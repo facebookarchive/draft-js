@@ -34,7 +34,7 @@ criteria.
 For instance, we may wish to render `ContentBlock` objects of type `'media'` using
 a custom `MediaComponent`.
 
-```
+```js
 function myBlockRenderer(contentBlock) {
   const type = contentBlock.getType();
   if (type === 'media') {
@@ -76,7 +76,7 @@ key to the text within a `'media'` block during `EditorState` management,
 then retrieve the metadata for that key in your custom component `render()`
 code.
 
-```
+```js
 import {Entity} from 'draft-js';
 const MediaComponent = React.createClass({
   render() {

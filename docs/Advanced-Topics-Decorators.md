@@ -43,7 +43,7 @@ optionally be provided.
 In the "Tweet" editor example, for instance, we use a `CompositeDecorator` that
 searches for @-handle strings as well as hashtag strings:
 
-```
+```js
 const compositeDecorator = new CompositeDecorator([
   {
     strategy: handleStrategy,
@@ -59,7 +59,7 @@ const compositeDecorator = new CompositeDecorator([
 This composite decorator will first scan a given block of text for @-handle
 matches, then for hashtag matches.
 
-```
+```js
 // Note: these aren't very good regexes, don't use them!
 const HANDLE_REGEX = /\@[\w]+/g;
 const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
@@ -95,7 +95,7 @@ In our current example, the `CompositeDecorator` object names `HandleSpan` and
 `HashtagSpan` as the components to use for decoration. These are just basic
 stateless components:
 
-```
+```js
 const HandleSpan = (props) => {
   return <span {...props} style={styles.handle}>{props.children}</span>;
 };
@@ -134,7 +134,7 @@ For example, if for some reason we wished to disable the creation of @-handle
 decorations while the user interacts with the editor, it would be fine to do the
 following:
 
-```
+```js
 function turnOffHandleDecorations(editorState) {
   const onlyHashtags = new CompositeDecorator([{
     strategy: hashtagStrategy,

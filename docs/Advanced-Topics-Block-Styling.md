@@ -30,7 +30,7 @@ The `blockStyleFn` prop on `Editor` allows you to define CSS classes to
 style blocks at render time. For instance, you may wish to style `'blockquote'`
 type blocks with fancy italic text.
 
-```
+```js
 function myBlockStyleFn(contentBlock) {
   const type = contentBlock.getType();
   if (type === 'blockquote') {
@@ -49,7 +49,7 @@ const EditorWithFancyBlockquotes = React.createClass({
 
 Then in your own CSS:
 
-```
+```css
 .superFancyBlockquote {
   color: #999;
   font-family: 'Hoefler Text', Georgia, serif;
