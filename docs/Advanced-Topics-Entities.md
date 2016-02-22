@@ -19,7 +19,7 @@ and
 provide live code examples to help clarify how entities can be used, as well
 as their built-in behavior.
 
-The [Entity API Reference](/draf-js/docs/api-reference-entity.html) provides
+The [Entity API Reference](/draft-js/docs/api-reference-entity.html) provides
 details on the static methods to be used when creating, retrieving, or updating
 entity objects.
 
