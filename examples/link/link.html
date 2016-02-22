@@ -55,7 +55,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => {
-            console.log(convertToRaw(this.state.editorState.toJS()));
+            console.log(this.state.editorState.toJS());
           };
 
           this.addLink = this._addLink.bind(this);
