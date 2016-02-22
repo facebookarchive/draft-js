@@ -104,7 +104,7 @@ objects.
 
 *Properties*
 
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record) to
+> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map) to
 > set properties.
 
 <ul class="apiIndex">
@@ -252,7 +252,7 @@ Returns whether the contents contain any text at all.
 
 ## Properties
 
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record) to
+> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map) to
 > set properties.
 
 ### blockMap
