@@ -56,7 +56,7 @@ be used to refer to the entity.
 This key is the value that should be used when applying entities to your
 content. For instance, the `Modifier` module contains an `applyEntity` method:
 
-```
+```js
 const key = Entity.create('LINK', 'MUTABLE', {href: 'http://www.zombo.com'});
 const contentStateWithLink = Modifier.applyEntity(
   contentState,
@@ -69,7 +69,7 @@ For a given range of text, then, you can extract its associated entity key by us
 the `getEntityAt()` method on a `ContentBlock` object, passing in the target
 offset value.
 
-```
+```js
 const blockWithLinkAtBeginning = contentState.getBlockForKey('...');
 const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
 const linkInstance = Entity.get(linkKey);

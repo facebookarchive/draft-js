@@ -31,7 +31,7 @@ reuse identical immutable objects.
 
 In essence, our styles are:
 
-```
+```js
 [
   [], // H
   [], // e
@@ -51,7 +51,7 @@ Now let's say that we wish to make the middle range of characters italic as well
 The end result will accommodate the overlap by including `'ITALIC'` in the
 relevant `OrderedSet` objects as well.
 
-```
+```js
 [
   [], // H
   [], // e
@@ -85,7 +85,7 @@ for a live example.)
 For example, you may want to add a `'STRIKETHROUGH'` style. To do so, define a
 custom style map:
 
-```
+```js
 import {Editor} from 'draft-js';
 
 const styleMap = {

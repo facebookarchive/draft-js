@@ -26,7 +26,7 @@ This approach allows the component that composes the input to have strict
 control over the state of the input, while still allowing updates to the DOM
 to provide information about the text that the user has written.
 
-```
+```js
 const MyInput = React.createClass({
   onChange(evt) {
     this.setState({value: evt.target.value});
@@ -58,7 +58,7 @@ including contents, cursor, and undo/redo history. All changes to content and
 selection within the editor will create new `EditorState` objects. Note that
 this remains efficient due to data persistence across immutable objects.
 
-```
+```js
 import {Editor} from 'draft-js';
 const MyEditor = React.createClass({
   onChange(editorState) {

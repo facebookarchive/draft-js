@@ -44,7 +44,7 @@ write your contents to the server as a draft copy.
 
 First, let's define our key binding function.
 
-```
+```js
 import {KeyBindingUtil} from 'draft-js';
 const {hasCommandModifier} = KeyBindingUtil;
 
@@ -66,7 +66,7 @@ fall through to the default key bindings.
 In our editor component, we can then make use of the command via the
 `handleKeyCommand` prop:
 
-```
+```js
 import {Editor} from 'draft-js';
 class MyEditor extends React.Component {
   // ...

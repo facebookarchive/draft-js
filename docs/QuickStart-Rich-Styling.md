@@ -43,7 +43,7 @@ such as Cmd+B (bold), Cmd+I (italic), and so on.
 We can observe and handle key commands via the `handleKeyCommand` prop, and
 hook these into `RichUtils` to apply or remove the desired style.
 
-```
+```js
 import {Editor, RichUtils} from 'draft-js';
 const MyEditor = React.createClass({
   onChange(editorState) {
@@ -87,7 +87,7 @@ features.
 
 Here's a super-basic example with a "Bold" button to toggle the `BOLD` style.
 
-```
+```js
 const MyEditor = React.createClass({
   ...
 
