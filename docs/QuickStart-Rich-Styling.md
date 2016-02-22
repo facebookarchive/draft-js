@@ -93,6 +93,7 @@ class MyEditor extends React.Component {
   ...
 
   _onBoldClick() {
+    const {editorState} = this.state;
     this.onChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
   }
 
