@@ -79,7 +79,7 @@ defaults, or you may override the default style objects for the basic styles.
 
 Within your `Editor` use case, you may provide the `customStyleMap` prop
 to define your style objects. (See
-[Colorful Editor](http://github.com/facebook/draft-js/examples/color)
+[Colorful Editor](http://github.com/facebook/draft-js/tree/master/examples/color)
 for a live example.)
 
 For example, you may want to add a `'STRIKETHROUGH'` style. To do so, define a
