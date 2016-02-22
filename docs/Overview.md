@@ -26,7 +26,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Editor} from 'draft-js';
 
-class MyEditor extends React.Component {
+const MyEditor = React.createClass({
   onChange(editorState) {
     this.setState({editorState});
   },
@@ -34,7 +34,7 @@ class MyEditor extends React.Component {
     const {editorState} = this.state;
     return <Editor editorState={editorState} onChange={this.onChange} />;
   }
-}
+});
 
 ReactDOM.render(
   <MyEditor />,
