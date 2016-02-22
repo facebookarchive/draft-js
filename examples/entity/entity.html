@@ -123,7 +123,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => {
-            console.log(convertToRaw(this.state.editorState.toJS()));
+            const content = this.state.editorState.getCurrentContent();
+            console.log(convertToRaw(content));
           };
         }
 
