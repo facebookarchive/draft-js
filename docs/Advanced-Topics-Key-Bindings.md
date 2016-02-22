@@ -42,7 +42,7 @@ handled. If it returns `false`, the command will fall through
 Let's say we have an editor that should have a "Save" mechanism to periodically
 write your contents to the server as a draft copy.
 
-First, let's define our key binding function.
+First, let's define our key binding function:
 
 ```js
 import {KeyBindingUtil} from 'draft-js';
@@ -85,6 +85,7 @@ class MyEditor extends React.Component {
       <Editor
         editorState={this.state.editorState}
         handleKeyCommand={this.handleKeyCommand.bind(this)}
+        keyBindingFn={myKeyBindingFn}
         ...
       />
     );

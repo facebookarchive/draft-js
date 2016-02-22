@@ -11,7 +11,7 @@ Within `Editor`, some block types are given default CSS styles to limit the amou
 of basic configuration required to get engineers up and running with custom
 editors.
 
-By defining a `blockStyleFn` prop function for a `Editor`, it is possible
+By defining a `blockStyleFn` prop function for an `Editor`, it is possible
 to specify classes that should be applied to blocks at render time.
 
 ## DraftStyleDefault.css
@@ -47,7 +47,7 @@ class EditorWithFancyBlockquotes extends React.Component {
 }
 ```
 
-Then in your own CSS:
+Then, in your own CSS:
 
 ```css
 .superFancyBlockquote {
