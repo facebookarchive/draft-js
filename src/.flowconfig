@@ -1,0 +1,17 @@
+[ignore]
+.*/__tests__.*
+.*/react/node_modules/.*
+.*/fbjs/node_modules/.*
+
+[include]
+../node_modules/fbjs/lib/
+../node_modules/immutable
+../node_modules/react
+
+[libs]
+../node_modules/fbjs/flow/lib
+
+[options]
+module.system=haste
+esproposal.class_static_fields=enable
+suppress_type=$FlowIssue

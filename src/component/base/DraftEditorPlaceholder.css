@@ -1,0 +1,17 @@
+/**
+ * @providesModule DraftEditorPlaceholder
+ */
+
+.public-DraftEditorPlaceholder-root {
+  color: #9197a3;
+  position: absolute;
+  z-index: 0;
+}
+
+.public-DraftEditorPlaceholder-hasFocus {
+  color: #bdc1c9;
+}
+
+.DraftEditorPlaceholder-hidden {
+  display: none;
+}

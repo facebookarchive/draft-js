@@ -1,0 +1,85 @@
+{
+  "name": "draft-js",
+  "private": true,
+  "description": "A React framework for building text editors.",
+  "version": "0.1.0",
+  "keywords": [
+    "draftjs",
+    "editor",
+    "react",
+    "richtext"
+  ],
+  "homepage": "https://facebook.github.io/draft-js",
+  "bugs": "https://github.com/facebook/draft-js/issues",
+  "files": [
+    "dist/",
+    "lib/",
+    "LICENSE",
+    "PATENTS"
+  ],
+  "main": "lib/Draft.js",
+  "repository": "facebook/draft-js",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "build": "gulp",
+    "lint": "eslint .",
+    "test": "NODE_ENV=test jest"
+  },
+  "dependencies": {
+    "fbjs": "^0.8.0-alpha.1",
+    "immutable": "^3.7.4"
+  },
+  "peerDependencies": {
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0"
+  },
+  "devDependencies": {
+    "babel-core": "^5.8.35",
+    "babel-eslint": "^4.1.3",
+    "del": "^2.2.0",
+    "envify": "^3.4.0",
+    "eslint": "^1.5.1",
+    "eslint-plugin-react": "^3.2.2",
+    "fbjs-scripts": "^0.6.0-alpha.1",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-browserify-thin": "^0.1.5",
+    "gulp-concat-css": "^2.2.0",
+    "gulp-derequire": "^2.1.0",
+    "gulp-flatten": "^0.2.0",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.6",
+    "jest-cli": "^0.9.0-fb1",
+    "object-assign": "^4.0.1",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "run-sequence": "^1.1.2",
+    "vinyl-buffer": "^1.0.0",
+    "webpack-stream": "^3.0.0"
+  },
+  "jest": {
+    "rootDir": "",
+    "scriptPreprocessor": "scripts/jest/preprocessor.js",
+    "setupEnvScriptFile": "node_modules/fbjs-scripts/jest/environment.js",
+    "persistModuleRegistryBetweenSpecs": true,
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib/",
+      "<rootDir>/node_modules/"
+    ],
+    "preprocessorIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "testPathDirs": [
+      "<rootDir>/src/"
+    ],
+    "testRunner": "node_modules/jest-cli/src/testRunners/jasmine/jasmine2.js",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/fbjs/node_modules/",
+      "<rootDir>/node_modules/fbjs/lib/(?!(UserAgent.js$|UserAgentData.js$))",
+      "<rootDir>/node_modules/fbjs-scripts/",
+      "<rootDir>/node_modules/immutable/",
+      "<rootDir>/node_modules/react/",
+      "<rootDir>/node_modules/react-dom/"
+    ]
+  }
+}
