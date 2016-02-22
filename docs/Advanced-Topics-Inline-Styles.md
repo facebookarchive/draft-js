@@ -12,8 +12,8 @@ behavior that goes well beyond the bold/italic/underline basics. For instance,
 you may want to support variety with color, font families, font sizes, and more.
 Further, your desired styles may overlap or be mutually exclusive.
 
-The [Rich Editor](http://github.com/facebook/draft-js/examples/rich) and
-[Colorful Editor](http://github.com/facebook/draft-js/examples/color)
+The [Rich Editor](http://github.com/facebook/draft-js/tree/master/examples/rich) and
+[Colorful Editor](http://github.com/facebook/draft-js/tree/master/examples/color)
 examples demonstrate complex inline style behavior in action.
 
 ### Model
