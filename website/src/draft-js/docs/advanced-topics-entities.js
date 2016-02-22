@@ -90,7 +90,7 @@ from the text. Entities with this mutability type are effectively atomic.
 
 For instance, in a Facebook input, add a mention for a Page (i.e. Barack Obama).
 Then, either add a character within the mentioned text, or try to delete a character.
-Note that when adding characters, the entity is removed, and when deleting charaters,
+Note that when adding characters, the entity is removed, and when deleting character,
 the entire entity is removed.
 
 This mutability value is useful in cases where the text absolutely must match
