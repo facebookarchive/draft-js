@@ -40,11 +40,11 @@ function myBlockStyleFn(contentBlock) {
 
 // Then...
 import {Editor} from 'draft-js';
-const EditorWithFancyBlockquotes = React.createClass({
+class EditorWithFancyBlockquotes extends React.Component {
   render() {
     return <Editor ... blockStyleFn={myBlockStyleFn} />;
   }
-});
+}
 ```
 
 Then in your own CSS:
