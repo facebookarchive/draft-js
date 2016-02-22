@@ -15,7 +15,7 @@ with [immutable-js](https://facebook.github.io/immutable-js/), offering
 an API with functional state updates and aggressively leveraging data persistence
 for scalable memory usage.
 
-[Learn how to use Draft.js in your own project.](https://facebook.github.io/draft-js/docs/quickstart-getting-started.html)
+[Learn how to use Draft.js in your own project.](https://facebook.github.io/draft-js/docs/overview.html)
 
 ## Examples
 
