@@ -49,12 +49,12 @@ function myBlockRenderer(contentBlock) {
 
 // Then...
 import {Editor} from 'draft-js';
-const EditorWithMedia = React.createClass({
+class EditorWithMedia extends React.Component {
   ...
   render() {
     return <Editor ... blockRendererFn={myBlockRenderer} />;
   }
-});
+}
 ```
 
 If no custom renderer object is returned by the `blockRendererFn` function,
@@ -78,13 +78,13 @@ code.
 
 ```js
 import {Entity} from 'draft-js';
-const MediaComponent = React.createClass({
+class MediaComponent extends React.Component {
   render() {
     const {block, foo} = this.props;
     const data = Entity.get(block.getEntityAt(0)).getData();
     // Return a <figure> or some other content using this data.
   }
-});
+}
 ```
 
 The `ContentBlock` object is made available within the custom component, along

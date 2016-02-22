@@ -27,14 +27,15 @@ control over the state of the input, while still allowing updates to the DOM
 to provide information about the text that the user has written.
 
 ```js
-const MyInput = React.createClass({
-  onChange(evt) {
-    this.setState({value: evt.target.value});
-  },
+class MyInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onChange = (evt) => this.setState({value: evt.target.value});
+  }
   render() {
     return <input value={this.state.value} onChange={this.onChange} />;
   }
-});
+}
 ```
 
 The top-level component can maintain control over the input state via this
@@ -60,15 +61,16 @@ this remains efficient due to data persistence across immutable objects.
 
 ```js
 import {Editor} from 'draft-js';
-const MyEditor = React.createClass({
-  onChange(editorState) {
-    this.setState({editorState});
-  },
+class MyEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onChange = (editorState) => this.setState({editorState});
+  }
   render() {
     const {editorState} = this.state;
     return <Editor editorState={editorState} onChange={this.onChange} />;
   }
-});
+}
 ```
 
 For any edits or selection changes that occur in the editor DOM, your `onChange`

@@ -45,10 +45,11 @@ hook these into `RichUtils` to apply or remove the desired style.
 
 ```js
 import {Editor, RichUtils} from 'draft-js';
-const MyEditor = React.createClass({
-  onChange(editorState) {
-    this.setState({editorState});
-  },
+class MyEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onChange = (editorState) => this.setState({editorState});
+  }
   handleKeyCommand(command) {
     const {editorState} = this.state;
     const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -57,7 +58,7 @@ const MyEditor = React.createClass({
       return true;
     }
     return false;
-  },
+  }
   render() {
     const {editorState} = this.state;
     return (
@@ -68,7 +69,7 @@ const MyEditor = React.createClass({
       />
     );
   }
-});
+}
 ```
 
 > handleKeyCommand
@@ -88,7 +89,7 @@ features.
 Here's a super-basic example with a "Bold" button to toggle the `BOLD` style.
 
 ```js
-const MyEditor = React.createClass({
+class MyEditor extends React.Component {
   ...
 
   _onBoldClick() {
@@ -99,7 +100,7 @@ const MyEditor = React.createClass({
     const {editorState} = this.state;
     return (
       <div>
-        <button onClick={this._onBoldClick}>Bold</button>
+        <button onClick={this._onBoldClick.bind(this)}>Bold</button>
         <Editor
           editorState={editorState}
           handleKeyCommand={this.handleKeyCommand}
@@ -108,5 +109,5 @@ const MyEditor = React.createClass({
       </div>
     );
   }
-});
+}
 ```
