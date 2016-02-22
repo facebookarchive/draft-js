@@ -35,7 +35,7 @@ fall-through case, so that your editor may benefit from default commands.
 With your custom command string, you may then implement the `handleKeyCommand`
 prop function, which allows you to map that command string to your desired
 behavior. If `handleKeyCommand` returns `true`, the command is considered
-handled. If it returns `false`, the command will fall through
+handled. If it returns `false`, the command will fall through.
 
 ### Example
 
