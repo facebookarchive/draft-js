@@ -99,7 +99,7 @@ methods on a single `List` object.
 
 > Note
 >
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record)
+> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map)
 > for the `ContentBlock` constructor or to set properties.
 
 <ul class="apiIndex">
@@ -227,7 +227,7 @@ Executes a callback for each contiguous range of entities within this
 
 > Note
 >
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record)
+> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map)
 > for the `ContentBlock` constructor or to set properties.
 
 ### key
