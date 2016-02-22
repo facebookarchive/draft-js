@@ -28,7 +28,7 @@ const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const generateBlockKey = require('generateBlockKey');
 
-var DraftPublic = {
+const DraftPublic = {
   Editor: DraftEditor,
   EditorState,
 
