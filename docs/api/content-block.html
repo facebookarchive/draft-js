@@ -1,0 +1,117 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><title>Draft.js | Rich Text Editor Framework for React</title><meta name="viewport" content="width=device-width"/><meta property="og:title" content="Draft.js | Rich Text Editor Framework for React"/><meta property="og:type" content="website"/><meta property="og:url" content="http://facebook.github.io/draft-js/index.html"/><meta property="og:description" content="Rich Text Editor Framework for React"/><link rel="stylesheet" href="/draft-js/css/draft.css"/><script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script></head><body><div class="container"><div class="nav-main"><div class="wrap"><a class="nav-home" href="/draft-js/">Draft.js</a><ul class="nav-site"><li><a href="/draft-js/docs/overview.html#content" class="active">docs</a></li><li><a href="http://github.com/facebook/draft-js" class="">github</a></li></ul></div></div><section class="content wrap documentationContent"><div class="nav-docs"><div class="nav-docs-section"><h3>Quick Start</h3><ul><li><a style="margin-left:0;" class="" href="/draft-js/docs/overview.html#content">Getting Started</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/quickstart-api-basics.html#content">API Basics</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/quickstart-rich-styling.html#content">Rich Styling</a></li></ul></div><div class="nav-docs-section"><h3>Advanced Topics</h3><ul><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-entities.html#content">Entities</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-decorators.html#content">Decorators</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-key-bindings.html#content">Key Bindings</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-managing-focus.html#content">Managing Focus</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-block-styling.html#content">Block Styling</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-block-components.html#content">Custom Block Components</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-inline-styles.html#content">Complex Inline Styles</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-nested-lists.html#content">Nested Lists</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-text-direction.html#content">Text Direction</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/advanced-topics-issues-and-pitfalls.html#content">Issues and Pitfalls</a></li></ul></div><div class="nav-docs-section"><h3>API Reference</h3><ul><li><a style="margin-left:0;" class="" href="/draft-js/docs/api-reference-editor.html#content">Editor Component</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/api-reference-editor-state.html#content">EditorState</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/api-reference-content-state.html#content">ContentState</a></li><li><a style="margin-left:0;" class="active" href="/draft-js/docs/api-reference-content-block.html#content">ContentBlock</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/api-reference-character-metadata.html#content">CharacterMetadata</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/api-reference-entity.html#content">Entity</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/api-reference-selection-state.html#content">SelectionState</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/api-reference-data-conversion.html#content">Data Conversion</a></li><li><a style="margin-left:0;" class="" href="/draft-js/docs/api-reference-modifier.html#content">Modifier</a></li></ul></div></div><div class="inner-content"><a id="content"></a><h1>ContentBlock</h1><div><p><code>ContentBlock</code> is an Immutable
+<a href="http://facebook.github.io/immutable-js/docs/#/Record/Record" target="_blank">Record</a> that
+represents the full state of a single block of editor content, including:</p><ul><li>Plain text contents of the block</li><li>Type, e.g. paragraph, header, list item</li><li>Entity, inline style, and depth information</li></ul><p>A <code>ContentState</code> object contains an <code>OrderedMap</code> of these <code>ContentBlock</code> objects,
+which together comprise the full contents of the editor.</p><p><code>ContentBlock</code> objects are largely analogous to block-level HTML elements like
+paragraphs and list items.</p><p>New <code>ContentBlock</code> objects may be created directly using the constructor.
+Expected Record values are detailed below.</p><h2><a class="anchor" name="overview"></a>Overview <a class="hash-link" href="#overview">#</a></h2><p><em>Methods</em></p><div><ul class="apiIndex">
+  <li>
+    <a href="#getkey">
+      <pre>getKey(): string</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#gettype">
+      <pre>getType(): DraftBlockType</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#gettext">
+      <pre>getText(): string</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#getcharacterlist">
+      <pre>getCharacterList(): List<CharacterMetadata></pre>
+    </a>
+  </li>
+  <li>
+    <a href="#getlength">
+      <pre>getLength(): number</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#getdepth">
+      <pre>getDepth(): number</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#getinlinestyleat">
+      <pre>getInlineStyleAt(offset: number): DraftInlineStyle</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#getentityat">
+      <pre>getEntityAt(offset: number): ?string</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#findstyleranges">
+      <pre>findStyleRanges(filterFn: Function, callback: Function): void</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#findentityranges">
+      <pre>findEntityRanges(filterFn: Function, callback: Function): void</pre>
+    </a>
+  </li>
+</ul>
+
+</div><p><em>Properties</em></p><blockquote><p>Note</p><p>Use <a href="http://facebook.github.io/immutable-js/docs/#/Record/Record" target="_blank">Immutable Map API</a>
+for the <code>ContentBlock</code> constructor or to set properties.</p></blockquote><div><ul class="apiIndex">
+  <li>
+    <a href="#key">
+      <pre>key: string</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#type">
+      <pre>type: DraftBlockType</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#text">
+      <pre>text: string</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#characterlist">
+      <pre>characterList: List<CharacterMetadata></pre>
+    </a>
+  </li>
+  <li>
+    <a href="#depth">
+      <pre>depth: number</pre>
+    </a>
+  </li>
+</ul>
+
+</div><h2><a class="anchor" name="methods"></a>Methods <a class="hash-link" href="#methods">#</a></h2><h3><a class="anchor" name="getkey"></a>getKey() <a class="hash-link" href="#getkey">#</a></h3><pre class="prism language-javascript"><span class="token function">getKey<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> string</pre><p>Returns the string key for this <code>ContentBlock</code>.</p><h3><a class="anchor" name="gettype"></a>getType() <a class="hash-link" href="#gettype">#</a></h3><pre class="prism language-javascript"><span class="token function">getType<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> DraftBlockType</pre><p>Returns the type for this <code>ContentBlock</code>. Type values are largely analogous to
+block-level HTML elements.</p><h3><a class="anchor" name="gettext"></a>getText() <a class="hash-link" href="#gettext">#</a></h3><pre class="prism language-javascript"><span class="token function">getText<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> string</pre><p>Returns the full plaintext for this <code>ContentBlock</code>. This value does not contain
+any styling, decoration, or HTML information.</p><h3><a class="anchor" name="getcharacterlist"></a>getCharacterList() <a class="hash-link" href="#getcharacterlist">#</a></h3><pre class="prism language-javascript"><span class="token function">getCharacterList<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> List&lt;CharacterMetadata<span class="token operator">&gt;</span></pre><p>Returns an immutable <code>List</code> of <code>CharacterMetadata</code> objects, one for each
+character in the <code>ContentBlock</code>. (See <a href="/draft-js/docs/api/character-metadata.html" target="">CharacterMetadata</a>
+for details.)</p><p>This <code>List</code> contains all styling and entity information for the block.</p><h3><a class="anchor" name="getlength"></a>getLength() <a class="hash-link" href="#getlength">#</a></h3><pre class="prism language-javascript"><span class="token function">getLength<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> number</pre><p>Returns the length of the plaintext for the <code>ContentBlock</code>.</p><p>This value uses the standard JavaScript <code>length</code> property for the string, and
+is therefore not Unicode-aware -- surrogate pairs will be counted as two
+characters.</p><h3><a class="anchor" name="getdepth"></a>getDepth() <a class="hash-link" href="#getdepth">#</a></h3><pre class="prism language-javascript"><span class="token function">getDepth<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> number</pre><p>Returns the depth value for this block, if any. This is currently used only
+for list items.</p><h3><a class="anchor" name="getinlinestyleat"></a>getInlineStyleAt() <a class="hash-link" href="#getinlinestyleat">#</a></h3><pre class="prism language-javascript"><span class="token function">getInlineStyleAt<span class="token punctuation">(</span></span>offset<span class="token punctuation">:</span> number<span class="token punctuation">)</span><span class="token punctuation">:</span> DraftInlineStyle</pre><p>Returns the <code>DraftInlineStyle</code> value (an <code>OrderedSet&lt;string&gt;</code>) at a given offset
+within this <code>ContentBlock</code>.</p><h3><a class="anchor" name="getentityat"></a>getEntityAt() <a class="hash-link" href="#getentityat">#</a></h3><pre class="prism language-javascript"><span class="token function">getEntityAt<span class="token punctuation">(</span></span>offset<span class="token punctuation">:</span> number<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token operator">?</span>string</pre><p>Returns the entity key value (or <code>null</code> if none) at a given offset within this
+<code>ContentBlock</code>.</p><h3><a class="anchor" name="findstyleranges"></a>findStyleRanges() <a class="hash-link" href="#findstyleranges">#</a></h3><pre class="prism language-javascript"><span class="token function">findStyleRanges<span class="token punctuation">(</span></span>
+  filterFn<span class="token punctuation">:</span> <span class="token punctuation">(</span>value<span class="token punctuation">:</span> CharacterMetadata<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> boolean<span class="token punctuation">,</span>
+  callback<span class="token punctuation">:</span> <span class="token punctuation">(</span>start<span class="token punctuation">:</span> number<span class="token punctuation">,</span> end<span class="token punctuation">:</span> number<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> void
+<span class="token punctuation">)</span><span class="token punctuation">:</span> void</pre><p>Executes a callback for each contiguous range of styles within this
+<code>ContentBlock</code>.</p><h3><a class="anchor" name="findentityranges"></a>findEntityRanges() <a class="hash-link" href="#findentityranges">#</a></h3><pre class="prism language-javascript"><span class="token function">findEntityRanges<span class="token punctuation">(</span></span>
+  filterFn<span class="token punctuation">:</span> <span class="token punctuation">(</span>value<span class="token punctuation">:</span> CharacterMetadata<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> boolean<span class="token punctuation">,</span>
+  callback<span class="token punctuation">:</span> <span class="token punctuation">(</span>start<span class="token punctuation">:</span> number<span class="token punctuation">,</span> end<span class="token punctuation">:</span> number<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> void
+<span class="token punctuation">)</span><span class="token punctuation">:</span> void</pre><p>Executes a callback for each contiguous range of entities within this
+<code>ContentBlock</code>.</p><h2><a class="anchor" name="properties"></a>Properties <a class="hash-link" href="#properties">#</a></h2><blockquote><p>Note</p><p>Use <a href="http://facebook.github.io/immutable-js/docs/#/Record/Record" target="_blank">Immutable Map API</a>
+for the <code>ContentBlock</code> constructor or to set properties.</p></blockquote><h3><a class="anchor" name="key"></a>key <a class="hash-link" href="#key">#</a></h3><p>See <code>getKey()</code>.</p><h3><a class="anchor" name="text"></a>text <a class="hash-link" href="#text">#</a></h3><p>See <code>getText()</code>.</p><h3><a class="anchor" name="type"></a>type <a class="hash-link" href="#type">#</a></h3><p>See <code>getType()</code>.</p><h3><a class="anchor" name="characterlist"></a>characterList <a class="hash-link" href="#characterlist">#</a></h3><p>See <code>getCharacterList()</code>.</p><h3><a class="anchor" name="depth"></a>depth <a class="hash-link" href="#depth">#</a></h3><p>See <code>getDepth()</code>.</p></div><div class="docs-prevnext"><a class="docs-next" href="api-reference-character-metadata.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2016 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-387204-10', 'facebook.github.io');
+            ga('send', 'pageview');
+
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)
+            ){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+          </script></body></html>
