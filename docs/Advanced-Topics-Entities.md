@@ -19,7 +19,7 @@ and
 provide live code examples to help clarify how entities can be used, as well
 as their built-in behavior.
 
-The [Entity API Reference](/draf-js/docs/api-reference-entity.html) provides
+The [Entity API Reference](/draft-js/docs/api-reference-entity.html) provides
 details on the static methods to be used when creating, retrieving, or updating
 entity objects.
 
@@ -44,7 +44,7 @@ decorate annotated ranges. _(We are considering future changes to bring
 the entity store into `EditorState` or `ContentState`.)_
 
 Using [decorators](/draft-js/docs/advanced-topics-decorators.html) or
-[custom block components](docs/advanced-topics-block-components.html), you can
+[custom block components](/draft-js/docs/advanced-topics-block-components.html), you can
 add rich rendering to your editor based on entity metadata.
 
 ## Creating and Retrieving Entities
