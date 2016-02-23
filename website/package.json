@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "node server/server.js",
-    "postinstall": "npm install .. && mkdir -p src/draft-js/lib"
+    "postinstall": "npm install .."
   },
   "dependencies": {
     "compression": "1.2.2",
