@@ -72,7 +72,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           }
           const href = window.prompt('Enter a URL');
           const entityKey = Entity.create('link', 'MUTABLE', {href});
-          const content = editorState.getCurrentContent();
           this.setState({
             editorState: RichUtils.toggleLink(editorState, selection, entityKey),
           });
@@ -84,7 +83,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           if (selection.isCollapsed()) {
             return;
           }
-          const content = editorState.getCurrentContent();
           this.setState({
             editorState: RichUtils.toggleLink(editorState, selection, null),
           });
