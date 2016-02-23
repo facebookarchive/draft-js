@@ -25,7 +25,7 @@ operations are already implemented and available via utility modules. The getter
 methods, however, may come in handy at render time.
 
 See the API reference on
-[ContentBlock](https://facebook.github.io/draft-js/docs/api-reference-content-block.html)
+[ContentBlock](https://github.com/facebook/draft-js/blob/master/docs/APIReference-ContentBlock.md)
 for information on how `CharacterMetadata` is used within `ContentBlock`.
 
 ## Overview
