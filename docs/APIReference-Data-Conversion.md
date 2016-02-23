@@ -29,10 +29,10 @@ objects.
 ### convertFromRaw
 
 ```
-convertFromRaw(rawState: RawDraftContentState): ContentState
+convertFromRaw(rawState: RawDraftContentState): Array<ContentBlock>
 ```
 
-Given a raw state, convert it to  `ContentState` object. This is useful when
+Given a raw state, convert it to an array of `ContentBlock` objects. This is useful when
 restoring contents to use within a Draft editor.
 
 ### convertToRaw
