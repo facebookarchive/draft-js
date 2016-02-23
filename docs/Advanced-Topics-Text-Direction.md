@@ -14,7 +14,7 @@ For example, we want input behavior for RTL languages such as Arabic and Hebrew
 to meet users' expectations. We also want to be able to support editor contents
 with a mixture of LTR and RTL text.
 
-To that end, Draft uses a bidi direction algorithm to determine appropriate
+To that end, Draft uses a bidi algorithm to determine appropriate
 text alignment and direction on a per-block basis.
 
 Text is rendered with an LTR or RTL direction automatically as the user types.

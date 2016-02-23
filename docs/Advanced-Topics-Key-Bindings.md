@@ -35,14 +35,14 @@ fall-through case, so that your editor may benefit from default commands.
 With your custom command string, you may then implement the `handleKeyCommand`
 prop function, which allows you to map that command string to your desired
 behavior. If `handleKeyCommand` returns `true`, the command is considered
-handled. If it returns `false`, the command will fall through
+handled. If it returns `false`, the command will fall through.
 
 ### Example
 
 Let's say we have an editor that should have a "Save" mechanism to periodically
 write your contents to the server as a draft copy.
 
-First, let's define our key binding function.
+First, let's define our key binding function:
 
 ```js
 import {KeyBindingUtil} from 'draft-js';
@@ -85,6 +85,7 @@ class MyEditor extends React.Component {
       <Editor
         editorState={this.state.editorState}
         handleKeyCommand={this.handleKeyCommand.bind(this)}
+        keyBindingFn={myKeyBindingFn}
         ...
       />
     );

@@ -169,7 +169,7 @@ Handle files that have been pasted directly into the editor.
 
 ### Key Handlers (Optional)
 
-These prop functions expose common useful key events. Example: at Facebook, these are
+These prop functions expose common useful key events. Example: At Facebook, these are
 used to provide keyboard interaction for mention results in inputs.
 
 #### onEscape
