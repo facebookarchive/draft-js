@@ -11,4 +11,31 @@ before_install:
   npm --version
 script:
 - |
-  npm test
+  if [ "$TEST_TYPE" = test ]
+  then
+
+    npm test
+
+  elif [ "$TEST_TYPE" = build_website ]
+  then
+
+    cd website
+    npm install
+    ./setup.sh
+    if [ "$TRAVIS_PULL_REQUEST" = false ] && [ "$TRAVIS_BRANCH" = master ]; then
+      # Automatically publish the website
+      echo "machine github.com login reactjs-bot password $GITHUB_TOKEN" >~/.netrc
+      ./publish.sh
+    else
+      # Make sure the website builds without error
+      node server/generate.js
+    fi
+
+  fi
+env:
+  matrix:
+    - TEST_TYPE=test
+    - TEST_TYPE=build_website
+  global:
+    # $GITHUB_TOKEN
+    - secure: "JOaZao55VK0+3Uf2AoPo5qOXBKEUnqwbwfHsPq5746+7zzr4WpSOleYWLCOm3cl/pMuw7MEa8cQ8MzBktvUyuqbYEl6tslqNE+IINXPlrLbZJGbz5US/doNwv6nWk679op4XJin8ZjJy3AsoP8+qRJCzGRepjiNQTT4Yq72lWEEv1ea5RN5CQNobTBJfyJ47+XK+A8Zqea8mV152LO2h0/q96Ny1YQpcG/uQj8KGjd/Gi9OEifheKYZV5YzamWF3zouchVC3uJZTfAs7zOuiz/23ej2HwUwCfE7ZlcM0EvEJ4oEKPhO7ZUt0tLw3O/xIzhIJMngyfWee+jp47SAPioyfW/mzX8S+2ma8dstFsgG7XbVpIwk4906tJFIcOLxrAocXqcSAOC+bS01rFbFzDVdh3czWF8iaSglZh6SWfgn0aAEoNSxZZJffVsxciAG13FlG0bz0MgNqZuNflwE2aN14k2rWYtgz/rpjnMQNE0p98JMuxxC4ezWQ7FwNe+k3OLqSfSiQffeOvLiOqdMQlH5KCLg/7ODtI6vvoxA3IQvYM8s0pZ7OY581aUhaBTZ/GiLGHz8fHuA4URUGNFixEyGvMr6Q1zhNvGmyHOW+vyzx4JOdM6VmW85+mY0M+qJ7TfoUJRM1A3WhvW43X2ghwou4YM35Xj2I7g4DRPEk+XE="
