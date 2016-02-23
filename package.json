@@ -20,6 +20,7 @@
   "repository": "facebook/draft-js",
   "license": "BSD-3-Clause",
   "scripts": {
+    "prebuild": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "build": "gulp",
     "lint": "eslint .",
     "test": "NODE_ENV=test jest"
@@ -55,6 +56,10 @@
     "run-sequence": "^1.1.2",
     "vinyl-buffer": "^1.0.0",
     "webpack-stream": "^3.0.0"
+  },
+  "devEngines": {
+    "node": "4.x",
+    "npm": "2.x"
   },
   "jest": {
     "rootDir": "",
