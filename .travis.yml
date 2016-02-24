@@ -19,6 +19,7 @@ script:
   elif [ "$TEST_TYPE" = build_website ]
   then
 
+    npm run build
     cd website
     npm install
     ./setup.sh
