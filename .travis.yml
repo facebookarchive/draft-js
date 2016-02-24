@@ -19,7 +19,8 @@ script:
   elif [ "$TEST_TYPE" = build_website ]
   then
 
-    npm run build
+    set -e
+    ./node_modules/.bin/gulp
     cd website
     npm install
     ./setup.sh

@@ -21,5 +21,8 @@
     "request": "*",
     "serve-favicon": "2.2.0",
     "serve-static": "1.7.1"
+  },
+  "devDependencies": {
+    "bluebird": "^3.3.1"
   }
 }
