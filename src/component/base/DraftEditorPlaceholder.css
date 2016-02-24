@@ -2,16 +2,16 @@
  * @providesModule DraftEditorPlaceholder
  */
 
-.public-DraftEditorPlaceholder-root {
-  color: #9197a3;
+.public/DraftEditorPlaceholder/root {
+  color: var(fbui-desktop-text-placeholder);
   position: absolute;
   z-index: 0;
 }
 
-.public-DraftEditorPlaceholder-hasFocus {
-  color: #bdc1c9;
+.public/DraftEditorPlaceholder/hasFocus {
+  color: var(fbui-desktop-text-placeholder-focused);
 }
 
-.DraftEditorPlaceholder-hidden {
+.DraftEditorPlaceholder/hidden {
   display: none;
 }

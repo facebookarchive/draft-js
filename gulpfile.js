@@ -17,6 +17,7 @@ var flatten = require('gulp-flatten');
 var gulp = require('gulp');
 var gulpUtil = require('gulp-util');
 var runSequence = require('run-sequence');
+var through = require('through2');
 var webpackStream = require('webpack-stream');
 
 var babelOpts = require('./scripts/babel/default-options');
@@ -94,6 +95,38 @@ gulp.task('modules', function() {
 gulp.task('css', function() {
   return gulp
     .src(paths.css)
+    .pipe(through.obj(function(file, encoding, callback) {
+      var contents = file.contents.toString();
+      var replaced = contents.replace(
+        // Regex based on MakeHasteCssModuleTransform: ignores comments,
+        // strings, and URLs
+        /\/\*.*?\*\/|'(?:\\.|[^'])*'|"(?:\\.|[^"])*"|url\([^)]*\)|(\.(?:public\/)?[\w-]*\/{1,2}[\w-]+)/g,
+        function(match, cls) {
+          if (cls) {
+            return cls.replace(/\//g, '-');
+          } else {
+            return match;
+          }
+        }
+      );
+      replaced = replaced.replace(
+        // MakeHasteCssVariablesTransform
+        /\bvar\(([\w-]+)\)/g,
+        function(match, name) {
+          var vars = {
+            'fbui-desktop-text-placeholder': '#9197a3',
+            'fbui-desktop-text-placeholder-focused': '#bdc1c9',
+          };
+          if (vars[name]) {
+            return vars[name];
+          } else {
+            throw new Error('Unknown CSS variable ' + name);
+          }
+        }
+      );
+      file.contents = new Buffer(replaced);
+      callback(null, file);
+    }))
     .pipe(concatCSS('Draft.css'))
     .pipe(gulp.dest(paths.dist));
 });
