@@ -238,6 +238,7 @@ class DraftEditor
             aria-owns={readOnly ? null : this.props.ariaOwneeID}
             className={cx('public/DraftEditor/content')}
             contentEditable={!readOnly}
+            suppressContentEditableWarning={true}
             data-testid={this.props.webDriverTestID}
             onBeforeInput={this._onBeforeInput}
             onBlur={this._onBlur}
