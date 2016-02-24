@@ -13,17 +13,17 @@
 
 jest.autoMockOff();
 
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
-var ContentState = require('ContentState');
-var EditorState = require('EditorState');
-var Immutable = require('immutable');
-var SelectionState = require('SelectionState');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentBlock = require('ContentBlock');
+const ContentState = require('ContentState');
+const EditorState = require('EditorState');
+const Immutable = require('immutable');
+const SelectionState = require('SelectionState');
 
-var {BOLD} = require('SampleDraftInlineStyle');
-var {EMPTY} = CharacterMetadata;
+const {BOLD} = require('SampleDraftInlineStyle');
+const {EMPTY} = CharacterMetadata;
 
-var getDraftEditorSelection = require('getDraftEditorSelection');
+const getDraftEditorSelection = require('getDraftEditorSelection');
 
 /**
  * Test possible selection states for the text editor. This is based on
@@ -34,14 +34,14 @@ var getDraftEditorSelection = require('getDraftEditorSelection');
  * Welcome to the jungle.
  */
 describe('getDraftEditorSelection', function() {
-  var editorState;
-  var root;
-  var contents;
-  var blocks;
-  var decorators;
-  var leafs;
-  var leafChildren;
-  var textNodes;
+  let editorState;
+  let root;
+  let contents;
+  let blocks;
+  let decorators;
+  let leafs;
+  let leafChildren;
+  let textNodes;
 
   beforeEach(function() {
     window.getSelection = jest.genMockFunction();
@@ -50,7 +50,7 @@ describe('getDraftEditorSelection', function() {
     contents.setAttribute('data-contents', 'true');
     root.appendChild(contents);
 
-    var text = [
+    const text = [
       'Washington',
       'Jefferson',
       'Lincoln',
@@ -59,28 +59,28 @@ describe('getDraftEditorSelection', function() {
       'Obama',
     ];
 
-    var textA = text[0] + text[1];
-    var textB = text[2] + text[3];
-    var textC = text[4] + text[5];
+    const textA = text[0] + text[1];
+    const textB = text[2] + text[3];
+    const textC = text[4] + text[5];
 
-    var boldChar = CharacterMetadata.create({style: BOLD});
-    var aChars = Immutable.List(
+    const boldChar = CharacterMetadata.create({style: BOLD});
+    const aChars = Immutable.List(
       Immutable.Repeat(EMPTY, text[0].length).concat(
         Immutable.Repeat(boldChar, text[1].length)
       )
     );
-    var bChars = Immutable.List(
+    const bChars = Immutable.List(
       Immutable.Repeat(EMPTY, text[2].length).concat(
         Immutable.Repeat(boldChar, text[3].length)
       )
     );
-    var cChars = Immutable.List(
+    const cChars = Immutable.List(
       Immutable.Repeat(EMPTY, text[4].length).concat(
         Immutable.Repeat(boldChar, text[5].length)
       )
     );
 
-    var contentBlocks = [
+    const contentBlocks = [
       new ContentBlock({
         key: 'a',
         type: 'unstyled',
@@ -101,7 +101,7 @@ describe('getDraftEditorSelection', function() {
       }),
     ];
 
-    var contentState = ContentState.createFromBlockArray(contentBlocks);
+    const contentState = ContentState.createFromBlockArray(contentBlocks);
     editorState = EditorState.createWithContent(contentState);
 
     textNodes = text
@@ -113,7 +113,7 @@ describe('getDraftEditorSelection', function() {
     leafChildren = textNodes
       .map(
         function(textNode) {
-          var span = document.createElement('span');
+          const span = document.createElement('span');
           span.appendChild(textNode);
           return span;
         }
@@ -121,7 +121,7 @@ describe('getDraftEditorSelection', function() {
     leafs = ['a-0-0', 'a-0-1', 'b-0-0', 'b-0-1', 'c-0-0', 'c-0-1']
       .map(
         function(blockKey, ii) {
-          var span = document.createElement('span');
+          const span = document.createElement('span');
           span.setAttribute('data-offset-key', '' + blockKey);
           span.appendChild(leafChildren[ii]);
           return span;
@@ -130,7 +130,7 @@ describe('getDraftEditorSelection', function() {
     decorators = ['a-0-0', 'b-0-0', 'c-0-0']
       .map(
         function(decoratorKey, ii) {
-          var span = document.createElement('span');
+          const span = document.createElement('span');
           span.setAttribute('data-offset-key', '' + decoratorKey);
           span.appendChild(leafs[(ii * 2)]);
           span.appendChild(leafs[(ii * 2) + 1]);
@@ -140,7 +140,7 @@ describe('getDraftEditorSelection', function() {
     blocks = ['a-0-0', 'b-0-0', 'c-0-0']
       .map(
         function(blockKey, ii) {
-          var blockElement = document.createElement('div');
+          const blockElement = document.createElement('div');
           blockElement.setAttribute('data-offset-key', '' + blockKey);
           blockElement.appendChild(decorators[ii]);
           return blockElement;
@@ -154,10 +154,10 @@ describe('getDraftEditorSelection', function() {
   });
 
   function assertEquals(result, assert) {
-    var resultSelection = result.selectionState;
-    var resultRecovery = result.needsRecovery;
-    var assertSelection = assert.selectionState;
-    var assertRecovery = assert.needsRecovery;
+    const resultSelection = result.selectionState;
+    const resultRecovery = result.needsRecovery;
+    const assertSelection = assert.selectionState;
+    const assertRecovery = assert.needsRecovery;
     expect(resultSelection.getAnchorKey())
       .toBe(assertSelection.getAnchorKey());
     expect(resultSelection.getAnchorOffset())
@@ -179,7 +179,7 @@ describe('getDraftEditorSelection', function() {
     describe('Selection is entirely within a single text node', function() {
 
       it('must find offsets when collapsed at start', function() {
-        var textNode = textNodes[0];
+        const textNode = textNodes[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNode,
@@ -188,7 +188,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -202,7 +202,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('must find offsets when collapsed at end', function() {
-        var textNode = textNodes[0];
+        const textNode = textNodes[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNode,
@@ -211,7 +211,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: textNode.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -225,7 +225,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('must find offsets for non-collapsed selection', function() {
-        var textNode = textNodes[0];
+        const textNode = textNodes[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNode,
@@ -234,7 +234,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 6,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -248,7 +248,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('must find offsets for reversed selection', function() {
-        var textNode = textNodes[0];
+        const textNode = textNodes[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNode,
@@ -257,7 +257,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 1,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -271,7 +271,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('must find offsets for selection on entire text node', function() {
-        var textNode = textNodes[0];
+        const textNode = textNodes[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNode,
@@ -280,7 +280,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: textNode.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -305,7 +305,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -327,7 +327,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: textNodes[2].textContent.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -349,7 +349,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 6,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -371,7 +371,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 6,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'c',
@@ -396,7 +396,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -410,7 +410,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('starts at head of text node, ends at end of leaf child', function() {
-        var leaf = leafChildren[4];
+        const leaf = leafChildren[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNodes[0],
@@ -419,7 +419,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: leaf.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -434,7 +434,7 @@ describe('getDraftEditorSelection', function() {
 
 
       it('starts within text node, ends at start of leaf child', function() {
-        var leaf = leafChildren[4];
+        const leaf = leafChildren[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNodes[0],
@@ -443,7 +443,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -457,7 +457,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('starts within text node, ends at end of leaf child', function() {
-        var leaf = leafChildren[4];
+        const leaf = leafChildren[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNodes[0],
@@ -466,7 +466,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: leaf.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -480,7 +480,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('is a reversed text-to-leaf-child selection', function() {
-        var leaf = leafChildren[4];
+        const leaf = leafChildren[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: leaf,
@@ -489,7 +489,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 4,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'c',
@@ -513,7 +513,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -527,7 +527,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('starts at head of text node, ends at end of leaf span', function() {
-        var leaf = leafs[4];
+        const leaf = leafs[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNodes[0],
@@ -536,7 +536,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: leaf.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -551,7 +551,7 @@ describe('getDraftEditorSelection', function() {
 
 
       it('starts within text node, ends at start of leaf span', function() {
-        var leaf = leafs[4];
+        const leaf = leafs[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNodes[0],
@@ -560,7 +560,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -574,7 +574,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('starts within text node, ends at end of leaf span', function() {
-        var leaf = leafs[4];
+        const leaf = leafs[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNodes[0],
@@ -583,7 +583,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: leaf.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -597,7 +597,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('is a reversed text-to-leaf selection', function() {
-        var leaf = leafs[4];
+        const leaf = leafs[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: leaf,
@@ -606,7 +606,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 4,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'c',
@@ -622,7 +622,7 @@ describe('getDraftEditorSelection', function() {
 
     describe('A single leaf span is selected', function() {
       it('is collapsed at start', function() {
-        var leaf = leafs[0];
+        const leaf = leafs[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: leaf,
@@ -631,7 +631,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -645,7 +645,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('is collapsed at end', function() {
-        var leaf = leafs[0];
+        const leaf = leafs[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: leaf,
@@ -654,7 +654,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: leaf.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -669,7 +669,7 @@ describe('getDraftEditorSelection', function() {
 
 
       it('contains an entire leaf', function() {
-        var leaf = leafs[4];
+        const leaf = leafs[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: leaf,
@@ -678,7 +678,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: leaf.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'c',
@@ -692,7 +692,7 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('is reversed on entire leaf', function() {
-        var leaf = leafs[4];
+        const leaf = leafs[4];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: leaf,
@@ -701,7 +701,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'c',
@@ -725,7 +725,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -747,7 +747,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: leafs[4].childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -770,7 +770,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'c',
@@ -786,7 +786,7 @@ describe('getDraftEditorSelection', function() {
 
     describe('A single block is selected', function() {
       it('is collapsed at start', function() {
-        var block = blocks[0];
+        const block = blocks[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: block,
@@ -795,7 +795,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -809,9 +809,9 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('is collapsed at end', function() {
-        var block = blocks[0];
-        var decorators = block.childNodes;
-        var leafs = decorators[0].childNodes;
+        const block = blocks[0];
+        const decorators = block.childNodes;
+        const leafs = decorators[0].childNodes;
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: block,
@@ -820,12 +820,12 @@ describe('getDraftEditorSelection', function() {
           focusOffset: decorators.length,
         });
 
-        var textLength = 0;
-        for (var ii = 0; ii < leafs.length; ii++) {
+        let textLength = 0;
+        for (let ii = 0; ii < leafs.length; ii++) {
           textLength += leafs[ii].textContent.length;
         }
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -839,9 +839,9 @@ describe('getDraftEditorSelection', function() {
       });
 
       it('is entirely selected', function() {
-        var block = blocks[0];
-        var decorators = block.childNodes;
-        var leafs = decorators[0].childNodes;
+        const block = blocks[0];
+        const decorators = block.childNodes;
+        const leafs = decorators[0].childNodes;
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: block,
@@ -850,12 +850,12 @@ describe('getDraftEditorSelection', function() {
           focusOffset: decorators.length,
         });
 
-        var textLength = 0;
-        for (var ii = 0; ii < leafs.length; ii++) {
+        let textLength = 0;
+        for (let ii = 0; ii < leafs.length; ii++) {
           textLength += leafs[ii].textContent.length;
         }
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -876,8 +876,8 @@ describe('getDraftEditorSelection', function() {
      */
     describe('Selection with text node and block', function() {
       it('begins at text node zero, ends at end of block', function() {
-        var textNode = textNodes[0];
-        var block = blocks[0];
+        const textNode = textNodes[0];
+        const block = blocks[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNode,
@@ -886,7 +886,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: block.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -901,8 +901,8 @@ describe('getDraftEditorSelection', function() {
 
       // No idea if this is possible.
       it('begins within text node, ends at end of block', function() {
-        var textNode = textNodes[0];
-        var block = blocks[0];
+        const textNode = textNodes[0];
+        const block = blocks[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: textNode,
@@ -911,7 +911,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: block.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -926,8 +926,8 @@ describe('getDraftEditorSelection', function() {
 
       // No idea if this is possible.
       it('is reversed from the first case', function() {
-        var textNode = textNodes[0];
-        var block = blocks[0];
+        const textNode = textNodes[0];
+        const block = blocks[0];
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
           anchorNode: block,
@@ -936,7 +936,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -960,7 +960,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: blocks[2].childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -982,7 +982,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -1004,7 +1004,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: blocks[2].childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -1026,7 +1026,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 1,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -1048,7 +1048,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 1,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'c',
@@ -1072,7 +1072,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -1094,7 +1094,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 1,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -1116,7 +1116,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 1,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -1138,7 +1138,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 3,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -1165,7 +1165,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -1187,7 +1187,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: root.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'c',
@@ -1209,7 +1209,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: root.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',
@@ -1231,7 +1231,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: 0,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'c',
@@ -1260,7 +1260,7 @@ describe('getDraftEditorSelection', function() {
           focusOffset: root.childNodes.length,
         });
 
-        var selection = getDraftEditorSelection(editorState, root);
+        const selection = getDraftEditorSelection(editorState, root);
         assertEquals(selection, {
           selectionState: new SelectionState({
             anchorKey: 'a',

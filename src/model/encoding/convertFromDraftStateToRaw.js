@@ -12,11 +12,11 @@
 
 'use strict';
 
-var DraftEntity = require('DraftEntity');
-var DraftStringKey = require('DraftStringKey');
+const DraftEntity = require('DraftEntity');
+const DraftStringKey = require('DraftStringKey');
 
-var encodeEntityRanges = require('encodeEntityRanges');
-var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
+const encodeEntityRanges = require('encodeEntityRanges');
+const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 
 import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
@@ -25,16 +25,16 @@ import type {RawDraftContentState} from 'RawDraftContentState';
 function convertFromDraftStateToRaw(
   contentState: ContentState
 ): RawDraftContentState {
-  var entityStorageKey = 0;
-  var entityStorageMap = {};
-  var rawBlocks = [];
+  let entityStorageKey = 0;
+  const entityStorageMap = {};
+  const rawBlocks = [];
 
   contentState.getBlockMap().forEach((block, blockKey) => {
     block.findEntityRanges(
       character => character.getEntity() !== null,
       start => {
         // Stringify to maintain order of otherwise numeric keys.
-        var stringifiedEntityKey = DraftStringKey.stringify(
+        const stringifiedEntityKey = DraftStringKey.stringify(
           block.getEntityAt(start)
         );
         if (!entityStorageMap.hasOwnProperty(stringifiedEntityKey)) {
@@ -55,10 +55,10 @@ function convertFromDraftStateToRaw(
 
   // Flip storage map so that our storage keys map to global
   // DraftEntity keys.
-  var entityKeys = Object.keys(entityStorageMap);
-  var flippedStorageMap = {};
+  const entityKeys = Object.keys(entityStorageMap);
+  const flippedStorageMap = {};
   entityKeys.forEach((key, jj) => {
-    var entity = DraftEntity.get(DraftStringKey.unstringify(key));
+    const entity = DraftEntity.get(DraftStringKey.unstringify(key));
     flippedStorageMap[jj] = {
       type: entity.getType(),
       mutability: entity.getMutability(),
@@ -73,7 +73,7 @@ function convertFromDraftStateToRaw(
 }
 
 function canHaveDepth(block: ContentBlock): boolean {
-  var type = block.getType();
+  const type = block.getType();
   return type === 'ordered-list-item' || type === 'unordered-list-item';
 }
 

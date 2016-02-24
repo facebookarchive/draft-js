@@ -13,8 +13,8 @@
 
 'use strict';
 
-var generateBlockKey = require('generateBlockKey');
-var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
+const generateBlockKey = require('generateBlockKey');
+const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
 import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
@@ -24,29 +24,29 @@ function getContentStateFragment(
   contentState: ContentState,
   selectionState: SelectionState
 ): BlockMap {
-  var startKey = selectionState.getStartKey();
-  var startOffset = selectionState.getStartOffset();
-  var endKey = selectionState.getEndKey();
-  var endOffset = selectionState.getEndOffset();
+  const startKey = selectionState.getStartKey();
+  const startOffset = selectionState.getStartOffset();
+  const endKey = selectionState.getEndKey();
+  const endOffset = selectionState.getEndOffset();
 
   // Edge entities should be stripped to ensure that we don't preserve
   // invalid partial entities when the fragment is reused. We do, however,
   // preserve entities that are entirely within the selection range.
-  var contentWithoutEdgeEntities = removeEntitiesAtEdges(
+  const contentWithoutEdgeEntities = removeEntitiesAtEdges(
     contentState,
     selectionState
   );
 
-  var blockMap = contentWithoutEdgeEntities.getBlockMap();
-  var blockKeys = blockMap.keySeq();
-  var startIndex = blockKeys.indexOf(startKey);
-  var endIndex = blockKeys.indexOf(endKey) + 1;
+  const blockMap = contentWithoutEdgeEntities.getBlockMap();
+  const blockKeys = blockMap.keySeq();
+  const startIndex = blockKeys.indexOf(startKey);
+  const endIndex = blockKeys.indexOf(endKey) + 1;
 
-  var slice = blockMap.slice(startIndex, endIndex).map((block, blockKey) => {
-    var newKey = generateBlockKey();
+  const slice = blockMap.slice(startIndex, endIndex).map((block, blockKey) => {
+    const newKey = generateBlockKey();
 
-    var text = block.getText();
-    var chars = block.getCharacterList();
+    const text = block.getText();
+    const chars = block.getCharacterList();
 
     if (startKey === endKey) {
       return block.merge({

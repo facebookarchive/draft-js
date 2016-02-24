@@ -13,11 +13,11 @@
 
 'use strict';
 
-var DraftEntity = require('DraftEntity');
-var DraftEntitySegments = require('DraftEntitySegments');
+const DraftEntity = require('DraftEntity');
+const DraftEntitySegments = require('DraftEntitySegments');
 
-var getRangesForDraftEntity = require('getRangesForDraftEntity');
-var invariant = require('invariant');
+const getRangesForDraftEntity = require('getRangesForDraftEntity');
+const invariant = require('invariant');
 
 import type ContentBlock from 'ContentBlock';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
@@ -37,15 +37,15 @@ function getCharacterRemovalRange(
   selectionState: SelectionState,
   direction: DraftRemovalDirection
 ): SelectionState {
-  var start = selectionState.getStartOffset();
-  var end = selectionState.getEndOffset();
-  var entityKey = block.getEntityAt(start);
+  const start = selectionState.getStartOffset();
+  const end = selectionState.getEndOffset();
+  const entityKey = block.getEntityAt(start);
   if (!entityKey) {
     return selectionState;
   }
 
-  var entity = DraftEntity.get(entityKey);
-  var mutability = entity.getMutability();
+  const entity = DraftEntity.get(entityKey);
+  const mutability = entity.getMutability();
 
   // `MUTABLE` entities can just have the specified range of text removed
   // directly. No adjustments are needed.
@@ -54,7 +54,7 @@ function getCharacterRemovalRange(
   }
 
   // Find the entity range that overlaps with our removal range.
-  var entityRanges = getRangesForDraftEntity(block, entityKey).filter(
+  const entityRanges = getRangesForDraftEntity(block, entityKey).filter(
     (range) => start < range.end && end > range.start
   );
 
@@ -63,7 +63,7 @@ function getCharacterRemovalRange(
     'There should only be one entity range within this removal range.'
   );
 
-  var entityRange = entityRanges[0];
+  const entityRange = entityRanges[0];
 
   // For `IMMUTABLE` entity types, we will remove the entire entity range.
   if (mutability === 'IMMUTABLE') {
@@ -76,7 +76,7 @@ function getCharacterRemovalRange(
 
   // For `SEGMENTED` entity types, determine the appropriate segment to
   // remove.
-  var removalRange = DraftEntitySegments.getRemovalRange(
+  const removalRange = DraftEntitySegments.getRemovalRange(
     start,
     end,
     block.getText().slice(entityRange.start, entityRange.end),

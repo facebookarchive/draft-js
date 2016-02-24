@@ -13,7 +13,7 @@
 
 jest.autoMockOff();
 
-var DraftEntity = require('DraftEntity');
+const DraftEntity = require('DraftEntity');
 
 describe('DraftEntity', () => {
   beforeEach(() => {
@@ -25,13 +25,13 @@ describe('DraftEntity', () => {
   }
 
   it('must create instances', () => {
-    var key = createLink();
+    const key = createLink();
     expect(typeof key).toBe('string');
   });
 
   it('must retrieve an instance given a key', () => {
-    var key = createLink();
-    var retrieved = DraftEntity.get(key);
+    const key = createLink();
+    const retrieved = DraftEntity.get(key);
     expect(retrieved.getType()).toBe('LINK');
     expect(retrieved.getMutability()).toBe('MUTABLE');
     expect(retrieved.getData()).toEqual({uri: 'zombo.com'});
@@ -44,21 +44,21 @@ describe('DraftEntity', () => {
   });
 
   it('must merge data', () => {
-    var key = createLink();
+    const key = createLink();
 
     // Merge new property.
-    var newData = {foo: 'bar'};
+    const newData = {foo: 'bar'};
     DraftEntity.mergeData(key, newData);
-    var newEntity = DraftEntity.get(key);
+    const newEntity = DraftEntity.get(key);
     expect(newEntity.getData()).toEqual({
       uri: 'zombo.com',
       foo: 'bar',
     });
 
     // Replace existing property.
-    var withNewURI = {uri: 'homestarrunner.com'};
+    const withNewURI = {uri: 'homestarrunner.com'};
     DraftEntity.mergeData(key, withNewURI);
-    var entityWithNewURI = DraftEntity.get(key);
+    const entityWithNewURI = DraftEntity.get(key);
     expect(entityWithNewURI.getData()).toEqual({
       uri: 'homestarrunner.com',
       foo: 'bar',

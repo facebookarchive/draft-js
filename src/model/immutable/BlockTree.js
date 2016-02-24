@@ -12,26 +12,26 @@
 
 'use strict';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
-var emptyFunction = require('emptyFunction');
-var findRangesImmutable = require('findRangesImmutable');
+const emptyFunction = require('emptyFunction');
+const findRangesImmutable = require('findRangesImmutable');
 
 import type CharacterMetadata from 'CharacterMetadata';
 import type ContentBlock from 'ContentBlock';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 
-var {
+const {
   List,
   Repeat,
   Record,
 } = Immutable;
 
-var returnTrue = emptyFunction.thatReturnsTrue;
+const returnTrue = emptyFunction.thatReturnsTrue;
 
-var FINGERPRINT_DELIMITER = '-';
+const FINGERPRINT_DELIMITER = '-';
 
-var defaultLeafRange: {
+const defaultLeafRange: {
   start: ?number;
   end: ?number;
 } = {
@@ -39,9 +39,9 @@ var defaultLeafRange: {
   end: null,
 };
 
-var LeafRange = Record(defaultLeafRange);
+const LeafRange = Record(defaultLeafRange);
 
-var defaultDecoratorRange: {
+const defaultDecoratorRange: {
   start: ?number;
   end: ?number;
   decoratorKey: ?string;
@@ -53,9 +53,9 @@ var defaultDecoratorRange: {
   leaves: null,
 };
 
-var DecoratorRange = Record(defaultDecoratorRange);
+const DecoratorRange = Record(defaultDecoratorRange);
 
-var BlockTree = {
+const BlockTree = {
   /**
    * Generate a block tree for a given ContentBlock/decorator pair.
    */
@@ -63,7 +63,7 @@ var BlockTree = {
     block: ContentBlock,
     decorator: ?DraftDecoratorType
   ): List<DecoratorRange> {
-    var textLength = block.getLength();
+    const textLength = block.getLength();
     if (!textLength) {
       return List.of(
         new DecoratorRange({
@@ -77,12 +77,12 @@ var BlockTree = {
       );
     }
 
-    var leafSets = [];
-    var decorations = decorator ?
+    const leafSets = [];
+    const decorations = decorator ?
       decorator.getDecorations(block) :
       List(Repeat(null, textLength));
 
-    var chars = block.getCharacterList();
+    const chars = block.getCharacterList();
 
     findRangesImmutable(
       decorations,
@@ -114,8 +114,8 @@ var BlockTree = {
   getFingerprint: function(tree: List<DecoratorRange>): string {
     return tree.map(
       leafSet => {
-        var decoratorKey = leafSet.get('decoratorKey');
-        var fingerprintString = decoratorKey !== null ?
+        const decoratorKey = leafSet.get('decoratorKey');
+        const fingerprintString = decoratorKey !== null ?
           decoratorKey + '.' + (leafSet.get('end') - leafSet.get('start')) :
           '';
         return '' + fingerprintString + '.' + leafSet.get('leaves').size;
@@ -131,8 +131,8 @@ function generateLeaves(
   characters: List<CharacterMetadata>,
   offset: number
 ): List<LeafRange> {
-  var leaves = [];
-  var inlineStyles = characters.map(c => c.getStyle()).toList();
+  const leaves = [];
+  const inlineStyles = characters.map(c => c.getStyle()).toList();
   findRangesImmutable(
     inlineStyles,
     areEqual,

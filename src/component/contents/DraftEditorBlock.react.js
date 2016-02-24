@@ -84,21 +84,21 @@ class DraftEditorBlock extends React.Component {
    * scroll parent.
    */
   componentDidMount(): void {
-    var selection = this.props.selection;
-    var endKey = selection.getEndKey();
+    const selection = this.props.selection;
+    const endKey = selection.getEndKey();
     if (!selection.getHasFocus() || endKey !== this.props.block.getKey()) {
       return;
     }
 
-    var blockNode = ReactDOM.findDOMNode(this);
-    var scrollParent = Style.getScrollParent(blockNode);
-    var scrollPosition = getScrollPosition(scrollParent);
-    var scrollDelta;
+    const blockNode = ReactDOM.findDOMNode(this);
+    const scrollParent = Style.getScrollParent(blockNode);
+    const scrollPosition = getScrollPosition(scrollParent);
+    let scrollDelta;
 
     if (scrollParent === window) {
-      var nodePosition = getElementPosition(blockNode);
-      var nodeBottom = nodePosition.y + nodePosition.height;
-      var viewportHeight = getViewportDimensions().height;
+      const nodePosition = getElementPosition(blockNode);
+      const nodeBottom = nodePosition.y + nodePosition.height;
+      const viewportHeight = getViewportDimensions().height;
       scrollDelta = nodeBottom - viewportHeight;
       if (scrollDelta > 0) {
         window.scrollTo(
@@ -107,8 +107,8 @@ class DraftEditorBlock extends React.Component {
         );
       }
     } else {
-      var blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
-      var scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
+      const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
+      const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
       if (scrollDelta > 0) {
         Scroll.setTop(
@@ -120,19 +120,19 @@ class DraftEditorBlock extends React.Component {
   }
 
   _renderChildren(): Array<ReactElement> {
-    var block = this.props.block;
-    var blockKey = block.getKey();
-    var text = block.getText();
-    var lastLeafSet = this.props.tree.size - 1;
-    var hasSelection = isBlockOnSelectionEdge(this.props.selection, blockKey);
+    const block = this.props.block;
+    const blockKey = block.getKey();
+    const text = block.getText();
+    const lastLeafSet = this.props.tree.size - 1;
+    const hasSelection = isBlockOnSelectionEdge(this.props.selection, blockKey);
 
     return this.props.tree.map((leafSet, ii) => {
-      var leavesForLeafSet = leafSet.get('leaves');
-      var lastLeaf = leavesForLeafSet.size - 1;
-      var leaves = leavesForLeafSet.map((leaf, jj) => {
-        var offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
-        var start = leaf.get('start');
-        var end = leaf.get('end');
+      const leavesForLeafSet = leafSet.get('leaves');
+      const lastLeaf = leavesForLeafSet.size - 1;
+      const leaves = leavesForLeafSet.map((leaf, jj) => {
+        const offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
+        const start = leaf.get('start');
+        const end = leaf.get('end');
         return (
           <DraftEditorLeaf
             key={offsetKey}
@@ -149,7 +149,7 @@ class DraftEditorBlock extends React.Component {
         );
       }).toArray();
 
-      var decoratorKey = leafSet.get('decoratorKey');
+      const decoratorKey = leafSet.get('decoratorKey');
       if (decoratorKey == null) {
         return leaves;
       }
@@ -158,23 +158,23 @@ class DraftEditorBlock extends React.Component {
         return leaves;
       }
 
-      var decorator = nullthrows(this.props.decorator);
+      const decorator = nullthrows(this.props.decorator);
 
-      var DecoratorComponent = decorator.getComponentForKey(decoratorKey);
+      const DecoratorComponent = decorator.getComponentForKey(decoratorKey);
       if (!DecoratorComponent) {
         return leaves;
       }
 
-      var decoratorProps = decorator.getPropsForKey(decoratorKey);
-      var decoratorOffsetKey = DraftOffsetKey.encode(blockKey, ii, 0);
-      var decoratedText = text.slice(
+      const decoratorProps = decorator.getPropsForKey(decoratorKey);
+      const decoratorOffsetKey = DraftOffsetKey.encode(blockKey, ii, 0);
+      const decoratedText = text.slice(
         leavesForLeafSet.first().get('start'),
         leavesForLeafSet.last().get('end')
       );
 
       // Resetting dir to the same value on a child node makes Chrome/Firefox
       // confused on cursor movement. See http://jsfiddle.net/d157kLck/3/
-      var dir = UnicodeBidiDirection.getHTMLDirIfDifferent(
+      const dir = UnicodeBidiDirection.getHTMLDirIfDifferent(
         UnicodeBidi.getDirection(decoratedText),
         this.props.direction,
       );

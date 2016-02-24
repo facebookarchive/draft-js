@@ -12,12 +12,12 @@
 
 'use strict';
 
-var EditorState = require('EditorState');
-var UserAgent = require('UserAgent');
+const EditorState = require('EditorState');
+const UserAgent = require('UserAgent');
 
-var getActiveElement = require('getActiveElement');
+const getActiveElement = require('getActiveElement');
 
-var isWebKit = UserAgent.isEngine('WebKit');
+const isWebKit = UserAgent.isEngine('WebKit');
 
 function editOnBlur(e: SyntheticEvent): void {
   // Webkit has a bug in which blurring a contenteditable by clicking on
@@ -30,13 +30,13 @@ function editOnBlur(e: SyntheticEvent): void {
     global.getSelection().removeAllRanges();
   }
 
-  var editorState = this.props.editorState;
-  var currentSelection = editorState.getSelection();
+  const editorState = this.props.editorState;
+  const currentSelection = editorState.getSelection();
   if (!currentSelection.getHasFocus()) {
     return;
   }
 
-  var selection = currentSelection.set('hasFocus', false);
+  const selection = currentSelection.set('hasFocus', false);
   this.props.onBlur && this.props.onBlur(e);
   this.update(EditorState.acceptSelection(editorState, selection));
 }

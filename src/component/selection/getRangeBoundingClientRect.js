@@ -13,7 +13,7 @@
 
 'use strict';
 
-var getRangeClientRects = require('getRangeClientRects');
+const getRangeClientRects = require('getRangeClientRects');
 
 /**
  * Like range.getBoundingClientRect() but normalizes for browser bugs.
@@ -23,16 +23,16 @@ function getRangeBoundingClientRect(range: Range): ClientRect {
   // the first rectangle in list and all of the remaining rectangles of which
   // the height or width is not zero."
   // http://www.w3.org/TR/cssom-view/#dom-range-getboundingclientrect
-  var rects = getRangeClientRects(range);
-  var top = 0;
-  var right = 0;
-  var bottom = 0;
-  var left = 0;
+  const rects = getRangeClientRects(range);
+  let top = 0;
+  let right = 0;
+  let bottom = 0;
+  let left = 0;
 
   if (rects.length) {
     ({top, right, bottom, left} = rects[0]);
-    for (var ii = 1; ii < rects.length; ii++) {
-      var rect = rects[ii];
+    for (let ii = 1; ii < rects.length; ii++) {
+      const rect = rects[ii];
       if (rect.height !== 0 || rect.width !== 0) {
         top = Math.min(top, rect.top);
         right = Math.max(right, rect.right);

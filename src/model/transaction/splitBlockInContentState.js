@@ -13,8 +13,8 @@
 
 'use strict';
 
-var generateBlockKey = require('generateBlockKey');
-var invariant = require('invariant');
+const generateBlockKey = require('generateBlockKey');
+const invariant = require('invariant');
 
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
@@ -28,29 +28,29 @@ function splitBlockInContentState(
     'Selection range must be collapsed.'
   );
 
-  var key = selectionState.getAnchorKey();
-  var offset = selectionState.getAnchorOffset();
-  var blockMap = contentState.getBlockMap();
-  var blockToSplit = blockMap.get(key);
+  const key = selectionState.getAnchorKey();
+  const offset = selectionState.getAnchorOffset();
+  const blockMap = contentState.getBlockMap();
+  const blockToSplit = blockMap.get(key);
 
-  var text = blockToSplit.getText();
-  var chars = blockToSplit.getCharacterList();
+  const text = blockToSplit.getText();
+  const chars = blockToSplit.getCharacterList();
 
-  var blockAbove = blockToSplit.merge({
+  const blockAbove = blockToSplit.merge({
     text: text.slice(0, offset),
     characterList: chars.slice(0, offset),
   });
 
-  var keyBelow = generateBlockKey();
-  var blockBelow = blockAbove.merge({
+  const keyBelow = generateBlockKey();
+  const blockBelow = blockAbove.merge({
     key: keyBelow,
     text: text.slice(offset),
     characterList: chars.slice(offset),
   });
 
-  var blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
-  var blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
-  var newBlocks = blocksBefore.concat(
+  const blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
+  const blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
+  const newBlocks = blocksBefore.concat(
       [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
       blocksAfter
     ).toOrderedMap();

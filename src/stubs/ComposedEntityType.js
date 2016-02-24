@@ -12,7 +12,7 @@
 
 'use strict';
 
-var ComposedEntityType = {
+const ComposedEntityType = {
   'LINK': true,
   'TOKEN': true,
   'PHOTO': true,

@@ -12,7 +12,7 @@
 
 'use strict';
 
-var ComposedEntityMutability = {
+const ComposedEntityMutability = {
   'MUTABLE': true,
   'IMMUTABLE': true,
   'SEGMENTED': true,

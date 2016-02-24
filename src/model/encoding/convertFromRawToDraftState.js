@@ -12,50 +12,51 @@
 
 'use strict';
 
-var ContentBlock = require('ContentBlock');
-var DraftEntity = require('DraftEntity');
+const ContentBlock = require('ContentBlock');
+const DraftEntity = require('DraftEntity');
 
-var createCharacterList = require('createCharacterList');
-var decodeEntityRanges = require('decodeEntityRanges');
-var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
-var generateBlockKey = require('generateBlockKey');
+const createCharacterList = require('createCharacterList');
+const decodeEntityRanges = require('decodeEntityRanges');
+const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
+const generateBlockKey = require('generateBlockKey');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
 
 function convertFromRawToDraftState(
   rawState: RawDraftContentState
 ): Array<ContentBlock> {
-  var {blocks, entityMap} = rawState;
+  const {blocks, entityMap} = rawState;
 
-  var fromStorageToLocal = {};
+  const fromStorageToLocal = {};
   Object.keys(entityMap).forEach(
     storageKey => {
-      var encodedEntity = entityMap[storageKey];
-      var {type, mutability, data} = encodedEntity;
-      var newKey = DraftEntity.create(type, mutability, data || {});
+      const encodedEntity = entityMap[storageKey];
+      const {type, mutability, data} = encodedEntity;
+      const newKey = DraftEntity.create(type, mutability, data || {});
       fromStorageToLocal[storageKey] = newKey;
     }
   );
 
   return blocks.map(
     block => {
-      var {key, type, text, depth, inlineStyleRanges, entityRanges} = block;
+      const {type, text} = block
+      let {key, depth, inlineStyleRanges, entityRanges} = block;
       key = key || generateBlockKey();
       depth = depth || 0;
       inlineStyleRanges = inlineStyleRanges || [];
       entityRanges = entityRanges || [];
 
-      var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
+      const inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
 
       // Translate entity range keys to the DraftEntity map.
-      var filteredEntityRanges = entityRanges
+      const filteredEntityRanges = entityRanges
         .filter(range => fromStorageToLocal.hasOwnProperty(range.key))
         .map(range => {
           return {...range, key: fromStorageToLocal[range.key]};
         });
 
-      var entities = decodeEntityRanges(text, filteredEntityRanges);
-      var characterList = createCharacterList(inlineStyles, entities);
+      const entities = decodeEntityRanges(text, filteredEntityRanges);
+      const characterList = createCharacterList(inlineStyles, entities);
 
       return new ContentBlock({key, type, text, depth, characterList});
     }

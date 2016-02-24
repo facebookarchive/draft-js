@@ -13,7 +13,7 @@
 
 'use strict';
 
-var Keys = require('Keys');
+const Keys = require('Keys');
 
 function isSoftNewlineEvent(e: SyntheticKeyboardEvent): boolean {
   return e.which === Keys.RETURN && (

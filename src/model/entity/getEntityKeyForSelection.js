@@ -13,7 +13,7 @@
 
 'use strict';
 
-var DraftEntity = require('DraftEntity');
+const DraftEntity = require('DraftEntity');
 
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
@@ -27,11 +27,11 @@ function getEntityKeyForSelection(
   contentState: ContentState,
   targetSelection: SelectionState
 ): ?string {
-  var entityKey;
+  let entityKey;
 
   if (targetSelection.isCollapsed()) {
-    var key = targetSelection.getAnchorKey();
-    var offset = targetSelection.getAnchorOffset();
+    const key = targetSelection.getAnchorKey();
+    const offset = targetSelection.getAnchorOffset();
     if (offset > 0) {
       entityKey = contentState.getBlockForKey(key).getEntityAt(offset - 1);
       return filterKey(entityKey);
@@ -39,9 +39,9 @@ function getEntityKeyForSelection(
     return null;
   }
 
-  var startKey = targetSelection.getStartKey();
-  var startOffset = targetSelection.getStartOffset();
-  var startBlock = contentState.getBlockForKey(startKey);
+  const startKey = targetSelection.getStartKey();
+  const startOffset = targetSelection.getStartOffset();
+  const startBlock = contentState.getBlockForKey(startKey);
 
   entityKey = startOffset === startBlock.getLength() ?
     null :
@@ -58,7 +58,7 @@ function filterKey(
   entityKey: ?string
 ): ?string {
   if (entityKey) {
-    var entity = DraftEntity.get(entityKey);
+    const entity = DraftEntity.get(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;
   }
   return null;

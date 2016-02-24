@@ -13,16 +13,16 @@
 
 jest.autoMockOff();
 
-var decodeEntityRanges = require('decodeEntityRanges');
+const decodeEntityRanges = require('decodeEntityRanges');
 
 describe('decodeEntityRanges', () => {
   it('must decode when no entities present', () => {
-    var decoded = decodeEntityRanges(' '.repeat(20), []);
+    const decoded = decodeEntityRanges(' '.repeat(20), []);
     expect(decoded).toEqual(Array(20).fill(null));
   });
 
   it('must decode when an entity is present', () => {
-    var decoded = decodeEntityRanges(
+    const decoded = decodeEntityRanges(
       ' '.repeat(5),
       [{
         offset: 2,
@@ -34,7 +34,7 @@ describe('decodeEntityRanges', () => {
   });
 
   it('must decode when multiple entities present', () => {
-    var decoded = decodeEntityRanges(
+    const decoded = decodeEntityRanges(
       ' '.repeat(8),
       [
         {
@@ -53,7 +53,7 @@ describe('decodeEntityRanges', () => {
   });
 
   it('must decode when an entity is present more than once', () => {
-    var decoded = decodeEntityRanges(
+    const decoded = decodeEntityRanges(
       ' '.repeat(8),
       [
         {
@@ -72,7 +72,7 @@ describe('decodeEntityRanges', () => {
   });
 
   it('must handle ranges that include surrogate pairs', () => {
-    var decoded = decodeEntityRanges(
+    const decoded = decodeEntityRanges(
       'Take a \uD83D\uDCF7 #selfie',
       [
         {
@@ -88,7 +88,7 @@ describe('decodeEntityRanges', () => {
       ]
     );
 
-    var entities = [
+    const entities = [
       null, null, null, null, null, null, // `Take a`
       '6', '6', '6', '6', '6', '6',       // ` [camera] #s`
       null, null, '8', '8', null,         // `elfie`

@@ -12,14 +12,14 @@
 
 'use strict';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
 import type {BlockMap} from 'BlockMap';
 import type ContentBlock from 'ContentBlock';
 
-var {OrderedMap} = Immutable;
+const {OrderedMap} = Immutable;
 
-var BlockMapBuilder = {
+const BlockMapBuilder = {
   createFromArray: function(
     blocks: Array<ContentBlock>
   ): BlockMap {

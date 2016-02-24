@@ -13,13 +13,13 @@
 
 jest.autoMockOff();
 
-var Immutable = require('immutable');
-var getSampleStateForTesting = require('getSampleStateForTesting');
-var removeRangeFromContentState = require('removeRangeFromContentState');
-var ContentBlock = require('ContentBlock');
+const Immutable = require('immutable');
+const getSampleStateForTesting = require('getSampleStateForTesting');
+const removeRangeFromContentState = require('removeRangeFromContentState');
+const ContentBlock = require('ContentBlock');
 
 describe('removeRangeFromContentState', () => {
-  var {
+  const {
     contentState,
     selectionState,
   } = getSampleStateForTesting();
@@ -61,25 +61,25 @@ describe('removeRangeFromContentState', () => {
   describe('Removal within a single block', () => {
     it('must remove from the beginning of the block', () => {
       // Remove from 0 to 3.
-      var selection = selectionState.set('focusOffset', 3);
-      var afterRemoval = removeRangeFromContentState(contentState, selection);
-      var afterBlockMap = afterRemoval.getBlockMap();
-      var alteredBlock = afterBlockMap.first();
-      var originalBlock = contentState.getBlockMap().first();
+      const selection = selectionState.set('focusOffset', 3);
+      const afterRemoval = removeRangeFromContentState(contentState, selection);
+      const afterBlockMap = afterRemoval.getBlockMap();
+      const alteredBlock = afterBlockMap.first();
+      const originalBlock = contentState.getBlockMap().first();
 
       expectBlockToBeSlice(alteredBlock, originalBlock, 3);
     });
 
     it('must remove from within the block', () => {
       // Remove from 2 to 4.
-      var selection = selectionState.merge({
+      const selection = selectionState.merge({
         anchorOffset: 2,
         focusOffset: 4,
       });
-      var afterRemoval = removeRangeFromContentState(contentState, selection);
-      var afterBlockMap = afterRemoval.getBlockMap();
-      var alteredBlock = afterBlockMap.first();
-      var originalBlock = contentState.getBlockMap().first();
+      const afterRemoval = removeRangeFromContentState(contentState, selection);
+      const afterBlockMap = afterRemoval.getBlockMap();
+      const alteredBlock = afterBlockMap.first();
+      const originalBlock = contentState.getBlockMap().first();
 
       expect(alteredBlock).not.toBe(originalBlock);
       expect(alteredBlock.getType()).toBe(originalBlock.getType());
@@ -88,11 +88,11 @@ describe('removeRangeFromContentState', () => {
         originalBlock.getText().slice(4)
       );
 
-      var stylesToJS = getInlineStyles(originalBlock);
+      const stylesToJS = getInlineStyles(originalBlock);
       expect(getInlineStyles(alteredBlock)).toEqual(
         stylesToJS.slice(0, 2).concat(stylesToJS.slice(4))
       );
-      var entitiesToJS = getEntities(originalBlock);
+      const entitiesToJS = getEntities(originalBlock);
       expect(getEntities(alteredBlock)).toEqual(
         entitiesToJS.slice(0, 2).concat(entitiesToJS.slice(4))
       );
@@ -100,14 +100,14 @@ describe('removeRangeFromContentState', () => {
 
     it('nust remove to the end of the block', () => {
       // Remove from 3 to end.
-      var originalBlock = contentState.getBlockMap().first();
-      var selection = selectionState.merge({
+      const originalBlock = contentState.getBlockMap().first();
+      const selection = selectionState.merge({
         anchorOffset: 3,
         focusOffset: originalBlock.getLength(),
       });
-      var afterRemoval = removeRangeFromContentState(contentState, selection);
-      var afterBlockMap = afterRemoval.getBlockMap();
-      var alteredBlock = afterBlockMap.first();
+      const afterRemoval = removeRangeFromContentState(contentState, selection);
+      const afterBlockMap = afterRemoval.getBlockMap();
+      const alteredBlock = afterBlockMap.first();
 
       expectBlockToBeSlice(alteredBlock, originalBlock, 0, 3);
     });
@@ -116,16 +116,16 @@ describe('removeRangeFromContentState', () => {
   describe('Removal across two blocks', () => {
     describe('Removal from the start of A', () => {
       it('must remove from the start of A to the start of B', () => {
-        var selection = selectionState.set('focusKey', 'b');
-        var afterRemoval = removeRangeFromContentState(contentState, selection);
-        var afterBlockMap = afterRemoval.getBlockMap();
+        const selection = selectionState.set('focusKey', 'b');
+        const afterRemoval = removeRangeFromContentState(contentState, selection);
+        const afterBlockMap = afterRemoval.getBlockMap();
         expect(afterBlockMap.size).toBe(2);
-        var alteredBlock = afterBlockMap.first();
+        const alteredBlock = afterBlockMap.first();
 
         // Block B is removed. Its contents replace the contents of block A,
         // while the `type` of block A is preserved.
-        var blockB = contentState.getBlockMap().skip(1).first();
-        var sameContentDifferentType = blockB.set(
+        const blockB = contentState.getBlockMap().skip(1).first();
+        const sameContentDifferentType = blockB.set(
           'type',
           contentState.getBlockMap().first().getType()
         );
@@ -134,20 +134,20 @@ describe('removeRangeFromContentState', () => {
       });
 
       it('must remove from the start of A to within B', () => {
-        var selection = selectionState.merge({
+        const selection = selectionState.merge({
           focusKey: 'b',
           focusOffset: 3,
         });
 
-        var afterRemoval = removeRangeFromContentState(contentState, selection);
-        var afterBlockMap = afterRemoval.getBlockMap();
+        const afterRemoval = removeRangeFromContentState(contentState, selection);
+        const afterBlockMap = afterRemoval.getBlockMap();
         expect(afterBlockMap.size).toBe(2);
-        var alteredBlock = afterBlockMap.first();
+        const alteredBlock = afterBlockMap.first();
 
         // A slice of block B contents replace the contents of block A,
         // while the `type` of block A is preserved. Block B is removed.
-        var blockB = contentState.getBlockMap().skip(1).first();
-        var sameContentDifferentType = blockB.set(
+        const blockB = contentState.getBlockMap().skip(1).first();
+        const sameContentDifferentType = blockB.set(
           'type',
           contentState.getBlockMap().first().getType()
         );
@@ -156,19 +156,19 @@ describe('removeRangeFromContentState', () => {
       });
 
       it('must remove from the start of A to the end of B', () => {
-        var blockB = contentState.getBlockMap().skip(1).first();
-        var selection = selectionState.merge({
+        const blockB = contentState.getBlockMap().skip(1).first();
+        const selection = selectionState.merge({
           focusKey: 'b',
           focusOffset: blockB.getLength(),
         });
 
-        var afterRemoval = removeRangeFromContentState(contentState, selection);
-        var afterBlockMap = afterRemoval.getBlockMap();
+        const afterRemoval = removeRangeFromContentState(contentState, selection);
+        const afterBlockMap = afterRemoval.getBlockMap();
         expect(afterBlockMap.size).toBe(2);
-        var alteredBlock = afterBlockMap.first();
+        const alteredBlock = afterBlockMap.first();
 
         // Block A is effectively just emptied out, while block B is removed.
-        var emptyBlock = new ContentBlock({
+        const emptyBlock = new ContentBlock({
           text: '',
           type: contentState.getBlockMap().first().getType(),
           characterList: Immutable.List(),
@@ -179,17 +179,17 @@ describe('removeRangeFromContentState', () => {
     });
 
     describe('Removal from within A', () => {
-      var selectionWithinA = selectionState.set('anchorOffset', 3);
+      const selectionWithinA = selectionState.set('anchorOffset', 3);
 
       it('must remove from within A to the start of B', () => {
-        var selection = selectionWithinA.set('focusKey', 'b');
+        const selection = selectionWithinA.set('focusKey', 'b');
 
-        var originalBlockA = contentState.getBlockMap().first();
-        var originalBlockB = contentState.getBlockMap().skip(1).first();
-        var afterRemoval = removeRangeFromContentState(contentState, selection);
-        var afterBlockMap = afterRemoval.getBlockMap();
+        const originalBlockA = contentState.getBlockMap().first();
+        const originalBlockB = contentState.getBlockMap().skip(1).first();
+        const afterRemoval = removeRangeFromContentState(contentState, selection);
+        const afterBlockMap = afterRemoval.getBlockMap();
         expect(afterBlockMap.size).toBe(2);
-        var alteredBlock = afterBlockMap.first();
+        const alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
         expect(alteredBlock).not.toBe(originalBlockB);
@@ -199,11 +199,11 @@ describe('removeRangeFromContentState', () => {
           originalBlockB.getText()
         );
 
-        var stylesToJS = getInlineStyles(originalBlockA);
+        const stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
           stylesToJS.slice(0, 3).concat(getInlineStyles(originalBlockB))
         );
-        var entitiesToJS = getEntities(originalBlockA);
+        const entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
           entitiesToJS.slice(0, 3).concat(getEntities(originalBlockB))
         );
@@ -212,17 +212,17 @@ describe('removeRangeFromContentState', () => {
       });
 
       it('must remove from within A to within B', () => {
-        var selection = selectionWithinA.merge({
+        const selection = selectionWithinA.merge({
           focusKey: 'b',
           focusOffset: 3,
         });
 
-        var originalBlockA = contentState.getBlockMap().first();
-        var originalBlockB = contentState.getBlockMap().skip(1).first();
-        var afterRemoval = removeRangeFromContentState(contentState, selection);
-        var afterBlockMap = afterRemoval.getBlockMap();
+        const originalBlockA = contentState.getBlockMap().first();
+        const originalBlockB = contentState.getBlockMap().skip(1).first();
+        const afterRemoval = removeRangeFromContentState(contentState, selection);
+        const afterBlockMap = afterRemoval.getBlockMap();
         expect(afterBlockMap.size).toBe(2);
-        var alteredBlock = afterBlockMap.first();
+        const alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
         expect(alteredBlock).not.toBe(originalBlockB);
@@ -232,13 +232,13 @@ describe('removeRangeFromContentState', () => {
           originalBlockB.getText().slice(3)
         );
 
-        var stylesToJS = getInlineStyles(originalBlockA);
+        const stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
           stylesToJS.slice(0, 3).concat(
             getInlineStyles(originalBlockB).slice(3)
           )
         );
-        var entitiesToJS = getEntities(originalBlockA);
+        const entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
           entitiesToJS.slice(0, 3).concat(
             getEntities(originalBlockB).slice(3)
@@ -249,18 +249,18 @@ describe('removeRangeFromContentState', () => {
       });
 
       it('must remove from within A to the end of B', () => {
-        var blockB = contentState.getBlockMap().skip(1).first();
-        var selection = selectionWithinA.merge({
+        const blockB = contentState.getBlockMap().skip(1).first();
+        const selection = selectionWithinA.merge({
           focusKey: 'b',
           focusOffset: blockB.getLength(),
         });
 
-        var originalBlockA = contentState.getBlockMap().first();
-        var originalBlockB = contentState.getBlockMap().skip(1).first();
-        var afterRemoval = removeRangeFromContentState(contentState, selection);
-        var afterBlockMap = afterRemoval.getBlockMap();
+        const originalBlockA = contentState.getBlockMap().first();
+        const originalBlockB = contentState.getBlockMap().skip(1).first();
+        const afterRemoval = removeRangeFromContentState(contentState, selection);
+        const afterBlockMap = afterRemoval.getBlockMap();
         expect(afterBlockMap.size).toBe(2);
-        var alteredBlock = afterBlockMap.first();
+        const alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
         expect(alteredBlock).not.toBe(originalBlockB);
@@ -269,11 +269,11 @@ describe('removeRangeFromContentState', () => {
           originalBlockA.getText().slice(0, 3)
         );
 
-        var stylesToJS = getInlineStyles(originalBlockA);
+        const stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
           stylesToJS.slice(0, 3)
         );
-        var entitiesToJS = getEntities(originalBlockA);
+        const entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
           entitiesToJS.slice(0, 3)
         );
@@ -283,24 +283,24 @@ describe('removeRangeFromContentState', () => {
     });
 
     describe('Removal from the end of A', () => {
-      var initialBlock = contentState.getBlockMap().first();
-      var selectionFromEndOfA = selectionState.merge({
+      const initialBlock = contentState.getBlockMap().first();
+      const selectionFromEndOfA = selectionState.merge({
         anchorOffset: initialBlock.getLength(),
         focusOffset: initialBlock.getLength(),
       });
 
       it('must remove from the end of A to the start of B', () => {
-        var selection = selectionFromEndOfA.merge({
+        const selection = selectionFromEndOfA.merge({
           focusKey: 'b',
           focusOffset: 0,
         });
 
-        var originalBlockA = contentState.getBlockMap().first();
-        var originalBlockB = contentState.getBlockMap().skip(1).first();
-        var afterRemoval = removeRangeFromContentState(contentState, selection);
-        var afterBlockMap = afterRemoval.getBlockMap();
+        const originalBlockA = contentState.getBlockMap().first();
+        const originalBlockB = contentState.getBlockMap().skip(1).first();
+        const afterRemoval = removeRangeFromContentState(contentState, selection);
+        const afterBlockMap = afterRemoval.getBlockMap();
         expect(afterBlockMap.size).toBe(2);
-        var alteredBlock = afterBlockMap.first();
+        const alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
         expect(alteredBlock).not.toBe(originalBlockB);
@@ -310,11 +310,11 @@ describe('removeRangeFromContentState', () => {
           originalBlockB.getText()
         );
 
-        var stylesToJS = getInlineStyles(originalBlockA);
+        const stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
           stylesToJS.concat(getInlineStyles(originalBlockB))
         );
-        var entitiesToJS = getEntities(originalBlockA);
+        const entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
           entitiesToJS.concat(getEntities(originalBlockB))
         );
@@ -323,17 +323,17 @@ describe('removeRangeFromContentState', () => {
       });
 
       it('must remove from the end of A to within B', () => {
-        var selection = selectionFromEndOfA.merge({
+        const selection = selectionFromEndOfA.merge({
           focusKey: 'b',
           focusOffset: 3,
         });
 
-        var originalBlockA = contentState.getBlockMap().first();
-        var originalBlockB = contentState.getBlockMap().skip(1).first();
-        var afterRemoval = removeRangeFromContentState(contentState, selection);
-        var afterBlockMap = afterRemoval.getBlockMap();
+        const originalBlockA = contentState.getBlockMap().first();
+        const originalBlockB = contentState.getBlockMap().skip(1).first();
+        const afterRemoval = removeRangeFromContentState(contentState, selection);
+        const afterBlockMap = afterRemoval.getBlockMap();
         expect(afterBlockMap.size).toBe(2);
-        var alteredBlock = afterBlockMap.first();
+        const alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
         expect(alteredBlock).not.toBe(originalBlockB);
@@ -343,13 +343,13 @@ describe('removeRangeFromContentState', () => {
           originalBlockB.getText().slice(3)
         );
 
-        var stylesToJS = getInlineStyles(originalBlockA);
+        const stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
           stylesToJS.concat(
             getInlineStyles(originalBlockB).slice(3)
           )
         );
-        var entitiesToJS = getEntities(originalBlockA);
+        const entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
           entitiesToJS.concat(
             getEntities(originalBlockB).slice(3)
@@ -359,18 +359,18 @@ describe('removeRangeFromContentState', () => {
       });
 
       it('must remove from the end of A to the end of B', () => {
-        var originalBlockA = contentState.getBlockMap().first();
-        var originalBlockB = contentState.getBlockMap().skip(1).first();
+        const originalBlockA = contentState.getBlockMap().first();
+        const originalBlockB = contentState.getBlockMap().skip(1).first();
 
-        var selection = selectionFromEndOfA.merge({
+        const selection = selectionFromEndOfA.merge({
           focusKey: 'b',
           focusOffset: originalBlockB.getLength(),
         });
 
-        var afterRemoval = removeRangeFromContentState(contentState, selection);
-        var afterBlockMap = afterRemoval.getBlockMap();
+        const afterRemoval = removeRangeFromContentState(contentState, selection);
+        const afterBlockMap = afterRemoval.getBlockMap();
         expect(afterBlockMap.size).toBe(2);
-        var alteredBlock = afterBlockMap.first();
+        const alteredBlock = afterBlockMap.first();
 
         // no-op for the first block, since no new content is appended.
         expect(alteredBlock).toBe(originalBlockA);
@@ -384,21 +384,21 @@ describe('removeRangeFromContentState', () => {
   });
 
   describe('Removal across more than two blocks', () => {
-    var selection = selectionState.merge({
+    const selection = selectionState.merge({
       anchorOffset: 3,
       focusKey: 'c',
       focusOffset: 3,
     });
 
     it('must remove blocks entirely within the selection', () => {
-      var originalBlockA = contentState.getBlockMap().first();
-      var originalBlockB = contentState.getBlockMap().skip(1).first();
-      var originalBlockC = contentState.getBlockMap().skip(2).first();
+      const originalBlockA = contentState.getBlockMap().first();
+      const originalBlockB = contentState.getBlockMap().skip(1).first();
+      const originalBlockC = contentState.getBlockMap().skip(2).first();
 
-      var afterRemoval = removeRangeFromContentState(contentState, selection);
-      var afterBlockMap = afterRemoval.getBlockMap();
+      const afterRemoval = removeRangeFromContentState(contentState, selection);
+      const afterBlockMap = afterRemoval.getBlockMap();
       expect(afterBlockMap.size).toBe(1);
-      var alteredBlock = afterBlockMap.first();
+      const alteredBlock = afterBlockMap.first();
 
       expect(alteredBlock).not.toBe(originalBlockA);
       expect(alteredBlock).not.toBe(originalBlockB);
@@ -409,13 +409,13 @@ describe('removeRangeFromContentState', () => {
         originalBlockC.getText().slice(3)
       );
 
-      var stylesToJS = getInlineStyles(originalBlockA);
+      const stylesToJS = getInlineStyles(originalBlockA);
       expect(getInlineStyles(alteredBlock)).toEqual(
         stylesToJS.slice(0, 3).concat(
           getInlineStyles(originalBlockC).slice(3)
         )
       );
-      var entitiesToJS = getEntities(originalBlockA);
+      const entitiesToJS = getEntities(originalBlockA);
       expect(getEntities(alteredBlock)).toEqual(
         entitiesToJS.slice(0, 3).concat(
           getEntities(originalBlockC).slice(3)

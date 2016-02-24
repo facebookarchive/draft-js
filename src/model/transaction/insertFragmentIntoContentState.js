@@ -13,11 +13,11 @@
 
 'use strict';
 
-var BlockMapBuilder = require('BlockMapBuilder');
+const BlockMapBuilder = require('BlockMapBuilder');
 
-var generateBlockKey = require('generateBlockKey');
-var insertIntoList = require('insertIntoList');
-var invariant = require('invariant');
+const generateBlockKey = require('generateBlockKey');
+const insertIntoList = require('insertIntoList');
+const invariant = require('invariant');
 
 import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
@@ -33,22 +33,22 @@ function insertFragmentIntoContentState(
     '`insertFragment` should only be called with a collapsed selection state.'
   );
 
-  var targetKey = selectionState.getStartKey();
-  var targetOffset = selectionState.getStartOffset();
+  const targetKey = selectionState.getStartKey();
+  const targetOffset = selectionState.getStartOffset();
 
-  var blockMap = contentState.getBlockMap();
+  let blockMap = contentState.getBlockMap();
 
-  var fragmentSize = fragment.size;
-  var finalKey;
-  var finalOffset;
+  const fragmentSize = fragment.size;
+  let finalKey;
+  let finalOffset;
 
   if (fragmentSize === 1) {
-    var targetBlock = blockMap.get(targetKey);
-    var pastedBlock = fragment.first();
-    var text = targetBlock.getText();
-    var chars = targetBlock.getCharacterList();
+    const targetBlock = blockMap.get(targetKey);
+    const pastedBlock = fragment.first();
+    const text = targetBlock.getText();
+    const chars = targetBlock.getCharacterList();
 
-    var newBlock = targetBlock.merge({
+    const newBlock = targetBlock.merge({
       text: (
         text.slice(0, targetOffset) +
         pastedBlock.getText() +
@@ -79,7 +79,7 @@ function insertFragmentIntoContentState(
     });
   }
 
-  var newBlockArr = [];
+  const newBlockArr = [];
 
   contentState.getBlockMap().forEach(
     (block, blockKey) => {
@@ -88,16 +88,16 @@ function insertFragmentIntoContentState(
         return;
       }
 
-      var text = block.getText();
-      var chars = block.getCharacterList();
+      const text = block.getText();
+      const chars = block.getCharacterList();
 
       // Modify head portion of block.
-      var blockSize = text.length;
-      var headText = text.slice(0, targetOffset);
-      var headCharacters = chars.slice(0, targetOffset);
-      var appendToHead = fragment.first();
+      const blockSize = text.length;
+      const headText = text.slice(0, targetOffset);
+      const headCharacters = chars.slice(0, targetOffset);
+      const appendToHead = fragment.first();
 
-      var modifiedHead = block.merge({
+      const modifiedHead = block.merge({
         text: headText + appendToHead.getText(),
         characterList: headCharacters.concat(appendToHead.getCharacterList()),
       });
@@ -112,12 +112,12 @@ function insertFragmentIntoContentState(
       );
 
       // Modify tail portion of block.
-      var tailText = text.slice(targetOffset, blockSize);
-      var tailCharacters = chars.slice(targetOffset, blockSize);
-      var prependToTail = fragment.last();
+      const tailText = text.slice(targetOffset, blockSize);
+      const tailCharacters = chars.slice(targetOffset, blockSize);
+      const prependToTail = fragment.last();
       finalKey = generateBlockKey();
 
-      var modifiedTail = prependToTail.merge({
+      const modifiedTail = prependToTail.merge({
         key: finalKey,
         text: prependToTail.getText() + tailText,
         characterList: prependToTail

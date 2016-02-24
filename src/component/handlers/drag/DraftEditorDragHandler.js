@@ -35,7 +35,7 @@ function getSelectionForEvent(
   let offset: ?number = null;
 
   if (document.caretRangeFromPoint) {
-    var dropRange = document.caretRangeFromPoint(event.x, event.y);
+    const dropRange = document.caretRangeFromPoint(event.x, event.y);
     node = dropRange.startContainer;
     offset = dropRange.startOffset;
   } else if (event.rangeParent) {
@@ -58,7 +58,7 @@ function getSelectionForEvent(
   );
 }
 
-var DraftEditorDragHandler = {
+const DraftEditorDragHandler = {
   /**
    * Drag originating from input terminated.
    */

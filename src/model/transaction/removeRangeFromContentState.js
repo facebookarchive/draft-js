@@ -12,7 +12,7 @@
 
 'use strict';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
 import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
@@ -27,15 +27,15 @@ function removeRangeFromContentState(
     return contentState;
   }
 
-  var blockMap = contentState.getBlockMap();
-  var startKey = selectionState.getStartKey();
-  var startOffset = selectionState.getStartOffset();
-  var endKey = selectionState.getEndKey();
-  var endOffset = selectionState.getEndOffset();
+  let blockMap = contentState.getBlockMap();
+  const startKey = selectionState.getStartKey();
+  const startOffset = selectionState.getStartOffset();
+  const endKey = selectionState.getEndKey();
+  const endOffset = selectionState.getEndOffset();
 
-  var startBlock = blockMap.get(startKey);
-  var endBlock = blockMap.get(endKey);
-  var characterList;
+  const startBlock = blockMap.get(startKey);
+  const endBlock = blockMap.get(endKey);
+  let characterList;
 
   if (startBlock === endBlock) {
     characterList = removeFromList(
@@ -50,7 +50,7 @@ function removeRangeFromContentState(
       .concat(endBlock.getCharacterList().slice(endOffset));
   }
 
-  var modifiedStart = startBlock.merge({
+  const modifiedStart = startBlock.merge({
     text: (
       startBlock.getText().slice(0, startOffset) +
       endBlock.getText().slice(endOffset)
@@ -58,7 +58,7 @@ function removeRangeFromContentState(
     characterList,
   });
 
-  var newBlocks = blockMap
+  const newBlocks = blockMap
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
@@ -100,8 +100,8 @@ function removeFromList(
       endOffset--;
     }
   } else {
-    var head = targetList.slice(0, startOffset);
-    var tail = targetList.slice(endOffset);
+    const head = targetList.slice(0, startOffset);
+    const tail = targetList.slice(endOffset);
     targetList = head.concat(tail).toList();
   }
   return targetList;

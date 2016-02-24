@@ -13,17 +13,17 @@
 
 jest.autoMockOff();
 
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
-var applyEntityToContentBlock = require('applyEntityToContentBlock');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentBlock = require('ContentBlock');
+const applyEntityToContentBlock = require('applyEntityToContentBlock');
 
-var {
+const {
   List,
   Repeat,
 } = require('immutable');
 
 describe('applyEntityToContentBlock', () => {
-  var block = new ContentBlock({
+  const block = new ContentBlock({
     key: 'a',
     text: 'Hello',
     characterList: List(Repeat(CharacterMetadata.EMPTY, 5)),
@@ -34,22 +34,22 @@ describe('applyEntityToContentBlock', () => {
   }
 
   it('must apply from the start', () => {
-    var modified = applyEntityToContentBlock(block, 0, 2, 'x');
+    const modified = applyEntityToContentBlock(block, 0, 2, 'x');
     expect(getEntities(modified)).toEqual(['x', 'x', null, null, null]);
   });
 
   it('must apply within', () => {
-    var modified = applyEntityToContentBlock(block, 1, 4, 'x');
+    const modified = applyEntityToContentBlock(block, 1, 4, 'x');
     expect(getEntities(modified)).toEqual([null, 'x', 'x', 'x', null]);
   });
 
   it('must apply at the end', () => {
-    var modified = applyEntityToContentBlock(block, 3, 5, 'x');
+    const modified = applyEntityToContentBlock(block, 3, 5, 'x');
     expect(getEntities(modified)).toEqual([null, null, null, 'x', 'x']);
   });
 
   it('must apply to the entire text', () => {
-    var modified = applyEntityToContentBlock(block, 0, 5, 'x');
+    const modified = applyEntityToContentBlock(block, 0, 5, 'x');
     expect(getEntities(modified)).toEqual(['x', 'x', 'x', 'x', 'x']);
   });
 });

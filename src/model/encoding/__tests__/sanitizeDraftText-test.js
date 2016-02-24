@@ -12,17 +12,17 @@
 jest.autoMockOff();
 
 describe('sanitizeDraftText', () => {
-  var sanitizeDraftText = require('sanitizeDraftText');
+  const sanitizeDraftText = require('sanitizeDraftText');
   it('must strip carriage returns', () => {
-    var trailing = 'test\u000d';
+    const trailing = 'test\u000d';
     expect(sanitizeDraftText(trailing)).toBe('test');
-    var twoTrailing = 'test\u000d\u000d';
+    const twoTrailing = 'test\u000d\u000d';
     expect(sanitizeDraftText(twoTrailing)).toBe('test');
-    var within = 'te\u000dst';
+    const within = 'te\u000dst';
     expect(sanitizeDraftText(within)).toBe('test');
-    var leading = '\u000dtest';
+    const leading = '\u000dtest';
     expect(sanitizeDraftText(leading)).toBe('test');
-    var all = '\u000dt\u000des\u000dt\u000d\u000d';
+    const all = '\u000dt\u000des\u000dt\u000d\u000d';
     expect(sanitizeDraftText(all)).toBe('test');
   });
 });

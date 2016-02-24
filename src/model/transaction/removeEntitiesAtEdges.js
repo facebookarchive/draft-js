@@ -12,11 +12,11 @@
 
 'use strict';
 
-var CharacterMetadata = require('CharacterMetadata');
-var DraftEntity = require('DraftEntity');
+const CharacterMetadata = require('CharacterMetadata');
+const DraftEntity = require('DraftEntity');
 
-var findRangesImmutable = require('findRangesImmutable');
-var invariant = require('invariant');
+const findRangesImmutable = require('findRangesImmutable');
+const invariant = require('invariant');
 
 import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
@@ -27,27 +27,27 @@ function removeEntitiesAtEdges(
   contentState: ContentState,
   selectionState: SelectionState
 ): ContentState {
-  var blockMap = contentState.getBlockMap();
+  const blockMap = contentState.getBlockMap();
 
-  var updatedBlocks = {};
+  const updatedBlocks = {};
 
-  var startKey = selectionState.getStartKey();
-  var startOffset = selectionState.getStartOffset();
-  var startBlock = blockMap.get(startKey);
-  var updatedStart = removeForBlock(startBlock, startOffset);
+  const startKey = selectionState.getStartKey();
+  const startOffset = selectionState.getStartOffset();
+  const startBlock = blockMap.get(startKey);
+  const updatedStart = removeForBlock(startBlock, startOffset);
 
   if (updatedStart !== startBlock) {
     updatedBlocks[startKey] = updatedStart;
   }
 
-  var endKey = selectionState.getEndKey();
-  var endOffset = selectionState.getEndOffset();
-  var endBlock = blockMap.get(endKey);
+  const endKey = selectionState.getEndKey();
+  const endOffset = selectionState.getEndOffset();
+  let endBlock = blockMap.get(endKey);
   if (startKey === endKey) {
     endBlock = updatedStart;
   }
 
-  var updatedEnd = removeForBlock(endBlock, endOffset);
+  const updatedEnd = removeForBlock(endBlock, endOffset);
 
   if (updatedEnd !== endBlock) {
     updatedBlocks[endKey] = updatedEnd;
@@ -68,7 +68,7 @@ function getRemovalRange(
   key: ?string,
   offset: number
 ): Object {
-  var removalRange;
+  let removalRange;
   findRangesImmutable(
     characters,
     (a, b) => a.getEntity() === b.getEntity(),
@@ -90,17 +90,19 @@ function removeForBlock(
   block: ContentBlock,
   offset: number
 ): ContentBlock {
-  var chars = block.getCharacterList();
-  var charBefore = offset > 0 ? chars.get(offset - 1) : undefined;
-  var charAfter = offset < chars.count() ? chars.get(offset) : undefined;
-  var entityBeforeCursor = charBefore ? charBefore.getEntity() : undefined;
-  var entityAfterCursor = charAfter ? charAfter.getEntity() : undefined;
+  let chars = block.getCharacterList();
+  const charBefore = offset > 0 ? chars.get(offset - 1) : undefined;
+  const charAfter = offset < chars.count() ? chars.get(offset) : undefined;
+  const entityBeforeCursor = charBefore ? charBefore.getEntity() : undefined;
+  const entityAfterCursor = charAfter ? charAfter.getEntity() : undefined;
 
   if (entityAfterCursor && entityAfterCursor === entityBeforeCursor) {
-    var entity = DraftEntity.get(entityAfterCursor);
+    const entity = DraftEntity.get(entityAfterCursor);
     if (entity.getMutability() !== 'MUTABLE') {
-      var {start, end} = getRemovalRange(chars, entityAfterCursor, offset);
-      var current;
+      const range = getRemovalRange(chars, entityAfterCursor, offset);
+      const {end} = range;
+      let {start} = range;
+      let current;
       while (start < end) {
         current = chars.get(start);
         chars = chars.set(start, CharacterMetadata.applyEntity(current, null));

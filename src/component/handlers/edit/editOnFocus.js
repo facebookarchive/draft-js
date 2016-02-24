@@ -12,16 +12,16 @@
 
 'use strict';
 
-var EditorState = require('EditorState');
+const EditorState = require('EditorState');
 
 function editOnFocus(e: SyntheticFocusEvent): void {
-  var editorState = this.props.editorState;
-  var currentSelection = editorState.getSelection();
+  const editorState = this.props.editorState;
+  const currentSelection = editorState.getSelection();
   if (currentSelection.getHasFocus()) {
     return;
   }
 
-  var selection = currentSelection.set('hasFocus', true);
+  const selection = currentSelection.set('hasFocus', true);
   this.props.onFocus && this.props.onFocus(e);
 
   // When the tab containing this text editor is hidden and the user does a

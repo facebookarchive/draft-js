@@ -13,13 +13,13 @@
 
 jest.autoMockOff();
 
-var Immutable = require('immutable');
-var SelectionState = require('SelectionState');
-var applyEntityToContentState = require('applyEntityToContentState');
-var getSampleStateForTesting = require('getSampleStateForTesting');
+const Immutable = require('immutable');
+const SelectionState = require('SelectionState');
+const applyEntityToContentState = require('applyEntityToContentState');
+const getSampleStateForTesting = require('getSampleStateForTesting');
 
 describe('applyEntityToContentState', () => {
-  var {
+  const {
     contentState,
   } = getSampleStateForTesting();
 
@@ -32,8 +32,8 @@ describe('applyEntityToContentState', () => {
   }
 
   describe('Apply entity within single block', () => {
-    var target = contentState.getBlockMap().first();
-    var targetSelection = new SelectionState({
+    const target = contentState.getBlockMap().first();
+    const targetSelection = new SelectionState({
       anchorKey: target.getKey(),
       anchorOffset: 0,
       focusKey: target.getKey(),
@@ -41,12 +41,12 @@ describe('applyEntityToContentState', () => {
     });
 
     function applyAndCheck(entityKey) {
-      var withNewEntity = applyEntityToContentState(
+      const withNewEntity = applyEntityToContentState(
         contentState,
         targetSelection,
         entityKey
       );
-      var first = withNewEntity.getBlockMap().first();
+      const first = withNewEntity.getBlockMap().first();
 
       checkForCharacterList(first);
       expect(getEntities(first)).toEqual(
@@ -64,11 +64,11 @@ describe('applyEntityToContentState', () => {
   });
 
   describe('Apply entity across multiple blocks', () => {
-    var blockMap = contentState.getBlockMap();
-    var first = blockMap.first();
-    var last = contentState.getBlockAfter(first.getKey());
+    const blockMap = contentState.getBlockMap();
+    const first = blockMap.first();
+    const last = contentState.getBlockAfter(first.getKey());
 
-    var targetSelection = new SelectionState({
+    const targetSelection = new SelectionState({
       anchorKey: first.getKey(),
       anchorOffset: 0,
       focusKey: last.getKey(),
@@ -76,13 +76,13 @@ describe('applyEntityToContentState', () => {
     });
 
     function applyAndCheck(entityKey) {
-      var withNewEntity = applyEntityToContentState(
+      const withNewEntity = applyEntityToContentState(
         contentState,
         targetSelection,
         entityKey
       );
-      var first = withNewEntity.getBlockMap().first();
-      var last = withNewEntity.getBlockAfter(first.getKey());
+      const first = withNewEntity.getBlockMap().first();
+      const last = withNewEntity.getBlockAfter(first.getKey());
 
       checkForCharacterList(first);
       expect(getEntities(first)).toEqual(

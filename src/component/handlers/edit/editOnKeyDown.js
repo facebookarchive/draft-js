@@ -12,20 +12,20 @@
 
 'use strict';
 
-var EditorState = require('EditorState');
-var Keys = require('Keys');
-var SecondaryClipboard = require('SecondaryClipboard');
+const EditorState = require('EditorState');
+const Keys = require('Keys');
+const SecondaryClipboard = require('SecondaryClipboard');
 
-var keyCommandBackspaceToStartOfLine = require('keyCommandBackspaceToStartOfLine');
-var keyCommandBackspaceWord = require('keyCommandBackspaceWord');
-var keyCommandDeleteWord = require('keyCommandDeleteWord');
-var keyCommandInsertNewline = require('keyCommandInsertNewline');
-var keyCommandPlainBackspace = require('keyCommandPlainBackspace');
-var keyCommandPlainDelete = require('keyCommandPlainDelete');
-var keyCommandMoveSelectionToEndOfBlock = require('keyCommandMoveSelectionToEndOfBlock');
-var keyCommandMoveSelectionToStartOfBlock = require('keyCommandMoveSelectionToStartOfBlock');
-var keyCommandTransposeCharacters = require('keyCommandTransposeCharacters');
-var keyCommandUndo = require('keyCommandUndo');
+const keyCommandBackspaceToStartOfLine = require('keyCommandBackspaceToStartOfLine');
+const keyCommandBackspaceWord = require('keyCommandBackspaceWord');
+const keyCommandDeleteWord = require('keyCommandDeleteWord');
+const keyCommandInsertNewline = require('keyCommandInsertNewline');
+const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
+const keyCommandPlainDelete = require('keyCommandPlainDelete');
+const keyCommandMoveSelectionToEndOfBlock = require('keyCommandMoveSelectionToEndOfBlock');
+const keyCommandMoveSelectionToStartOfBlock = require('keyCommandMoveSelectionToStartOfBlock');
+const keyCommandTransposeCharacters = require('keyCommandTransposeCharacters');
+const keyCommandUndo = require('keyCommandUndo');
 
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 
@@ -76,8 +76,8 @@ function onKeyCommand(
  * component may provide a custom mapping via the `keyBindingFn` prop.
  */
 function editOnKeyDown(e: SyntheticKeyboardEvent): void {
-  var keyCode = e.which;
-  var editorState = this.props.editorState;
+  const keyCode = e.which;
+  const editorState = this.props.editorState;
 
   switch (keyCode) {
     case Keys.RETURN:
@@ -103,7 +103,7 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
       return;
   }
 
-  var command = this.props.keyBindingFn(e);
+  const command = this.props.keyBindingFn(e);
 
   // If no command is specified, allow keydown event to continue.
   if (!command) {
@@ -126,7 +126,7 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
     return;
   }
 
-  var newState = onKeyCommand(command, editorState);
+  const newState = onKeyCommand(command, editorState);
   if (newState !== editorState) {
     this.update(newState);
   }

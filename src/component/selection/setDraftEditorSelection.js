@@ -13,8 +13,8 @@
 
 'use strict';
 
-var containsNode = require('containsNode');
-var getActiveElement = require('getActiveElement');
+const containsNode = require('containsNode');
+const getActiveElement = require('getActiveElement');
 
 import type SelectionState from 'SelectionState';
 
@@ -41,17 +41,17 @@ function setDraftEditorSelection(
     return;
   }
 
-  var selection = global.getSelection();
-  var anchorKey = selectionState.getAnchorKey();
-  var anchorOffset = selectionState.getAnchorOffset();
-  var focusKey = selectionState.getFocusKey();
-  var focusOffset = selectionState.getFocusOffset();
-  var isBackward = selectionState.getIsBackward();
+  const selection = global.getSelection();
+  let anchorKey = selectionState.getAnchorKey();
+  let anchorOffset = selectionState.getAnchorOffset();
+  let focusKey = selectionState.getFocusKey();
+  let focusOffset = selectionState.getFocusOffset();
+  let isBackward = selectionState.getIsBackward();
 
   // IE doesn't support backward selection. Swap key/offset pairs.
   if (!selection.extend && isBackward) {
-    var tempKey = anchorKey;
-    var tempOffset = anchorOffset;
+    const tempKey = anchorKey;
+    const tempOffset = anchorOffset;
     anchorKey = focusKey;
     anchorOffset = focusOffset;
     focusKey = tempKey;
@@ -59,13 +59,13 @@ function setDraftEditorSelection(
     isBackward = false;
   }
 
-  var hasAnchor = (
+  const hasAnchor = (
     anchorKey === blockKey &&
     nodeStart <= anchorOffset &&
     nodeEnd >= anchorOffset
   );
 
-  var hasFocus = (
+  const hasFocus = (
     focusKey === blockKey &&
     nodeStart <= focusOffset &&
     nodeEnd >= focusOffset
@@ -107,8 +107,8 @@ function setDraftEditorSelection(
     // We keep track of it, reset the selection range, and extend it
     // back to the focus point.
     if (hasAnchor) {
-      var storedFocusNode = selection.focusNode;
-      var storedFocusOffset = selection.focusOffset;
+      const storedFocusNode = selection.focusNode;
+      const storedFocusOffset = selection.focusOffset;
 
       selection.removeAllRanges();
       addPointToSelection(selection, node, anchorOffset - nodeStart);
@@ -138,7 +138,7 @@ function addFocusToSelection(
     // Additionally, clone the selection range. IE11 throws an
     // InvalidStateError when attempting to access selection properties
     // after the range is detached.
-    var range = selection.getRangeAt(0);
+    const range = selection.getRangeAt(0);
     range.setEnd(node, offset);
     selection.addRange(range.cloneRange());
   }
@@ -149,7 +149,7 @@ function addPointToSelection(
   node: Node,
   offset: number
 ): void {
-  var range = document.createRange();
+  const range = document.createRange();
   range.setStart(node, offset);
   selection.addRange(range);
 }

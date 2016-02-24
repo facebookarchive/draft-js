@@ -13,14 +13,14 @@
 
 'use strict';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
 import type ContentBlock from 'ContentBlock';
 import type {DraftDecorator} from 'DraftDecorator';
 
-var {List} = Immutable;
+const {List} = Immutable;
 
-var DELIMITER = '.';
+const DELIMITER = '.';
 
 /**
  * A CompositeDraftDecorator traverses through a list of DraftDecorator
@@ -52,12 +52,12 @@ class CompositeDraftDecorator {
   }
 
   getDecorations(block: ContentBlock): List<?string> {
-    var decorations = Array(block.getText().length).fill(null);
+    const decorations = Array(block.getText().length).fill(null);
 
     this._decorators.forEach(
       (/*object*/ decorator, /*number*/ ii) => {
-        var counter = 0;
-        var strategy = decorator.strategy;
+        let counter = 0;
+        const strategy = decorator.strategy;
         strategy(block, (/*number*/ start, /*number*/ end) => {
           // Find out if any of our matching range is already occupied
           // by another decorator. If so, discard the match. Otherwise, store
@@ -74,12 +74,12 @@ class CompositeDraftDecorator {
   }
 
   getComponentForKey(key: string): Function {
-    var componentKey = parseInt(key.split(DELIMITER)[0], 10);
+    const componentKey = parseInt(key.split(DELIMITER)[0], 10);
     return this._decorators[componentKey].component;
   }
 
   getPropsForKey(key: string): ?Object {
-    var componentKey = parseInt(key.split(DELIMITER)[0], 10);
+    const componentKey = parseInt(key.split(DELIMITER)[0], 10);
     return this._decorators[componentKey].props;
   }
 }
@@ -93,7 +93,7 @@ function canOccupySlice(
   start: number,
   end: number
 ): boolean {
-  for (var ii = start; ii < end; ii++) {
+  for (let ii = start; ii < end; ii++) {
     if (decorations[ii] != null) {
       return false;
     }
@@ -111,7 +111,7 @@ function occupySlice(
   end: number,
   componentKey: string
 ): void {
-  for (var ii = start; ii < end; ii++) {
+  for (let ii = start; ii < end; ii++) {
     targetArr[ii] = componentKey;
   }
 }
