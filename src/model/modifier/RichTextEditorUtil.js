@@ -111,15 +111,13 @@ var RichTextEditorUtil = {
     var content = editorState.getCurrentContent();
     var startKey = selection.getStartKey();
     var blockAfter = content.getBlockAfter(startKey);
-
-    // If the current block is empty, just delete it.
-    if (blockAfter && content.getBlockForKey(startKey).getLength() === 0) {
-      return null;
-    }
-
     var blockBefore = content.getBlockBefore(startKey);
 
     if (blockBefore && blockBefore.getType() === 'media') {
+      // If the current block is empty, just delete it.
+      if (blockAfter && content.getBlockForKey(startKey).getLength() === 0) {
+        return null;
+      }
       var mediaBlockTarget = selection.merge({
         anchorKey: blockBefore.getKey(),
         anchorOffset: 0,
