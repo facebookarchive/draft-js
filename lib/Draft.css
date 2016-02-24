@@ -1,0 +1,297 @@
+/**
+ * @providesModule DraftEditor
+ * @permanent
+ */
+
+/**
+ * We inherit the height of the container by default
+ */
+
+.DraftEditor-root,
+.DraftEditor-editorContainer,
+.public-DraftEditor-content {
+  height: inherit;
+  text-align: initial;
+}
+
+.DraftEditor-root {
+  position: relative;
+}
+
+/**
+ * Zero-opacity background used to allow focus in IE. Otherwise, clicks
+ * fall through to the placeholder.
+ */
+
+.DraftEditor-editorContainer {
+  background-color: rgba(255, 255, 255, 0);
+  /* Repair mysterious missing Safari cursor */
+  border-left: 0.1px solid transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.public-DraftEditor-content {
+  outline: none;
+  white-space: pre-wrap;
+}
+
+.public-DraftEditor-block {
+  position: relative;
+}
+
+.DraftEditor-alignLeft .public-DraftEditor-block {
+  text-align: left;
+}
+
+.DraftEditor-alignLeft .public-DraftEditorPlaceholder/root {
+  left: 0;
+  text-align: left;
+}
+
+.DraftEditor-alignCenter .public-DraftEditor-block {
+  text-align: center;
+}
+
+.DraftEditor-alignCenter .public-DraftEditorPlaceholder/root {
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.DraftEditor-alignRight .public-DraftEditor-block {
+  text-align: right;
+}
+
+.DraftEditor-alignRight .public-DraftEditorPlaceholder/root {
+  right: 0;
+  text-align: right;
+}
+/**
+ * @providesModule DraftEditorPlaceholder
+ */
+
+.public-DraftEditorPlaceholder-root {
+  color: #9197a3;
+  position: absolute;
+  z-index: 0;
+}
+
+.public-DraftEditorPlaceholder-hasFocus {
+  color: #bdc1c9;
+}
+
+.DraftEditorPlaceholder-hidden {
+  display: none;
+}
+/**
+ * @providesModule DraftStyleDefault
+ */
+
+.public-DraftStyleDefault-block {
+  position: relative;
+  white-space: pre-wrap;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/**
+ * These rules provide appropriate text direction for counter pseudo-elements.
+ */
+
+/* @noflip */
+
+.public-DraftStyleDefault-listLTR {
+  direction: ltr;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-listRTL {
+  direction: rtl;
+}
+
+/**
+ * Default spacing for list container elements. Override with CSS as needed.
+ */
+
+.public-DraftStyleDefault-ul,
+.public-DraftStyleDefault-ol {
+  margin: 16px 0;
+  padding: 0;
+}
+
+/**
+ * Default counters and styles are provided for five levels of nesting.
+ * If you require nesting beyond that level, you should use your own CSS
+ * classes to do so. If you care about handling RTL languages, the rules you
+ * create should look a lot like these.
+ */
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth0.public-DraftStyleDefault-listLTR {
+  margin-left: 1.5em;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth0.public-DraftStyleDefault-listRTL {
+  margin-right: 1.5em;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth1.public-DraftStyleDefault-listLTR {
+  margin-left: 3em;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth1.public-DraftStyleDefault-listRTL {
+  margin-right: 3em;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth2.public-DraftStyleDefault-listLTR {
+  margin-left: 4.5em;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth2.public-DraftStyleDefault-listRTL {
+  margin-right: 4.5em;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth3.public-DraftStyleDefault-listLTR {
+  margin-left: 6em;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth3.public-DraftStyleDefault-listRTL {
+  margin-right: 6em;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth4.public-DraftStyleDefault-listLTR {
+  margin-left: 7.5em;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-depth4.public-DraftStyleDefault-listRTL {
+  margin-right: 7.5em;
+}
+
+/**
+ * Only use `square` list-style after the first two levels.
+ */
+
+.public-DraftStyleDefault-unorderedListItem {
+  list-style-type: square;
+  position: relative;
+}
+
+.public-DraftStyleDefault-unorderedListItem.public-DraftStyleDefault-depth0 {
+  list-style-type: disc;
+}
+
+.public-DraftStyleDefault-unorderedListItem.public-DraftStyleDefault-depth1 {
+  list-style-type: circle;
+}
+
+/**
+ * Ordered list item counters are managed with CSS, since all list nesting is
+ * purely visual.
+ */
+
+.public-DraftStyleDefault-orderedListItem {
+  list-style-type: none;
+  position: relative;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-listLTR:before {
+  left: -36px;
+  position: absolute;
+  text-align: right;
+  width: 30px;
+}
+
+/* @noflip */
+
+.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-listRTL:before {
+  position: absolute;
+  right: -36px;
+  text-align: left;
+  width: 30px;
+}
+
+/**
+ * Counters are reset in JavaScript. If you need different counter styles,
+ * override these rules. If you need more nesting, create your own rules to
+ * do so.
+ */
+
+.public-DraftStyleDefault-orderedListItem:before {
+  content: counter(ol0) ". ";
+  counter-increment: ol0;
+}
+
+.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-depth1:before {
+  content: counter(ol1) ". ";
+  counter-increment: ol1;
+}
+
+.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-depth2:before {
+  content: counter(ol2) ". ";
+  counter-increment: ol2;
+}
+
+.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-depth3:before {
+  content: counter(ol3) ". ";
+  counter-increment: ol3;
+}
+
+.public-DraftStyleDefault-orderedListItem.public-DraftStyleDefault-depth4:before {
+  content: counter(ol4) ". ";
+  counter-increment: ol4;
+}
+
+.public-DraftStyleDefault-depth0.public-DraftStyleDefault-reset {
+  counter-reset: ol0;
+}
+
+.public-DraftStyleDefault-depth1.public-DraftStyleDefault-reset {
+  counter-reset: ol1;
+}
+
+.public-DraftStyleDefault-depth2.public-DraftStyleDefault-reset {
+  counter-reset: ol2;
+}
+
+.public-DraftStyleDefault-depth3.public-DraftStyleDefault-reset {
+  counter-reset: ol3;
+}
+
+.public-DraftStyleDefault-depth4.public-DraftStyleDefault-reset {
+  counter-reset: ol4;
+}
