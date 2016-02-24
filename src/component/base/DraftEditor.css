@@ -42,7 +42,7 @@
   text-align: left;
 }
 
-.DraftEditor-alignLeft .public-DraftEditorPlaceholder/root {
+.DraftEditor-alignLeft .public-DraftEditorPlaceholder-root {
   left: 0;
   text-align: left;
 }
@@ -51,7 +51,7 @@
   text-align: center;
 }
 
-.DraftEditor-alignCenter .public-DraftEditorPlaceholder/root {
+.DraftEditor-alignCenter .public-DraftEditorPlaceholder-root {
   margin: 0 auto;
   text-align: center;
   width: 100%;
@@ -61,7 +61,7 @@
   text-align: right;
 }
 
-.DraftEditor-alignRight .public-DraftEditorPlaceholder/root {
+.DraftEditor-alignRight .public-DraftEditorPlaceholder-root {
   right: 0;
   text-align: right;
 }
