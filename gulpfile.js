@@ -29,11 +29,11 @@ var paths = {
   src: [
     'src/**/*.js',
     '!src/**/__tests__/**/*.js',
-    '!src/**/__mocks__/**/*.js'
+    '!src/**/__mocks__/**/*.js',
   ],
   css: [
-    'src/**/*.css'
-  ]
+    'src/**/*.css',
+  ],
 };
 
 // Ensure that we use another plugin that isn't specified in the default Babel
@@ -51,12 +51,12 @@ var buildDist = function(opts) {
     output: {
       filename: opts.output,
       libraryTarget: 'var',
-      library: 'Draft'
+      library: 'Draft',
     },
     plugins: [
       new webpackStream.webpack.optimize.OccurenceOrderPlugin(),
-      new webpackStream.webpack.optimize.DedupePlugin()
-    ]
+      new webpackStream.webpack.optimize.DedupePlugin(),
+    ],
   };
   if (!opts.debug) {
     webpackOpts.plugins.push(
@@ -64,8 +64,8 @@ var buildDist = function(opts) {
         compress: {
           hoist_vars: true,
           screw_ie8: true,
-          warnings: false
-        }
+          warnings: false,
+        },
       })
     );
   }
@@ -101,7 +101,7 @@ gulp.task('css', function() {
 gulp.task('dist', ['modules', 'css'], function() {
   var opts = {
     debug: true,
-    output: 'Draft.js'
+    output: 'Draft.js',
   };
   return gulp.src('./lib/Draft.js')
     .pipe(buildDist(opts))
