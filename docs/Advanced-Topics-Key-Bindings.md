@@ -45,7 +45,7 @@ write your contents to the server as a draft copy.
 First, let's define our key binding function:
 
 ```js
-import {KeyBindingUtil} from 'draft-js';
+import {getDefaultKeyBinding, KeyBindingUtil} from 'draft-js';
 const {hasCommandModifier} = KeyBindingUtil;
 
 function myKeyBindingFn(e: SyntheticKeyboardEvent): string {
