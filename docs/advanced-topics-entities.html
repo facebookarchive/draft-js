@@ -6,7 +6,7 @@ content can all be implemented using entities.</p><p>In the Draft repository, th
 and
 <a href="https://github.com/facebook/draft-js/tree/master/examples/entity" target="_blank">entity demo</a>
 provide live code examples to help clarify how entities can be used, as well
-as their built-in behavior.</p><p>The <a href="/draf-js/docs/api-reference-entity.html" target="">Entity API Reference</a> provides
+as their built-in behavior.</p><p>The <a href="/draft-js/docs/api-reference-entity.html" target="">Entity API Reference</a> provides
 details on the static methods to be used when creating, retrieving, or updating
 entity objects.</p><h2><a class="anchor" name="introduction"></a>Introduction <a class="hash-link" href="#introduction">#</a></h2><p>An entity is an object that represents metadata for a range of text within a
 Draft editor. It has three properties:</p><ul><li><strong>type</strong>: A string that indicates what kind of entity it is, e.g. <code>&#x27;LINK&#x27;</code>,
@@ -19,7 +19,7 @@ for that link.</li></ul><p>All entities are stored in a single object store with
 and are referenced by key within <code>ContentState</code> and React components used to
 decorate annotated ranges. <em>(We are considering future changes to bring
 the entity store into <code>EditorState</code> or <code>ContentState</code>.)</em></p><p>Using <a href="/draft-js/docs/advanced-topics-decorators.html" target="">decorators</a> or
-<a href="docs/advanced-topics-block-components.html" target="_blank">custom block components</a>, you can
+<a href="/draft-js/docs/advanced-topics-block-components.html" target="">custom block components</a>, you can
 add rich rendering to your editor based on entity metadata.</p><h2><a class="anchor" name="creating-and-retrieving-entities"></a>Creating and Retrieving Entities <a class="hash-link" href="#creating-and-retrieving-entities">#</a></h2><p>Entities should be created using <code>Entity.create</code>, which accepts the three
 properties above as arguments. This method returns a string key, which can then
 be used to refer to the entity.</p><p>This key is the value that should be used when applying entities to your

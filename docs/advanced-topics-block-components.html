@@ -25,12 +25,12 @@ a custom <code>MediaComponent</code>.</p><pre class="prism language-javascript">
 <span class="token comment" spellcheck="true">
 // Then...
 </span>import <span class="token punctuation">{</span>Editor<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
-const EditorWithMedia <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">createClass<span class="token punctuation">(</span></span><span class="token punctuation">{</span>
+class <span class="token class-name">EditorWithMedia</span> extends <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
   <span class="token function">render<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> &lt;Editor <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> blockRendererFn<span class="token operator">=</span><span class="token punctuation">{</span>myBlockRenderer<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">&gt;</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre><p>If no custom renderer object is returned by the <code>blockRendererFn</code> function,
+<span class="token punctuation">}</span></pre><p>If no custom renderer object is returned by the <code>blockRendererFn</code> function,
 <code>Editor</code> will render the default <code>DraftEditorBlock</code> text block component.</p><p>The <code>component</code> property defines the component to be used, while the optional
 <code>props</code> object includes props that will be passed through to the rendered
 custom component.</p><p>By defining this function within the context of a higher-level component,
@@ -40,13 +40,13 @@ retrieve entity metadata to render your custom block. You may apply an entity
 key to the text within a <code>&#x27;media&#x27;</code> block during <code>EditorState</code> management,
 then retrieve the metadata for that key in your custom component <code>render()</code>
 code.</p><pre class="prism language-javascript">import <span class="token punctuation">{</span>Entity<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
-const MediaComponent <span class="token operator">=</span> React<span class="token punctuation">.</span><span class="token function">createClass<span class="token punctuation">(</span></span><span class="token punctuation">{</span>
+class <span class="token class-name">MediaComponent</span> extends <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
   <span class="token function">render<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     const <span class="token punctuation">{</span>block<span class="token punctuation">,</span> foo<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">;</span>
     const data <span class="token operator">=</span> Entity<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>block<span class="token punctuation">.</span><span class="token function">getEntityAt<span class="token punctuation">(</span></span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getData<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token comment" spellcheck="true"> // Return a &lt;figure&gt; or some other content using this data.
 </span>  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre><p>The <code>ContentBlock</code> object is made available within the custom component, along
+<span class="token punctuation">}</span></pre><p>The <code>ContentBlock</code> object is made available within the custom component, along
 with the props defined at the top level. By extracting entity information from
 the <code>ContentBlock</code> and the <code>Entity</code> map, you can obtain the metadata required to
 render your custom component.</p><p><em>Retrieving the entity from the block is admittedly a bit of an awkward API,

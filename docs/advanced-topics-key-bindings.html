@@ -8,8 +8,8 @@ which then routes our handler to perform an <code>EditorState.undo()</code>.</p>
 fall-through case, so that your editor may benefit from default commands.</p><p>With your custom command string, you may then implement the <code>handleKeyCommand</code>
 prop function, which allows you to map that command string to your desired
 behavior. If <code>handleKeyCommand</code> returns <code>true</code>, the command is considered
-handled. If it returns <code>false</code>, the command will fall through</p><h3><a class="anchor" name="example"></a>Example <a class="hash-link" href="#example">#</a></h3><p>Let&#x27;s say we have an editor that should have a &quot;Save&quot; mechanism to periodically
-write your contents to the server as a draft copy.</p><p>First, let&#x27;s define our key binding function.</p><pre class="prism language-javascript">import <span class="token punctuation">{</span>KeyBindingUtil<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
+handled. If it returns <code>false</code>, the command will fall through.</p><h3><a class="anchor" name="example"></a>Example <a class="hash-link" href="#example">#</a></h3><p>Let&#x27;s say we have an editor that should have a &quot;Save&quot; mechanism to periodically
+write your contents to the server as a draft copy.</p><p>First, let&#x27;s define our key binding function:</p><pre class="prism language-javascript">import <span class="token punctuation">{</span>KeyBindingUtil<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
 const <span class="token punctuation">{</span>hasCommandModifier<span class="token punctuation">}</span> <span class="token operator">=</span> KeyBindingUtil<span class="token punctuation">;</span>
 
 <span class="token keyword">function</span> <span class="token function">myKeyBindingFn<span class="token punctuation">(</span></span>e<span class="token punctuation">:</span> SyntheticKeyboardEvent<span class="token punctuation">)</span><span class="token punctuation">:</span> string <span class="token punctuation">{</span>
@@ -39,6 +39,7 @@ class <span class="token class-name">MyEditor</span> extends <span class="token 
       &lt;Editor
         editorState<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>editorState<span class="token punctuation">}</span>
         handleKeyCommand<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleKeyCommand<span class="token punctuation">.</span><span class="token function">bind<span class="token punctuation">(</span></span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+        keyBindingFn<span class="token operator">=</span><span class="token punctuation">{</span>myKeyBindingFn<span class="token punctuation">}</span>
         <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
       <span class="token operator">/</span><span class="token operator">&gt;</span>
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
