@@ -21,6 +21,9 @@ in the Draft repository provides a live example of custom block rendering, with
 TeX syntax translated on the fly into editable embedded formula rendering via the
 [KaTeX library](https://khan.github.io/KaTeX/).
 
+A [media example](https://github.com/facebook/draft-js/tree/master/examples/media) is also
+available, which showcases custom block rendering of audio, image, and video.
+
 By using a custom block renderer, it is possible to introduce complex rich
 interactions within the frame of your editor.
 

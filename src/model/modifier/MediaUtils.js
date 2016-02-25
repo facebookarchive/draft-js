@@ -27,7 +27,7 @@ const MediaUtils = {
     editorState: EditorState,
     entityKey: string,
     character: string
-  ): ?EditorState {
+  ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
 
