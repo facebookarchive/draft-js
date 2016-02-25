@@ -338,12 +338,12 @@ h1:hover .hash-link, h2:hover .hash-link, h3:hover .hash-link, h4:hover .hash-li
 
 .buttons-unit .button {
   font-size: 24px;
-  background: #C15757;
+  background: #843131;
   color: #fafafa;
 }
 
 .buttons-unit .button:active {
-  background: #57A85C;
+  background: #C15757;
 }
 
 .buttons-unit.downloads {
@@ -382,11 +382,11 @@ h1:hover .hash-link, h2:hover .hash-link, h3:hover .hash-link, h4:hover .hash-li
 
 .nav-docs a:hover {
   text-decoration: none;
-  color: #34A83B;
+  color: #C15757;
 }
 
 .nav-docs a.active {
-  color: #34A83B;
+  color: #C15757;
 }
 
 .nav-docs .nav-docs-section {
@@ -957,7 +957,7 @@ p + .apiIndex {
   text-decoration: none;
 }
 .apiIndex li a:hover::before {
-  color: #f26b00;
+  color: #C15757;
   content: '#';
   font-size: 16px;
   left: -2em;
@@ -1191,7 +1191,7 @@ pre[class*="language-"],
 .apiIndex li {
   font-size: 13px;
   line-height: 20px;
-  border-left: 4px solid #f26b00;
+  border-left: 4px solid #C15757;
   padding: 5px 10px;
   background-color: rgba(75, 145, 80, 0.05);
 }
