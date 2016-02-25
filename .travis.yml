@@ -14,7 +14,7 @@ script:
   if [ "$TEST_TYPE" = test ]
   then
 
-    npm test
+    npm run test-ci
 
   elif [ "$TEST_TYPE" = build_website ]
   then
