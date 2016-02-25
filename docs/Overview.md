@@ -44,4 +44,10 @@ ReactDOM.render(
 );
 ```
 
+Because Draft.js supports unicode, you must have the following meta tag in the `<head></head>` block of your HTML file:
+
+```html
+<meta charset="utf-8" />
+```
+
 Next, let's go into the basics of the API and learn what else you can do with Draft.js.
