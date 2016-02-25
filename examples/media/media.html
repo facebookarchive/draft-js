@@ -29,15 +29,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       'use strict';
 
       const {
-        BlockMapBuilder,
-        CharacterMetadata,
-        ContentBlock,
         Editor,
         EditorState,
         Entity,
-        Modifier,
+        MediaUtils,
+        RichUtils,
         convertToRaw,
-        genKey,
       } = Draft;
 
       const {List, Repeat} = Immutable;
@@ -57,21 +54,44 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             console.log(convertToRaw(content));
           };
 
+          this.handleKeyCommand = this._handleKeyCommand.bind(this);
+          this.addMedia = this._addMedia.bind(this);
           this.addAudio = this._addAudio.bind(this);
           this.addImage = this._addImage.bind(this);
           this.addVideo = this._addVideo.bind(this);
         }
 
-        _addAudio(e) {
-          this.onChange(insertMedia(this.state.editorState, 'audio'));
+        _handleKeyCommand(command) {
+          const {editorState} = this.state;
+          const newState = RichUtils.handleKeyCommand(editorState, command);
+          if (newState) {
+            this.onChange(newState);
+            return true;
+          }
+          return false;
         }
 
-        _addImage(e) {
-          this.onChange(insertMedia(this.state.editorState, 'image'));
+        _addMedia(type) {
+          const src = window.prompt('Enter a URL');
+          if (!src) {
+            return;
+          }
+
+          const entityKey = Entity.create(type, 'IMMUTABLE', {src});
+
+          return MediaUtils.insertMedia(this.state.editorState, entityKey, ' ');
         }
 
-        _addVideo(e) {
-          this.onChange(insertMedia(this.state.editorState, 'video'));
+        _addAudio() {
+          this.onChange(this._addMedia('audio'));
+        }
+
+        _addImage() {
+          this.onChange(this._addMedia('image'));
+        }
+
+        _addVideo() {
+          this.onChange(this._addMedia('video'));
         }
 
         render() {
@@ -95,6 +115,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 <Editor
                   blockRendererFn={mediaBlockRenderer}
                   editorState={this.state.editorState}
+                  handleKeyCommand={this.handleKeyCommand}
                   onChange={this.onChange}
                   placeholder="Enter some text..."
                   ref="editor"
@@ -109,65 +130,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             </div>
           );
         }
-      }
-
-      function insertMedia(editorState, type) {
-        const src = window.prompt('Enter a URL');
-        if (!src) {
-          return;
-        }
-
-        const entityKey = Entity.create(type, 'IMMUTABLE', {src});
-
-        const contentState = editorState.getCurrentContent();
-        const selectionState = editorState.getSelection();
-
-        const afterRemoval = Modifier.removeRange(
-          contentState,
-          selectionState,
-          'backward'
-        );
-
-        const targetSelection = afterRemoval.getSelectionAfter();
-        const afterSplit = Modifier.splitBlock(afterRemoval, targetSelection);
-        const insertionTarget = afterSplit.getSelectionAfter();
-
-        const asMedia = Modifier.setBlockType(
-          afterSplit,
-          insertionTarget,
-          'media'
-        );
-        const charData = CharacterMetadata.create({entity: entityKey});
-
-        const fragmentArray = [
-          new ContentBlock({
-            key: genKey(),
-            type: 'media',
-            text: '',
-            characterList: List(Repeat(charData, 1)),
-          }),
-          new ContentBlock({
-            key: genKey(),
-            type: 'unstyled',
-            text: '',
-            characterList: List(),
-          }),
-        ];
-
-        const fragment = BlockMapBuilder.createFromArray(fragmentArray);
-
-        const withMedia = Modifier.replaceWithFragment(
-          asMedia,
-          insertionTarget,
-          fragment
-        );
-
-        const newContent = withMedia.merge({
-          selectionBefore: selectionState,
-          selectionAfter: withMedia.getSelectionAfter().set('hasFocus', true),
-        });
-
-        return EditorState.push(editorState, newContent, 'insert-fragment');
       }
 
       function mediaBlockRenderer(block) {
