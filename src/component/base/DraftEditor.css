@@ -6,14 +6,14 @@
 /**
  * We inherit the height of the container by default
  */
-.DraftEditor-root,
-.DraftEditor-editorContainer,
-.public-DraftEditor-content {
+.DraftEditor/root,
+.DraftEditor/editorContainer,
+.public/DraftEditor/content {
   height: inherit;
   text-align: initial;
 }
 
-.DraftEditor-root {
+.DraftEditor/root {
   position: relative;
 }
 
@@ -21,7 +21,7 @@
  * Zero-opacity background used to allow focus in IE. Otherwise, clicks
  * fall through to the placeholder.
  */
-.DraftEditor-editorContainer {
+.DraftEditor/editorContainer {
   background-color: rgba(255, 255, 255, 0);
   /* Repair mysterious missing Safari cursor */
   border-left: 0.1px solid transparent;
@@ -29,39 +29,39 @@
   z-index: 1;
 }
 
-.public-DraftEditor-content {
+.public/DraftEditor/content {
   outline: none;
   white-space: pre-wrap;
 }
 
-.public-DraftEditor-block {
+.public/DraftEditor/block {
   position: relative;
 }
 
-.DraftEditor-alignLeft .public-DraftEditor-block {
+.DraftEditor/alignLeft .public/DraftStyleDefault/block {
   text-align: left;
 }
 
-.DraftEditor-alignLeft .public-DraftEditorPlaceholder-root {
+.DraftEditor/alignLeft .public/DraftEditorPlaceholder/root {
   left: 0;
   text-align: left;
 }
 
-.DraftEditor-alignCenter .public-DraftEditor-block {
+.DraftEditor/alignCenter .public/DraftStyleDefault/block {
   text-align: center;
 }
 
-.DraftEditor-alignCenter .public-DraftEditorPlaceholder-root {
+.DraftEditor/alignCenter .public/DraftEditorPlaceholder/root {
   margin: 0 auto;
   text-align: center;
   width: 100%;
 }
 
-.DraftEditor-alignRight .public-DraftEditor-block {
+.DraftEditor/alignRight .public/DraftStyleDefault/block {
   text-align: right;
 }
 
-.DraftEditor-alignRight .public-DraftEditorPlaceholder-root {
+.DraftEditor/alignRight .public/DraftEditorPlaceholder/root {
   right: 0;
   text-align: right;
 }
