@@ -21,12 +21,14 @@ const DraftModifier = require('DraftModifier');
 const DraftEntity = require('DraftEntity');
 const DraftEntityInstance = require('DraftEntityInstance');
 const EditorState = require('EditorState');
+const KeyBindingUtil = require('KeyBindingUtil');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 const SelectionState = require('SelectionState');
 
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const generateBlockKey = require('generateBlockKey');
+const getDefaultKeyBinding = require('getDefaultKeyBinding');
 
 const DraftPublic = {
   Editor: DraftEditor,
@@ -42,12 +44,14 @@ const DraftPublic = {
   ContentState,
   SelectionState,
 
+  KeyBindingUtil: KeyBindingUtil,
   Modifier: DraftModifier,
   RichUtils: RichTextEditorUtil,
 
   convertFromRaw: convertFromRawToDraftState,
   convertToRaw: convertFromDraftStateToRaw,
   genKey: generateBlockKey,
+  getDefaultKeyBinding: getDefaultKeyBinding,
 };
 
 module.exports = DraftPublic;
