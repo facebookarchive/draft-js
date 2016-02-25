@@ -13,14 +13,14 @@
 
 jest.autoMockOff();
 
-var ContentBlock = require('ContentBlock');
-var Immutable = require('immutable');
-var SampleDraftInlineStyle = require('SampleDraftInlineStyle');
+const ContentBlock = require('ContentBlock');
+const Immutable = require('immutable');
+const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
 
-var createCharacterList = require('createCharacterList');
-var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
+const createCharacterList = require('createCharacterList');
+const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 
-var {
+const {
   BOLD,
   BOLD_ITALIC,
   BOLD_UNDERLINE,
@@ -30,7 +30,7 @@ var {
   NONE,
 } = SampleDraftInlineStyle;
 
-var {
+const {
   List,
   Repeat,
 } = Immutable;
@@ -81,7 +81,7 @@ describe('encodeInlineStyleRanges', () => {
       {offset: 0, length: 20, style: 'ITALIC'},
     ]);
 
-    var all = BOLD_ITALIC_UNDERLINE;
+    const all = BOLD_ITALIC_UNDERLINE;
     expect(
       encodeInlineStyleRanges(createBlock(' '.repeat(20), Repeat(all, 20)))
     ).toEqual([
@@ -92,7 +92,7 @@ describe('encodeInlineStyleRanges', () => {
   });
 
   it('must encode for a complex styled document', () => {
-    var complex = List([
+    const complex = List([
       BOLD, BOLD, BOLD, BOLD, NONE,         // "four "
       BOLD_ITALIC, BOLD_ITALIC,         // "sc"
       ITALIC_UNDERLINE, BOLD_UNDERLINE, // "or"
@@ -112,8 +112,8 @@ describe('encodeInlineStyleRanges', () => {
   });
 
   it('must encode for strings with surrogate pairs', () => {
-    var str = 'Take a \uD83D\uDCF7 #selfie';
-    var styles = List([
+    const str = 'Take a \uD83D\uDCF7 #selfie';
+    const styles = List([
       NONE, NONE, NONE, NONE, // `Take`
       BOLD, BOLD, BOLD_ITALIC, BOLD_ITALIC, BOLD_ITALIC, // ` a [camera]`
       ITALIC, ITALIC, ITALIC, ITALIC, ITALIC, ITALIC,  // ` #self`

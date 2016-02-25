@@ -13,46 +13,46 @@
 
 jest.autoMockOff();
 
-var ContentBlock = require('ContentBlock');
-var ContentState = require('ContentState');
-var EditorBidiService = require('EditorBidiService');
-var Immutable = require('immutable');
-var UnicodeBidiDirection = require('UnicodeBidiDirection');
+const ContentBlock = require('ContentBlock');
+const ContentState = require('ContentState');
+const EditorBidiService = require('EditorBidiService');
+const Immutable = require('immutable');
+const UnicodeBidiDirection = require('UnicodeBidiDirection');
 
-var {
+const {
   OrderedMap,
   Seq,
 } = Immutable;
 
-var {
+const {
   LTR,
   RTL,
 } = UnicodeBidiDirection;
 
-var ltr = new ContentBlock({
+const ltr = new ContentBlock({
   key: 'a',
   text: 'hello',
 });
-var rtl = new ContentBlock({
+const rtl = new ContentBlock({
   key: 'b',
   text: '\u05e9\u05d1\u05ea',
 });
-var empty = new ContentBlock({
+const empty = new ContentBlock({
   key: 'c',
   text: '',
 });
 
 describe('EditorBidiService', () => {
   function getContentState(blocks) {
-    var keys = Seq(blocks.map(b => b.getKey()));
-    var values = Seq(blocks);
-    var blockMap = OrderedMap(keys.zip(values));
+    const keys = Seq(blocks.map(b => b.getKey()));
+    const values = Seq(blocks);
+    const blockMap = OrderedMap(keys.zip(values));
     return new ContentState({blockMap});
   }
 
   it('must create a new map', () => {
-    var state = getContentState([ltr]);
-    var directions = EditorBidiService.getDirectionMap(state);
+    const state = getContentState([ltr]);
+    const directions = EditorBidiService.getDirectionMap(state);
     expect(
       directions.keySeq().toArray()
     ).toEqual(
@@ -66,11 +66,11 @@ describe('EditorBidiService', () => {
   });
 
   it('must return the same map if no changes', () => {
-    var state = getContentState([ltr]);
-    var directions = EditorBidiService.getDirectionMap(state);
+    const state = getContentState([ltr]);
+    const directions = EditorBidiService.getDirectionMap(state);
 
-    var nextState = getContentState([ltr]);
-    var nextDirections = EditorBidiService.getDirectionMap(
+    const nextState = getContentState([ltr]);
+    const nextDirections = EditorBidiService.getDirectionMap(
       nextState,
       directions
     );
@@ -80,17 +80,17 @@ describe('EditorBidiService', () => {
   });
 
   it('must return the same map if no text changes', () => {
-    var state = getContentState([ltr]);
-    var directions = EditorBidiService.getDirectionMap(state);
+    const state = getContentState([ltr]);
+    const directions = EditorBidiService.getDirectionMap(state);
 
-    var newLTR = new ContentBlock({
+    const newLTR = new ContentBlock({
       key: 'a',
       text: 'hello',
     });
     expect(newLTR).not.toBe(ltr);
 
-    var nextState = getContentState([newLTR]);
-    var nextDirections = EditorBidiService.getDirectionMap(
+    const nextState = getContentState([newLTR]);
+    const nextDirections = EditorBidiService.getDirectionMap(
       nextState,
       directions
     );
@@ -100,17 +100,17 @@ describe('EditorBidiService', () => {
   });
 
   it('must return the same map if no directions change', () => {
-    var state = getContentState([ltr]);
-    var directions = EditorBidiService.getDirectionMap(state);
+    const state = getContentState([ltr]);
+    const directions = EditorBidiService.getDirectionMap(state);
 
-    var newLTR = new ContentBlock({
+    const newLTR = new ContentBlock({
       key: 'a',
       text: 'asdf',
     });
     expect(newLTR).not.toBe(ltr);
 
-    var nextState = getContentState([newLTR]);
-    var nextDirections = EditorBidiService.getDirectionMap(
+    const nextState = getContentState([newLTR]);
+    const nextDirections = EditorBidiService.getDirectionMap(
       nextState,
       directions
     );
@@ -120,16 +120,16 @@ describe('EditorBidiService', () => {
   });
 
   it('must return a new map if block keys change', () => {
-    var state = getContentState([ltr]);
-    var directions = EditorBidiService.getDirectionMap(state);
+    const state = getContentState([ltr]);
+    const directions = EditorBidiService.getDirectionMap(state);
 
-    var newLTR = new ContentBlock({
+    const newLTR = new ContentBlock({
       key: 'asdf',
       text: 'asdf',
     });
 
-    var nextState = getContentState([newLTR]);
-    var nextDirections = EditorBidiService.getDirectionMap(
+    const nextState = getContentState([newLTR]);
+    const nextDirections = EditorBidiService.getDirectionMap(
       nextState,
       directions
     );
@@ -150,8 +150,8 @@ describe('EditorBidiService', () => {
   });
 
   it('must return a new map if direction changes', () => {
-    var state = getContentState([ltr, empty]);
-    var directions = EditorBidiService.getDirectionMap(state);
+    const state = getContentState([ltr, empty]);
+    const directions = EditorBidiService.getDirectionMap(state);
 
     expect(
       directions.valueSeq().toArray()
@@ -159,8 +159,8 @@ describe('EditorBidiService', () => {
       [LTR, LTR]
     );
 
-    var nextState = getContentState([ltr, rtl]);
-    var nextDirections = EditorBidiService.getDirectionMap(
+    const nextState = getContentState([ltr, rtl]);
+    const nextDirections = EditorBidiService.getDirectionMap(
       nextState,
       directions
     );

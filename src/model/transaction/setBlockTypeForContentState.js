@@ -13,7 +13,7 @@
 
 'use strict';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
 import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
@@ -24,10 +24,10 @@ function setBlockTypeForContentState(
   selectionState: SelectionState,
   blockType: DraftBlockType,
 ): ContentState {
-  var startKey = selectionState.getStartKey();
-  var endKey = selectionState.getEndKey();
-  var blockMap = contentState.getBlockMap();
-  var newBlocks = blockMap
+  const startKey = selectionState.getStartKey();
+  const endKey = selectionState.getEndKey();
+  const blockMap = contentState.getBlockMap();
+  const newBlocks = blockMap
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)

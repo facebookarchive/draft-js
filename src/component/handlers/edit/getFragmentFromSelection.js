@@ -12,13 +12,13 @@
 
 'use strict';
 
-var getContentStateFragment = require('getContentStateFragment');
+const getContentStateFragment = require('getContentStateFragment');
 
 import type {BlockMap} from 'BlockMap';
 import type EditorState from 'EditorState';
 
 function getFragmentFromSelection(editorState: EditorState): ?BlockMap {
-  var selectionState = editorState.getSelection();
+  const selectionState = editorState.getSelection();
   if (!selectionState.isCollapsed()) {
     return getContentStateFragment(
       editorState.getCurrentContent(),

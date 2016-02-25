@@ -41,7 +41,7 @@ let resolved = false;
 let stillComposing = false;
 let textInputData = '';
 
-var DraftEditorCompositionHandler = {
+const DraftEditorCompositionHandler = {
   onBeforeInput: function(e: SyntheticInputEvent): void {
     textInputData = (textInputData || '') + e.data;
   },

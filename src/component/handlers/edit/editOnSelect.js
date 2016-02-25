@@ -12,22 +12,22 @@
 
 'use strict';
 
-var EditorState = require('EditorState');
-var ReactDOM = require('ReactDOM');
+const EditorState = require('EditorState');
+const ReactDOM = require('ReactDOM');
 
-var getDraftEditorSelection = require('getDraftEditorSelection');
+const getDraftEditorSelection = require('getDraftEditorSelection');
 
 function editOnSelect(): void {
   if (this._blockSelectEvents) {
     return;
   }
 
-  var editorState = this.props.editorState;
-  var documentSelection = getDraftEditorSelection(
+  let editorState = this.props.editorState;
+  const documentSelection = getDraftEditorSelection(
     editorState,
     ReactDOM.findDOMNode(this.refs.editorContainer).firstChild
   );
-  var updatedSelectionState = documentSelection.selectionState;
+  const updatedSelectionState = documentSelection.selectionState;
 
   if (updatedSelectionState !== editorState.getSelection()) {
     if (documentSelection.needsRecovery) {

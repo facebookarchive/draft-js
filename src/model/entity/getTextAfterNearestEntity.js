@@ -23,7 +23,7 @@ function getTextAfterNearestEntity(
   block: ContentBlock,
   offset: number
 ): string {
-  var start = offset;
+  let start = offset;
 
   // Get start based on where the last entity ended.
   while (start > 0 && block.getEntityAt(start - 1) === null) {

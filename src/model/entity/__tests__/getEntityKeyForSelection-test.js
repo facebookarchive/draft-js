@@ -13,24 +13,22 @@ jest.autoMockOff();
 
 jest.mock('DraftEntity');
 
-var getEntityKeyForSelection = require('getEntityKeyForSelection');
-var getSampleStateForTesting = require('getSampleStateForTesting');
+const getEntityKeyForSelection = require('getEntityKeyForSelection');
+const getSampleStateForTesting = require('getSampleStateForTesting');
 
-var {
-  contentState,
-  selectionState,
-} = getSampleStateForTesting();
+const state = getSampleStateForTesting();
+const {contentState} = state;
 
-selectionState = selectionState.merge({
+const selectionState = state.selectionState.merge({
   anchorKey: 'b',
   focusKey: 'b',
 });
 
-var DraftEntity = require('DraftEntity');
+const DraftEntity = require('DraftEntity');
 
 describe('getEntityKeyForSelection', () => {
   describe('collapsed selection', () => {
-    var collapsed = selectionState.merge({
+    const collapsed = selectionState.merge({
       anchorOffset: 2,
       focusOffset: 2,
     });
@@ -40,7 +38,7 @@ describe('getEntityKeyForSelection', () => {
     });
 
     it('must return null at start of block', () => {
-      var key = getEntityKeyForSelection(contentState, selectionState);
+      const key = getEntityKeyForSelection(contentState, selectionState);
       expect(key).toBe(null);
     });
 
@@ -48,7 +46,7 @@ describe('getEntityKeyForSelection', () => {
       DraftEntity.get.mockImplementation(() => {
         return {getMutability: () => 'MUTABLE'};
       });
-      var key = getEntityKeyForSelection(contentState, collapsed);
+      const key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe('123');
     });
 
@@ -56,7 +54,7 @@ describe('getEntityKeyForSelection', () => {
       DraftEntity.get.mockImplementation(() => {
         return {getMutability: () => 'IMMUTABLE'};
       });
-      var key = getEntityKeyForSelection(contentState, collapsed);
+      const key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe(null);
     });
 
@@ -64,13 +62,13 @@ describe('getEntityKeyForSelection', () => {
       DraftEntity.get.mockImplementation(() => {
         return {getMutability: () => 'SEGMENTED'};
       });
-      var key = getEntityKeyForSelection(contentState, collapsed);
+      const key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe(null);
     });
   });
 
   describe('non-collapsed selection', () => {
-    var nonCollapsed = selectionState.merge({
+    const nonCollapsed = selectionState.merge({
       anchorOffset: 2,
       focusKey: 'c',
       focusOffset: 2,
@@ -81,10 +79,10 @@ describe('getEntityKeyForSelection', () => {
     });
 
     it('must return null if start is at end of block', () => {
-      var startsAtEnd = nonCollapsed.merge({
+      const startsAtEnd = nonCollapsed.merge({
         anchorOffset: contentState.getBlockForKey('b').getLength(),
       });
-      var key = getEntityKeyForSelection(contentState, startsAtEnd);
+      const key = getEntityKeyForSelection(contentState, startsAtEnd);
       expect(key).toBe(null);
     });
 
@@ -92,7 +90,7 @@ describe('getEntityKeyForSelection', () => {
       DraftEntity.get.mockImplementation(() => {
         return {getMutability: () => 'MUTABLE'};
       });
-      var key = getEntityKeyForSelection(contentState, nonCollapsed);
+      const key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe('123');
     });
 
@@ -100,7 +98,7 @@ describe('getEntityKeyForSelection', () => {
       DraftEntity.get.mockImplementation(() => {
         return {getMutability: () => 'IMMUTABLE'};
       });
-      var key = getEntityKeyForSelection(contentState, nonCollapsed);
+      const key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe(null);
     });
 
@@ -108,7 +106,7 @@ describe('getEntityKeyForSelection', () => {
       DraftEntity.get.mockImplementation(() => {
         return {getMutability: () => 'SEGMENTED'};
       });
-      var key = getEntityKeyForSelection(contentState, nonCollapsed);
+      const key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe(null);
     });
   });

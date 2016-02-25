@@ -13,60 +13,60 @@
 
 jest.autoMockOff();
 
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
-var ContentState = require('ContentState');
-var EditorState = require('EditorState');
-var Immutable = require('immutable');
-var SelectionState = require('SelectionState');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentBlock = require('ContentBlock');
+const ContentState = require('ContentState');
+const EditorState = require('EditorState');
+const Immutable = require('immutable');
+const SelectionState = require('SelectionState');
 
-var {
+const {
   NONE,
   BOLD,
   ITALIC,
 } = require('SampleDraftInlineStyle');
 
-var {EMPTY} = CharacterMetadata;
+const {EMPTY} = CharacterMetadata;
 
-var {
+const {
   List,
   Repeat,
 } = Immutable;
 
-var plainBlock = new ContentBlock({
+const plainBlock = new ContentBlock({
   key: 'a',
   text: 'Arsenal',
   characterList: List(Repeat(EMPTY, 7)),
 });
 
-var boldChar = CharacterMetadata.create({style: BOLD});
-var boldBlock = new ContentBlock({
+const boldChar = CharacterMetadata.create({style: BOLD});
+const boldBlock = new ContentBlock({
   key: 'b',
   text: 'Burnley',
   characterList: List(Repeat(boldChar, 7)),
 });
 
-var emptyBlockA = new ContentBlock({
+const emptyBlockA = new ContentBlock({
   key: 'emptyA',
   text: '',
   characterList: List(),
 });
 
-var emptyBlockB = new ContentBlock({
+const emptyBlockB = new ContentBlock({
   key: 'emptyB',
   text: '',
   characterList: List(),
 });
 
-var italicChar = CharacterMetadata.create({style: ITALIC});
-var italicBlock = new ContentBlock({
+const italicChar = CharacterMetadata.create({style: ITALIC});
+const italicBlock = new ContentBlock({
   key: 'c',
   text: 'Chelsea',
   characterList: List(Repeat(italicChar, 7)),
 });
 
 function getUndecoratedEditorState() {
-  var contentState = ContentState.createFromBlockArray([
+  const contentState = ContentState.createFromBlockArray([
     plainBlock,
     boldBlock,
     emptyBlockA,
@@ -77,7 +77,7 @@ function getUndecoratedEditorState() {
 }
 
 function getEmptyLedMultiBlockEditorState() {
-  var contentState = ContentState.createFromBlockArray([
+  const contentState = ContentState.createFromBlockArray([
     emptyBlockA,
     emptyBlockB,
     boldBlock,
@@ -86,7 +86,7 @@ function getEmptyLedMultiBlockEditorState() {
 }
 
 function getDecoratedEditorState(decorator) {
-  var contentState = ContentState.createFromBlockArray([
+  const contentState = ContentState.createFromBlockArray([
     boldBlock,
     italicBlock,
   ]);
@@ -96,10 +96,10 @@ function getDecoratedEditorState(decorator) {
 describe('EditorState', () => {
 
   describe('getCurrentInlineStyle', () => {
-    var mainEditor = getUndecoratedEditorState();
+    const mainEditor = getUndecoratedEditorState();
 
     describe('Collapsed selection', () => {
-      var mainSelection = new SelectionState({
+      const mainSelection = new SelectionState({
         anchorKey: 'a',
         anchorOffset: 0,
         focusKey: 'a',
@@ -108,49 +108,49 @@ describe('EditorState', () => {
       });
 
       it('uses right of the caret at document start', () => {
-        var editor = EditorState.acceptSelection(mainEditor, mainSelection);
+        const editor = EditorState.acceptSelection(mainEditor, mainSelection);
         expect(editor.getCurrentInlineStyle()).toBe(NONE);
       });
 
       it('uses left of the caret, at position `1+`', () => {
-        var selection = mainSelection.merge({
+        const selection = mainSelection.merge({
           anchorOffset: 1,
           focusOffset: 1,
         });
-        var editor = EditorState.acceptSelection(mainEditor, selection);
+        const editor = EditorState.acceptSelection(mainEditor, selection);
         expect(editor.getCurrentInlineStyle()).toBe(NONE);
       });
 
       it('uses right of the caret at offset `0` within document', () => {
-        var selection = mainSelection.merge({
+        const selection = mainSelection.merge({
           anchorKey: 'b',
           focusKey: 'b',
         });
-        var editor = EditorState.acceptSelection(mainEditor, selection);
+        const editor = EditorState.acceptSelection(mainEditor, selection);
         expect(editor.getCurrentInlineStyle()).toBe(BOLD);
       });
 
       it('uses previous block at offset `0` within empty block', () => {
-        var selection = mainSelection.merge({
+        const selection = mainSelection.merge({
           anchorKey: 'emptyA',
           focusKey: 'emptyA',
         });
-        var editor = EditorState.acceptSelection(mainEditor, selection);
+        const editor = EditorState.acceptSelection(mainEditor, selection);
         expect(editor.getCurrentInlineStyle()).toBe(BOLD);
       });
 
       it('looks upward through empty blocks to find a character', () => {
-        var selection = mainSelection.merge({
+        const selection = mainSelection.merge({
           anchorKey: 'emptyB',
           focusKey: 'emptyB',
         });
-        var editor = EditorState.acceptSelection(mainEditor, selection);
+        const editor = EditorState.acceptSelection(mainEditor, selection);
         expect(editor.getCurrentInlineStyle()).toBe(BOLD);
       });
     });
 
     describe('Non-collapsed selection', () => {
-      var selectionState = new SelectionState({
+      const selectionState = new SelectionState({
         anchorKey: 'a',
         anchorOffset: 0,
         focusKey: 'a',
@@ -159,37 +159,37 @@ describe('EditorState', () => {
       });
 
       it('uses right of the start for blocks with text', () => {
-        var selection = selectionState.set('focusKey', 'b');
-        var editor = EditorState.acceptSelection(mainEditor, selection);
+        const selection = selectionState.set('focusKey', 'b');
+        const editor = EditorState.acceptSelection(mainEditor, selection);
         expect(editor.getCurrentInlineStyle()).toBe(NONE);
       });
 
       it('uses left of the start if starting at end of block', () => {
-        var blockB = mainEditor.getCurrentContent().getBlockForKey('b');
-        var selection = selectionState.merge({
+        const blockB = mainEditor.getCurrentContent().getBlockForKey('b');
+        const selection = selectionState.merge({
           anchorKey: 'b',
           anchorOffset: blockB.getLength(),
           focusKey: 'c',
           focusOffset: 3,
         });
 
-        var editor = EditorState.acceptSelection(mainEditor, selection);
+        const editor = EditorState.acceptSelection(mainEditor, selection);
         expect(editor.getCurrentInlineStyle()).toBe(BOLD);
       });
 
       it('looks upward through empty blocks to find a character', () => {
-        var selection = selectionState.merge({
+        const selection = selectionState.merge({
           anchorKey: 'emptyA',
           anchorOffset: 0,
           focusKey: 'c',
           focusOffset: 3,
         });
-        var editor = EditorState.acceptSelection(mainEditor, selection);
+        const editor = EditorState.acceptSelection(mainEditor, selection);
         expect(editor.getCurrentInlineStyle()).toBe(BOLD);
       });
 
       it('falls back to no style if in empty block at document start', () => {
-        var editor = getEmptyLedMultiBlockEditorState(
+        const editor = getEmptyLedMultiBlockEditorState(
           new SelectionState({
             anchorKey: 'emptyA',
             anchorOffset: 0,
@@ -204,8 +204,8 @@ describe('EditorState', () => {
   });
 
   describe('Decorator handling', () => {
-    var boldA = List(Repeat('x', boldBlock.getLength()));
-    var boldB = List(Repeat('y', boldBlock.getLength()));
+    const boldA = List(Repeat('x', boldBlock.getLength()));
+    const boldB = List(Repeat('y', boldBlock.getLength()));
 
     function Decorator() {}
     Decorator.prototype.getDecorations = jest.genMockFn();
@@ -221,19 +221,19 @@ describe('EditorState', () => {
     });
 
     it('must set a new decorator', () => {
-      var decorator = new Decorator();
-      var editorState = getDecoratedEditorState(decorator);
+      const decorator = new Decorator();
+      const editorState = getDecoratedEditorState(decorator);
       expect(decorator.getDecorations.mock.calls.length).toBe(2);
 
       Decorator.prototype.getDecorations.mockImplementation(
         v => v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()))
       );
-      var newDecorator = new NextDecorator();
+      const newDecorator = new NextDecorator();
       NextDecorator.prototype.getDecorations.mockImplementation(
         v => v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()))
       );
 
-      var withNewDecorator = EditorState.set(editorState, {
+      const withNewDecorator = EditorState.set(editorState, {
         decorator: newDecorator,
       });
       expect(withNewDecorator).not.toBe(editorState);
@@ -263,10 +263,10 @@ describe('EditorState', () => {
     });
 
     it('must correctly remove a decorator', () => {
-      var decorator = new Decorator();
-      var editorState = getDecoratedEditorState(decorator);
+      const decorator = new Decorator();
+      const editorState = getDecoratedEditorState(decorator);
       expect(decorator.getDecorations.mock.calls.length).toBe(2);
-      var withNewDecorator = EditorState.set(editorState, {decorator: null});
+      const withNewDecorator = EditorState.set(editorState, {decorator: null});
       expect(withNewDecorator).not.toBe(editorState);
       expect(withNewDecorator.getDecorator()).toBe(null);
       expect(decorator.getDecorations.mock.calls.length).toBe(2);

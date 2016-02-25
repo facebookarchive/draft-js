@@ -13,20 +13,20 @@
 
 jest.autoMockOff();
 
-var DraftRemovableWord = require('DraftRemovableWord');
+const DraftRemovableWord = require('DraftRemovableWord');
 
 describe('DraftRemovableWord', function() {
-  var forward;
-  var backward;
+  let forward;
+  let backward;
 
-  var english = 'the animals';
-  var accents = 'th\u00e9 f\u00e0bregas';
-  var arabic = '\u0637\u0638\u0639 \u063A\u063B\u063C';
-  var japanese = '\u4f1a\u8b70\u4e2d \u30cf\u30c3\u30b7\u30e5';
-  var korean = '\ud2b8\uc704\ud130 \ud2b8\uc704\ud130';
-  var halfWidthHangul = '\uffa3\uffa6\uffb0 \uffa1\uffa2\uffb2';
-  var cyrillic = '\u0430\u0448\u043e\u043a \u0431\u0414\u0416\u0426';
-  var withNumbers = 'f14 tomcat';
+  const english = 'the animals';
+  const accents = 'th\u00e9 f\u00e0bregas';
+  const arabic = '\u0637\u0638\u0639 \u063A\u063B\u063C';
+  const japanese = '\u4f1a\u8b70\u4e2d \u30cf\u30c3\u30b7\u30e5';
+  const korean = '\ud2b8\uc704\ud130 \ud2b8\uc704\ud130';
+  const halfWidthHangul = '\uffa3\uffa6\uffb0 \uffa1\uffa2\uffb2';
+  const cyrillic = '\u0430\u0448\u043e\u043a \u0431\u0414\u0416\u0426';
+  const withNumbers = 'f14 tomcat';
 
   beforeEach(function() {
     jest.resetModuleRegistry();
@@ -77,7 +77,7 @@ describe('DraftRemovableWord', function() {
   });
 
   it('must identify words led by punctuation looking forward', function() {
-    var match = english.split(' ')[0];
+    const match = english.split(' ')[0];
     expect(forward('.' + english)).toBe('.' + match);
     expect(forward('|' + english)).toBe('|' + match);
     expect(forward('^' + english)).toBe('^' + match);
@@ -116,7 +116,7 @@ describe('DraftRemovableWord', function() {
   });
 
   it('must identify words ended by punctuation looking backward', function() {
-    var match = english.split(' ')[1];
+    const match = english.split(' ')[1];
     expect(backward(english + '.')).toBe(match + '.');
     expect(backward(english + '|')).toBe(match + '|');
     expect(backward(english + '^')).toBe(match + '^');

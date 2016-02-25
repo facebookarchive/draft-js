@@ -12,17 +12,17 @@
 
 'use strict';
 
-var BlockMapBuilder = require('BlockMapBuilder');
-var CharacterMetadata = require('CharacterMetadata');
-var DataTransfer = require('DataTransfer');
-var DraftModifier = require('DraftModifier');
-var DraftPasteProcessor = require('DraftPasteProcessor');
-var EditorState = require('EditorState');
+const BlockMapBuilder = require('BlockMapBuilder');
+const CharacterMetadata = require('CharacterMetadata');
+const DataTransfer = require('DataTransfer');
+const DraftModifier = require('DraftModifier');
+const DraftPasteProcessor = require('DraftPasteProcessor');
+const EditorState = require('EditorState');
 
-var getEntityKeyForSelection = require('getEntityKeyForSelection');
-var getTextContentFromFiles = require('getTextContentFromFiles');
-var nullthrows = require('nullthrows');
-var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
+const getEntityKeyForSelection = require('getEntityKeyForSelection');
+const getTextContentFromFiles = require('getTextContentFromFiles');
+const nullthrows = require('nullthrows');
+const splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 import type {BlockMap} from 'BlockMap';
 
@@ -31,12 +31,12 @@ import type {BlockMap} from 'BlockMap';
  */
 function editOnPaste(e: SyntheticClipboardEvent): void {
   e.preventDefault();
-  var data = new DataTransfer(e.clipboardData);
+  const data = new DataTransfer(e.clipboardData);
 
   // Get files, unless this is likely to be a string the user wants inline.
   if (!data.isRichText()) {
-    var files = data.getFiles();
-    var defaultFileText = data.getText();
+    const files = data.getFiles();
+    const defaultFileText = data.getText();
     if (files.length > 0) {
       // Allow customized paste handling for images, etc. Otherwise, fall
       // through to insert text contents into the editor.
@@ -53,9 +53,9 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
           return;
         }
 
-        var {editorState} = this.props;
-        var blocks = splitTextIntoTextBlocks(fileText);
-        var character = CharacterMetadata.create({
+        const {editorState} = this.props;
+        const blocks = splitTextIntoTextBlocks(fileText);
+        const character = CharacterMetadata.create({
           style: editorState.getCurrentInlineStyle(),
           entity: getEntityKeyForSelection(
             editorState.getCurrentContent(),
@@ -63,10 +63,10 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
           ),
         });
 
-        var text = DraftPasteProcessor.processText(blocks, character);
-        var fragment = BlockMapBuilder.createFromArray(text);
+        const text = DraftPasteProcessor.processText(blocks, character);
+        const fragment = BlockMapBuilder.createFromArray(text);
 
-        var withInsertedText = DraftModifier.replaceWithFragment(
+        const withInsertedText = DraftModifier.replaceWithFragment(
           editorState.getCurrentContent(),
           editorState.getSelection(),
           fragment
@@ -85,8 +85,8 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     }
   }
 
-  var textBlocks: ?Array<string> = null;
-  var text = data.getText();
+  let textBlocks: ?Array<string> = null;
+  const text = data.getText();
   this.props.onPasteRawText && this.props.onPasteRawText(text);
   if (text) {
     textBlocks = splitTextIntoTextBlocks(text);
@@ -102,15 +102,15 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     // paste will preserve the newlines correctly.
     if (data.isRichText() && this.getClipboard()) {
       textBlocks = nullthrows(textBlocks);
-      var textBlocksWithoutNewlines = textBlocks.filter(filterOutNewlines);
-      var currentClipboard = this.getClipboard();
-      var clipboardWithoutNewlines = currentClipboard
+      const textBlocksWithoutNewlines = textBlocks.filter(filterOutNewlines);
+      const currentClipboard = this.getClipboard();
+      const clipboardWithoutNewlines = currentClipboard
         .toSeq()
         .map(clipBlock => clipBlock.getText())
         .filter(filterOutNewlines)
         .toArray();
 
-      var clipboardMatch = textBlocksWithoutNewlines.every(
+      const clipboardMatch = textBlocksWithoutNewlines.every(
         (line, ii) => line === clipboardWithoutNewlines[ii]
       );
 
@@ -123,14 +123,14 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     }
 
     // If there is html paste data, try to parse that.
-    var htmlData = data.getHTML();
+    const htmlData = data.getHTML();
     if (htmlData) {
-      var htmlFragment = DraftPasteProcessor.processHTML(
+      const htmlFragment = DraftPasteProcessor.processHTML(
         htmlData,
       );
 
       if (htmlFragment) {
-        var htmlMap = BlockMapBuilder.createFromArray(htmlFragment);
+        const htmlMap = BlockMapBuilder.createFromArray(htmlFragment);
         this.update(insertFragment(this.props.editorState, htmlMap));
         return;
       }
@@ -141,8 +141,8 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   }
 
   if (textBlocks) {
-    var {editorState} = this.props;
-    var character = CharacterMetadata.create({
+    const {editorState} = this.props;
+    const character = CharacterMetadata.create({
       style: editorState.getCurrentInlineStyle(),
       entity: getEntityKeyForSelection(
         editorState.getCurrentContent(),
@@ -150,12 +150,12 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       ),
     });
 
-    var textFragment = DraftPasteProcessor.processText(
+    const textFragment = DraftPasteProcessor.processText(
       textBlocks,
       character
     );
 
-    var textMap = BlockMapBuilder.createFromArray(textFragment);
+    const textMap = BlockMapBuilder.createFromArray(textFragment);
     this.update(insertFragment(this.props.editorState, textMap));
   }
 }
@@ -168,7 +168,7 @@ function insertFragment(
   editorState: EditorState,
   fragment: BlockMap
 ): EditorState {
-  var newContent = DraftModifier.replaceWithFragment(
+  const newContent = DraftModifier.replaceWithFragment(
     editorState.getCurrentContent(),
     editorState.getSelection(),
     fragment

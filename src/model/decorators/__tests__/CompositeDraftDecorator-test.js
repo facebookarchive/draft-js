@@ -12,7 +12,7 @@
 
 jest.dontMock('CompositeDraftDecorator');
 
-var CompositeDraftDecorator = require('CompositeDraftDecorator');
+const CompositeDraftDecorator = require('CompositeDraftDecorator');
 
 describe('CompositeDraftDecorator', () => {
   class ContentBlock {
@@ -26,7 +26,7 @@ describe('CompositeDraftDecorator', () => {
 
   function searchWith(regex) {
     return function(block, callback) {
-      var text = block.getText();
+      const text = block.getText();
       text.replace(
         regex,
         function(/*string*/ match, /*number*/ offset) {
@@ -36,31 +36,31 @@ describe('CompositeDraftDecorator', () => {
     };
   }
 
-  var FooSpan = jest.genMockFn();
-  var FooDecorator = {
+  const FooSpan = jest.genMockFn();
+  const FooDecorator = {
     strategy: searchWith(/foo/gi),
     component: FooSpan,
   };
 
-  var BarSpan = jest.genMockFn();
-  var BarDecorator = {
+  const BarSpan = jest.genMockFn();
+  const BarDecorator = {
     strategy: searchWith(/bar/gi),
     component: BarSpan,
   };
 
-  var BartSpan = jest.genMockFn();
-  var BartDecorator = {
+  const BartSpan = jest.genMockFn();
+  const BartDecorator = {
     strategy: searchWith(/bart/gi),
     component: BartSpan,
   };
 
   function getCompositeDecorator() {
-    var decorators = [FooDecorator, BarDecorator];
+    const decorators = [FooDecorator, BarDecorator];
     return new CompositeDraftDecorator(decorators);
   }
 
   function isOccupied(arr) {
-    for (var ii = 0; ii < arr.length; ii++) {
+    for (let ii = 0; ii < arr.length; ii++) {
       if (arr[ii] == null) {
         return false;
       }
@@ -69,7 +69,7 @@ describe('CompositeDraftDecorator', () => {
   }
 
   function isEntirelyNull(arr) {
-    for (var ii = 0; ii < arr.length; ii++) {
+    for (let ii = 0; ii < arr.length; ii++) {
       if (arr[ii] != null) {
         return false;
       }
@@ -78,19 +78,19 @@ describe('CompositeDraftDecorator', () => {
   }
 
   it('must behave correctly if there are no matches', () => {
-    var composite = getCompositeDecorator();
-    var text = 'take a sad song and make it better';
-    var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    const composite = getCompositeDecorator();
+    const text = 'take a sad song and make it better';
+    const content = new ContentBlock(text);
+    const decorations = composite.getDecorations(content).toArray();
     expect(decorations.length).toBe(text.length);
     expect(decorations).toEqual(Array(text.length).fill(null));
   });
 
   it('must find decoration matches', () => {
-    var composite = getCompositeDecorator();
-    var text = 'a footballing fool';
-    var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    const composite = getCompositeDecorator();
+    const text = 'a footballing fool';
+    const content = new ContentBlock(text);
+    const decorations = composite.getDecorations(content).toArray();
     expect(decorations.length).toBe(text.length);
 
     expect(isOccupied(decorations.slice(2, 5))).toBe(true);
@@ -105,10 +105,10 @@ describe('CompositeDraftDecorator', () => {
   });
 
   it('must find matches for multiple decorators', () => {
-    var composite = getCompositeDecorator();
-    var text = 'a foosball bar';
-    var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    const composite = getCompositeDecorator();
+    const text = 'a foosball bar';
+    const content = new ContentBlock(text);
+    const decorations = composite.getDecorations(content).toArray();
 
     // Match the "Foo" decorator.
     expect(isOccupied(decorations.slice(2, 5))).toBe(true);
@@ -126,10 +126,10 @@ describe('CompositeDraftDecorator', () => {
   // Reverse the order of the matches from above. "foo" comes after "bar" in
   // the document text.
   it('must find matches regardless of text location', () => {
-    var composite = getCompositeDecorator();
-    var text = 'some bar food';
-    var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    const composite = getCompositeDecorator();
+    const text = 'some bar food';
+    const content = new ContentBlock(text);
+    const decorations = composite.getDecorations(content).toArray();
 
     // Match the "Foo" decorator.
     expect(isOccupied(decorations.slice(9, 12))).toBe(true);
@@ -143,12 +143,12 @@ describe('CompositeDraftDecorator', () => {
   });
 
   it('must throw out overlaps with existing decorations', () => {
-    var decorators = [BartDecorator, BarDecorator];
-    var composite = new CompositeDraftDecorator(decorators);
+    const decorators = [BartDecorator, BarDecorator];
+    const composite = new CompositeDraftDecorator(decorators);
 
-    var text = 'bart has a bar';
-    var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    const text = 'bart has a bar';
+    const content = new ContentBlock(text);
+    const decorations = composite.getDecorations(content).toArray();
 
     // Even though "bart" matches our "bar" strategy, "bart" comes first
     // in our decoration order and will claim those letters first.
@@ -167,12 +167,12 @@ describe('CompositeDraftDecorator', () => {
 
   // Swap the order of "bar" and "bart".
   it('must throw out matches if earlier match is shorter', () => {
-    var decorators = [BarDecorator, BartDecorator];
-    var composite = new CompositeDraftDecorator(decorators);
+    const decorators = [BarDecorator, BartDecorator];
+    const composite = new CompositeDraftDecorator(decorators);
 
-    var text = 'bart has a bar';
-    var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    const text = 'bart has a bar';
+    const content = new ContentBlock(text);
+    const decorations = composite.getDecorations(content).toArray();
 
     // "bar" comes first and claims two strings.
     expect(isOccupied(decorations.slice(0, 3))).toBe(true);
@@ -189,12 +189,12 @@ describe('CompositeDraftDecorator', () => {
   });
 
   it('must separate adjacent ranges that have the same decorator', () => {
-    var decorators = [BarDecorator];
-    var composite = new CompositeDraftDecorator(decorators);
+    const decorators = [BarDecorator];
+    const composite = new CompositeDraftDecorator(decorators);
 
-    var text = 'barbarbar';
-    var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    const text = 'barbarbar';
+    const content = new ContentBlock(text);
+    const decorations = composite.getDecorations(content).toArray();
 
     expect(isOccupied(decorations.slice(0, 3))).toBe(true);
     expect(decorations[0]).toEqual(decorations[2]);

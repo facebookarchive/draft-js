@@ -12,16 +12,16 @@
 
 'use strict';
 
-var TEXT_CLIPPING_REGEX = /\.textClipping$/;
+const TEXT_CLIPPING_REGEX = /\.textClipping$/;
 
-var TEXT_TYPES = {
+const TEXT_TYPES = {
   'text/plain': true,
   'text/html': true,
   'text/rtf': true,
 };
 
 // Somewhat arbitrary upper bound on text size. Let's not lock up the browser.
-var TEXT_SIZE_UPPER_BOUND = 5000;
+const TEXT_SIZE_UPPER_BOUND = 5000;
 
 /**
  * Extract the text content from a file list.
@@ -30,8 +30,8 @@ function getTextContentFromFiles(
   files: Array<File>,
   callback: (contents: string) => void
 ): void {
-  var readCount = 0;
-  var results = [];
+  let readCount = 0;
+  const results = [];
   files.forEach(function(/*blob*/ file) {
     readFile(file, function(/*string*/ text) {
       readCount++;
@@ -56,7 +56,7 @@ function readFile(
   }
 
   if (file.type === '') {
-    var contents = '';
+    let contents = '';
     // Special-case text clippings, which have an empty type but include
     // `.textClipping` in the file name. `readAsText` results in an empty
     // string for text clippings, so we force the file name to serve
@@ -68,7 +68,7 @@ function readFile(
     return;
   }
 
-  var reader = new FileReader();
+  const reader = new FileReader();
   reader.onload = function() {
     callback(reader.result);
   };

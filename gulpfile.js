@@ -9,22 +9,22 @@
 
 'use strict';
 
-var babel = require('gulp-babel');
-var del = require('del');
-var concatCSS = require('gulp-concat-css');
-var derequire = require('gulp-derequire');
-var flatten = require('gulp-flatten');
-var gulp = require('gulp');
-var gulpUtil = require('gulp-util');
-var runSequence = require('run-sequence');
-var through = require('through2');
-var webpackStream = require('webpack-stream');
+const babel = require('gulp-babel');
+const del = require('del');
+const concatCSS = require('gulp-concat-css');
+const derequire = require('gulp-derequire');
+const flatten = require('gulp-flatten');
+const gulp = require('gulp');
+const gulpUtil = require('gulp-util');
+const runSequence = require('run-sequence');
+const through = require('through2');
+const webpackStream = require('webpack-stream');
 
-var babelOpts = require('./scripts/babel/default-options');
-var babelPluginDEV = require('fbjs-scripts/babel/dev-expression');
-var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
+const babelOpts = require('./scripts/babel/default-options');
+const babelPluginDEV = require('fbjs-scripts/babel/dev-expression');
+const gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
 
-var paths = {
+const paths = {
   dist: 'dist',
   lib: 'lib',
   src: [
@@ -41,8 +41,8 @@ var paths = {
 // options, converting __DEV__.
 babelOpts.plugins.push(babelPluginDEV);
 
-var buildDist = function(opts) {
-  var webpackOpts = {
+const buildDist = function(opts) {
+  const webpackOpts = {
     debug: opts.debug,
     externals: {
       immutable: 'Immutable',
@@ -96,8 +96,8 @@ gulp.task('css', function() {
   return gulp
     .src(paths.css)
     .pipe(through.obj(function(file, encoding, callback) {
-      var contents = file.contents.toString();
-      var replaced = contents.replace(
+      const contents = file.contents.toString();
+      let replaced = contents.replace(
         // Regex based on MakeHasteCssModuleTransform: ignores comments,
         // strings, and URLs
         /\/\*.*?\*\/|'(?:\\.|[^'])*'|"(?:\\.|[^"])*"|url\([^)]*\)|(\.(?:public\/)?[\w-]*\/{1,2}[\w-]+)/g,
@@ -113,7 +113,7 @@ gulp.task('css', function() {
         // MakeHasteCssVariablesTransform
         /\bvar\(([\w-]+)\)/g,
         function(match, name) {
-          var vars = {
+          const vars = {
             'fbui-desktop-text-placeholder': '#9197a3',
             'fbui-desktop-text-placeholder-focused': '#bdc1c9',
           };
@@ -132,7 +132,7 @@ gulp.task('css', function() {
 });
 
 gulp.task('dist', ['modules', 'css'], function() {
-  var opts = {
+  const opts = {
     debug: true,
     output: 'Draft.js'
   };
@@ -143,7 +143,7 @@ gulp.task('dist', ['modules', 'css'], function() {
 });
 
 gulp.task('dist:min', ['modules'], function() {
-  var opts = {
+  const opts = {
     debug: false,
     output: 'Draft.min.js',
   };

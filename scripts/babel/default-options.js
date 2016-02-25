@@ -1,5 +1,5 @@
-var assign = require('object-assign');
-var babelPluginModules = require('fbjs-scripts/babel/rewrite-modules');
+const assign = require('object-assign');
+const babelPluginModules = require('fbjs-scripts/babel/rewrite-modules');
 
 module.exports = {
   blacklist: [

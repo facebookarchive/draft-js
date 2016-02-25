@@ -52,7 +52,7 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlockForKey(key: string): ContentBlock {
-    var block: ContentBlock = this.getBlockMap().get(key);
+    const block: ContentBlock = this.getBlockMap().get(key);
     return block;
   }
 
@@ -103,7 +103,7 @@ class ContentState extends ContentStateRecord {
   }
 
   hasText(): boolean {
-    var blockMap = this.getBlockMap();
+    const blockMap = this.getBlockMap();
     return (
       blockMap.size > 1 ||
       blockMap.first().getLength() > 0
@@ -113,8 +113,8 @@ class ContentState extends ContentStateRecord {
   static createFromBlockArray(
     blocks: Array<ContentBlock>
   ): ContentState {
-    var blockMap = BlockMapBuilder.createFromArray(blocks);
-    var selectionState = SelectionState.createEmpty(blockMap.first().getKey());
+    const blockMap = BlockMapBuilder.createFromArray(blocks);
+    const selectionState = SelectionState.createEmpty(blockMap.first().getKey());
     return new ContentState({
       blockMap,
       selectionBefore: selectionState,

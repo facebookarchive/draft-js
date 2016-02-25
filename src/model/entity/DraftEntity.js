@@ -11,18 +11,18 @@
  * @flow
  */
 
-var DraftEntityInstance = require('DraftEntityInstance');
-var Immutable = require('immutable');
+const DraftEntityInstance = require('DraftEntityInstance');
+const Immutable = require('immutable');
 
-var invariant = require('invariant');
+const invariant = require('invariant');
 
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
 
-var {Map} = Immutable;
+const {Map} = Immutable;
 
-var instances: Map<string, DraftEntityInstance> = Map();
-var instanceKey = 0;
+let instances: Map<string, DraftEntityInstance> = Map();
+let instanceKey = 0;
 
 /**
  * A "document entity" is an object containing metadata associated with a
@@ -37,7 +37,7 @@ var instanceKey = 0;
  * generated via DraftEntity.create() and used to obtain entity metadata
  * via DraftEntity.get().
  */
-var DraftEntity = {
+const DraftEntity = {
   /**
    * Create a DraftEntityInstance and store it for later retrieval.
    *
@@ -60,7 +60,7 @@ var DraftEntity = {
    * useful when restoring instances from the server.
    */
   add: function(instance: DraftEntityInstance): string {
-    var key = '' + (++instanceKey);
+    const key = '' + (++instanceKey);
     instances = instances.set(key, instance);
     return key;
   },
@@ -69,7 +69,7 @@ var DraftEntity = {
    * Retrieve the entity corresponding to the supplied key string.
    */
   get: function(key: string): DraftEntityInstance {
-    var instance = instances.get(key);
+    const instance = instances.get(key);
     invariant(!!instance, 'Unknown DraftEntity key.');
     return instance;
   },
@@ -83,9 +83,9 @@ var DraftEntity = {
     key: string,
     toMerge: {[key: string]: any}
   ): DraftEntityInstance {
-    var instance = DraftEntity.get(key);
-    var newData = {...instance.getData(), ...toMerge};
-    var newInstance = instance.set('data', newData);
+    const instance = DraftEntity.get(key);
+    const newData = {...instance.getData(), ...toMerge};
+    const newInstance = instance.set('data', newData);
     instances = instances.set(key, newInstance);
     return newInstance;
   },

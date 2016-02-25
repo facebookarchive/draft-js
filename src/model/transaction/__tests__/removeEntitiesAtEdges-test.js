@@ -15,24 +15,24 @@ jest
   .autoMockOff()
   .mock('DraftEntity');
 
-var DraftEntity = require('DraftEntity');
-var Immutable = require('immutable');
-var applyEntityToContentBlock = require('applyEntityToContentBlock');
-var getSampleStateForTesting = require('getSampleStateForTesting');
-var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
+const DraftEntity = require('DraftEntity');
+const Immutable = require('immutable');
+const applyEntityToContentBlock = require('applyEntityToContentBlock');
+const getSampleStateForTesting = require('getSampleStateForTesting');
+const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
 describe('removeEntitiesAtEdges', () => {
-  var {
+  const {
     List,
     Repeat,
   } = Immutable;
 
-  var {
+  const {
     contentState,
     selectionState,
   } = getSampleStateForTesting();
 
-  var selectionOnEntity = selectionState.merge({
+  const selectionOnEntity = selectionState.merge({
     anchorKey: 'b',
     anchorOffset: 2,
     focusKey: 'b',
@@ -63,27 +63,27 @@ describe('removeEntitiesAtEdges', () => {
 
   describe('Within a single block', () => {
     it('must not affect blockMap if there are no entities', () => {
-      var result = removeEntitiesAtEdges(contentState, selectionState);
+      const result = removeEntitiesAtEdges(contentState, selectionState);
       expectSameBlockMap(contentState, result);
     });
 
     describe('Handling different mutability types', () => {
       it('must not remove mutable entities', () => {
         setEntityMutability('MUTABLE');
-        var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
+        const result = removeEntitiesAtEdges(contentState, selectionOnEntity);
         expectSameBlockMap(contentState, result);
       });
 
       it('must remove immutable entities', () => {
         setEntityMutability('IMMUTABLE');
-        var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
+        const result = removeEntitiesAtEdges(contentState, selectionOnEntity);
         expect(result.getBlockMap()).not.toBe(contentState.getBlockMap());
         expectNullEntities(result.getBlockForKey('b'));
       });
 
       it('must remove segmented entities', () => {
         setEntityMutability('SEGMENTED');
-        var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
+        const result = removeEntitiesAtEdges(contentState, selectionOnEntity);
         expect(result.getBlockMap()).not.toBe(contentState.getBlockMap());
         expectNullEntities(result.getBlockForKey('b'));
       });
@@ -93,26 +93,26 @@ describe('removeEntitiesAtEdges', () => {
       setEntityMutability('IMMUTABLE');
 
       it('must not remove if cursor is at start of entity', () => {
-        var selection = selectionOnEntity.merge({
+        const selection = selectionOnEntity.merge({
           anchorOffset: 0,
           focusOffset: 0,
         });
-        var result = removeEntitiesAtEdges(contentState, selection);
+        const result = removeEntitiesAtEdges(contentState, selection);
         expectSameBlockMap(contentState, result);
       });
 
       it('must remove if cursor is within entity', () => {
-        var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
+        const result = removeEntitiesAtEdges(contentState, selectionOnEntity);
         expectNullEntities(result.getBlockForKey('b'));
       });
 
       it('must not remove if cursor is at end of entity', () => {
-        var length = contentState.getBlockForKey('b').getLength();
-        var selection = selectionOnEntity.merge({
+        const length = contentState.getBlockForKey('b').getLength();
+        const selection = selectionOnEntity.merge({
           anchorOffset: length,
           focusOffset: length,
         });
-        var result = removeEntitiesAtEdges(contentState, selection);
+        const result = removeEntitiesAtEdges(contentState, selection);
         expectSameBlockMap(contentState, result);
       });
     });
@@ -122,38 +122,38 @@ describe('removeEntitiesAtEdges', () => {
 
       it('must remove for non-collapsed cursor within a single entity', () => {
         setEntityMutability('IMMUTABLE');
-        var selection = selectionOnEntity.set('anchorOffset', 1);
-        var result = removeEntitiesAtEdges(contentState, selection);
+        const selection = selectionOnEntity.set('anchorOffset', 1);
+        const result = removeEntitiesAtEdges(contentState, selection);
         expectNullEntities(result.getBlockForKey('b'));
       });
 
       it('must remove for non-collapsed cursor on multiple entities', () => {
-        var block = contentState.getBlockForKey('b');
-        var newBlock = applyEntityToContentBlock(block, 3, 5, '456');
-        var newBlockMap = contentState.getBlockMap().set('b', newBlock);
-        var newContent = contentState.set('blockMap', newBlockMap);
-        var selection = selectionOnEntity.merge({
+        const block = contentState.getBlockForKey('b');
+        const newBlock = applyEntityToContentBlock(block, 3, 5, '456');
+        const newBlockMap = contentState.getBlockMap().set('b', newBlock);
+        const newContent = contentState.set('blockMap', newBlockMap);
+        const selection = selectionOnEntity.merge({
           anchorOffset: 1,
           focusOffset: 4,
         });
-        var result = removeEntitiesAtEdges(newContent, selection);
+        const result = removeEntitiesAtEdges(newContent, selection);
         expectNullEntities(result.getBlockForKey('b'));
       });
 
       it('must ignore an entity that is entirely within the selection', () => {
-        var block = contentState.getBlockForKey('b');
+        const block = contentState.getBlockForKey('b');
 
         // Remove entity from beginning and end of block.
-        var newBlock = applyEntityToContentBlock(block, 0, 1, null);
+        let newBlock = applyEntityToContentBlock(block, 0, 1, null);
         newBlock = applyEntityToContentBlock(newBlock, 4, 5, null);
 
-        var newBlockMap = contentState.getBlockMap().set('b', newBlock);
-        var newContent = contentState.set('blockMap', newBlockMap);
-        var selection = selectionOnEntity.merge({
+        const newBlockMap = contentState.getBlockMap().set('b', newBlock);
+        const newContent = contentState.set('blockMap', newBlockMap);
+        const selection = selectionOnEntity.merge({
           anchorOffset: 0,
           focusOffset: 5,
         });
-        var result = removeEntitiesAtEdges(newContent, selection);
+        const result = removeEntitiesAtEdges(newContent, selection);
         expectSameBlockMap(newContent, result);
       });
     });
@@ -163,42 +163,42 @@ describe('removeEntitiesAtEdges', () => {
     setEntityMutability('IMMUTABLE');
 
     it('must remove entity at start of selection', () => {
-      var selection = selectionState.merge({
+      const selection = selectionState.merge({
         anchorKey: 'b',
         anchorOffset: 3,
         focusKey: 'c',
         focusOffset: 3,
       });
-      var result = removeEntitiesAtEdges(contentState, selection);
+      const result = removeEntitiesAtEdges(contentState, selection);
       expectNullEntities(result.getBlockForKey('b'));
       expectNullEntities(result.getBlockForKey('c'));
     });
 
     it('must remove entity at end of selection', () => {
-      var selection = selectionState.merge({
+      const selection = selectionState.merge({
         anchorKey: 'a',
         anchorOffset: 3,
         focusKey: 'b',
         focusOffset: 3,
       });
-      var result = removeEntitiesAtEdges(contentState, selection);
+      const result = removeEntitiesAtEdges(contentState, selection);
       expectNullEntities(result.getBlockForKey('a'));
       expectNullEntities(result.getBlockForKey('b'));
     });
 
     it('must remove entities at both ends of selection', () => {
-      var cBlock = contentState.getBlockForKey('c');
-      var len = cBlock.getLength();
-      var modifiedC = applyEntityToContentBlock(cBlock, 0, len, '456');
-      var newBlockMap = contentState.getBlockMap().set('c', modifiedC);
-      var newContent = contentState.set('blockMap', newBlockMap);
-      var selection = selectionState.merge({
+      const cBlock = contentState.getBlockForKey('c');
+      const len = cBlock.getLength();
+      const modifiedC = applyEntityToContentBlock(cBlock, 0, len, '456');
+      const newBlockMap = contentState.getBlockMap().set('c', modifiedC);
+      const newContent = contentState.set('blockMap', newBlockMap);
+      const selection = selectionState.merge({
         anchorKey: 'b',
         anchorOffset: 3,
         focusKey: 'c',
         focusOffset: 3,
       });
-      var result = removeEntitiesAtEdges(newContent, selection);
+      const result = removeEntitiesAtEdges(newContent, selection);
       expectNullEntities(result.getBlockForKey('b'));
       expectNullEntities(result.getBlockForKey('c'));
     });

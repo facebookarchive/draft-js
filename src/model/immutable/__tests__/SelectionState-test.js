@@ -13,9 +13,9 @@
 
 jest.autoMockOff();
 
-var SelectionState = require('SelectionState');
+const SelectionState = require('SelectionState');
 
-var COLLAPSED = {
+const COLLAPSED = {
   anchorKey: 'a',
   anchorOffset: 0,
   focusKey: 'a',
@@ -24,7 +24,7 @@ var COLLAPSED = {
   hasFocus: true,
 };
 
-var WITHIN_BLOCK = {
+const WITHIN_BLOCK = {
   anchorKey: 'a',
   anchorOffset: 10,
   focusKey: 'a',
@@ -33,7 +33,7 @@ var WITHIN_BLOCK = {
   hasFocus: true,
 };
 
-var MULTIBLOCK = {
+const MULTIBLOCK = {
   anchorKey: 'b',
   anchorOffset: 10,
   focusKey: 'c',
@@ -47,7 +47,7 @@ function getSample(config) {
 }
 
 function verifyValues(state, values) {
-  var {
+  const {
     anchorKey,
     anchorOffset,
     focusKey,
@@ -67,12 +67,12 @@ function verifyValues(state, values) {
 describe('SelectionState', () => {
   describe('creation and retrieval', () => {
     it('must create a new instance', () => {
-      var state = getSample(COLLAPSED);
+      const state = getSample(COLLAPSED);
       expect(state instanceof SelectionState).toBe(true);
     });
 
     it('must retrieve properties correctly', () => {
-      var state = getSample(COLLAPSED);
+      const state = getSample(COLLAPSED);
       verifyValues(state, COLLAPSED);
     });
   });
@@ -152,8 +152,8 @@ describe('SelectionState', () => {
     });
 
     it('properly identifies start end end keys when backward', () => {
-      var withinBlock = flip(getSample(WITHIN_BLOCK));
-      var multiBlock = getSample({...MULTIBLOCK, isBackward: true});
+      const withinBlock = flip(getSample(WITHIN_BLOCK));
+      const multiBlock = getSample({...MULTIBLOCK, isBackward: true});
       expect(withinBlock.getStartKey()).toBe('a');
       expect(multiBlock.getStartKey()).toBe('c');
       expect(withinBlock.getEndKey()).toBe('a');
@@ -161,8 +161,8 @@ describe('SelectionState', () => {
     });
 
     it('properly identifies start end end offsets when backward', () => {
-      var withinBlock = flip(getSample(WITHIN_BLOCK));
-      var multiBlock = getSample({...MULTIBLOCK, isBackward: true});
+      const withinBlock = flip(getSample(WITHIN_BLOCK));
+      const multiBlock = getSample({...MULTIBLOCK, isBackward: true});
       expect(withinBlock.getStartOffset()).toBe(10);
       expect(multiBlock.getStartOffset()).toBe(15);
       expect(withinBlock.getEndOffset()).toBe(20);

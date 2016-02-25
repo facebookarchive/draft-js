@@ -15,19 +15,19 @@ jest
   .autoMockOff()
   .mock('SelectionState');
 
-var BlockMapBuilder = require('BlockMapBuilder');
-var ContentBlock = require('ContentBlock');
-var ContentState = require('ContentState');
+const BlockMapBuilder = require('BlockMapBuilder');
+const ContentBlock = require('ContentBlock');
+const ContentState = require('ContentState');
 
-var SINGLE_BLOCK = [
+const SINGLE_BLOCK = [
   {text: 'Lorem ipsum', key: 'a'},
 ];
-var MULTI_BLOCK = [
+const MULTI_BLOCK = [
   {text: 'Four score', key: 'b'},
   {text: 'and seven', key: 'c'},
 ];
 
-var SelectionState = require('SelectionState');
+const SelectionState = require('SelectionState');
 
 describe('ContentState', () => {
   function getContentBlocks(textBlocks) {
@@ -35,8 +35,8 @@ describe('ContentState', () => {
   }
 
   function getConfigForText(textBlocks) {
-    var contentBlocks = getContentBlocks(textBlocks);
-    var blockMap = BlockMapBuilder.createFromArray(contentBlocks);
+    const contentBlocks = getContentBlocks(textBlocks);
+    const blockMap = BlockMapBuilder.createFromArray(contentBlocks);
     return {
       blockMap,
       selectionBefore: new SelectionState(),
@@ -56,21 +56,21 @@ describe('ContentState', () => {
 
   describe('creation and retrieval', () => {
     it('must create a new instance', () => {
-      var state = getSample(SINGLE_BLOCK);
+      const state = getSample(SINGLE_BLOCK);
       expect(state instanceof ContentState).toBe(true);
     });
   });
 
   describe('key fetching', () => {
     it('must succeed or fail properly', () => {
-      var singleBlock = getSample(SINGLE_BLOCK);
-      var key = SINGLE_BLOCK[0].key;
+      const singleBlock = getSample(SINGLE_BLOCK);
+      const key = SINGLE_BLOCK[0].key;
       expect(singleBlock.getKeyBefore(key)).toBe(undefined);
       expect(singleBlock.getKeyAfter(key)).toBe(undefined);
 
-      var multiBlock = getSample(MULTI_BLOCK);
-      var firstKey = MULTI_BLOCK[0].key;
-      var secondKey = MULTI_BLOCK[1].key;
+      const multiBlock = getSample(MULTI_BLOCK);
+      const firstKey = MULTI_BLOCK[0].key;
+      const secondKey = MULTI_BLOCK[1].key;
 
       expect(multiBlock.getKeyBefore(firstKey)).toBe(undefined);
       expect(multiBlock.getKeyAfter(firstKey)).toBe(secondKey);
@@ -81,8 +81,8 @@ describe('ContentState', () => {
 
   describe('block fetching', () => {
     it('must retrieve or fail fetching block for key', () => {
-      var state = getSample(SINGLE_BLOCK);
-      var block = state.getBlockForKey('a');
+      const state = getSample(SINGLE_BLOCK);
+      const block = state.getBlockForKey('a');
       expect(block instanceof ContentBlock).toBe(true);
       expect(block.getText()).toBe(SINGLE_BLOCK[0].text);
       expect(state.getBlockForKey('x')).toBe(undefined);

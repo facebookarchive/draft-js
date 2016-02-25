@@ -13,9 +13,9 @@
 
 'use strict';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
-var applyEntityToContentBlock = require('applyEntityToContentBlock');
+const applyEntityToContentBlock = require('applyEntityToContentBlock');
 
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
@@ -25,20 +25,20 @@ function applyEntityToContentState(
   selectionState: SelectionState,
   entityKey: ?string
 ): ContentState {
-  var blockMap = contentState.getBlockMap();
-  var startKey = selectionState.getStartKey();
-  var startOffset = selectionState.getStartOffset();
-  var endKey = selectionState.getEndKey();
-  var endOffset = selectionState.getEndOffset();
+  const blockMap = contentState.getBlockMap();
+  const startKey = selectionState.getStartKey();
+  const startOffset = selectionState.getStartOffset();
+  const endKey = selectionState.getEndKey();
+  const endOffset = selectionState.getEndOffset();
 
-  var newBlocks = blockMap
+  const newBlocks = blockMap
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
     .toOrderedMap()
     .merge(Immutable.OrderedMap([[endKey, blockMap.get(endKey)]]))
     .map((block, blockKey) => {
-      var sliceStart;
-      var sliceEnd;
+      let sliceStart;
+      let sliceEnd;
 
       if (startKey === endKey) {
         sliceStart = startOffset;

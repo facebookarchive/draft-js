@@ -13,11 +13,11 @@
 
 'use strict';
 
-var DraftEntity = require('DraftEntity');
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
+const DraftEntity = require('DraftEntity');
+const DraftModifier = require('DraftModifier');
+const EditorState = require('EditorState');
 
-var adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
+const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
 
 import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
@@ -25,23 +25,23 @@ import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type SelectionState from 'SelectionState';
 import type URI from 'URI';
 
-var RichTextEditorUtil = {
+const RichTextEditorUtil = {
   currentBlockContainsLink: function(
     editorState: EditorState
   ): boolean {
-    var selection = editorState.getSelection();
+    const selection = editorState.getSelection();
     return editorState.getCurrentContent()
       .getBlockForKey(selection.getAnchorKey())
       .getCharacterList()
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
-        var entity = v.getEntity();
+        const entity = v.getEntity();
         return !!entity && DraftEntity.get(entity).getType() === 'LINK';
       });
   },
 
   getCurrentBlockType: function(editorState: EditorState): DraftBlockType {
-    var selection = editorState.getSelection();
+    const selection = editorState.getSelection();
     return editorState.getCurrentContent()
       .getBlockForKey(selection.getStartKey())
       .getType();
@@ -78,7 +78,7 @@ var RichTextEditorUtil = {
   },
 
   insertSoftNewline: function(editorState: EditorState): EditorState {
-    var contentState = DraftModifier.insertText(
+    const contentState = DraftModifier.insertText(
       editorState.getCurrentContent(),
       editorState.getSelection(),
       '\n',
@@ -98,7 +98,7 @@ var RichTextEditorUtil = {
    * just remove the existing style.
    */
   onBackspace: function(editorState: EditorState): ?EditorState {
-    var selection = editorState.getSelection();
+    const selection = editorState.getSelection();
     if (
       !selection.isCollapsed() ||
       selection.getAnchorOffset() ||
@@ -108,28 +108,28 @@ var RichTextEditorUtil = {
     }
 
     // First, try to remove a preceding media block.
-    var content = editorState.getCurrentContent();
-    var startKey = selection.getStartKey();
-    var blockAfter = content.getBlockAfter(startKey);
+    const content = editorState.getCurrentContent();
+    const startKey = selection.getStartKey();
+    const blockAfter = content.getBlockAfter(startKey);
 
     // If the current block is empty, just delete it.
     if (blockAfter && content.getBlockForKey(startKey).getLength() === 0) {
       return null;
     }
 
-    var blockBefore = content.getBlockBefore(startKey);
+    const blockBefore = content.getBlockBefore(startKey);
 
     if (blockBefore && blockBefore.getType() === 'media') {
-      var mediaBlockTarget = selection.merge({
+      const mediaBlockTarget = selection.merge({
         anchorKey: blockBefore.getKey(),
         anchorOffset: 0,
       });
-      var asCurrentStyle = DraftModifier.setBlockType(
+      const asCurrentStyle = DraftModifier.setBlockType(
         content,
         mediaBlockTarget,
         content.getBlockForKey(startKey).getType()
       );
-      var withoutMedia = DraftModifier.removeRange(
+      const withoutMedia = DraftModifier.removeRange(
         asCurrentStyle,
         mediaBlockTarget,
         'backward'
@@ -144,7 +144,7 @@ var RichTextEditorUtil = {
     }
 
     // If that doesn't succeed, try to remove the current block style.
-    var withoutBlockStyle = RichTextEditorUtil.tryToRemoveBlockStyle(
+    const withoutBlockStyle = RichTextEditorUtil.tryToRemoveBlockStyle(
       editorState
     );
 
@@ -160,22 +160,22 @@ var RichTextEditorUtil = {
   },
 
   onDelete: function(editorState: EditorState): ?EditorState {
-    var selection = editorState.getSelection();
+    const selection = editorState.getSelection();
     if (!selection.isCollapsed()) {
       return null;
     }
 
-    var content = editorState.getCurrentContent();
-    var startKey = selection.getStartKey();
-    var block = content.getBlockForKey(startKey);
-    var length = block.getLength();
+    const content = editorState.getCurrentContent();
+    const startKey = selection.getStartKey();
+    const block = content.getBlockForKey(startKey);
+    const length = block.getLength();
 
     // The cursor is somewhere within the text. Behave normally.
     if (selection.getStartOffset() < length) {
       return null;
     }
 
-    var blockAfter = content.getBlockAfter(startKey);
+    const blockAfter = content.getBlockAfter(startKey);
 
     if (!blockAfter || blockAfter.getType() !== 'media') {
       return null;
@@ -183,18 +183,18 @@ var RichTextEditorUtil = {
 
     // If the current block is empty, delete it.
     if (length === 0) {
-      var target = selection.merge({
+      const target = selection.merge({
         focusKey: blockAfter.getKey(),
         focusOffset: 0,
       });
 
-      var withoutEmptyBlock = DraftModifier.removeRange(
+      const withoutEmptyBlock = DraftModifier.removeRange(
         content,
         target,
         'forward'
       );
 
-      var preserveMedia = DraftModifier.setBlockType(
+      const preserveMedia = DraftModifier.setBlockType(
         withoutEmptyBlock,
         withoutEmptyBlock.getSelectionAfter(),
         'media'
@@ -204,12 +204,12 @@ var RichTextEditorUtil = {
     }
 
     // Otherwise, delete the media block.
-    var mediaBlockTarget = selection.merge({
+    const mediaBlockTarget = selection.merge({
       focusKey: blockAfter.getKey(),
       focusOffset: blockAfter.getLength(),
     });
 
-    var withoutMedia = DraftModifier.removeRange(
+    const withoutMedia = DraftModifier.removeRange(
       content,
       mediaBlockTarget,
       'forward'
@@ -231,15 +231,15 @@ var RichTextEditorUtil = {
     editorState: EditorState,
     maxDepth: number
   ): EditorState {
-    var selection = editorState.getSelection();
-    var key = selection.getAnchorKey();
+    const selection = editorState.getSelection();
+    const key = selection.getAnchorKey();
     if (key !== selection.getFocusKey()) {
       return editorState;
     }
 
-    var content = editorState.getCurrentContent();
-    var block = content.getBlockForKey(key);
-    var type = block.getType();
+    const content = editorState.getCurrentContent();
+    const block = content.getBlockForKey(key);
+    const type = block.getType();
     if (type !== 'unordered-list-item' && type !== 'ordered-list-item') {
       return editorState;
     }
@@ -248,12 +248,12 @@ var RichTextEditorUtil = {
 
     // Only allow indenting one level beyond the block above, and only if
     // the block above is a list item as well.
-    var blockAbove = content.getBlockBefore(key);
+    const blockAbove = content.getBlockBefore(key);
     if (!blockAbove) {
       return editorState;
     }
 
-    var typeAbove = blockAbove.getType();
+    const typeAbove = blockAbove.getType();
     if (
       typeAbove !== 'unordered-list-item' &&
       typeAbove !== 'ordered-list-item'
@@ -261,14 +261,14 @@ var RichTextEditorUtil = {
       return editorState;
     }
 
-    var depth = block.getDepth();
+    const depth = block.getDepth();
     if (!event.shiftKey && depth === maxDepth) {
       return editorState;
     }
 
     maxDepth = Math.min(blockAbove.getDepth() + 1, maxDepth);
 
-    var withAdjustment = adjustBlockDepthForContentState(
+    const withAdjustment = adjustBlockDepthForContentState(
       content,
       selection,
       event.shiftKey ? -1 : 1,
@@ -286,12 +286,12 @@ var RichTextEditorUtil = {
     editorState: EditorState,
     blockType: DraftBlockType
   ): EditorState {
-    var selection = editorState.getSelection();
-    var startKey = selection.getStartKey();
-    var endKey = selection.getEndKey();
-    var content = editorState.getCurrentContent();
+    const selection = editorState.getSelection();
+    const startKey = selection.getStartKey();
+    const endKey = selection.getEndKey();
+    const content = editorState.getCurrentContent();
 
-    var hasMedia = content.getBlockMap()
+    const hasMedia = content.getBlockMap()
       .skipWhile((_, k) => k !== startKey)
       .takeWhile((_, k) => k !== endKey)
       .some(v => v.getType() === 'media');
@@ -300,7 +300,7 @@ var RichTextEditorUtil = {
       return editorState;
     }
 
-    var typeToSet = content.getBlockForKey(startKey).getType() === blockType ?
+    const typeToSet = content.getBlockForKey(startKey).getType() === blockType ?
       'unstyled' :
       blockType;
 
@@ -312,9 +312,9 @@ var RichTextEditorUtil = {
   },
 
   toggleCode: function(editorState: EditorState): EditorState {
-    var selection = editorState.getSelection();
-    var anchorKey = selection.getAnchorKey();
-    var focusKey = selection.getFocusKey();
+    const selection = editorState.getSelection();
+    const anchorKey = selection.getAnchorKey();
+    const focusKey = selection.getFocusKey();
 
     if (selection.isCollapsed() || anchorKey !== focusKey) {
       return RichTextEditorUtil.toggleBlockType(editorState, 'code-block');
@@ -333,8 +333,8 @@ var RichTextEditorUtil = {
     editorState: EditorState,
     inlineStyle: string
   ): EditorState {
-    var selection = editorState.getSelection();
-    var currentStyle = editorState.getCurrentInlineStyle();
+    const selection = editorState.getSelection();
+    const currentStyle = editorState.getCurrentInlineStyle();
 
     // If the selection is collapsed, toggle the specified style on or off and
     // set the result as the new inline style override. This will then be
@@ -350,8 +350,8 @@ var RichTextEditorUtil = {
 
     // If characters are selected, immediately apply or remove the
     // inline style on the document state itself.
-    var content = editorState.getCurrentContent();
-    var newContent;
+    const content = editorState.getCurrentContent();
+    let newContent;
 
     // If the style is already present for the selection range, remove it.
     // Otherwise, apply it.
@@ -381,7 +381,7 @@ var RichTextEditorUtil = {
     targetSelection: SelectionState,
     entityKey: ?string
   ): EditorState {
-    var withoutLink = DraftModifier.applyEntity(
+    const withoutLink = DraftModifier.applyEntity(
       editorState.getCurrentContent(),
       targetSelection,
       entityKey
@@ -400,17 +400,17 @@ var RichTextEditorUtil = {
    * style of the block instead of the default behavior.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
-    var selection = editorState.getSelection();
-    var offset = selection.getAnchorOffset();
+    const selection = editorState.getSelection();
+    const offset = selection.getAnchorOffset();
     if (selection.isCollapsed() && offset === 0) {
-      var key = selection.getAnchorKey();
-      var content = editorState.getCurrentContent();
-      var block = content.getBlockForKey(key);
+      const key = selection.getAnchorKey();
+      const content = editorState.getCurrentContent();
+      const block = content.getBlockForKey(key);
       if (block.getLength() > 0) {
         return null;
       }
 
-      var type = block.getType();
+      const type = block.getType();
       if (type !== 'unstyled' && type !== 'code-block') {
         return DraftModifier.setBlockType(content, selection, 'unstyled');
       }

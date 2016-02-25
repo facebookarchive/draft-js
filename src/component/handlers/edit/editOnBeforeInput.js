@@ -12,14 +12,14 @@
 
 'use strict';
 
-var BlockTree = require('BlockTree');
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
-var UserAgent = require('UserAgent');
+const BlockTree = require('BlockTree');
+const DraftModifier = require('DraftModifier');
+const EditorState = require('EditorState');
+const UserAgent = require('UserAgent');
 
-var getEntityKeyForSelection = require('getEntityKeyForSelection');
-var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-var nullthrows = require('nullthrows');
+const getEntityKeyForSelection = require('getEntityKeyForSelection');
+const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
+const nullthrows = require('nullthrows');
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
@@ -30,9 +30,9 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 // This breaks the input. Special case these characters to ensure that when
 // they are typed, we prevent default on the event to make sure not to
 // trigger quickfind.
-var FF_QUICKFIND_CHAR = '\'';
-var FF_QUICKFIND_LINK_CHAR = '\/';
-var isFirefox = UserAgent.isBrowser('Firefox');
+const FF_QUICKFIND_CHAR = '\'';
+const FF_QUICKFIND_LINK_CHAR = '\/';
+const isFirefox = UserAgent.isBrowser('Firefox');
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
@@ -53,7 +53,7 @@ function replaceText(
   inlineStyle: DraftInlineStyle,
   entityKey: ?string
 ): EditorState {
-  var contentState = DraftModifier.replaceText(
+  const contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),
     editorState.getSelection(),
     text,
@@ -73,7 +73,7 @@ function replaceText(
  * occurs on the relevant text nodes.
  */
 function editOnBeforeInput(e: SyntheticInputEvent): void {
-  var chars = e.data;
+  const chars = e.data;
 
   // In some cases (ex: IE ideographic space insertion) no character data
   // is provided. There's nothing to do when this happens.
@@ -94,8 +94,8 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
   // If selection is collapsed, conditionally allow native behavior. This
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
-  var editorState = this.props.editorState;
-  var selection = editorState.getSelection();
+  const editorState = this.props.editorState;
+  const selection = editorState.getSelection();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
@@ -113,8 +113,8 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
     return;
   }
 
-  var mayAllowNative = !isSelectionAtLeafStart(editorState);
-  var newEditorState = replaceText(
+  const mayAllowNative = !isSelectionAtLeafStart(editorState);
+  let newEditorState = replaceText(
     editorState,
     chars,
     editorState.getCurrentInlineStyle(),
@@ -130,14 +130,14 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
     return;
   }
 
-  var anchorKey = selection.getAnchorKey();
-  var anchorTree = editorState.getBlockTree(anchorKey);
+  const anchorKey = selection.getAnchorKey();
+  const anchorTree = editorState.getBlockTree(anchorKey);
 
   // Check the old and new "fingerprints" of the current block to determine
   // whether this insertion requires any addition or removal of text nodes,
   // in which case we would prevent the native character insertion.
-  var originalFingerprint = BlockTree.getFingerprint(anchorTree);
-  var newFingerprint = BlockTree.getFingerprint(
+  const originalFingerprint = BlockTree.getFingerprint(anchorTree);
+  const newFingerprint = BlockTree.getFingerprint(
     newEditorState.getBlockTree(anchorKey)
   );
 

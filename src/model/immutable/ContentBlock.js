@@ -13,15 +13,15 @@
 
 'use strict';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
-var findRangesImmutable = require('findRangesImmutable');
+const findRangesImmutable = require('findRangesImmutable');
 
 import type CharacterMetadata from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var {
+const {
   List,
   OrderedSet,
   Record,
@@ -29,7 +29,7 @@ var {
 
 const EMPTY_SET = OrderedSet();
 
-var defaultRecord: {
+const defaultRecord: {
   key: string;
   type: DraftBlockType;
   text: string;
@@ -43,7 +43,7 @@ var defaultRecord: {
   depth: 0,
 };
 
-var ContentBlockRecord = Record(defaultRecord);
+const ContentBlockRecord = Record(defaultRecord);
 
 class ContentBlock extends ContentBlockRecord {
   getKey(): string {
@@ -71,12 +71,12 @@ class ContentBlock extends ContentBlockRecord {
   }
 
   getInlineStyleAt(offset: number): DraftInlineStyle {
-    var character = this.getCharacterList().get(offset);
+    const character = this.getCharacterList().get(offset);
     return character ? character.getStyle() : EMPTY_SET;
   }
 
   getEntityAt(offset: number): ?string {
-    var character = this.getCharacterList().get(offset);
+    const character = this.getCharacterList().get(offset);
     return character ? character.getEntity() : null;
   }
 

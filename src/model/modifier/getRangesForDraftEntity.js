@@ -13,7 +13,7 @@
 
 'use strict';
 
-var invariant = require('invariant');
+const invariant = require('invariant');
 
 import type ContentBlock from 'ContentBlock';
 import type {DraftRange} from 'DraftRange';
@@ -30,7 +30,7 @@ function getRangesForDraftEntity(
   block: ContentBlock,
   key: string
 ): Array<DraftRange> {
-  var ranges = [];
+  const ranges = [];
   block.findEntityRanges(
     c => c.getEntity() === key,
     (start, end) => {

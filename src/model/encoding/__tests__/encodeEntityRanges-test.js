@@ -13,13 +13,13 @@
 
 jest.autoMockOff();
 
-var ContentBlock = require('ContentBlock');
-var Immutable = require('immutable');
+const ContentBlock = require('ContentBlock');
+const Immutable = require('immutable');
 
-var createCharacterList = require('createCharacterList');
-var encodeEntityRanges = require('encodeEntityRanges');
+const createCharacterList = require('createCharacterList');
+const encodeEntityRanges = require('encodeEntityRanges');
 
-var {OrderedSet, Repeat} = Immutable;
+const {OrderedSet, Repeat} = Immutable;
 
 describe('encodeEntityRanges', () => {
   function createBlock(text, entities) {
@@ -36,8 +36,8 @@ describe('encodeEntityRanges', () => {
   }
 
   it('must return an empty array if no entities present', () => {
-    var block = createBlock(' '.repeat(20), Repeat(null, 20).toArray());
-    var encoded = encodeEntityRanges(block, {});
+    const block = createBlock(' '.repeat(20), Repeat(null, 20).toArray());
+    let encoded = encodeEntityRanges(block, {});
     expect(encoded).toEqual([]);
 
     encoded = encodeEntityRanges(block, {'0': '0'});
@@ -45,9 +45,9 @@ describe('encodeEntityRanges', () => {
   });
 
   it('must return ranges with the storage-mapped key', () => {
-    var entities = [null, null, '6', '6', null];
-    var block = createBlock(' '.repeat(entities.length), entities);
-    var encoded = encodeEntityRanges(block, {'_6': '0'});
+    const entities = [null, null, '6', '6', null];
+    const block = createBlock(' '.repeat(entities.length), entities);
+    const encoded = encodeEntityRanges(block, {'_6': '0'});
     expect(encoded).toEqual([
       {
         offset: 2,
@@ -58,9 +58,9 @@ describe('encodeEntityRanges', () => {
   });
 
   it('must return ranges with multiple entities present', () => {
-    var entities = [null, null, '6', '6', null, '8', '8', null];
-    var block = createBlock(' '.repeat(entities.length), entities);
-    var encoded = encodeEntityRanges(block, {'_6': '0', '_8': '1'});
+    const entities = [null, null, '6', '6', null, '8', '8', null];
+    const block = createBlock(' '.repeat(entities.length), entities);
+    const encoded = encodeEntityRanges(block, {'_6': '0', '_8': '1'});
     expect(encoded).toEqual([
       {
         offset: 2,
@@ -76,9 +76,9 @@ describe('encodeEntityRanges', () => {
   });
 
   it('must return ranges with an entity present more than once', () => {
-    var entities = [null, null, '6', '6', null, '6', '6', null];
-    var block = createBlock(' '.repeat(entities.length), entities);
-    var encoded = encodeEntityRanges(block, {'_6': '0', '_8': '1'});
+    const entities = [null, null, '6', '6', null, '6', '6', null];
+    const block = createBlock(' '.repeat(entities.length), entities);
+    const encoded = encodeEntityRanges(block, {'_6': '0', '_8': '1'});
     expect(encoded).toEqual([
       {
         offset: 2,
@@ -94,15 +94,15 @@ describe('encodeEntityRanges', () => {
   });
 
   it('must handle ranges that include surrogate pairs', () => {
-    var str = 'Take a \uD83D\uDCF7 #selfie';
-    var entities = [
+    const str = 'Take a \uD83D\uDCF7 #selfie';
+    const entities = [
       null, null, null, null, null, null, // `Take a`
       '6', '6', '6', '6', '6', '6',       // ` [camera] #s`
       null, null, '8', '8', null,         // `elfie`
     ];
 
-    var block = createBlock(str, entities);
-    var encoded = encodeEntityRanges(block, {'_6': '0', '_8': '1'});
+    const block = createBlock(str, entities);
+    const encoded = encodeEntityRanges(block, {'_6': '0', '_8': '1'});
     expect(encoded).toEqual([
       {
         offset: 6,

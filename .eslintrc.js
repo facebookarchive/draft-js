@@ -11,5 +11,6 @@ module.exports = {
   rules: {
     'react/jsx-uses-react': 1,
     'react/react-in-jsx-scope': 1,
+    'no-var': 1
   }
 };

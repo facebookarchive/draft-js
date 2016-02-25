@@ -13,12 +13,12 @@
 
 'use strict';
 
-var DraftEditorTextNode = require('DraftEditorTextNode.react');
-var React = require('React');
-var ReactDOM = require('ReactDOM');
-var SelectionState = require('SelectionState');
+const DraftEditorTextNode = require('DraftEditorTextNode.react');
+const React = require('React');
+const ReactDOM = require('ReactDOM');
+const SelectionState = require('SelectionState');
 
-var setDraftEditorSelection = require('setDraftEditorSelection');
+const setDraftEditorSelection = require('setDraftEditorSelection');
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 

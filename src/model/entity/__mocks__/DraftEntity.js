@@ -7,15 +7,15 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-var DraftEntity = jest.genMockFromModule('DraftEntity');
+const DraftEntity = jest.genMockFromModule('DraftEntity');
 
-var DraftEntityInstance = {
+const DraftEntityInstance = {
   getType: jest.genMockFn().mockReturnValue(''),
   getMutability: jest.genMockFn().mockReturnValue(''),
   getData: jest.genMockFn().mockReturnValue({}),
 };
 
-var count = 0;
+let count = 0;
 
 DraftEntity.create = jest.genMockFn().mockImplementation(function() {
   count++;

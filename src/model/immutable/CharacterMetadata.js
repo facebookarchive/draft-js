@@ -13,7 +13,7 @@
 
 'use strict';
 
-var {
+const {
   Map,
   OrderedSet,
   Record,
@@ -28,12 +28,12 @@ type CharacterMetadataConfig = {
 
 const EMPTY_SET = OrderedSet();
 
-var defaultRecord: CharacterMetadataConfig = {
+const defaultRecord: CharacterMetadataConfig = {
   style: EMPTY_SET,
   entity: null,
 };
 
-var CharacterMetadataRecord = Record(defaultRecord);
+const CharacterMetadataRecord = Record(defaultRecord);
 
 class CharacterMetadata extends CharacterMetadataRecord {
   getStyle(): DraftInlineStyle {
@@ -52,7 +52,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
     record: CharacterMetadata,
     style: string
   ): CharacterMetadata {
-    var withStyle = record.set('style', record.getStyle().add(style));
+    const withStyle = record.set('style', record.getStyle().add(style));
     return CharacterMetadata.create(withStyle);
   }
 
@@ -60,7 +60,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
     record: CharacterMetadata,
     style: string
   ): CharacterMetadata {
-    var withoutStyle = record.set('style', record.getStyle().remove(style));
+    const withoutStyle = record.set('style', record.getStyle().remove(style));
     return CharacterMetadata.create(withoutStyle);
   }
 
@@ -68,7 +68,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
     record: CharacterMetadata,
     entityKey: ?string
   ): CharacterMetadata {
-    var withEntity = record.getEntity() === entityKey ?
+    const withEntity = record.getEntity() === entityKey ?
       record :
       record.set('entity', entityKey);
     return CharacterMetadata.create(withEntity);
@@ -86,22 +86,22 @@ class CharacterMetadata extends CharacterMetadataRecord {
     }
 
     // Fill in unspecified properties, if necessary.
-    var configMap =
+    const configMap =
       Map({style: EMPTY_SET, entity: (null: ?string)}).merge(config);
 
-    var existing: ?CharacterMetadata = pool.get(configMap);
+    const existing: ?CharacterMetadata = pool.get(configMap);
     if (existing) {
       return existing;
     }
 
-    var newCharacter = new CharacterMetadata(configMap);
+    const newCharacter = new CharacterMetadata(configMap);
     pool = pool.set(configMap, newCharacter);
     return newCharacter;
   }
 }
 
-var EMPTY = new CharacterMetadata();
-var pool: Map<Map, CharacterMetadata> = Map([[Map(defaultRecord), EMPTY]]);
+const EMPTY = new CharacterMetadata();
+let pool: Map<Map, CharacterMetadata> = Map([[Map(defaultRecord), EMPTY]]);
 
 CharacterMetadata.EMPTY = EMPTY;
 

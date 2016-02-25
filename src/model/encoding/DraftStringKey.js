@@ -13,7 +13,7 @@
 
 'use strict';
 
-var DraftStringKey = {
+const DraftStringKey = {
   stringify: function(key: mixed): string {
     return '_' + String(key);
   },

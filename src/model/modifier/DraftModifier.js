@@ -13,20 +13,20 @@
 
 'use strict';
 
-var CharacterMetadata = require('CharacterMetadata');
-var ContentStateInlineStyle = require('ContentStateInlineStyle');
-var {OrderedSet} = require('immutable');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentStateInlineStyle = require('ContentStateInlineStyle');
+const {OrderedSet} = require('immutable');
 
-var applyEntityToContentState = require('applyEntityToContentState');
-var getCharacterRemovalRange = require('getCharacterRemovalRange');
-var getContentStateFragment = require('getContentStateFragment');
-var insertFragmentIntoContentState = require('insertFragmentIntoContentState');
-var insertTextIntoContentState = require('insertTextIntoContentState');
-var invariant = require('invariant');
-var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
-var removeRangeFromContentState = require('removeRangeFromContentState');
-var setBlockTypeForContentState = require('setBlockTypeForContentState');
-var splitBlockInContentState = require('splitBlockInContentState');
+const applyEntityToContentState = require('applyEntityToContentState');
+const getCharacterRemovalRange = require('getCharacterRemovalRange');
+const getContentStateFragment = require('getContentStateFragment');
+const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
+const insertTextIntoContentState = require('insertTextIntoContentState');
+const invariant = require('invariant');
+const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
+const removeRangeFromContentState = require('removeRangeFromContentState');
+const setBlockTypeForContentState = require('setBlockTypeForContentState');
+const splitBlockInContentState = require('splitBlockInContentState');
 
 import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
@@ -45,7 +45,7 @@ import type SelectionState from 'SelectionState';
  *
  * These functions encapsulate some of the most common transaction sequences.
  */
-var DraftModifier = {
+const DraftModifier = {
   replaceText: function(
     contentState: ContentState,
     rangeToReplace: SelectionState,
@@ -53,13 +53,13 @@ var DraftModifier = {
     inlineStyle?: DraftInlineStyle,
     entityKey?: ?string
   ): ContentState {
-    var withoutEntities = removeEntitiesAtEdges(contentState, rangeToReplace);
-    var withoutText = removeRangeFromContentState(
+    const withoutEntities = removeEntitiesAtEdges(contentState, rangeToReplace);
+    const withoutText = removeRangeFromContentState(
       withoutEntities,
       rangeToReplace
     );
 
-    var character = CharacterMetadata.create({
+    const character = CharacterMetadata.create({
       style: inlineStyle || OrderedSet(),
       entity: entityKey || null,
     });
@@ -97,9 +97,9 @@ var DraftModifier = {
     removalRange: SelectionState,
     targetRange: SelectionState
   ): ContentState {
-    var movedFragment = getContentStateFragment(contentState, removalRange);
+    const movedFragment = getContentStateFragment(contentState, removalRange);
 
-    var afterRemoval = DraftModifier.removeRange(
+    const afterRemoval = DraftModifier.removeRange(
       contentState,
       removalRange,
       'backward'
@@ -117,8 +117,8 @@ var DraftModifier = {
     targetRange: SelectionState,
     fragment: BlockMap
   ): ContentState {
-    var withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
-    var withoutText = removeRangeFromContentState(
+    const withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
+    const withoutText = removeRangeFromContentState(
       withoutEntities,
       targetRange
     );
@@ -138,15 +138,15 @@ var DraftModifier = {
     // Check whether the selection state overlaps with a single entity.
     // If so, try to remove the appropriate substring of the entity text.
     if (rangeToRemove.getAnchorKey() === rangeToRemove.getFocusKey()) {
-      var key = rangeToRemove.getAnchorKey();
-      var startOffset = rangeToRemove.getStartOffset();
-      var endOffset = rangeToRemove.getEndOffset();
-      var block = contentState.getBlockForKey(key);
+      const key = rangeToRemove.getAnchorKey();
+      const startOffset = rangeToRemove.getStartOffset();
+      const endOffset = rangeToRemove.getEndOffset();
+      const block = contentState.getBlockForKey(key);
 
-      var startEntity = block.getEntityAt(startOffset);
-      var endEntity = block.getEntityAt(endOffset - 1);
+      const startEntity = block.getEntityAt(startOffset);
+      const endEntity = block.getEntityAt(endOffset - 1);
       if (startEntity && startEntity === endEntity) {
-        var adjustedRemovalRange = getCharacterRemovalRange(
+        const adjustedRemovalRange = getCharacterRemovalRange(
           block,
           rangeToRemove,
           removalDirection
@@ -155,7 +155,7 @@ var DraftModifier = {
       }
     }
 
-    var withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
+    const withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
     return removeRangeFromContentState(withoutEntities, rangeToRemove);
   },
 
@@ -163,8 +163,8 @@ var DraftModifier = {
     contentState: ContentState,
     selectionState: SelectionState
   ): ContentState {
-    var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
-    var withoutText = removeRangeFromContentState(
+    const withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
+    const withoutText = removeRangeFromContentState(
       withoutEntities,
       selectionState
     );
@@ -216,7 +216,7 @@ var DraftModifier = {
     selectionState: SelectionState,
     entityKey: ?string
   ): ContentState {
-    var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
+    const withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     return applyEntityToContentState(
       withoutEntities,
       selectionState,

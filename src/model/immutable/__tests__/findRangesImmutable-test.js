@@ -13,14 +13,14 @@
 
 jest.autoMockOff();
 
-var Immutable = require('immutable');
-var findRangesImmutable = require('findRangesImmutable');
+const Immutable = require('immutable');
+const findRangesImmutable = require('findRangesImmutable');
 
 describe('findRangesImmutable', () => {
-  var returnTrue = () => true;
+  const returnTrue = () => true;
 
   it('must be a no-op for an empty list', () => {
-    var cb = jest.genMockFn();
+    const cb = jest.genMockFn();
     findRangesImmutable(
       Immutable.List(),
       returnTrue,
@@ -31,26 +31,26 @@ describe('findRangesImmutable', () => {
   });
 
   describe('Function usage', () => {
-    var list = Immutable.List.of(1, 1, 1, 1, 1);
+    const list = Immutable.List.of(1, 1, 1, 1, 1);
 
     it('must identify the full list as a single range', () => {
-      var cb = jest.genMockFn();
+      const cb = jest.genMockFn();
       findRangesImmutable(list, returnTrue, returnTrue, cb);
-      var calls = cb.mock.calls;
+      const calls = cb.mock.calls;
       expect(calls.length).toBe(1);
       expect(calls[0]).toEqual([0, 5]);
     });
 
     it('must properly use `areEqualFn`', () => {
-      var cb = jest.genMockFn();
-      var areEqual = () => false;
+      const cb = jest.genMockFn();
+      const areEqual = () => false;
       findRangesImmutable(
         list,
         areEqual, // never equal
         returnTrue,
         cb
       );
-      var calls = cb.mock.calls;
+      const calls = cb.mock.calls;
       expect(calls.length).toBe(5);
       expect(calls[0]).toEqual([0, 1]);
       expect(calls[1]).toEqual([1, 2]);
@@ -60,30 +60,30 @@ describe('findRangesImmutable', () => {
     });
 
     it('must properly use `filterFn`', () => {
-      var cb = jest.genMockFn();
+      const cb = jest.genMockFn();
       findRangesImmutable(
         list,
         returnTrue,
         () => false, // never an accepted filter result
         cb
       );
-      var calls = cb.mock.calls;
+      const calls = cb.mock.calls;
       expect(calls.length).toBe(0);
     });
   });
 
   describe('Range finding for multi-value list', () => {
-    var list = Immutable.List.of(0, 0, 1, 1, 0, 0, 2, 2);
+    const list = Immutable.List.of(0, 0, 1, 1, 0, 0, 2, 2);
 
     it('must identify each range', () => {
-      var cb = jest.genMockFn();
+      const cb = jest.genMockFn();
       findRangesImmutable(
         list,
         (a, b) => a === b,
         returnTrue,
         cb
       );
-      var calls = cb.mock.calls;
+      const calls = cb.mock.calls;
       expect(calls.length).toBe(4);
       expect(calls[0]).toEqual([0, 2]);
       expect(calls[1]).toEqual([2, 4]);

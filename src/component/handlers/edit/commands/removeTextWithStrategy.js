@@ -12,7 +12,7 @@
 
 'use strict';
 
-var DraftModifier = require('DraftModifier');
+const DraftModifier = require('DraftModifier');
 
 import type ContentState from 'ContentState';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
@@ -28,9 +28,9 @@ function removeTextWithStrategy(
   strategy: (editorState: EditorState) => SelectionState,
   direction: DraftRemovalDirection
 ): ContentState {
-  var selection = editorState.getSelection();
-  var content = editorState.getCurrentContent();
-  var target = selection;
+  const selection = editorState.getSelection();
+  const content = editorState.getCurrentContent();
+  let target = selection;
   if (selection.isCollapsed()) {
     if (direction === 'forward') {
       if (editorState.isSelectionAtEndOfContent()) {

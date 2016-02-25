@@ -13,12 +13,12 @@
 
 jest.autoMockOff();
 
-var Immutable = require('immutable');
-var getSampleStateForTesting = require('getSampleStateForTesting');
-var splitBlockInContentState = require('splitBlockInContentState');
+const Immutable = require('immutable');
+const getSampleStateForTesting = require('getSampleStateForTesting');
+const splitBlockInContentState = require('splitBlockInContentState');
 
 describe('removeRangeFromContentState', () => {
-  var {
+  const {
     contentState,
     selectionState,
   } = getSampleStateForTesting();
@@ -37,7 +37,7 @@ describe('removeRangeFromContentState', () => {
 
   it('must be restricted to collapsed selections', () => {
     expect(() => {
-      var nonCollapsed = selectionState.set('focusOffset', 1);
+      const nonCollapsed = selectionState.set('focusOffset', 1);
       return splitBlockInContentState(contentState, nonCollapsed);
     }).toThrow();
 
@@ -47,19 +47,19 @@ describe('removeRangeFromContentState', () => {
   });
 
   it('must split at the beginning of a block', () => {
-    var initialBlock = contentState.getBlockMap().first();
-    var afterSplit = splitBlockInContentState(contentState, selectionState);
-    var afterBlockMap = afterSplit.getBlockMap();
+    const initialBlock = contentState.getBlockMap().first();
+    const afterSplit = splitBlockInContentState(contentState, selectionState);
+    const afterBlockMap = afterSplit.getBlockMap();
     expect(afterBlockMap.size).toBe(4);
 
-    var preSplitBlock = afterBlockMap.first();
+    const preSplitBlock = afterBlockMap.first();
 
     expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
     expect(preSplitBlock.getText()).toBe('');
     expect(getInlineStyles(preSplitBlock)).toEqual([]);
     expect(getEntities(preSplitBlock)).toEqual([]);
 
-    var postSplitBlock = afterBlockMap.skip(1).first();
+    const postSplitBlock = afterBlockMap.skip(1).first();
     expect(preSplitBlock.getKey()).not.toBe(postSplitBlock.getKey());
     expect(preSplitBlock.getType()).toBe(postSplitBlock.getType());
 
@@ -82,19 +82,19 @@ describe('removeRangeFromContentState', () => {
   });
 
   it('must split within a block', () => {
-    var initialBlock = contentState.getBlockMap().first();
-    var SPLIT_OFFSET = 3;
-    var selection = selectionState.merge({
+    const initialBlock = contentState.getBlockMap().first();
+    const SPLIT_OFFSET = 3;
+    const selection = selectionState.merge({
       anchorOffset: SPLIT_OFFSET,
       focusOffset: SPLIT_OFFSET,
     });
 
-    var afterSplit = splitBlockInContentState(contentState, selection);
-    var afterBlockMap = afterSplit.getBlockMap();
+    const afterSplit = splitBlockInContentState(contentState, selection);
+    const afterBlockMap = afterSplit.getBlockMap();
     expect(afterBlockMap.size).toBe(4);
 
-    var preSplitBlock = afterBlockMap.first();
-    var postSplitBlock = afterBlockMap.skip(1).first();
+    const preSplitBlock = afterBlockMap.first();
+    const postSplitBlock = afterBlockMap.skip(1).first();
 
     expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
     expect(preSplitBlock.getText()).toBe(
@@ -127,19 +127,19 @@ describe('removeRangeFromContentState', () => {
   });
 
   it('must split at the end of a block', () => {
-    var initialBlock = contentState.getBlockMap().first();
-    var end = initialBlock.getLength();
-    var selection = selectionState.merge({
+    const initialBlock = contentState.getBlockMap().first();
+    const end = initialBlock.getLength();
+    const selection = selectionState.merge({
       anchorOffset: end,
       focusOffset: end,
     });
 
-    var afterSplit = splitBlockInContentState(contentState, selection);
-    var afterBlockMap = afterSplit.getBlockMap();
+    const afterSplit = splitBlockInContentState(contentState, selection);
+    const afterBlockMap = afterSplit.getBlockMap();
     expect(afterBlockMap.size).toBe(4);
 
-    var preSplitBlock = afterBlockMap.first();
-    var postSplitBlock = afterBlockMap.skip(1).first();
+    const preSplitBlock = afterBlockMap.first();
+    const postSplitBlock = afterBlockMap.skip(1).first();
 
     expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
 

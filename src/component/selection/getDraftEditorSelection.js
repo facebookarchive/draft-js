@@ -13,7 +13,7 @@
 
 'use strict';
 
-var getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
+const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
 
 import type {DOMDerivedSelection} from 'DOMDerivedSelection';
 import type EditorState from 'EditorState';
@@ -26,7 +26,7 @@ function getDraftEditorSelection(
   editorState: EditorState,
   root: HTMLElement
 ): DOMDerivedSelection {
-  var selection = global.getSelection();
+  const selection = global.getSelection();
 
   // No active selection.
   if (selection.rangeCount === 0) {

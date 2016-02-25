@@ -13,9 +13,9 @@
 
 jest.autoMockOff();
 
-var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
+const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 
-var {
+const {
   BOLD,
   BOLD_ITALIC,
   BOLD_ITALIC_UNDERLINE,
@@ -24,7 +24,7 @@ var {
   NONE,
 } = require('SampleDraftInlineStyle');
 
-var {List} = require('immutable');
+const {List} = require('immutable');
 
 function areEqual(a, b) {
   expect(List(a).equals(List(b))).toBeTruthy();
@@ -32,19 +32,19 @@ function areEqual(a, b) {
 
 describe('decodeInlineStyleRanges', function() {
   it('must decode for an unstyled block', function() {
-    var block = {text: 'Hello'};
-    var decoded = decodeInlineStyleRanges(block.text);
+    const block = {text: 'Hello'};
+    const decoded = decodeInlineStyleRanges(block.text);
     areEqual(decoded, Array(block.text.length).fill(NONE));
   });
 
   it('must decode for a flat styled block', function() {
-    var block = {
+    const block = {
       text: 'Hello',
       inlineStyleRanges: [
         {style: 'BOLD', offset: 0, length: 5},
       ],
     };
-    var decoded = decodeInlineStyleRanges(
+    const decoded = decodeInlineStyleRanges(
       block.text,
       block.inlineStyleRanges
     );
@@ -52,7 +52,7 @@ describe('decodeInlineStyleRanges', function() {
   });
 
   it('must decode for a mixed-style block', function() {
-    var block = {
+    const block = {
       text: 'Hello',
       inlineStyleRanges: [
         {style: 'BOLD', offset: 0, length: 3},
@@ -61,7 +61,7 @@ describe('decodeInlineStyleRanges', function() {
         {style: 'BOLD', offset: 4, length: 1},
       ],
     };
-    var decoded = decodeInlineStyleRanges(
+    const decoded = decodeInlineStyleRanges(
       block.text,
       block.inlineStyleRanges
     );
@@ -75,7 +75,7 @@ describe('decodeInlineStyleRanges', function() {
   });
 
   it('must decode for strings that contain surrogate pairs in UTF-16', () => {
-    var block = {
+    const block = {
       text: 'Take a \uD83D\uDCF7 #selfie',
       inlineStyleRanges: [
         {offset: 4, length: 4, style: 'BOLD'},
@@ -83,7 +83,7 @@ describe('decodeInlineStyleRanges', function() {
       ],
     };
 
-    var decoded = decodeInlineStyleRanges(
+    const decoded = decodeInlineStyleRanges(
       block.text,
       block.inlineStyleRanges
     );

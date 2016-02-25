@@ -13,14 +13,14 @@
 
 jest.autoMockOff();
 
-var Immutable = require('immutable');
-var insertIntoList = require('insertIntoList');
+const Immutable = require('immutable');
+const insertIntoList = require('insertIntoList');
 
 describe('insertIntoList', () => {
-  var list = Immutable.List.of(0, 1, 2, 3, 4);
+  const list = Immutable.List.of(0, 1, 2, 3, 4);
 
   it('must insert at end of list', () => {
-    var result = insertIntoList(
+    const result = insertIntoList(
       list,
       Immutable.List.of(100, 101, 102),
       list.size
@@ -30,7 +30,7 @@ describe('insertIntoList', () => {
   });
 
   it('must insert at beginning of list', () => {
-    var result = insertIntoList(
+    const result = insertIntoList(
       list,
       Immutable.List.of(100, 101, 102),
       0
@@ -40,7 +40,7 @@ describe('insertIntoList', () => {
   });
 
   it('must insert within a list', () => {
-    var result = insertIntoList(
+    const result = insertIntoList(
       list,
       Immutable.List.of(100, 101, 102),
       3

@@ -13,17 +13,17 @@
 
 jest.autoMockOff();
 
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
-var Immutable = require('immutable');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentBlock = require('ContentBlock');
+const Immutable = require('immutable');
 
-var {
+const {
   NONE,
   BOLD,
 } = require('SampleDraftInlineStyle');
 
 describe('ContentBlock', () => {
-  var ENTITY_KEY = 'x';
+  const ENTITY_KEY = 'x';
 
   function getSampleBlock() {
     return new ContentBlock({
@@ -42,7 +42,7 @@ describe('ContentBlock', () => {
 
   describe('basic retrieval', () => {
     it('must provide default values', () => {
-      var block = new ContentBlock();
+      const block = new ContentBlock();
       expect(block.getType()).toBe('unstyled');
       expect(block.getText()).toBe('');
       expect(
@@ -51,7 +51,7 @@ describe('ContentBlock', () => {
     });
 
     it('must retrieve properties', () => {
-      var block = getSampleBlock();
+      const block = getSampleBlock();
       expect(block.getKey()).toBe('a');
       expect(block.getText()).toBe('Alpha');
       expect(block.getType()).toBe('unstyled');
@@ -62,7 +62,7 @@ describe('ContentBlock', () => {
 
   describe('style retrieval', () => {
     it('must properly retrieve style at offset', () => {
-      var block = getSampleBlock();
+      const block = getSampleBlock();
       expect(block.getInlineStyleAt(0)).toBe(BOLD);
       expect(block.getInlineStyleAt(1)).toBe(NONE);
       expect(block.getInlineStyleAt(2)).toBe(NONE);
@@ -71,11 +71,11 @@ describe('ContentBlock', () => {
     });
 
     it('must correctly identify ranges of styles', () => {
-      var block = getSampleBlock();
-      var cb = jest.genMockFn();
+      const block = getSampleBlock();
+      const cb = jest.genMockFn();
       block.findStyleRanges(() => true, cb);
 
-      var calls = cb.mock.calls;
+      const calls = cb.mock.calls;
       expect(calls.length).toBe(4);
       expect(calls[0]).toEqual([0, 1]);
       expect(calls[1]).toEqual([1, 3]);
@@ -86,7 +86,7 @@ describe('ContentBlock', () => {
 
   describe('entity retrieval', () => {
     it('must properly retrieve entity at offset', () => {
-      var block = getSampleBlock();
+      const block = getSampleBlock();
       expect(block.getEntityAt(0)).toBe(ENTITY_KEY);
       expect(block.getEntityAt(1)).toBe(null);
       expect(block.getEntityAt(2)).toBe(null);
@@ -95,11 +95,11 @@ describe('ContentBlock', () => {
     });
 
     it('must correctly identify ranges of entities', () => {
-      var block = getSampleBlock();
-      var cb = jest.genMockFn();
+      const block = getSampleBlock();
+      const cb = jest.genMockFn();
       block.findEntityRanges(() => true, cb);
 
-      var calls = cb.mock.calls;
+      const calls = cb.mock.calls;
       expect(calls.length).toBe(3);
       expect(calls[0]).toEqual([0, 1]);
       expect(calls[1]).toEqual([1, 4]);

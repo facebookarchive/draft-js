@@ -13,14 +13,14 @@
 
 'use strict';
 
-var getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
+const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 
 /**
  * Get the key from the node's nearest offset-aware ancestor.
  */
 function findAncestorOffsetKey(node: Node): ?string {
   while (node && node !== document.documentElement) {
-    var key = getSelectionOffsetKeyForNode(node);
+    const key = getSelectionOffsetKeyForNode(node);
     if (key != null) {
       return key;
     }

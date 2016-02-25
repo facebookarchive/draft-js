@@ -13,42 +13,42 @@
 
 'use strict';
 
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
-var DraftEntity = require('DraftEntity');
-var Immutable = require('immutable');
-var URI = require('URI');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentBlock = require('ContentBlock');
+const DraftEntity = require('DraftEntity');
+const Immutable = require('immutable');
+const URI = require('URI');
 
-var generateBlockKey = require('generateBlockKey');
-var getSafeBodyFromHTML = require('getSafeBodyFromHTML');
-var invariant = require('invariant');
-var nullthrows = require('nullthrows');
-var sanitizeDraftText = require('sanitizeDraftText');
+const generateBlockKey = require('generateBlockKey');
+const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
+const invariant = require('invariant');
+const nullthrows = require('nullthrows');
+const sanitizeDraftText = require('sanitizeDraftText');
 
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var {
+const {
   List,
   OrderedSet,
   Repeat,
 } = Immutable;
 
-var NBSP = '&nbsp;';
-var SPACE = ' ';
+const NBSP = '&nbsp;';
+const SPACE = ' ';
 
 // Corresponds to max indent in campfire editor
-var MAX_DEPTH = 4;
+const MAX_DEPTH = 4;
 
 // used for replacing characters in HTML
-var REGEX_CR = new RegExp('\r', 'g');
-var REGEX_LF = new RegExp('\n', 'g');
-var REGEX_NBSP = new RegExp(NBSP, 'g');
+const REGEX_CR = new RegExp('\r', 'g');
+const REGEX_LF = new RegExp('\n', 'g');
+const REGEX_NBSP = new RegExp(NBSP, 'g');
 
 // Block tag flow is different because LIs do not have
 // a deterministic style ;_;
-var blockTags = ['p', 'h1', 'h2', 'h3', 'li', 'blockquote', 'pre'];
-var inlineTags = {
+const blockTags = ['p', 'h1', 'h2', 'h3', 'li', 'blockquote', 'pre'];
+const inlineTags = {
   b: 'BOLD',
   code: 'CODE',
   del: 'STRIKETHROUGH',
@@ -60,7 +60,7 @@ var inlineTags = {
   u: 'UNDERLINE',
 };
 
-var lastBlock;
+let lastBlock;
 
 type Block = {
   type: DraftBlockType;
@@ -84,7 +84,7 @@ function getEmptyChunk(): Chunk {
 }
 
 function getWhitespaceChunk(inEntity: ?string): Chunk {
-  var entities = new Array(1);
+  const entities = new Array(1);
   if (inEntity) {
     entities[0] = inEntity;
   }
@@ -142,7 +142,7 @@ function processInlineTag(
   node: Node,
   currentStyle: DraftInlineStyle
 ): DraftInlineStyle {
-  var styleToCheck = inlineTags[tag];
+  const styleToCheck = inlineTags[tag];
   if (styleToCheck) {
     currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
   } else if (node instanceof HTMLElement) {
@@ -171,7 +171,7 @@ function processInlineTag(
 function joinChunks(A: Chunk, B: Chunk): Chunk {
   // Sometimes two blocks will touch in the DOM and we need to strip the
   // extra delimiter to preserve niceness.
-  var lastInB = B.text.slice(0, 1);
+  const lastInB = B.text.slice(0, 1);
 
   if (
     A.text.slice(-1) === '\r' &&
@@ -218,7 +218,7 @@ function hasValidLinkText(link: Node): boolean {
     link instanceof HTMLAnchorElement,
     'Link must be an HTMLAnchorElement.'
   );
-  var protocol = link.protocol;
+  const protocol = link.protocol;
   return protocol === 'http:' || protocol === 'https:';
 }
 
@@ -231,14 +231,14 @@ function genFragment(
   depth: number,
   inEntity?: string
 ): Chunk {
-  var nodeName = node.nodeName.toLowerCase();
-  var newBlock = false;
-  var nextBlockType = 'unstyled';
-  var lastLastBlock = lastBlock;
+  let nodeName = node.nodeName.toLowerCase();
+  let newBlock = false;
+  let nextBlockType = 'unstyled';
+  let lastLastBlock = lastBlock;
 
   // Base Case
   if (nodeName === '#text') {
-    var text = node.textContent;
+    let text = node.textContent;
     if (text.trim() === '' && inBlock !== 'pre') {
       return getWhitespaceChunk(inEntity);
     }
@@ -272,8 +272,8 @@ function genFragment(
     return getSoftNewlineChunk();
   }
 
-  var chunk = getEmptyChunk();
-  var newChunk: ?Chunk = null;
+  let chunk = getEmptyChunk();
+  let newChunk: ?Chunk = null;
 
   // Inline tags
   inlineStyle = processInlineTag(nodeName, node, inlineStyle);
@@ -307,13 +307,13 @@ function genFragment(
   }
 
   // Recurse through children
-  var child: ?Node = node.firstChild;
+  let child: ?Node = node.firstChild;
   if (child != null) {
     nodeName = child.nodeName.toLowerCase();
   }
 
-  var entityId: ?string = null;
-  var href: ?string = null;
+  let entityId: ?string = null;
+  let href: ?string = null;
 
   while (child) {
     if (nodeName === 'a' && child.href && hasValidLinkText(child)) {
@@ -334,7 +334,7 @@ function genFragment(
     );
 
     chunk = joinChunks(chunk, newChunk);
-    var sibling: Node = child.nextSibling;
+    const sibling: Node = child.nextSibling;
 
     // Put in a newline to break up blocks inside blocks
     if (
@@ -366,7 +366,7 @@ function getChunkForHTML(html: string): ?Chunk {
     .replace(REGEX_CR, '')
     .replace(REGEX_NBSP, SPACE);
 
-  var safeBody = getSafeBodyFromHTML(html);
+  const safeBody = getSafeBodyFromHTML(html);
   if (!safeBody) {
     return null;
   }
@@ -375,11 +375,11 @@ function getChunkForHTML(html: string): ?Chunk {
   // Sometimes we aren't dealing with content that contains nice semantic
   // tags. In this case, use divs to separate everything out into paragraphs
   // and hope for the best.
-  var workingBlocks = containsSemanticBlockMarkup(html) ? blockTags : ['div'];
+  const workingBlocks = containsSemanticBlockMarkup(html) ? blockTags : ['div'];
 
   // Start with -1 block depth to offset the fact that we are passing in a fake
   // UL block to start with.
-  var chunk =
+  let chunk =
     genFragment(safeBody, OrderedSet(), 'ul', null, workingBlocks, -1);
 
   // join with previous block to prevent weirdness on paste
@@ -415,23 +415,23 @@ function getChunkForHTML(html: string): ?Chunk {
   return chunk;
 }
 
-var DraftPasteProcessor = {
+const DraftPasteProcessor = {
   processHTML(html: string): ?Array<ContentBlock> {
-    var chunk = getChunkForHTML(html);
+    const chunk = getChunkForHTML(html);
     if (chunk == null) {
       return null;
     }
-    var start = 0;
+    let start = 0;
     return chunk.text.split('\r').map(
       (textBlock, ii) => {
         // Make absolutely certain that our text is acceptable.
         textBlock = sanitizeDraftText(textBlock);
-        var end = start + textBlock.length;
-        var inlines = nullthrows(chunk).inlines.slice(start, end);
-        var entities = nullthrows(chunk).entities.slice(start, end);
-        var characterList = List(
+        const end = start + textBlock.length;
+        const inlines = nullthrows(chunk).inlines.slice(start, end);
+        const entities = nullthrows(chunk).entities.slice(start, end);
+        const characterList = List(
           inlines.map((style, ii) => {
-            var data = {style, entity: (null: ?string)};
+            const data = {style, entity: (null: ?string)};
             if (entities[ii]) {
               data.entity = entities[ii];
             }
