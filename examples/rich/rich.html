@@ -176,6 +176,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           <div className="RichEditor-controls">
             {BLOCK_TYPES.map((type) =>
               <StyleButton
+                key={type.label}
                 active={type.style === blockType}
                 label={type.label}
                 onToggle={props.onToggle}
@@ -199,6 +200,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           <div className="RichEditor-controls">
             {INLINE_STYLES.map(type =>
               <StyleButton
+                key={type.label}
                 active={currentStyle.has(type.style)}
                 label={type.label}
                 onToggle={props.onToggle}
