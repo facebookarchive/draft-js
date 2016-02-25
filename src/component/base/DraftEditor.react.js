@@ -55,12 +55,12 @@ const handlerMap = {
 };
 
 type DefaultProps = {
-  blockRendererFn: (block: ContentBlock) => ?Object;
-  blockStyleFn: (type: number) => string,
-  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
-  readOnly: boolean,
-  spellCheck: boolean,
-  stripPastedStyles: boolean,
+  blockRendererFn?: (block: ContentBlock) => ?Object;
+  blockStyleFn?: (type: number) => string,
+  keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string,
+  readOnly?: boolean,
+  spellCheck?: boolean,
+  stripPastedStyles?: boolean,
 };
 
 type State = {

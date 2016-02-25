@@ -246,37 +246,33 @@ var RichTextEditorUtil = {
 
     event.preventDefault();
 
-    var blockAbove = content.getBlockBefore(key);
-    var depth = maxDepth;
-
     // Only allow indenting one level beyond the block above, and only if
-    // the block above is a list item as well. Always allow unindenting
-    // if depth is greater than zero.
-    if (event.shiftKey) {
-      if (block.getDepth() === 0) {
-        return editorState;
-      }
-    } else {
-      if (!blockAbove || block.getDepth() === maxDepth) {
-        return editorState;
-      }
-
-      var typeAbove = blockAbove.getType();
-      if (
-        typeAbove !== 'unordered-list-item' &&
-        typeAbove !== 'ordered-list-item'
-      ) {
-        return editorState;
-      }
-
-      depth = Math.min(blockAbove.getDepth() + 1, maxDepth);
+    // the block above is a list item as well.
+    var blockAbove = content.getBlockBefore(key);
+    if (!blockAbove) {
+      return editorState;
     }
+
+    var typeAbove = blockAbove.getType();
+    if (
+      typeAbove !== 'unordered-list-item' &&
+      typeAbove !== 'ordered-list-item'
+    ) {
+      return editorState;
+    }
+
+    var depth = block.getDepth();
+    if (!event.shiftKey && depth === maxDepth) {
+      return editorState;
+    }
+
+    maxDepth = Math.min(blockAbove.getDepth() + 1, maxDepth);
 
     var withAdjustment = adjustBlockDepthForContentState(
       content,
       selection,
       event.shiftKey ? -1 : 1,
-      depth
+      maxDepth
     );
 
     return EditorState.push(
