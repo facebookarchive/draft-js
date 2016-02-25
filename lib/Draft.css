@@ -40,7 +40,7 @@
   position: relative;
 }
 
-.DraftEditor-alignLeft .public-DraftEditor-block {
+.DraftEditor-alignLeft .public-DraftStyleDefault-block {
   text-align: left;
 }
 
@@ -49,7 +49,7 @@
   text-align: left;
 }
 
-.DraftEditor-alignCenter .public-DraftEditor-block {
+.DraftEditor-alignCenter .public-DraftStyleDefault-block {
   text-align: center;
 }
 
@@ -59,7 +59,7 @@
   width: 100%;
 }
 
-.DraftEditor-alignRight .public-DraftEditor-block {
+.DraftEditor-alignRight .public-DraftStyleDefault-block {
   text-align: right;
 }
 
