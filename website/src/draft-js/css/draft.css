@@ -337,13 +337,13 @@ h1:hover .hash-link, h2:hover .hash-link, h3:hover .hash-link, h4:hover .hash-li
 }
 
 .buttons-unit .button {
+  background: #843131;
+  color: #fff;
   font-size: 24px;
-  background: #C15757;
-  color: #fafafa;
 }
 
 .buttons-unit .button:active {
-  background: #57A85C;
+  background: #C15757;
 }
 
 .buttons-unit.downloads {
@@ -381,12 +381,12 @@ h1:hover .hash-link, h2:hover .hash-link, h3:hover .hash-link, h4:hover .hash-li
 }
 
 .nav-docs a:hover {
+  color: #C15757;
   text-decoration: none;
-  color: #34A83B;
 }
 
 .nav-docs a.active {
-  color: #34A83B;
+  color: #C15757;
 }
 
 .nav-docs .nav-docs-section {
@@ -957,7 +957,7 @@ p + .apiIndex {
   text-decoration: none;
 }
 .apiIndex li a:hover::before {
-  color: #f26b00;
+  color: #C15757;
   content: '#';
   font-size: 16px;
   left: -2em;
@@ -1045,76 +1045,74 @@ p + .apiIndex {
 code[class*="language-"],
 pre[class*="language-"],
 .apiIndex pre {
-	color: black;
-	text-shadow: 0 1px white;
-	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-	direction: ltr;
-	text-align: left;
-	white-space: pre;
-	word-spacing: normal;
-	word-break: normal;
-	line-height: 1.5;
-
-	-moz-tab-size: 4;
-	-o-tab-size: 4;
-	tab-size: 4;
-
-	-webkit-hyphens: none;
-	-moz-hyphens: none;
-	-ms-hyphens: none;
-	hyphens: none;
+  color: #000;
+  direction: ltr;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  -webkit-hyphens: none;
+  hyphens: none;
+  line-height: 1.5;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  text-align: left;
+  text-shadow: 0 1px white;
+  white-space: pre;
+  word-break: normal;
+  word-spacing: normal;
 }
 
 pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
 code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-	text-shadow: none;
-	background: #b3d4fc;
+  background: #b3d4fc;
+  text-shadow: none;
 }
 
 pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
 code[class*="language-"]::selection, code[class*="language-"] ::selection {
-	text-shadow: none;
-	background: #b3d4fc;
+  background: #b3d4fc;
+  text-shadow: none;
 }
 
 @media print {
-	code[class*="language-"],
-	pre[class*="language-"] {
-		text-shadow: none;
-	}
+  code[class*="language-"],
+  pre[class*="language-"] {
+    text-shadow: none;
+  }
 }
 
 /* Code blocks */
 pre[class*="language-"] {
-	padding: 1em;
-	margin: .5em 0;
-	overflow: auto;
+  margin: .5em 0;
+  overflow: auto;
+  padding: 1em;
 }
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-	background: #f5f2f0;
+  background: #fff;
 }
 
 /* Inline code */
 :not(pre) > code[class*="language-"] {
-	padding: .1em;
-	border-radius: .3em;
+  border-radius: .3em;
+  padding: .1em;
 }
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-	color: slategray;
+  color: slategray;
 }
 
 .token.punctuation {
-	color: #999;
+  color: #999;
 }
 
 .namespace {
-	opacity: .7;
+  opacity: .7;
 }
 
 .token.property,
@@ -1124,7 +1122,7 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-	color: #905;
+  color: #905;
 }
 
 .token.selector,
@@ -1133,7 +1131,7 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-	color: #690;
+  color: #690;
 }
 
 .token.operator,
@@ -1141,36 +1139,36 @@ pre[class*="language-"] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-	color: #a67f59;
-	background: hsla(0, 0%, 100%, .5);
+  background: hsla(0, 0%, 100%, .5);
+  color: #a67f59;
 }
 
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-	color: #07a;
+  color: #07a;
 }
 
 .token.function {
-	color: #DD4A68;
+  color: #DD4A68;
 }
 
 .token.regex,
 .token.important,
 .token.variable {
-	color: #e90;
+  color: #e90;
 }
 
 .token.important,
 .token.bold {
-	font-weight: bold;
+  font-weight: bold;
 }
 .token.italic {
-	font-style: italic;
+  font-style: italic;
 }
 
 .token.entity {
-	cursor: help;
+  cursor: help;
 }
 
 /* Custom prism rules for the Relay docs */
@@ -1189,11 +1187,11 @@ pre[class*="language-"],
 code[class*="language-"],
 pre[class*="language-"],
 .apiIndex li {
+  background-color: rgba(75, 145, 80, 0.05);
+  border-left: 4px solid #C15757;
   font-size: 13px;
   line-height: 20px;
-  border-left: 4px solid #f26b00;
   padding: 5px 10px;
-  background-color: rgba(75, 145, 80, 0.05);
 }
 
 .prism + .prism {
