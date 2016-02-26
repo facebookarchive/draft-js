@@ -1,4 +1,6 @@
 /**
+ * Copyright 2004-present Facebook. All Rights Reserved.
+ *
  * This file provided by Facebook is for non-commercial testing and evaluation
  * purposes only. Facebook reserves all rights not expressly granted.
  *
@@ -259,7 +261,7 @@ var index = React.createClass({
         <script type="text/babel" dangerouslySetInnerHTML={{__html: richExample}} />
       </Site>
     );
-  }
+  },
 });
 
 module.exports = index;

@@ -5,6 +5,7 @@
  *
  * @providesModule Prism
  * @jsx React.DOM
+ * @preserve-header
  */
 
 var React = require('React');
@@ -15,12 +16,12 @@ var lang = /\blang(?:uage)?-(?!\*)(\w+)\b/i;
 
 var _ = {
   util: {
-    type: function (o) {
+    type: function(o) {
       return Object.prototype.toString.call(o).match(/\[object (\w+)\]/)[1];
     },
 
     // Deep clone a language definition (e.g. to extend it)
-    clone: function (o) {
+    clone: function(o) {
       var type = _.util.type(o);
 
       switch (type) {
@@ -40,11 +41,11 @@ var _ = {
       }
 
       return o;
-    }
+    },
   },
 
   languages: {
-    extend: function (id, redef) {
+    extend: function(id, redef) {
       var lang = _.util.clone(_.languages[id]);
 
       for (var key in redef) {
@@ -55,7 +56,7 @@ var _ = {
     },
 
     // Insert a token before another token in a language literal
-    insertBefore: function (inside, before, insert, root) {
+    insertBefore: function(inside, before, insert, root) {
       root = root || _.languages;
       var grammar = root[inside];
       var ret = {};
@@ -90,7 +91,7 @@ var _ = {
           _.languages.DFS(o[i], callback);
         }
       }
-    }
+    },
   },
 
   tokenize: function(text, grammar, language) {
@@ -109,7 +110,7 @@ var _ = {
     }
 
     tokenloop: for (var token in grammar) {
-      if(!grammar.hasOwnProperty(token) || !grammar[token]) {
+      if (!grammar.hasOwnProperty(token) || !grammar[token]) {
         continue;
       }
 
@@ -120,7 +121,7 @@ var _ = {
 
       pattern = pattern.pattern || pattern;
 
-      for (var i=0; i<strarr.length; i++) { // Don’t cache length as it changes during the loop
+      for (var i=0; i<strarr.length; i++) { // Don't cache length as it changes during the loop
 
         var str = strarr[i];
 
@@ -138,7 +139,7 @@ var _ = {
         var match = pattern.exec(str);
 
         if (match) {
-          if(lookbehind) {
+          if (lookbehind) {
             lookbehindLength = match[1].length;
           }
 
@@ -174,7 +175,7 @@ var _ = {
   hooks: {
     all: {},
 
-    add: function (name, callback) {
+    add: function(name, callback) {
       var hooks = _.hooks.all;
 
       hooks[name] = hooks[name] || [];
@@ -182,7 +183,7 @@ var _ = {
       hooks[name].push(callback);
     },
 
-    run: function (name, env) {
+    run: function(name, env) {
       var callbacks = _.hooks.all[name];
 
       if (!callbacks || !callbacks.length) {
@@ -192,8 +193,8 @@ var _ = {
       for (var i=0, callback; callback = callbacks[i++];) {
         callback(env);
       }
-    }
-  }
+    },
+  },
 };
 
 var Token = _.Token = function(type, content) {
@@ -214,8 +215,8 @@ Token.reactify = function(o, key) {
 
   var attributes = {
     className: 'token ' + o.type,
-    key: key
-  }
+    key: key,
+  };
   if (o.type == 'comment') {
     attributes.spellCheck = true;
   }
@@ -235,26 +236,26 @@ _.languages.markup = {
         pattern: /^&lt;\/?[\w:-]+/i,
         inside: {
           'punctuation': /^&lt;\/?/,
-          'namespace': /^[\w-]+?:/
-        }
+          'namespace': /^[\w-]+?:/,
+        },
       },
       'attr-value': {
         pattern: /=(?:('|")[\w\W]*?(\1)|[^\s>]+)/gi,
         inside: {
-          'punctuation': /=|>|"/g
-        }
+          'punctuation': /=|>|"/g,
+        },
       },
       'punctuation': /\/?>/g,
       'attr-name': {
         pattern: /[\w:-]+/g,
         inside: {
-          'namespace': /^[\w-]+?:/
-        }
-      }
+          'namespace': /^[\w-]+?:/,
+        },
+      },
 
-    }
+    },
   },
-  'entity': /&amp;#?[\da-z]{1,8};/gi
+  'entity': /&amp;#?[\da-z]{1,8};/gi,
 };
 
 _.languages.css = {
@@ -262,8 +263,8 @@ _.languages.css = {
   'atrule': {
     pattern: /@[\w-]+?.*?(;|(?=\s*{))/gi,
     inside: {
-      'punctuation': /[;:]/g
-    }
+      'punctuation': /[;:]/g,
+    },
   },
   'url': /url\((["']?).*?\1\)/gi,
   'selector': /[^\{\}\s][^\{\};]*(?=\s*\{)/g,
@@ -271,7 +272,7 @@ _.languages.css = {
   'string': /("|')(\\?.)*?\1/g,
   'important': /\B!important\b/gi,
   'ignore': /&(lt|gt|amp);/gi,
-  'punctuation': /[\{\};:]/g
+  'punctuation': /[\{\};:]/g,
 };
 
 _.languages.insertBefore('markup', 'tag', {
@@ -280,50 +281,50 @@ _.languages.insertBefore('markup', 'tag', {
     inside: {
       'tag': {
         pattern: /(&lt;|<)style[\w\W]*?(>|&gt;)|(&lt;|<)\/style(>|&gt;)/ig,
-        inside: _.languages.markup.tag.inside
+        inside: _.languages.markup.tag.inside,
       },
-      rest: _.languages.css
-    }
-  }
+      rest: _.languages.css,
+    },
+  },
 });
 
 _.languages.clike = {
   'comment': {
     pattern: /(^|[^\\])(\/\*[\w\W]*?\*\/|(^|[^:])\/\/.*?(\r?\n|$))/g,
-    lookbehind: true
+    lookbehind: true,
   },
   'string': /("|')(\\?.)*?\1/g,
   'class-name': {
     pattern: /((?:(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/ig,
     lookbehind: true,
     inside: {
-      punctuation: /(\.|\\)/
-    }
+      punctuation: /(\.|\\)/,
+    },
   },
   'keyword': /\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/g,
   'boolean': /\b(true|false)\b/g,
   'function': {
     pattern: /[a-z0-9_]+\(/ig,
     inside: {
-      punctuation: /\(/
-    }
+      punctuation: /\(/,
+    },
   },
   'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?)\b/g,
   'operator': /[-+]{1,2}|!|&lt;=?|>=?|={1,3}|(&amp;){1,2}|\|?\||\?|\*|\/|\~|\^|\%/g,
   'ignore': /&(lt|gt|amp);/gi,
-  'punctuation': /[{}[\];(),.:]/g
+  'punctuation': /[{}[\];(),.:]/g,
 };
 
 _.languages.javascript = _.languages.extend('clike', {
   'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|get|set|new|with|typeof|try|throw|catch|finally|null|break|continue|this)\b/g,
-  'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?|NaN|-?Infinity)\b/g
+  'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?|NaN|-?Infinity)\b/g,
 });
 
 _.languages.insertBefore('javascript', 'keyword', {
   'regex': {
     pattern: /(^|[^/])\/(?!\/)(\[.+?]|\\.|[^/\r\n])+\/[gim]{0,3}(?=\s*($|[\r\n,.;})]))/g,
-    lookbehind: true
-  }
+    lookbehind: true,
+  },
 });
 
 _.languages.insertBefore('markup', 'tag', {
@@ -332,20 +333,20 @@ _.languages.insertBefore('markup', 'tag', {
     inside: {
       'tag': {
         pattern: /(&lt;|<)script[\w\W]*?(>|&gt;)|(&lt;|<)\/script(>|&gt;)/ig,
-        inside: _.languages.markup.tag.inside
+        inside: _.languages.markup.tag.inside,
       },
-      rest: _.languages.javascript
-    }
-  }
+      rest: _.languages.javascript,
+    },
+  },
 });
 
 var Prism = React.createClass({
   statics: {
-    _: _
+    _: _,
   },
   getDefaultProps: function() {
     return {
-      language: 'javascript'
+      language: 'javascript',
     };
   },
   render: function() {
@@ -355,7 +356,7 @@ var Prism = React.createClass({
         {Token.reactify(_.tokenize(this.props.children, grammar))}
       </pre>
     );
-  }
-})
+  },
+});
 
 module.exports = Prism;

@@ -23,7 +23,7 @@ const APP_PORT = 3000;
 var compiler = webpack({
   entry: path.resolve(__dirname, 'js', 'app.js'),
   eslint: {
-    configFile: '.eslintrc'
+    configFile: '.eslintrc',
   },
   module: {
     loaders: [
@@ -34,16 +34,16 @@ var compiler = webpack({
       },
       {
         test: /\.js$/,
-        loader: 'eslint'
-      }
-    ]
+        loader: 'eslint',
+      },
+    ],
   },
-  output: {filename: 'app.js', path: '/'}
+  output: {filename: 'app.js', path: '/'},
 });
 var app = new WebpackDevServer(compiler, {
   contentBase: '/public/',
   publicPath: '/js/',
-  stats: {colors: true}
+  stats: {colors: true},
 });
 // Serve static resources
 app.use('/', express.static('public'));

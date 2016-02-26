@@ -1,4 +1,6 @@
-"use strict";
+// Copyright 2004-present Facebook. All Rights Reserved.
+
+'use strict';
 
 var compression = require('compression');
 var connect = require('connect');
@@ -35,7 +37,7 @@ var buildOptions = {
   },
   serverRender: true,
   dev: argv.dev !== 'false',
-  static: true
+  static: true,
 };
 
 var app = connect()

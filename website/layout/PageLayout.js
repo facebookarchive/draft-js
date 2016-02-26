@@ -1,4 +1,6 @@
 /**
+ * Copyright 2004-present Facebook. All Rights Reserved.
+ *
  * @providesModule PageLayout
  * @jsx React.DOM
  */
@@ -20,7 +22,7 @@ var support = React.createClass({
         </section>
       </Site>
     );
-  }
+  },
 });
 
 module.exports = support;
