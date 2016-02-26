@@ -411,7 +411,16 @@ var RichTextEditorUtil = {
       }
 
       var type = block.getType();
-      if (type !== 'unstyled' && type !== 'code-block') {
+      var blockBefore = content.getBlockBefore(key);
+      if (
+        type === 'code-block' &&
+        blockBefore &&
+        blockBefore.getType() === 'code-block'
+      ) {
+        return null;
+      }
+
+      if (type !== 'unstyled') {
         return DraftModifier.setBlockType(content, selection, 'unstyled');
       }
     }
