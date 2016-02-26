@@ -20,6 +20,9 @@ export type DraftBlockType = (
   'paragraph' |
   'header-one' |
   'header-two' |
+  'header-three' |
+  'header-four' |
+  'header-five' |
   'unordered-list-item' |
   'ordered-list-item' |
   'blockquote' |
