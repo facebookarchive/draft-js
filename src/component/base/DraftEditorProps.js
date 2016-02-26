@@ -94,7 +94,7 @@ export type DraftEditorProps = {
   // to trigger some special behavior. E.g. immediately converting `:)` to an
   // emoji Unicode character, or replacing ASCII quote characters with smart
   // quotes.
-  handleBeforeInput?: (e: SyntheticInputEvent) => boolean,
+  handleBeforeInput?: (chars: string) => boolean,
 
   handlePastedFiles?: (files: Array<Blob>) => boolean,
 

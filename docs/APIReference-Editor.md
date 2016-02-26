@@ -152,9 +152,11 @@ for details on usage.
 
 #### handleBeforeInput
 ```
-handleBeforeInput?: (e: SyntheticInputEvent) => boolean
+handleBeforeInput?: (chars: string) => boolean
 ```
-Handle a `beforeInput` event before character insertion occurs within the editor.
+Handle the characters to be inserted from a `beforeInput` event. Returning `true`
+causes the default behavior of the `beforeInput` event to be prevented (i.e. it is
+the same as calling the `preventDefault` method on the event).
 Example usage: After a user has typed `- ` at the start of a new block, you might
 convert that `ContentBlock` into an `unordered-list-item`.
 
