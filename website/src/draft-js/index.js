@@ -231,9 +231,10 @@ var index = React.createClass({
             </p>
 
             <p>
-              In Draft.js, everything is customizable – we provide the building
-              blocks so that you have full control over the user interface.
-              Here's a simple example of a rich text editor built in Draft.js:
+              In Draft.js, everything is customizable &ndash; we provide the
+              building blocks so that you have full control over the user
+              interface. Here's a simple example of a rich text editor built in
+              Draft.js:
             </p>
 
             <div id="rich-example"></div>
