@@ -262,6 +262,7 @@ class DraftEditor
             ref="editor"
             role={readOnly ? null : (this.props.role || 'textbox')}
             spellCheck={allowSpellCheck && this.props.spellCheck}
+            suppressContentEditableWarning={true}
             tabIndex={this.props.tabIndex}
             title={hasContent ? null : this.props.placeholder}>
             <DraftEditorContents
