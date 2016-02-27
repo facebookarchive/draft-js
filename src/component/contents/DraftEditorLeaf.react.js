@@ -105,6 +105,7 @@ class DraftEditorLeaf extends React.Component {
   shouldComponentUpdate(nextProps: Props): boolean {
     return (
       ReactDOM.findDOMNode(this.refs.leaf).textContent !== nextProps.text ||
+      nextProps.styleSet !== this.props.styleSet ||
       nextProps.forceSelection
     );
   }
