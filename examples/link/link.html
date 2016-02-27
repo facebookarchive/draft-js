@@ -51,6 +51,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
           this.state = {
             editorState: EditorState.createEmpty(decorator),
+            showURLInput: false,
+            urlValue: '',
           };
 
           this.focus = () => this.refs.editor.focus();
@@ -60,35 +62,72 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             console.log(convertToRaw(content));
           };
 
-          this.addLink = this._addLink.bind(this);
+          this.promptForLink = this._promptForLink.bind(this);
+          this.onURLChange = (e) => this.setState({urlValue: e.target.value});
+          this.confirmLink = this._confirmLink.bind(this);
           this.removeLink = this._removeLink.bind(this);
         }
 
-        _addLink(e) {
+        _promptForLink(e) {
+          e.preventDefault();
           const {editorState} = this.state;
           const selection = editorState.getSelection();
-          if (selection.isCollapsed()) {
-            return;
+          if (!selection.isCollapsed()) {
+            this.setState({
+              showURLInput: true,
+              urlValue: '',
+            }, () => {
+              setTimeout(() => this.refs.url.focus(), 0);
+            });
           }
-          const href = window.prompt('Enter a URL');
-          const entityKey = Entity.create('link', 'MUTABLE', {href});
+        }
+
+        _confirmLink(e) {
+          e.preventDefault();
+          const {editorState, urlValue} = this.state;
+          const entityKey = Entity.create('link', 'MUTABLE', {href: urlValue});
           this.setState({
-            editorState: RichUtils.toggleLink(editorState, selection, entityKey),
+            editorState: RichUtils.toggleLink(
+              editorState,
+              editorState.getSelection(),
+              entityKey
+            ),
+            showURLInput: false,
+            urlValue: '',
+          }, () => {
+            setTimeout(() => this.refs.editor.focus(), 0);
           });
         }
 
         _removeLink(e) {
+          e.preventDefault();
           const {editorState} = this.state;
           const selection = editorState.getSelection();
-          if (selection.isCollapsed()) {
-            return;
+          if (!selection.isCollapsed()) {
+            this.setState({
+              editorState: RichUtils.toggleLink(editorState, selection, null),
+            });
           }
-          this.setState({
-            editorState: RichUtils.toggleLink(editorState, selection, null),
-          });
         }
 
         render() {
+          let urlInput;
+          if (this.state.showURLInput) {
+            urlInput =
+              <div style={styles.urlInputContainer}>
+                <input
+                  onChange={this.onURLChange}
+                  ref="url"
+                  style={styles.urlInput}
+                  type="text"
+                  value={this.state.urlValue}
+                />
+                <button onMouseDown={this.confirmLink}>
+                  Confirm
+                </button>
+              </div>;
+          }
+
           return (
             <div style={styles.root}>
               <div style={{marginBottom: 10}}>
@@ -96,13 +135,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 on the selected text.
               </div>
               <div style={styles.buttons}>
-                <button onMouseDown={this.addLink} style={{marginRight: 10}}>
+                <button
+                  onMouseDown={this.promptForLink}
+                  style={{marginRight: 10}}>
                   Add Link
                 </button>
                 <button onMouseDown={this.removeLink}>
                   Remove Link
                 </button>
               </div>
+              {urlInput}
               <div style={styles.editor} onClick={this.focus}>
                 <Editor
                   editorState={this.state.editorState}
@@ -152,6 +194,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
         buttons: {
           marginBottom: 10,
+        },
+        urlInputContainer: {
+          marginBottom: 10,
+        },
+        urlInput: {
+          fontFamily: '\'Georgia\', serif',
+          marginRight: 10,
+          padding: 3,
         },
         editor: {
           border: '1px solid #ccc',
