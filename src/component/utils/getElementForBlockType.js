@@ -17,9 +17,17 @@ import type {DraftBlockType} from 'DraftBlockType';
 function getElementForBlockType(blockType: DraftBlockType): string {
   switch (blockType) {
     case 'header-one':
-      return 'h2';
+      return 'h1';
     case 'header-two':
+      return 'h2';
+    case 'header-three':
       return 'h3';
+    case 'header-four':
+      return 'h4';
+    case 'header-five':
+      return 'h5';
+    case 'header-six':
+      return 'h6';
     case 'unordered-list-item':
     case 'ordered-list-item':
       return 'li';
