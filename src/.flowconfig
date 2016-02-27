@@ -2,6 +2,7 @@
 .*/__tests__.*
 .*/react/node_modules/.*
 .*/fbjs/node_modules/.*
+.*/node_modules/invariant/.*
 
 [include]
 ../node_modules/fbjs/lib/
