@@ -18,6 +18,7 @@ var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 
 var adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
+var nullthrows = require('nullthrows');
 
 import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
@@ -290,6 +291,23 @@ var RichTextEditorUtil = {
     var startKey = selection.getStartKey();
     var endKey = selection.getEndKey();
     var content = editorState.getCurrentContent();
+    var target = selection;
+
+    // Triple-click can lead to a selection that includes offset 0 of the
+    // following block. The `SelectionState` for this case is accurate, but
+    // we should avoid toggling block type for the trailing block because it
+    // is a confusing interaction.
+    if (startKey !== endKey && selection.getEndOffset() === 0) {
+      var blockBefore = nullthrows(content.getBlockBefore(endKey));
+      endKey = blockBefore.getKey();
+      target = target.merge({
+        anchorKey: startKey,
+        anchorOffset: selection.getStartOffset(),
+        focusKey: endKey,
+        focusOffset: blockBefore.getLength(),
+        isBackward: false,
+      });
+    }
 
     var hasMedia = content.getBlockMap()
       .skipWhile((_, k) => k !== startKey)
@@ -306,7 +324,7 @@ var RichTextEditorUtil = {
 
     return EditorState.push(
       editorState,
-      DraftModifier.setBlockType(content, selection, typeToSet),
+      DraftModifier.setBlockType(content, target, typeToSet),
       'change-block-type'
     );
   },
