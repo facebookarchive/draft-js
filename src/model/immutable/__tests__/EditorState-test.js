@@ -215,9 +215,9 @@ describe('EditorState', () => {
 
     beforeEach(() => {
       Decorator.prototype.getDecorations.mockClear();
-      Decorator.prototype.getDecorations.mockImplementation(
-        v => v === boldBlock ? boldA : List(Repeat(undefined, v.getLength()))
-      );
+      Decorator.prototype.getDecorations.mockImplementation(v => {
+        return v === boldBlock ? boldA : List(Repeat(undefined, v.getLength()));
+      });
     });
 
     it('must set a new decorator', () => {
@@ -225,13 +225,13 @@ describe('EditorState', () => {
       var editorState = getDecoratedEditorState(decorator);
       expect(decorator.getDecorations.mock.calls.length).toBe(2);
 
-      Decorator.prototype.getDecorations.mockImplementation(
-        v => v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()))
-      );
+      Decorator.prototype.getDecorations.mockImplementation(v => {
+        return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
+      });
       var newDecorator = new NextDecorator();
-      NextDecorator.prototype.getDecorations.mockImplementation(
-        v => v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()))
-      );
+      NextDecorator.prototype.getDecorations.mockImplementation(v => {
+        return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
+      });
 
       var withNewDecorator = EditorState.set(editorState, {
         decorator: newDecorator,

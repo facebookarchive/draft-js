@@ -98,7 +98,9 @@ class ContentState extends ContentStateRecord {
 
   getPlainText(delimiter?: string): string {
     return this.getBlockMap()
-      .map(block => block ? block.getText() : '')
+      .map(block => {
+        return block ? block.getText() : '';
+      })
       .join(delimiter || '\n');
   }
 
