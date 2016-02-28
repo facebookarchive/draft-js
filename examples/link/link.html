@@ -65,6 +65,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.promptForLink = this._promptForLink.bind(this);
           this.onURLChange = (e) => this.setState({urlValue: e.target.value});
           this.confirmLink = this._confirmLink.bind(this);
+          this.onLinkInputKeyDown = this._onLinkInputKeyDown.bind(this);
           this.removeLink = this._removeLink.bind(this);
         }
 
@@ -85,7 +86,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         _confirmLink(e) {
           e.preventDefault();
           const {editorState, urlValue} = this.state;
-          const entityKey = Entity.create('link', 'MUTABLE', {href: urlValue});
+          const entityKey = Entity.create('LINK', 'MUTABLE', {url: urlValue});
           this.setState({
             editorState: RichUtils.toggleLink(
               editorState,
@@ -97,6 +98,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           }, () => {
             setTimeout(() => this.refs.editor.focus(), 0);
           });
+        }
+
+        _onLinkInputKeyDown(e) {
+          if (e.which === 13) {
+            this._confirmLink(e);
+          }
         }
 
         _removeLink(e) {
@@ -121,6 +128,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   style={styles.urlInput}
                   type="text"
                   value={this.state.urlValue}
+                  onKeyDown={this.onLinkInputKeyDown}
                 />
                 <button onMouseDown={this.confirmLink}>
                   Confirm
@@ -170,7 +178,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             const entityKey = character.getEntity();
             return (
               entityKey !== null &&
-              Entity.get(entityKey).getType() === 'link'
+              Entity.get(entityKey).getType() === 'LINK'
             );
           },
           callback
@@ -178,9 +186,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       const Link = (props) => {
-        const {href} = Entity.get(props.entityKey).getData();
+        const {url} = Entity.get(props.entityKey).getData();
         return (
-          <a href={href} style={styles.link}>
+          <a href={url} style={styles.link}>
             {props.children}
           </a>
         );
