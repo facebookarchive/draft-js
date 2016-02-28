@@ -39,6 +39,12 @@ Draft.js is used in production on Facebook, including status and
 comment inputs, [Notes](https://www.facebook.com/notes/), and
 [messenger.com](https://www.messenger.com).
 
+## Discussion and Support
+
+Join our [Slack team](https://draftjs.slack.com)! Signup is currently invite-only.
+Use your email address to
+[request an invite](http://goo.gl/forms/ru9B3HNcXJ) and we'll add you soon.
+
 ## Contribute
 
 We actively welcome pull requests. Learn how to
