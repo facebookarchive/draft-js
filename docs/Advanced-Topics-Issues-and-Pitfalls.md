@@ -73,3 +73,7 @@ interaction.
 
 As of IE11, Internet Explorer demonstrates notable issues with certain international
 input methods, most significantly Korean input.
+
+### Polyfills
+
+Some of Draft's code and that of its dependencies make use of ES2015 language features. Syntax features like `class` are compiled away via Babel, but new polyfillable APIs are left intact. One example of this is `String.prototype.startsWith`. As a result, it is expected that your browser supports these APIs, either natively or with the assistance of a polyfill. One such polyfill is [es6-shim](https://github.com/es-shims/es6-shim), which we are using in our examples.
