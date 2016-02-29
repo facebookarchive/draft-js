@@ -129,6 +129,8 @@ function getBlockTypeForTag(tag: string, lastList: ?string): DraftBlockType {
       return 'header-four';
     case 'h5':
       return 'header-five';
+    case 'h6':
+      return 'header-six';
     case 'li':
       if (lastList === 'ol') {
         return 'ordered-list-item';
