@@ -191,7 +191,7 @@ Returns the `ContentBlock` corresponding to the given block key.
 
 ```
 var {editorState} = this.state;
-var blockKey = editorState.getSelection().getStartKey();
+var startKey = editorState.getSelection().getStartKey();
 var selectedBlockType = editorState
   .getCurrentContent()
   .getBlockForKey(startKey)
