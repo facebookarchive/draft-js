@@ -41,9 +41,7 @@ comment inputs, [Notes](https://www.facebook.com/notes/), and
 
 ## Discussion and Support
 
-Join our [Slack team](https://draftjs.slack.com)! Signup is currently invite-only.
-Use your email address to
-[request an invite](http://goo.gl/forms/ru9B3HNcXJ) and we'll add you soon.
+Join our [Slack team](https://draftjs.herokuapp.com)!
 
 ## Contribute
 
