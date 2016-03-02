@@ -6,18 +6,18 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule generateBlockKey
+ * @providesModule generateRandomKey
  * @typechecks
  * @flow
  */
 
 'use strict';
 
-var seenKeys = {};
-var MULTIPLIER = Math.pow(2, 24);
+const seenKeys = {};
+const MULTIPLIER = Math.pow(2, 24);
 
-function generateBlockKey(): string {
-  var key;
+function generateRandomKey(): string {
+  let key;
   while (key === undefined || seenKeys.hasOwnProperty(key) || !isNaN(+key)) {
     key = Math.floor(Math.random() * MULTIPLIER).toString(32);
   }
@@ -25,4 +25,4 @@ function generateBlockKey(): string {
   return key;
 }
 
-module.exports = generateBlockKey;
+module.exports = generateRandomKey;

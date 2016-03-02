@@ -13,7 +13,7 @@
 
 'use strict';
 
-var generateBlockKey = require('generateBlockKey');
+var generateRandomKey = require('generateRandomKey');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
 import type {BlockMap} from 'BlockMap';
@@ -43,7 +43,7 @@ function getContentStateFragment(
   var endIndex = blockKeys.indexOf(endKey) + 1;
 
   var slice = blockMap.slice(startIndex, endIndex).map((block, blockKey) => {
-    var newKey = generateBlockKey();
+    var newKey = generateRandomKey();
 
     var text = block.getText();
     var chars = block.getCharacterList();

@@ -13,7 +13,7 @@
 
 'use strict';
 
-var generateBlockKey = require('generateBlockKey');
+var generateRandomKey = require('generateRandomKey');
 var invariant = require('invariant');
 
 import type ContentState from 'ContentState';
@@ -41,7 +41,7 @@ function splitBlockInContentState(
     characterList: chars.slice(0, offset),
   });
 
-  var keyBelow = generateBlockKey();
+  var keyBelow = generateRandomKey();
   var blockBelow = blockAbove.merge({
     key: keyBelow,
     text: text.slice(offset),
