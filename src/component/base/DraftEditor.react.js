@@ -220,7 +220,7 @@ class DraftEditor
     const hasContent = this.props.editorState.getCurrentContent().hasText();
 
     return (
-      <div className={rootClass}>
+      <div className={rootClass} style={this.props.style}>
         {this._renderPlaceholder()}
         <div
           className={cx('DraftEditor/editorContainer')}
