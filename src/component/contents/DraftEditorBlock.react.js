@@ -182,6 +182,7 @@ class DraftEditorBlock extends React.Component {
       return (
         <DecoratorComponent
           {...decoratorProps}
+          decoratedText={decoratedText}
           dir={dir}
           key={decoratorOffsetKey}
           entityKey={block.getEntityAt(leafSet.get('start'))}
