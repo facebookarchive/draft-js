@@ -19,7 +19,7 @@ var DraftEntity = require('DraftEntity');
 var Immutable = require('immutable');
 var URI = require('URI');
 
-var generateBlockKey = require('generateBlockKey');
+var generateRandomKey = require('generateRandomKey');
 var getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 var invariant = require('invariant');
 var nullthrows = require('nullthrows');
@@ -449,7 +449,7 @@ var DraftPasteProcessor = {
         start = end + 1;
 
         return new ContentBlock({
-          key: generateBlockKey(),
+          key: generateRandomKey(),
           type: nullthrows(chunk).blocks[ii].type,
           depth: nullthrows(chunk).blocks[ii].depth,
           text: textBlock,
@@ -467,7 +467,7 @@ var DraftPasteProcessor = {
       textLine => {
         textLine = sanitizeDraftText(textLine);
         return new ContentBlock({
-          key: generateBlockKey(),
+          key: generateRandomKey(),
           type: 'unstyled',
           text: textLine,
           characterList: List(Repeat(character, textLine.length)),

@@ -27,7 +27,7 @@ const SelectionState = require('SelectionState');
 
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
-const generateBlockKey = require('generateBlockKey');
+const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 
 const DraftPublic = {
@@ -50,7 +50,7 @@ const DraftPublic = {
 
   convertFromRaw: convertFromRawToDraftState,
   convertToRaw: convertFromDraftStateToRaw,
-  genKey: generateBlockKey,
+  genKey: generateRandomKey,
   getDefaultKeyBinding: getDefaultKeyBinding,
 };
 
