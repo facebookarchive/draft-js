@@ -14,8 +14,10 @@
 
 import type ContentBlock from 'ContentBlock';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type {DraftDragType} from 'DraftDragType';
 import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
+import type SelectionState from 'SelectionState';
 
 export type DraftEditorProps = {
   /**
@@ -97,6 +99,19 @@ export type DraftEditorProps = {
   handleBeforeInput?: (chars: string) => boolean,
 
   handlePastedFiles?: (files: Array<Blob>) => boolean,
+
+  // Handle dropped files
+  handleDroppedFiles?: (
+    selection: SelectionState,
+    files: Array<Blob>
+  ) => boolean,
+
+  // Handle other drops to prevent default text movement/insertion behaviour
+  handleDrop?: (
+    selection: SelectionState,
+    dataTransfer: Object,
+    isInternal: DraftDragType
+  ) => boolean,
 
   /**
    * Non-cancelable event triggers.

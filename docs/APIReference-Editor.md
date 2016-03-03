@@ -169,6 +169,18 @@ handlePastedFiles?: (files: Array<Blob>) => boolean
 ```
 Handle files that have been pasted directly into the editor.
 
+#### handleDroppedFiles
+```
+handleDroppedFiles?: (selection: SelectionState, files: Array<Blob>) => boolean
+```
+Handle files that have been dropped into the editor.
+
+#### handleDrop
+```
+handleDrop?: (selection: SelectionState, dataTransfer: Object, isInternal: DraftDragType) => boolean
+```
+Handle other drop operations.
+
 ### Key Handlers (Optional)
 
 These prop functions expose common useful key events. Example: At Facebook, these are
