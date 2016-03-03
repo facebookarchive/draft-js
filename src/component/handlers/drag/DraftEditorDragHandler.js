@@ -104,6 +104,11 @@ var DraftEditorDragHandler = {
       return;
     }
 
+    if (this.props.handleDrop && 
+        this.props.handleDrop(dropSelection, data)) {
+      return;
+    }
+    
     if (this._internalDrag) {
       this.update(moveText(editorState, dropSelection));
       return;
