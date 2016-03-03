@@ -171,13 +171,13 @@ Handle files that have been pasted directly into the editor.
 
 #### handleDroppedFiles
 ```
-handleDroppedFiles?: (selection: SelectionState, files: Array<Blob>) => boolean,
+handleDroppedFiles?: (selection: SelectionState, files: Array<Blob>) => boolean
 ```
 Handle files that have been dropped into the editor.
 
 #### handleDrop
 ```
-handleDrop?: (selection: SelectionState, dataTransfer: DataTransfer, isInternal: boolean) => boolean,
+handleDrop?: (selection: SelectionState, dataTransfer: DataTransfer, isInternal: boolean) => boolean
 ```
 Handle other drop operations.
 
