@@ -177,7 +177,7 @@ Handle files that have been dropped into the editor.
 
 #### handleDrop
 ```
-handleDrop?: (selection: SelectionState, dataTransfer: DataTransfer, isInternal: boolean) => boolean
+handleDrop?: (selection: SelectionState, dataTransfer: DataTransfer, isInternal: DraftDragType) => boolean
 ```
 Handle other drop operations.
 

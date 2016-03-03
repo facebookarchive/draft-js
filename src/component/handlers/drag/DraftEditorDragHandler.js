@@ -103,9 +103,10 @@ var DraftEditorDragHandler = {
       });
       return;
     }
-
+    
+    const dragType = this._internalDrag ? 'internal' : 'external';
     if (this.props.handleDrop && 
-        this.props.handleDrop(dropSelection, data, this._internalDrag)) {
+        this.props.handleDrop(dropSelection, data, dragType)) {
       return;
     }
     
