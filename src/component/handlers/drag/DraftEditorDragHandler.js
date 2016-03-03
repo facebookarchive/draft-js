@@ -105,7 +105,7 @@ var DraftEditorDragHandler = {
     }
 
     if (this.props.handleDrop && 
-        this.props.handleDrop(dropSelection, data)) {
+        this.props.handleDrop(dropSelection, data, this._internalDrag)) {
       return;
     }
     
