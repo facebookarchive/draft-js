@@ -14,8 +14,10 @@
 
 import type ContentBlock from 'ContentBlock';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type {DraftDragType} from 'DraftDragType';
 import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
+import type SelectionState from 'SelectionState';
 
 export type DraftEditorProps = {
   /**
