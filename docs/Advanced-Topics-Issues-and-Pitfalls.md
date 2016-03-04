@@ -32,6 +32,18 @@ you must always allow your `EditorState` to propagate to your `Editor`
 component without delay, and independently perform batched updates that do
 not affect the state of your `Editor` component.
 
+### Missing Draft.css
+
+The Draft framework includes a handful of CSS resources intended for use with
+the editor, available in a single file via the build, Draft.css.
+
+This CSS should be included when rendering the editor, as these styles set defaults
+for text alignment, spacing, and other important features. Without it, you may
+encounter issues with block positioning, alignment, and cursor behavior.
+
+If you choose to write your own CSS independent of Draft.css, you will most
+likely need to replicate much of the default styling.
+
 ## Known Issues
 
 ### React ContentEditable Warning
