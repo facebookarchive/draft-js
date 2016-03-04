@@ -39,7 +39,7 @@ function convertFromRawToDraftState(
 
   return blocks.map(
     block => {
-      var {key, type, text, depth, inlineStyleRanges, entityRanges} = block;
+      var {key, type, text, depth, inlineStyleRanges, entityRanges, blockEntity} = block;
       key = key || generateRandomKey();
       depth = depth || 0;
       inlineStyleRanges = inlineStyleRanges || [];
@@ -57,7 +57,7 @@ function convertFromRawToDraftState(
       var entities = decodeEntityRanges(text, filteredEntityRanges);
       var characterList = createCharacterList(inlineStyles, entities);
 
-      return new ContentBlock({key, type, text, depth, characterList});
+      return new ContentBlock({key, type, text, depth, characterList, blockEntity});
     }
   );
 }

@@ -34,13 +34,15 @@ var defaultRecord: {
   type: DraftBlockType;
   text: string;
   characterList: List<CharacterMetadata>;
-  depth: number;
+  depth: number,
+  blockEntity: ?string;
 } = {
   key: '',
   type: 'unstyled',
   text: '',
   characterList: List(),
   depth: 0,
+  blockEntity: null,
 };
 
 var ContentBlockRecord = Record(defaultRecord);
@@ -78,6 +80,10 @@ class ContentBlock extends ContentBlockRecord {
   getEntityAt(offset: number): ?string {
     var character = this.getCharacterList().get(offset);
     return character ? character.getEntity() : null;
+  }
+
+  getBlockEntity(): ?string {
+    return this.get('blockEntity');
   }
 
   /**

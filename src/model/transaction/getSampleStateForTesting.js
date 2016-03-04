@@ -32,6 +32,7 @@ var BLOCKS = [
     characterList: Immutable.List(
       Immutable.Repeat(CharacterMetadata.EMPTY, 5)
     ),
+    blockEntity: 'EntityA',
   }),
   new ContentBlock({
     key: 'b',
