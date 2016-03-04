@@ -70,9 +70,11 @@ describe('EditorBidiService', () => {
     var directions = EditorBidiService.getDirectionMap(state);
 
     var nextState = getContentState([ltr]);
+
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
+      state      
     );
 
     expect(state).not.toBe(nextState);
@@ -92,7 +94,8 @@ describe('EditorBidiService', () => {
     var nextState = getContentState([newLTR]);
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
+      state
     );
 
     expect(state).not.toBe(nextState);
@@ -112,7 +115,8 @@ describe('EditorBidiService', () => {
     var nextState = getContentState([newLTR]);
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
+      state
     );
 
     expect(state).not.toBe(nextState);
@@ -131,7 +135,8 @@ describe('EditorBidiService', () => {
     var nextState = getContentState([newLTR]);
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
+      state
     );
 
     expect(state).not.toBe(nextState);
@@ -162,7 +167,8 @@ describe('EditorBidiService', () => {
     var nextState = getContentState([ltr, rtl]);
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
+      state
     );
 
     expect(state).not.toBe(nextState);

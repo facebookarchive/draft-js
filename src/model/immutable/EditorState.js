@@ -340,7 +340,8 @@ class EditorState {
     var forceSelection = changeType !== 'insert-characters';
     var directionMap = EditorBidiService.getDirectionMap(
       contentState,
-      editorState.getDirectionMap()
+      editorState.getDirectionMap(),
+      editorState.getCurrentContent(),
     );
 
     if (!editorState.getAllowUndo()) {
