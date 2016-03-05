@@ -11,7 +11,11 @@ component tree, which can cause a disconnect between keystrokes and updates.</p>
 separate the delay behavior from your <code>Editor</code> state propagation. That is,
 you must always allow your <code>EditorState</code> to propagate to your <code>Editor</code>
 component without delay, and independently perform batched updates that do
-not affect the state of your <code>Editor</code> component.</p><h2><a class="anchor" name="known-issues"></a>Known Issues <a class="hash-link" href="#known-issues">#</a></h2><h3><a class="anchor" name="react-contenteditable-warning"></a>React ContentEditable Warning <a class="hash-link" href="#react-contenteditable-warning">#</a></h3><p>Within the React core, a warning is used to ward off engineers who wish to
+not affect the state of your <code>Editor</code> component.</p><h3><a class="anchor" name="missing-draft-css"></a>Missing Draft.css <a class="hash-link" href="#missing-draft-css">#</a></h3><p>The Draft framework includes a handful of CSS resources intended for use with
+the editor, available in a single file via the build, Draft.css.</p><p>This CSS should be included when rendering the editor, as these styles set defaults
+for text alignment, spacing, and other important features. Without it, you may
+encounter issues with block positioning, alignment, and cursor behavior.</p><p>If you choose to write your own CSS independent of Draft.css, you will most
+likely need to replicate much of the default styling.</p><h2><a class="anchor" name="known-issues"></a>Known Issues <a class="hash-link" href="#known-issues">#</a></h2><h3><a class="anchor" name="react-contenteditable-warning"></a>React ContentEditable Warning <a class="hash-link" href="#react-contenteditable-warning">#</a></h3><p>Within the React core, a warning is used to ward off engineers who wish to
 use ContentEditable within their components, since by default the
 browser-controlled nature of ContentEditable does not mesh with strict React
 control over the DOM. The Draft editor resolves this issue, so for our case,
