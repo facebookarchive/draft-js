@@ -219,6 +219,11 @@ class DraftEditor
     });
     const hasContent = this.props.editorState.getCurrentContent().hasText();
 
+    const contentStyle = {
+      outline: 'none',
+      whiteSpace: 'pre-wrap',
+    };
+
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
@@ -262,6 +267,7 @@ class DraftEditor
             ref="editor"
             role={readOnly ? null : (this.props.role || 'textbox')}
             spellCheck={allowSpellCheck && this.props.spellCheck}
+            style={contentStyle}
             tabIndex={this.props.tabIndex}
             title={hasContent ? null : this.props.placeholder}>
             <DraftEditorContents

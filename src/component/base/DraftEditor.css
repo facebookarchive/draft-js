@@ -29,11 +29,6 @@
   z-index: 1;
 }
 
-.public/DraftEditor/content {
-  outline: none;
-  white-space: pre-wrap;
-}
-
 .public/DraftEditor/block {
   position: relative;
 }
