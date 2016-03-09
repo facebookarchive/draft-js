@@ -4,6 +4,12 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.2.1 (March 9, 2016)
+
+### Added
+
+* React 15 RC as peer/dev dependency, provide `suppressContentEditableWarning`
+
 ## 0.2.0 (March 8, 2016)
 
 ### Added
