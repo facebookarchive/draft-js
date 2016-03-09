@@ -55,6 +55,11 @@ var buildDist = function(opts) {
       library: 'Draft',
     },
     plugins: [
+      new webpackStream.webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(
+          opts.debug ? 'development' : 'production'
+        ),
+      }),
       new webpackStream.webpack.optimize.OccurenceOrderPlugin(),
       new webpackStream.webpack.optimize.DedupePlugin(),
     ],
