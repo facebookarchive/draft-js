@@ -12,16 +12,13 @@ Changes to `src` are live in production on facebook.com at the time of release.
 * `handleDrop` prop method for `Editor` to allow manual drop management
 * `decoratedText` prop for decorator components
 * `getVisibleSelectionRect`, to provide Rect for DOM selection
-* Create Slack team inviter
 * Export `KeyBindingUtil` and `getDefaultKeyBinding`
-* Website autobuild, Travis/NPM badges
 
 ### Fixed
 
 * Triple-clicks followed by block type changes now only affect first block
 * `DraftEditorLeaf` now re-renders correctly when its styles change
 * Backspace behavior within empty code blocks
-* Documentation typos, broken examples
 
 ## 0.1.0 (February 22, 2016)
 
