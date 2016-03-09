@@ -53,7 +53,7 @@ class MyEditor extends React.Component {
     this.onChange = (editorState) => this.setState({editorState});
   }
   handleKeyCommand(command) {
-    const newState = RichUtils.handleKeyCommand(this.editorState, command);
+    const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
     if (newState) {
       this.onChange(newState);
       return true;
