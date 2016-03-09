@@ -30,7 +30,7 @@ to provide information about the text that the user has written.
 class MyInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: '' }
+    this.state = {value: ''};
     this.onChange = (evt) => this.setState({value: evt.target.value});
   }
   render() {
@@ -66,7 +66,7 @@ import {Editor, EditorState} from 'draft-js';
 class MyEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() }
+    this.state = {editorState: EditorState.createEmpty()};
     this.onChange = (editorState) => this.setState({editorState});
   }
   render() {

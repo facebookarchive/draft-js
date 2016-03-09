@@ -49,7 +49,7 @@ import {Editor, EditorState, RichUtils} from 'draft-js';
 class MyEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editorState: EditorState.createEmpty() }
+    this.state = {editorState: EditorState.createEmpty()};
     this.onChange = (editorState) => this.setState({editorState});
   }
   handleKeyCommand(command) {
