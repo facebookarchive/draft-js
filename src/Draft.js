@@ -17,6 +17,7 @@ const CompositeDraftDecorator = require('CompositeDraftDecorator');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const DraftEditor = require('DraftEditor.react');
+const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftModifier = require('DraftModifier');
 const DraftEntity = require('DraftEntity');
 const DraftEntityInstance = require('DraftEntityInstance');
@@ -32,6 +33,7 @@ const getDefaultKeyBinding = require('getDefaultKeyBinding');
 
 const DraftPublic = {
   Editor: DraftEditor,
+  EditorBlock: DraftEditorBlock,
   EditorState,
 
   CompositeDecorator: CompositeDraftDecorator,
