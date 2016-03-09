@@ -4,6 +4,12 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.2.2 (March 9, 2016)
+
+### Fixed
+
+* Build before publish to get the warning suppression in place correctly
+
 ## 0.2.1 (March 9, 2016)
 
 ### Added
