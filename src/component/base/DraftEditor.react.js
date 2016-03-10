@@ -28,6 +28,7 @@ const UserAgent = require('UserAgent');
 
 const cx = require('cx');
 const emptyFunction = require('emptyFunction');
+const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const nullthrows = require('nullthrows');
 const getScrollPosition = require('getScrollPosition');
@@ -90,6 +91,7 @@ class DraftEditor
   _guardAgainstRender: boolean;
   _handler: ?Object;
   _dragCount: number;
+  _editorKey: string;
 
   /**
    * Define proxies that can route events to the current handler.
@@ -124,6 +126,7 @@ class DraftEditor
   removeRenderGuard: () => void;
   setClipboard: (clipboard?: BlockMap) => void;
   getClipboard: () => ?BlockMap;
+  getEditorKey: () => string;
   update: (editorState: EditorState) => void;
   onDragEnter: () => void;
   onDragLeave: () => void;
@@ -136,6 +139,7 @@ class DraftEditor
     this._guardAgainstRender = false;
     this._handler = null;
     this._dragCount = 0;
+    this._editorKey = generateRandomKey();
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');
     this._onBlur = this._buildHandler('onBlur');
@@ -168,6 +172,7 @@ class DraftEditor
     this.removeRenderGuard = this._removeRenderGuard.bind(this);
     this.setClipboard = this._setClipboard.bind(this);
     this.getClipboard = this._getClipboard.bind(this);
+    this.getEditorKey = () => this._editorKey;
     this.update = this._update.bind(this);
     this.onDragEnter = this._onDragEnter.bind(this);
     this.onDragLeave = this._onDragLeave.bind(this);
@@ -277,6 +282,7 @@ class DraftEditor
               customStyleMap={
                 {...DefaultDraftInlineStyle, ...this.props.customStyleMap}
               }
+              editorKey={this._editorKey}
               editorState={this.props.editorState}
             />
           </div>

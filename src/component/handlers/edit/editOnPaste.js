@@ -85,7 +85,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     }
   }
 
-  var textBlocks: ?Array<string> = null;
+  let textBlocks: Array<string> = [];
   var text = data.getText();
   this.props.onPasteRawText && this.props.onPasteRawText(text);
   if (text) {
@@ -100,35 +100,32 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     // stripped during comparison -- this is because copy/paste within the
     // editor in Firefox and IE will not include empty lines. The resulting
     // paste will preserve the newlines correctly.
-    if (data.isRichText() && this.getClipboard()) {
-      textBlocks = nullthrows(textBlocks);
-      var textBlocksWithoutNewlines = textBlocks.filter(filterOutNewlines);
-      var currentClipboard = this.getClipboard();
-      var clipboardWithoutNewlines = currentClipboard
-        .toSeq()
-        .map(clipBlock => clipBlock.getText())
-        .filter(filterOutNewlines)
-        .toArray();
-
-      var clipboardMatch = textBlocksWithoutNewlines.every(
-        (line, ii) => line === clipboardWithoutNewlines[ii]
-      );
-
-      if (clipboardMatch) {
+    const html = data.getHTML();
+    const internalClipboard = this.getClipboard();
+    if (data.isRichText() && internalClipboard) {
+      if (
+        // If the editorKey is present in the pasted HTML, it should be safe to
+        // assume this is an internal paste.
+        html.indexOf(this.getEditorKey()) !== -1 ||
+        // The copy may have been made within a single block, in which case the
+        // editor key won't be part of the paste. In this case, just check
+        // whether the pasted text matches the internal clipboard.
+        (
+          textBlocks.length === 1 &&
+          internalClipboard.size === 1 &&
+          internalClipboard.first().getText() === text
+        )
+      ) {
         this.update(
-          insertFragment(this.props.editorState, currentClipboard)
+          insertFragment(this.props.editorState, internalClipboard)
         );
         return;
       }
     }
 
     // If there is html paste data, try to parse that.
-    var htmlData = data.getHTML();
-    if (htmlData) {
-      var htmlFragment = DraftPasteProcessor.processHTML(
-        htmlData,
-      );
-
+    if (html) {
+      var htmlFragment = DraftPasteProcessor.processHTML(html);
       if (htmlFragment) {
         var htmlMap = BlockMapBuilder.createFromArray(htmlFragment);
         this.update(insertFragment(this.props.editorState, htmlMap));
