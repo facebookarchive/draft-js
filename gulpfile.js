@@ -11,6 +11,7 @@
 
 var babel = require('gulp-babel');
 var del = require('del');
+var cleanCSS = require('gulp-clean-css');
 var concatCSS = require('gulp-concat-css');
 var derequire = require('gulp-derequire');
 var flatten = require('gulp-flatten');
@@ -133,6 +134,8 @@ gulp.task('css', function() {
       callback(null, file);
     }))
     .pipe(concatCSS('Draft.css'))
+    // Avoid rewriting rules *just in case*, just compress
+    .pipe(cleanCSS({advanced: false}))
     .pipe(gulp.dest(paths.dist));
 });
 
