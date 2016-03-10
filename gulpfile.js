@@ -17,6 +17,8 @@ var derequire = require('gulp-derequire');
 var flatten = require('gulp-flatten');
 var gulp = require('gulp');
 var gulpUtil = require('gulp-util');
+var header = require('gulp-header');
+var packageData = require('./package.json');
 var runSequence = require('run-sequence');
 var through = require('through2');
 var webpackStream = require('webpack-stream');
@@ -41,6 +43,18 @@ var paths = {
 // Ensure that we use another plugin that isn't specified in the default Babel
 // options, converting __DEV__.
 babelOpts.plugins.push(babelPluginDEV);
+
+var COPYRIGHT_HEADER = `/**
+ * Draft v<%= version %>
+ *
+ * Copyright (c) 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+`;
 
 var buildDist = function(opts) {
   var webpackOpts = {
@@ -136,6 +150,7 @@ gulp.task('css', function() {
     .pipe(concatCSS('Draft.css'))
     // Avoid rewriting rules *just in case*, just compress
     .pipe(cleanCSS({advanced: false}))
+    .pipe(header(COPYRIGHT_HEADER, {version: packageData.version}))
     .pipe(gulp.dest(paths.dist));
 });
 
@@ -147,6 +162,7 @@ gulp.task('dist', ['modules', 'css'], function() {
   return gulp.src('./lib/Draft.js')
     .pipe(buildDist(opts))
     .pipe(derequire())
+    .pipe(header(COPYRIGHT_HEADER, {version: packageData.version}))
     .pipe(gulp.dest(paths.dist));
 });
 
@@ -157,6 +173,7 @@ gulp.task('dist:min', ['modules'], function() {
   };
   return gulp.src('./lib/Draft.js')
     .pipe(buildDist(opts))
+    .pipe(header(COPYRIGHT_HEADER, {version: packageData.version}))
     .pipe(gulp.dest(paths.dist));
 });
 
