@@ -32,6 +32,7 @@ const convertFromHTMLToContentBlocks =
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
+const getVisibleSelectionRect = require('getVisibleSelectionRect');
 
 const DraftPublic = {
   Editor: DraftEditor,
@@ -57,6 +58,7 @@ const DraftPublic = {
   convertToRaw: convertFromDraftStateToRaw,
   genKey: generateRandomKey,
   getDefaultKeyBinding: getDefaultKeyBinding,
+  getVisibleSelectionRect: getVisibleSelectionRect,
 };
 
 module.exports = DraftPublic;
