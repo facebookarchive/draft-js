@@ -40,6 +40,7 @@ function myBlockRenderer(contentBlock) {
   if (type === 'media') {
     return {
       component: MediaComponent,
+      editable: false,
       props: {
         foo: 'bar',
       },
@@ -62,7 +63,8 @@ If no custom renderer object is returned by the `blockRendererFn` function,
 
 The `component` property defines the component to be used, while the optional
 `props` object includes props that will be passed through to the rendered
-custom component.
+custom component. In addition, the optional `editable` property determines
+whether the custom component is `contentEditable`.
 
 By defining this function within the context of a higher-level component,
 the props for this custom component may be bound to that component, allowing
@@ -80,7 +82,8 @@ code.
 import {Entity} from 'draft-js';
 class MediaComponent extends React.Component {
   render() {
-    const {block, foo} = this.props;
+    const {block} = this.props;
+    const {foo} = this.props.blockProps;
     const data = Entity.get(block.getEntityAt(0)).getData();
     // Return a <figure> or some other content using this data.
   }
