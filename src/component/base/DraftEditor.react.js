@@ -227,6 +227,8 @@ class DraftEditor
     const contentStyle = {
       outline: 'none',
       whiteSpace: 'pre-wrap',
+      wordWrap: 'break-word',
+      wordBreak: 'break-all',
     };
 
     return (
