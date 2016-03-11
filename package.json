@@ -28,7 +28,7 @@
     "test-ci": "NODE_ENV=test npm run lint && npm run test"
   },
   "dependencies": {
-    "fbjs": "^0.8.0-alpha.1",
+    "fbjs": "^0.8.0-alpha.2",
     "immutable": "^3.7.4"
   },
   "peerDependencies": {
