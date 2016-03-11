@@ -30,6 +30,7 @@ to provide information about the text that the user has written.
 class MyInput extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {value: ''};
     this.onChange = (evt) => this.setState({value: evt.target.value});
   }
   render() {
@@ -60,15 +61,16 @@ selection within the editor will create new `EditorState` objects. Note that
 this remains efficient due to data persistence across immutable objects.
 
 ```js
-import {Editor} from 'draft-js';
+import {Editor, EditorState} from 'draft-js';
+
 class MyEditor extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {editorState: EditorState.createEmpty()};
     this.onChange = (editorState) => this.setState({editorState});
   }
   render() {
-    const {editorState} = this.state;
-    return <Editor editorState={editorState} onChange={this.onChange} />;
+    return <Editor editorState={this.state.editorState} onChange={this.onChange} />;
   }
 }
 ```

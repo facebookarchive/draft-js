@@ -44,15 +44,16 @@ We can observe and handle key commands via the `handleKeyCommand` prop, and
 hook these into `RichUtils` to apply or remove the desired style.
 
 ```js
-import {Editor, RichUtils} from 'draft-js';
+import {Editor, EditorState, RichUtils} from 'draft-js';
+
 class MyEditor extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {editorState: EditorState.createEmpty()};
     this.onChange = (editorState) => this.setState({editorState});
   }
   handleKeyCommand(command) {
-    const {editorState} = this.state;
-    const newState = RichUtils.handleKeyCommand(editorState, command);
+    const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
     if (newState) {
       this.onChange(newState);
       return true;
@@ -60,10 +61,9 @@ class MyEditor extends React.Component {
     return false;
   }
   render() {
-    const {editorState} = this.state;
     return (
       <Editor
-        editorState={editorState}
+        editorState={this.state.editorState}
         handleKeyCommand={this.handleKeyCommand}
         onChange={this.onChange}
       />
@@ -90,20 +90,18 @@ Here's a super-basic example with a "Bold" button to toggle the `BOLD` style.
 
 ```js
 class MyEditor extends React.Component {
-  ...
+  // …
 
   _onBoldClick() {
-    const {editorState} = this.state;
-    this.onChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
   }
 
   render() {
-    const {editorState} = this.state;
     return (
       <div>
         <button onClick={this._onBoldClick.bind(this)}>Bold</button>
         <Editor
-          editorState={editorState}
+          editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}
           onChange={this.onChange}
         />
