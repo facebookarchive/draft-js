@@ -12,15 +12,16 @@ compose simpler, smaller edit functions to return the desired <code>EditorState<
 object.</p><p>For this example, we&#x27;ll stick with <code>RichUtils</code> to demonstrate how to apply basic
 rich styling within the top-level component.</p><h2><a class="anchor" name="richutils-and-key-commands"></a>RichUtils and Key Commands <a class="hash-link" href="#richutils-and-key-commands">#</a></h2><p><code>RichUtils</code> has information about the core key commands available to web editors,
 such as Cmd+B (bold), Cmd+I (italic), and so on.</p><p>We can observe and handle key commands via the <code>handleKeyCommand</code> prop, and
-hook these into <code>RichUtils</code> to apply or remove the desired style.</p><pre class="prism language-javascript">import <span class="token punctuation">{</span>Editor<span class="token punctuation">,</span> RichUtils<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
+hook these into <code>RichUtils</code> to apply or remove the desired style.</p><pre class="prism language-javascript">import <span class="token punctuation">{</span>Editor<span class="token punctuation">,</span> EditorState<span class="token punctuation">,</span> RichUtils<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
+
 class <span class="token class-name">MyEditor</span> extends <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
   <span class="token function">constructor<span class="token punctuation">(</span></span>props<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token function">super<span class="token punctuation">(</span></span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">{</span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">.</span><span class="token function">createEmpty<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
     <span class="token keyword">this</span><span class="token punctuation">.</span>onChange <span class="token operator">=</span> <span class="token punctuation">(</span>editorState<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState<span class="token punctuation">(</span></span><span class="token punctuation">{</span>editorState<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
   <span class="token function">handleKeyCommand<span class="token punctuation">(</span></span>command<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    const <span class="token punctuation">{</span>editorState<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">;</span>
-    const newState <span class="token operator">=</span> RichUtils<span class="token punctuation">.</span><span class="token function">handleKeyCommand<span class="token punctuation">(</span></span>editorState<span class="token punctuation">,</span> command<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    const newState <span class="token operator">=</span> RichUtils<span class="token punctuation">.</span><span class="token function">handleKeyCommand<span class="token punctuation">(</span></span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>editorState<span class="token punctuation">,</span> command<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>newState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
       <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">onChange<span class="token punctuation">(</span></span>newState<span class="token punctuation">)</span><span class="token punctuation">;</span>
       <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
@@ -28,10 +29,9 @@ class <span class="token class-name">MyEditor</span> extends <span class="token 
     <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
   <span class="token function">render<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    const <span class="token punctuation">{</span>editorState<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">;</span>
     <span class="token keyword">return</span> <span class="token punctuation">(</span>
       &lt;Editor
-        editorState<span class="token operator">=</span><span class="token punctuation">{</span>editorState<span class="token punctuation">}</span>
+        editorState<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>editorState<span class="token punctuation">}</span>
         handleKeyCommand<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleKeyCommand<span class="token punctuation">}</span>
         onChange<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onChange<span class="token punctuation">}</span>
       <span class="token operator">/</span><span class="token operator">&gt;</span>
@@ -44,20 +44,18 @@ on this, as well as details on why the function returns a boolean.</p></blockquo
 the user to modify styles within the editor. In the example above, we are using
 known key commands, but we can add more complex UI to provide these rich
 features.</p><p>Here&#x27;s a super-basic example with a &quot;Bold&quot; button to toggle the <code>BOLD</code> style.</p><pre class="prism language-javascript">class <span class="token class-name">MyEditor</span> extends <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
-  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-
+ <span class="token comment" spellcheck="true"> // …
+</span>
   <span class="token function">_onBoldClick<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    const <span class="token punctuation">{</span>editorState<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">;</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">onChange<span class="token punctuation">(</span></span>RichUtils<span class="token punctuation">.</span><span class="token function">toggleInlineStyle<span class="token punctuation">(</span></span>editorState<span class="token punctuation">,</span> <span class="token string">&#x27;BOLD&#x27;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">onChange<span class="token punctuation">(</span></span>RichUtils<span class="token punctuation">.</span><span class="token function">toggleInlineStyle<span class="token punctuation">(</span></span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>editorState<span class="token punctuation">,</span> <span class="token string">&#x27;BOLD&#x27;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
 
   <span class="token function">render<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    const <span class="token punctuation">{</span>editorState<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">;</span>
     <span class="token keyword">return</span> <span class="token punctuation">(</span>
       &lt;div<span class="token operator">&gt;</span>
         &lt;button onClick<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>_onBoldClick<span class="token punctuation">.</span><span class="token function">bind<span class="token punctuation">(</span></span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token operator">&gt;</span>Bold&lt;<span class="token operator">/</span>button<span class="token operator">&gt;</span>
         &lt;Editor
-          editorState<span class="token operator">=</span><span class="token punctuation">{</span>editorState<span class="token punctuation">}</span>
+          editorState<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>editorState<span class="token punctuation">}</span>
           handleKeyCommand<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleKeyCommand<span class="token punctuation">}</span>
           onChange<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>onChange<span class="token punctuation">}</span>
         <span class="token operator">/</span><span class="token operator">&gt;</span>
