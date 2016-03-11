@@ -19,10 +19,6 @@
   padding: 15px;
 }
 
-.RichEditor-editor .public-DraftEditor-content {
-  min-height: 100px;
-}
-
 .RichEditor-hidePlaceholder .public-DraftEditorPlaceholder-root {
   display: none;
 }

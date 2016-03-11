@@ -227,6 +227,7 @@ class DraftEditor
     const contentStyle = {
       outline: 'none',
       whiteSpace: 'pre-wrap',
+      minHeight: this.props.minHeight,
     };
 
     return (

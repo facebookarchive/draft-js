@@ -97,6 +97,7 @@ class RichEditorExample extends React.Component {
             placeholder="Tell a story..."
             ref="editor"
             spellCheck={true}
+            minHeight={100}
           />
         </div>
       </div>
