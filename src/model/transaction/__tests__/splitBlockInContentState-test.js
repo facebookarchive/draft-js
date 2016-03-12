@@ -58,6 +58,7 @@ describe('removeRangeFromContentState', () => {
     expect(preSplitBlock.getText()).toBe('');
     expect(getInlineStyles(preSplitBlock)).toEqual([]);
     expect(getEntities(preSplitBlock)).toEqual([]);
+    expect(preSplitBlock.getBlockEntity()).toEqual('EntityA');
 
     var postSplitBlock = afterBlockMap.skip(1).first();
     expect(preSplitBlock.getKey()).not.toBe(postSplitBlock.getKey());
@@ -66,6 +67,8 @@ describe('removeRangeFromContentState', () => {
     expect(postSplitBlock.getKey()).not.toBe(initialBlock.getKey());
     expect(postSplitBlock.getType()).toBe(initialBlock.getType());
     expect(postSplitBlock.getText()).toBe(initialBlock.getText());
+    expect(postSplitBlock.getBlockEntity()).toEqual(null);
+
     expect(
       getInlineStyles(initialBlock)
     ).toEqual(

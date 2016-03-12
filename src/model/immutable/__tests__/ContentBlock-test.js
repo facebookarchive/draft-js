@@ -84,7 +84,14 @@ describe('ContentBlock', () => {
     });
   });
 
-  describe('entity retrieval', () => {
+  describe('block entity retrieval', () => {
+    it('must retrieve block-level entities', () => {
+      var block = getSampleBlock().set('blockEntity', ENTITY_KEY);
+      expect(block.getBlockEntity()).toBe(ENTITY_KEY);
+    });
+  });
+
+  describe('caracter entity retrieval', () => {
     it('must properly retrieve entity at offset', () => {
       var block = getSampleBlock();
       expect(block.getEntityAt(0)).toBe(ENTITY_KEY);

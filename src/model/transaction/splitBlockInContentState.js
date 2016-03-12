@@ -46,6 +46,7 @@ function splitBlockInContentState(
     key: keyBelow,
     text: text.slice(offset),
     characterList: chars.slice(offset),
+    blockEntity: null,
   });
 
   var blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);

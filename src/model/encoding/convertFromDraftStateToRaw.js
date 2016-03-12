@@ -48,6 +48,7 @@ function convertFromDraftStateToRaw(
       text: block.getText(),
       type: block.getType(),
       depth: canHaveDepth(block) ? block.getDepth() : 0,
+      blockEntity: block.getBlockEntity(),
       inlineStyleRanges: encodeInlineStyleRanges(block),
       entityRanges: encodeEntityRanges(block, entityStorageMap),
     });
