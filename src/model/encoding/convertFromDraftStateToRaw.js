@@ -14,6 +14,7 @@
 
 var DraftEntity = require('DraftEntity');
 var DraftStringKey = require('DraftStringKey');
+var DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 
 var encodeEntityRanges = require('encodeEntityRanges');
 var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
@@ -23,11 +24,18 @@ import type ContentState from 'ContentState';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
 function convertFromDraftStateToRaw(
-  contentState: ContentState
+  contentState: ContentState,
+  customStyleMap: Object
 ): RawDraftContentState {
   var entityStorageKey = 0;
   var entityStorageMap = {};
   var rawBlocks = [];
+  var styleMap = {};
+  var styleKeys = [];
+
+  customStyleMap = customStyleMap || {};
+  styleMap = Object.assign({}, DefaultDraftInlineStyle, customStyleMap);
+  styleKeys = Object.keys(styleMap);
 
   contentState.getBlockMap().forEach((block, blockKey) => {
     block.findEntityRanges(
@@ -48,7 +56,7 @@ function convertFromDraftStateToRaw(
       text: block.getText(),
       type: block.getType(),
       depth: canHaveDepth(block) ? block.getDepth() : 0,
-      inlineStyleRanges: encodeInlineStyleRanges(block),
+      inlineStyleRanges: encodeInlineStyleRanges(block, styleKeys),
       entityRanges: encodeEntityRanges(block, entityStorageMap),
     });
   });
