@@ -130,8 +130,8 @@ describe('DraftPasteProcessor', function() {
   });
 
   it('must not generate fake blocks on heavy nesting', function() {
-    var html = '<p><span><span><span>Word</span></span></span>' +
-      '<span><span>,</span></span></p>';
+    var html = '<div><span><span><span>Word</span></span></span>' +
+      '<span><span>,</span></span></div>';
     var output = DraftPasteProcessor.processHTML(html);
     assertBlockTypes(output, ['unstyled']);
   });
@@ -168,8 +168,8 @@ describe('DraftPasteProcessor', function() {
     var html = '<div><p>hi</p><p>hello</p></div>';
     var output = DraftPasteProcessor.processHTML(html);
     assertBlockTypes(output, [
-      'unstyled',
-      'unstyled',
+      'paragraph',
+      'paragraph',
     ]);
   });
 
@@ -186,7 +186,7 @@ describe('DraftPasteProcessor', function() {
       'unstyled',
       'unstyled',
     ]);
-    html = '<p>hi<br><br>hello</p>';
+    html = '<div>hi<br><br>hello</div>';
     output = DraftPasteProcessor.processHTML(html);
     assertBlockTypes(output, [
       'unstyled',
@@ -296,14 +296,14 @@ describe('DraftPasteProcessor', function() {
       'unstyled',
       'unstyled',
     ]);
-    html = '<p>hi<br> <br>hello</p>';
+    html = '<div>hi<br> <br>hello</div>';
     output = DraftPasteProcessor.processHTML(html);
     assertBlockTypes(output, [
       'unstyled',
       'unstyled',
     ]);
 
-    html = '<p>hi<br> good stuff here <br>hello</p>';
+    html = '<div>hi<br> good stuff here <br>hello</div>';
     output = DraftPasteProcessor.processHTML(html);
     assertBlockTypes(output, [
       'unstyled',
