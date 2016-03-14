@@ -21,7 +21,6 @@ var EditorState = require('EditorState');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
-var nullthrows = require('nullthrows');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 import type {BlockMap} from 'BlockMap';
@@ -87,7 +86,11 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
 
   let textBlocks: Array<string> = [];
   var text = data.getText();
-  this.props.onPasteRawText && this.props.onPasteRawText(text);
+
+  if (this.props.handlePastedText && this.props.handlePastedText(text)) {
+    return;
+  }
+
   if (text) {
     textBlocks = splitTextIntoTextBlocks(text);
   }
