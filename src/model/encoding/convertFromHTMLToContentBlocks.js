@@ -118,6 +118,8 @@ function getBlockDividerChunk(block: DraftBlockType, depth: number): Chunk {
 
 function getBlockTypeForTag(tag: string, lastList: ?string): DraftBlockType {
   switch (tag) {
+    case 'p':
+      return 'paragraph';
     case 'h1':
       return 'header-one';
     case 'h2':

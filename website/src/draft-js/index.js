@@ -145,6 +145,7 @@ class StyleButton extends React.Component {
 }
 
 const BLOCK_TYPES = [
+  {label: 'p', style: 'paragraph'},
   {label: 'H1', style: 'header-one'},
   {label: 'H2', style: 'header-two'},
   {label: 'H3', style: 'header-three'},

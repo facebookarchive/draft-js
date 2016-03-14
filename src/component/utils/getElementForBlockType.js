@@ -16,6 +16,8 @@ import type {DraftBlockType} from 'DraftBlockType';
 
 function getElementForBlockType(blockType: DraftBlockType): string {
   switch (blockType) {
+    case 'paragraph':
+        return 'p';
     case 'header-one':
       return 'h1';
     case 'header-two':
