@@ -21,6 +21,7 @@ var EditorState = require('EditorState');
 function editOnCompositionStart(e): void {
   this.setRenderGuard();
   this.setMode('composite');
+  this._onCompositionStart(e);
   this.update(
     EditorState.set(this.props.editorState, {inCompositionMode: true})
   );
