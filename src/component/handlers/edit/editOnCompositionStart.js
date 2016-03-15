@@ -18,7 +18,7 @@ var EditorState = require('EditorState');
  * The user has begun using an IME input system. Switching to `composite` mode
  * allows handling composition input and disables other edit behavior.
  */
-function editOnCompositionStart(): void {
+function editOnCompositionStart(e): void {
   this.setRenderGuard();
   this.setMode('composite');
   this.update(
