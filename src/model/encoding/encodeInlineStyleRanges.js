@@ -68,7 +68,10 @@ function encodeInlineStyleRanges(
   block: ContentBlock
 ): Array<InlineStyleRange> {
   var styleList = block.getCharacterList().map(c => c.getStyle()).toList();
-  var styles = Object.keys(DefaultDraftInlineStyle);
+  var styles = styleList
+    .flatten()
+    .toSet()
+    .toJS();
   var ranges: Array<Array<InlineStyleRange>> = styles
     .map(style => getEncodedInlinesForType(block, styleList, style));
 
