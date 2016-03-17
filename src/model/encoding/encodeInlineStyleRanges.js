@@ -68,11 +68,12 @@ function encodeInlineStyleRanges(
   block: ContentBlock
 ): Array<InlineStyleRange> {
   var styleList = block.getCharacterList().map(c => c.getStyle()).toList();
-  var styles = Object.keys(DefaultDraftInlineStyle);
-  var ranges: Array<Array<InlineStyleRange>> = styles
+  var ranges = styleList
+    .flatten()
+    .toSet()
     .map(style => getEncodedInlinesForType(block, styleList, style));
 
-  return Array.prototype.concat.apply(EMPTY_ARRAY, ranges);
+  return Array.prototype.concat.apply(EMPTY_ARRAY, ranges.toJS());
 }
 
 module.exports = encodeInlineStyleRanges;

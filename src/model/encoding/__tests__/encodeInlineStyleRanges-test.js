@@ -30,10 +30,14 @@ var {
   NONE,
 } = SampleDraftInlineStyle;
 
-var {
+const {
   List,
+  OrderedSet,
   Repeat,
 } = Immutable;
+
+const FOO = OrderedSet.of('foo');
+const FOO_BAR = OrderedSet.of('foo', 'bar');
 
 describe('encodeInlineStyleRanges', () => {
   function createBlock(text, inlineStyles) {
@@ -88,6 +92,17 @@ describe('encodeInlineStyleRanges', () => {
       {offset: 0, length: 20, style: 'BOLD'},
       {offset: 0, length: 20, style: 'ITALIC'},
       {offset: 0, length: 20, style: 'UNDERLINE'},
+    ]);
+  });
+
+  it('must encode custom styles', () => {
+    const custom = List([FOO, FOO, FOO_BAR, FOO_BAR, BOLD, BOLD]);
+    expect(
+      encodeInlineStyleRanges(createBlock(' '.repeat(6), custom))
+    ).toEqual([
+      {offset: 0, length: 4, style: 'foo'},
+      {offset: 2, length: 2, style: 'bar'},
+      {offset: 4, length: 2, style: 'BOLD'},
     ]);
   });
 
