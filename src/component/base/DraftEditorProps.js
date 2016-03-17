@@ -98,7 +98,7 @@ export type DraftEditorProps = {
   // quotes.
   handleBeforeInput?: (chars: string) => boolean,
 
-  handlePastedText?: (text: string) => boolean,
+  handlePastedText?: (text: string, html: string) => boolean,
 
   handlePastedFiles?: (files: Array<Blob>) => boolean,
 

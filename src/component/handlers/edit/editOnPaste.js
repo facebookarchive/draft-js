@@ -85,9 +85,10 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   }
 
   let textBlocks: Array<string> = [];
-  var text = data.getText();
+  const text = data.getText(),
+    html = data.getHTML();
 
-  if (this.props.handlePastedText && this.props.handlePastedText(text)) {
+  if (this.props.handlePastedText && this.props.handlePastedText(text, html)) {
     return;
   }
 
@@ -103,7 +104,6 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     // stripped during comparison -- this is because copy/paste within the
     // editor in Firefox and IE will not include empty lines. The resulting
     // paste will preserve the newlines correctly.
-    const html = data.getHTML();
     const internalClipboard = this.getClipboard();
     if (data.isRichText() && internalClipboard) {
       if (
