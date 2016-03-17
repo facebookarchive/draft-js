@@ -14,6 +14,7 @@
 
 var ContentBlock = require('ContentBlock');
 var DraftEntity = require('DraftEntity');
+var Immutable = require('immutable');
 
 var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');
@@ -21,6 +22,8 @@ var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 var generateRandomKey = require('generateRandomKey');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
+
+var {Map} = Immutable;
 
 function convertFromRawToDraftState(
   rawState: RawDraftContentState
@@ -39,11 +42,12 @@ function convertFromRawToDraftState(
 
   return blocks.map(
     block => {
-      var {key, type, text, depth, inlineStyleRanges, entityRanges} = block;
+      var {key, type, text, depth, inlineStyleRanges, entityRanges, data} = block;
       key = key || generateRandomKey();
       depth = depth || 0;
       inlineStyleRanges = inlineStyleRanges || [];
       entityRanges = entityRanges || [];
+      data = Map(data);
 
       var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
 
@@ -57,7 +61,7 @@ function convertFromRawToDraftState(
       var entities = decodeEntityRanges(text, filteredEntityRanges);
       var characterList = createCharacterList(inlineStyles, entities);
 
-      return new ContentBlock({key, type, text, depth, characterList});
+      return new ContentBlock({key, type, text, depth, characterList, data});
     }
   );
 }
