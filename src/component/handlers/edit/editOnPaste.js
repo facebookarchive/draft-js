@@ -85,8 +85,8 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   }
 
   let textBlocks: Array<string> = [];
-  const text = data.getText(),
-    html = data.getHTML();
+  const text = data.getText();
+  const html = data.getHTML();
 
   if (this.props.handlePastedText && this.props.handlePastedText(text, html)) {
     return;

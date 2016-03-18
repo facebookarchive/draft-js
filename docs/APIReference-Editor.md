@@ -165,7 +165,7 @@ and to convert typed emoticons into images.
 
 #### handlePastedText
 ```
-handlePastedText?: (text: string, html: string) => boolean
+handlePastedText?: (text: string, html?: string) => boolean
 ```
 Handle text and html(for rich text) that has been pasted directly into the editor.
 
