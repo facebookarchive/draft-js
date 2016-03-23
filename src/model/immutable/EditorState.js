@@ -312,7 +312,7 @@ class EditorState {
 
   /**
    * Force focus to the end of the editor. This is useful in scenarios
-   * where we want to programatically focus the input and it makes sense
+   * where we want to programmatically focus the input and it makes sense
    * to allow the user to continue working seamlessly.
    */
   static moveFocusToEnd(editorState: EditorState): EditorState {
