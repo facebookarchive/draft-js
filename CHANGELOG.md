@@ -4,6 +4,19 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.3.0 (March 22, 2016)
+
+### Fixed
+
+* Properly extract custom inline styles for `convertToRaw`
+* Fix internal paste behavior to better handle copied custom blocks
+
+### Added
+
+* Export `getVisibleSelectionRect`
+* Export `convertFromHTML`
+* Export `DraftEditorBlock`
+
 ## 0.2.2 (March 9, 2016)
 
 ### Fixed
