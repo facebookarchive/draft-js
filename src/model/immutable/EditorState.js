@@ -377,16 +377,22 @@ class EditorState {
       );
     }
 
-    return EditorState.set(editorState, {
+    var editorStateChanges = {
       currentContent: newContent,
       directionMap,
       undoStack,
       redoStack: Stack(),
       lastChangeType: changeType,
       selection: contentState.getSelectionAfter(),
-      forceSelection,
-      inlineStyleOverride: null,
-    });
+      forceSelection
+    };
+
+    // don't override inline style on block type change
+    if (changeType !== 'change-block-type') {
+      editorStateChanges.inlineStyleOverride = null;
+    }
+
+    return EditorState.set(editorState, editorStateChanges);
   }
 
   /**
