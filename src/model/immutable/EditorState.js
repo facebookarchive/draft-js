@@ -384,11 +384,14 @@ class EditorState {
       redoStack: Stack(),
       lastChangeType: changeType,
       selection: contentState.getSelectionAfter(),
-      forceSelection
+      forceSelection,
     };
 
-    // don't override inline style on block type change
-    if (changeType !== 'change-block-type') {
+    // don't override inline style on block type or depth changes
+    if (
+      changeType !== 'adjust-depth' &&
+      changeType !== 'change-block-type'
+    ) {
       editorStateChanges.inlineStyleOverride = null;
     }
 
