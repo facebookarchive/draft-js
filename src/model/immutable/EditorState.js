@@ -377,7 +377,14 @@ class EditorState {
       );
     }
 
-    return EditorState.set(editorState, {
+    let inlineStyleOverride = editorState.getInlineStyleOverride();
+
+    // Don't discard inline style overrides on block type or depth changes.
+    if (changeType !== 'adjust-depth' && changeType !== 'change-block-type') {
+      inlineStyleOverride = null;
+    }
+
+    var editorStateChanges = {
       currentContent: newContent,
       directionMap,
       undoStack,
@@ -385,8 +392,10 @@ class EditorState {
       lastChangeType: changeType,
       selection: contentState.getSelectionAfter(),
       forceSelection,
-      inlineStyleOverride: null,
-    });
+      inlineStyleOverride,
+    };
+
+    return EditorState.set(editorState, editorStateChanges);
   }
 
   /**
