@@ -324,7 +324,7 @@ static moveSelectionToEnd(editorState: EditorState): EditorState
 ```
 Returns a new `EditorState` object with the selection at the end.
 
-Move selection to the end of the editor without forcing focus.
+Moves selection to the end of the editor without forcing focus.
 
 ### moveFocusToEnd
 
