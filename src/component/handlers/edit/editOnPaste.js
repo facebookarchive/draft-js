@@ -21,7 +21,6 @@ var EditorState = require('EditorState');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
-var nullthrows = require('nullthrows');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 import type {BlockMap} from 'BlockMap';
@@ -155,10 +154,6 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     var textMap = BlockMapBuilder.createFromArray(textFragment);
     this.update(insertFragment(this.props.editorState, textMap));
   }
-}
-
-function filterOutNewlines(str: string): boolean {
-  return str.length > 0;
 }
 
 function insertFragment(

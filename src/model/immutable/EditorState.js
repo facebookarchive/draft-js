@@ -377,7 +377,7 @@ class EditorState {
       );
     }
 
-    return EditorState.set(editorState, {
+    var editorStateChanges = {
       currentContent: newContent,
       directionMap,
       undoStack,
@@ -385,8 +385,17 @@ class EditorState {
       lastChangeType: changeType,
       selection: contentState.getSelectionAfter(),
       forceSelection,
-      inlineStyleOverride: null,
-    });
+    };
+
+    // don't override inline style on block type or depth changes
+    if (
+      changeType !== 'adjust-depth' &&
+      changeType !== 'change-block-type'
+    ) {
+      editorStateChanges.inlineStyleOverride = null;
+    }
+
+    return EditorState.set(editorState, editorStateChanges);
   }
 
   /**

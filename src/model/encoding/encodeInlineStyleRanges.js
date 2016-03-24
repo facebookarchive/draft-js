@@ -12,7 +12,6 @@
 
 'use strict';
 
-var DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 var UnicodeUtils = require('UnicodeUtils');
 
 var findRangesImmutable = require('findRangesImmutable');
