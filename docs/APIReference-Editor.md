@@ -163,6 +163,12 @@ convert that `ContentBlock` into an `unordered-list-item`.
 At Facebook, we also use this to convert typed ASCII quotes into "smart" quotes,
 and to convert typed emoticons into images.
 
+#### handlePastedText
+```
+handlePastedText?: (text: string, html?: string) => boolean
+```
+Handle text and html(for rich text) that has been pasted directly into the editor.
+
 #### handlePastedFiles
 ```
 handlePastedFiles?: (files: Array<Blob>) => boolean

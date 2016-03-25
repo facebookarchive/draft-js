@@ -98,6 +98,8 @@ export type DraftEditorProps = {
   // quotes.
   handleBeforeInput?: (chars: string) => boolean,
 
+  handlePastedText?: (text: string, html?: string) => boolean,
+
   handlePastedFiles?: (files: Array<Blob>) => boolean,
 
   // Handle dropped files
@@ -120,7 +122,6 @@ export type DraftEditorProps = {
   onTab?: (e: SyntheticKeyboardEvent) => void,
   onUpArrow?: (e: SyntheticKeyboardEvent) => void,
   onDownArrow?: (e: SyntheticKeyboardEvent) => void,
-  onPasteRawText?: (text: string) => void,
 
   onBlur?: (e: SyntheticEvent) => void,
   onFocus?: (e: SyntheticEvent) => void,
