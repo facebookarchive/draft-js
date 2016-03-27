@@ -19,6 +19,7 @@ var ContentState = require('ContentState');
 var EditorState = require('EditorState');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
+var RichTextEditorUtil = require('RichTextEditorUtil');
 
 var {
   NONE,
@@ -146,6 +147,16 @@ describe('EditorState', () => {
         });
         var editor = EditorState.acceptSelection(mainEditor, selection);
         expect(editor.getCurrentInlineStyle()).toBe(BOLD);
+      });
+
+      it('does not discard style override when changing block type', () => {
+        var editor = EditorState.createEmpty();
+
+        editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
+
+        editor = RichTextEditorUtil.toggleBlockType(editor, 'test-block');
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
       });
     });
 

@@ -21,7 +21,6 @@ var EditorState = require('EditorState');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
-var nullthrows = require('nullthrows');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 import type {BlockMap} from 'BlockMap';
@@ -86,8 +85,13 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   }
 
   let textBlocks: Array<string> = [];
-  var text = data.getText();
-  this.props.onPasteRawText && this.props.onPasteRawText(text);
+  const text = data.getText();
+  const html = data.getHTML();
+
+  if (this.props.handlePastedText && this.props.handlePastedText(text, html)) {
+    return;
+  }
+
   if (text) {
     textBlocks = splitTextIntoTextBlocks(text);
   }
@@ -100,7 +104,6 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     // stripped during comparison -- this is because copy/paste within the
     // editor in Firefox and IE will not include empty lines. The resulting
     // paste will preserve the newlines correctly.
-    const html = data.getHTML();
     const internalClipboard = this.getClipboard();
     if (data.isRichText() && internalClipboard) {
       if (
@@ -155,10 +158,6 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     var textMap = BlockMapBuilder.createFromArray(textFragment);
     this.update(insertFragment(this.props.editorState, textMap));
   }
-}
-
-function filterOutNewlines(str: string): boolean {
-  return str.length > 0;
 }
 
 function insertFragment(
