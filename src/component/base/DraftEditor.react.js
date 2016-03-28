@@ -14,7 +14,6 @@
 'use strict';
 
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
-const DefaultDraftBlock = require('DefaultDraftBlock');
 const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
 const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');

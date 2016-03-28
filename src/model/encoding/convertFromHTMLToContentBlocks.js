@@ -122,11 +122,11 @@ function getListBlockType(
   tag: string,
   lastList: ?string
 ): ?DraftBlockType {
-  if(tag === 'li') {
-      if (lastList === 'ol') {
-        return 'ordered-list-item';
-      }
-      return 'unordered-list-item';
+  if (tag === 'li') {
+    if (lastList === 'ol') {
+      return 'ordered-list-item';
+    }
+    return 'unordered-list-item';
   }
 
   return null;
@@ -137,13 +137,17 @@ function getBlockMapSupportedTags(
 ): Array<DraftBlockType> {
   const blockTypes = Object.keys(draftBlockMap);
   const matchedTags = blockTypes.map(function(blockType) {
-      return draftBlockMap[blockType].element;
+    return draftBlockMap[blockType].element;
   }).sort();
 
   const supportedTags = matchedTags.filter(function(tag, index) {
-      const notUnstyledTag = tag !== draftBlockMap.unstyled.element;  // we do not want unstyled to be viewed as a valid match
-      const uniqueTag = matchedTags.indexOf(tag) === index;  // this will guarantee no duplicate tags added
-      return notUnstyledTag && uniqueTag;
+    // we do not want unstyled to be viewed as a valid match
+    const notUnstyledTag = tag !== draftBlockMap.unstyled.element;
+
+    // this will guarantee no duplicate tags added
+    const uniqueTag = matchedTags.indexOf(tag) === index;
+
+    return notUnstyledTag && uniqueTag;
   });
 
   return supportedTags;
@@ -155,15 +159,15 @@ function getMultiMatchedType(
   lastList: ?string,
   multiMatchExtractor: Array<Function>
 ): ?DraftBlockType {
-    for (var i = 0; i < multiMatchExtractor.length; i++) {
-        const matchType = multiMatchExtractor[i](tag, lastList);
+  for (var i = 0; i < multiMatchExtractor.length; i++) {
+    const matchType = multiMatchExtractor[i](tag, lastList);
 
-        if (matchType) {
-            return matchType;
-        }
+    if (matchType) {
+      return matchType;
     }
+  }
 
-    return null;
+  return null;
 }
 
 function getBlockTypeForTag(
@@ -173,7 +177,7 @@ function getBlockTypeForTag(
 ): DraftBlockType {
   const blockTypes = Object.keys(draftBlockMap);
   const matchedTypes = blockTypes.filter(function(blockType) {
-      return draftBlockMap[blockType].element === tag || draftBlockMap[blockType].wrapper === tag;
+    return draftBlockMap[blockType].element === tag || draftBlockMap[blockType].wrapper === tag;
   });
   const matchesFound = matchedTypes.length;
   const UNSTYLED = 'unstyled';
@@ -181,13 +185,13 @@ function getBlockTypeForTag(
   // if we dont have any matched type, return unstyled
   // if we have one matched type return it
   // if we have multi matched types use the multi-match function to determine which type is it
-  switch(matchesFound) {
+  switch (matchesFound) {
     case 0:
-        return UNSTYLED;
+      return UNSTYLED;
     case 1:
-        return matchedTypes[0];
+      return matchedTypes[0];
     default:
-        return getMultiMatchedType(tag, lastList, [getListBlockType]) || UNSTYLED;
+      return getMultiMatchedType(tag, lastList, [getListBlockType]) || UNSTYLED;
   }
 }
 

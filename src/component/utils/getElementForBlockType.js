@@ -22,7 +22,10 @@ function getElementForBlockType(
   customBlockMap: ?DraftBlockMap
 ): string {
   const draftBlockMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlock;
-  return draftBlockMap[blockType] && draftBlockMap[blockType].element ? draftBlockMap[blockType].element : draftBlockMap.unstyled.element;
+
+  return draftBlockMap[blockType] && draftBlockMap[blockType].element ?
+    draftBlockMap[blockType].element :
+    draftBlockMap.unstyled.element;
 }
 
 module.exports = getElementForBlockType;

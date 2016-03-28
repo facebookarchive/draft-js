@@ -12,8 +12,6 @@
 
 'use strict';
 
-const React = require('React');
-const cx = require('cx');
 const DefaultDraftBlock = require('DefaultDraftBlock');
 
 import type {DraftBlockType} from 'DraftBlockType';
