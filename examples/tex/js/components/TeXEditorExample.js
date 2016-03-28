@@ -38,6 +38,7 @@ export default class TeXEditorExample extends React.Component {
       if (block.getType() === 'media') {
         return {
           component: TeXBlock,
+          editable: false,
           props: {
             onStartEdit: (blockKey) => {
               var {liveTeXEdits} = this.state;

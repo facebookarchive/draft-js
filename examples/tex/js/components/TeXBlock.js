@@ -165,12 +165,10 @@ export default class TeXBlock extends React.Component {
     }
 
     return (
-      <figure
-        contentEditable={false}
-        className={className}>
+      <div className={className}>
         <KatexOutput content={texContent} onClick={this._onClick} />
         {editPanel}
-      </figure>
+      </div>
     );
   }
 }
