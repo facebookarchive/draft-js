@@ -86,7 +86,7 @@ function getDefaultKeyBinding(
     case 75: // K
       return (!isWindows && isCtrlKeyCommand(e)) ? 'secondary-cut' : null;
     case 77: // M
-      return hasCommandModifier(e) ? 'split-block' : null;
+      return isCtrlKeyCommand(e) ? 'split-block' : null;
     case 79: // O
       return isCtrlKeyCommand(e) ? 'split-block' : null;
     case 84: // T
