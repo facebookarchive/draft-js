@@ -187,6 +187,10 @@ gulp.task('watch', function() {
   gulp.watch(paths.src, ['modules']);
 });
 
+gulp.task('dev', function() {
+  gulp.watch(paths.src, ['modules', 'dist']);
+});
+
 gulp.task('default', function(cb) {
   runSequence('check-dependencies', 'clean', 'modules', ['dist', 'dist:min'], cb);
 });
