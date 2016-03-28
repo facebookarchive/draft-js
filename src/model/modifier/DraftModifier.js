@@ -15,7 +15,7 @@
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentStateInlineStyle = require('ContentStateInlineStyle');
-var {OrderedSet} = require('immutable');
+var {OrderedSet, Map} = require('immutable');
 
 var applyEntityToContentState = require('applyEntityToContentState');
 var getCharacterRemovalRange = require('getCharacterRemovalRange');
@@ -211,6 +211,33 @@ var DraftModifier = {
       operation
     );
   },
+
+  setBlockData: function(
+    contentState: ContentState,
+    selectionState: SelectionState,
+    blockData: Map,
+  ): ContentState {
+    const operation = (block) => block.merge({data: blockData});
+    return modifyBlockForContentState(
+      contentState,
+      selectionState,
+      operation
+    );
+  },
+
+  mergeBlockData: function(
+    contentState: ContentState,
+    selectionState: SelectionState,
+    blockData: Map,
+  ): ContentState {
+    const operation = (block) => block.merge({data: block.getData().merge(blockData)});
+    return modifyBlockForContentState(
+      contentState,
+      selectionState,
+      operation
+    );
+  },
+
 
   applyEntity: function(
     contentState: ContentState,
