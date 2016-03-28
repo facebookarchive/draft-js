@@ -25,7 +25,7 @@ var insertTextIntoContentState = require('insertTextIntoContentState');
 var invariant = require('invariant');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 var removeRangeFromContentState = require('removeRangeFromContentState');
-var setBlockTypeForContentState = require('setBlockTypeForContentState');
+var modifyBlockForContentState = require('modifyBlockForContentState');
 var splitBlockInContentState = require('splitBlockInContentState');
 
 import type {BlockMap} from 'BlockMap';
@@ -204,10 +204,11 @@ var DraftModifier = {
     selectionState: SelectionState,
     blockType: DraftBlockType
   ): ContentState {
-    return setBlockTypeForContentState(
+    const operation = (block) => block.merge({type: blockType, depth: 0});
+    return modifyBlockForContentState(
       contentState,
       selectionState,
-      blockType
+      operation
     );
   },
 
