@@ -205,7 +205,6 @@ describe('DraftPasteProcessor', function() {
 
     it('must NOT treat divs as Ps when we pave Ps', function() {
         var html = '<div><p>hi</p><p>hello</p></div>';
-        debugger;
         var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
         assertBlockTypes(output, [
             'paragraph',
