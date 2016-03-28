@@ -13,31 +13,18 @@
 'use strict';
 
 const React = require('React');
-
 const cx = require('cx');
+const DefaultDraftBlock = require('DefaultDraftBlock');
 
 import type {DraftBlockType} from 'DraftBlockType';
-
-/**
- * Create these elements once and cache them so they're reference-equal.
- */
-const UL_WRAP = <ul className={cx('public/DraftStyleDefault/ul')} />;
-const OL_WRAP = <ol className={cx('public/DraftStyleDefault/ol')} />;
-const PRE_WRAP = <pre className={cx('public/DraftStyleDefault/pre')} />;
+import type {DraftBlockMap} from 'DraftBlockMap';
 
 function getWrapperTemplateForBlockType(
-  blockType: DraftBlockType
+  blockType: DraftBlockType,
+  customBlockMap: ?DraftBlockMap
 ): ?ReactElement {
-  switch (blockType) {
-    case 'unordered-list-item':
-      return UL_WRAP;
-    case 'ordered-list-item':
-      return OL_WRAP;
-    case 'code-block':
-      return PRE_WRAP;
-    default:
-      return null;
-  }
+  const draftBlockMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlock;
+  return draftBlockMap[blockType] && draftBlockMap[blockType].wrapper ? draftBlockMap[blockType].wrapper : null;
 }
 
 module.exports = getWrapperTemplateForBlockType;

@@ -22,14 +22,16 @@ const convertFromHTMLtoContentBlocks
 const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
 
+import type {DraftBlockMap} from 'DraftBlockMap';
+
 const {
   List,
   Repeat,
 } = Immutable;
 
 const DraftPasteProcessor = {
-  processHTML(html: string): ?Array<ContentBlock> {
-    return convertFromHTMLtoContentBlocks(html);
+  processHTML(html: string, customBlockMap: ?DraftBlockMap): ?Array<ContentBlock> {
+    return convertFromHTMLtoContentBlocks(html, undefined, customBlockMap);
   },
 
   processText(

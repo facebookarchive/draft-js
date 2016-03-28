@@ -12,34 +12,17 @@
 
 'use strict';
 
-import type {DraftBlockType} from 'DraftBlockType';
+const DefaultDraftBlock = require('DefaultDraftBlock');
 
-function getElementForBlockType(blockType: DraftBlockType): string {
-  switch (blockType) {
-    case 'paragraph':
-        return 'p';
-    case 'header-one':
-      return 'h1';
-    case 'header-two':
-      return 'h2';
-    case 'header-three':
-      return 'h3';
-    case 'header-four':
-      return 'h4';
-    case 'header-five':
-      return 'h5';
-    case 'header-six':
-      return 'h6';
-    case 'unordered-list-item':
-    case 'ordered-list-item':
-      return 'li';
-    case 'blockquote':
-      return 'blockquote';
-    case 'media':
-      return 'figure';
-    default:
-      return 'div';
-  }
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftBlockMap} from 'DraftBlockMap';
+
+function getElementForBlockType(
+  blockType: DraftBlockType,
+  customBlockMap: ?DraftBlockMap
+): string {
+  const draftBlockMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlock;
+  return draftBlockMap[blockType] && draftBlockMap[blockType].element ? draftBlockMap[blockType].element : draftBlockMap.unstyled.element;
 }
 
 module.exports = getElementForBlockType;

@@ -141,7 +141,7 @@ class DraftEditorContents extends React.Component {
       if (CustomComponent) {
         child = <CustomComponent {...componentProps} />;
       } else {
-        const Element = getElementForBlockType(blockType);
+        const Element = getElementForBlockType(blockType, this.props.customBlockMap);
         const depth = block.getDepth();
         let className = this.props.blockStyleFn(block);
 

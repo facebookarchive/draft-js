@@ -14,6 +14,7 @@
 'use strict';
 
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
+const DefaultDraftBlock = require('DefaultDraftBlock');
 const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
 const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
@@ -280,6 +281,9 @@ class DraftEditor
             <DraftEditorContents
               blockRendererFn={nullthrows(this.props.blockRendererFn)}
               blockStyleFn={nullthrows(this.props.blockStyleFn)}
+              customBlockMap={
+                {...this.props.customBlockMap}
+              }
               customStyleMap={
                 {...DefaultDraftInlineStyle, ...this.props.customStyleMap}
               }
