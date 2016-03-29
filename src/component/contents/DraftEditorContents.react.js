@@ -92,7 +92,7 @@ class DraftEditorContents extends React.Component {
     );
   }
 
-  render(): ReactElement {
+  render(): React.Element {
     const {blockRendererFn, customStyleMap, editorState} = this.props;
     const content = editorState.getCurrentContent();
     const selection = editorState.getSelection();
@@ -159,7 +159,7 @@ class DraftEditorContents extends React.Component {
           );
         }
 
-        /* $FlowFixMe - Support DOM elements in React.createElement */
+        // $FlowFixMe: Support DOM elements in React.createElement
         child = React.createElement(
           Element,
           {

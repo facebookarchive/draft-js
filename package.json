@@ -24,8 +24,9 @@
     "pretest": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "build": "gulp",
     "lint": "eslint .",
+    "flow": "flow src",
     "test": "NODE_ENV=test jest",
-    "test-ci": "NODE_ENV=test npm run lint && npm run test"
+    "test-ci": "NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
     "fbjs": "^0.8.0-alpha.2",
@@ -44,6 +45,7 @@
     "eslint": "^1.5.1",
     "eslint-plugin-react": "^3.2.2",
     "fbjs-scripts": "^0.6.0-alpha.1",
+    "flow-bin": "^0.22.1",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
     "gulp-browserify-thin": "^0.1.5",
