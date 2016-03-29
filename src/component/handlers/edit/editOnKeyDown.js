@@ -14,7 +14,7 @@
 
 var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
-var KeyBindingUtil = require('KeyBindingUtil')
+var KeyBindingUtil = require('KeyBindingUtil');
 var Keys = require('Keys');
 var SecondaryClipboard = require('SecondaryClipboard');
 
