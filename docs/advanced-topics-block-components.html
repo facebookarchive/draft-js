@@ -16,6 +16,7 @@ a custom <code>MediaComponent</code>.</p><pre class="prism language-javascript">
   <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">&#x27;media&#x27;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token punctuation">{</span>
       component<span class="token punctuation">:</span> MediaComponent<span class="token punctuation">,</span>
+      editable<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
       props<span class="token punctuation">:</span> <span class="token punctuation">{</span>
         foo<span class="token punctuation">:</span> <span class="token string">&#x27;bar&#x27;</span><span class="token punctuation">,</span>
       <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -33,7 +34,11 @@ class <span class="token class-name">EditorWithMedia</span> extends <span class=
 <span class="token punctuation">}</span></pre><p>If no custom renderer object is returned by the <code>blockRendererFn</code> function,
 <code>Editor</code> will render the default <code>DraftEditorBlock</code> text block component.</p><p>The <code>component</code> property defines the component to be used, while the optional
 <code>props</code> object includes props that will be passed through to the rendered
-custom component.</p><p>By defining this function within the context of a higher-level component,
+custom component. In addition, the optional <code>editable</code> property determines
+whether the custom component is <code>contentEditable</code>.</p><p>It is strongly recommended that you use <code>editable: false</code> if your custom
+component will not contain text.</p><p>If your component contains text as provided by your <code>ContentState</code>, your custom
+component should compose a <code>DraftEditorBlock</code> component. This will allow the
+Draft framework to properly maintain cursor behavior within your contents.</p><p>By defining this function within the context of a higher-level component,
 the props for this custom component may be bound to that component, allowing
 instance methods for custom component props.</p><h2><a class="anchor" name="defining-custom-block-components"></a>Defining custom block components <a class="hash-link" href="#defining-custom-block-components">#</a></h2><p>Within <code>MediaComponent</code>, the most likely use case is that you will want to
 retrieve entity metadata to render your custom block. You may apply an entity
@@ -42,7 +47,8 @@ then retrieve the metadata for that key in your custom component <code>render()<
 code.</p><pre class="prism language-javascript">import <span class="token punctuation">{</span>Entity<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
 class <span class="token class-name">MediaComponent</span> extends <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
   <span class="token function">render<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    const <span class="token punctuation">{</span>block<span class="token punctuation">,</span> foo<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">;</span>
+    const <span class="token punctuation">{</span>block<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">;</span>
+    const <span class="token punctuation">{</span>foo<span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>blockProps<span class="token punctuation">;</span>
     const data <span class="token operator">=</span> Entity<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>block<span class="token punctuation">.</span><span class="token function">getEntityAt<span class="token punctuation">(</span></span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getData<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
    <span class="token comment" spellcheck="true"> // Return a &lt;figure&gt; or some other content using this data.
 </span>  <span class="token punctuation">}</span>
