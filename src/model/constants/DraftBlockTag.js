@@ -6,12 +6,26 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftBlockMap
+ * @providesModule DraftBlockTag
  * @flow
  */
 
 'use strict';
 
-import type Immutable from 'immutable';
-
-export type DraftBlockMap = Immutable.OrderedSet<string>;
+/**
+ * The list of default valid block tags.
+ */
+export type DraftBlockTag = (
+  'div' |
+  'p' |
+  'h1' |
+  'h2' |
+  'h3' |
+  'h4' |
+  'h5' |
+  'h6' |
+  'li' |
+  'blockquote' |
+  'pre' |
+  'media'
+);

@@ -11,7 +11,7 @@
 
 'use strict';
 
-const DefaultDraftBlock = require('DefaultDraftBlock');
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -55,7 +55,7 @@ const DraftPublic = {
   Modifier: DraftModifier,
   RichUtils: RichTextEditorUtil,
 
-  DefaultDraftBlock,
+  DefaultDraftBlockRenderMap,
   DefaultDraftInlineStyle,
 
   convertFromHTML: convertFromHTMLToContentBlocks,

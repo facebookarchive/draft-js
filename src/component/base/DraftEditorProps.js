@@ -18,6 +18,7 @@ import type {DraftDragType} from 'DraftDragType';
 import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 export type DraftEditorProps = {
   /**
@@ -128,4 +129,7 @@ export type DraftEditorProps = {
   // Provide a map of inline style names corresponding to CSS style objects
   // that will be rendered for matching ranges.
   customStyleMap?: Object,
+
+  // custom block maps
+  customBlockMap: DraftBlockRenderMap,
 };

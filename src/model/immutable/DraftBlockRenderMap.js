@@ -6,26 +6,15 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftBlockType
+ * @providesModule DraftBlockRenderMap
  * @flow
  */
 
 'use strict';
 
-/**
- * The list of default valid block types.
- */
-export type DraftBlockType = (
-  'unstyled' |
-  'header-one' |
-  'header-two' |
-  'header-three' |
-  'header-four' |
-  'header-five' |
-  'header-six' |
-  'unordered-list-item' |
-  'ordered-list-item' |
-  'blockquote' |
-  'code-block' |
-  'media'
-);
+import type Immutable from 'immutable';
+
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
+import type {DraftBlockType} from 'DraftBlockType';
+
+export type DraftBlockRenderMap = Immutable.Map<DraftBlockType, DraftBlockRenderConfig>

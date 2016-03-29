@@ -13,6 +13,7 @@
 
 'use strict';
 
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
 const DraftEditorContents = require('DraftEditorContents.react');
@@ -38,6 +39,7 @@ import type ContentBlock from 'ContentBlock';
 import type {DraftEditorModes} from 'DraftEditorModes';
 import type {DraftEditorProps} from 'DraftEditorProps';
 import type {DraftScrollPosition} from 'DraftScrollPosition';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 const isIE = UserAgent.isBrowser('IE');
 
@@ -58,6 +60,7 @@ const handlerMap = {
 type DefaultProps = {
   blockRendererFn?: (block: ContentBlock) => ?Object;
   blockStyleFn?: (type: number) => string,
+  customBlockMap: DraftBlockRenderMap,
   keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string,
   readOnly?: boolean,
   spellCheck?: boolean,
@@ -78,6 +81,7 @@ class DraftEditor
   state: State;
 
   static defaultProps = {
+    customBlockMap: DefaultDraftBlockRenderMap,
     blockRendererFn: emptyFunction.thatReturnsNull,
     blockStyleFn: emptyFunction.thatReturns(''),
     keyBindingFn: getDefaultKeyBinding,

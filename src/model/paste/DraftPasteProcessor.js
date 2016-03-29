@@ -22,7 +22,7 @@ const convertFromHTMLtoContentBlocks
 const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-import type {DraftBlockMap} from 'DraftBlockMap';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 const {
   List,
@@ -30,7 +30,7 @@ const {
 } = Immutable;
 
 const DraftPasteProcessor = {
-  processHTML(html: string, customBlockMap: ?DraftBlockMap): ?Array<ContentBlock> {
+  processHTML(html: string, customBlockMap: ?DraftBlockRenderMap): ?Array<ContentBlock> {
     return convertFromHTMLtoContentBlocks(html, undefined, customBlockMap);
   },
 

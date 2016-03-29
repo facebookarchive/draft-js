@@ -33,7 +33,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <script type="text/babel">
       'use strict';
 
-      const {Editor, EditorState, RichUtils, DefaultDraftBlock, DefaultDraftInlineStyle} = Draft;
+      const {Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, DefaultDraftInlineStyle} = Draft;
 
       class RichEditorExample extends React.Component {
         constructor(props) {
@@ -89,7 +89,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             }
           }
 
-          var customBlockMap = Object.assign({}, DefaultDraftBlock, {
+          var customBlockMap = Object.assign({}, DefaultDraftBlockRenderMap, {
             'paragraph': {
                 wrapper: null,
                 element: 'p'

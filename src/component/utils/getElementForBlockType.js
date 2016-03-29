@@ -12,20 +12,20 @@
 
 'use strict';
 
-const DefaultDraftBlock = require('DefaultDraftBlock');
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
 import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftBlockMap} from 'DraftBlockMap';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 function getElementForBlockType(
   blockType: DraftBlockType,
-  customBlockMap: ?DraftBlockMap
+  customBlockMap: DraftBlockRenderMap
 ): string {
-  const draftBlockMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlock;
+  const draftBlockRenderMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlockRenderMap;
 
-  return draftBlockMap[blockType] && draftBlockMap[blockType].element ?
-    draftBlockMap[blockType].element :
-    draftBlockMap.unstyled.element;
+  return draftBlockRenderMap[blockType] && draftBlockRenderMap[blockType].element ?
+    draftBlockRenderMap[blockType].element :
+    draftBlockRenderMap.unstyled.element;
 }
 
 module.exports = getElementForBlockType;

@@ -25,11 +25,11 @@ const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-const DefaultDraftBlock = require('DefaultDraftBlock');
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {DraftBlockMap} from 'DraftBlockMap';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 var {
   List,
@@ -133,16 +133,16 @@ function getListBlockType(
 }
 
 function getBlockMapSupportedTags(
-  draftBlockMap: DraftBlockMap
-): Array<DraftBlockType> {
-  const blockTypes = Object.keys(draftBlockMap);
+  draftBlockRenderMap: DraftBlockRenderMap
+): Array<string> {
+  const blockTypes = Object.keys(draftBlockRenderMap);
   const matchedTags = blockTypes.map(function(blockType) {
-    return draftBlockMap[blockType].element;
+    return draftBlockRenderMap[blockType].element;
   }).sort();
 
   const supportedTags = matchedTags.filter(function(tag, index) {
     // we do not want unstyled to be viewed as a valid match
-    const notUnstyledTag = tag !== draftBlockMap.unstyled.element;
+    const notUnstyledTag = tag !== draftBlockRenderMap.unstyled.element;
 
     // this will guarantee no duplicate tags added
     const uniqueTag = matchedTags.indexOf(tag) === index;
@@ -173,11 +173,11 @@ function getMultiMatchedType(
 function getBlockTypeForTag(
   tag: string,
   lastList: ?string,
-  draftBlockMap: DraftBlockMap
+  draftBlockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
-  const blockTypes = Object.keys(draftBlockMap);
+  const blockTypes = Object.keys(draftBlockRenderMap);
   const matchedTypes = blockTypes.filter(function(blockType) {
-    return draftBlockMap[blockType].element === tag || draftBlockMap[blockType].wrapper === tag;
+    return draftBlockRenderMap[blockType].element === tag || draftBlockRenderMap[blockType].wrapper === tag;
   });
   const matchesFound = matchedTypes.length;
   const UNSTYLED = 'unstyled';
@@ -287,7 +287,7 @@ function genFragment(
   inBlock: ?string,
   blockTags: Array<string>,
   depth: number,
-  draftBlockMap: DraftBlockMap,
+  draftBlockRenderMap: DraftBlockRenderMap,
   inEntity?: string
 ): Chunk {
   var nodeName = node.nodeName.toLowerCase();
@@ -324,7 +324,7 @@ function genFragment(
   if (nodeName === 'br') {
     if (
         lastLastBlock === 'br' &&
-        (!inBlock || getBlockTypeForTag(inBlock, lastList, draftBlockMap) === 'unstyled')
+        (!inBlock || getBlockTypeForTag(inBlock, lastList, draftBlockRenderMap) === 'unstyled')
     ) {
       return getBlockDividerChunk('unstyled', depth);
     }
@@ -348,14 +348,14 @@ function genFragment(
   // Block Tags
   if (!inBlock && blockTags.indexOf(nodeName) !== -1) {
     chunk = getBlockDividerChunk(
-      getBlockTypeForTag(nodeName, lastList, draftBlockMap),
+      getBlockTypeForTag(nodeName, lastList, draftBlockRenderMap),
       depth
     );
     inBlock = nodeName;
     newBlock = true;
   } else if (lastList && inBlock === 'li' && nodeName === 'li') {
     chunk = getBlockDividerChunk(
-      getBlockTypeForTag(nodeName, lastList, draftBlockMap),
+      getBlockTypeForTag(nodeName, lastList, draftBlockRenderMap),
       depth
     );
     inBlock = nodeName;
@@ -389,7 +389,7 @@ function genFragment(
       inBlock,
       blockTags,
       depth,
-      draftBlockMap,
+      draftBlockRenderMap,
       entityId || inEntity
     );
 
@@ -420,13 +420,13 @@ function genFragment(
   return chunk;
 }
 
-function getChunkForHTML(html: string, DOMBuilder: Function, draftBlockMap: DraftBlockMap): ?Chunk {
+function getChunkForHTML(html: string, DOMBuilder: Function, draftBlockRenderMap: DraftBlockRenderMap): ?Chunk {
   html = html
     .trim()
     .replace(REGEX_CR, '')
     .replace(REGEX_NBSP, SPACE);
 
-  const supportedBlockTags = getBlockMapSupportedTags(draftBlockMap);
+  const supportedBlockTags = getBlockMapSupportedTags(draftBlockRenderMap);
 
   var safeBody = DOMBuilder(html);
   if (!safeBody) {
@@ -442,7 +442,7 @@ function getChunkForHTML(html: string, DOMBuilder: Function, draftBlockMap: Draf
   // Start with -1 block depth to offset the fact that we are passing in a fake
   // UL block to start with.
   var chunk =
-    genFragment(safeBody, OrderedSet(), 'ul', null, workingBlocks, -1, draftBlockMap);
+    genFragment(safeBody, OrderedSet(), 'ul', null, workingBlocks, -1, draftBlockRenderMap);
 
 
   // join with previous block to prevent weirdness on paste
@@ -481,15 +481,15 @@ function getChunkForHTML(html: string, DOMBuilder: Function, draftBlockMap: Draf
 function convertFromHTMLtoContentBlocks(
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
-  customBlockMap: ?DraftBlockMap
+  customBlockMap: ?DraftBlockRenderMap
 ): ?Array<ContentBlock> {
-  const draftBlockMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlock;
+  const draftBlockRenderMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlockRenderMap;
 
   // Be ABSOLUTELY SURE that the dom builder you pass hare won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
-  var chunk = getChunkForHTML(html, DOMBuilder, draftBlockMap);
+  var chunk = getChunkForHTML(html, DOMBuilder, draftBlockRenderMap);
 
   if (chunk == null) {
     return null;
