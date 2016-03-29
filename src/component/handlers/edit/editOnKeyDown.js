@@ -12,7 +12,9 @@
 
 'use strict';
 
+var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
+var KeyBindingUtil = require('KeyBindingUtil')
 var Keys = require('Keys');
 var SecondaryClipboard = require('SecondaryClipboard');
 
@@ -28,6 +30,8 @@ var keyCommandTransposeCharacters = require('keyCommandTransposeCharacters');
 var keyCommandUndo = require('keyCommandUndo');
 
 import type {DraftEditorCommand} from 'DraftEditorCommand';
+
+var { isOptionKeyCommand } = KeyBindingUtil;
 
 /**
  * Map a `DraftEditorCommand` command value to a corresponding function.
@@ -101,6 +105,18 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
     case Keys.DOWN:
       this.props.onDownArrow && this.props.onDownArrow(e);
       return;
+    case Keys.SPACE:
+      if (isOptionKeyCommand(e)) {
+        e.preventDefault();
+        // insert a space into the editor
+        const contentState = DraftModifier.replaceText(
+            editorState.getCurrentContent(),
+            editorState.getSelection(),
+            ' '
+        );
+        this.update(EditorState.push(editorState, contentState, 'space'));
+        return;
+      }
   }
 
   var command = this.props.keyBindingFn(e);
