@@ -106,6 +106,7 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
       this.props.onDownArrow && this.props.onDownArrow(e);
       return;
     case Keys.SPACE:
+      // handling for OSX where option + space scrolls
       if (isOptionKeyCommand(e)) {
         e.preventDefault();
         // insert a space into the editor
