@@ -105,6 +105,11 @@ The list below includes the most commonly used instance methods for `EditorState
       <pre>static moveFocusToEnd(editorState): EditorState</pre>
     </a>
   </li>
+  <li>
+    <a href="#setInlineStyleOverride">
+      <pre>static setInlineStyleOverride(inlineStyleOverride): EditorState</pre>
+    </a>
+  </li>
 </ul>
 
 *Properties*
@@ -335,6 +340,14 @@ Returns a new `EditorState` object with selection at the end and forces focus.
 
 This is useful in scenarios where we want to programmatically focus the input
 and it makes sense to allow the user to continue working seamlessly.
+
+### setInlineStyleOverride
+
+```
+static setInlineStyleOverride(inlineStyleOverride: DraftInlineStyle): EditorState
+```
+Returns a new `EditorState` object with the specified `DraftInlineStyle` applied
+as the set of inline styles to be applied to the next inserted characters.
 
 ## Properties and Getters
 
