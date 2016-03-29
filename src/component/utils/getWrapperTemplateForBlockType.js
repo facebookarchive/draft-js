@@ -27,7 +27,7 @@ const PRE_WRAP = <pre className={cx('public/DraftStyleDefault/pre')} />;
 
 function getWrapperTemplateForBlockType(
   blockType: DraftBlockType
-): ?ReactElement {
+): ?React.Element {
   switch (blockType) {
     case 'unordered-list-item':
       return UL_WRAP;

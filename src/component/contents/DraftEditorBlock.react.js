@@ -119,7 +119,7 @@ class DraftEditorBlock extends React.Component {
     }
   }
 
-  _renderChildren(): Array<ReactElement> {
+  _renderChildren(): Array<React.Element> {
     var block = this.props.block;
     var blockKey = block.getKey();
     var text = block.getText();
@@ -193,7 +193,7 @@ class DraftEditorBlock extends React.Component {
     }).toArray();
   }
 
-  render(): ReactElement {
+  render(): React.Element {
     const {direction, offsetKey} = this.props;
     const className = cx({
       'public/DraftStyleDefault/block': true,
