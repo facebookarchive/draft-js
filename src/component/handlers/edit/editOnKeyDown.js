@@ -17,6 +17,7 @@ var EditorState = require('EditorState');
 var KeyBindingUtil = require('KeyBindingUtil');
 var Keys = require('Keys');
 var SecondaryClipboard = require('SecondaryClipboard');
+var UserAgent = require('UserAgent');
 
 var keyCommandBackspaceToStartOfLine = require('keyCommandBackspaceToStartOfLine');
 var keyCommandBackspaceWord = require('keyCommandBackspaceWord');
@@ -32,6 +33,7 @@ var keyCommandUndo = require('keyCommandUndo');
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 
 var { isOptionKeyCommand } = KeyBindingUtil;
+var isChrome = UserAgent.isBrowser('Chrome');
 
 /**
  * Map a `DraftEditorCommand` command value to a corresponding function.
@@ -107,7 +109,7 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
       return;
     case Keys.SPACE:
       // handling for OSX where option + space scrolls
-      if (isOptionKeyCommand(e)) {
+      if (isChrome && isOptionKeyCommand(e)) {
         e.preventDefault();
         // insert a space into the editor
         const contentState = DraftModifier.replaceText(
