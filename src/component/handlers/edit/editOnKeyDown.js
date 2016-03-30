@@ -113,11 +113,11 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
         e.preventDefault();
         // insert a space into the editor
         const contentState = DraftModifier.replaceText(
-            editorState.getCurrentContent(),
-            editorState.getSelection(),
-            ' '
+          editorState.getCurrentContent(),
+          editorState.getSelection(),
+          ' '
         );
-        this.update(EditorState.push(editorState, contentState, 'space'));
+        this.update(EditorState.push(editorState, contentState, 'insert-characters'));
         return;
       }
   }
