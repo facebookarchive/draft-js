@@ -23,6 +23,7 @@ const DraftEntity = require('DraftEntity');
 const DraftEntityInstance = require('DraftEntityInstance');
 const EditorState = require('EditorState');
 const KeyBindingUtil = require('KeyBindingUtil');
+const MediaUtils = require('MediaUtils');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 const SelectionState = require('SelectionState');
 
@@ -50,6 +51,7 @@ const DraftPublic = {
   SelectionState,
 
   KeyBindingUtil,
+  MediaUtils,
   Modifier: DraftModifier,
   RichUtils: RichTextEditorUtil,
 
