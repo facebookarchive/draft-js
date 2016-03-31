@@ -115,7 +115,7 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
         const contentState = DraftModifier.replaceText(
           editorState.getCurrentContent(),
           editorState.getSelection(),
-          ' '
+          '\u00a0'
         );
         this.update(EditorState.push(editorState, contentState, 'insert-characters'));
         return;
