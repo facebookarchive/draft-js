@@ -312,7 +312,7 @@ class EditorState {
 
   /**
    * Force focus to the end of the editor. This is useful in scenarios
-   * where we want to programatically focus the input and it makes sense
+   * where we want to programmatically focus the input and it makes sense
    * to allow the user to continue working seamlessly.
    */
   static moveFocusToEnd(editorState: EditorState): EditorState {
@@ -377,7 +377,14 @@ class EditorState {
       );
     }
 
-    return EditorState.set(editorState, {
+    let inlineStyleOverride = editorState.getInlineStyleOverride();
+
+    // Don't discard inline style overrides on block type or depth changes.
+    if (changeType !== 'adjust-depth' && changeType !== 'change-block-type') {
+      inlineStyleOverride = null;
+    }
+
+    var editorStateChanges = {
       currentContent: newContent,
       directionMap,
       undoStack,
@@ -385,8 +392,10 @@ class EditorState {
       lastChangeType: changeType,
       selection: contentState.getSelectionAfter(),
       forceSelection,
-      inlineStyleOverride: null,
-    });
+      inlineStyleOverride,
+    };
+
+    return EditorState.set(editorState, editorStateChanges);
   }
 
   /**

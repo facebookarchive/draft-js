@@ -199,7 +199,7 @@ class DraftEditor
     };
   }
 
-  _renderPlaceholder(): ?ReactElement {
+  _renderPlaceholder(): ?React.Element {
     const content = this.props.editorState.getCurrentContent();
     const showPlaceholder = (
       this.props.placeholder &&
@@ -218,7 +218,7 @@ class DraftEditor
     }
   }
 
-  render(): ReactElement {
+  render(): React.Element {
     const {readOnly, textAlignment} = this.props;
     const rootClass = cx({
       'DraftEditor/root': true,

@@ -17,6 +17,7 @@ var BlockMapBuilder = require('BlockMapBuilder');
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
+var EditorState = require('EditorState');
 var Immutable = require('immutable');
 var SampleDraftInlineStyle = require('SampleDraftInlineStyle');
 var SelectionState = require('SelectionState');
@@ -73,8 +74,11 @@ var contentState = new ContentState({
   selectionAfter: selectionState,
 });
 
+var editorState = EditorState.createWithContent(contentState);
+editorState = EditorState.forceSelection(editorState, selectionState);
+
 function getSampleStateForTesting(): Object {
-  return {contentState, selectionState};
+  return {editorState, contentState, selectionState};
 }
 
 module.exports = getSampleStateForTesting;

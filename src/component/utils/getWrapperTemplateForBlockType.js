@@ -12,6 +12,7 @@
 
 'use strict';
 
+const React = require('React');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
 import type {DraftBlockType} from 'DraftBlockType';
@@ -20,7 +21,7 @@ import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 function getWrapperTemplateForBlockType(
   blockType: DraftBlockType,
   customBlockMap: DraftBlockRenderMap
-): ?ReactElement {
+): ?React.Element {
   const draftBlockRenderMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlockRenderMap;
   return draftBlockRenderMap[blockType] && draftBlockRenderMap[blockType].wrapper ?
     draftBlockRenderMap[blockType].wrapper :

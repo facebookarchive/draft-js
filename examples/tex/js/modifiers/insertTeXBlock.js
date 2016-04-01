@@ -14,19 +14,13 @@
 
 'use strict';
 
-import {List, Repeat} from 'immutable';
 import {
-  BlockMapBuilder,
-  CharacterMetadata,
-  ContentBlock,
-  EditorState,
   Entity,
-  Modifier,
-  genKey,
+  MediaUtils,
 } from 'draft-js';
 
-var count = 0;
-var examples = [
+let count = 0;
+const examples = [
   '\\int_a^bu\\frac{d^2v}{dx^2}\\,dx\n' +
   '=\\left.u\\frac{dv}{dx}\\right|_a^b\n' +
   '-\\int_a^b\\frac{du}{dx}\\frac{dv}{dx}\\,dx',
@@ -42,57 +36,12 @@ var examples = [
 ];
 
 export function insertTeXBlock(editorState) {
-  var contentState = editorState.getCurrentContent();
-  var selectionState = editorState.getSelection();
-
-  var afterRemoval = Modifier.removeRange(
-    contentState,
-    selectionState,
-    'backward'
-  );
-
-  var targetSelection = afterRemoval.getSelectionAfter();
-  var afterSplit = Modifier.splitBlock(afterRemoval, targetSelection);
-  var insertionTarget = afterSplit.getSelectionAfter();
-
-  var asMedia = Modifier.setBlockType(afterSplit, insertionTarget, 'media');
-  var nextFormula = count++ % examples.length;
-
-  var entityKey = Entity.create(
+  const nextFormula = count++ % examples.length;
+  const entityKey = Entity.create(
     'TOKEN',
     'IMMUTABLE',
     {content: examples[nextFormula]}
   );
 
-  var charData = CharacterMetadata.create({entity: entityKey});
-
-  var fragmentArray = [
-    new ContentBlock({
-      key: genKey(),
-      type: 'media',
-      text: ' ',
-      characterList: List(Repeat(charData, 1)),
-    }),
-    new ContentBlock({
-      key: genKey(),
-      type: 'unstyled',
-      text: '',
-      characterList: List(),
-    }),
-  ];
-
-  var fragment = BlockMapBuilder.createFromArray(fragmentArray);
-
-  var withMedia = Modifier.replaceWithFragment(
-    asMedia,
-    insertionTarget,
-    fragment
-  );
-
-  var newContent = withMedia.merge({
-    selectionBefore: selectionState,
-    selectionAfter: withMedia.getSelectionAfter().set('hasFocus', true),
-  });
-
-  return EditorState.push(editorState, newContent, 'insert-fragment');
+  return MediaUtils.insertMedia(editorState, entityKey, ' ');
 }

@@ -92,7 +92,7 @@ class DraftEditorContents extends React.Component {
     );
   }
 
-  render(): ReactElement {
+  render(): React.Element {
     const {blockRendererFn, customStyleMap, editorState} = this.props;
     const content = editorState.getCurrentContent();
     const selection = editorState.getSelection();
@@ -106,7 +106,7 @@ class DraftEditorContents extends React.Component {
     let currentWrapperTemplate = null;
     let currentDepth = null;
     let currentWrappedBlocks;
-    let block, key, blockType, child, wrapperTemplate;
+    let block, key, blockType, child, childProps, wrapperTemplate;
 
     for (let ii = 0; ii < blocksAsArray.length; ii++) {
       block = blocksAsArray[ii];
@@ -114,10 +114,11 @@ class DraftEditorContents extends React.Component {
       blockType = block.getType();
 
       const customRenderer = blockRendererFn(block);
-      let CustomComponent, customProps;
+      let CustomComponent, customProps, customEditable;
       if (customRenderer) {
         CustomComponent = customRenderer.component;
         customProps = customRenderer.props;
+        customEditable = customRenderer.editable;
       }
 
       const direction = directionMap.get(key);
@@ -135,43 +136,49 @@ class DraftEditorContents extends React.Component {
         tree: editorState.getBlockTree(key),
       };
 
-      wrapperTemplate = getWrapperTemplateForBlockType(blockType);
+      wrapperTemplate = getWrapperTemplateForBlockType(blockType, this.props.customBlockMap);
       const useNewWrapper = wrapperTemplate !== currentWrapperTemplate;
 
-      if (CustomComponent) {
-        child = <CustomComponent {...componentProps} />;
-      } else {
-        const Element = getElementForBlockType(blockType, this.props.customBlockMap);
-        const depth = block.getDepth();
-        let className = this.props.blockStyleFn(block);
+      const Element = getElementForBlockType(blockType, this.props.customBlockMap);
+      const depth = block.getDepth();
+      let className = this.props.blockStyleFn(block);
 
-        // List items are special snowflakes, since we handle nesting and
-        // counters manually.
-        if (Element === 'li') {
-          const shouldResetCount = (
-            useNewWrapper ||
-            currentDepth === null ||
-            depth > currentDepth
-          );
-          className = joinClasses(
-            className,
-            getListItemClasses(blockType, depth, shouldResetCount, direction)
-          );
-        }
-
-        /* $FlowFixMe - Support DOM elements in React.createElement */
-        child = React.createElement(
-          Element,
-          {
-            className,
-            'data-block': true,
-            'data-editor': this.props.editorKey,
-            'data-offset-key': offsetKey,
-            key,
-          },
-          <DraftEditorBlock {...componentProps} />,
+      // List items are special snowflakes, since we handle nesting and
+      // counters manually.
+      if (Element === 'li') {
+        const shouldResetCount = (
+          useNewWrapper ||
+          currentDepth === null ||
+          depth > currentDepth
+        );
+        className = joinClasses(
+          className,
+          getListItemClasses(blockType, depth, shouldResetCount, direction)
         );
       }
+
+      const Component = CustomComponent || DraftEditorBlock;
+      childProps = {
+        className,
+        'data-block': true,
+        'data-editor': this.props.editorKey,
+        'data-offset-key': offsetKey,
+        key,
+      };
+      if (customEditable !== undefined) {
+        childProps = {
+          ...childProps,
+          contentEditable: customEditable,
+          suppressContentEditableWarning: true,
+        };
+      }
+
+      // $FlowFixMe: Support DOM elements in React.createElement
+      child = React.createElement(
+        Element,
+        childProps,
+        <Component {...componentProps} />,
+      );
 
       if (wrapperTemplate) {
         if (useNewWrapper) {

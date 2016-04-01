@@ -21,6 +21,9 @@ in the Draft repository provides a live example of custom block rendering, with
 TeX syntax translated on the fly into editable embedded formula rendering via the
 [KaTeX library](https://khan.github.io/KaTeX/).
 
+A [media example](https://github.com/facebook/draft-js/tree/master/examples/media) is also
+available, which showcases custom block rendering of audio, image, and video.
+
 By using a custom block renderer, it is possible to introduce complex rich
 interactions within the frame of your editor.
 
@@ -40,6 +43,7 @@ function myBlockRenderer(contentBlock) {
   if (type === 'media') {
     return {
       component: MediaComponent,
+      editable: false,
       props: {
         foo: 'bar',
       },
@@ -62,7 +66,15 @@ If no custom renderer object is returned by the `blockRendererFn` function,
 
 The `component` property defines the component to be used, while the optional
 `props` object includes props that will be passed through to the rendered
-custom component.
+custom component. In addition, the optional `editable` property determines
+whether the custom component is `contentEditable`.
+
+It is strongly recommended that you use `editable: false` if your custom
+component will not contain text.
+
+If your component contains text as provided by your `ContentState`, your custom
+component should compose a `DraftEditorBlock` component. This will allow the
+Draft framework to properly maintain cursor behavior within your contents.
 
 By defining this function within the context of a higher-level component,
 the props for this custom component may be bound to that component, allowing
@@ -80,7 +92,8 @@ code.
 import {Entity} from 'draft-js';
 class MediaComponent extends React.Component {
   render() {
-    const {block, foo} = this.props;
+    const {block} = this.props;
+    const {foo} = this.props.blockProps;
     const data = Entity.get(block.getEntityAt(0)).getData();
     // Return a <figure> or some other content using this data.
   }

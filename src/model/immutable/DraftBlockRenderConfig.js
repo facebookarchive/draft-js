@@ -12,7 +12,9 @@
 
 'use strict';
 
+const React = require('React');
+
 import type Immutable from 'immutable';
 import type {DraftBlockTag} from 'DraftBlockTag';
 
-export type DraftBlockRenderConfig = Immutable.Map<DraftBlockTag, ReactElement>
+export type DraftBlockRenderConfig = Immutable.Map<DraftBlockTag, React.Element>
