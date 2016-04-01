@@ -135,20 +135,14 @@ function getListBlockType(
 function getBlockMapSupportedTags(
   draftBlockRenderMap: DraftBlockRenderMap
 ): Array<string> {
-  const blockTypes = Object.keys(draftBlockRenderMap);
-  const matchedTags = blockTypes.map(function(blockType) {
-    return draftBlockRenderMap[blockType].element;
-  }).sort();
-
-  const supportedTags = matchedTags.filter(function(tag, index) {
-    // we do not want unstyled to be viewed as a valid match
-    const notUnstyledTag = tag !== draftBlockRenderMap.unstyled.element;
-
-    // this will guarantee no duplicate tags added
-    const uniqueTag = matchedTags.indexOf(tag) === index;
-
-    return notUnstyledTag && uniqueTag;
-  });
+  const unstyledElement = draftBlockRenderMap.get('unstyled').get('element');
+  const supportedTags = draftBlockRenderMap
+    .map((config) => config.get('element'))
+    .valueSeq()
+    .toSet()
+    .filter((tag) => tag !== unstyledElement)
+    .toArray()
+    .sort();
 
   return supportedTags;
 }
@@ -175,23 +169,27 @@ function getBlockTypeForTag(
   lastList: ?string,
   draftBlockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
-  const blockTypes = Object.keys(draftBlockRenderMap);
-  const matchedTypes = blockTypes.filter(function(blockType) {
-    return draftBlockRenderMap[blockType].element === tag || draftBlockRenderMap[blockType].wrapper === tag;
-  });
-  const matchesFound = matchedTypes.length;
-  const UNSTYLED = 'unstyled';
+  const matchedTypes = draftBlockRenderMap
+    .filter((blockType) => {
+      return blockType.get('element') === tag ||
+        blockType.get('wrapper') === tag;
+    })
+    .keySeq()
+    .toSet()
+    .toArray()
+    .sort();
 
   // if we dont have any matched type, return unstyled
   // if we have one matched type return it
-  // if we have multi matched types use the multi-match function to determine which type is it
-  switch (matchesFound) {
+  // if we have multi matched types use the multi-match function to gather type
+  switch (matchedTypes.length) {
     case 0:
-      return UNSTYLED;
+      return 'unstyled';
     case 1:
       return matchedTypes[0];
     default:
-      return getMultiMatchedType(tag, lastList, [getListBlockType]) || UNSTYLED;
+      return getMultiMatchedType(tag, lastList, [getListBlockType]) ||
+        'unstyled';
   }
 }
 
@@ -267,7 +265,10 @@ function joinChunks(A: Chunk, B: Chunk): Chunk {
  * block tags from. If we do, we can use those and ignore <div> tags. If we
  * don't, we can treat <div> tags as meaningful (unstyled) blocks.
  */
-function containsSemanticBlockMarkup(html: string, blockTags: Array<string>): boolean {
+function containsSemanticBlockMarkup(
+  html: string,
+  blockTags: Array<string>
+): boolean {
   return blockTags.some(tag => html.indexOf('<' + tag) !== -1);
 }
 
@@ -323,8 +324,8 @@ function genFragment(
   // BR tags
   if (nodeName === 'br') {
     if (
-        lastLastBlock === 'br' &&
-        (!inBlock || getBlockTypeForTag(inBlock, lastList, draftBlockRenderMap) === 'unstyled')
+      lastLastBlock === 'br' && (!inBlock ||
+      getBlockTypeForTag(inBlock, lastList, draftBlockRenderMap) === 'unstyled')
     ) {
       return getBlockDividerChunk('unstyled', depth);
     }
@@ -420,7 +421,11 @@ function genFragment(
   return chunk;
 }
 
-function getChunkForHTML(html: string, DOMBuilder: Function, draftBlockRenderMap: DraftBlockRenderMap): ?Chunk {
+function getChunkForHTML(
+  html: string,
+  DOMBuilder: Function,
+  draftBlockRenderMap: DraftBlockRenderMap
+): ?Chunk {
   html = html
     .trim()
     .replace(REGEX_CR, '')
@@ -437,12 +442,21 @@ function getChunkForHTML(html: string, DOMBuilder: Function, draftBlockRenderMap
   // Sometimes we aren't dealing with content that contains nice semantic
   // tags. In this case, use divs to separate everything out into paragraphs
   // and hope for the best.
-  var workingBlocks = containsSemanticBlockMarkup(html, supportedBlockTags) ? supportedBlockTags : ['div'];
+  var workingBlocks = containsSemanticBlockMarkup(html, supportedBlockTags) ?
+    supportedBlockTags :
+    ['div'];
 
   // Start with -1 block depth to offset the fact that we are passing in a fake
   // UL block to start with.
-  var chunk =
-    genFragment(safeBody, OrderedSet(), 'ul', null, workingBlocks, -1, draftBlockRenderMap);
+  var chunk = genFragment(
+    safeBody,
+    OrderedSet(),
+    'ul',
+    null,
+    workingBlocks,
+    -1,
+    draftBlockRenderMap
+  );
 
 
   // join with previous block to prevent weirdness on paste

@@ -284,9 +284,7 @@ class DraftEditor
             <DraftEditorContents
               blockRendererFn={nullthrows(this.props.blockRendererFn)}
               blockStyleFn={nullthrows(this.props.blockStyleFn)}
-              customBlockMap={
-                {...this.props.customBlockMap}
-              }
+              customBlockMap={nullthrows(this.props.customBlockMap)}
               customStyleMap={
                 {...DefaultDraftInlineStyle, ...this.props.customStyleMap}
               }

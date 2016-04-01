@@ -14,47 +14,47 @@
 jest.autoMockOff();
 
 var DraftEntity = require('DraftEntity');
+var Immutable = require('immutable');
 
 var DraftPasteProcessor = require('DraftPasteProcessor');
-var CUSTOM_BLOCK_MAP= {
-  'header-one': {
-    wrapper: null,
-    element: 'h1'
-  },
-  'header-two': {
-    wrapper: null,
-    element: 'h2'
-  },
-  'header-three': {
-    wrapper: null,
-    element: 'h3'
-  },
-  'unordered-list-item': {
-    wrapper: null,
-    element: 'li'
-  },
-  'ordered-list-item': {
-    wrapper: null,
-    element: 'li'
-  },
-  'blockquote': {
-    wrapper: null,
-    element: 'blockquote'
-  },
-  'code-block': {
-    wrapper: null,
-    element: 'pre'
-  },
-  'paragraph': {
-    wrapper: null,
-    element: 'p'
-  },
-  'unstyled': {
-    wrapper: null,
-    element: 'div'
-  }
-};
-
+var CUSTOM_BLOCK_MAP = Immutable.Map({
+  'header-one': Immutable.Map({
+    element: 'h1',
+    wrapper: null
+  }),
+  'header-two': Immutable.Map({
+    element: 'h2',
+    wrapper: null
+  }),
+  'header-three': Immutable.Map({
+    element: 'h3',
+    wrapper: null
+  }),
+  'unordered-list-item': Immutable.Map({
+    element: 'li',
+    wrapper: null
+  }),
+  'ordered-list-item': Immutable.Map({
+    element: 'li',
+    wrapper: null
+  }),
+  'blockquote': Immutable.Map({
+    element: 'blockquote',
+    wrapper: null
+  }),
+  'code-block': Immutable.Map({
+    element: 'pre',
+    wrapper: null
+  }),
+  'paragraph': Immutable.Map({
+    element: 'p',
+    wrapper: null
+  }),
+  'unstyled': Immutable.Map({
+    element: 'div',
+    wrapper: null
+  })
+});
 
 describe('DraftPasteProcessor', function() {
   function assertInlineStyles(block, comparison) {

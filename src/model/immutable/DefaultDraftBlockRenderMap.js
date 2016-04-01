@@ -14,59 +14,61 @@
 
 const React = require('React');
 
+const Immutable = require('immutable');
+
 const cx = require('cx');
 
 const UL_WRAP = <ul className={cx('public/DraftStyleDefault/ul')} />;
 const OL_WRAP = <ol className={cx('public/DraftStyleDefault/ol')} />;
 const PRE_WRAP = <pre className={cx('public/DraftStyleDefault/pre')} />;
 
-module.exports = {
-  'header-one': {
-    wrapper: null,
-    element: 'h1'
-  },
-  'header-two': {
-    wrapper: null,
-    element: 'h2'
-  },
-  'header-three': {
-    wrapper: null,
-    element: 'h3'
-  },
-  'header-four': {
-    wrapper: null,
-    element: 'h4'
-  },
-  'header-five': {
-    wrapper: null,
-    element: 'h5'
-  },
-  'header-six': {
-    wrapper: null,
-    element: 'h6'
-  },
-  'unordered-list-item': {
-    wrapper: UL_WRAP,
-    element: 'li'
-  },
-  'ordered-list-item': {
-    wrapper: OL_WRAP,
-    element: 'li'
-  },
-  'blockquote': {
-    wrapper: null,
-    element: 'blockquote'
-  },
-  'media': {
-    wrapper: null,
-    element: 'figure'
-  },
-  'code-block': {
-    wrapper: PRE_WRAP,
-    element: 'pre'
-  },
-  'unstyled': {
-    wrapper: null,
-    element: 'div'
-  }
-};
+module.exports = Immutable.Map({
+  'header-one': Immutable.Map({
+    element: 'h1',
+    wrapper: null
+  }),
+  'header-two': Immutable.Map({
+    element: 'h2',
+    wrapper: null
+  }),
+  'header-three': Immutable.Map({
+    element: 'h3',
+    wrapper: null
+  }),
+  'header-four': Immutable.Map({
+    element: 'h4',
+    wrapper: null
+  }),
+  'header-five': Immutable.Map({
+    element: 'h5',
+    wrapper: null
+  }),
+  'header-six': Immutable.Map({
+    element: 'h6',
+    wrapper: null
+  }),
+  'unordered-list-item': Immutable.Map({
+    element: 'li',
+    wrapper: UL_WRAP
+  }),
+  'ordered-list-item': Immutable.Map({
+    element: 'li',
+    wrapper: OL_WRAP
+  }),
+  'blockquote': Immutable.Map({
+    element: 'blockquote',
+    wrapper: null
+  }),
+  'media': Immutable.Map({
+    element: 'figure',
+    wrapper: null
+  }),
+  'code-block': Immutable.Map({
+    element: 'pre',
+    wrapper: PRE_WRAP
+  }),
+  'unstyled': Immutable.Map({
+    element: 'div',
+    wrapper: null
+  })
+});

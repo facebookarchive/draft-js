@@ -13,18 +13,18 @@
 'use strict';
 
 const React = require('React');
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 function getWrapperTemplateForBlockType(
   blockType: DraftBlockType,
-  customBlockMap: DraftBlockRenderMap
+  draftBlockRenderMap: DraftBlockRenderMap
 ): ?React.Element {
-  const draftBlockRenderMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlockRenderMap;
-  return draftBlockRenderMap[blockType] && draftBlockRenderMap[blockType].wrapper ?
-    draftBlockRenderMap[blockType].wrapper :
+  const matchedBlockType = draftBlockRenderMap.get(blockType);
+
+  return matchedBlockType && matchedBlockType.get('wrapper')  ?
+    matchedBlockType.get('wrapper') :
     null;
 }
 

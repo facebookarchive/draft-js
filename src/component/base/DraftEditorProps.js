@@ -131,6 +131,8 @@ export type DraftEditorProps = {
   // that will be rendered for matching ranges.
   customStyleMap?: Object,
 
-  // custom block maps
+  // Provide a map of configurable blockRenderTypes, each type then define
+  // a mapping element tag and/or a react element wrapper that is used for
+  // rendering and paste processing
   customBlockMap: DraftBlockRenderMap,
 };

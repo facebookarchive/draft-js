@@ -27,5 +27,5 @@ export type DraftBlockTag = (
   'li' |
   'blockquote' |
   'pre' |
-  'media'
+  'figure'
 );

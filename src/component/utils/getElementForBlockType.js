@@ -19,13 +19,16 @@ import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 function getElementForBlockType(
   blockType: DraftBlockType,
-  customBlockMap: DraftBlockRenderMap
+  draftBlockRenderMap: DraftBlockRenderMap
 ): string {
-  const draftBlockRenderMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlockRenderMap;
+  const matchedBlockType = draftBlockRenderMap.get(blockType) ||
+    draftBlockRenderMap.get('unstyled');
 
-  return draftBlockRenderMap[blockType] && draftBlockRenderMap[blockType].element ?
-    draftBlockRenderMap[blockType].element :
-    draftBlockRenderMap.unstyled.element;
+  const matchedBlockTypeTag = matchedBlockType ?
+    matchedBlockType.get('element') :
+    DefaultDraftBlockRenderMap.get('unstyled').get('element');
+
+  return matchedBlockTypeTag;
 }
 
 module.exports = getElementForBlockType;
