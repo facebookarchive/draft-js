@@ -16,7 +16,7 @@
 
 import {
   Entity,
-  MediaUtils,
+  AtomicUtils,
 } from 'draft-js';
 
 let count = 0;
@@ -43,5 +43,5 @@ export function insertTeXBlock(editorState) {
     {content: examples[nextFormula]}
   );
 
-  return MediaUtils.insertMedia(editorState, entityKey, ' ');
+  return AtomicUtils.insertAtomic(editorState, entityKey, ' ');
 }
