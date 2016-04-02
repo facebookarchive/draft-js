@@ -64,7 +64,7 @@ class MyEditor extends React.Component {
     return (
       <Editor
         editorState={this.state.editorState}
-        handleKeyCommand={this.handleKeyCommand}
+        handleKeyCommand={this.handleKeyCommand.bind(this)}
         onChange={this.onChange}
       />
     );
