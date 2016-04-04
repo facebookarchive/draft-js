@@ -44,7 +44,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       class RichEditorExample extends React.Component {
         constructor(props) {
           super(props);
-          this.state = {editorState: EditorState.createEmpty()};
+          this.state = {
+            editorState: EditorState.createEmpty(),
+            customBlockMap: DefaultDraftBlockRenderMap.merge(Immutable.Map({
+              'paragraph': Immutable.Map({
+                wrapper: null,
+                element: 'p'
+              }),
+              'unstyled': Immutable.Map({
+                wrapper: null,
+                element: 'p'
+              })
+            }))
+          };
 
           this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
@@ -83,7 +95,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
 
         render() {
-          const {editorState} = this.state;
+          const {editorState, customBlockMap} = this.state;
 
           // If the user changes block type before entering any text, we can
           // either style the placeholder or hide it. Let's just hide it now.
@@ -94,20 +106,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               className += ' RichEditor-hidePlaceholder';
             }
           }
-
-          const customDraftBlockRenderMap = Immutable.Map({
-            'paragraph': Immutable.Map({
-              wrapper: null,
-              element: 'p'
-            }),
-            'unstyled': Immutable.Map({
-              wrapper: null,
-              element: 'p'
-            })
-          });
-
-          // we are now merging our custom overwrites with the defaults provided
-          const draftBlockRenderMapConfig = DefaultDraftBlockRenderMap.merge(customDraftBlockRenderMap);
 
           return (
             <div className="RichEditor-root">
@@ -121,7 +119,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               />
               <div className={className} onClick={this.focus}>
                 <Editor
-                  customBlockMap={draftBlockRenderMapConfig}
+                  customBlockMap={customBlockMap}
                   blockStyleFn={getBlockStyle}
                   customStyleMap={styleMap}
                   editorState={editorState}
