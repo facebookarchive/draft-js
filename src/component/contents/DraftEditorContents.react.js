@@ -19,8 +19,7 @@ const EditorState = require('EditorState');
 const React = require('React');
 
 const cx = require('cx');
-const getElementForBlockType = require('getElementForBlockType');
-const getWrapperTemplateForBlockType = require('getWrapperTemplateForBlockType');
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const joinClasses = require('joinClasses');
 const nullthrows = require('nullthrows');
 
@@ -136,10 +135,21 @@ class DraftEditorContents extends React.Component {
         tree: editorState.getBlockTree(key),
       };
 
-      wrapperTemplate = getWrapperTemplateForBlockType(blockType, this.props.customBlockMap);
+      const draftBlockRenderMap = this.props.customBlockMap;
+
+      const matchedBlockType = draftBlockRenderMap.get(blockType) ||
+        draftBlockRenderMap.get('unstyled');
+
+      wrapperTemplate = matchedBlockType && matchedBlockType.get('wrapper')  ?
+        matchedBlockType.get('wrapper') :
+        null;
+
       const useNewWrapper = wrapperTemplate !== currentWrapperTemplate;
 
-      const Element = getElementForBlockType(blockType, this.props.customBlockMap);
+      const Element = matchedBlockType && matchedBlockType.get('element') ?
+        matchedBlockType.get('element') :
+        DefaultDraftBlockRenderMap.getIn(['unstyled', 'element']);
+
       const depth = block.getDepth();
       let className = this.props.blockStyleFn(block);
 
@@ -173,7 +183,7 @@ class DraftEditorContents extends React.Component {
         };
       }
 
-      // $FlowFixMe: Support DOM elements in React.createElement
+      // FlowFixMe: Support DOM elements in React.createElement
       child = React.createElement(
         Element,
         childProps,

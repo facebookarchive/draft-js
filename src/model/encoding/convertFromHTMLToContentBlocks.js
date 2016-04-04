@@ -135,7 +135,9 @@ function getListBlockType(
 function getBlockMapSupportedTags(
   draftBlockRenderMap: DraftBlockRenderMap
 ): Array<string> {
-  const unstyledElement = draftBlockRenderMap.get('unstyled').get('element');
+  const unstyledElement = draftBlockRenderMap.getIn(['unstyled', 'element']) ||
+    DefaultDraftBlockRenderMap.getIn(['unstyled', 'element']);
+
   const supportedTags = draftBlockRenderMap
     .map((config) => config.get('element'))
     .valueSeq()
@@ -324,8 +326,11 @@ function genFragment(
   // BR tags
   if (nodeName === 'br') {
     if (
-      lastLastBlock === 'br' && (!inBlock ||
-      getBlockTypeForTag(inBlock, lastList, draftBlockRenderMap) === 'unstyled')
+      lastLastBlock === 'br' &&
+      (
+        !inBlock ||
+        getBlockTypeForTag(inBlock, lastList, draftBlockRenderMap) === 'unstyled'
+      )
     ) {
       return getBlockDividerChunk('unstyled', depth);
     }
