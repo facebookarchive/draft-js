@@ -102,6 +102,8 @@ function getDefaultKeyBinding(
       return null;
     case 90: // Z
       return getZCommand(e) || null;
+    case Keys.RETURN:
+      return 'split-block';
     case Keys.DELETE:
       return getDeleteCommand(e);
     case Keys.BACKSPACE:
