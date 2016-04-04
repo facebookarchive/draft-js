@@ -130,15 +130,15 @@ var RichTextEditorUtil = {
         atomicBlockTarget,
         content.getBlockForKey(startKey).getType()
       );
-      var withoutAtomic = DraftModifier.removeRange(
+      var withoutAtomicBlock = DraftModifier.removeRange(
         asCurrentStyle,
         atomicBlockTarget,
         'backward'
       );
-      if (withoutAtomic !== content) {
+      if (withoutAtomicBlock !== content) {
         return EditorState.push(
           editorState,
-          withoutAtomic,
+          withoutAtomicBlock,
           'remove-range'
         );
       }
@@ -195,13 +195,13 @@ var RichTextEditorUtil = {
         'forward'
       );
 
-      var preserveAtomic = DraftModifier.setBlockType(
+      var preserveAtomicBlock = DraftModifier.setBlockType(
         withoutEmptyBlock,
         withoutEmptyBlock.getSelectionAfter(),
         'atomic'
       );
 
-      return EditorState.push(editorState, preserveAtomic, 'remove-range');
+      return EditorState.push(editorState, preserveAtomicBlock, 'remove-range');
     }
 
     // Otherwise, delete the atomic block.
@@ -210,16 +210,16 @@ var RichTextEditorUtil = {
       focusOffset: blockAfter.getLength(),
     });
 
-    var withoutAtomic = DraftModifier.removeRange(
+    var withoutAtomicBlock = DraftModifier.removeRange(
       content,
       atomicBlockTarget,
       'forward'
     );
 
-    if (withoutAtomic !== content) {
+    if (withoutAtomicBlock !== content) {
       return EditorState.push(
         editorState,
-        withoutAtomic,
+        withoutAtomicBlock,
         'remove-range'
       );
     }
@@ -309,12 +309,12 @@ var RichTextEditorUtil = {
       });
     }
 
-    var hasAtomic = content.getBlockMap()
+    var hasAtomicBlock = content.getBlockMap()
       .skipWhile((_, k) => k !== startKey)
       .takeWhile((_, k) => k !== endKey)
       .some(v => v.getType() === 'atomic');
 
-    if (hasAtomic) {
+    if (hasAtomicBlock) {
       return editorState;
     }
 

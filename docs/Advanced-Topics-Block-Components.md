@@ -21,7 +21,7 @@ in the Draft repository provides a live example of custom block rendering, with
 TeX syntax translated on the fly into editable embedded formula rendering via the
 [KaTeX library](https://khan.github.io/KaTeX/).
 
-A [atomic example](https://github.com/facebook/draft-js/tree/master/examples/atomic) is also
+A [media example](https://github.com/facebook/draft-js/tree/master/examples/media) is also
 available, which showcases custom block rendering of audio, image, and video.
 
 By using a custom block renderer, it is possible to introduce complex rich
@@ -35,14 +35,14 @@ rendering for `ContentBlock` objects, based on block type, text, or other
 criteria.
 
 For instance, we may wish to render `ContentBlock` objects of type `'atomic'` using
-a custom `AtomicComponent`.
+a custom `MediaComponent`.
 
 ```js
 function myBlockRenderer(contentBlock) {
   const type = contentBlock.getType();
   if (type === 'atomic') {
     return {
-      component: AtomicComponent,
+      component: MediaComponent,
       editable: false,
       props: {
         foo: 'bar',
@@ -53,7 +53,7 @@ function myBlockRenderer(contentBlock) {
 
 // Then...
 import {Editor} from 'draft-js';
-class EditorWithAtomic extends React.Component {
+class EditorWithMedia extends React.Component {
   ...
   render() {
     return <Editor ... blockRendererFn={myBlockRenderer} />;
@@ -82,7 +82,7 @@ instance methods for custom component props.
 
 ## Defining custom block components
 
-Within `AtomicComponent`, the most likely use case is that you will want to
+Within `MediaComponent`, the most likely use case is that you will want to
 retrieve entity metadata to render your custom block. You may apply an entity
 key to the text within a `'atomic'` block during `EditorState` management,
 then retrieve the metadata for that key in your custom component `render()`
@@ -90,7 +90,7 @@ code.
 
 ```js
 import {Entity} from 'draft-js';
-class AtomicComponent extends React.Component {
+class MediaComponent extends React.Component {
   render() {
     const {block} = this.props;
     const {foo} = this.props.blockProps;

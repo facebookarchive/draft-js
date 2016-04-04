@@ -13,12 +13,12 @@
 
 jest.autoMockOff();
 
+const {insertAtomicBlock} = require('AtomicBlockUtils');
 const EditorState = require('EditorState');
-const {insertAtomic} = require('AtomicUtils');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 
-describe('AtomicUtils', () => {
+describe('AtomicBlockUtils', () => {
   const {
     editorState,
     contentState,
@@ -36,7 +36,11 @@ describe('AtomicUtils', () => {
 
   describe('Collapsed cursor', () => {
     it('must insert atomic at start of block', () => {
-      const resultEditor = insertAtomic(editorState, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        editorState,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       // Empty block inserted above content.
@@ -61,7 +65,11 @@ describe('AtomicUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertAtomic(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -90,7 +98,11 @@ describe('AtomicUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertAtomic(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -117,7 +129,11 @@ describe('AtomicUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertAtomic(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -142,7 +158,11 @@ describe('AtomicUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertAtomic(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -172,7 +192,11 @@ describe('AtomicUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertAtomic(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -204,7 +228,11 @@ describe('AtomicUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertAtomic(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();

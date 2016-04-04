@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule AtomicUtils
+ * @providesModule AtomicBlockUtils
  * @typechecks
  * @flow
  */
@@ -27,8 +27,8 @@ const {
   Repeat,
 } = Immutable;
 
-const AtomicUtils = {
-  insertAtomic: function(
+const AtomicBlockUtils = {
+  insertAtomicBlock: function(
     editorState: EditorState,
     entityKey: string,
     character: string
@@ -46,7 +46,7 @@ const AtomicUtils = {
     const afterSplit = DraftModifier.splitBlock(afterRemoval, targetSelection);
     const insertionTarget = afterSplit.getSelectionAfter();
 
-    const asAtomic = DraftModifier.setBlockType(
+    const asAtomicBlock = DraftModifier.setBlockType(
       afterSplit,
       insertionTarget,
       'atomic'
@@ -71,19 +71,19 @@ const AtomicUtils = {
 
     const fragment = BlockMapBuilder.createFromArray(fragmentArray);
 
-    const withAtomic = DraftModifier.replaceWithFragment(
-      asAtomic,
+    const withAtomicBlock = DraftModifier.replaceWithFragment(
+      asAtomicBlock,
       insertionTarget,
       fragment
     );
 
-    const newContent = withAtomic.merge({
+    const newContent = withAtomicBlock.merge({
       selectionBefore: selectionState,
-      selectionAfter: withAtomic.getSelectionAfter().set('hasFocus', true),
+      selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', true),
     });
 
     return EditorState.push(editorState, newContent, 'insert-fragment');
   },
 };
 
-module.exports = AtomicUtils;
+module.exports = AtomicBlockUtils;

@@ -15,7 +15,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Draft • Atomic Editor</title>
+    <title>Draft • Media Editor</title>
     <link rel="stylesheet" href="../../dist/Draft.css" />
   </head>
   <body>
@@ -29,15 +29,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       'use strict';
 
       const {
+        AtomicBlockUtils,
         Editor,
         EditorState,
         Entity,
-        AtomicUtils,
         RichUtils,
         convertToRaw,
       } = Draft;
 
-      class AtomicEditorExample extends React.Component {
+      class MediaEditorExample extends React.Component {
         constructor(props) {
           super(props);
 
@@ -53,7 +53,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           };
 
           this.handleKeyCommand = this._handleKeyCommand.bind(this);
-          this.addAtomic = this._addAtomic.bind(this);
+          this.addMedia = this._addMedia.bind(this);
           this.addAudio = this._addAudio.bind(this);
           this.addImage = this._addImage.bind(this);
           this.addVideo = this._addVideo.bind(this);
@@ -69,7 +69,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           return false;
         }
 
-        _addAtomic(type) {
+        _addMedia(type) {
           const src = window.prompt('Enter a URL');
           if (!src) {
             return;
@@ -77,19 +77,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
           const entityKey = Entity.create(type, 'IMMUTABLE', {src});
 
-          return AtomicUtils.insertAtomic(this.state.editorState, entityKey, ' ');
+          return AtomicBlockUtils.insertAtomicBlock(
+            this.state.editorState,
+            entityKey,
+            ' '
+          );
         }
 
         _addAudio() {
-          this.onChange(this._addAtomic('audio'));
+          this.onChange(this._addMedia('audio'));
         }
 
         _addImage() {
-          this.onChange(this._addAtomic('image'));
+          this.onChange(this._addMedia('image'));
         }
 
         _addVideo() {
-          this.onChange(this._addAtomic('video'));
+          this.onChange(this._addMedia('video'));
         }
 
         render() {
@@ -101,9 +105,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               <div style={{marginBottom: 10}}>
                 Here are some local examples that can be entered as a URL:
                 <ul>
-                  <li>atomic.mp3</li>
-                  <li>atomic.png</li>
-                  <li>atomic.mp4</li>
+                  <li>media.mp3</li>
+                  <li>media.png</li>
+                  <li>media.mp4</li>
                 </ul>
               </div>
               <div style={styles.buttons}>
@@ -119,7 +123,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               </div>
               <div style={styles.editor} onClick={this.focus}>
                 <Editor
-                  blockRendererFn={atomicBlockRenderer}
+                  blockRendererFn={mediaBlockRenderer}
                   editorState={this.state.editorState}
                   handleKeyCommand={this.handleKeyCommand}
                   onChange={this.onChange}
@@ -138,10 +142,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
       }
 
-      function atomicBlockRenderer(block) {
+      function mediaBlockRenderer(block) {
         if (block.getType() === 'atomic') {
           return {
-            component: Atomic,
+            component: Media,
             editable: false,
           };
         }
@@ -150,32 +154,32 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       const Audio = (props) => {
-        return <audio controls src={props.src} style={styles.atomic} />;
+        return <audio controls src={props.src} style={styles.media} />;
       };
 
       const Image = (props) => {
-        return <img src={props.src} style={styles.atomic} />;
+        return <img src={props.src} style={styles.media} />;
       };
 
       const Video = (props) => {
-        return <video controls src={props.src} style={styles.atomic} />;
+        return <video controls src={props.src} style={styles.media} />;
       };
 
-      const Atomic = (props) => {
+      const Media = (props) => {
         const entity = Entity.get(props.block.getEntityAt(0));
         const {src} = entity.getData();
         const type = entity.getType();
 
-        let atomic;
+        let media;
         if (type === 'audio') {
-          atomic = <Audio src={src} />;
+          media = <Audio src={src} />;
         } else if (type === 'image') {
-          atomic = <Image src={src} />;
+          media = <Image src={src} />;
         } else if (type === 'video') {
-          atomic = <Video src={src} />;
+          media = <Video src={src} />;
         }
 
-        return atomic;
+        return media;
       };
 
       const styles = {
@@ -197,13 +201,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           marginTop: 10,
           textAlign: 'center',
         },
-        atomic: {
+        media: {
           width: '100%',
         },
       };
 
       ReactDOM.render(
-        <AtomicEditorExample />,
+        <MediaEditorExample />,
         document.getElementById('target')
       );
     </script>
