@@ -137,18 +137,14 @@ class DraftEditorContents extends React.Component {
 
       const draftBlockRenderMap = this.props.customBlockMap;
 
-      const matchedBlockType = draftBlockRenderMap.get(blockType) ||
-        draftBlockRenderMap.get('unstyled');
-
-      wrapperTemplate = matchedBlockType && matchedBlockType.get('wrapper')  ?
-        matchedBlockType.get('wrapper') :
-        null;
+      wrapperTemplate = draftBlockRenderMap.getIn([blockType, 'wrapper']);
 
       const useNewWrapper = wrapperTemplate !== currentWrapperTemplate;
 
-      const Element = matchedBlockType && matchedBlockType.get('element') ?
-        matchedBlockType.get('element') :
+      const unstyledElement = draftBlockRenderMap.getIn(['unstyled', 'element']) ||
         DefaultDraftBlockRenderMap.getIn(['unstyled', 'element']);
+
+      const Element = draftBlockRenderMap.getIn([blockType, 'element']) || unstyledElement;
 
       const depth = block.getDepth();
       let className = this.props.blockStyleFn(block);
