@@ -13,16 +13,12 @@
 
 'use strict';
 
-const seenKeys = {};
-const MULTIPLIER = Math.pow(2, 24);
+let lastKey = 0;
 
 function generateRandomKey(): string {
-  let key;
-  while (key === undefined || seenKeys.hasOwnProperty(key) || !isNaN(+key)) {
-    key = Math.floor(Math.random() * MULTIPLIER).toString(32);
-  }
-  seenKeys[key] = true;
-  return key;
+  lastKey += 1;
+  const str = parseInt(lastKey).toString(16);
+  return "00000".slice(str.length) + str;
 }
 
 module.exports = generateRandomKey;
