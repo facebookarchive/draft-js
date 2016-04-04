@@ -28,7 +28,7 @@ const UserAgent = require('UserAgent');
 
 const cx = require('cx');
 const emptyFunction = require('emptyFunction');
-const generateRandomKey = require('generateRandomKey');
+const generateKey = require('generateKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const nullthrows = require('nullthrows');
 const getScrollPosition = require('getScrollPosition');
@@ -139,7 +139,7 @@ class DraftEditor
     this._guardAgainstRender = false;
     this._handler = null;
     this._dragCount = 0;
-    this._editorKey = generateRandomKey();
+    this._editorKey = generateKey();
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');
     this._onBlur = this._buildHandler('onBlur');

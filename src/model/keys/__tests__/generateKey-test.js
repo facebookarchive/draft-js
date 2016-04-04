@@ -6,19 +6,17 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule generateRandomKey
+ * @emails isaac, oncall+ui_infra
  * @typechecks
- * @flow
  */
 
-'use strict';
+jest.dontMock('generateKey');
 
-let lastKey = 0;
+var generateKey = require('generateKey');
 
-function generateRandomKey(): string {
-  lastKey += 1;
-  const str = parseInt(lastKey).toString(16);
-  return "00000".slice(str.length) + str;
-}
-
-module.exports = generateRandomKey;
+describe('generateKey', () => {
+  it('increments lastKey each time it is called, and returns padded output', () => {
+    expect(generateKey()).toEqual("00001");
+    expect(generateKey()).toEqual("00002");
+  });
+});
