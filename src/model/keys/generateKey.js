@@ -17,8 +17,8 @@ let lastKey = 0;
 
 function generateKey(): string {
   lastKey += 1;
-  const str = parseInt(lastKey).toString(16);
-  return "00000".slice(str.length) + str;
+  const str = lastKey.toString(16);
+  return '00000'.slice(str.length) + str;
 }
 
 module.exports = generateKey;

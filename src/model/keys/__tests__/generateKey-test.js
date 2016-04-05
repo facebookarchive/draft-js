@@ -16,7 +16,7 @@ var generateKey = require('generateKey');
 
 describe('generateKey', () => {
   it('increments lastKey each time it is called, and returns padded output', () => {
-    expect(generateKey()).toEqual("00001");
-    expect(generateKey()).toEqual("00002");
+    expect(generateKey()).toEqual('00001');
+    expect(generateKey()).toEqual('00002');
   });
 });
