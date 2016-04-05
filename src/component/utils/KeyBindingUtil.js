@@ -27,6 +27,10 @@ var KeyBindingUtil = {
     return !!e.ctrlKey && !e.altKey;
   },
 
+  isOptionKeyCommand: function(e: SyntheticKeyboardEvent): boolean {
+    return isOSX && e.altKey;
+  },
+
   hasCommandModifier: function(e: SyntheticKeyboardEvent): boolean {
     return isOSX ?
       (!!e.metaKey && !e.altKey) :
