@@ -87,10 +87,15 @@ var RichTextEditorUtil = {
       null
     );
 
-    return EditorState.push(
+    var newEditorState = EditorState.push(
       editorState,
       contentState,
       'insert-characters'
+    );
+
+    return EditorState.forceSelection(
+      newEditorState,
+      contentState.getSelectionAfter()
     );
   },
 
