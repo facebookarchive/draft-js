@@ -210,6 +210,13 @@ class EditorState {
     return this.getImmutable().get('inlineStyleOverride');
   }
 
+  static setInlineStyleOverride(
+    editorState: EditorState,
+    inlineStyleOverride: DraftInlineStyle
+  ): EditorState {
+    return EditorState.set(editorState, {inlineStyleOverride});
+  }
+
   /**
    * Get the appropriate inline style for the editor state. If an
    * override is in place, use it. Otherwise, the current style is

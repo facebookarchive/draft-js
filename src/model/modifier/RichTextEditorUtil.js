@@ -363,12 +363,12 @@ var RichTextEditorUtil = {
     // set the result as the new inline style override. This will then be
     // used as the inline style for the next character to be inserted.
     if (selection.isCollapsed()) {
-      return EditorState.set(editorState, {
-        inlineStyleOverride:
-          currentStyle.has(inlineStyle)
-            ? currentStyle.remove(inlineStyle)
-            : currentStyle.add(inlineStyle),
-      });
+      return EditorState.setInlineStyleOverride(
+        editorState,
+        currentStyle.has(inlineStyle)
+          ? currentStyle.remove(inlineStyle)
+          : currentStyle.add(inlineStyle),
+      );
     }
 
     // If characters are selected, immediately apply or remove the
