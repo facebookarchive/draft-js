@@ -11,10 +11,10 @@ available, which showcases custom block rendering of audio, image, and video.</p
 interactions within the frame of your editor.</p><h2><a class="anchor" name="custom-block-components"></a>Custom Block Components <a class="hash-link" href="#custom-block-components">#</a></h2><p>Within the <code>Editor</code> component, one may specify the <code>blockRendererFn</code> prop.
 This prop function allows a higher-level component to define custom React
 rendering for <code>ContentBlock</code> objects, based on block type, text, or other
-criteria.</p><p>For instance, we may wish to render <code>ContentBlock</code> objects of type <code>&#x27;media&#x27;</code> using
-a custom <code>MediaComponent</code>.</p><pre class="prism language-javascript"><span class="token keyword">function</span> <span class="token function">myBlockRenderer<span class="token punctuation">(</span></span>contentBlock<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+criteria.</p><p>For instance, we may wish to render <code>ContentBlock</code> objects of type <code>&#x27;atomic&#x27;</code>
+using a custom <code>MediaComponent</code>.</p><pre class="prism language-javascript"><span class="token keyword">function</span> <span class="token function">myBlockRenderer<span class="token punctuation">(</span></span>contentBlock<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   const type <span class="token operator">=</span> contentBlock<span class="token punctuation">.</span><span class="token function">getType<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">&#x27;media&#x27;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">&#x27;atomic&#x27;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token punctuation">{</span>
       component<span class="token punctuation">:</span> MediaComponent<span class="token punctuation">,</span>
       editable<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
@@ -43,7 +43,7 @@ Draft framework to properly maintain cursor behavior within your contents.</p><p
 the props for this custom component may be bound to that component, allowing
 instance methods for custom component props.</p><h2><a class="anchor" name="defining-custom-block-components"></a>Defining custom block components <a class="hash-link" href="#defining-custom-block-components">#</a></h2><p>Within <code>MediaComponent</code>, the most likely use case is that you will want to
 retrieve entity metadata to render your custom block. You may apply an entity
-key to the text within a <code>&#x27;media&#x27;</code> block during <code>EditorState</code> management,
+key to the text within a <code>&#x27;atomic&#x27;</code> block during <code>EditorState</code> management,
 then retrieve the metadata for that key in your custom component <code>render()</code>
 code.</p><pre class="prism language-javascript">import <span class="token punctuation">{</span>Entity<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
 class <span class="token class-name">MediaComponent</span> extends <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
