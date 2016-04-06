@@ -74,6 +74,11 @@ Instead, use the instance getters and static methods below.</p></blockquote><h2>
       <pre>static moveFocusToEnd(editorState): EditorState</pre>
     </a>
   </li>
+  <li>
+    <a href="#setInlineStyleOverride">
+      <pre>static setInlineStyleOverride(inlineStyleOverride): EditorState</pre>
+    </a>
+  </li>
 </ul>
 
 </div><p><em>Properties</em></p><blockquote><p>Note</p><p>Use the static <code>EditorState</code> methods to set properties, rather than using
@@ -177,7 +182,8 @@ control, and no re-renders are necessary.</p><h3><a class="anchor" name="forcese
 <span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the specified <code>SelectionState</code> applied,
 forcing the selection to be rendered.</p><p>This is useful when the selection should be manually rendered in the correct
 location to maintain control of the rendered output.</p><h3><a class="anchor" name="moveselectiontoend"></a>moveSelectionToEnd <a class="hash-link" href="#moveselectiontoend">#</a></h3><pre class="prism language-javascript">static <span class="token function">moveSelectionToEnd<span class="token punctuation">(</span></span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the selection at the end.</p><p>Moves selection to the end of the editor without forcing focus.</p><h3><a class="anchor" name="movefocustoend"></a>moveFocusToEnd <a class="hash-link" href="#movefocustoend">#</a></h3><pre class="prism language-javascript">static <span class="token function">moveFocusToEnd<span class="token punctuation">(</span></span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with selection at the end and forces focus.</p><p>This is useful in scenarios where we want to programmatically focus the input
-and it makes sense to allow the user to continue working seamlessly.</p><h2><a class="anchor" name="properties-and-getters"></a>Properties and Getters <a class="hash-link" href="#properties-and-getters">#</a></h2><p>In most cases, the instance and static methods above should be sufficient to
+and it makes sense to allow the user to continue working seamlessly.</p><h3><a class="anchor" name="setinlinestyleoverride"></a>setInlineStyleOverride <a class="hash-link" href="#setinlinestyleoverride">#</a></h3><pre class="prism language-javascript">static <span class="token function">setInlineStyleOverride<span class="token punctuation">(</span></span>inlineStyleOverride<span class="token punctuation">:</span> DraftInlineStyle<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the specified <code>DraftInlineStyle</code> applied
+as the set of inline styles to be applied to the next inserted characters.</p><h2><a class="anchor" name="properties-and-getters"></a>Properties and Getters <a class="hash-link" href="#properties-and-getters">#</a></h2><p>In most cases, the instance and static methods above should be sufficient to
 manage the state of your Draft editor.</p><p>Below is the full list of properties tracked by an <code>EditorState</code>, as well as
 their corresponding getter methods, to better provide detail on the scope of the
 state tracked in this object.</p><blockquote><p>Note</p><p>You should not use the Immutable API when using EditorState objects.
