@@ -4,6 +4,23 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.4.0 (April 6, 2016)
+
+### Fixed
+
+* Avoid clearing inline style override when setting block type or depth
+
+### Added
+
+* `editable` field for custom block component configuration
+* Default key binding support for <kbd>Ctrl</kbd>+<kbd>M</kbd> (`split-block`)
+
+### Changed
+
+* Always wrap custom block components, based on block type
+  * Includes `data-editor`, `data-offset-key`, `data-block` in block props
+* Replace `onPasteRawText` prop with `handlePastedText`
+
 ## 0.3.0 (March 22, 2016)
 
 ### Fixed
