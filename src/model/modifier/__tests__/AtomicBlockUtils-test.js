@@ -13,12 +13,12 @@
 
 jest.autoMockOff();
 
+const {insertAtomicBlock} = require('AtomicBlockUtils');
 const EditorState = require('EditorState');
-const {insertMedia} = require('MediaUtils');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 
-describe('MediaUtils', () => {
+describe('AtomicBlockUtils', () => {
   const {
     editorState,
     contentState,
@@ -28,15 +28,19 @@ describe('MediaUtils', () => {
   const entityKey = 'abc';
   const character = ' ';
 
-  function assertMediaBlock(block) {
-    expect(block.getType()).toBe('media');
+  function assertAtomicBlock(block) {
+    expect(block.getType()).toBe('atomic');
     expect(block.getText()).toBe(character);
     expect(block.getCharacterList().first().getEntity()).toBe(entityKey);
   }
 
   describe('Collapsed cursor', () => {
-    it('must insert media at start of block', () => {
-      const resultEditor = insertMedia(editorState, entityKey, character);
+    it('must insert atomic at start of block', () => {
+      const resultEditor = insertAtomicBlock(
+        editorState,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       // Empty block inserted above content.
@@ -45,13 +49,13 @@ describe('MediaUtils', () => {
       expect(firstBlock.getText()).toBe('');
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertMediaBlock(secondBlock);
+      assertAtomicBlock(secondBlock);
 
       const thirdBlock = resultContent.getBlockMap().skip(2).first();
       expect(thirdBlock.getText()).toBe(originalFirstBlock.getText());
     });
 
-    it('must insert media within a block, via split', () => {
+    it('must insert atomic within a block, via split', () => {
       const targetSelection = selectionState.merge({
         anchorOffset: 2,
         focusOffset: 2,
@@ -61,7 +65,11 @@ describe('MediaUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertMedia(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -73,14 +81,14 @@ describe('MediaUtils', () => {
       );
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertMediaBlock(secondBlock);
+      assertAtomicBlock(secondBlock);
 
       const thirdBlock = resultContent.getBlockMap().skip(2).first();
       expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
       expect(thirdBlock.getText()).toBe(originalFirstBlock.getText().slice(2));
     });
 
-    it('must insert media after a block', () => {
+    it('must insert atomic after a block', () => {
       const targetSelection = selectionState.merge({
         anchorOffset: originalFirstBlock.getLength(),
         focusOffset: originalFirstBlock.getLength(),
@@ -90,7 +98,11 @@ describe('MediaUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertMedia(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -98,7 +110,7 @@ describe('MediaUtils', () => {
       expect(firstBlock.getText()).toBe(originalFirstBlock.getText());
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertMediaBlock(secondBlock);
+      assertAtomicBlock(secondBlock);
 
       const thirdBlock = resultContent.getBlockMap().skip(2).first();
       expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
@@ -107,7 +119,7 @@ describe('MediaUtils', () => {
   });
 
   describe('Non-collapsed cursor', () => {
-    it('must insert media at start of block', () => {
+    it('must insert atomic at start of block', () => {
       const targetSelection = selectionState.merge({
         anchorOffset: 0,
         focusOffset: 2,
@@ -117,7 +129,11 @@ describe('MediaUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertMedia(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -125,14 +141,14 @@ describe('MediaUtils', () => {
       expect(firstBlock.getText()).toBe('');
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertMediaBlock(secondBlock);
+      assertAtomicBlock(secondBlock);
 
       const thirdBlock = resultContent.getBlockMap().skip(2).first();
       expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
       expect(thirdBlock.getText()).toBe(originalFirstBlock.getText().slice(2));
     });
 
-    it('must insert media within a block', () => {
+    it('must insert atomic within a block', () => {
       const targetSelection = selectionState.merge({
         anchorOffset: 1,
         focusOffset: 2,
@@ -142,7 +158,11 @@ describe('MediaUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertMedia(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -154,14 +174,14 @@ describe('MediaUtils', () => {
       );
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertMediaBlock(secondBlock);
+      assertAtomicBlock(secondBlock);
 
       const thirdBlock = resultContent.getBlockMap().skip(2).first();
       expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
       expect(thirdBlock.getText()).toBe(originalFirstBlock.getText().slice(2));
     });
 
-    it('must insert media at end of block', () => {
+    it('must insert atomic at end of block', () => {
       const origLength = originalFirstBlock.getLength();
       const targetSelection = selectionState.merge({
         anchorOffset: origLength - 2,
@@ -172,7 +192,11 @@ describe('MediaUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertMedia(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -184,14 +208,14 @@ describe('MediaUtils', () => {
       );
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertMediaBlock(secondBlock);
+      assertAtomicBlock(secondBlock);
 
       const thirdBlock = resultContent.getBlockMap().skip(2).first();
       expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
       expect(thirdBlock.getText()).toBe('');
     });
 
-    it('must insert media for cross-block selection', () => {
+    it('must insert atomic for cross-block selection', () => {
       const originalThirdBlock = contentState.getBlockMap().skip(2).first();
 
       const targetSelection = selectionState.merge({
@@ -204,7 +228,11 @@ describe('MediaUtils', () => {
         targetSelection
       );
 
-      const resultEditor = insertMedia(targetEditor, entityKey, character);
+      const resultEditor = insertAtomicBlock(
+        targetEditor,
+        entityKey,
+        character
+      );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
@@ -216,7 +244,7 @@ describe('MediaUtils', () => {
       );
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertMediaBlock(secondBlock);
+      assertAtomicBlock(secondBlock);
 
       // Third block gets original first block's type, but sliced text from
       // original second block.

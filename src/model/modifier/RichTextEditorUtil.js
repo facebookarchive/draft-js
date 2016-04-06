@@ -113,7 +113,7 @@ var RichTextEditorUtil = {
       return null;
     }
 
-    // First, try to remove a preceding media block.
+    // First, try to remove a preceding atomic block.
     var content = editorState.getCurrentContent();
     var startKey = selection.getStartKey();
     var blockAfter = content.getBlockAfter(startKey);
@@ -125,25 +125,25 @@ var RichTextEditorUtil = {
 
     var blockBefore = content.getBlockBefore(startKey);
 
-    if (blockBefore && blockBefore.getType() === 'media') {
-      var mediaBlockTarget = selection.merge({
+    if (blockBefore && blockBefore.getType() === 'atomic') {
+      var atomicBlockTarget = selection.merge({
         anchorKey: blockBefore.getKey(),
         anchorOffset: 0,
       });
       var asCurrentStyle = DraftModifier.setBlockType(
         content,
-        mediaBlockTarget,
+        atomicBlockTarget,
         content.getBlockForKey(startKey).getType()
       );
-      var withoutMedia = DraftModifier.removeRange(
+      var withoutAtomicBlock = DraftModifier.removeRange(
         asCurrentStyle,
-        mediaBlockTarget,
+        atomicBlockTarget,
         'backward'
       );
-      if (withoutMedia !== content) {
+      if (withoutAtomicBlock !== content) {
         return EditorState.push(
           editorState,
-          withoutMedia,
+          withoutAtomicBlock,
           'remove-range'
         );
       }
@@ -183,7 +183,7 @@ var RichTextEditorUtil = {
 
     var blockAfter = content.getBlockAfter(startKey);
 
-    if (!blockAfter || blockAfter.getType() !== 'media') {
+    if (!blockAfter || blockAfter.getType() !== 'atomic') {
       return null;
     }
 
@@ -200,31 +200,31 @@ var RichTextEditorUtil = {
         'forward'
       );
 
-      var preserveMedia = DraftModifier.setBlockType(
+      var preserveAtomicBlock = DraftModifier.setBlockType(
         withoutEmptyBlock,
         withoutEmptyBlock.getSelectionAfter(),
-        'media'
+        'atomic'
       );
 
-      return EditorState.push(editorState, preserveMedia, 'remove-range');
+      return EditorState.push(editorState, preserveAtomicBlock, 'remove-range');
     }
 
-    // Otherwise, delete the media block.
-    var mediaBlockTarget = selection.merge({
+    // Otherwise, delete the atomic block.
+    var atomicBlockTarget = selection.merge({
       focusKey: blockAfter.getKey(),
       focusOffset: blockAfter.getLength(),
     });
 
-    var withoutMedia = DraftModifier.removeRange(
+    var withoutAtomicBlock = DraftModifier.removeRange(
       content,
-      mediaBlockTarget,
+      atomicBlockTarget,
       'forward'
     );
 
-    if (withoutMedia !== content) {
+    if (withoutAtomicBlock !== content) {
       return EditorState.push(
         editorState,
-        withoutMedia,
+        withoutAtomicBlock,
         'remove-range'
       );
     }
@@ -314,12 +314,12 @@ var RichTextEditorUtil = {
       });
     }
 
-    var hasMedia = content.getBlockMap()
+    var hasAtomicBlock = content.getBlockMap()
       .skipWhile((_, k) => k !== startKey)
       .takeWhile((_, k) => k !== endKey)
-      .some(v => v.getType() === 'media');
+      .some(v => v.getType() === 'atomic');
 
-    if (hasMedia) {
+    if (hasAtomicBlock) {
       return editorState;
     }
 

@@ -41,7 +41,7 @@ var rawContent = {
     },
     {
       text: ' ',
-      type: 'media',
+      type: 'atomic',
       entityRanges: [{offset: 0, length: 1, key: 'first'}],
     },
     {

@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule MediaUtils
+ * @providesModule AtomicBlockUtils
  * @typechecks
  * @flow
  */
@@ -27,8 +27,8 @@ const {
   Repeat,
 } = Immutable;
 
-const MediaUtils = {
-  insertMedia: function(
+const AtomicBlockUtils = {
+  insertAtomicBlock: function(
     editorState: EditorState,
     entityKey: string,
     character: string
@@ -46,10 +46,10 @@ const MediaUtils = {
     const afterSplit = DraftModifier.splitBlock(afterRemoval, targetSelection);
     const insertionTarget = afterSplit.getSelectionAfter();
 
-    const asMedia = DraftModifier.setBlockType(
+    const asAtomicBlock = DraftModifier.setBlockType(
       afterSplit,
       insertionTarget,
-      'media'
+      'atomic'
     );
 
     const charData = CharacterMetadata.create({entity: entityKey});
@@ -57,7 +57,7 @@ const MediaUtils = {
     const fragmentArray = [
       new ContentBlock({
         key: generateRandomKey(),
-        type: 'media',
+        type: 'atomic',
         text: character,
         characterList: List(Repeat(charData, character.length)),
       }),
@@ -71,19 +71,19 @@ const MediaUtils = {
 
     const fragment = BlockMapBuilder.createFromArray(fragmentArray);
 
-    const withMedia = DraftModifier.replaceWithFragment(
-      asMedia,
+    const withAtomicBlock = DraftModifier.replaceWithFragment(
+      asAtomicBlock,
       insertionTarget,
       fragment
     );
 
-    const newContent = withMedia.merge({
+    const newContent = withAtomicBlock.merge({
       selectionBefore: selectionState,
-      selectionAfter: withMedia.getSelectionAfter().set('hasFocus', true),
+      selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', true),
     });
 
     return EditorState.push(editorState, newContent, 'insert-fragment');
   },
 };
 
-module.exports = MediaUtils;
+module.exports = AtomicBlockUtils;

@@ -15,8 +15,8 @@
 'use strict';
 
 import {
+  AtomicBlockUtils,
   Entity,
-  MediaUtils,
 } from 'draft-js';
 
 let count = 0;
@@ -43,5 +43,5 @@ export function insertTeXBlock(editorState) {
     {content: examples[nextFormula]}
   );
 
-  return MediaUtils.insertMedia(editorState, entityKey, ' ');
+  return AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, ' ');
 }
