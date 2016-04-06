@@ -35,7 +35,7 @@ export default class TeXEditorExample extends React.Component {
     };
 
     this._blockRenderer = (block) => {
-      if (block.getType() === 'media') {
+      if (block.getType() === 'atomic') {
         return {
           component: TeXBlock,
           editable: false,

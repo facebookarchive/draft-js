@@ -33,7 +33,7 @@ function getElementForBlockType(blockType: DraftBlockType): string {
       return 'li';
     case 'blockquote':
       return 'blockquote';
-    case 'media':
+    case 'atomic':
       return 'figure';
     default:
       return 'div';

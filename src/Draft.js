@@ -11,6 +11,7 @@
 
 'use strict';
 
+const AtomicBlockUtils = require('AtomicBlockUtils');
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const CompositeDraftDecorator = require('CompositeDraftDecorator');
@@ -23,7 +24,6 @@ const DraftEntity = require('DraftEntity');
 const DraftEntityInstance = require('DraftEntityInstance');
 const EditorState = require('EditorState');
 const KeyBindingUtil = require('KeyBindingUtil');
-const MediaUtils = require('MediaUtils');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 const SelectionState = require('SelectionState');
 
@@ -50,8 +50,8 @@ const DraftPublic = {
   ContentState,
   SelectionState,
 
+  AtomicBlockUtils,
   KeyBindingUtil,
-  MediaUtils,
   Modifier: DraftModifier,
   RichUtils: RichTextEditorUtil,
 
