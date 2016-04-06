@@ -25,8 +25,11 @@ const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 const sanitizeDraftText = require('sanitizeDraftText');
 
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
+
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 var {
   List,
@@ -46,7 +49,6 @@ var REGEX_NBSP = new RegExp(NBSP, 'g');
 
 // Block tag flow is different because LIs do not have
 // a deterministic style ;_;
-var blockTags = ['p', 'h1', 'h2', 'h3', 'li', 'blockquote', 'pre'];
 var inlineTags = {
   b: 'BOLD',
   code: 'CODE',
@@ -116,31 +118,80 @@ function getBlockDividerChunk(block: DraftBlockType, depth: number): Chunk {
   };
 }
 
-function getBlockTypeForTag(tag: string, lastList: ?string): DraftBlockType {
-  switch (tag) {
-    case 'h1':
-      return 'header-one';
-    case 'h2':
-      return 'header-two';
-    case 'h3':
-      return 'header-three';
-    case 'h4':
-      return 'header-four';
-    case 'h5':
-      return 'header-five';
-    case 'h6':
-      return 'header-six';
-    case 'li':
-      if (lastList === 'ol') {
-        return 'ordered-list-item';
-      }
-      return 'unordered-list-item';
-    case 'blockquote':
-      return 'blockquote';
-    case 'pre':
-      return 'code-block';
-    default:
+function getListBlockType(
+  tag: string,
+  lastList: ?string
+): ?DraftBlockType {
+  if (tag === 'li') {
+    if (lastList === 'ol') {
+      return 'ordered-list-item';
+    }
+    return 'unordered-list-item';
+  }
+
+  return null;
+}
+
+function getBlockMapSupportedTags(
+  draftBlockRenderMap: DraftBlockRenderMap
+): Array<string> {
+  const unstyledElement = draftBlockRenderMap.getIn(['unstyled', 'element']) ||
+    DefaultDraftBlockRenderMap.getIn(['unstyled', 'element']);
+
+  const supportedTags = draftBlockRenderMap
+    .map((config) => config.get('element'))
+    .valueSeq()
+    .toSet()
+    .filter((tag) => tag !== unstyledElement)
+    .toArray()
+    .sort();
+
+  return supportedTags;
+}
+
+// custom element conversions
+function getMultiMatchedType(
+  tag: string,
+  lastList: ?string,
+  multiMatchExtractor: Array<Function>
+): ?DraftBlockType {
+  for (var i = 0; i < multiMatchExtractor.length; i++) {
+    const matchType = multiMatchExtractor[i](tag, lastList);
+
+    if (matchType) {
+      return matchType;
+    }
+  }
+
+  return null;
+}
+
+function getBlockTypeForTag(
+  tag: string,
+  lastList: ?string,
+  draftBlockRenderMap: DraftBlockRenderMap
+): DraftBlockType {
+  const matchedTypes = draftBlockRenderMap
+    .filter((blockType) => {
+      return blockType.get('element') === tag ||
+        blockType.get('wrapper') === tag;
+    })
+    .keySeq()
+    .toSet()
+    .toArray()
+    .sort();
+
+  // if we dont have any matched type, return unstyled
+  // if we have one matched type return it
+  // if we have multi matched types use the multi-match function to gather type
+  switch (matchedTypes.length) {
+    case 0:
       return 'unstyled';
+    case 1:
+      return matchedTypes[0];
+    default:
+      return getMultiMatchedType(tag, lastList, [getListBlockType]) ||
+        'unstyled';
   }
 }
 
@@ -216,7 +267,10 @@ function joinChunks(A: Chunk, B: Chunk): Chunk {
  * block tags from. If we do, we can use those and ignore <div> tags. If we
  * don't, we can treat <div> tags as meaningful (unstyled) blocks.
  */
-function containsSemanticBlockMarkup(html: string): boolean {
+function containsSemanticBlockMarkup(
+  html: string,
+  blockTags: Array<string>
+): boolean {
   return blockTags.some(tag => html.indexOf('<' + tag) !== -1);
 }
 
@@ -236,6 +290,7 @@ function genFragment(
   inBlock: ?string,
   blockTags: Array<string>,
   depth: number,
+  draftBlockRenderMap: DraftBlockRenderMap,
   inEntity?: string
 ): Chunk {
   var nodeName = node.nodeName.toLowerCase();
@@ -271,8 +326,11 @@ function genFragment(
   // BR tags
   if (nodeName === 'br') {
     if (
-        lastLastBlock === 'br' &&
-        (!inBlock || getBlockTypeForTag(inBlock, lastList) === 'unstyled')
+      lastLastBlock === 'br' &&
+      (
+        !inBlock ||
+        getBlockTypeForTag(inBlock, lastList, draftBlockRenderMap) === 'unstyled'
+      )
     ) {
       return getBlockDividerChunk('unstyled', depth);
     }
@@ -296,14 +354,14 @@ function genFragment(
   // Block Tags
   if (!inBlock && blockTags.indexOf(nodeName) !== -1) {
     chunk = getBlockDividerChunk(
-      getBlockTypeForTag(nodeName, lastList),
+      getBlockTypeForTag(nodeName, lastList, draftBlockRenderMap),
       depth
     );
     inBlock = nodeName;
     newBlock = true;
   } else if (lastList && inBlock === 'li' && nodeName === 'li') {
     chunk = getBlockDividerChunk(
-      getBlockTypeForTag(nodeName, lastList),
+      getBlockTypeForTag(nodeName, lastList, draftBlockRenderMap),
       depth
     );
     inBlock = nodeName;
@@ -337,6 +395,7 @@ function genFragment(
       inBlock,
       blockTags,
       depth,
+      draftBlockRenderMap,
       entityId || inEntity
     );
 
@@ -367,11 +426,17 @@ function genFragment(
   return chunk;
 }
 
-function getChunkForHTML(html: string, DOMBuilder: Function): ?Chunk {
+function getChunkForHTML(
+  html: string,
+  DOMBuilder: Function,
+  draftBlockRenderMap: DraftBlockRenderMap
+): ?Chunk {
   html = html
     .trim()
     .replace(REGEX_CR, '')
     .replace(REGEX_NBSP, SPACE);
+
+  const supportedBlockTags = getBlockMapSupportedTags(draftBlockRenderMap);
 
   var safeBody = DOMBuilder(html);
   if (!safeBody) {
@@ -382,12 +447,22 @@ function getChunkForHTML(html: string, DOMBuilder: Function): ?Chunk {
   // Sometimes we aren't dealing with content that contains nice semantic
   // tags. In this case, use divs to separate everything out into paragraphs
   // and hope for the best.
-  var workingBlocks = containsSemanticBlockMarkup(html) ? blockTags : ['div'];
+  var workingBlocks = containsSemanticBlockMarkup(html, supportedBlockTags) ?
+    supportedBlockTags :
+    ['div'];
 
   // Start with -1 block depth to offset the fact that we are passing in a fake
   // UL block to start with.
-  var chunk =
-    genFragment(safeBody, OrderedSet(), 'ul', null, workingBlocks, -1);
+  var chunk = genFragment(
+    safeBody,
+    OrderedSet(),
+    'ul',
+    null,
+    workingBlocks,
+    -1,
+    draftBlockRenderMap
+  );
+
 
   // join with previous block to prevent weirdness on paste
   if (chunk.text.indexOf('\r') === 0) {
@@ -425,12 +500,16 @@ function getChunkForHTML(html: string, DOMBuilder: Function): ?Chunk {
 function convertFromHTMLtoContentBlocks(
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
+  customBlockMap: ?DraftBlockRenderMap
 ): ?Array<ContentBlock> {
+  const draftBlockRenderMap = customBlockMap !== undefined ? customBlockMap : DefaultDraftBlockRenderMap;
+
   // Be ABSOLUTELY SURE that the dom builder you pass hare won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
-  var chunk = getChunkForHTML(html, DOMBuilder);
+  var chunk = getChunkForHTML(html, DOMBuilder, draftBlockRenderMap);
+
   if (chunk == null) {
     return null;
   }

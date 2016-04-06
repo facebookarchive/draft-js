@@ -11,6 +11,8 @@
 
 'use strict';
 
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
+const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const CompositeDraftDecorator = require('CompositeDraftDecorator');
@@ -54,6 +56,9 @@ const DraftPublic = {
   MediaUtils,
   Modifier: DraftModifier,
   RichUtils: RichTextEditorUtil,
+
+  DefaultDraftBlockRenderMap,
+  DefaultDraftInlineStyle,
 
   convertFromHTML: convertFromHTMLToContentBlocks,
   convertFromRaw: convertFromRawToDraftState,

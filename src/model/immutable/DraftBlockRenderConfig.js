@@ -6,26 +6,15 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftBlockType
+ * @providesModule DraftBlockRenderConfig
  * @flow
  */
 
 'use strict';
 
-/**
- * The list of default valid block types.
- */
-export type DraftBlockType = (
-  'unstyled' |
-  'header-one' |
-  'header-two' |
-  'header-three' |
-  'header-four' |
-  'header-five' |
-  'header-six' |
-  'unordered-list-item' |
-  'ordered-list-item' |
-  'blockquote' |
-  'code-block' |
-  'media'
-);
+const React = require('React');
+
+import type Immutable from 'immutable';
+import type {DraftBlockTag} from 'DraftBlockTag';
+
+export type DraftBlockRenderConfig = Immutable.Map<DraftBlockTag, React.Element>
