@@ -12,11 +12,13 @@ Changes to `src` are live in production on facebook.com at the time of release.
 
 ### Added
 
-* Add default key binding support for <kbd>Ctrl</kbd>+<kbd>M</kbd> (`split-block`)
+* `editable` field for custom block component configuration
+* Default key binding support for <kbd>Ctrl</kbd>+<kbd>M</kbd> (`split-block`)
 
 ### Changed
 
 * Always wrap custom block components, based on block type
+  * Includes `data-editor`, `data-offset-key`, `data-block` in block props
 * Replace `onPasteRawText` prop with `handlePastedText`
 
 ## 0.3.0 (March 22, 2016)
