@@ -18,7 +18,7 @@ var DraftEntity = require('DraftEntity');
 var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');
 var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
-var generateRandomKey = require('generateRandomKey');
+var generateKey = require('generateKey');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
 
@@ -40,7 +40,7 @@ function convertFromRawToDraftState(
   return blocks.map(
     block => {
       var {key, type, text, depth, inlineStyleRanges, entityRanges} = block;
-      key = key || generateRandomKey();
+      key = key || generateKey();
       depth = depth || 0;
       inlineStyleRanges = inlineStyleRanges || [];
       entityRanges = entityRanges || [];

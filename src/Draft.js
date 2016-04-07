@@ -31,7 +31,7 @@ const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const convertFromHTMLToContentBlocks =
   require('convertFromHTMLToContentBlocks');
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
-const generateRandomKey = require('generateRandomKey');
+const generateKey = require('generateKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getVisibleSelectionRect = require('getVisibleSelectionRect');
 
@@ -58,7 +58,7 @@ const DraftPublic = {
   convertFromHTML: convertFromHTMLToContentBlocks,
   convertFromRaw: convertFromRawToDraftState,
   convertToRaw: convertFromDraftStateToRaw,
-  genKey: generateRandomKey,
+  genKey: generateKey,
   getDefaultKeyBinding,
   getVisibleSelectionRect,
 };

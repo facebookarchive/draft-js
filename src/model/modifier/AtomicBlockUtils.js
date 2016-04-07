@@ -20,7 +20,7 @@ const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Immutable = require('immutable');
 
-const generateRandomKey = require('generateRandomKey');
+const generateKey = require('generateKey');
 
 const {
   List,
@@ -56,13 +56,13 @@ const AtomicBlockUtils = {
 
     const fragmentArray = [
       new ContentBlock({
-        key: generateRandomKey(),
+        key: generateKey(),
         type: 'atomic',
         text: character,
         characterList: List(Repeat(charData, character.length)),
       }),
       new ContentBlock({
-        key: generateRandomKey(),
+        key: generateKey(),
         type: 'unstyled',
         text: '',
         characterList: List(),
