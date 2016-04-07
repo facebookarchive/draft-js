@@ -29,5 +29,5 @@ export type DraftBlockType = (
   'blockquote' |
   'pullquote' |
   'code-block' |
-  'media'
+  'atomic'
 );

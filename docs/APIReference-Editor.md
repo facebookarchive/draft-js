@@ -211,3 +211,22 @@ onUpArrow?: (e: SyntheticKeyboardEvent) => void
 ```
 onDownArrow?: (e: SyntheticKeyboardEvent) => void
 ```
+
+
+## Methods
+
+#### focus
+
+```
+focus(): void
+```
+
+Force focus back onto the editor node.
+
+#### blur
+
+```
+blur(): void
+```
+
+Remove focus from the editor node.

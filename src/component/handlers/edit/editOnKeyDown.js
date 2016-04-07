@@ -12,9 +12,12 @@
 
 'use strict';
 
+var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
+var KeyBindingUtil = require('KeyBindingUtil');
 var Keys = require('Keys');
 var SecondaryClipboard = require('SecondaryClipboard');
+var UserAgent = require('UserAgent');
 
 var keyCommandBackspaceToStartOfLine = require('keyCommandBackspaceToStartOfLine');
 var keyCommandBackspaceWord = require('keyCommandBackspaceWord');
@@ -28,6 +31,9 @@ var keyCommandTransposeCharacters = require('keyCommandTransposeCharacters');
 var keyCommandUndo = require('keyCommandUndo');
 
 import type {DraftEditorCommand} from 'DraftEditorCommand';
+
+var {isOptionKeyCommand} = KeyBindingUtil;
+var isChrome = UserAgent.isBrowser('Chrome');
 
 /**
  * Map a `DraftEditorCommand` command value to a corresponding function.
@@ -101,6 +107,25 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
     case Keys.DOWN:
       this.props.onDownArrow && this.props.onDownArrow(e);
       return;
+    case Keys.SPACE:
+      // Handling for OSX where option + space scrolls.
+      if (isChrome && isOptionKeyCommand(e)) {
+        e.preventDefault();
+        // Insert a nbsp into the editor.
+        const contentState = DraftModifier.replaceText(
+          editorState.getCurrentContent(),
+          editorState.getSelection(),
+          '\u00a0'
+        );
+        this.update(
+          EditorState.push(
+            editorState,
+            contentState,
+            'insert-characters'
+          )
+        );
+        return;
+      }
   }
 
   var command = this.props.keyBindingFn(e);

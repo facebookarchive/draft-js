@@ -34,13 +34,13 @@ This prop function allows a higher-level component to define custom React
 rendering for `ContentBlock` objects, based on block type, text, or other
 criteria.
 
-For instance, we may wish to render `ContentBlock` objects of type `'media'` using
-a custom `MediaComponent`.
+For instance, we may wish to render `ContentBlock` objects of type `'atomic'`
+using a custom `MediaComponent`.
 
 ```js
 function myBlockRenderer(contentBlock) {
   const type = contentBlock.getType();
-  if (type === 'media') {
+  if (type === 'atomic') {
     return {
       component: MediaComponent,
       editable: false,
@@ -84,7 +84,7 @@ instance methods for custom component props.
 
 Within `MediaComponent`, the most likely use case is that you will want to
 retrieve entity metadata to render your custom block. You may apply an entity
-key to the text within a `'media'` block during `EditorState` management,
+key to the text within a `'atomic'` block during `EditorState` management,
 then retrieve the metadata for that key in your custom component `render()`
 code.
 
