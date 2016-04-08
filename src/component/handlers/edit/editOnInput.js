@@ -83,7 +83,8 @@ function editOnInput(): void {
     content,
     targetRange,
     domText,
-    block.getInlineStyleAt(start)
+    block.getInlineStyleAt(start),
+    block.getEntityAt(start)
   );
 
   var anchorOffset, focusOffset, startOffset, endOffset;
