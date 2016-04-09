@@ -18,12 +18,14 @@ var DataTransfer = require('DataTransfer');
 var DraftModifier = require('DraftModifier');
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var EditorState = require('EditorState');
+var UserAgent = require('UserAgent');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 import type {BlockMap} from 'BlockMap';
+var isSafari = UserAgent.isBrowser('Safari');
 
 /**
  * Paste content.
@@ -124,6 +126,13 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
         );
         return;
       }
+    // Safari does not properly store text/html. Use the internalClipboard
+    // if present.   
+    } else if (isSafari && internalClipboard) {
+      this.update(
+        insertFragment(this.props.editorState, internalClipboard)
+      );
+      return;
     }
 
     // If there is html paste data, try to parse that.
