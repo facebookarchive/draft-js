@@ -15,6 +15,7 @@
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
 var EditorState = require('EditorState');
+var Entity = require('DraftEntity');
 var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
@@ -79,12 +80,15 @@ function editOnInput(): void {
     isBackward: false,
   });
 
+  var entityKey = block.getEntityAt(start);
+  var entity = entityKey && Entity.get(entityKey);
+  var applyEntity = entity && entity.getMutability() !== 'IMMUTABLE';
   var newContent = DraftModifier.replaceText(
     content,
     targetRange,
     domText,
     block.getInlineStyleAt(start),
-    block.getEntityAt(start)
+    applyEntity ? block.getEntityAt(start) : null,
   );
 
   var anchorOffset, focusOffset, startOffset, endOffset;
