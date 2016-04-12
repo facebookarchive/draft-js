@@ -44,3 +44,12 @@ convertToRaw(contentState: ContentState): RawDraftContentState
 Given a `ContentState` object, convert it to a raw JS structure. This is useful
 when saving an editor state for storage, conversion to other formats, or
 other usage within an application.
+
+
+### convertFromHTML
+
+```
+convertFromHTML(html: string): Array<ContentBlock>
+```
+
+Given an HTML fragment, convert it to an array of `ContentBlock` objects. 
