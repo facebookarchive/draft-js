@@ -3,7 +3,7 @@ id: api-reference-atomic-block-utils
 title: AtomicBlockUtils
 layout: docs
 category: API Reference
-next: api-reference-modifier
+next: api-reference-key-binding-util
 permalink: docs/api-reference-atomic-block-utils.html
 ---
 
