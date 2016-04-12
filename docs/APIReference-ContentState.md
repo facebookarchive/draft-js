@@ -235,6 +235,14 @@ getBlocksAsArray(): Array<ContentBlock>
 ```
 Returns the values of `blockMap` as an array.
 
+### getLastBlock()
+
+
+```
+getLastBlock(): ContentBlock
+```
+Returns the last `ContentBlock`.
+
 ### getPlainText()
 
 ```

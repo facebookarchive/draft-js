@@ -96,12 +96,12 @@ The list below includes the most commonly used instance methods for `EditorState
     </a>
   </li>
   <li>
-    <a href="#moveSelectionToEnd">
+    <a href="#moveselectiontoend">
       <pre>static moveSelectionToEnd(editorState): EditorState</pre>
     </a>
   </li>
   <li>
-    <a href="#moveFocusToEnd">
+    <a href="#movefocustoend">
       <pre>static moveFocusToEnd(editorState): EditorState</pre>
     </a>
   </li>
@@ -136,7 +136,7 @@ The list below includes the most commonly used instance methods for `EditorState
     </a>
   </li>
   <li>
-    <a href="#directionMap">
+    <a href="#directionmap">
       <pre>directionMap</pre>
     </a>
   </li>
