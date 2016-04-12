@@ -106,7 +106,7 @@ The list below includes the most commonly used instance methods for `EditorState
     </a>
   </li>
   <li>
-    <a href="#setInlineStyleOverride">
+    <a href="#setinlinestyleoverride">
       <pre>static setInlineStyleOverride(inlineStyleOverride): EditorState</pre>
     </a>
   </li>
