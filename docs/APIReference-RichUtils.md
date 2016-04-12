@@ -3,7 +3,7 @@ id: api-reference-rich-utils
 title: RichUtils
 layout: docs
 category: API Reference
-next: api-reference-modifier
+next: api-reference-atomic-block-utils
 permalink: docs/api-reference-rich-utils.html
 ---
 
