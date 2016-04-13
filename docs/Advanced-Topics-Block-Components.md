@@ -76,7 +76,7 @@ If your component contains text as provided by your `ContentState`, your custom
 component should compose a `EditorBlock` component. This will allow the
 Draft framework to properly maintain cursor behavior within your contents.
 
-By default it must have props defined. You can set all properties on the `EditorBlock` to those passed in by a blockRendererFn as follows:
+By default it must have props defined. You can set all properties on the `EditorBlock` to those passed in by a `blockRendererFn` as follows:
 
 ```js
 import React from 'react';
