@@ -86,9 +86,7 @@ class YourCustomBlockComponent extends React.Component {
   // class methods
   
   render() {		
-    return (
-      <EditorBlock {...this.props} />;
-    )
+    return <EditorBlock {...this.props} />;
   }
 }
 ```
