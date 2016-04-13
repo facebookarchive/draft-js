@@ -92,6 +92,10 @@ class ContentState extends ContentStateRecord {
     return this.getBlockMap().toArray();
   }
 
+  getFirstBlock(): ContentBlock {
+    return this.getBlockMap().first();
+  }
+
   getLastBlock(): ContentBlock {
     return this.getBlockMap().last();
   }
