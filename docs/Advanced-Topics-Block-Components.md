@@ -80,7 +80,7 @@ By default it must have props defined. You can set all properties on the `Editor
 
 ```js
 import React from 'react';
-import { EditorBlock } from 'draft-js';
+import {EditorBlock} from 'draft-js';
 
 class YourCustomBlockComponent extends React.Component {
   // class methods
