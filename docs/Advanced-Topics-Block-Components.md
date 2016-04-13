@@ -62,7 +62,7 @@ class EditorWithMedia extends React.Component {
 ```
 
 If no custom renderer object is returned by the `blockRendererFn` function,
-`Editor` will render the default `DraftEditorBlock` text block component.
+`Editor` will render the default `EditorBlock` text block component.
 
 The `component` property defines the component to be used, while the optional
 `props` object includes props that will be passed through to the rendered
@@ -73,29 +73,24 @@ It is strongly recommended that you use `editable: false` if your custom
 component will not contain text.
 
 If your component contains text as provided by your `ContentState`, your custom
-component should compose a `DraftEditorBlock` component. This will allow the
+component should compose a `EditorBlock` component. This will allow the
 Draft framework to properly maintain cursor behavior within your contents.
 
-`DraftEditorBlock` is exposed as `EditorBlock` in the core library. By default it must have props
-defined. You can set all properties on the DraftEditorBlock to those passed in by your blockRendererFn
-as follows:
+By default it must have props defined. You can set all properties on the `EditorBlock` to those passed in by a blockRendererFn as follows:
 
 ```js
-  import React from 'react';
-  import { EditorBlock } from 'draft-js'; // EditorBlock is "DraftEditorBlock"
+import React from 'react';
+import { EditorBlock } from 'draft-js';
+
+class YourCustomBlockComponent extends React.Component {
+  // class methods
   
-  class YourCustomBlockComponent extends React.CreateClass {
-    
-    // class methods
-  
-    render() {		
-  		return (
-  			<EditorBlock 
-  				{...this.props} 
-  			/>
-  		)
-  	}
-	}
+  render() {		
+    return (
+      <EditorBlock {...this.props} />;
+    )
+  }
+}
 ```
 
 By defining this function within the context of a higher-level component,
