@@ -13,6 +13,7 @@
 
 'use strict';
 
+var UnicodeUtils = require('UnicodeUtils');
 var Immutable = require('immutable');
 
 var findRangesImmutable = require('findRangesImmutable');
@@ -63,7 +64,7 @@ class ContentBlock extends ContentBlockRecord {
   }
 
   getLength(): number {
-    return this.getText().length;
+    return UnicodeUtils.strlen(this.getText());
   }
 
   getDepth(): number {

@@ -173,9 +173,8 @@ getLength(): number
 ```
 Returns the length of the plaintext for the `ContentBlock`.
 
-This value uses the standard JavaScript `length` property for the string, and
-is therefore not Unicode-aware -- surrogate pairs will be counted as two
-characters.
+This operation is Unicode-aware -- surrogate pairs will be counted as one
+character.
 
 ### getDepth()
 
