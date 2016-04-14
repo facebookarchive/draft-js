@@ -127,8 +127,9 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
         return;
       }
     // Safari does not properly store text/html. Use the internalClipboard
-    // if present.   
-    } else if (isSafari && internalClipboard) {
+    // if present and equal to what is on the clipboard.
+    } else if (isSafari && internalClipboard &&
+        areTextBlocksAndClipboardEqual(textBlocks, internalClipboard)) {
       this.update(
         insertFragment(this.props.editorState, internalClipboard)
       );
@@ -183,6 +184,23 @@ function insertFragment(
     newContent,
     'insert-fragment'
   );
+}
+
+function areTextBlocksAndClipboardEqual(
+  textBlocks: Array<string>,
+  blockMap: BlockMap
+): boolean {
+  if (textBlocks.length != blockMap.size) {
+    return false;
+  }
+  let i = 0;
+  for (const block of blockMap) {
+    if (block[1].getText() !== textBlocks[i]) {
+      return false;
+    }
+    i++;
+  }
+  return true;
 }
 
 module.exports = editOnPaste;
