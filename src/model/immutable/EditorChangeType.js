@@ -15,19 +15,17 @@
 'use strict';
 
 export type EditorChangeType = (
-  'undo' |
-  'redo' |
-  'change-selection' |
-  'insert-characters' |
-  'backspace-character' |
-  'delete-character' |
-  'remove-range' |
-  'split-block' |
-  'insert-fragment' |
-  'change-inline-style' |
-  'change-block-type' |
-  'apply-entity' |
-  'reset-block' |
   'adjust-depth' |
-  'spellcheck-change'
+  'apply-entity' |
+  'backspace-character' |
+  'change-block-type' |
+  'change-inline-style' |
+  'delete-character' |
+  'insert-characters' |
+  'insert-fragment' |
+  'redo' |
+  'remove-range' |
+  'spellcheck-change' |
+  'split-block' |
+  'undo'
 );

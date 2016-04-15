@@ -3,7 +3,7 @@ id: api-reference-editor
 title: Editor Component
 layout: docs
 category: API Reference
-next: api-reference-editor-state
+next: api-reference-editor-change-type
 permalink: docs/api-reference-editor.html
 ---
 
