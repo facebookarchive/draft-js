@@ -173,7 +173,6 @@ class DraftEditorContents extends React.Component {
         };
       }
 
-      // $FlowFixMe: Support DOM elements in React.createElement
       child = React.createElement(
         Element,
         childProps,

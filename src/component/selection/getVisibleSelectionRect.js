@@ -15,12 +15,14 @@
 
 const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
 
+import type {FakeClientRect} from 'getRangeBoundingClientRect';
+
 /**
  * Return the bounding ClientRect for the visible DOM selection, if any.
  * In cases where there are no selected ranges or the bounding rect is
  * temporarily invalid, return null.
  */
-function getVisibleSelectionRect(global: any): ?ClientRect {
+function getVisibleSelectionRect(global: any): ?FakeClientRect {
   const selection = global.getSelection();
   if (!selection.rangeCount) {
     return null;
