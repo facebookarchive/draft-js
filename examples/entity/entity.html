@@ -15,7 +15,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Draft • Plain Text Editor</title>
+    <title>Draft • Entity Editor</title>
     <link rel="stylesheet" href="../../dist/Draft.css" />
   </head>
   <body>
@@ -115,10 +115,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           const blocks = convertFromRaw(rawContent);
 
           this.state = {
-            editorState: EditorState.createWithContent(
-              ContentState.createFromBlockArray(blocks),
-              decorator
-            ),
+            editorState: EditorState.createWithContent(blocks, decorator),
           };
 
           this.focus = () => this.refs.editor.focus();

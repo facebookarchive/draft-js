@@ -23,14 +23,13 @@ import {content} from '../data/content';
 import {insertTeXBlock} from '../modifiers/insertTeXBlock';
 import {removeTeXBlock} from '../modifiers/removeTeXBlock';
 
-var {ContentState, Editor, EditorState, RichUtils} = Draft;
+var {Editor, EditorState, RichUtils} = Draft;
 
 export default class TeXEditorExample extends React.Component {
   constructor(props) {
     super(props);
-    const contentState = ContentState.createFromBlockArray(content);
     this.state = {
-      editorState: EditorState.createWithContent(contentState),
+      editorState: EditorState.createWithContent(content),
       liveTeXEdits: Map(),
     };
 
