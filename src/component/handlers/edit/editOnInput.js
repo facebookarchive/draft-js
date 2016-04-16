@@ -100,18 +100,19 @@ function editOnInput(): void {
       'apply-entity' :
       changeType;
 
-    if (isImmutableEntity) {
-      applyEntity = false;
-    } else if (isSegmentedEntity) {
+    if (isImmutableEntity || isSegmentedEntity) {
       var characterRemoved = domText.length < modelText.length;
+
       if (characterRemoved) {
-        mergeSelection = false;
         newContent = DraftModifier.removeRange(
           content,
           selection,
           'backward',
         );
-      } else {
+        mergeSelection = false;
+      }
+
+      if (!characterRemoved) {
         applyEntity = false;
       }
     }
