@@ -82,7 +82,23 @@ function editOnInput(): void {
 
   var entityKey = block.getEntityAt(start);
   var entity = entityKey && Entity.get(entityKey);
-  var applyEntity = entity && entity.getMutability() !== 'IMMUTABLE';
+  var applyEntity = true;
+  var entityType = entity && entity.getMutability();
+  var changeType = 'spellcheck-change';
+
+  if (entityType) {
+    var isImmutableEntity =  entityType === 'IMMUTABLE';
+    var isSegmentedEntity =  entityType === 'SEGMENTED';
+    changeType = (isImmutableEntity || isSegmentedEntity) ?
+      'apply-entity' :
+      changeType;
+
+    if (isImmutableEntity) {
+      applyEntity = false;
+    }
+
+  }
+
   var newContent = DraftModifier.replaceText(
     content,
     targetRange,
@@ -125,7 +141,7 @@ function editOnInput(): void {
     EditorState.push(
       editorState,
       contentWithAdjustedDOMSelection,
-      'spellcheck-change'
+      changeType
     )
   );
 }
