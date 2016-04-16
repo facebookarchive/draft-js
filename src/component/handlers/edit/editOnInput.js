@@ -85,27 +85,47 @@ function editOnInput(): void {
   var applyEntity = true;
   var entityType = entity && entity.getMutability();
   var changeType = 'spellcheck-change';
+  var newContent;
+  var mergeSelection = true;
 
   if (entityType) {
-    var isImmutableEntity =  entityType === 'IMMUTABLE';
-    var isSegmentedEntity =  entityType === 'SEGMENTED';
+    var isImmutableEntity = entityType === 'IMMUTABLE';
+    var isSegmentedEntity = entityType === 'SEGMENTED';
+
+    // Immutable or segmented entities cannot properly be handled by the
+    // default browser undo, so we have to use a different change type to
+    // force using our internal undo method instead of falling through to the
+    // native browser undo.
     changeType = (isImmutableEntity || isSegmentedEntity) ?
       'apply-entity' :
       changeType;
 
     if (isImmutableEntity) {
       applyEntity = false;
+    } else if (isSegmentedEntity) {
+      var characterRemoved = domText.length < modelText.length;
+      if (characterRemoved) {
+        mergeSelection = false;
+        newContent = DraftModifier.removeRange(
+          content,
+          selection,
+          'backward',
+        );
+      } else {
+        applyEntity = false;
+      }
     }
-
   }
 
-  var newContent = DraftModifier.replaceText(
-    content,
-    targetRange,
-    domText,
-    block.getInlineStyleAt(start),
-    applyEntity ? block.getEntityAt(start) : null,
-  );
+  newContent = newContent ?
+    newContent :
+    DraftModifier.replaceText(
+      content,
+      targetRange,
+      domText,
+      block.getInlineStyleAt(start),
+      applyEntity ? block.getEntityAt(start) : null,
+    );
 
   var anchorOffset, focusOffset, startOffset, endOffset;
 
@@ -132,10 +152,15 @@ function editOnInput(): void {
     focusOffset = endOffset + charDelta;
   }
 
-  var contentWithAdjustedDOMSelection = newContent.merge({
-    selectionBefore: content.getSelectionAfter(),
-    selectionAfter: selection.merge({anchorOffset, focusOffset}),
-  });
+  // Segmented entities are completely or partially removed when their
+  // text content changes. For this case we do not want any text to be selected
+  // after the change, so we are not merging the selection.
+  var contentWithAdjustedDOMSelection = mergeSelection ?
+    newContent.merge({
+      selectionBefore: content.getSelectionAfter(),
+      selectionAfter: selection.merge({anchorOffset, focusOffset})
+    }) :
+    newContent;
 
   this.update(
     EditorState.push(
