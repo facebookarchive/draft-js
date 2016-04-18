@@ -86,6 +86,7 @@ class DraftEditorBlock extends React.Component {
   componentDidMount(): void {
     var selection = this.props.selection;
     var endKey = selection.getEndKey();
+    var blockType = this.props.block.getType();
     if (!selection.getHasFocus() || endKey !== this.props.block.getKey()) {
       return;
     }
@@ -107,6 +108,9 @@ class DraftEditorBlock extends React.Component {
         );
       }
     } else {
+      if (blockType === 'unordered-list-item' || blockType === 'ordered-list-item') {
+        blockNode = blockNode.parentNode;
+      }
       var blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
       var scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
