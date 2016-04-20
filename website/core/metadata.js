@@ -113,7 +113,7 @@ module.exports = {
       "title": "Data Conversion",
       "layout": "docs",
       "category": "API Reference",
-      "next": "api-reference-modifier",
+      "next": "api-reference-rich-utils",
       "permalink": "docs/api-reference-data-conversion.html"
     },
     {
@@ -121,8 +121,16 @@ module.exports = {
       "title": "Editor Component",
       "layout": "docs",
       "category": "API Reference",
-      "next": "api-reference-editor-state",
+      "next": "api-reference-editor-change-type",
       "permalink": "docs/api-reference-editor.html"
+    },
+    {
+      "id": "api-reference-editor-change-type",
+      "title": "EditorChangeType",
+      "layout": "docs",
+      "category": "API Reference",
+      "next": "api-reference-editor-state",
+      "permalink": "docs/api-reference-editor-change-type.html"
     },
     {
       "id": "api-reference-editor-state",
@@ -146,6 +154,14 @@ module.exports = {
       "layout": "docs",
       "category": "API Reference",
       "permalink": "docs/api-reference-modifier.html"
+    },
+    {
+      "id": "api-reference-rich-utils",
+      "title": "RichUtils",
+      "layout": "docs",
+      "category": "API Reference",
+      "next": "api-reference-modifier",
+      "permalink": "docs/api-reference-rich-utils.html"
     },
     {
       "id": "api-reference-selection-state",
