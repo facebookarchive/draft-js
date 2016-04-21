@@ -89,11 +89,11 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
     case Keys.RETURN:
       e.preventDefault();
       // The top-level component may manually handle newline insertion. If
-      // no special handling is performed, insert a newline.
-      if (!this.props.handleReturn || !this.props.handleReturn(e)) {
-        this.update(keyCommandInsertNewline(editorState));
+      // no special handling is performed, fall through to command handling.
+      if (this.props.handleReturn && this.props.handleReturn(e)) {
+        return;
       }
-      return;
+      break;
     case Keys.ESC:
       e.preventDefault();
       this.props.onEscape && this.props.onEscape(e);
