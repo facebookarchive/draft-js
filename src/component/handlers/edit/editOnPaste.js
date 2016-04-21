@@ -190,17 +190,11 @@ function areTextBlocksAndClipboardEqual(
   textBlocks: Array<string>,
   blockMap: BlockMap
 ): boolean {
-  if (textBlocks.length != blockMap.size) {
-    return false;
-  }
   let i = 0;
-  for (const block of blockMap) {
-    if (block[1].getText() !== textBlocks[i]) {
-      return false;
-    }
-    i++;
-  }
-  return true;
+  return (
+    textBlocks.length === blockMap.size &&
+    blockMap.toSeq().every((block) => block.getText() === textBlocks[i++])
+  );
 }
 
 module.exports = editOnPaste;
