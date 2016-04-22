@@ -85,8 +85,6 @@ function editOnInput(): void {
   var applyEntity = true;
   var entityType = entity && entity.getMutability();
   var changeType = 'spellcheck-change';
-  var newContent;
-  var mergeSelection = true;
 
   if (entityType) {
     var isImmutableEntity = entityType === 'IMMUTABLE';
@@ -100,33 +98,16 @@ function editOnInput(): void {
       'apply-entity' :
       changeType;
 
-    if (isImmutableEntity || isSegmentedEntity) {
-      var characterRemoved = domText.length < modelText.length;
-
-      if (characterRemoved) {
-        newContent = DraftModifier.removeRange(
-          content,
-          selection,
-          'backward',
-        );
-        mergeSelection = false;
-      }
-
-      if (!characterRemoved) {
-        applyEntity = false;
-      }
-    }
+    applyEntity = !(isImmutableEntity || isSegmentedEntity);
   }
 
-  newContent = newContent ?
-    newContent :
-    DraftModifier.replaceText(
-      content,
-      targetRange,
-      domText,
-      block.getInlineStyleAt(start),
-      applyEntity ? block.getEntityAt(start) : null,
-    );
+  var newContent = DraftModifier.replaceText(
+    content,
+    targetRange,
+    domText,
+    block.getInlineStyleAt(start),
+    applyEntity ? block.getEntityAt(start) : null,
+  );
 
   var anchorOffset, focusOffset, startOffset, endOffset;
 
@@ -156,12 +137,10 @@ function editOnInput(): void {
   // Segmented entities are completely or partially removed when their
   // text content changes. For this case we do not want any text to be selected
   // after the change, so we are not merging the selection.
-  var contentWithAdjustedDOMSelection = mergeSelection ?
-    newContent.merge({
-      selectionBefore: content.getSelectionAfter(),
-      selectionAfter: selection.merge({anchorOffset, focusOffset})
-    }) :
-    newContent;
+  var contentWithAdjustedDOMSelection = newContent.merge({
+    selectionBefore: content.getSelectionAfter(),
+    selectionAfter: selection.merge({anchorOffset, focusOffset})
+  });
 
   this.update(
     EditorState.push(
