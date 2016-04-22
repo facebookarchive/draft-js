@@ -112,10 +112,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             },
           ]);
 
-          const blocks = convertFromRaw(rawContent);
+          const contentState = ContentState.createFromBlockArray(convertFromRaw(rawContent));
 
           this.state = {
-            editorState: EditorState.createWithContent(blocks, decorator),
+            editorState: EditorState.createWithContent(contentState, decorator),
           };
 
           this.focus = () => this.refs.editor.focus();
