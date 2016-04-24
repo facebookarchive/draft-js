@@ -29,10 +29,10 @@ objects.
 ### convertFromRaw
 
 ```
-convertFromRaw(rawState: RawDraftContentState): Array<ContentBlock>
+convertFromRaw(rawState: RawDraftContentState): ContentState
 ```
 
-Given a raw state, convert it to an array of `ContentBlock` objects. This is useful when
+Given a raw state, convert it to a `ContentState`. This is useful when
 restoring contents to use within a Draft editor.
 
 ### convertToRaw
@@ -49,7 +49,7 @@ other usage within an application.
 ### convertFromHTML
 
 ```
-convertFromHTML(html: string): Array<ContentBlock>
+convertFromHTML(html: string): ?Array<ContentBlock>
 ```
 
-Given an HTML fragment, convert it to an array of `ContentBlock` objects. 
+Given an HTML fragment, convert it to an array of `ContentBlock` objects.
