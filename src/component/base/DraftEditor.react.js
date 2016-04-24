@@ -56,8 +56,8 @@ const handlerMap = {
 };
 
 type DefaultProps = {
-  blockRendererFn?: (block: ContentBlock) => ?Object;
-  blockStyleFn?: (type: number) => string,
+  blockRendererFn?: (block: ContentBlock, index: number) => ?Object;
+  blockStyleFn?: (type: number, index: number) => string,
   keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string,
   readOnly?: boolean,
   spellCheck?: boolean,
