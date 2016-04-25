@@ -82,31 +82,21 @@ function editOnInput(): void {
 
   var entityKey = block.getEntityAt(start);
   var entity = entityKey && Entity.get(entityKey);
-  var applyEntity = true;
   var entityType = entity && entity.getMutability();
-  var changeType = 'spellcheck-change';
+  const preserveEntity = entityType === 'MUTABLE';
 
-  if (entityType) {
-    var isImmutableEntity = entityType === 'IMMUTABLE';
-    var isSegmentedEntity = entityType === 'SEGMENTED';
-
-    // Immutable or segmented entities cannot properly be handled by the
-    // default browser undo, so we have to use a different change type to
-    // force using our internal undo method instead of falling through to the
-    // native browser undo.
-    changeType = (isImmutableEntity || isSegmentedEntity) ?
-      'apply-entity' :
-      changeType;
-
-    applyEntity = !(isImmutableEntity || isSegmentedEntity);
-  }
+  // Immutable or segmented entities cannot properly be handled by the
+  // default browser undo, so we have to use a different change type to
+  // force using our internal undo method instead of falling through to the
+  // native browser undo.
+  const changeType = preserveEntity ? 'spellcheck-change' : 'apply-entity';
 
   var newContent = DraftModifier.replaceText(
     content,
     targetRange,
     domText,
     block.getInlineStyleAt(start),
-    applyEntity ? block.getEntityAt(start) : null,
+    preserveEntity ? block.getEntityAt(start) : null,
   );
 
   var anchorOffset, focusOffset, startOffset, endOffset;
@@ -139,7 +129,7 @@ function editOnInput(): void {
   // after the change, so we are not merging the selection.
   var contentWithAdjustedDOMSelection = newContent.merge({
     selectionBefore: content.getSelectionAfter(),
-    selectionAfter: selection.merge({anchorOffset, focusOffset})
+    selectionAfter: selection.merge({anchorOffset, focusOffset}),
   });
 
   this.update(
