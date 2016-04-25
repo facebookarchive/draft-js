@@ -113,7 +113,7 @@ class DraftEditorContents extends React.Component {
       key = block.getKey();
       blockType = block.getType();
 
-      const customRenderer = blockRendererFn(block);
+      const customRenderer = blockRendererFn(block, ii);
       let CustomComponent, customProps, customEditable;
       if (customRenderer) {
         CustomComponent = customRenderer.component;
@@ -141,7 +141,7 @@ class DraftEditorContents extends React.Component {
 
       const Element = getElementForBlockType(blockType);
       const depth = block.getDepth();
-      let className = this.props.blockStyleFn(block);
+      let className = this.props.blockStyleFn(block, ii);
 
       // List items are special snowflakes, since we handle nesting and
       // counters manually.
