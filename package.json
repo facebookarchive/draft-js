@@ -56,7 +56,7 @@
     "gulp-header": "^1.7.1",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "jest-cli": "^0.9.0-fb1",
+    "jest-cli": "^11.0.2",
     "object-assign": "^4.0.1",
     "react": "^15.0.0-rc.1",
     "react-dom": "^15.0.0-rc.1",
@@ -84,10 +84,10 @@
     "testPathDirs": [
       "<rootDir>/src/"
     ],
-    "testRunner": "node_modules/jest-cli/src/testRunners/jasmine/jasmine2.js",
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/fbjs/node_modules/",
-      "<rootDir>/node_modules/fbjs/lib/(?!(UserAgent.js$|UserAgentData.js$))",
+      "<rootDir>/node_modules/fbjs/lib/UserAgent.js",
+      "<rootDir>/node_modules/fbjs/lib/UserAgentData.js",
       "<rootDir>/node_modules/fbjs-scripts/",
       "<rootDir>/node_modules/immutable/",
       "<rootDir>/node_modules/react/",
