@@ -41,7 +41,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       // through to insert text contents into the editor.
       if (
         this.props.handlePastedFiles &&
-        this.props.handlePastedFiles(files)
+        this.props.handlePastedFiles(files) === 'handled'
       ) {
         return;
       }
@@ -88,7 +88,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   const text = data.getText();
   const html = data.getHTML();
 
-  if (this.props.handlePastedText && this.props.handlePastedText(text, html)) {
+  if (this.props.handlePastedText && this.props.handlePastedText(text, html) === 'handled') {
     return;
   }
 

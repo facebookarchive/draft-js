@@ -88,7 +88,7 @@ var DraftEditorDragHandler = {
     const files = data.getFiles();
     if (files.length > 0) {
       if (this.props.handleDroppedFiles &&
-          this.props.handleDroppedFiles(dropSelection, files)) {
+          this.props.handleDroppedFiles(dropSelection, files) === 'handled') {
         return;
       }
 
@@ -107,7 +107,7 @@ var DraftEditorDragHandler = {
     const dragType = this._internalDrag ? 'internal' : 'external';
     if (
       this.props.handleDrop &&
-      this.props.handleDrop(dropSelection, data, dragType)
+      this.props.handleDrop(dropSelection, data, dragType) === 'handled'
     ) {
       return;
     }
