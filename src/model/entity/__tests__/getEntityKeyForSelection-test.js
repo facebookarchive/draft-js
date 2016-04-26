@@ -9,7 +9,7 @@
  * @emails isaac, oncall+ui_infra
  */
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 jest.mock('DraftEntity');
 

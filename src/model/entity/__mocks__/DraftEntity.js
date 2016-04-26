@@ -10,19 +10,19 @@
 var DraftEntity = jest.genMockFromModule('DraftEntity');
 
 var DraftEntityInstance = {
-  getType: jest.genMockFn().mockReturnValue(''),
-  getMutability: jest.genMockFn().mockReturnValue(''),
-  getData: jest.genMockFn().mockReturnValue({}),
+  getType: jest.fn().mockReturnValue(''),
+  getMutability: jest.fn().mockReturnValue(''),
+  getData: jest.fn().mockReturnValue({}),
 };
 
 var count = 0;
 
-DraftEntity.create = jest.genMockFn().mockImplementation(function() {
+DraftEntity.create = jest.fn(function() {
   count++;
   return '' + count;
 });
 
-DraftEntity.get = jest.genMockFn().mockImplementation(function() {
+DraftEntity.get = jest.fn(function() {
   return DraftEntityInstance;
 });
 

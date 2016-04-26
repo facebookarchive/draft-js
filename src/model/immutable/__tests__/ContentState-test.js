@@ -12,7 +12,7 @@
 'use strict';
 
 jest
-  .autoMockOff()
+  .disableAutomock()
   .mock('SelectionState');
 
 var BlockMapBuilder = require('BlockMapBuilder');

@@ -10,7 +10,7 @@
  * @typechecks
  */
 
-jest.dontMock('CompositeDraftDecorator');
+jest.unmock('CompositeDraftDecorator');
 
 var CompositeDraftDecorator = require('CompositeDraftDecorator');
 
@@ -36,19 +36,19 @@ describe('CompositeDraftDecorator', () => {
     };
   }
 
-  var FooSpan = jest.genMockFn();
+  var FooSpan = jest.fn();
   var FooDecorator = {
     strategy: searchWith(/foo/gi),
     component: FooSpan,
   };
 
-  var BarSpan = jest.genMockFn();
+  var BarSpan = jest.fn();
   var BarDecorator = {
     strategy: searchWith(/bar/gi),
     component: BarSpan,
   };
 
-  var BartSpan = jest.genMockFn();
+  var BartSpan = jest.fn();
   var BartDecorator = {
     strategy: searchWith(/bart/gi),
     component: BartSpan,

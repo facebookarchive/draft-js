@@ -11,7 +11,7 @@
 
 'use strict';
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 var BlockTree = require('BlockTree');
 var CharacterMetadata = require('CharacterMetadata');
@@ -57,7 +57,7 @@ function assertLeafValues(leaf, values) {
 
 describe('BlockTree', () => {
   class Decorator {}
-  Decorator.prototype.getDecorations = jest.genMockFn();
+  Decorator.prototype.getDecorations = jest.fn();
 
   beforeEach(() => {
     jest.resetModuleRegistry();

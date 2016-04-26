@@ -11,7 +11,7 @@
 
 'use strict';
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');

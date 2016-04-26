@@ -9,7 +9,7 @@
  * @emails oncall+ui_infra
  */
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 describe('sanitizeDraftText', () => {
   var sanitizeDraftText = require('sanitizeDraftText');

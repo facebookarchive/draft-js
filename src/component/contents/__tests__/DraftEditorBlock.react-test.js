@@ -12,7 +12,7 @@
 
 'use strict';
 
-jest.autoMockOff()
+jest.disableAutomock()
   .mock('Style')
   .mock('getElementPosition')
   .mock('getScrollPosition')
@@ -36,7 +36,7 @@ var getViewportDimensions = require('getViewportDimensions');
 var reactComponentExpect = require('reactComponentExpect');
 var {BOLD, NONE, ITALIC} = SampleDraftInlineStyle;
 
-var mockGetDecorations = jest.genMockFn();
+var mockGetDecorations = jest.fn();
 
 var DecoratorSpan = React.createClass({
   render() {
@@ -59,7 +59,7 @@ class Decorator {
   }
 }
 
-var mockLeafRender = jest.genMockFn().mockReturnValue(<span />);
+var mockLeafRender = jest.fn().mockReturnValue(<span />);
 jest.setMock(
   'DraftEditorLeaf.react',
   React.createClass({
@@ -128,7 +128,7 @@ function assertLeaves(renderedBlock, leafProps) {
 
 describe('DraftEditorBlock.react', () => {
   Style.getScrollParent.mockReturnValue(window);
-  window.scrollTo = jest.genMockFn();
+  window.scrollTo = jest.fn();
   getElementPosition.mockReturnValue({
     x: 0,
     y: 600,

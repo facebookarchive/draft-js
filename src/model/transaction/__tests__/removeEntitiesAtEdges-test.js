@@ -12,7 +12,7 @@
 'use strict';
 
 jest
-  .autoMockOff()
+  .disableAutomock()
   .mock('DraftEntity');
 
 var DraftEntity = require('DraftEntity');

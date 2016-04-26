@@ -11,7 +11,7 @@
 
 'use strict';
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 var Immutable = require('immutable');
 var findRangesImmutable = require('findRangesImmutable');
@@ -20,7 +20,7 @@ describe('findRangesImmutable', () => {
   var returnTrue = () => true;
 
   it('must be a no-op for an empty list', () => {
-    var cb = jest.genMockFn();
+    var cb = jest.fn();
     findRangesImmutable(
       Immutable.List(),
       returnTrue,
@@ -34,7 +34,7 @@ describe('findRangesImmutable', () => {
     var list = Immutable.List.of(1, 1, 1, 1, 1);
 
     it('must identify the full list as a single range', () => {
-      var cb = jest.genMockFn();
+      var cb = jest.fn();
       findRangesImmutable(list, returnTrue, returnTrue, cb);
       var calls = cb.mock.calls;
       expect(calls.length).toBe(1);
@@ -42,7 +42,7 @@ describe('findRangesImmutable', () => {
     });
 
     it('must properly use `areEqualFn`', () => {
-      var cb = jest.genMockFn();
+      var cb = jest.fn();
       var areEqual = () => false;
       findRangesImmutable(
         list,
@@ -60,7 +60,7 @@ describe('findRangesImmutable', () => {
     });
 
     it('must properly use `filterFn`', () => {
-      var cb = jest.genMockFn();
+      var cb = jest.fn();
       findRangesImmutable(
         list,
         returnTrue,
@@ -76,7 +76,7 @@ describe('findRangesImmutable', () => {
     var list = Immutable.List.of(0, 0, 1, 1, 0, 0, 2, 2);
 
     it('must identify each range', () => {
-      var cb = jest.genMockFn();
+      var cb = jest.fn();
       findRangesImmutable(
         list,
         (a, b) => a === b,

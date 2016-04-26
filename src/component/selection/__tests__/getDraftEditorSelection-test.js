@@ -11,7 +11,7 @@
 
 'use strict';
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
@@ -44,7 +44,7 @@ describe('getDraftEditorSelection', function() {
   var textNodes;
 
   beforeEach(function() {
-    window.getSelection = jest.genMockFunction();
+    window.getSelection = jest.fn();
     root = document.createElement('div');
     contents = document.createElement('div');
     contents.setAttribute('data-contents', 'true');

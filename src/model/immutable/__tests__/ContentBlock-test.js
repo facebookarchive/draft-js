@@ -11,7 +11,7 @@
 
 'use strict';
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
@@ -72,7 +72,7 @@ describe('ContentBlock', () => {
 
     it('must correctly identify ranges of styles', () => {
       var block = getSampleBlock();
-      var cb = jest.genMockFn();
+      var cb = jest.fn();
       block.findStyleRanges(() => true, cb);
 
       var calls = cb.mock.calls;
@@ -96,7 +96,7 @@ describe('ContentBlock', () => {
 
     it('must correctly identify ranges of entities', () => {
       var block = getSampleBlock();
-      var cb = jest.genMockFn();
+      var cb = jest.fn();
       block.findEntityRanges(() => true, cb);
 
       var calls = cb.mock.calls;

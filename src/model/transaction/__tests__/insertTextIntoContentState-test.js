@@ -11,7 +11,7 @@
 
 'use strict';
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
 var Immutable = require('immutable');

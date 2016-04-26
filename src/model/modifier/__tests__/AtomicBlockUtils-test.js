@@ -11,7 +11,7 @@
 
 'use strict';
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 const {insertAtomicBlock} = require('AtomicBlockUtils');
 const EditorState = require('EditorState');

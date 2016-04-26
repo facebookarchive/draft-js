@@ -11,7 +11,7 @@
 
 'use strict';
 
-jest.autoMockOff();
+jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
@@ -219,10 +219,10 @@ describe('EditorState', () => {
     var boldB = List(Repeat('y', boldBlock.getLength()));
 
     function Decorator() {}
-    Decorator.prototype.getDecorations = jest.genMockFn();
+    Decorator.prototype.getDecorations = jest.fn();
 
     function NextDecorator() {}
-    NextDecorator.prototype.getDecorations = jest.genMockFn();
+    NextDecorator.prototype.getDecorations = jest.fn();
 
     beforeEach(() => {
       Decorator.prototype.getDecorations.mockClear();
