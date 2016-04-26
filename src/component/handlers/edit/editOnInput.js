@@ -15,6 +15,7 @@
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
 var EditorState = require('EditorState');
+var Entity = require('DraftEntity');
 var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
@@ -79,11 +80,23 @@ function editOnInput(): void {
     isBackward: false,
   });
 
+  var entityKey = block.getEntityAt(start);
+  var entity = entityKey && Entity.get(entityKey);
+  var entityType = entity && entity.getMutability();
+  const preserveEntity = entityType === 'MUTABLE';
+
+  // Immutable or segmented entities cannot properly be handled by the
+  // default browser undo, so we have to use a different change type to
+  // force using our internal undo method instead of falling through to the
+  // native browser undo.
+  const changeType = preserveEntity ? 'spellcheck-change' : 'apply-entity';
+
   var newContent = DraftModifier.replaceText(
     content,
     targetRange,
     domText,
-    block.getInlineStyleAt(start)
+    block.getInlineStyleAt(start),
+    preserveEntity ? block.getEntityAt(start) : null,
   );
 
   var anchorOffset, focusOffset, startOffset, endOffset;
@@ -111,6 +124,9 @@ function editOnInput(): void {
     focusOffset = endOffset + charDelta;
   }
 
+  // Segmented entities are completely or partially removed when their
+  // text content changes. For this case we do not want any text to be selected
+  // after the change, so we are not merging the selection.
   var contentWithAdjustedDOMSelection = newContent.merge({
     selectionBefore: content.getSelectionAfter(),
     selectionAfter: selection.merge({anchorOffset, focusOffset}),
@@ -120,7 +136,7 @@ function editOnInput(): void {
     EditorState.push(
       editorState,
       contentWithAdjustedDOMSelection,
-      'spellcheck-change'
+      changeType
     )
   );
 }
