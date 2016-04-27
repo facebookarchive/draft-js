@@ -4,6 +4,19 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.6.0 (April 27, 2016)
+
+### Added
+
+* `ContentState.getFirstBlock()` convenience method
+
+### Changed
+
+* <kbd>return</kbd> key handling now goes through command flow to enable easier
+custom `'split-block'` handling.
+* `convertFromRaw` now returns a `ContentState` object instead of an
+`Array<ContentBlock>`
+
 ## 0.5.0 (April 12, 2016)
 
 ### Fixed
