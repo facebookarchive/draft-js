@@ -21,6 +21,7 @@ import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
 
 type Props = {
+  accessibilityID: ?string,
   editorState: EditorState,
   text: string,
   textAlignment: DraftTextAlignment,
@@ -53,7 +54,9 @@ class DraftEditorPlaceholder extends React.Component {
 
     return (
       <div className={className}>
-        <div className={cx('public/DraftEditorPlaceholder/inner')}>
+        <div
+          className={cx('public/DraftEditorPlaceholder/inner')}
+          id={this.props.accessibilityID}>
           {this.props.text}
         </div>
       </div>

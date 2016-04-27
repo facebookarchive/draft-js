@@ -92,6 +92,7 @@ class DraftEditor
   _handler: ?Object;
   _dragCount: number;
   _editorKey: string;
+  _placeholderAccessibilityID: string;
 
   /**
    * Define proxies that can route events to the current handler.
@@ -140,6 +141,7 @@ class DraftEditor
     this._handler = null;
     this._dragCount = 0;
     this._editorKey = generateRandomKey();
+    this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');
     this._onBlur = this._buildHandler('onBlur');
@@ -209,6 +211,7 @@ class DraftEditor
           text={nullthrows(this.props.placeholder)}
           editorState={this.props.editorState}
           textAlignment={this.props.textAlignment}
+          accessibilityID={this._placeholderAccessibilityID}
         />
       );
     }
@@ -230,6 +233,11 @@ class DraftEditor
       wordWrap: 'break-word',
     };
 
+    let ariaDescribedBy = this.props.ariaDescribedBy;
+    if (ariaDescribedBy === undefined) {
+      ariaDescribedBy = this._placeholderAccessibilityID;
+    }
+
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
@@ -242,7 +250,7 @@ class DraftEditor
               readOnly ? null : this.props.ariaActiveDescendantID
             }
             aria-autocomplete={readOnly ? null : this.props.ariaAutoComplete}
-            aria-describedby={this.props.ariaDescribedBy}
+            aria-describedby={ariaDescribedBy}
             aria-expanded={readOnly ? null : this.props.ariaExpanded}
             aria-haspopup={readOnly ? null : this.props.ariaHasPopup}
             aria-label={this.props.ariaLabel}
@@ -275,8 +283,7 @@ class DraftEditor
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
             suppressContentEditableWarning
-            tabIndex={this.props.tabIndex}
-            title={hasContent ? null : this.props.placeholder}>
+            tabIndex={this.props.tabIndex}>
             <DraftEditorContents
               blockRendererFn={nullthrows(this.props.blockRendererFn)}
               blockStyleFn={nullthrows(this.props.blockStyleFn)}
