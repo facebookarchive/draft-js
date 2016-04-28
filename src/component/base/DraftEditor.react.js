@@ -197,15 +197,16 @@ class DraftEditor
     };
   }
 
-  _renderPlaceholder(): ?React.Element {
-    const content = this.props.editorState.getCurrentContent();
-    const showPlaceholder = (
-      this.props.placeholder &&
+  _showPlaceholder(): boolean {
+    return (
+      !!this.props.placeholder &&
       !this.props.editorState.isInCompositionMode() &&
-      !content.hasText()
+      !this.props.editorState.getCurrentContent().hasText()
     );
+  }
 
-    if (showPlaceholder) {
+  _renderPlaceholder(): ?React.Element {
+    if (this._showPlaceholder()) {
       return (
         <DraftEditorPlaceholder
           text={nullthrows(this.props.placeholder)}
@@ -233,11 +234,6 @@ class DraftEditor
       wordWrap: 'break-word',
     };
 
-    let ariaDescribedBy = this.props.ariaDescribedBy;
-    if (ariaDescribedBy === undefined) {
-      ariaDescribedBy = this._placeholderAccessibilityID;
-    }
-
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
@@ -250,7 +246,9 @@ class DraftEditor
               readOnly ? null : this.props.ariaActiveDescendantID
             }
             aria-autocomplete={readOnly ? null : this.props.ariaAutoComplete}
-            aria-describedby={ariaDescribedBy}
+            aria-describedby={
+              this._showPlaceholder() ? this._placeholderAccessibilityID : null
+            }
             aria-expanded={readOnly ? null : this.props.ariaExpanded}
             aria-haspopup={readOnly ? null : this.props.ariaHasPopup}
             aria-label={this.props.ariaLabel}

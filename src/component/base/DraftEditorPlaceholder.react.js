@@ -21,7 +21,7 @@ import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
 
 type Props = {
-  accessibilityID: ?string,
+  accessibilityID: string,
   editorState: EditorState,
   text: string,
   textAlignment: DraftTextAlignment,
