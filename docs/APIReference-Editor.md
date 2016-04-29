@@ -137,7 +137,7 @@ false, you defer to Draft to handle the event.
 
 #### handleReturn
 ```
-handleReturn?: (e: SyntheticKeyboardEvent) => boolean
+handleReturn?: (e: SyntheticKeyboardEvent) => DraftHandleValue
 ```
 Handle a `RETURN` keydown event. Example usage: Choosing a mention tag from a
 rendered list of results to trigger applying the mention entity to your content.
