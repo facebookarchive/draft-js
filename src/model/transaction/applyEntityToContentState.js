@@ -37,15 +37,19 @@ function applyEntityToContentState(
     .toOrderedMap()
     .merge(Immutable.OrderedMap([[endKey, blockMap.get(endKey)]]))
     .map((block, blockKey) => {
+      const isSameBlock = startKey === endKey;
       var sliceStart;
       var sliceEnd;
 
-      if (startKey === endKey) {
+      if (blockKey === startKey) {
         sliceStart = startOffset;
+        sliceEnd = isSameBlock ? endOffset : block.getLength();
+      } else if (blockKey === endKey) {
+        sliceStart = isSameBlock ? startOffset : 0;
         sliceEnd = endOffset;
       } else {
-        sliceStart = blockKey === startKey ? startOffset : 0;
-        sliceEnd = blockKey === endKey ? 0 : block.getLength();
+        sliceStart = 0;
+        sliceEnd = block.getLength();
       }
 
       return applyEntityToContentBlock(
