@@ -39,6 +39,7 @@ const SCROLL_BUFFER = 10;
 type Props = {
   block: ContentBlock,
   customStyleMap: Object,
+  customStyleFn: Function,
   tree: List<any>,
   selection: SelectionState,
   decorator: DraftDecoratorType,
@@ -144,6 +145,7 @@ class DraftEditorBlock extends React.Component {
             text={text.slice(start, end)}
             styleSet={block.getInlineStyleAt(start)}
             customStyleMap={this.props.customStyleMap}
+            customStyleFn={this.props.customStyleFn}
             isLast={ii === lastLeafSet && jj === lastLeaf}
           />
         );
