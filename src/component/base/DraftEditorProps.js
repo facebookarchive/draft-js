@@ -132,12 +132,12 @@ export type DraftEditorProps = {
   // that will be rendered for matching ranges.
   customStyleMap?: Object,
 
+  // Provide a function that will construct CSS style objects given inline
+  // style names.
+  customStyleFn?: (style: DraftInlineStyle) => ?Object,
+
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and am optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
-  blockRenderMap: DraftBlockRenderMap,
-
-  // Provide a function that will construct CSS style objects given inline
-  // style names.
-  customStyleFn?: (style: DraftInlineStyle) => ?Object
+  blockRenderMap: DraftBlockRenderMap
 };
