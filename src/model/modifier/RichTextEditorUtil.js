@@ -13,20 +13,20 @@
 
 'use strict';
 
-var DraftEntity = require('DraftEntity');
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
+const DraftEntity = require('DraftEntity');
+const DraftModifier = require('DraftModifier');
+const EditorState = require('EditorState');
+const SelectionState = require('SelectionState');
 
-var adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
-var nullthrows = require('nullthrows');
+const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
+const nullthrows = require('nullthrows');
 
 import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type SelectionState from 'SelectionState';
 import type URI from 'URI';
 
-var RichTextEditorUtil = {
+const RichTextEditorUtil = {
   currentBlockContainsLink: function(
     editorState: EditorState
   ): boolean {
@@ -116,13 +116,6 @@ var RichTextEditorUtil = {
     // First, try to remove a preceding atomic block.
     var content = editorState.getCurrentContent();
     var startKey = selection.getStartKey();
-    var blockAfter = content.getBlockAfter(startKey);
-
-    // If the current block is empty, just delete it.
-    if (blockAfter && content.getBlockForKey(startKey).getLength() === 0) {
-      return null;
-    }
-
     var blockBefore = content.getBlockBefore(startKey);
 
     if (blockBefore && blockBefore.getType() === 'atomic') {
@@ -166,56 +159,33 @@ var RichTextEditorUtil = {
   },
 
   onDelete: function(editorState: EditorState): ?EditorState {
-    var selection = editorState.getSelection();
+    const selection = editorState.getSelection();
     if (!selection.isCollapsed()) {
       return null;
     }
 
-    var content = editorState.getCurrentContent();
-    var startKey = selection.getStartKey();
-    var block = content.getBlockForKey(startKey);
-    var length = block.getLength();
+    const content = editorState.getCurrentContent();
+    const startKey = selection.getStartKey();
+    const block = content.getBlockForKey(startKey);
+    const length = block.getLength();
 
     // The cursor is somewhere within the text. Behave normally.
     if (selection.getStartOffset() < length) {
       return null;
     }
 
-    var blockAfter = content.getBlockAfter(startKey);
+    const blockAfter = content.getBlockAfter(startKey);
 
     if (!blockAfter || blockAfter.getType() !== 'atomic') {
       return null;
     }
 
-    // If the current block is empty, delete it.
-    if (length === 0) {
-      var target = selection.merge({
-        focusKey: blockAfter.getKey(),
-        focusOffset: 0,
-      });
-
-      var withoutEmptyBlock = DraftModifier.removeRange(
-        content,
-        target,
-        'forward'
-      );
-
-      var preserveAtomicBlock = DraftModifier.setBlockType(
-        withoutEmptyBlock,
-        withoutEmptyBlock.getSelectionAfter(),
-        'atomic'
-      );
-
-      return EditorState.push(editorState, preserveAtomicBlock, 'remove-range');
-    }
-
-    // Otherwise, delete the atomic block.
-    var atomicBlockTarget = selection.merge({
+    const atomicBlockTarget = selection.merge({
       focusKey: blockAfter.getKey(),
       focusOffset: blockAfter.getLength(),
     });
 
-    var withoutAtomicBlock = DraftModifier.removeRange(
+    const withoutAtomicBlock = DraftModifier.removeRange(
       content,
       atomicBlockTarget,
       'forward'
