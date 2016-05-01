@@ -128,7 +128,10 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
 
     // If there is html paste data, try to parse that.
     if (html) {
-      var htmlFragment = DraftPasteProcessor.processHTML(html);
+      var htmlFragment = DraftPasteProcessor.processHTML(
+        html,
+        this.props.blockRenderMap
+      );
       if (htmlFragment) {
         var htmlMap = BlockMapBuilder.createFromArray(htmlFragment);
         this.update(insertFragment(this.props.editorState, htmlMap));

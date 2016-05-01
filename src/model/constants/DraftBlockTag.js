@@ -6,27 +6,26 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftBlockType
+ * @providesModule DraftBlockTag
  * @flow
  */
 
 'use strict';
 
 /**
- * The list of default valid block types.
+ * The list of default valid block tags.
  */
-export type DraftBlockType = (
-  'unstyled' |
-  'paragraph' |
-  'header-one' |
-  'header-two' |
-  'header-three' |
-  'header-four' |
-  'header-five' |
-  'header-six' |
-  'unordered-list-item' |
-  'ordered-list-item' |
+export type DraftBlockTag = (
+  'div' |
+  'p' |
+  'h1' |
+  'h2' |
+  'h3' |
+  'h4' |
+  'h5' |
+  'h6' |
+  'li' |
   'blockquote' |
-  'code-block' |
-  'atomic'
+  'pre' |
+  'figure'
 );

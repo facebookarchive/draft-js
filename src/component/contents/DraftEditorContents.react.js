@@ -19,8 +19,6 @@ const EditorState = require('EditorState');
 const React = require('React');
 
 const cx = require('cx');
-const getElementForBlockType = require('getElementForBlockType');
-const getWrapperTemplateForBlockType = require('getWrapperTemplateForBlockType');
 const joinClasses = require('joinClasses');
 const nullthrows = require('nullthrows');
 
@@ -93,7 +91,13 @@ class DraftEditorContents extends React.Component {
   }
 
   render(): React.Element {
-    const {blockRendererFn, customStyleMap, editorState} = this.props;
+    const {
+      blockRenderMap,
+      blockRendererFn,
+      customStyleMap,
+      editorState,
+    } = this.props;
+
     const content = editorState.getCurrentContent();
     const selection = editorState.getSelection();
     const forceSelection = editorState.mustForceSelection();
@@ -136,10 +140,19 @@ class DraftEditorContents extends React.Component {
         tree: editorState.getBlockTree(key),
       };
 
-      wrapperTemplate = getWrapperTemplateForBlockType(blockType);
+      // Block render map must have a configuration specified for this
+      // block type.
+      const configForType = nullthrows(blockRenderMap.get(blockType));
+
+      wrapperTemplate = configForType.wrapper;
+
       const useNewWrapper = wrapperTemplate !== currentWrapperTemplate;
 
-      const Element = getElementForBlockType(blockType);
+      const Element = (
+        blockRenderMap.get(blockType).element ||
+        blockRenderMap.get('unstyled').element
+      );
+
       const depth = block.getDepth();
       let className = this.props.blockStyleFn(block);
 

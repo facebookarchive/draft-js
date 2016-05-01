@@ -33,12 +33,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <script type="text/babel">
       'use strict';
 
-      const {Editor, EditorState, RichUtils} = Draft;
+      const {
+        Editor,
+        EditorState,
+        RichUtils,
+        DefaultDraftBlockRenderMap,
+      } = Draft;
+
+      const {Map} = immutable;
 
       class RichEditorExample extends React.Component {
         constructor(props) {
           super(props);
-          this.state = {editorState: EditorState.createEmpty()};
+
+          const customBlockRendering = Map({
+            'paragraph': {
+              element: 'p',
+            },
+            'unstyled': {
+              element: 'p',
+            },
+          });
+
+          this.state = {
+            blockRenderMap: DefaultDraftBlockRenderMap.merge(
+              customBlockRenderMap,
+            ),
+            editorState: EditorState.createEmpty(),
+          };
 
           this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
@@ -101,6 +123,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               />
               <div className={className} onClick={this.focus}>
                 <Editor
+                  blockRenderMap={this.state.blockRenderMap}
                   blockStyleFn={getBlockStyle}
                   customStyleMap={styleMap}
                   editorState={editorState}
@@ -157,6 +180,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       const BLOCK_TYPES = [
+        {label: 'P', style:  'paragraph'},
         {label: 'H1', style: 'header-one'},
         {label: 'H2', style: 'header-two'},
         {label: 'H3', style: 'header-three'},

@@ -13,6 +13,7 @@
 
 'use strict';
 
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
 const DraftEditorContents = require('DraftEditorContents.react');
@@ -34,7 +35,6 @@ const nullthrows = require('nullthrows');
 const getScrollPosition = require('getScrollPosition');
 
 import type {BlockMap} from 'BlockMap';
-import type ContentBlock from 'ContentBlock';
 import type {DraftEditorModes} from 'DraftEditorModes';
 import type {DraftEditorProps} from 'DraftEditorProps';
 import type {DraftScrollPosition} from 'DraftScrollPosition';
@@ -55,15 +55,6 @@ const handlerMap = {
   'render': null,
 };
 
-type DefaultProps = {
-  blockRendererFn?: (block: ContentBlock) => ?Object;
-  blockStyleFn?: (type: number) => string,
-  keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string,
-  readOnly?: boolean,
-  spellCheck?: boolean,
-  stripPastedStyles?: boolean,
-};
-
 type State = {
   containerKey: number,
 };
@@ -73,11 +64,12 @@ type State = {
  * div, and provides a wide variety of useful function props for managing the
  * state of the editor. See `DraftEditorProps` for details.
  */
-class DraftEditor
-  extends React.Component<DefaultProps, DraftEditorProps, State> {
+class DraftEditor extends React.Component {
+  props: DraftEditorProps;
   state: State;
 
   static defaultProps = {
+    blockRenderMap: DefaultDraftBlockRenderMap,
     blockRendererFn: emptyFunction.thatReturnsNull,
     blockStyleFn: emptyFunction.thatReturns(''),
     keyBindingFn: getDefaultKeyBinding,
@@ -216,6 +208,7 @@ class DraftEditor
         />
       );
     }
+    return null;
   }
 
   render(): React.Element {
@@ -283,8 +276,9 @@ class DraftEditor
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
             <DraftEditorContents
-              blockRendererFn={nullthrows(this.props.blockRendererFn)}
-              blockStyleFn={nullthrows(this.props.blockStyleFn)}
+              blockRenderMap={this.props.blockRenderMap}
+              blockRendererFn={this.props.blockRendererFn}
+              blockStyleFn={this.props.blockStyleFn}
               customStyleMap={
                 {...DefaultDraftInlineStyle, ...this.props.customStyleMap}
               }

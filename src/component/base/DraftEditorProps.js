@@ -13,8 +13,9 @@
 'use strict';
 
 import type ContentBlock from 'ContentBlock';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDragType} from 'DraftDragType';
+import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
@@ -129,4 +130,9 @@ export type DraftEditorProps = {
   // Provide a map of inline style names corresponding to CSS style objects
   // that will be rendered for matching ranges.
   customStyleMap?: Object,
+
+  // Provide a map of block rendering configurations. Each block type maps to
+  // an element tag and am optional react element wrapper. This configuration
+  // is used for both rendering and paste processing.
+  blockRenderMap: DraftBlockRenderMap,
 };

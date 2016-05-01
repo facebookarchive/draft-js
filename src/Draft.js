@@ -17,6 +17,8 @@ const CharacterMetadata = require('CharacterMetadata');
 const CompositeDraftDecorator = require('CompositeDraftDecorator');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
+const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 const DraftEditor = require('DraftEditor.react');
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftModifier = require('DraftModifier');
@@ -54,6 +56,9 @@ const DraftPublic = {
   KeyBindingUtil,
   Modifier: DraftModifier,
   RichUtils: RichTextEditorUtil,
+
+  DefaultDraftBlockRenderMap,
+  DefaultDraftInlineStyle,
 
   convertFromHTML: convertFromHTMLToContentBlocks,
   convertFromRaw: convertFromRawToDraftState,

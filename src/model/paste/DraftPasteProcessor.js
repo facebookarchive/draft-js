@@ -20,7 +20,10 @@ const Immutable = require('immutable');
 const convertFromHTMLtoContentBlocks
   = require('convertFromHTMLToContentBlocks');
 const generateRandomKey = require('generateRandomKey');
+const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
+
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 const {
   List,
@@ -28,8 +31,15 @@ const {
 } = Immutable;
 
 const DraftPasteProcessor = {
-  processHTML(html: string): ?Array<ContentBlock> {
-    return convertFromHTMLtoContentBlocks(html);
+  processHTML(
+    html: string,
+    blockRenderMap?: DraftBlockRenderMap
+  ): ?Array<ContentBlock> {
+    return convertFromHTMLtoContentBlocks(
+      html,
+      getSafeBodyFromHTML,
+      blockRenderMap
+    );
   },
 
   processText(
