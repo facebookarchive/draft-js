@@ -89,7 +89,7 @@ describe('applyEntityToContentState', () => {
         Immutable.Repeat(entityKey, first.getLength()).toArray()
       );
       checkForCharacterList(last);
-      expect(getEntities(first)).toEqual(
+      expect(getEntities(last)).toEqual(
         Immutable.Repeat(entityKey, last.getLength()).toArray()
       );
     }

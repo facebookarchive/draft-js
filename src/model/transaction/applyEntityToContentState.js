@@ -25,29 +25,20 @@ function applyEntityToContentState(
   selectionState: SelectionState,
   entityKey: ?string
 ): ContentState {
-  var blockMap = contentState.getBlockMap();
-  var startKey = selectionState.getStartKey();
-  var startOffset = selectionState.getStartOffset();
-  var endKey = selectionState.getEndKey();
-  var endOffset = selectionState.getEndOffset();
+  const blockMap = contentState.getBlockMap();
+  const startKey = selectionState.getStartKey();
+  const startOffset = selectionState.getStartOffset();
+  const endKey = selectionState.getEndKey();
+  const endOffset = selectionState.getEndOffset();
 
-  var newBlocks = blockMap
+  const newBlocks = blockMap
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
     .toOrderedMap()
     .merge(Immutable.OrderedMap([[endKey, blockMap.get(endKey)]]))
     .map((block, blockKey) => {
-      var sliceStart;
-      var sliceEnd;
-
-      if (startKey === endKey) {
-        sliceStart = startOffset;
-        sliceEnd = endOffset;
-      } else {
-        sliceStart = blockKey === startKey ? startOffset : 0;
-        sliceEnd = blockKey === endKey ? 0 : block.getLength();
-      }
-
+      const sliceStart = blockKey === startKey ? startOffset : 0;
+      const sliceEnd = blockKey === endKey ? endOffset : block.getLength();
       return applyEntityToContentBlock(
         block,
         sliceStart,
