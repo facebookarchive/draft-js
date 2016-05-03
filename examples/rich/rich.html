@@ -46,19 +46,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         constructor(props) {
           super(props);
 
-          const customBlockRenderMap = Map({
-            'paragraph': {
-              element: 'p',
-            },
-            'unstyled': {
-              element: 'p',
-            },
-          });
-
           this.state = {
-            blockRenderMap: DefaultDraftBlockRenderMap.merge(
-              customBlockRenderMap,
-            ),
             editorState: EditorState.createEmpty(),
           };
 
@@ -123,7 +111,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               />
               <div className={className} onClick={this.focus}>
                 <Editor
-                  blockRenderMap={this.state.blockRenderMap}
                   blockStyleFn={getBlockStyle}
                   customStyleMap={styleMap}
                   editorState={editorState}
@@ -180,7 +167,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       const BLOCK_TYPES = [
-        {label: 'P', style:  'paragraph'},
         {label: 'H1', style: 'header-one'},
         {label: 'H2', style: 'header-two'},
         {label: 'H3', style: 'header-three'},
