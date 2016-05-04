@@ -4,6 +4,27 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.7.0 (May 3, 2016)
+
+### Added
+
+* `blockRenderMap`: A map that allows configuration for the DOM elements and
+wrapper components to render, keyed by block type
+  * Includes configurability of element-to-block-type paste processing
+
+### Changed
+
+* Update to Jest 11.0.2
+
+### Fixed
+
+* Change deletion behavior around `atomic` blocks to avoid DOM selection errors
+* Properly apply entities across multiple blocks in
+* Improve placeholder behavior for a11y
+* Properly remove and modify entity ranges during spellcheck changes
+* Match Chrome `<textarea>` behavior during <kbd>cmd</kbd>+<kbd>backspace</kbd>
+command at visual line-start
+
 ## 0.6.0 (April 27, 2016)
 
 ### Added
