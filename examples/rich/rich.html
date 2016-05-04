@@ -40,7 +40,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         DefaultDraftBlockRenderMap,
       } = Draft;
 
-      const {Map} = immutable;
+      const {Map} = Immutable;
 
       class RichEditorExample extends React.Component {
         constructor(props) {
@@ -57,7 +57,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
           this.state = {
             blockRenderMap: DefaultDraftBlockRenderMap.merge(
-              customBlockRenderMap,
+              customBlockRendering,
             ),
             editorState: EditorState.createEmpty(),
           };
