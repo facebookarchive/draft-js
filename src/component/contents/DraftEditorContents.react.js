@@ -140,16 +140,14 @@ class DraftEditorContents extends React.Component {
         tree: editorState.getBlockTree(key),
       };
 
-      // Block render map must have a configuration specified for this
-      // block type.
-      const configForType = nullthrows(blockRenderMap.get(blockType));
+      const configForType = blockRenderMap.get(blockType);
 
       wrapperTemplate = configForType.wrapper;
 
       const useNewWrapper = wrapperTemplate !== currentWrapperTemplate;
 
       const Element = (
-        blockRenderMap.get(blockType).element ||
+        configForType.element ||
         blockRenderMap.get('unstyled').element
       );
 
