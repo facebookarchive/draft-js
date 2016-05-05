@@ -426,7 +426,7 @@ function convertFromHTMLtoContentBlocks(
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
 ): ?Array<ContentBlock> {
-  // Be ABSOLUTELY SURE that the dom builder you pass hare won't execute
+  // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
