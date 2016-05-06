@@ -58,7 +58,20 @@ var inlineTags = {
   strike: 'STRIKETHROUGH',
   strong: 'BOLD',
   u: 'UNDERLINE',
+/**
+ *
+ *
+ * @returns {6 +60,14 @@ var inlineTags = {}
+ */
 };
+
+var anchorAttr = [
+  'className',
+  'href',
+  'rel',
+  'target',
+  'title'
+];
 
 var lastBlock;
 
@@ -366,12 +379,23 @@ function genFragment(
   }
 
   var entityId: ?string = null;
-  var href: ?string = null;
 
   while (child) {
     if (nodeName === 'a' && child.href && hasValidLinkText(child)) {
-      href = new URI(child.href).toString();
-      entityId = DraftEntity.create('LINK', 'MUTABLE', {url: href});
+      // had to cast to Object due to https://github.com/facebook/flow/issues/1730
+      const anchor:Object = child;
+
+      var entityConfig = {};
+
+      anchorAttr.forEach(attr => {
+        if (anchor[attr]) {
+          entityConfig[attr] = anchor[attr];
+        }
+      });
+
+      entityConfig.url = new URI(entityConfig.href).toString();
+
+      entityId = DraftEntity.create('LINK', 'MUTABLE', entityConfig);
     } else {
       entityId = undefined;
     }
