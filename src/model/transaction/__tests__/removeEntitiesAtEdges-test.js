@@ -13,7 +13,6 @@
 
 jest
   .disableAutomock()
-  .mock('DraftEntity');
 
 var DraftEntity = require('DraftEntity');
 var Immutable = require('immutable');
@@ -56,7 +55,7 @@ describe('removeEntitiesAtEdges', () => {
   }
 
   function setEntityMutability(mutability) {
-    DraftEntity.get.mockReturnValue({
+    contentState.getEntityMap().get = () => ({
       getMutability: () => mutability,
     });
   }

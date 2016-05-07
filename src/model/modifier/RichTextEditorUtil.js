@@ -13,7 +13,6 @@
 
 'use strict';
 
-const DraftEntity = require('DraftEntity');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
@@ -31,13 +30,15 @@ const RichTextEditorUtil = {
     editorState: EditorState
   ): boolean {
     var selection = editorState.getSelection();
-    return editorState.getCurrentContent()
+    const contentState = editorState.getCurrentContent();
+    const entityMap = contentState.getEntityMap();
+    return contentState
       .getBlockForKey(selection.getAnchorKey())
       .getCharacterList()
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
         var entity = v.getEntity();
-        return !!entity && DraftEntity.get(entity).getType() === 'LINK';
+        return !!entity && entityMap.get(entity).getType() === 'LINK';
       });
   },
 

@@ -18,6 +18,7 @@ var emptyFunction = require('emptyFunction');
 var findRangesImmutable = require('findRangesImmutable');
 
 import type CharacterMetadata from 'CharacterMetadata';
+import type ContentState from 'ContentState';
 import type ContentBlock from 'ContentBlock';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 
@@ -60,6 +61,7 @@ var BlockTree = {
    * Generate a block tree for a given ContentBlock/decorator pair.
    */
   generate: function(
+    contentState: ContentState,
     block: ContentBlock,
     decorator: ?DraftDecoratorType
   ): List<DecoratorRange> {
@@ -79,7 +81,7 @@ var BlockTree = {
 
     var leafSets = [];
     var decorations = decorator ?
-      decorator.getDecorations(block) :
+      decorator.getDecorations(contentState, block) :
       List(Repeat(null, textLength));
 
     var chars = block.getCharacterList();

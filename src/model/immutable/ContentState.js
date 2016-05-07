@@ -23,14 +23,17 @@ const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 import type {BlockMap} from 'BlockMap';
+import type {EntityMap} from 'EntityMap';
 
-const {List, Record, Repeat} = Immutable;
+const {List, Record, Repeat, OrderedMap} = Immutable;
 
 const defaultRecord: {
-  blockMap: ?BlockMap,
-  selectionBefore: ?SelectionState,
-  selectionAfter: ?SelectionState,
+  entityMap: ?EntityMap;
+  blockMap: ?BlockMap;
+  selectionBefore: ?SelectionState;
+  selectionAfter: ?SelectionState;
 } = {
+  entityMap: null,
   blockMap: null,
   selectionBefore: null,
   selectionAfter: null,
@@ -39,6 +42,11 @@ const defaultRecord: {
 const ContentStateRecord = Record(defaultRecord);
 
 class ContentState extends ContentStateRecord {
+
+  getEntityMap(): EntityMap {
+    return this.get('entityMap');
+  }
+
   getBlockMap(): BlockMap {
     return this.get('blockMap');
   }
@@ -108,6 +116,10 @@ class ContentState extends ContentStateRecord {
       .join(delimiter || '\n');
   }
 
+  getLastCreatedEntityKey() {
+    return this.getEntityMap().keySeq().last();
+  }
+
   hasText(): boolean {
     var blockMap = this.getBlockMap();
     return (
@@ -123,6 +135,7 @@ class ContentState extends ContentStateRecord {
     var selectionState = SelectionState.createEmpty(blockMap.first().getKey());
     return new ContentState({
       blockMap,
+      entityMap: OrderedMap(),
       selectionBefore: selectionState,
       selectionAfter: selectionState,
     });

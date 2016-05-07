@@ -11,18 +11,16 @@
  * @flow
  */
 
-var DraftEntityInstance = require('DraftEntityInstance');
-var Immutable = require('immutable');
+const createEntityInContentState = require('createEntityInContentState');
+const addEntityToContentState = require('addEntityToContentState');
 
-var invariant = require('invariant');
+// var invariant = require('invariant');
 
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
+import type DraftEntityInstance from 'DraftEntityInstance';
+import type ContentState from 'ContentState';
 
-var {Map} = Immutable;
-
-var instances: Map<string, DraftEntityInstance> = Map();
-var instanceKey = 0;
 
 /**
  * A "document entity" is an object containing metadata associated with a
@@ -37,7 +35,8 @@ var instanceKey = 0;
  * generated via DraftEntity.create() and used to obtain entity metadata
  * via DraftEntity.get().
  */
-var DraftEntity = {
+const DraftEntity = {
+
   /**
    * Create a DraftEntityInstance and store it for later retrieval.
    *
@@ -46,32 +45,24 @@ var DraftEntity = {
    * retrieving data about the entity at render time.
    */
   create: function(
+    contentState: ContentState,
     type: DraftEntityType,
     mutability: DraftEntityMutability,
     data?: Object
-  ): string {
-    return DraftEntity.add(
-      new DraftEntityInstance({type, mutability, data: data || {}})
-    );
+  ): ContentState {
+    return createEntityInContentState(contentState, type, mutability, data);
   },
 
   /**
    * Add an existing DraftEntityInstance to the DraftEntity map. This is
    * useful when restoring instances from the server.
    */
-  add: function(instance: DraftEntityInstance): string {
-    var key = '' + (++instanceKey);
-    instances = instances.set(key, instance);
-    return key;
+  add: function(contentState: ContentState, instance: DraftEntityInstance): ContentState {
+    return addEntityToContentState(contentState, instance);
   },
 
-  /**
-   * Retrieve the entity corresponding to the supplied key string.
-   */
-  get: function(key: string): DraftEntityInstance {
-    var instance = instances.get(key);
-    invariant(!!instance, 'Unknown DraftEntity key.');
-    return instance;
+  get: function(contentState: ContentState, key: String): DraftEntityInstance {
+    return contentState.getEntityMap().get(key);
   },
 
   /**
@@ -79,29 +70,29 @@ var DraftEntity = {
    * instance, this method will merge your data updates and return a new
    * instance.
    */
-  mergeData: function(
-    key: string,
-    toMerge: {[key: string]: any}
-  ): DraftEntityInstance {
-    var instance = DraftEntity.get(key);
-    var newData = {...instance.getData(), ...toMerge};
-    var newInstance = instance.set('data', newData);
-    instances = instances.set(key, newInstance);
-    return newInstance;
-  },
+  // mergeData: function(
+  //   key: string,
+  //   toMerge: {[key: string]: any}
+  // ): DraftEntityInstance {
+  //   var instance = DraftEntity.get(key);
+  //   var newData = {...instance.getData(), ...toMerge};
+  //   var newInstance = instance.set('data', newData);
+  //   instances = instances.set(key, newInstance);
+  //   return newInstance;
+  // },
 
   /**
    * Completely replace the data for a given instance.
    */
-  replaceData: function(
-    key: string,
-    newData: {[key: string]: any}
-  ): DraftEntityInstance {
-    const instance = DraftEntity.get(key);
-    const newInstance = instance.set('data', newData);
-    instances = instances.set(key, newInstance);
-    return newInstance;
-  },
+  // replaceData: function(
+  //   key: string,
+  //   newData: {[key: string]: any}
+  // ): DraftEntityInstance {
+  //   const instance = DraftEntity.get(key);
+  //   const newInstance = instance.set('data', newData);
+  //   instances = instances.set(key, newInstance);
+  //   return newInstance;
+  // },
 };
 
 module.exports = DraftEntity;

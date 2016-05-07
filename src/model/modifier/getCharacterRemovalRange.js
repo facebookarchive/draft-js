@@ -13,7 +13,6 @@
 
 'use strict';
 
-var DraftEntity = require('DraftEntity');
 var DraftEntitySegments = require('DraftEntitySegments');
 
 var getRangesForDraftEntity = require('getRangesForDraftEntity');
@@ -22,6 +21,7 @@ var invariant = require('invariant');
 import type ContentBlock from 'ContentBlock';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type SelectionState from 'SelectionState';
+import type {EntityMap} from 'EntityMap';
 
 /**
  * Given a SelectionState and a removal direction, determine the entire range
@@ -33,6 +33,7 @@ import type SelectionState from 'SelectionState';
  * will be adjusted accordingly.
  */
 function getCharacterRemovalRange(
+  entityMap: EntityMap,
   block: ContentBlock,
   selectionState: SelectionState,
   direction: DraftRemovalDirection
@@ -44,7 +45,7 @@ function getCharacterRemovalRange(
     return selectionState;
   }
 
-  var entity = DraftEntity.get(entityKey);
+  var entity = entityMap.get(entityKey);
   var mutability = entity.getMutability();
 
   // `MUTABLE` entities can just have the specified range of text removed

@@ -14,24 +14,27 @@
 jest.disableAutomock();
 
 var DraftEntity = require('DraftEntity');
+const ContentState = require('ContentState');
 
 describe('DraftEntity', () => {
+  let contentState;
   beforeEach(() => {
+    contentState = ContentState.createFromText('');
     jest.resetModuleRegistry();
   });
 
   function createLink() {
-    return DraftEntity.create('LINK', 'MUTABLE', {uri: 'zombo.com'});
+    return DraftEntity.create(contentState, 'LINK', 'MUTABLE', {uri: 'zombo.com'});
   }
 
   it('must create instances', () => {
-    var key = createLink();
-    expect(typeof key).toBe('string');
+    var contentState = createLink();
+    expect(typeof contentState.getLastCreatedEntityKey()).toBe('string');
   });
 
   it('must retrieve an instance given a key', () => {
-    var key = createLink();
-    var retrieved = DraftEntity.get(key);
+    var contentState = createLink();
+    var retrieved = DraftEntity.get(contentState, contentState.getLastCreatedEntityKey());
     expect(retrieved.getType()).toBe('LINK');
     expect(retrieved.getMutability()).toBe('MUTABLE');
     expect(retrieved.getData()).toEqual({uri: 'zombo.com'});
