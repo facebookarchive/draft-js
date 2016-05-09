@@ -100,6 +100,7 @@ function insertFragmentIntoContentState(
       var modifiedHead = block.merge({
         text: headText + appendToHead.getText(),
         characterList: headCharacters.concat(appendToHead.getCharacterList()),
+        type: headText ? block.getType() : appendToHead.getType(),
       });
 
       newBlockArr.push(modifiedHead);
