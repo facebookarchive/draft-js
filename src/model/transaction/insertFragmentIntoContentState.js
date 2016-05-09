@@ -100,10 +100,11 @@ function insertFragmentIntoContentState(
       var modifiedHead = block.merge({
         text: headText + appendToHead.getText(),
         characterList: headCharacters.concat(appendToHead.getCharacterList()),
-        type: (!text.length || targetOffset === 0) ? appendToHead.getType() : block.getType(),
+        type: headText ? block.getType() : appendToHead.getType(),
       });
 
       newBlockArr.push(modifiedHead);
+
       // Insert fragment blocks after the head and before the tail.
       fragment.slice(1, fragmentSize - 1).forEach(
         fragmentBlock => {
