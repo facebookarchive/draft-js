@@ -139,7 +139,7 @@ class DraftEditorLeaf extends React.Component {
         map.textDecoration !== style.textDecoration
       ) {
         mergedStyles.textDecoration =
-          [map.textDecoration, style.textDecoration].join(' ');
+          [map.textDecoration, style.textDecoration].join(' ').trim();
       }
 
       return Object.assign(map, style, mergedStyles);
