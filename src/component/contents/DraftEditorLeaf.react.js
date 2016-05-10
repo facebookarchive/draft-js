@@ -138,6 +138,7 @@ class DraftEditorLeaf extends React.Component {
         style !== undefined &&
         map.textDecoration !== style.textDecoration
       ) {
+        // .trim() is necessary for IE9, IE10, Edge
         mergedStyles.textDecoration =
           [map.textDecoration, style.textDecoration].join(' ').trim();
       }
