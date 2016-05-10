@@ -20,10 +20,12 @@ var findRangesImmutable = require('findRangesImmutable');
 import type CharacterMetadata from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {BlockMap} from 'BlockMap';
 
 var {
   List,
   OrderedSet,
+  OrderedMap,
   Record,
 } = Immutable;
 
@@ -68,6 +70,13 @@ class ContentBlock extends ContentBlockRecord {
 
   getDepth(): number {
     return this.get('depth');
+  }
+
+  getParentKey(): string {
+    var key = this.getKey();
+    var parts = key.split('/');
+
+    return parts.slice(0, -1).join('/');
   }
 
   getInlineStyleAt(offset: number): DraftInlineStyle {

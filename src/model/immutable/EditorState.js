@@ -14,6 +14,7 @@
 
 var BlockTree = require('BlockTree');
 var ContentState = require('ContentState');
+var ContentBlock = require('ContentBlock');
 var EditorBidiService = require('EditorBidiService');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
@@ -21,11 +22,12 @@ var SelectionState = require('SelectionState');
 import type {BlockMap} from 'BlockMap';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {List, OrderedMap} from 'immutable';
+import type {List} from 'immutable';
 import type {EditorChangeType} from 'EditorChangeType';
 
 var {
   OrderedSet,
+  OrderedMap,
   Record,
   Stack,
 } = Immutable;

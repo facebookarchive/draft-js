@@ -56,6 +56,17 @@ class ContentState extends ContentStateRecord {
     return block;
   }
 
+  getFirstLevelBlocks(): BlockMap {
+    return this.getBlockChildren('');
+  }
+
+  getBlockChildren(key: string): BlockMap {
+    return this.getBlockMap()
+    .filter(function(block) {
+      return block.getParentKey() === key;
+    });
+  }
+
   getKeyBefore(key: string): ?string {
     return this.getBlockMap()
       .reverse()

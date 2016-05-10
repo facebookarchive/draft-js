@@ -23,6 +23,42 @@ var generateRandomKey = require('generateRandomKey');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
 
+function convertBlocksFromRaw(
+  inputBlocks: Array,
+  fromStorageToLocal: Object,
+  parentKey: ?string
+) : Array<ContentBlock> {
+  return inputBlocks.reduce(
+    (result, block) => {
+      var {key, type, text, depth, inlineStyleRanges, entityRanges, blocks} = block;
+      key = key || generateRandomKey();
+      depth = depth || 0;
+      inlineStyleRanges = inlineStyleRanges || [];
+      entityRanges = entityRanges || [];
+      blocks = blocks || [];
+
+      key = (parentKey || '') + key;
+
+      var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
+
+      // Translate entity range keys to the DraftEntity map.
+      var filteredEntityRanges = entityRanges
+        .filter(range => fromStorageToLocal.hasOwnProperty(range.key))
+        .map(range => {
+          return {...range, key: fromStorageToLocal[range.key]};
+        });
+
+      var entities = decodeEntityRanges(text, filteredEntityRanges);
+      var characterList = createCharacterList(inlineStyles, entities);
+
+      result = result.concat(convertBlocksFromRaw(blocks, fromStorageToLocal, key + '/'));
+      result.push(new ContentBlock({key, type, text, depth, characterList}));
+
+      return result;
+    }, []
+  );
+}
+
 function convertFromRawToDraftState(
   rawState: RawDraftContentState
 ): ContentState {
@@ -38,29 +74,7 @@ function convertFromRawToDraftState(
     }
   );
 
-  var contentBlocks = blocks.map(
-    block => {
-      var {key, type, text, depth, inlineStyleRanges, entityRanges} = block;
-      key = key || generateRandomKey();
-      depth = depth || 0;
-      inlineStyleRanges = inlineStyleRanges || [];
-      entityRanges = entityRanges || [];
-
-      var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
-
-      // Translate entity range keys to the DraftEntity map.
-      var filteredEntityRanges = entityRanges
-        .filter(range => fromStorageToLocal.hasOwnProperty(range.key))
-        .map(range => {
-          return {...range, key: fromStorageToLocal[range.key]};
-        });
-
-      var entities = decodeEntityRanges(text, filteredEntityRanges);
-      var characterList = createCharacterList(inlineStyles, entities);
-
-      return new ContentBlock({key, type, text, depth, characterList});
-    }
-  );
+  var contentBlocks = convertBlocksFromRaw(blocks, fromStorageToLocal);
 
   return ContentState.createFromBlockArray(contentBlocks);
 }
