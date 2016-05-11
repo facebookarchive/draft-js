@@ -57,7 +57,7 @@ One or more characters is being inserted at a selection state.
 #### `insert-fragment`
 
 A "fragment" of content (i.e. a
-[BlockMap](https://github.com/facebook/draft-js/blob/master/src/model/immutable/BlockMap.js)
+[BlockMap](https://github.com/facebook/draft-js/blob/master/src/model/immutable/BlockMap.js))
 is being inserted at a selection state.
 
 #### `redo`
