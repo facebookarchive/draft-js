@@ -3,7 +3,7 @@ id: advanced-topics-block-styling
 title: Block Styling
 layout: docs
 category: Advanced Topics
-next: advanced-topics-block-components
+next: advanced-topics-custom-block-render-map
 permalink: docs/advanced-topics-block-styling.html
 ---
 
