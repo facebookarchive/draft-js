@@ -20,13 +20,13 @@ by matching the Draft block render map with the matched tag.
 
 | HTML element    | Draft block type                        |
 | --------------- | --------------------------------------- |
-| `</h1>`         | header-one                              |
-| `</h2>`         | header-two                              |
-| `</h3>`         | header-three                            |
-| `</h4>`         | header-four                             |
-| `</h5>`         | header-five                             |
-| `</h6>`         | header-six                              |
-| `</h6>`         | header-six                              |
+| `<h1/>`         | header-one                              |
+| `<h2/>`         | header-two                              |
+| `<h3/>`         | header-three                            |
+| `<h4/>`         | header-four                             |
+| `<h5/>`         | header-five                             |
+| `<h6/>`         | header-six                              |
+| `<h6/>`         | header-six                              |
 | `<blockquote/>` | blockquote                              |
 | `<pre/>`        | code-block                              |
 | `<figure/>`     | atomic                                  |
