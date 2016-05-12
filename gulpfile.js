@@ -19,6 +19,7 @@ var gulp = require('gulp');
 var gulpUtil = require('gulp-util');
 var header = require('gulp-header');
 var packageData = require('./package.json');
+var rename = require('gulp-rename');
 var runSequence = require('run-sequence');
 var through = require('through2');
 var webpackStream = require('webpack-stream');
@@ -45,6 +46,15 @@ var babelOptsJS = {
   presets: [
     fbjsConfigurePreset({
       stripDEV: true,
+      rewriteModules: {map: moduleMap},
+    }),
+  ]
+};
+
+var babelOptsFlow = {
+  presets: [
+    fbjsConfigurePreset({
+      target: 'flow',
       rewriteModules: {map: moduleMap},
     }),
   ]
@@ -115,6 +125,15 @@ gulp.task('modules', function() {
     .src(paths.src)
     .pipe(babel(babelOptsJS))
     .pipe(flatten())
+    .pipe(gulp.dest(paths.lib));
+});
+
+gulp.task('flow', function() {
+  return gulp
+    .src(paths.src)
+    .pipe(babel(babelOptsFlow))
+    .pipe(flatten())
+    .pipe(rename({extname: '.js.flow'}))
     .pipe(gulp.dest(paths.lib));
 });
 
@@ -198,5 +217,5 @@ gulp.task('dev', function() {
 });
 
 gulp.task('default', function(cb) {
-  runSequence('check-dependencies', 'clean', 'modules', ['dist', 'dist:min'], cb);
+  runSequence('check-dependencies', 'clean', ['modules', 'flow'], ['dist', 'dist:min'], cb);
 });
