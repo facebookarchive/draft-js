@@ -23,9 +23,10 @@ var runSequence = require('run-sequence');
 var through = require('through2');
 var webpackStream = require('webpack-stream');
 
-var babelOpts = require('./scripts/babel/default-options');
-var babelPluginDEV = require('fbjs-scripts/babel/dev-expression');
+var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
 var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
+
+var moduleMap = require('./scripts/module-map');
 
 var paths = {
   dist: 'dist',
@@ -40,9 +41,14 @@ var paths = {
   ],
 };
 
-// Ensure that we use another plugin that isn't specified in the default Babel
-// options, converting __DEV__.
-babelOpts.plugins.push(babelPluginDEV);
+var babelOptsJS = {
+  presets: [
+    fbjsConfigurePreset({
+      stripDEV: true,
+      rewriteModules: {map: moduleMap},
+    }),
+  ]
+};
 
 var COPYRIGHT_HEADER = `/**
  * Draft v<%= version %>
@@ -107,7 +113,7 @@ gulp.task('clean', function() {
 gulp.task('modules', function() {
   return gulp
     .src(paths.src)
-    .pipe(babel(babelOpts))
+    .pipe(babel(babelOptsJS))
     .pipe(flatten())
     .pipe(gulp.dest(paths.lib));
 });
