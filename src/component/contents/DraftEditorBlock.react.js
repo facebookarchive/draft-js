@@ -57,7 +57,11 @@ type Props = {
  */
 class DraftEditorBlock extends React.Component {
   shouldComponentUpdate(nextProps: Props): boolean {
+    const nestedBlocks = this.props.getBlockChildren(this.props.block.getKey());
+    const hasNestedBlocks = nestedBlocks && nestedBlocks.size;
+
     return (
+      hasNestedBlocks ||
       this.props.block !== nextProps.block ||
       this.props.tree !== nextProps.tree ||
       this.props.direction !== nextProps.direction ||

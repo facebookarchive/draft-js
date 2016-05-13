@@ -17,7 +17,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <meta charset="utf-8" />
     <title>Draft • Tree Editor</title>
     <link rel="stylesheet" href="../../dist/Draft.css" />
+    <link rel="stylesheet" href="tree.css" />
     <style>
+      #target { width: 600px; }
       .public-DraftStyleDefault-block {
         padding-left: 20px;
       }
@@ -34,7 +36,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <script type="text/babel">
       'use strict';
 
-      const {Editor, EditorState, ContentState, convertFromRaw} = Draft;
+      const {
+        ContentState,
+        DefaultDraftBlockRenderMap,
+        Editor,
+        EditorState,
+        RichUtils,
+        convertFromRaw
+      } = Draft;
 
       console.log('starting');
       var baseContent = convertFromRaw({
@@ -65,32 +74,190 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 text: 'Awesome'
               }
             ]
+          },
+          {
+            type: 'table',
+            text: ' ',
+            blocks: [
+              {
+                type: 'row',
+                text: ' ',
+                blocks: [
+                  {
+                    type: 'cell',
+                    text: ' ',
+                    blocks: [
+                      {
+                        type: 'unstyled',
+                        text: 'nested cell 1',
+                        inlineStyleRanges: [
+                          {
+                            offset: 8,
+                            length: 4,
+                            style: 'BOLD'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    type: 'cell',
+                    text: ' ',
+                    blocks: [
+                      {
+                        type: 'unstyled',
+                        text: 'nested cell 2',
+                        inlineStyleRanges: [
+                          {
+                            offset: 8,
+                            length: 4,
+                            style: 'BOLD'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                ]
+              },
+              {
+                type: 'row',
+                text: ' ',
+                blocks: [
+                  {
+                    type: 'cell',
+                    text: ' ',
+                    blocks: [
+                      {
+                        type: 'unstyled',
+                        text: 'nested cell 3',
+                        inlineStyleRanges: [
+                          {
+                            offset: 8,
+                            length: 4,
+                            style: 'BOLD'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    type: 'cell',
+                    text: ' ',
+                    blocks: [
+                      {
+                        type: 'unstyled',
+                        text: 'nested cell 4',
+                        inlineStyleRanges: [
+                          {
+                            offset: 8,
+                            length: 4,
+                            style: 'BOLD'
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                ]
+              }
+            ]
           }
         ],
         entityMap: {}
       });
       console.log('baseContent is', baseContent.toJS());
 
-
       class TreeEditorExample extends React.Component {
         constructor(props) {
           super(props);
-          this.state = {editorState: EditorState.createWithContent(baseContent)};
+
+          this.state = {
+            editorState: EditorState.createWithContent(baseContent),
+						blockRenderMap: DefaultDraftBlockRenderMap.merge(Immutable.Map({
+                'table': {
+										element: 'table',
+                },
+                'cell': {
+                    element: 'td',
+                },
+                'row': {
+                    element: 'tr',
+                    wrapper: <tbody />
+                }
+            })),
+
+          };
+
+          this.handleKeyCommand = (command) => this._handleKeyCommand(command);
+          this.toggleBlockType = (type) => this._toggleBlockType(type);
+          this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
 
           this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
-          this.logState = () => console.log(this.state.editorState.toJS());
+          this.logState = () => console.log(JSON.stringify(this.state.editorState.toJS(), null, 2));
+        }
+
+        _handleKeyCommand(command) {
+          const {editorState} = this.state;
+          const newState = RichUtils.handleKeyCommand(editorState, command);
+          if (newState) {
+            this.onChange(newState);
+            return true;
+          }
+          return false;
+        }
+
+        _toggleBlockType(blockType) {
+          this.onChange(
+            RichUtils.toggleBlockType(
+              this.state.editorState,
+              blockType
+            )
+          );
+        }
+
+        _toggleInlineStyle(inlineStyle) {
+          this.onChange(
+            RichUtils.toggleInlineStyle(
+              this.state.editorState,
+              inlineStyle
+            )
+          );
         }
 
         render() {
+          const {editorState, blockRenderMap} = this.state;
+
+          // If the user changes block type before entering any text, we can
+          // either style the placeholder or hide it. Let's just hide it now.
+          let className = 'RichEditor-editor';
+          var contentState = editorState.getCurrentContent();
+          if (!contentState.hasText()) {
+            if (contentState.getBlockMap().first().getType() !== 'unstyled') {
+              className += ' RichEditor-hidePlaceholder';
+            }
+          }
+
           return (
-            <div style={styles.root}>
-              <div style={styles.editor} onClick={this.focus}>
+            <div className="RichEditor-root">
+              <BlockStyleControls
+                editorState={editorState}
+                onToggle={this.toggleBlockType}
+              />
+              <InlineStyleControls
+                editorState={editorState}
+                onToggle={this.toggleInlineStyle}
+              />
+              <div className={className} onClick={this.focus}>
                 <Editor
-                  editorState={this.state.editorState}
+									blockRenderMap={blockRenderMap}
+                  blockStyleFn={getBlockStyle}
+                  customStyleMap={styleMap}
+                  editorState={editorState}
+                  handleKeyCommand={this.handleKeyCommand}
                   onChange={this.onChange}
-                  placeholder="Enter some text..."
+                  placeholder="Tell a story..."
                   ref="editor"
+                  spellCheck={true}
                 />
               </div>
               <input
@@ -104,22 +271,111 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
       }
 
+      // Custom overrides for "code" style.
+      const styleMap = {
+        CODE: {
+          backgroundColor: 'rgba(0, 0, 0, 0.05)',
+          fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
+          fontSize: 16,
+          padding: 2,
+        },
+      };
+
+      function getBlockStyle(block) {
+        switch (block.getType()) {
+          case 'blockquote': return 'RichEditor-blockquote';
+          default: return null;
+        }
+      }
+
+      class StyleButton extends React.Component {
+        constructor() {
+          super();
+          this.onToggle = (e) => {
+            e.preventDefault();
+            this.props.onToggle(this.props.style);
+          };
+        }
+
+        render() {
+          let className = 'RichEditor-styleButton';
+          if (this.props.active) {
+            className += ' RichEditor-activeButton';
+          }
+
+          return (
+            <span className={className} onMouseDown={this.onToggle}>
+              {this.props.label}
+            </span>
+          );
+        }
+      }
+
+      const BLOCK_TYPES = [
+        {label: 'H1', style: 'header-one'},
+        {label: 'H2', style: 'header-two'},
+        {label: 'H3', style: 'header-three'},
+        {label: 'H4', style: 'header-four'},
+        {label: 'H5', style: 'header-five'},
+        {label: 'H6', style: 'header-six'},
+        {label: 'Blockquote', style: 'blockquote'},
+        {label: 'UL', style: 'unordered-list-item'},
+        {label: 'OL', style: 'ordered-list-item'},
+        {label: 'Code Block', style: 'code-block'},
+      ];
+
+      const BlockStyleControls = (props) => {
+        const {editorState} = props;
+        const selection = editorState.getSelection();
+        const blockType = editorState
+          .getCurrentContent()
+          .getBlockForKey(selection.getStartKey())
+          .getType();
+
+        return (
+          <div className="RichEditor-controls">
+            {BLOCK_TYPES.map((type) =>
+              <StyleButton
+                key={type.label}
+                active={type.style === blockType}
+                label={type.label}
+                onToggle={props.onToggle}
+                style={type.style}
+              />
+            )}
+          </div>
+        );
+      };
+
+      var INLINE_STYLES = [
+        {label: 'Bold', style: 'BOLD'},
+        {label: 'Italic', style: 'ITALIC'},
+        {label: 'Underline', style: 'UNDERLINE'},
+        {label: 'Monospace', style: 'CODE'},
+      ];
+
+      const InlineStyleControls = (props) => {
+        var currentStyle = props.editorState.getCurrentInlineStyle();
+        return (
+          <div className="RichEditor-controls">
+            {INLINE_STYLES.map(type =>
+              <StyleButton
+                key={type.label}
+                active={currentStyle.has(type.style)}
+                label={type.label}
+                onToggle={props.onToggle}
+                style={type.style}
+              />
+            )}
+          </div>
+        );
+      };
+
       const styles = {
-        root: {
-          fontFamily: '\'Helvetica\', sans-serif',
-          padding: 20,
-          width: 600,
-        },
-        editor: {
-          border: '1px solid #ccc',
-          cursor: 'text',
-          minHeight: 80,
-          padding: 10,
-        },
         button: {
           marginTop: 10,
           textAlign: 'center',
-        },
+        }
       };
 
       ReactDOM.render(
