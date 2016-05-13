@@ -24,7 +24,7 @@ var generateRandomKey = require('generateRandomKey');
 import type {RawDraftContentState} from 'RawDraftContentState';
 
 function convertBlocksFromRaw(
-  inputBlocks: Array,
+  inputBlocks: Array<ContentBlock>,
   fromStorageToLocal: Object,
   parentKey: ?string
 ) : Array<ContentBlock> {

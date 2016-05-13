@@ -27,6 +27,7 @@ const DraftEntityInstance = require('DraftEntityInstance');
 const EditorState = require('EditorState');
 const KeyBindingUtil = require('KeyBindingUtil');
 const RichTextEditorUtil = require('RichTextEditorUtil');
+const NestedTextEditorUtil = require('NestedTextEditorUtil');
 const SelectionState = require('SelectionState');
 
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
@@ -56,6 +57,7 @@ const DraftPublic = {
   KeyBindingUtil,
   Modifier: DraftModifier,
   RichUtils: RichTextEditorUtil,
+  NestedUtils: NestedTextEditorUtil,
 
   DefaultDraftBlockRenderMap,
   DefaultDraftInlineStyle,

@@ -42,26 +42,34 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         Editor,
         EditorState,
         RichUtils,
-        convertFromRaw
+        NestedUtils,
+        convertFromRaw,
+        getDefaultKeyBinding,
+        KeyBindingUtil
       } = Draft;
+      const {hasCommandModifier} = KeyBindingUtil;
 
       console.log('starting');
       var baseContent = convertFromRaw({
         blocks: [
           {
-            type: 'unstyled',
+              type: 'header-one',
+              text: 'Example with tree data structure'
+          },
+          {
+            type: 'blockquote',
             text: 'Hello World',
             blocks: [
               {
-                type: 'unstyled',
-                text: 'Cool',
+                type: 'unordered-list-item',
+                text: 'A first item of a list in a blockquote',
                 blocks: [
                   {
                     type: 'unstyled',
-                    text: 'Another deep block',
+                    text: 'A paragraph in the list',
                     inlineStyleRanges: [
                       {
-                        offset: 8,
+                        offset: 19,
                         length: 4,
                         style: 'BOLD'
                       }
@@ -70,8 +78,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 ]
               },
               {
-                type: 'unstyled',
-                text: 'Awesome'
+                type: 'unordered-list-item',
+                text: 'A second item of the list'
               }
             ]
           },
@@ -125,7 +133,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 blocks: [
                   {
                     type: 'cell',
-                    text: ' ',
+                    text: '',
                     blocks: [
                       {
                         type: 'unstyled',
@@ -172,9 +180,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
           this.state = {
             editorState: EditorState.createWithContent(baseContent),
-						blockRenderMap: DefaultDraftBlockRenderMap.merge(Immutable.Map({
+            blockRenderMap: DefaultDraftBlockRenderMap.merge(Immutable.Map({
                 'table': {
-										element: 'table',
+                  element: 'table',
                 },
                 'cell': {
                     element: 'td',
@@ -188,6 +196,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           };
 
           this.handleKeyCommand = (command) => this._handleKeyCommand(command);
+          this.keyBindingFn = (e) => this._keyBindingFn(e);
           this.toggleBlockType = (type) => this._toggleBlockType(type);
           this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
 
@@ -198,12 +207,26 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
         _handleKeyCommand(command) {
           const {editorState} = this.state;
-          const newState = RichUtils.handleKeyCommand(editorState, command);
+
+          var newState = NestedUtils.handleKeyCommand(editorState, command);
+          if (newState) {
+            this.onChange(newState);
+            return true;
+          }
+
+          newState = RichUtils.handleKeyCommand(editorState, command);
           if (newState) {
             this.onChange(newState);
             return true;
           }
           return false;
+        }
+
+        _keyBindingFn(e) {
+          if (e.keyCode === 13 /* `Enter` key */ && e.shiftKey) {
+            return 'split-nested-block';
+          }
+          return getDefaultKeyBinding(e);
         }
 
         _toggleBlockType(blockType) {
@@ -249,11 +272,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               />
               <div className={className} onClick={this.focus}>
                 <Editor
-									blockRenderMap={blockRenderMap}
+                  blockRenderMap={blockRenderMap}
                   blockStyleFn={getBlockStyle}
                   customStyleMap={styleMap}
                   editorState={editorState}
                   handleKeyCommand={this.handleKeyCommand}
+                  keyBindingFn={this.keyBindingFn}
                   onChange={this.onChange}
                   placeholder="Tell a story..."
                   ref="editor"
