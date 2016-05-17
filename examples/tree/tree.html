@@ -44,12 +44,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         RichUtils,
         NestedUtils,
         convertFromRaw,
+        convertToRaw,
         getDefaultKeyBinding,
         KeyBindingUtil
       } = Draft;
       const {hasCommandModifier} = KeyBindingUtil;
-
-      console.log('starting');
 
       const blockRenderMap = Immutable.Map(DefaultDraftBlockRenderMap.keySeq().toArray().reduce((o, v, i) => {
         // we are manually enabling all default draft blocks to support nesting for this example
@@ -214,7 +213,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
           this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
-          this.logState = () => console.log(JSON.stringify(this.state.editorState.toJS(), null, 2));
+          this.logState = () => this._logState();
+        }
+
+        _logState() {
+          console.log(JSON.stringify(this.state.editorState.toJS(), null, 2));
+          console.log('raw=', convertToRaw(this.state.editorState.getCurrentContent()))
         }
 
         _handleKeyCommand(command) {

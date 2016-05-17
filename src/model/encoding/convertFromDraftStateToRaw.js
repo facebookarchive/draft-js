@@ -21,6 +21,7 @@ var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
 import type {RawDraftContentState} from 'RawDraftContentState';
+import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 
 function convertFromDraftStateToRaw(
   contentState: ContentState
@@ -29,7 +30,11 @@ function convertFromDraftStateToRaw(
   var entityStorageMap = {};
   var rawBlocks = [];
 
-  contentState.getBlockMap().forEach((block, blockKey) => {
+  function convertBlockFromDraftToRaw(
+    block: ContentBlock
+  ) : RawDraftContentBlock {
+    var innerRawBlocks = [];
+
     block.findEntityRanges(
       character => character.getEntity() !== null,
       start => {
@@ -43,14 +48,23 @@ function convertFromDraftStateToRaw(
       }
     );
 
-    rawBlocks.push({
-      key: blockKey,
+    contentState.getBlockChildren(block.getKey()).forEach((innerBlock) => {
+      innerRawBlocks.push(convertBlockFromDraftToRaw(innerBlock));
+    });
+
+    return {
+      key: block.getInnerKey(),
       text: block.getText(),
       type: block.getType(),
       depth: canHaveDepth(block) ? block.getDepth() : 0,
       inlineStyleRanges: encodeInlineStyleRanges(block),
       entityRanges: encodeEntityRanges(block, entityStorageMap),
-    });
+      blocks: innerRawBlocks
+    };
+  }
+
+  contentState.getFirstLevelBlocks().forEach((block, blockKey) => {
+    rawBlocks.push(convertBlockFromDraftToRaw(block));
   });
 
   // Flip storage map so that our storage keys map to global
@@ -71,6 +85,7 @@ function convertFromDraftStateToRaw(
     blocks: rawBlocks,
   };
 }
+
 
 function canHaveDepth(block: ContentBlock): boolean {
   var type = block.getType();
