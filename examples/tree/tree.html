@@ -50,7 +50,31 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       const {hasCommandModifier} = KeyBindingUtil;
 
       console.log('starting');
-      var baseContent = convertFromRaw({
+
+      const blockRenderMap = Immutable.Map(DefaultDraftBlockRenderMap.keySeq().toArray().reduce((o, v, i) => {
+        // we are manually enabling all default draft blocks to support nesting for this example
+        o[v] = Object.assign({}, DefaultDraftBlockRenderMap.get(v), {
+          nestingEnabled: true
+        });
+
+        return o;
+      }, {
+          'table': {
+            nestingEnabled: true,
+            element: 'table'
+          },
+          'cell': {
+            nestingEnabled: true,
+            element: 'td'
+          },
+          'row': {
+            nestingEnabled: true,
+            element: 'tr',
+            wrapper: <tbody />,
+          }
+      }));
+
+      const baseContent = convertFromRaw({
         blocks: [
           {
               type: 'header-one',
@@ -171,7 +195,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           }
         ],
         entityMap: {}
-      });
+      }, blockRenderMap);
       console.log('baseContent is', baseContent.toJS());
 
       class TreeEditorExample extends React.Component {
@@ -180,19 +204,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
           this.state = {
             editorState: EditorState.createWithContent(baseContent),
-            blockRenderMap: DefaultDraftBlockRenderMap.merge(Immutable.Map({
-                'table': {
-                  element: 'table',
-                },
-                'cell': {
-                    element: 'td',
-                },
-                'row': {
-                    element: 'tr',
-                    wrapper: <tbody />
-                }
-            })),
-
+            blockRenderMap: blockRenderMap
           };
 
           this.handleKeyCommand = (command) => this._handleKeyCommand(command);

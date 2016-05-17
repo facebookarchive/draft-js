@@ -16,28 +16,48 @@ var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
 var DraftEntity = require('DraftEntity');
 
+var DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');
 var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 var generateRandomKey = require('generateRandomKey');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
 function convertBlocksFromRaw(
   inputBlocks: Array<ContentBlock>,
   fromStorageToLocal: Object,
-  parentKey: ?string
+  blockRenderMap: DraftBlockRenderMap,
+  parentKey: ?string,
+  parentBlock: ?Object,
 ) : Array<ContentBlock> {
   return inputBlocks.reduce(
     (result, block) => {
-      var {key, type, text, depth, inlineStyleRanges, entityRanges, blocks} = block;
+      var {
+        key,
+        type,
+        text,
+        depth,
+        inlineStyleRanges,
+        entityRanges,
+        blocks
+      } = block;
+
+      var parentBlockRenderingConfig = parentBlock ?
+        blockRenderMap.get(parentBlock.type) :
+        null;
+
       key = key || generateRandomKey();
       depth = depth || 0;
       inlineStyleRanges = inlineStyleRanges || [];
       entityRanges = entityRanges || [];
       blocks = blocks || [];
 
-      key = (parentKey || '') + key;
+      key = parentKey && parentBlockRenderingConfig &&
+        parentBlockRenderingConfig.nestingEnabled ?
+          parentKey + key :
+          key;
 
       var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
 
@@ -51,7 +71,16 @@ function convertBlocksFromRaw(
       var entities = decodeEntityRanges(text, filteredEntityRanges);
       var characterList = createCharacterList(inlineStyles, entities);
 
-      result = result.concat(convertBlocksFromRaw(blocks, fromStorageToLocal, key + '/'));
+      result = result.concat(
+        convertBlocksFromRaw(
+          blocks,
+          fromStorageToLocal,
+          blockRenderMap,
+          key + '/',
+          block
+        )
+      );
+
       result.push(new ContentBlock({key, type, text, depth, characterList}));
 
       return result;
@@ -60,7 +89,8 @@ function convertBlocksFromRaw(
 }
 
 function convertFromRawToDraftState(
-  rawState: RawDraftContentState
+  rawState: RawDraftContentState,
+  blockRenderMap=DefaultDraftBlockRenderMap: DraftBlockRenderMap
 ): ContentState {
   var {blocks, entityMap} = rawState;
 
@@ -74,7 +104,7 @@ function convertFromRawToDraftState(
     }
   );
 
-  var contentBlocks = convertBlocksFromRaw(blocks, fromStorageToLocal);
+  var contentBlocks = convertBlocksFromRaw(blocks, fromStorageToLocal, blockRenderMap);
 
   console.log(JSON.stringify(contentBlocks, null, 2));
 

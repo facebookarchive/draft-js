@@ -24,41 +24,53 @@ const PRE_WRAP = <pre className={cx('public/DraftStyleDefault/pre')} />;
 module.exports = Map({
   'header-one': {
     element: 'h1',
+    nestingEnabled: false
   },
   'header-two': {
     element: 'h2',
+    nestingEnabled: false
   },
   'header-three': {
     element: 'h3',
+    nestingEnabled: false
   },
   'header-four': {
     element: 'h4',
+    nestingEnabled: false
   },
   'header-five': {
     element: 'h5',
+    nestingEnabled: false
   },
   'header-six': {
     element: 'h6',
+    nestingEnabled: false
   },
   'unordered-list-item': {
     element: 'li',
     wrapper: UL_WRAP,
+    nestingEnabled: false
   },
   'ordered-list-item': {
     element: 'li',
     wrapper: OL_WRAP,
+    nestingEnabled: false
   },
   'blockquote': {
     element: 'blockquote',
+    nestingEnabled: false
   },
   'atomic': {
     element: 'figure',
+    nestingEnabled: false
   },
   'code-block': {
     element: 'pre',
     wrapper: PRE_WRAP,
+    nestingEnabled: false
   },
   'unstyled': {
     element: 'div',
+    nestingEnabled: false
   },
 });
