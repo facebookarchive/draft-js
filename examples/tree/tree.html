@@ -41,12 +41,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         DefaultDraftBlockRenderMap,
         Editor,
         EditorState,
-        RichUtils,
+        KeyBindingUtil,
         NestedUtils,
+        RichUtils,
+        convertFromHTML,
         convertFromRaw,
         convertToRaw,
         getDefaultKeyBinding,
-        KeyBindingUtil
       } = Draft;
       const {hasCommandModifier} = KeyBindingUtil;
 
@@ -62,147 +63,32 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             nestingEnabled: true,
             element: 'table'
           },
+          'tbody': {
+            nestingEnabled: true,
+            element: 'tbody'
+          },
+          'thead': {
+            nestingEnabled: true,
+            element: 'thead'
+          },
           'cell': {
             nestingEnabled: true,
             element: 'td'
           },
           'row': {
             nestingEnabled: true,
-            element: 'tr',
-            wrapper: <tbody />,
+            element: 'tr'
           }
       }));
 
-      const baseContent = convertFromRaw({
-        blocks: [
-          {
-              type: 'header-one',
-              text: 'Example with tree data structure'
-          },
-          {
-            type: 'blockquote',
-            text: 'Hello World',
-            blocks: [
-              {
-                type: 'unordered-list-item',
-                text: 'A first item of a list in a blockquote',
-                blocks: [
-                  {
-                    type: 'unstyled',
-                    text: 'A paragraph in the list',
-                    inlineStyleRanges: [
-                      {
-                        offset: 19,
-                        length: 4,
-                        style: 'BOLD'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                type: 'unordered-list-item',
-                text: 'A second item of the list'
-              }
-            ]
-          },
-          {
-            type: 'table',
-            text: ' ',
-            blocks: [
-              {
-                type: 'row',
-                text: ' ',
-                blocks: [
-                  {
-                    type: 'cell',
-                    text: ' ',
-                    blocks: [
-                      {
-                        type: 'unstyled',
-                        text: 'nested cell 1',
-                        inlineStyleRanges: [
-                          {
-                            offset: 8,
-                            length: 4,
-                            style: 'BOLD'
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    type: 'cell',
-                    text: ' ',
-                    blocks: [
-                      {
-                        type: 'unstyled',
-                        text: 'nested cell 2',
-                        inlineStyleRanges: [
-                          {
-                            offset: 8,
-                            length: 4,
-                            style: 'BOLD'
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                ]
-              },
-              {
-                type: 'row',
-                text: ' ',
-                blocks: [
-                  {
-                    type: 'cell',
-                    text: '',
-                    blocks: [
-                      {
-                        type: 'unstyled',
-                        text: 'nested cell 3',
-                        inlineStyleRanges: [
-                          {
-                            offset: 8,
-                            length: 4,
-                            style: 'BOLD'
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    type: 'cell',
-                    text: ' ',
-                    blocks: [
-                      {
-                        type: 'unstyled',
-                        text: 'nested cell 4',
-                        inlineStyleRanges: [
-                          {
-                            offset: 8,
-                            length: 4,
-                            style: 'BOLD'
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                ]
-              }
-            ]
-          }
-        ],
-        entityMap: {}
-      }, blockRenderMap);
-      console.log('baseContent is', baseContent.toJS());
+      const baseContent = '<h1>Example with tree data structure<\/h1>\r\n\r\n<blockquote>\r\n   Hello World\r\n  <ul>\r\n     <li>\r\n        A first item of a list in a blockquote\r\n        <h1>A heading-one in the <strong>list<\/strong><\/h1>\r\n     <\/li>\r\n     <li>A second item of the list<\/li>\r\n  <\/ul>\r\n<\/blockquote>\r\n\r\n<table>\r\n  <tr>\r\n     <td>nested c<strong>ell<\/strong> 1<\/td>\r\n     <td>nested c<strong>ell<\/strong> 2<\/td>\r\n  <\/tr>\r\n  <tr>\r\n     <td>nested c<strong>ell<\/strong> 3<\/td>\r\n     <td>nested c<strong>ell<\/strong> 4<\/td>\r\n  <\/tr>\r\n<\/table>';
 
       class TreeEditorExample extends React.Component {
         constructor(props) {
           super(props);
 
           this.state = {
-            editorState: EditorState.createWithContent(baseContent),
+            editorState: EditorState.createEmpty(),
             blockRenderMap: blockRenderMap
           };
 
@@ -214,6 +100,29 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => this._logState();
+          this.setContentFromMarkup = () => this._setContentFromMarkup();
+        }
+
+        componentDidMount() {
+          this._setContentFromMarkup();
+        }
+
+        _setHTMLContent(html) {
+            const {
+              blockRenderMap
+            } = this.state;
+
+            const contentBlocks = convertFromHTML(
+              html,
+              undefined,
+              blockRenderMap
+            );
+
+            const contentState = ContentState.createFromBlockArray(contentBlocks);
+
+            this.onChange(
+              EditorState.createWithContent(contentState)
+            );
         }
 
         _logState() {
@@ -263,6 +172,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           );
         }
 
+        _setContentFromMarkup() {
+          const htmlContent = this.refs.markupinput.value;
+          this._setHTMLContent(htmlContent);
+        }
+
         render() {
           const {editorState, blockRenderMap} = this.state;
 
@@ -306,6 +220,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 type="button"
                 value="Log State"
               />
+              <br />
+              <fieldset>
+              <textarea
+                style={styles.textarea}
+                placeholder="Enter html in here"
+                defaultValue={baseContent}
+                ref="markupinput"
+              />
+              <input
+                onClick={this.setContentFromMarkup}
+                style={styles.button}
+                type="button"
+                value="Set HTML content"
+              />
+              </fieldset>
             </div>
           );
         }
@@ -412,6 +341,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       };
 
       const styles = {
+        textarea: {
+          width: '100%',
+          minHeight: '200px'
+        },
         button: {
           marginTop: 10,
           textAlign: 'center',
