@@ -22,17 +22,29 @@ const NestedTextEditorUtil = {
     editorState: EditorState,
     command: DraftEditorCommand
   ): ?EditorState {
+    var selectionState = editorState.getSelection();
+    var contentState = editorState.getCurrentContent();
+    var key = selectionState.getAnchorKey();
+    var nestedBlocks = contentState.getBlockChildren(key);
+
+    if (command === 'split-block' && nestedBlocks.size > 0) {
+      command = 'split-nested-block';
+    }
+
     switch (command) {
       case 'split-nested-block':
-        var contentState = splitNestedBlockInContentState(
-          editorState.getCurrentContent(),
-          editorState.getSelection()
-        );
+        contentState = splitNestedBlockInContentState(contentState, selectionState);
         return EditorState.push(editorState, contentState, 'split-nested-block');
       default:
         return null;
     }
   },
+
+  keyBinding: function(e) {
+    if (e.keyCode === 13 /* `Enter` key */ && e.shiftKey) {
+      return 'split-nested-block';
+    }
+  }
 
 };
 

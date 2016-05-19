@@ -148,10 +148,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
 
         _keyBindingFn(e) {
-          if (e.keyCode === 13 /* `Enter` key */ && e.shiftKey) {
-            return 'split-nested-block';
-          }
-          return getDefaultKeyBinding(e);
+          return (
+              NestedUtils.keyBinding(e)
+              || getDefaultKeyBinding(e)
+          );
         }
 
         _toggleBlockType(blockType) {

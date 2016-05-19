@@ -109,7 +109,7 @@ function getSoftNewlineChunk(): Chunk {
   };
 }
 
-function getBlockDividerChunk(block: DraftBlockType, depth: number, key=generateRandomKey(): string): Chunk {
+function getBlockDividerChunk(block: DraftBlockType, depth: number, key: string = generateRandomKey()): Chunk {
   return {
     text: '\r',
     inlines: [OrderedSet()],
@@ -550,26 +550,16 @@ function convertFromHTMLtoContentBlocks(
         nullthrows(chunk).keys[ii] :
         null;
 
-      var blockConfig = {
+      return new ContentBlock({
         key: key || generateRandomKey(),
         type: blockType,
         depth: nullthrows(chunk).blocks[ii].depth,
         text: textBlock,
         characterList,
-      };
-
-      //console.log("=========");
-      //console.log(JSON.stringify(blockConfig, null, 2));
-      //console.log("Key used on the block is :", chunk.keys[ii]);
-      //console.log("Key used on the block is :", chunk.blocks[ii].type);
-      //console.log("=========");
-
-      return new ContentBlock(blockConfig);
+      });
     }
   );
 
-  console.log(JSON.stringify(contentBlocks, null, 2));
-  //
   return contentBlocks;
 }
 

@@ -13,20 +13,39 @@
 
 'use strict';
 
-var generateRandomKey = require('generateRandomKey');
+var Immutable = require('immutable');
+var generateNestedKey = require('generateNestedKey');
 var invariant = require('invariant');
+var ContentBlock = require('ContentBlock');
 
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
+var {
+  List
+} = Immutable;
+
+/*
+  Split a block and create a new nested block,
+
+  If block has no nested blocks, original text from the block is split
+  between 2 nested blocks
+
+  LI "Hello World"   -->   LI ""
+                            UNSTYLED "Hello"
+                            UNSTYLED " World"
+*/
 function splitNestedBlockInContentState(
   contentState: ContentState,
-  selectionState: SelectionState
+  selectionState: SelectionState,
+  blockType: string
 ): ContentState {
   invariant(
     selectionState.isCollapsed(),
     'Selection range must be collapsed.'
   );
+
+  blockType = blockType || 'unstyled';
 
   var key = selectionState.getAnchorKey();
   var offset = selectionState.getAnchorOffset();
@@ -36,23 +55,34 @@ function splitNestedBlockInContentState(
   var text = blockToSplit.getText();
   var chars = blockToSplit.getCharacterList();
 
-  var blockAbove = blockToSplit.merge({
-    text: text.slice(0, offset),
-    characterList: chars.slice(0, offset),
+  var firstNestedKey = generateNestedKey(key);
+  var secondNestedKey = generateNestedKey(key);
+
+  var newParentBlock = blockToSplit.merge({
+    text: '',
+    characterList: List()
   });
 
-  var keyBelow = key + '/' + generateRandomKey();
+  var firstNestedBlock = new ContentBlock({
+    key: firstNestedKey,
+    type: blockType,
+    text: text.slice(0, offset),
+    characterList: chars.slice(0, offset)
+  });
 
-  var blockBelow = blockAbove.merge({
-    key: keyBelow,
+  var secondNestedBlock = new ContentBlock({
+    key: secondNestedKey,
+    type: blockType,
     text: text.slice(offset),
-    characterList: chars.slice(offset),
+    characterList: chars.slice(offset)
   });
 
   var blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
   var blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
   var newBlocks = blocksBefore.concat(
-      [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
+      [[newParentBlock.getKey(), newParentBlock],
+        [firstNestedBlock.getKey(), firstNestedBlock],
+        [secondNestedBlock.getKey(), secondNestedBlock]],
       blocksAfter
     ).toOrderedMap();
 
@@ -60,9 +90,9 @@ function splitNestedBlockInContentState(
     blockMap: newBlocks,
     selectionBefore: selectionState,
     selectionAfter: selectionState.merge({
-      anchorKey: keyBelow,
+      anchorKey: secondNestedKey,
       anchorOffset: 0,
-      focusKey: keyBelow,
+      focusKey: secondNestedKey,
       focusOffset: 0,
       isBackward: false,
     }),
