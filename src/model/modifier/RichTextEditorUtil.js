@@ -176,7 +176,32 @@ const RichTextEditorUtil = {
 
     const blockAfter = content.getBlockAfter(startKey);
 
-    if (!blockAfter || blockAfter.getType() !== 'atomic') {
+    if (!blockAfter) {
+      return null;
+    }
+
+    // Always delete empty blocks followed by non-atomic blocks
+    if (blockAfter.getType() !== "atomic") {
+      if (length === 0) {
+        var target = selection.merge({
+          focusKey: blockAfter.getKey(),
+          focusOffset: 0,
+        });
+
+        var withoutEmptyBlock = DraftModifier.removeRange(
+          content,
+          target,
+          'forward'
+        );
+
+        var preserveType = DraftModifier.setBlockType(
+          withoutEmptyBlock,
+          withoutEmptyBlock.getSelectionAfter(),
+          blockAfter.getType()
+        );
+
+        return EditorState.push(editorState, preserveType, 'remove-range');
+      }
       return null;
     }
 
