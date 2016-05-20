@@ -101,7 +101,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
 }
 
 var EMPTY = new CharacterMetadata();
-var pool: Map<Map, CharacterMetadata> = Map([[Map(defaultRecord), EMPTY]]);
+var pool: Map<Map<any, any>, CharacterMetadata> = Map([[Map(defaultRecord), EMPTY]]);
 
 CharacterMetadata.EMPTY = EMPTY;
 

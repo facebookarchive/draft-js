@@ -27,8 +27,8 @@ var bidiService;
 var EditorBidiService = {
   getDirectionMap: function(
     content: ContentState,
-    prevBidiMap: ?OrderedMap
-  ): OrderedMap {
+    prevBidiMap: ?OrderedMap<any, any>
+  ): OrderedMap<any, any> {
     if (!bidiService) {
       bidiService = new UnicodeBidiService();
     } else {

@@ -197,7 +197,7 @@ class DraftEditor extends React.Component {
     );
   }
 
-  _renderPlaceholder(): ?React.Element {
+  _renderPlaceholder(): ?React.Element<any> {
     if (this._showPlaceholder()) {
       return (
         <DraftEditorPlaceholder
@@ -211,7 +211,7 @@ class DraftEditor extends React.Component {
     return null;
   }
 
-  render(): React.Element {
+  render(): React.Element<any> {
     const {readOnly, textAlignment} = this.props;
     const rootClass = cx({
       'DraftEditor/root': true,

@@ -118,7 +118,7 @@ class DraftEditorLeaf extends React.Component {
     this._setSelection();
   }
 
-  render(): React.Element {
+  render(): React.Element<any> {
     let {text} = this.props;
 
     // If the leaf is at the end of its block and ends in a soft newline, append

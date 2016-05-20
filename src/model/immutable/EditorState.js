@@ -42,7 +42,7 @@ type EditorStateRecordType = {
   nativelyRenderedContent: ?ContentState;
   redoStack: Stack<ContentState>;
   selection: ?SelectionState;
-  treeMap: ?OrderedMap<string, List>;
+  treeMap: ?OrderedMap<string, List<any>>;
   undoStack: Stack<ContentState>;
 };
 
@@ -115,7 +115,7 @@ class EditorState {
       var newContent = put.currentContent || editorState.getCurrentContent();
 
       if (decorator !== existingDecorator) {
-        var treeMap: OrderedMap = state.get('treeMap');
+        var treeMap: OrderedMap<any, any> = state.get('treeMap');
         var newTreeMap;
         if (decorator && existingDecorator) {
           newTreeMap = regenerateTreeForNewDecorator(
@@ -238,7 +238,7 @@ class EditorState {
     return getInlineStyleForNonCollapsedSelection(content, selection);
   }
 
-  getBlockTree(blockKey: string): List {
+  getBlockTree(blockKey: string): List<any> {
     return this.getImmutable().getIn(['treeMap', blockKey]);
   }
 
@@ -255,7 +255,7 @@ class EditorState {
     return this.getSelection().hasEdgeWithin(last.getKey(), end, end);
   }
 
-  getDirectionMap(): ?OrderedMap {
+  getDirectionMap(): ?OrderedMap<any, any> {
     return this.getImmutable().get('directionMap');
   }
 
@@ -512,7 +512,7 @@ function updateSelection(
 function generateNewTreeMap(
   contentState: ContentState,
   decorator: ?DraftDecoratorType
-): OrderedMap<string, List> {
+): OrderedMap<string, List<any>> {
   return contentState
     .getBlockMap()
     .map(block => BlockTree.generate(block, decorator))
@@ -528,7 +528,7 @@ function regenerateTreeForNewBlocks(
   editorState: EditorState,
   newBlockMap: BlockMap,
   decorator: ?DraftDecoratorType
-): OrderedMap<string, List> {
+): OrderedMap<string, List<any>> {
   var prevBlockMap = editorState.getCurrentContent().getBlockMap();
   var prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(
@@ -549,10 +549,10 @@ function regenerateTreeForNewBlocks(
  */
 function regenerateTreeForNewDecorator(
   blockMap: BlockMap,
-  previousTreeMap: OrderedMap<string, List>,
+  previousTreeMap: OrderedMap<string, List<any>>,
   decorator: DraftDecoratorType,
   existingDecorator: DraftDecoratorType
-): OrderedMap<string, List> {
+): OrderedMap<string, List<any>> {
   return previousTreeMap.merge(
     blockMap
       .toSeq()

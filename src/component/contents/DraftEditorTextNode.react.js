@@ -81,7 +81,7 @@ class DraftEditorTextNode extends React.Component {
     this._forceFlag = !this._forceFlag;
   }
 
-  render(): React.Element {
+  render(): React.Element<any> {
     if (this.props.children === '') {
       return this._forceFlag ? NEWLINE_A : NEWLINE_B;
     }
