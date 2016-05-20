@@ -24,9 +24,10 @@ var generateRandomKey = require('generateRandomKey');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 
 function convertBlocksFromRaw(
-  inputBlocks: Array<ContentBlock>,
+  inputBlocks: Array<RawDraftContentBlock>,
   fromStorageToLocal: Object,
   blockRenderMap: DraftBlockRenderMap,
   parentKey: ?string,
@@ -90,7 +91,7 @@ function convertBlocksFromRaw(
 
 function convertFromRawToDraftState(
   rawState: RawDraftContentState,
-  blockRenderMap=DefaultDraftBlockRenderMap: DraftBlockRenderMap
+  blockRenderMap:DraftBlockRenderMap=DefaultDraftBlockRenderMap
 ): ContentState {
   var {blocks, entityMap} = rawState;
 

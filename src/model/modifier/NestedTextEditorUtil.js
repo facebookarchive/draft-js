@@ -40,7 +40,7 @@ const NestedTextEditorUtil = {
     }
   },
 
-  keyBinding: function(e) {
+  keyBinding: function(e: SyntheticKeyboardEvent) {
     if (e.keyCode === 13 /* `Enter` key */ && e.shiftKey) {
       return 'split-nested-block';
     }

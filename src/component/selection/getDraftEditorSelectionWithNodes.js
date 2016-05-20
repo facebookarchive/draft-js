@@ -39,6 +39,21 @@ function getDraftEditorSelectionWithNodes(
   focusNode: Node,
   focusOffset: number
 ): DOMDerivedSelection {
+  // if we end-up having the data-blocks component in our selection we need to make
+  // sure we pass the focus to the last child within it
+  if (focusNode && focusNode.getAttribute && focusNode.getAttribute('data-blocks'))  {
+    focusNode = focusNode.lastChild;
+    var child = focusNode;
+
+    // navigate throught the html elements until we get into the last textNode
+    while (child) {
+      focusNode = child;
+      child = child.lastChild;
+    }
+
+    focusOffset = typeof focusNode === 'string' ? focusNode.length : focusOffset;
+  }
+
   var anchorIsTextNode = anchorNode.nodeType === Node.TEXT_NODE;
   var focusIsTextNode = focusNode.nodeType === Node.TEXT_NODE;
 

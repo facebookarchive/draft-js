@@ -58,14 +58,26 @@ type Props = {
  */
 class DraftEditorBlock extends React.Component {
   shouldComponentUpdate(nextProps: Props): boolean {
-    const nestedBlocks = this.props.getBlockChildren(this.props.block.getKey());
+    const {
+        block,
+        direction,
+        getBlockChildren,
+        tree
+    } = this.props;
+
+    const nestedBlocks = (
+      getBlockChildren ?
+        getBlockChildren(block.getKey()) :
+        false
+    );
+
     const hasNestedBlocks = nestedBlocks && nestedBlocks.size;
 
     return (
       hasNestedBlocks ||
-      this.props.block !== nextProps.block ||
-      this.props.tree !== nextProps.tree ||
-      this.props.direction !== nextProps.direction ||
+      block !== nextProps.block ||
+      tree !== nextProps.tree ||
+      direction !== nextProps.direction ||
       (
         isBlockOnSelectionEdge(
           nextProps.selection,
@@ -213,11 +225,14 @@ class DraftEditorBlock extends React.Component {
       'public/DraftStyleDefault/rtl': direction === 'RTL',
     });
 
-    const nestedBlocks = getBlockChildren(block.getKey());
+    const nestedBlocks = getBlockChildren ? getBlockChildren(block.getKey()) : [];
 
     return (
       <div data-offset-key={offsetKey} className={className}>
-        {nestedBlocks.size > 0? this._renderBlockMap(nestedBlocks) : this._renderChildren()}
+        {nestedBlocks && nestedBlocks.size && nestedBlocks.size > 0 ?
+          this._renderBlockMap(nestedBlocks) :
+          this._renderChildren()
+        }
       </div>
     );
   }

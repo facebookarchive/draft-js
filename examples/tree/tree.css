@@ -64,6 +64,7 @@
 
 .RichEditor-editor table {
     border: 1px solid #ccc;
+    display: block;
 }
 
 .RichEditor-editor tr {

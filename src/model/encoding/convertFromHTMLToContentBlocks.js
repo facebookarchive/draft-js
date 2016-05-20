@@ -30,9 +30,15 @@ import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
+const flatten = list => list.reduce(
+    (a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
+);
+
+
 var {
   List,
   OrderedSet,
+  Repeat,
 } = Immutable;
 
 var NBSP = '&nbsp;';
@@ -147,21 +153,23 @@ function getBlockMapSupportedTags(
 
 // custom element conversions
 function getMultiMatchedType(
-  tag: string,
+  tag: ?string,
   lastList: ?string,
   multiMatchExtractor: Array<Function>
 ): ?DraftBlockType {
-  for (let ii = 0; ii < multiMatchExtractor.length; ii++) {
-    const matchType = multiMatchExtractor[ii](tag, lastList);
-    if (matchType) {
-      return matchType;
+  if (tag) {
+    for (let ii = 0; ii < multiMatchExtractor.length; ii++) {
+      const matchType = multiMatchExtractor[ii](tag, lastList);
+      if (matchType) {
+        return matchType;
+      }
     }
   }
   return null;
 }
 
 function getBlockTypeForTag(
-  tag: string,
+  tag: ?string,
   lastList: ?string,
   blockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
@@ -295,7 +303,9 @@ function genFragment(
   var newBlock = false;
   var nextBlockType = 'unstyled';
   var lastLastBlock = lastBlock;
-  var isNestedElement = blockKey && blockKey.split('/').length;
+  var isValidBlock = blockTags.indexOf(nodeName) !== -1;
+  var isListContainer = nodeName === 'ul' || nodeName === 'ol';
+  var inBlockType = getBlockTypeForTag(inBlock, lastList, blockRenderMap);
 
   // Base Case
   if (nodeName === '#text') {
@@ -329,7 +339,7 @@ function genFragment(
       lastLastBlock === 'br' &&
       (
         !inBlock ||
-        getBlockTypeForTag(inBlock, lastList, blockRenderMap) === 'unstyled'
+        inBlockType === 'unstyled'
       )
     ) {
       return getBlockDividerChunk('unstyled', depth, blockKey);
@@ -344,29 +354,32 @@ function genFragment(
   inlineStyle = processInlineTag(nodeName, node, inlineStyle);
 
   // Handle lists
-  if (nodeName === 'ul' || nodeName === 'ol') {
+  if (isListContainer) {
     if (lastList) {
       depth += 1;
     }
     lastList = nodeName;
   }
 
-  if ((!inBlock || isNestedElement) && blockTags.indexOf(nodeName) !== -1) {
+  var blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
+  var inBlockConfig = blockRenderMap.get(inBlockType);
+
+  if ((!inBlock || inBlockConfig.nestingEnabled) && blockTags.indexOf(nodeName) !== -1) {
     chunk = getBlockDividerChunk(
-      getBlockTypeForTag(nodeName, lastList, blockRenderMap),
+      blockType,
       depth,
       blockKey
     );
     inBlock = nodeName;
-    newBlock = true;//!isNestedElement;
+    newBlock = !inBlockConfig.nestingEnabled;
   } else if (lastList && inBlock === 'li' && nodeName === 'li') {
     chunk = getBlockDividerChunk(
-      getBlockTypeForTag(nodeName, lastList, blockRenderMap),
+      blockType,
       depth,
       blockKey
     );
     inBlock = nodeName;
-    newBlock = true;
+    newBlock = !inBlockConfig.nestingEnabled;
     nextBlockType = lastList === 'ul' ?
       'unordered-list-item' :
       'ordered-list-item';
@@ -389,14 +402,21 @@ function genFragment(
       entityId = undefined;
     }
 
-    var isValidBlock = blockTags.indexOf(nodeName) !== -1;
+    // if we are on an invalid block we can re-use the key since it wont generate a block
+    isValidBlock = blockTags.indexOf(nodeName) !== -1;
+    var hasNestingEnabled = inBlockConfig && inBlockConfig.nestingEnabled;
+
+    // todo add a check if we are inside a list container and we are not nested inside any element
+    // this way we know that this key should be not nested, instead should be a root key
 
     var chunkKey = (
       blockKey ?
         (
-          isValidBlock ?  blockKey + '/' + generateRandomKey() : blockKey
+          isValidBlock ?
+            blockKey + '/' + generateRandomKey() :
+            blockKey
         ) :
-      generateRandomKey()
+      isValidBlock ? generateRandomKey() : ''
     );
 
     newChunk = genFragment(
@@ -411,14 +431,15 @@ function genFragment(
       chunkKey
     );
 
-    chunk = joinChunks(chunk, newChunk);
+    chunk = joinChunks(chunk, newChunk, hasNestingEnabled);
     var sibling: ?Node = child.nextSibling;
 
     // Put in a newline to break up blocks inside blocks
     if (
       sibling &&
       blockTags.indexOf(nodeName) >= 0 &&
-      inBlock
+      inBlock &&
+      isValidBlock && chunkKey.split('/').length === 1 // not nested element or invalid
     ) {
       chunk = joinChunks(chunk, getSoftNewlineChunk());
     }
@@ -431,7 +452,12 @@ function genFragment(
   if (newBlock) {
     chunk = joinChunks(
       chunk,
-      getBlockDividerChunk(nextBlockType, depth, blockKey ? blockKey + '/' + generateRandomKey() : generateRandomKey())
+      getBlockDividerChunk(
+        nextBlockType,
+        depth,
+        blockKey ? blockKey + '/' + generateRandomKey() : generateRandomKey(),
+        !!blockKey
+      )
     );
   }
 
@@ -533,6 +559,7 @@ function convertFromHTMLtoContentBlocks(
       var end = start + textBlock.length;
       var inlines = nullthrows(chunk).inlines.slice(start, end);
       var entities = nullthrows(chunk).entities.slice(start, end);
+      var key = null;
       var characterList = List(
         inlines.map((style, ii) => {
           var data = {style, entity: (null: ?string)};
@@ -546,9 +573,38 @@ function convertFromHTMLtoContentBlocks(
 
       var blockType = nullthrows(chunk).blocks[ii].type;
       var blockConfig = blockRenderMap.get(blockType);
-      var key = blockConfig && blockConfig.nestingEnabled ?
-        nullthrows(chunk).keys[ii] :
-        null;
+
+      if (blockConfig && blockConfig.nestingEnabled) {
+        key  = nullthrows(chunk).keys[ii];
+        var character = ' ';
+        var nextChunkKey = nullthrows(chunk).keys[ii+1];
+        var hasChildren = key && nextChunkKey && nextChunkKey.indexOf(key + '/') !== -1;
+
+        var blockKey = key ? key : generateRandomKey();
+
+        var contentBlock = [
+          new ContentBlock({
+            key: blockKey,
+            type: blockType,
+            depth: nullthrows(chunk).blocks[ii].depth,
+            text: character,
+            characterList: List(Repeat(CharacterMetadata.create(), character.length))
+          })
+        ];
+
+        if ((hasChildren && textBlock) || !hasChildren) {
+          contentBlock.push(
+            new ContentBlock({
+              key: blockKey + '/' + generateRandomKey(),
+              type: 'unstyled',
+              text: textBlock,
+              characterList,
+            })
+          );
+        }
+
+        return contentBlock;
+      }
 
       return new ContentBlock({
         key: key || generateRandomKey(),
@@ -560,7 +616,9 @@ function convertFromHTMLtoContentBlocks(
     }
   );
 
-  return contentBlocks;
+  //console.log(JSON.stringify(contentBlocks, null, 2));
+
+  return flatten(contentBlocks);
 }
 
 module.exports = convertFromHTMLtoContentBlocks;

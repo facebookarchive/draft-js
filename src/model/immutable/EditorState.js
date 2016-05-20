@@ -14,7 +14,6 @@
 
 var BlockTree = require('BlockTree');
 var ContentState = require('ContentState');
-var ContentBlock = require('ContentBlock');
 var EditorBidiService = require('EditorBidiService');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');

@@ -38,14 +38,12 @@ var {
 function splitNestedBlockInContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-  blockType: string
+  blockType:string='unstyled'
 ): ContentState {
   invariant(
     selectionState.isCollapsed(),
     'Selection range must be collapsed.'
   );
-
-  blockType = blockType || 'unstyled';
 
   var key = selectionState.getAnchorKey();
   var offset = selectionState.getAnchorOffset();

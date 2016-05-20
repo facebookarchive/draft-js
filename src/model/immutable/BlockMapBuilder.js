@@ -22,7 +22,7 @@ var {OrderedMap} = Immutable;
 var BlockMapBuilder = {
   createFromArray: function(
     blocks: Array<ContentBlock>
-  ): BlockMap {
+  ): BlockMap | OrderedMap {
     return OrderedMap(
       blocks.map(
         block => [block.getKey(), block]

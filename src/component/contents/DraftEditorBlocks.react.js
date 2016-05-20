@@ -22,13 +22,6 @@ const joinClasses = require('joinClasses');
 const nullthrows = require('nullthrows');
 
 import type {BidiDirection} from 'UnicodeBidiDirection';
-import type ContentBlock from 'ContentBlock';
-
-type Props = {
-  blockRendererFn: Function,
-  blockStyleFn: (block: ContentBlock) => string,
-  blocksAsArray: Array<ContentBlock>,
-};
 
 /**
  * `DraftEditorContents` is the container component for all block components

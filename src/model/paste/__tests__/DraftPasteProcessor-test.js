@@ -46,37 +46,48 @@ var CUSTOM_BLOCK_MAP = Immutable.Map({
     element: 'div',
   },
 });
+function assertInlineStyles(block, comparison) {
+  var styles = block.getCharacterList().map(c => c.getStyle());
+  expect(styles.toJS()).toEqual(comparison);
+}
+
+// Don't want to couple this to a specific way of generating entity IDs so
+// just checking their existance
+function assertEntities(block, comparison) {
+  var entities = block.getCharacterList().map(c => c.getEntity());
+  entities.toJS().forEach((entity, ii) => {
+    expect(comparison[ii]).toBe(!!entity);
+  });
+}
+
+function assertDepths(blocks, comparison) {
+  expect(
+    blocks.map(b => b.getDepth())
+  ).toEqual(
+    comparison
+  );
+}
+
+function assertBlockTypes(blocks, comparison) {
+  expect(
+    blocks.map(b => b.getType())
+  ).toEqual(
+    comparison
+  );
+}
+
+function assertBlockIsChildrenOf(block, comparison) {
+  var blockKey = block.getKey();
+  var comparisonKey = comparison.getKey();
+
+  expect(
+    blockKey.indexOf(comparisonKey) !== -1
+  ).toBe(
+    true
+  );
+}
 
 describe('DraftPasteProcessor', function() {
-  function assertInlineStyles(block, comparison) {
-    var styles = block.getCharacterList().map(c => c.getStyle());
-    expect(styles.toJS()).toEqual(comparison);
-  }
-
-  // Don't want to couple this to a specific way of generating entity IDs so
-  // just checking their existance
-  function assertEntities(block, comparison) {
-    var entities = block.getCharacterList().map(c => c.getEntity());
-    entities.toJS().forEach((entity, ii) => {
-      expect(comparison[ii]).toBe(!!entity);
-    });
-  }
-
-  function assertDepths(blocks, comparison) {
-    expect(
-      blocks.map(b => b.getDepth())
-    ).toEqual(
-      comparison
-    );
-  }
-
-  function assertBlockTypes(blocks, comparison) {
-    expect(
-      blocks.map(b => b.getType())
-    ).toEqual(
-      comparison
-    );
-  }
 
   it('must identify italics text', function() {
     var html = '<i>hello</i> hi';
@@ -371,5 +382,78 @@ describe('DraftPasteProcessor', function() {
       'unordered-list-item',
     ]);
     assertDepths(output, [0, 0, 0, 1, 1, 0]);
+  });
+});
+
+describe('DraftPasteProcessor when nesting support is enabled', function() {
+  const nestingEnabledBlockRenderMap  = CUSTOM_BLOCK_MAP.merge(
+    Immutable.Map({
+      'blockquote': {
+        element: 'blockquote',
+        nestingEnabled: true
+      },
+      'unstyled': {
+        element: 'div',
+        nestingEnabled: true
+      },
+      'unordered-list-item': {
+        element: 'li',
+        nestingEnabled: true
+      },
+      'ordered-list-item' : {
+        element: 'li',
+        nestingEnabled: true
+      },
+      'header-one': {
+        element: 'h1',
+        nestingEnabled: true
+      }
+    })
+  );
+
+  it('must generate blocks with nested keys', function() {
+    var html = `
+    <blockquote>
+      <h1>Nested block</h1>
+    </blockquote>
+    `;
+
+    var output = DraftPasteProcessor.processHTML(
+      html,
+      nestingEnabledBlockRenderMap
+    );
+
+    assertBlockIsChildrenOf(output[1], output[0]);
+    assertBlockIsChildrenOf(output[2], output[1]);
+
+    assertBlockTypes(output, [
+      'blockquote',
+      'header-one',
+      'unstyled',
+    ]);
+  });
+
+  it('leaft block should wrap text on unstyled block', function() {
+    var nestingText = 'nesting enabled block';
+    var html = `
+      <li>${nestingText}</li>
+    `;
+
+    var output = DraftPasteProcessor.processHTML(
+      html,
+      nestingEnabledBlockRenderMap
+    );
+
+    var listBlock = output[0];
+    var unstyledBlock = output[1];
+
+    assertBlockTypes(output, [
+      'unordered-list-item',
+      'unstyled'
+    ]);
+
+    assertBlockIsChildrenOf(unstyledBlock, listBlock);
+
+    expect(unstyledBlock.getText()).toBe(nestingText);
   });
 });
