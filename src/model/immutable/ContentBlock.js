@@ -77,6 +77,10 @@ class ContentBlock extends ContentBlockRecord {
     return parts.slice(0, -1).join('/');
   }
 
+  hasParent(): boolean {
+    return (this.getParentKey() !== '');
+  }
+
   getInnerKey(): string {
     var key = this.getKey();
     var parts = key.split('/');

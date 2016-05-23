@@ -11,30 +11,113 @@
  * @flow
  */
 
+const Immutable = require('immutable');
 const EditorState = require('EditorState');
-const splitNestedBlockInContentState = require('splitNestedBlockInContentState');
+const splitBlockInContentState = require('splitBlockInContentState');
+const splitBlockWithNestingInContentState = require('splitBlockWithNestingInContentState');
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
 import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+
+var DefaultBlockRenderMap = DefaultDraftBlockRenderMap
+    .mergeWith(function(prev, next) {
+      return Immutable.fromJS(prev).merge(next).toJS();
+    }, {
+      'unordered-list-item': {
+        nestingEnabled: true
+      },
+      'ordered-list-item': {
+        nestingEnabled: true
+      },
+      'blockquote': {
+        nestingEnabled: true
+      },
+
+      // Table blocks
+      'table': {
+        element: 'table',
+        nestingEnabled: true
+      },
+      'table-header': {
+        element: 'thead',
+        nestingEnabled: true
+      },
+      'table-body': {
+        element: 'tbody',
+        nestingEnabled: true
+      },
+      'table-row': {
+        element: 'tr',
+        nestingEnabled: true
+      },
+      'table-cell': {
+        element: 'td',
+        nestingEnabled: true
+      }
+    });
+
 
 const NestedTextEditorUtil = {
+  DefaultBlockRenderMap: DefaultBlockRenderMap,
 
   handleKeyCommand: function(
     editorState: EditorState,
+    //blockRenderMap: DraftBlockRenderMap,
     command: DraftEditorCommand
   ): ?EditorState {
     var selectionState = editorState.getSelection();
     var contentState = editorState.getCurrentContent();
     var key = selectionState.getAnchorKey();
-    var nestedBlocks = contentState.getBlockChildren(key);
 
-    if (command === 'split-block' && nestedBlocks.size > 0) {
-      command = 'split-nested-block';
+    var currentBlock = contentState.getBlockForKey(key);
+    var nestedBlocks = contentState.getBlockChildren(key);
+    /*var renderOpt = blockRenderMap.get(currentBlock.getType());
+    var hasNestingEnabled = renderOpt && renderOpt.nestingEnabled;*/
+
+    // Press enter
+    if (command === 'split-block') {
+      var nextBlock = contentState.getBlockAfter(key);
+
+      // In an empty last nested block
+      if (currentBlock.hasParent()
+      && currentBlock.getLength() === 0
+      && (!nextBlock || nextBlock.getParentKey() !== currentBlock.getParentKey())) {
+        command = 'split-parent-block';
+      }
+
+      // In a block that already have some nested blocks
+      if (command === 'split-block' && nestedBlocks.size > 0) {
+        command = 'split-nested-block';
+      }
     }
 
     switch (command) {
       case 'split-nested-block':
-        contentState = splitNestedBlockInContentState(contentState, selectionState);
-        return EditorState.push(editorState, contentState, 'split-nested-block');
+        contentState = splitBlockWithNestingInContentState(contentState, selectionState);
+        return EditorState.push(editorState, contentState, 'split-block');
+
+      case 'split-parent-block':
+        var parentKey = currentBlock.getParentKey();
+
+        // Split parent block
+        var parentSelection = selectionState.merge({
+          anchorKey: parentKey,
+          anchorOffset: 0,
+          focusKey: parentKey,
+          focusOffset: 0,
+          isBackward: false,
+        });
+        contentState = splitBlockInContentState(contentState, parentSelection);
+
+        // Remove current block (the empty one)
+        contentState = contentState.set('blockMap',
+          contentState.getBlockMap()
+          .filter(block => block !== currentBlock)
+        );
+
+        return EditorState.push(editorState, contentState, 'split-block');
+
       default:
         return null;
     }

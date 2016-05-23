@@ -67,9 +67,14 @@ export type DraftEditorCommand = (
   'split-block' |
 
   /**
-   * Split a block in two and create a nested one
+   * Split a block in two by creating two nested blocks
    */
   'split-nested-block' |
+
+  /**
+   * Split the parent block in two
+   */
+  'split-parent-block' |
 
   /**
    * Self-explanatory.

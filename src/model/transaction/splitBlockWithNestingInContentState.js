@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule splitNestedBlockInContentState
+ * @providesModule splitBlockWithNestingInContentState
  * @typechecks
  * @flow
  */
@@ -35,7 +35,7 @@ var {
                             UNSTYLED "Hello"
                             UNSTYLED " World"
 */
-function splitNestedBlockInContentState(
+function splitBlockWithNestingInContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   blockType:string='unstyled'
@@ -97,4 +97,4 @@ function splitNestedBlockInContentState(
   });
 }
 
-module.exports = splitNestedBlockInContentState;
+module.exports = splitBlockWithNestingInContentState;

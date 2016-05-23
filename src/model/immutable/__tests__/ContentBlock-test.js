@@ -106,4 +106,29 @@ describe('ContentBlock', () => {
       expect(calls[2]).toEqual([4, 5]);
     });
   });
+
+  describe('parent key retrieval', () => {
+    it('must properly retrieve key of parent if first level', () => {
+      var block = getSampleBlock();
+      expect(block.getParentKey()).toBe('');
+    });
+
+    it('must properly retrieve key of parent if nested', () => {
+      var block = new ContentBlock({
+        key: 'a/b',
+        type: 'unstyled',
+        text: ''
+      });
+      expect(block.getParentKey()).toBe('a');
+    });
+
+    it('must properly retrieve key of parent if deep nested', () => {
+      var block = new ContentBlock({
+        key: 'a/b/b',
+        type: 'unstyled',
+        text: ''
+      });
+      expect(block.getParentKey()).toBe('a/b');
+    });
+  });
 });

@@ -26,6 +26,13 @@ var MULTI_BLOCK = [
   {text: 'Four score', key: 'b'},
   {text: 'and seven', key: 'c'},
 ];
+var NESTED_BLOCK = [
+  {text: 'Four score', key: 'd'},
+  {text: 'and seven', key: 'e'},
+  {text: 'Nested in e', key: 'e/f'},
+  {text: 'Nested in e', key: 'e/g'},
+  {text: 'Nested in e/g', key: 'e/g/h'},
+];
 
 var SelectionState = require('SelectionState');
 
@@ -86,6 +93,43 @@ describe('ContentState', () => {
       expect(block instanceof ContentBlock).toBe(true);
       expect(block.getText()).toBe(SINGLE_BLOCK[0].text);
       expect(state.getBlockForKey('x')).toBe(undefined);
+    });
+  });
+
+  describe('nested block fetching', () => {
+    it('must retrieve nested block for key', () => {
+      var state = getSample(NESTED_BLOCK);
+      var blocks = state.getBlockChildren('e');
+
+      expect(blocks.size).toBe(2);
+      expect(blocks.has('e/f')).toBe(true);
+      expect(blocks.has('e/g')).toBe(true);
+    });
+
+    it('must retrieve nested block for a deeper key', () => {
+      var state = getSample(NESTED_BLOCK);
+      var blocks = state.getBlockChildren('e/g');
+
+      expect(blocks.size).toBe(1);
+      expect(blocks.has('e/g/h')).toBe(true);
+    });
+
+    it('must return an empty map if none', () => {
+      var state = getSample(NESTED_BLOCK);
+      var blocks = state.getBlockChildren('d');
+
+      expect(blocks.size).toBe(0);
+    });
+  });
+
+  describe('first level block fetching', () => {
+    it('must retrieve first level block', () => {
+      var state = getSample(NESTED_BLOCK);
+      var blocks = state.getFirstLevelBlocks();
+
+      expect(blocks.size).toBe(2);
+      expect(blocks.has('d')).toBe(true);
+      expect(blocks.has('e')).toBe(true);
     });
   });
 });
