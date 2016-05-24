@@ -20,50 +20,58 @@ const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
-var DefaultBlockRenderMap = DefaultDraftBlockRenderMap
-    .mergeWith(function(prev, next) {
-      return Immutable.fromJS(prev).merge(next).toJS();
-    }, {
-      'unordered-list-item': {
-        nestingEnabled: true
-      },
-      'ordered-list-item': {
-        nestingEnabled: true
-      },
-      'blockquote': {
-        nestingEnabled: true
-      },
 
-      // Table blocks
-      'table': {
-        element: 'table',
-        nestingEnabled: true
-      },
-      'table-header': {
-        element: 'thead',
-        nestingEnabled: true
-      },
-      'table-body': {
-        element: 'tbody',
-        nestingEnabled: true
-      },
-      'table-row': {
-        element: 'tr',
-        nestingEnabled: true
-      },
-      'table-cell': {
-        element: 'td',
-        nestingEnabled: true
-      }
-    });
+const enabledNestingConfiguration = {
+  nestingEnabled: true
+};
 
+const defaultEnabledBlocks = [
+  'unordered-list-item',
+  'ordered-list-item',
+  'blockquote',
+];
+
+const DefaultBlockRenderMap = Immutable.Map(
+  DefaultDraftBlockRenderMap.keySeq().toArray().reduce((o, v, i) => {
+    // we are manually enabling all default draft blocks to support nesting for this example
+    const blockExtendConfiguration = (
+      defaultEnabledBlocks.indexOf(v) !== -1 ?
+        enabledNestingConfiguration :
+        {}
+    );
+
+    o[v] = Object.assign({}, DefaultDraftBlockRenderMap.get(v), blockExtendConfiguration);
+    return o;
+  }, {
+    'table': {
+      element: 'table',
+      nestingEnabled: true
+    },
+    'table-body': {
+      element: 'tbody',
+      nestingEnabled: true
+    },
+    'table-header': {
+      element: 'thead',
+      nestingEnabled: true
+    },
+    'table-cell': {
+      element: 'td',
+      nestingEnabled: true
+    },
+    'table-row': {
+      element: 'tr',
+      nestingEnabled: true
+    }
+  })
+);
 
 const NestedTextEditorUtil = {
   DefaultBlockRenderMap: DefaultBlockRenderMap,
 
   handleKeyCommand: function(
     editorState: EditorState,
-    //blockRenderMap: DraftBlockRenderMap,
+    blockRenderMap: DraftBlockRenderMap,
     command: DraftEditorCommand
   ): ?EditorState {
     var selectionState = editorState.getSelection();

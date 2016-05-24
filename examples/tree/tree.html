@@ -38,7 +38,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
       const {
         ContentState,
-        DefaultDraftBlockRenderMap,
         Editor,
         EditorState,
         KeyBindingUtil,
@@ -51,36 +50,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       } = Draft;
       const {hasCommandModifier} = KeyBindingUtil;
 
-      const blockRenderMap = Immutable.Map(DefaultDraftBlockRenderMap.keySeq().toArray().reduce((o, v, i) => {
-        // we are manually enabling all default draft blocks to support nesting for this example
-        o[v] = Object.assign({}, DefaultDraftBlockRenderMap.get(v), {
-          nestingEnabled: true
-        });
-
-        return o;
-      }, {
-          'table': {
-            nestingEnabled: true,
-            element: 'table'
-          },
-          'tbody': {
-            nestingEnabled: true,
-            element: 'tbody'
-          },
-          'thead': {
-            nestingEnabled: true,
-            element: 'thead'
-          },
-          'cell': {
-            nestingEnabled: true,
-            element: 'td'
-          },
-          'row': {
-            nestingEnabled: true,
-            element: 'tr'
-          }
-      }));
-
       const baseContent = '<h1>Example with tree data structure<\/h1>\r\n\r\n<blockquote>\r\n   Hello World\r\n  <ul>\r\n     <li>\r\n        A first item of a list in a blockquote\r\n        <h1>A heading-one in the <strong>list<\/strong><\/h1>\r\n     <\/li>\r\n     <li>A second item of the list<\/li>\r\n  <\/ul>\r\n<\/blockquote>\r\n\r\n<table>\r\n  <tr>\r\n     <td>nested c<strong>ell<\/strong> 1<\/td>\r\n     <td>nested c<strong>ell<\/strong> 2<\/td>\r\n  <\/tr>\r\n  <tr>\r\n     <td>nested c<strong>ell<\/strong> 3<\/td>\r\n     <td>nested c<strong>ell<\/strong> 4<\/td>\r\n  <\/tr>\r\n<\/table>';
 
       class TreeEditorExample extends React.Component {
@@ -89,7 +58,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
           this.state = {
             editorState: EditorState.createEmpty(),
-            blockRenderMap: blockRenderMap
+            blockRenderMap: NestedUtils.DefaultBlockRenderMap
           };
 
           this.handleKeyCommand = (command) => this._handleKeyCommand(command);
@@ -126,8 +95,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
 
         _logState() {
+          console.log('===');
+          console.log('Raw editor state:');
           console.log(JSON.stringify(this.state.editorState.toJS(), null, 2));
-          console.log('raw=', convertToRaw(this.state.editorState.getCurrentContent()))
+          console.log('===');
+          console.log('Raw content state:');
+          console.log(JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()), null, 2))
         }
 
         _handleKeyCommand(command) {

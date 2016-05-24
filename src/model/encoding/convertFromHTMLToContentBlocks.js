@@ -364,25 +364,29 @@ function genFragment(
   var blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
   var inBlockConfig = blockRenderMap.get(inBlockType);
 
-  if ((!inBlock || inBlockConfig.nestingEnabled) && blockTags.indexOf(nodeName) !== -1) {
+  if (lastList && inBlock === 'li' && nodeName === 'li') {
     chunk = getBlockDividerChunk(
       blockType,
       depth,
       blockKey
     );
-    inBlock = nodeName;
     newBlock = !inBlockConfig.nestingEnabled;
-  } else if (lastList && inBlock === 'li' && nodeName === 'li') {
-    chunk = getBlockDividerChunk(
-      blockType,
-      depth,
-      blockKey
-    );
     inBlock = nodeName;
-    newBlock = !inBlockConfig.nestingEnabled;
+    //blockType = getBlockTypeForTag(inBlock, lastList, blockRenderMap);
+    //inBlockConfig = blockRenderMap.get(blockType);
     nextBlockType = lastList === 'ul' ?
       'unordered-list-item' :
       'ordered-list-item';
+  } else if ((!inBlock || inBlockConfig.nestingEnabled) && blockTags.indexOf(nodeName) !== -1) {
+    chunk = getBlockDividerChunk(
+      blockType,
+      depth,
+      blockKey
+    );
+    newBlock = !inBlockConfig.nestingEnabled;
+    inBlock = nodeName;
+    //blockType = getBlockTypeForTag(inBlock, lastList, blockRenderMap);
+    //inBlockConfig = blockRenderMap.get(blockType);
   }
 
   // Recurse through children
@@ -393,6 +397,7 @@ function genFragment(
 
   var entityId: ?string = null;
   var href: ?string = null;
+  var hasNestingEnabled: boolean = inBlockConfig && inBlockConfig.nestingEnabled;
 
   while (child) {
     if (nodeName === 'a' && child.href && hasValidLinkText(child)) {
@@ -404,10 +409,6 @@ function genFragment(
 
     // if we are on an invalid block we can re-use the key since it wont generate a block
     isValidBlock = blockTags.indexOf(nodeName) !== -1;
-    var hasNestingEnabled = inBlockConfig && inBlockConfig.nestingEnabled;
-
-    // todo add a check if we are inside a list container and we are not nested inside any element
-    // this way we know that this key should be not nested, instead should be a root key
 
     var chunkKey = (
       blockKey ?
@@ -431,15 +432,32 @@ function genFragment(
       chunkKey
     );
 
+    if (isValidBlock && !hasNestingEnabled) {
+      // check to see if we have a valid parent that could adopt this child
+      var directParent: ?Node= child.parentNode;
+
+      while (!hasNestingEnabled && directParent) {
+        if (directParent) {
+          blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
+          var parentBlockType = getBlockTypeForTag(directParent.nodeName.toLowerCase(), lastList, blockRenderMap);
+          var parentBlockConfig = blockRenderMap.get(parentBlockType);
+
+          hasNestingEnabled = parentBlockConfig && parentBlockConfig.nestingEnabled;
+        }
+
+        directParent = directParent && directParent.parentNode ? directParent.parentNode : null;
+      }
+    }
+
     chunk = joinChunks(chunk, newChunk, hasNestingEnabled);
     var sibling: ?Node = child.nextSibling;
 
     // Put in a newline to break up blocks inside blocks
     if (
       sibling &&
-      blockTags.indexOf(nodeName) >= 0 &&
       inBlock &&
-      isValidBlock && chunkKey.split('/').length === 1 // not nested element or invalid
+      isValidBlock &&
+      chunkKey.split('/').length === 1 // not nested element or invalid
     ) {
       chunk = joinChunks(chunk, getSoftNewlineChunk());
     }
@@ -450,13 +468,13 @@ function genFragment(
   }
 
   if (newBlock) {
+    chunkKey = blockKey ? blockKey + '/' + generateRandomKey() : generateRandomKey();
     chunk = joinChunks(
       chunk,
       getBlockDividerChunk(
         nextBlockType,
         depth,
-        blockKey ? blockKey + '/' + generateRandomKey() : generateRandomKey(),
-        !!blockKey
+        chunkKey
       )
     );
   }
@@ -500,7 +518,6 @@ function getChunkForHTML(
     -1,
     blockRenderMap
   );
-
 
   // join with previous block to prevent weirdness on paste
   if (chunk.text.indexOf('\r') === 0) {
@@ -559,7 +576,6 @@ function convertFromHTMLtoContentBlocks(
       var end = start + textBlock.length;
       var inlines = nullthrows(chunk).inlines.slice(start, end);
       var entities = nullthrows(chunk).entities.slice(start, end);
-      var key = null;
       var characterList = List(
         inlines.map((style, ii) => {
           var data = {style, entity: (null: ?string)};
@@ -569,41 +585,35 @@ function convertFromHTMLtoContentBlocks(
           return CharacterMetadata.create(data);
         })
       );
+      var key  = nullthrows(chunk).keys[ii];
       start = end + 1;
 
       var blockType = nullthrows(chunk).blocks[ii].type;
       var blockConfig = blockRenderMap.get(blockType);
+      var nextChunkKey = nullthrows(chunk).keys[ii+1];
+      var hasChildren = key && nextChunkKey && nextChunkKey.indexOf(key + '/') !== -1;
 
-      if (blockConfig && blockConfig.nestingEnabled) {
-        key  = nullthrows(chunk).keys[ii];
+      if (blockConfig && blockConfig.nestingEnabled && hasChildren) {
         var character = ' ';
-        var nextChunkKey = nullthrows(chunk).keys[ii+1];
-        var hasChildren = key && nextChunkKey && nextChunkKey.indexOf(key + '/') !== -1;
-
-        var blockKey = key ? key : generateRandomKey();
-
-        var contentBlock = [
-          new ContentBlock({
-            key: blockKey,
-            type: blockType,
-            depth: nullthrows(chunk).blocks[ii].depth,
-            text: character,
-            characterList: List(Repeat(CharacterMetadata.create(), character.length))
-          })
-        ];
+        var blockKey = key || generateRandomKey();
 
         if ((hasChildren && textBlock) || !hasChildren) {
-          contentBlock.push(
+          return [
+            new ContentBlock({
+              key: blockKey,
+              type: blockType,
+              depth: nullthrows(chunk).blocks[ii].depth,
+              text: character,
+              characterList: List(Repeat(CharacterMetadata.create(), character.length))
+            }),
             new ContentBlock({
               key: blockKey + '/' + generateRandomKey(),
               type: 'unstyled',
               text: textBlock,
               characterList,
             })
-          );
+          ];
         }
-
-        return contentBlock;
       }
 
       return new ContentBlock({
@@ -615,8 +625,6 @@ function convertFromHTMLtoContentBlocks(
       });
     }
   );
-
-  //console.log(JSON.stringify(contentBlocks, null, 2));
 
   return flatten(contentBlocks);
 }
