@@ -80,8 +80,10 @@ const NestedTextEditorUtil = {
 
     var currentBlock = contentState.getBlockForKey(key);
     var nestedBlocks = contentState.getBlockChildren(key);
-    /*var renderOpt = blockRenderMap.get(currentBlock.getType());
-    var hasNestingEnabled = renderOpt && renderOpt.nestingEnabled;*/
+
+    // Option of rendering for the current block
+    var renderOpt = blockRenderMap.get(currentBlock.getType());
+    var hasNestingEnabled = renderOpt && renderOpt.nestingEnabled;
 
     // Press enter
     if (command === 'split-block') {
@@ -100,7 +102,16 @@ const NestedTextEditorUtil = {
       }
     }
 
+    // Prevent creation of nested blocks
+    if (!hasNestingEnabled && command == 'split-nested-block') {
+      command = 'split-block'
+    }
+
     switch (command) {
+      case 'split-block':
+        contentState = splitBlockInContentState(contentState, selectionState);
+        return EditorState.push(editorState, contentState, 'split-block');
+
       case 'split-nested-block':
         contentState = splitBlockWithNestingInContentState(contentState, selectionState);
         return EditorState.push(editorState, contentState, 'split-block');
