@@ -101,8 +101,8 @@ class DraftEditorContents extends React.Component {
     const directionMap = nullthrows(editorState.getDirectionMap());
     const blocksAsArray = content.getFirstLevelBlocks().toArray();
 
-    return <div data-contents="true">
-      <DraftEditorBlocks
+    return <DraftEditorBlocks
+        type="contents"
         selection={selection}
         forceSelection={forceSelection}
         decorator={decorator}
@@ -114,8 +114,7 @@ class DraftEditorContents extends React.Component {
         customStyleMap={customStyleMap}
         getBlockTree={editorState.getBlockTree.bind(editorState)}
         getBlockChildren={content.getBlockChildren.bind(content)}
-      />
-    </div>;
+      />;
   }
 }
 

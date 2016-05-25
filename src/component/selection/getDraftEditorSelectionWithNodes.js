@@ -39,21 +39,6 @@ function getDraftEditorSelectionWithNodes(
   focusNode: Node,
   focusOffset: number
 ): DOMDerivedSelection {
-  // if we end-up having the data-blocks component in our selection we need to make
-  // sure we pass the focus to the last child within it
-  if (focusNode && focusNode.getAttribute && focusNode.getAttribute('data-blocks'))  {
-    focusNode = focusNode.lastChild;
-    var child = focusNode;
-
-    // navigate throught the html elements until we get into the last textNode
-    while (child) {
-      focusNode = child;
-      child = child.lastChild;
-    }
-
-    focusOffset = typeof focusNode === 'string' ? focusNode.length : focusOffset;
-  }
-
   var anchorIsTextNode = anchorNode.nodeType === Node.TEXT_NODE;
   var focusIsTextNode = focusNode.nodeType === Node.TEXT_NODE;
 
@@ -136,7 +121,17 @@ function getDraftEditorSelectionWithNodes(
  * Identify the first leaf descendant for the given node.
  */
 function getFirstLeaf(node: Node): Node {
-  while (node.firstChild && getSelectionOffsetKeyForNode(node.firstChild)) {
+  while (
+    node.firstChild &&
+    (
+      // data-blocks has no offset
+      (
+        node.firstChild instanceof Element &&
+        node.firstChild.getAttribute('data-blocks') === 'true'
+      ) ||
+      getSelectionOffsetKeyForNode(node.firstChild)
+    )
+  ) {
     node = node.firstChild;
   }
   return node;
@@ -146,7 +141,17 @@ function getFirstLeaf(node: Node): Node {
  * Identify the last leaf descendant for the given node.
  */
 function getLastLeaf(node: Node): Node {
-  while (node.lastChild && getSelectionOffsetKeyForNode(node.lastChild)) {
+  while (
+    node.lastChild &&
+    (
+      // data-blocks has no offset
+      (
+        node.lastChild instanceof Element &&
+        node.lastChild.getAttribute('data-blocks') === 'true'
+      ) ||
+      getSelectionOffsetKeyForNode(node.lastChild)
+    )
+  ) {
     node = node.lastChild;
   }
   return node;

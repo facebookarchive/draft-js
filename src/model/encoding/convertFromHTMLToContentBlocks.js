@@ -594,7 +594,7 @@ function convertFromHTMLtoContentBlocks(
       var hasChildren = key && nextChunkKey && nextChunkKey.indexOf(key + '/') !== -1;
 
       if (blockConfig && blockConfig.nestingEnabled && hasChildren) {
-        var character = ' ';
+        var character = '';
         var blockKey = key || generateRandomKey();
 
         if ((hasChildren && textBlock) || !hasChildren) {

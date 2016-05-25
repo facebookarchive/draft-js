@@ -35,6 +35,7 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 class DraftEditorBlocks extends React.Component {
   render(): React.Element {
     const {
+      type,
       blockRenderMap,
       blockRendererFn,
       blockStyleFn,
@@ -168,7 +169,12 @@ class DraftEditorBlocks extends React.Component {
       }
     }
 
-    return <div data-blocks="true">{blocks}</div>;
+    const dataContents = type === 'contents' ? true : null;
+    const dataBlocks = dataContents ? null : true;
+
+    return (
+      <div data-contents={dataContents} data-blocks={dataBlocks} >{blocks}</div>
+    );
   }
 }
 

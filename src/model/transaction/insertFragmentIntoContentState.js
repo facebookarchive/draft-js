@@ -15,7 +15,6 @@
 
 var BlockMapBuilder = require('BlockMapBuilder');
 
-var generateRandomKey = require('generateRandomKey');
 var insertIntoList = require('insertIntoList');
 var invariant = require('invariant');
 
@@ -98,7 +97,6 @@ function insertFragmentIntoContentState(
       var appendToHead = fragment.first();
 
       var modifiedHead = block.merge({
-        key: appendToHead.getKey(),
         text: headText + appendToHead.getText(),
         characterList: headCharacters.concat(appendToHead.getCharacterList()),
         type: headText ? block.getType() : appendToHead.getType(),
@@ -117,10 +115,9 @@ function insertFragmentIntoContentState(
       var tailText = text.slice(targetOffset, blockSize);
       var tailCharacters = chars.slice(targetOffset, blockSize);
       var prependToTail = fragment.last();
-      finalKey = generateRandomKey();
+      finalKey = prependToTail.getKey();
 
       var modifiedTail = prependToTail.merge({
-        key: finalKey,
         text: prependToTail.getText() + tailText,
         characterList: prependToTail
           .getCharacterList()
