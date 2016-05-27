@@ -72,6 +72,10 @@ function convertBlocksFromRaw(
       var entities = decodeEntityRanges(text, filteredEntityRanges);
       var characterList = createCharacterList(inlineStyles, entities);
 
+      // Push parent block first
+      result.push(new ContentBlock({key, type, text, depth, characterList}));
+
+      // Then push child blocks
       result = result.concat(
         convertBlocksFromRaw(
           blocks,
@@ -81,8 +85,6 @@ function convertBlocksFromRaw(
           block
         )
       );
-
-      result.push(new ContentBlock({key, type, text, depth, characterList}));
 
       return result;
     }, []
@@ -106,9 +108,6 @@ function convertFromRawToDraftState(
   );
 
   var contentBlocks = convertBlocksFromRaw(blocks, fromStorageToLocal, blockRenderMap);
-
-  console.log(JSON.stringify(contentBlocks, null, 2));
-
   return ContentState.createFromBlockArray(contentBlocks);
 }
 
