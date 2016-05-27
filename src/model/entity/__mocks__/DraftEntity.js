@@ -10,9 +10,9 @@
 var DraftEntity = jest.genMockFromModule('DraftEntity');
 
 var DraftEntityInstance = {
-  getType: jest.fn().mockReturnValue(''),
-  getMutability: jest.fn().mockReturnValue(''),
-  getData: jest.fn().mockReturnValue({}),
+  getType: jest.fn(() => ''),
+  getMutability: jest.fn(() => ''),
+  getData: jest.fn(() => ({})),
 };
 
 var count = 0;
