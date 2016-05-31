@@ -14,6 +14,7 @@
 'use strict';
 
 var generateRandomKey = require('generateRandomKey');
+var generateNestedKey = require('generateNestedKey');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
 import type {BlockMap} from 'BlockMap';
@@ -42,8 +43,17 @@ function getContentStateFragment(
   var startIndex = blockKeys.indexOf(startKey);
   var endIndex = blockKeys.indexOf(endKey) + 1;
 
+  // nesting uses keys to handle their blocks
+  // we need to generate new keys but preserving their nesting
+  var newKeyHashMap = {};
+
   var slice = blockMap.slice(startIndex, endIndex).map((block, blockKey) => {
-    var newKey = generateRandomKey();
+    var parentKey = block.getParentKey();
+    var newKey = newKeyHashMap[blockKey] = (
+      parentKey && newKeyHashMap[parentKey] ?
+        generateNestedKey(newKeyHashMap[parentKey]) :
+        generateRandomKey()
+    );
 
     var text = block.getText();
     var chars = block.getCharacterList();

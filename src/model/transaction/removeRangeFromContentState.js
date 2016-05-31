@@ -35,6 +35,16 @@ function removeRangeFromContentState(
 
   var startBlock = blockMap.get(startKey);
   var endBlock = blockMap.get(endKey);
+
+  var nextBlock = contentState.getBlockAfter(endKey);
+  var nextBlockKey = nextBlock ? nextBlock.getKey() : '';
+  var topMostCommonParentKey = nextBlockKey.split('/').reduce((value, key, index) => {
+    if (endKey.indexOf(key) !== -1) {
+      value.push(key);
+    }
+    return value;
+  }, []).join('/');
+
   var characterList;
 
   if (startBlock === endBlock) {
@@ -62,6 +72,7 @@ function removeRangeFromContentState(
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
+    .filterNot((_, k) => topMostCommonParentKey.indexOf(k) !== -1)
     .concat(Immutable.Map([[endKey, null]]))
     .map((_, k) => { return k === startKey ? modifiedStart : null; });
 

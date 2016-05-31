@@ -40,51 +40,27 @@ const flatten = list => list.reduce(
   (a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
 );
 
-const enabledNestingConfiguration = {
-  nestingEnabled: true
-};
-
-const defaultEnabledBlocks = [
-  'unordered-list-item',
-  'ordered-list-item',
-  'blockquote',
-];
-
 const EMPTY_CHAR = '';
 const EMPTY_CHAR_LIST = List(Repeat(CharacterMetadata.create(), EMPTY_CHAR.length));
 
-const DefaultBlockRenderMap = Immutable.Map(
-  DefaultDraftBlockRenderMap.keySeq().toArray().reduce((o, v, i) => {
-    // we are manually enabling all default draft blocks to support nesting for this example
-    const blockExtendConfiguration = (
-      defaultEnabledBlocks.indexOf(v) !== -1 ?
-      enabledNestingConfiguration : {}
-    );
-
-    o[v] = Object.assign({}, DefaultDraftBlockRenderMap.get(v), blockExtendConfiguration);
-    return o;
-  }, {
-    'table': {
-      element: 'table',
-      nestingEnabled: true
-    },
-    'table-body': {
-      element: 'tbody',
-      nestingEnabled: true
-    },
-    'table-header': {
-      element: 'thead',
-      nestingEnabled: true
-    },
-    'table-cell': {
-      element: 'td',
-      nestingEnabled: true
-    },
-    'table-row': {
-      element: 'tr',
-      nestingEnabled: true
-    }
-  })
+const DefaultBlockRenderMap = new Immutable.Map(
+  new Immutable.fromJS(
+    DefaultDraftBlockRenderMap.toJS()
+  ).mergeDeep(
+    new Immutable.fromJS(
+      {
+        'blockquote': {
+          nestingEnabled: true
+        },
+        'unordered-list-item':{
+          nestingEnabled: true
+        },
+        'ordered-list-item': {
+          nestingEnabled: true
+        }
+      }
+    )
+  ).toJS()
 );
 
 const NestedTextEditorUtil = {
@@ -226,16 +202,18 @@ const NestedTextEditorUtil = {
           previousBlock &&
           previousBlock.getKey() === currentBlock.getParentKey()
         ) {
-          const blockMap = contentState.getBlockMap();
-
-          // the previous block is invalid so we need a new target
-          const targetBlock = contentState.getBlockBefore(
-            getAncestorBlock(currentBlock, contentState).getKey()
+          const targetBlock = getFirstAvailableLeafBeforeBlock(
+            currentBlock,
+            contentState
           );
 
-          // if we dont have any targetBlock its because the invalid block
-          // is the first block on the array so we need to create a new block before it
-          const targetKey = targetBlock ? targetBlock.getKey() : generateRandomKey();
+          if (targetBlock === currentBlock) {
+            return null;
+          }
+
+          const blockMap = contentState.getBlockMap();
+
+          const targetKey = targetBlock.getKey();
 
           const newContentState = ContentState.createFromBlockArray(
             flatten(
@@ -303,7 +281,7 @@ const NestedTextEditorUtil = {
           const blockMap = contentState.getBlockMap();
 
           // the previous block is invalid so we need a new target
-          const targetBlock = getFirstLeafBlock(nextBlock, contentState);
+          const targetBlock = getFirstAvailableLeafAfterBlock(currentBlock, contentState);
 
           const newContentState = ContentState.createFromBlockArray(
             flatten(
@@ -345,8 +323,11 @@ const NestedTextEditorUtil = {
         }
         break;
       case 'split-block':
-        contentState = splitBlockInContentState(contentState, selectionState);
-        return EditorState.push(editorState, contentState, 'split-block');
+        if (selectionState.isCollapsed()) {
+          contentState = splitBlockInContentState(contentState, selectionState);
+          return EditorState.push(editorState, contentState, 'split-block');
+        }
+        break;
 
       case 'split-nested-block':
         contentState = splitBlockWithNestingInContentState(contentState, selectionState);
@@ -370,9 +351,14 @@ const NestedTextEditorUtil = {
             .filter(block => block !== null)
             .map((block, index) => {
               if (block === currentBlock) {
+                const splittedBlockType = (
+                  !parentHasWrapper && (hasWrapper || !parentBlock.getParentKey()) ?
+                  'unstyled' :
+                  parentBlock.getType()
+                );
                 const splittedBlock = new ContentBlock({
                   key: targetKey,
-                  type: hasWrapper || !parentBlock.getParentKey() ? 'unstyled' : parentBlock.getType(),
+                  type: splittedBlockType,
                   depth: parentBlock ? parentBlock.getDepth() : 0,
                   text: currentBlock.getText().slice(selectionState.getEndOffset()),
                   characterList: currentBlock.getCharacterList().slice(selectionState.getEndOffset())
@@ -392,8 +378,8 @@ const NestedTextEditorUtil = {
                     key: block.getKey(),
                     type: block.getType(),
                     depth: block.getDepth(),
-                    text: currentBlock.getText().slice(0, selectionState.getEndOffset()),
-                    characterList: currentBlock.getCharacterList().slice(0, selectionState.getEndOffset())
+                    text: currentBlock.getText().slice(0, selectionState.getStartOffset()),
+                    characterList: currentBlock.getCharacterList().slice(0, selectionState.getStartOffset())
                   }),
                   splittedBlock
                 ];
@@ -432,36 +418,41 @@ const NestedTextEditorUtil = {
   }
 };
 
-function getAncestorBlock(
+function getFirstAvailableLeafBeforeBlock(
   block: ContentBlock,
   contentState: ContentState,
-  condition: Function = function() {
-    return true;
-  }
+  condition: Function = function() {}
 ): ContentBlock {
-  while (!!block &&
-    block.getParentKey() !== '' &&
-    condition(block)
+  let previousLeafBlock = contentState.getBlockBefore(block.getKey());
+
+  while (
+    !!previousLeafBlock &&
+    contentState.getBlockChildren(previousLeafBlock.getKey()).size !== 0 &&
+    !condition(previousLeafBlock)
   ) {
-    block = contentState.getBlockForKey(block.getParentKey());
+    previousLeafBlock = contentState.getBlockBefore(previousLeafBlock.getKey());
   }
-  return block;
+
+  return previousLeafBlock || block;
 }
 
-function getFirstLeafBlock(
+function getFirstAvailableLeafAfterBlock(
   block: ContentBlock,
   contentState: ContentState,
-  condition: Function = function() {
-    return true;
-  }
+  condition: Function = function() {}
 ): ContentBlock {
-  while (!!block &&
-    contentState.getBlockChildren(block.getKey()).size > 0 &&
-    condition(block)
+  let nextLeafBlock = contentState.getBlockAfter(block.getKey());
+
+  while (
+    !!nextLeafBlock &&
+    contentState.getBlockChildren(nextLeafBlock.getKey()).size !== 0 &&
+    contentState.getBlockAfter(nextLeafBlock.getKey()) &&
+    !condition(nextLeafBlock)
   ) {
-    block = contentState.getBlockChildren(block.getKey()).first();
+    nextLeafBlock = contentState.getBlockAfter(nextLeafBlock.getKey());
   }
-  return block;
+
+  return nextLeafBlock || block;
 }
 
 module.exports = NestedTextEditorUtil;
