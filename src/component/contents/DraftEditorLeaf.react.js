@@ -150,9 +150,7 @@ class DraftEditorLeaf extends React.Component {
 
     if (customStyleFn) {
       const newStyles = customStyleFn(styleSet);
-      if (newStyles !== undefined) {
-        styleObj = Object.assign(styleObj, newStyles);
-      }
+      styleObj = Object.assign(styleObj, newStyles);
     }
 
     return (
