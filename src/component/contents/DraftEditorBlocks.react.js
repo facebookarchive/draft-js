@@ -24,7 +24,7 @@ const nullthrows = require('nullthrows');
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
 /**
- * `DraftEditorContents` is the container component for all block components
+ * `DraftEditorBlocks` is the container component for all block components
  * rendered for a `DraftEditor`. It is optimized to aggressively avoid
  * re-rendering blocks whenever possible.
  *
@@ -173,6 +173,8 @@ class DraftEditorBlocks extends React.Component {
     const dataBlocks = dataContents ? null : true;
 
     return (
+      // data-contents will be true for the root level block otherwise
+      // it will just be a block container
       <div data-contents={dataContents} data-blocks={dataBlocks} >{blocks}</div>
     );
   }

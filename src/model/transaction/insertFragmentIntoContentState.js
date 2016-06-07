@@ -18,6 +18,8 @@ var BlockMapBuilder = require('BlockMapBuilder');
 var insertIntoList = require('insertIntoList');
 var invariant = require('invariant');
 
+var randomizeBlockMapKeys = require('randomizeBlockMapKeys');
+
 import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
@@ -25,7 +27,7 @@ import type SelectionState from 'SelectionState';
 function insertFragmentIntoContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-  fragment: BlockMap
+  fragmentBlockMap: BlockMap
 ): ContentState {
   invariant(
     selectionState.isCollapsed(),
@@ -36,6 +38,11 @@ function insertFragmentIntoContentState(
   var targetOffset = selectionState.getStartOffset();
 
   var blockMap = contentState.getBlockMap();
+
+  // we need to make sure that the fragment have unique keys
+  // that would not clash with the blockMap, so we need to
+  // generate new set of keys for all nested elements
+  var fragment = randomizeBlockMapKeys(fragmentBlockMap);
 
   var fragmentSize = fragment.size;
   var finalKey;

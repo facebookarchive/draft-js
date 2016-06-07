@@ -56,7 +56,7 @@ class MyEditor extends React.Component {
 ```js
 import {convertFromRaw} from 'draft-js';
 
-var contentState = convertFronRaw({
+var contentState = convertFromRaw({
     blocks: [
         {
             type: 'heading-one',

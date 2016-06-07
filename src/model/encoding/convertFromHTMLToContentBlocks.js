@@ -20,6 +20,7 @@ const DraftEntity = require('DraftEntity');
 const Immutable = require('immutable');
 const URI = require('URI');
 
+const generateNestedKey = require('generateNestedKey');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
@@ -29,11 +30,6 @@ const sanitizeDraftText = require('sanitizeDraftText');
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
-
-const flatten = list => list.reduce(
-    (a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
-);
-
 
 var {
   List,
@@ -141,11 +137,17 @@ function getListBlockType(
 function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap
 ): Array<string> {
+  // Some blocks must be treated as unstyled when not present on the blockRenderMap
   const unstyledElement = blockRenderMap.get('unstyled').element;
-  return blockRenderMap
+  const defaultUnstyledSet = new Immutable.Set(['p']);
+  const userDefinedSupportedBlockSet = (
+    blockRenderMap
     .map((config) => config.element)
     .valueSeq()
     .toSet()
+  );
+
+  return defaultUnstyledSet.merge(userDefinedSupportedBlockSet)
     .filter((tag) => tag !== unstyledElement)
     .toArray()
     .sort();
@@ -372,8 +374,6 @@ function genFragment(
     );
     newBlock = !inBlockConfig.nestingEnabled;
     inBlock = nodeName;
-    //blockType = getBlockTypeForTag(inBlock, lastList, blockRenderMap);
-    //inBlockConfig = blockRenderMap.get(blockType);
     nextBlockType = lastList === 'ul' ?
       'unordered-list-item' :
       'ordered-list-item';
@@ -385,8 +385,6 @@ function genFragment(
     );
     newBlock = !inBlockConfig.nestingEnabled;
     inBlock = nodeName;
-    //blockType = getBlockTypeForTag(inBlock, lastList, blockRenderMap);
-    //inBlockConfig = blockRenderMap.get(blockType);
   }
 
   // Recurse through children
@@ -414,7 +412,7 @@ function genFragment(
       blockKey ?
         (
           isValidBlock ?
-            blockKey + '/' + generateRandomKey() :
+            generateNestedKey(blockKey) :
             blockKey
         ) :
       isValidBlock ? generateRandomKey() : ''
@@ -468,7 +466,7 @@ function genFragment(
   }
 
   if (newBlock) {
-    chunkKey = blockKey ? blockKey + '/' + generateRandomKey() : generateRandomKey();
+    chunkKey = blockKey && hasNestingEnabled ? generateNestedKey(blockKey) : generateRandomKey();
     chunk = joinChunks(
       chunk,
       getBlockDividerChunk(
@@ -561,7 +559,6 @@ function convertFromHTMLtoContentBlocks(
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
-
   var chunk = getChunkForHTML(html, DOMBuilder, blockRenderMap);
 
   if (chunk == null) {
@@ -597,7 +594,10 @@ function convertFromHTMLtoContentBlocks(
         var character = '';
         var blockKey = key || generateRandomKey();
 
-        if ((hasChildren && textBlock) || !hasChildren) {
+        // if we have a valid block that support nesting, that also has children
+        // we should make sure that it's text is converted to an unstyled element
+        // since blocks can only either have text or children an never both
+        if ((hasChildren && textBlock)) {
           return [
             new ContentBlock({
               key: blockKey,
@@ -607,7 +607,7 @@ function convertFromHTMLtoContentBlocks(
               characterList: List(Repeat(CharacterMetadata.create(), character.length))
             }),
             new ContentBlock({
-              key: blockKey + '/' + generateRandomKey(),
+              key: generateNestedKey(blockKey),
               type: 'unstyled',
               text: textBlock,
               characterList,
@@ -617,7 +617,7 @@ function convertFromHTMLtoContentBlocks(
       }
 
       return new ContentBlock({
-        key: key || generateRandomKey(),
+        key: key,
         type: blockType,
         depth: nullthrows(chunk).blocks[ii].depth,
         text: textBlock,
@@ -626,7 +626,8 @@ function convertFromHTMLtoContentBlocks(
     }
   );
 
-  return flatten(contentBlocks);
+  // we need to flatten the array
+  return contentBlocks.reduce((a, b) => a.concat(b), []);
 }
 
 module.exports = convertFromHTMLtoContentBlocks;

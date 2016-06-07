@@ -38,6 +38,18 @@ function removeRangeFromContentState(
 
   var nextBlock = contentState.getBlockAfter(endKey);
   var nextBlockKey = nextBlock ? nextBlock.getKey() : '';
+
+  /*
+   * when dealing with selection ranges across nested blocks we need to be able to
+   * identify what is the most common shared parent beteween sibling blocks
+   *
+   * example
+   *
+   * li > bq > unstyled
+   * li > bq > header-one
+   *
+   * the topMosCommonParentKey would be the key for `li > bq`
+   */
   var topMostCommonParentKey = nextBlockKey.split('/').reduce((value, key, index) => {
     if (endKey.indexOf(key) !== -1) {
       value.push(key);

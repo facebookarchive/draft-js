@@ -11,14 +11,14 @@
 
 jest.disableAutomock();
 
-var ContentState = require('ContentState');
-var NestedTextEditorUtil = require('NestedTextEditorUtil');
+const ContentState = require('ContentState');
+const NestedTextEditorUtil = require('NestedTextEditorUtil');
 
 describe('convertFromRawToDraftState', () => {
-  var convertFromRawToDraftState = require('convertFromRawToDraftState');
+  const convertFromRawToDraftState = require('convertFromRawToDraftState');
 
-  it('should generate a ContentState', function() {
-    var result = convertFromRawToDraftState({
+  it('should generate a ContentState', () => {
+    const result = convertFromRawToDraftState({
       blocks: [
         {
           type: 'unstyled',
@@ -32,8 +32,8 @@ describe('convertFromRawToDraftState', () => {
     expect(result.getBlockMap().size).toEqual(1);
   });
 
-  it('should generate a nested ContentState', function() {
-    var contentState = convertFromRawToDraftState({
+  it('should generate a nested ContentState', () => {
+    const contentState = convertFromRawToDraftState({
       blocks: [
         {
           type: 'blockquote',
@@ -55,16 +55,16 @@ describe('convertFromRawToDraftState', () => {
 
     expect(contentState.getBlockMap().size).toEqual(3);
 
-    var mainBlocks = contentState.getFirstLevelBlocks();
-    var mainBlock = mainBlocks.first();
+    const mainBlocks = contentState.getFirstLevelBlocks();
+    const mainBlock = mainBlocks.first();
 
     expect(mainBlocks.size).toBe(1);
     expect(mainBlock.getType()).toBe('blockquote');
 
-    var mainKey = mainBlock.getKey();
+    const mainKey = mainBlock.getKey();
 
     // Verify nesting
-    var children = contentState.getBlockChildren(mainKey);
+    const children = contentState.getBlockChildren(mainKey);
     expect(children.size).toBe(2);
 
     // Check order in blockMap

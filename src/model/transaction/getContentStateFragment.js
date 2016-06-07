@@ -13,8 +13,7 @@
 
 'use strict';
 
-var generateRandomKey = require('generateRandomKey');
-var generateNestedKey = require('generateNestedKey');
+var randomizeBlockMapKeys = require('randomizeBlockMapKeys');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
 import type {BlockMap} from 'BlockMap';
@@ -39,50 +38,43 @@ function getContentStateFragment(
   );
 
   var blockMap = contentWithoutEdgeEntities.getBlockMap();
+
+  var randomizedBlockMapKeys = randomizeBlockMapKeys(blockMap);
+
+  var randomizedBlockKeys = randomizedBlockMapKeys.keySeq();
   var blockKeys = blockMap.keySeq();
+
   var startIndex = blockKeys.indexOf(startKey);
   var endIndex = blockKeys.indexOf(endKey) + 1;
 
-  // nesting uses keys to handle their blocks
-  // we need to generate new keys but preserving their nesting
-  var newKeyHashMap = {};
-
-  var slice = blockMap.slice(startIndex, endIndex).map((block, blockKey) => {
-    var parentKey = block.getParentKey();
-    var newKey = newKeyHashMap[blockKey] = (
-      parentKey && newKeyHashMap[parentKey] ?
-        generateNestedKey(newKeyHashMap[parentKey]) :
-        generateRandomKey()
-    );
+  var slice = randomizedBlockMapKeys.slice(startIndex, endIndex).map((block, blockKey) => {
+    var keyIndex = randomizedBlockKeys.indexOf(blockKey);
 
     var text = block.getText();
     var chars = block.getCharacterList();
 
     if (startKey === endKey) {
       return block.merge({
-        key: newKey,
         text: text.slice(startOffset, endOffset),
         characterList: chars.slice(startOffset, endOffset),
       });
     }
 
-    if (blockKey === startKey) {
+    if (keyIndex === startIndex) {
       return block.merge({
-        key: newKey,
         text: text.slice(startOffset),
         characterList: chars.slice(startOffset),
       });
     }
 
-    if (blockKey === endKey) {
+    if (keyIndex === endIndex) {
       return block.merge({
-        key: newKey,
         text: text.slice(0, endOffset),
         characterList: chars.slice(0, endOffset),
       });
     }
 
-    return block.set('key', newKey);
+    return block;
   });
 
   return slice.toOrderedMap();

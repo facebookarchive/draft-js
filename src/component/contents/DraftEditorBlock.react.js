@@ -227,6 +227,7 @@ class DraftEditorBlock extends React.Component {
 
     const nestedBlocks = getBlockChildren ? getBlockChildren(block.getKey()) : [];
 
+    // Render nested blocks or text but never both at the same time.
     return (
       <div data-offset-key={offsetKey} className={className}>
         {nestedBlocks && nestedBlocks.size && nestedBlocks.size > 0 ?

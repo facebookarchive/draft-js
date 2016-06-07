@@ -21,6 +21,7 @@ var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');
 var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 var generateRandomKey = require('generateRandomKey');
+const generateNestedKey = require('generateNestedKey');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
@@ -57,7 +58,7 @@ function convertBlocksFromRaw(
 
       key = parentKey && parentBlockRenderingConfig &&
         parentBlockRenderingConfig.nestingEnabled ?
-          parentKey + key :
+          generateNestedKey(parentKey) :
           key;
 
       var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
@@ -81,7 +82,7 @@ function convertBlocksFromRaw(
           blocks,
           fromStorageToLocal,
           blockRenderMap,
-          key + '/',
+          key,
           block
         )
       );

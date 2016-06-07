@@ -13,15 +13,15 @@
 
 'use strict';
 
-var Immutable = require('immutable');
-var generateNestedKey = require('generateNestedKey');
-var invariant = require('invariant');
-var ContentBlock = require('ContentBlock');
+const Immutable = require('immutable');
+const generateNestedKey = require('generateNestedKey');
+const invariant = require('invariant');
+const ContentBlock = require('ContentBlock');
 
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-var {
+const {
   List
 } = Immutable;
 
@@ -45,39 +45,39 @@ function splitBlockWithNestingInContentState(
     'Selection range must be collapsed.'
   );
 
-  var key = selectionState.getAnchorKey();
-  var offset = selectionState.getAnchorOffset();
-  var blockMap = contentState.getBlockMap();
-  var blockToSplit = blockMap.get(key);
+  const key = selectionState.getAnchorKey();
+  const offset = selectionState.getAnchorOffset();
+  const blockMap = contentState.getBlockMap();
+  const blockToSplit = blockMap.get(key);
 
-  var text = blockToSplit.getText();
-  var chars = blockToSplit.getCharacterList();
+  const text = blockToSplit.getText();
+  const chars = blockToSplit.getCharacterList();
 
-  var firstNestedKey = generateNestedKey(key);
-  var secondNestedKey = generateNestedKey(key);
+  const firstNestedKey = generateNestedKey(key);
+  const secondNestedKey = generateNestedKey(key);
 
-  var newParentBlock = blockToSplit.merge({
+  const newParentBlock = blockToSplit.merge({
     text: '',
     characterList: List()
   });
 
-  var firstNestedBlock = new ContentBlock({
+  const firstNestedBlock = new ContentBlock({
     key: firstNestedKey,
     type: blockType,
     text: text.slice(0, offset),
     characterList: chars.slice(0, offset)
   });
 
-  var secondNestedBlock = new ContentBlock({
+  const secondNestedBlock = new ContentBlock({
     key: secondNestedKey,
     type: blockType,
     text: text.slice(offset),
     characterList: chars.slice(offset)
   });
 
-  var blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
-  var blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
-  var newBlocks = blocksBefore.concat(
+  const blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
+  const blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
+  const newBlocks = blocksBefore.concat(
       [[newParentBlock.getKey(), newParentBlock],
         [firstNestedBlock.getKey(), firstNestedBlock],
         [secondNestedBlock.getKey(), secondNestedBlock]],

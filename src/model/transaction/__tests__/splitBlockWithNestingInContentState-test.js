@@ -18,7 +18,7 @@ var getSampleStateForTesting = require('getSampleStateForTesting');
 var splitBlockWithNestingInContentState = require('splitBlockWithNestingInContentState');
 
 describe('splitBlockWithNestingInContentState', () => {
-  var {
+  const {
     contentState,
     selectionState,
   } = getSampleStateForTesting();
@@ -37,7 +37,7 @@ describe('splitBlockWithNestingInContentState', () => {
 
   it('must be restricted to collapsed selections', () => {
     expect(() => {
-      var nonCollapsed = selectionState.set('focusOffset', 1);
+      const nonCollapsed = selectionState.set('focusOffset', 1);
       return splitBlockWithNestingInContentState(contentState, nonCollapsed);
     }).toThrow();
 
@@ -47,22 +47,22 @@ describe('splitBlockWithNestingInContentState', () => {
   });
 
   it('must split at the beginning of a block', () => {
-    var initialBlock = contentState.getBlockMap().first();
-    var afterSplit = splitBlockWithNestingInContentState(contentState, selectionState);
-    var afterBlockMap = afterSplit.getBlockMap();
+    const initialBlock = contentState.getBlockMap().first();
+    const afterSplit = splitBlockWithNestingInContentState(contentState, selectionState);
+    const afterBlockMap = afterSplit.getBlockMap();
     expect(afterBlockMap.size).toBe(5);
 
-    var preSplitBlock = afterBlockMap.first();
+    const preSplitBlock = afterBlockMap.first();
     expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
     expect(preSplitBlock.getText()).toBe('');
     expect(getInlineStyles(preSplitBlock)).toEqual([]);
     expect(getEntities(preSplitBlock)).toEqual([]);
 
-    var nestedBlocks = afterSplit.getBlockChildren(initialBlock.getKey());
+    const nestedBlocks = afterSplit.getBlockChildren(initialBlock.getKey());
     expect(nestedBlocks.size).toBe(2);
 
-    var firstNestedBlock = nestedBlocks.first();
-    var lastNestedBlock = nestedBlocks.last();
+    const firstNestedBlock = nestedBlocks.first();
+    const lastNestedBlock = nestedBlocks.last();
 
     // First block should contain nothing
     expect(firstNestedBlock.getKey()).not.toBe(lastNestedBlock.getKey());
@@ -92,28 +92,28 @@ describe('splitBlockWithNestingInContentState', () => {
   });
 
   it('must split within a block', () => {
-    var initialBlock = contentState.getBlockMap().first();
-    var SPLIT_OFFSET = 3;
-    var selection = selectionState.merge({
+    const initialBlock = contentState.getBlockMap().first();
+    const SPLIT_OFFSET = 3;
+    const selection = selectionState.merge({
       anchorOffset: SPLIT_OFFSET,
       focusOffset: SPLIT_OFFSET,
     });
 
-    var afterSplit = splitBlockWithNestingInContentState(contentState, selection);
-    var afterBlockMap = afterSplit.getBlockMap();
+    const afterSplit = splitBlockWithNestingInContentState(contentState, selection);
+    const afterBlockMap = afterSplit.getBlockMap();
     expect(afterBlockMap.size).toBe(5);
 
-    var preSplitBlock = afterBlockMap.first();
+    const preSplitBlock = afterBlockMap.first();
     expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
     expect(preSplitBlock.getText()).toBe('');
     expect(getInlineStyles(preSplitBlock)).toEqual([]);
     expect(getEntities(preSplitBlock)).toEqual([]);
 
-    var nestedBlocks = afterSplit.getBlockChildren(initialBlock.getKey());
+    const nestedBlocks = afterSplit.getBlockChildren(initialBlock.getKey());
     expect(nestedBlocks.size).toBe(2);
 
-    var firstNestedBlock = nestedBlocks.first();
-    var lastNestedBlock = nestedBlocks.last();
+    const firstNestedBlock = nestedBlocks.first();
+    const lastNestedBlock = nestedBlocks.last();
 
     // First block should contain everything until offset
     expect(firstNestedBlock.getText()).toBe(initialBlock.getText().slice(0, SPLIT_OFFSET));
@@ -143,28 +143,28 @@ describe('splitBlockWithNestingInContentState', () => {
   });
 
   it('must split at the end of a block', () => {
-    var initialBlock = contentState.getBlockMap().first();
-    var end = initialBlock.getLength();
-    var selection = selectionState.merge({
+    const initialBlock = contentState.getBlockMap().first();
+    const end = initialBlock.getLength();
+    const selection = selectionState.merge({
       anchorOffset: end,
       focusOffset: end,
     });
 
-    var afterSplit = splitBlockWithNestingInContentState(contentState, selection);
-    var afterBlockMap = afterSplit.getBlockMap();
+    const afterSplit = splitBlockWithNestingInContentState(contentState, selection);
+    const afterBlockMap = afterSplit.getBlockMap();
     expect(afterBlockMap.size).toBe(5);
 
-    var preSplitBlock = afterBlockMap.first();
+    const preSplitBlock = afterBlockMap.first();
     expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
     expect(preSplitBlock.getText()).toBe('');
     expect(getInlineStyles(preSplitBlock)).toEqual([]);
     expect(getEntities(preSplitBlock)).toEqual([]);
 
-    var nestedBlocks = afterSplit.getBlockChildren(initialBlock.getKey());
+    const nestedBlocks = afterSplit.getBlockChildren(initialBlock.getKey());
     expect(nestedBlocks.size).toBe(2);
 
-    var firstNestedBlock = nestedBlocks.first();
-    var lastNestedBlock = nestedBlocks.last();
+    const firstNestedBlock = nestedBlocks.first();
+    const lastNestedBlock = nestedBlocks.last();
 
     expect(firstNestedBlock.getKey()).not.toBe(lastNestedBlock.getKey());
     expect(firstNestedBlock.getType()).toBe(lastNestedBlock.getType());
