@@ -40,6 +40,7 @@ type EditorStateRecordType = {
   inlineStyleOverride: ?DraftInlineStyle;
   lastChangeType: ?EditorChangeType;
   nativelyRenderedContent: ?ContentState;
+  preventNativeInsertion: boolean;
   redoStack: Stack<ContentState>;
   selection: ?SelectionState;
   treeMap: ?OrderedMap<string, List<any>>;
@@ -56,6 +57,7 @@ var defaultRecord: EditorStateRecordType = {
   inlineStyleOverride: null,
   lastChangeType: null,
   nativelyRenderedContent: null,
+  preventNativeInsertion: false,
   redoStack: Stack(),
   selection: null,
   treeMap: null,
@@ -188,6 +190,10 @@ class EditorState {
 
   mustForceSelection(): boolean {
     return this.getImmutable().get('forceSelection');
+  }
+
+  mustPreventNativeInsertion(): boolean {
+    return this.getImmutable().get('preventNativeInsertion');
   }
 
   getNativelyRenderedContent(): ?ContentState {
@@ -328,6 +334,18 @@ class EditorState {
       afterSelectionMove,
       afterSelectionMove.getSelection()
     );
+  }
+
+  /**
+   * Prevent native insertion. This is intended to be used when EditorState has
+   * been updated from within `onChange`, to prevent duplicate character
+   * insertion.
+   */
+  static preventNativeInsertion(
+    editorState: EditorState,
+    preventNativeInsertion: boolean
+  ): EditorState {
+    return EditorState.set(editorState, {preventNativeInsertion});
   }
 
   /**
