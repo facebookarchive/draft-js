@@ -149,7 +149,7 @@ class DraftEditorContents extends React.Component {
       const useNewWrapper = wrapperTemplate !== currentWrapperTemplate;
 
       const Element = (
-        blockRenderMap.get(blockType).element ||
+        configForType.element ||
         blockRenderMap.get('unstyled').element
       );
 
