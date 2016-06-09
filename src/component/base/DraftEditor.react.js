@@ -80,10 +80,12 @@ class DraftEditor extends React.Component {
 
   _blockSelectEvents: boolean;
   _clipboard: ?BlockMap;
+  _continuousBackspaceCount: number;
   _guardAgainstRender: boolean;
   _handler: ?Object;
   _dragCount: number;
   _editorKey: string;
+  _lastBackspaceTimeStamp: number;
   _placeholderAccessibilityID: string;
 
   /**
@@ -129,10 +131,12 @@ class DraftEditor extends React.Component {
 
     this._blockSelectEvents = false;
     this._clipboard = null;
+    this._continuousBackspaceCount = 0;
     this._guardAgainstRender = false;
     this._handler = null;
     this._dragCount = 0;
     this._editorKey = generateRandomKey();
+    this._lastBackspaceTimeStamp = 0;
     this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');

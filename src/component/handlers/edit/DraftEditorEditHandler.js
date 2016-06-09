@@ -22,6 +22,7 @@ const onDragStart = require('editOnDragStart');
 const onFocus = require('editOnFocus');
 const onInput = require('editOnInput');
 const onKeyDown = require('editOnKeyDown');
+const onKeyUp = require('editOnKeyUp');
 const onPaste = require('editOnPaste');
 const onSelect = require('editOnSelect');
 
@@ -36,6 +37,7 @@ const DraftEditorEditHandler = {
   onFocus,
   onInput,
   onKeyDown,
+  onKeyUp,
   onPaste,
   onSelect,
 };

@@ -34,6 +34,7 @@ import type {DraftEditorCommand} from 'DraftEditorCommand';
 
 var {isOptionKeyCommand} = KeyBindingUtil;
 var isChrome = UserAgent.isBrowser('Chrome');
+var isIOS = UserAgent.isPlatform('iOS');
 
 /**
  * Map a `DraftEditorCommand` command value to a corresponding function.
@@ -145,6 +146,15 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
   // At this point, we know that we're handling a command of some kind, so
   // we don't want to insert a character following the keydown.
   e.preventDefault();
+
+  if(isIOS && command === 'backspace') {
+    // On iOS 'backspace' acts as 'backspace-word'
+    // starting the 23rd continous event
+    this._lastBackspaceTimeStamp = e.timeStamp;
+    if(this._continuousBackspaceCount++ >= 22) {
+      command = 'backspace-word';
+    }
+  }
 
   // Allow components higher up the tree to handle the command first.
   if (this.props.handleKeyCommand && this.props.handleKeyCommand(command)) {
