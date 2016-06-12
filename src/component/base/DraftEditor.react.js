@@ -85,7 +85,6 @@ class DraftEditor extends React.Component {
   _handler: ?Object;
   _dragCount: number;
   _editorKey: string;
-  _lastBackspaceTimeStamp: number;
   _placeholderAccessibilityID: string;
 
   /**
@@ -136,7 +135,6 @@ class DraftEditor extends React.Component {
     this._handler = null;
     this._dragCount = 0;
     this._editorKey = generateRandomKey();
-    this._lastBackspaceTimeStamp = 0;
     this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');
