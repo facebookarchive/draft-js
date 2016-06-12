@@ -154,6 +154,11 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
     if(this._continuousBackspaceCount++ >= 22) {
       command = 'backspace-word';
     }
+    setTimeout(function(previousCount) {
+      if(this._continuousBackspaceCount === previousCount) {
+        this._continuousBackspaceCount = 0;
+      }
+    }.bind(this, this._continuousBackspaceCount), 300);
   }
 
   // Allow components higher up the tree to handle the command first.
