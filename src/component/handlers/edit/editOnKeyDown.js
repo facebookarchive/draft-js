@@ -158,7 +158,7 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
       if(this._continuousBackspaceCount === previousCount) {
         this._continuousBackspaceCount = 0;
       }
-    }.bind(this, this._continuousBackspaceCount), 300);
+    }.bind(this, this._continuousBackspaceCount), 400);
   }
 
   // Allow components higher up the tree to handle the command first.
