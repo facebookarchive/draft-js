@@ -57,12 +57,7 @@ var inlineTags = {
   s: 'STRIKETHROUGH',
   strike: 'STRIKETHROUGH',
   strong: 'BOLD',
-  u: 'UNDERLINE',
-/**
- *
- *
- * @returns {6 +60,14 @@ var inlineTags = {}
- */
+  u: 'UNDERLINE'
 };
 
 var anchorAttr = [
@@ -383,11 +378,11 @@ function genFragment(
   while (child) {
     if (nodeName === 'a' && child.href && hasValidLinkText(child)) {
       // had to cast to Object due to https://github.com/facebook/flow/issues/1730
-      const anchor:Object = child;
+      const anchor: Object = child;
 
-      var entityConfig = {};
+      let entityConfig = {};
 
-      anchorAttr.forEach(attr => {
+      anchorAttr.forEach((attr) => {
         if (anchor[attr]) {
           entityConfig[attr] = anchor[attr];
         }
