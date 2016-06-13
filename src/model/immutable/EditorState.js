@@ -357,7 +357,7 @@ class EditorState {
     editorState: EditorState,
     contentState: ContentState,
     changeType: EditorChangeType,
-    preventNativeInsertion: boolean
+    preventNativeInsertion: boolean = false
   ): EditorState {
     if (editorState.getCurrentContent() === contentState) {
       return editorState;
