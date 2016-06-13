@@ -384,13 +384,14 @@ class EditorState {
     var selection = editorState.getSelection();
     var currentContent = editorState.getCurrentContent();
     var undoStack = editorState.getUndoStack();
+    var redoStack = editorState.getRedoStack();
     var newContent = contentState;
 
     if (
       selection !== currentContent.getSelectionAfter() ||
       mustBecomeBoundary(editorState, changeType)
     ) {
-      undoStack = undoStack.push(currentContent);
+      undoStack = preventNativeInsertion ? undoStack : undoStack.push(currentContent);
       newContent = newContent.set('selectionBefore', selection);
     } else if (
       changeType === 'insert-characters' ||
@@ -415,7 +416,7 @@ class EditorState {
       currentContent: newContent,
       directionMap,
       undoStack,
-      redoStack: Stack(),
+      redoStack: preventNativeInsertion ? redoStack : Stack(),
       lastChangeType: changeType,
       selection: contentState.getSelectionAfter(),
       forceSelection,
