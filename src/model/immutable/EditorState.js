@@ -356,7 +356,8 @@ class EditorState {
   static push(
     editorState: EditorState,
     contentState: ContentState,
-    changeType: EditorChangeType
+    changeType: EditorChangeType,
+    preventNativeInsertion: boolean
   ): EditorState {
     if (editorState.getCurrentContent() === contentState) {
       return editorState;
@@ -376,6 +377,7 @@ class EditorState {
         selection: contentState.getSelectionAfter(),
         forceSelection,
         inlineStyleOverride: null,
+        preventNativeInsertion,
       });
     }
 
@@ -418,6 +420,7 @@ class EditorState {
       selection: contentState.getSelectionAfter(),
       forceSelection,
       inlineStyleOverride,
+      preventNativeInsertion,
     };
 
     return EditorState.set(editorState, editorStateChanges);
