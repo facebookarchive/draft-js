@@ -189,26 +189,6 @@ describe('NestedTextEditorUtil', () => {
     });
   });
 
-  describe('onSplitBlock', () => {
-    const {
-      onSplitBlock
-    } = NestedTextEditorUtil;
-
-    it('does not handle non-collapsed selections', () => {
-      const nonZero = selectionState.merge({
-        anchorKey: 'b/c',
-        focusKey: 'b/c',
-        anchorOffset: 1,
-        focusOffset: 0
-      });
-      expect(
-        onSplitBlock(EditorState.forceSelection(editorState, nonZero))
-      ).toBe(
-        null
-      );
-    });
-  });
-
   describe('toggleBlockType', () => {
     const {
       toggleBlockType,
