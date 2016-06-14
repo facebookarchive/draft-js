@@ -273,8 +273,6 @@ const NestedTextEditorUtil = {
         return NestedTextEditorUtil.onBackspace(editorState, blockRenderMap);
       case 'delete':
         return NestedTextEditorUtil.onDelete(editorState, blockRenderMap);
-      case 'split-block':
-        return NestedTextEditorUtil.onSplitBlock(editorState, blockRenderMap);
       case 'split-nested-block':
         return NestedTextEditorUtil.onSplitNestedBlock(editorState, blockRenderMap);
       case 'split-parent-block':
@@ -445,26 +443,6 @@ const NestedTextEditorUtil = {
       'delete-character'
     );
 
-  },
-
-  onSplitBlock: function(
-    editorState: EditorState,
-    blockRenderMap: DraftBlockRenderMap = DefaultBlockRenderMap
-  ): ? EditorState {
-    const contentState = editorState.getCurrentContent();
-    const selectionState = editorState.getSelection();
-
-    const canHandleCommand = selectionState.isCollapsed();
-
-    if (!canHandleCommand) {
-      return null;
-    }
-
-    return EditorState.push(
-      editorState,
-      splitBlockInContentState(contentState, selectionState),
-      'split-block'
-    );
   },
 
   onSplitNestedBlock: function(
