@@ -27,8 +27,11 @@ var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 var removeRangeFromContentState = require('removeRangeFromContentState');
 var setBlockTypeForContentState = require('setBlockTypeForContentState');
 var splitBlockInContentState = require('splitBlockInContentState');
+var insertBlockBeforeInContentState = require('insertBlockBeforeInContentState');
+var insertBlockAfterInContentState = require('insertBlockAfterInContentState');
 
 import type {BlockMap} from 'BlockMap';
+import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -172,6 +175,30 @@ var DraftModifier = {
     return splitBlockInContentState(
       withoutText,
       withoutText.getSelectionAfter()
+    );
+  },
+
+  insertBlockBefore: function(
+    contentState: ContentState,
+    selectionState: SelectionState,
+    contentBlock: ContentBlock
+  ): ContentState {
+    return insertBlockBeforeInContentState(
+      contentState,
+      selectionState,
+      contentBlock
+    );
+  },
+
+  insertBlockAfter: function(
+    contentState: ContentState,
+    selectionState: SelectionState,
+    contentBlock: ContentBlock
+  ): ContentState {
+    return insertBlockAfterInContentState(
+      contentState,
+      selectionState,
+      contentBlock
     );
   },
 
