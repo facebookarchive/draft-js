@@ -63,14 +63,23 @@
 }
 
 .RichEditor-editor table {
-    border: 1px solid #ccc;
-    display: block;
+  border: 1px solid #ccc;
+  display: block;
 }
 
 .RichEditor-editor tr {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
+
 .RichEditor-editor td {
-    border: 1px solid black;
+  border: 1px solid black;
+}
+
+#target {
+  width: 600px;
+}
+
+.public-DraftStyleDefault-block {
+  padding-left: 20px;
 }

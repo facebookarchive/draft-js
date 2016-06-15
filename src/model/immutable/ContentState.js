@@ -8,7 +8,8 @@
  *
  * @providesModule ContentState
  * @typechecks
- * @flow */
+ * @flow
+ */
 'use strict';
 
 const BlockMapBuilder = require('BlockMapBuilder');
@@ -54,7 +55,6 @@ class ContentState extends ContentStateRecord {
     return block;
   }
 
-  // return all blocks
   getFirstLevelBlocks(): BlockMap {
     return this.getBlockChildren('');
   }

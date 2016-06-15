@@ -47,7 +47,7 @@ class MyEditor extends React.Component {
 
 ### Commands
 
-`NestedUtils` provides two methods: `NestedUtils.keyBinding` and `NestedUtils.handleKeyCommand` to respond to user interractions with the right behavior for nested content.
+`NestedUtils` provides two methods: `NestedUtils.keyBinding` and `NestedUtils.handleKeyCommand` to respond to user interactions with the right behavior for nested content.
 
 ### Data Conversion
 
@@ -79,10 +79,3 @@ var contentState = convertFromRaw({
     entityMap: {}
 });
 ```
-
-### Usage
-
-```js
-
-```
-
