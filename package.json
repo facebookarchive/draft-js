@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "fbjs": "^0.8.1",
-    "immutable": "^3.7.4"
+    "immutable": "~3.7.4"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0-rc",
