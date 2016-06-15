@@ -408,8 +408,14 @@ function genFragment(
     // if we are on an invalid block we can re-use the key since it wont generate a block
     isValidBlock = blockTags.indexOf(nodeName) !== -1;
 
+    var insideANestableBlock = (
+      chunk.keys.indexOf(blockKey) !== -1 &&
+      lastBlock && blockRenderMap.get(lastBlock) &&
+      blockRenderMap.get(lastBlock).nestingEnabled
+    );
+
     var chunkKey = (
-      blockKey ?
+      blockKey  && (hasNestingEnabled || insideANestableBlock) ?
         (
           isValidBlock ?
             generateNestedKey(blockKey) :
