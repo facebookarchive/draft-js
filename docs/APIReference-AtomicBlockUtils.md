@@ -24,3 +24,23 @@ insertAtomicBlock: function(
   character: string
 ): EditorState
 ```
+
+### insertAtomicBlockBefore
+
+```
+insertAtomicBlockBefore: function(
+  editorState: EditorState,
+  entityKey: string,
+  character: string
+): EditorState
+```
+
+### insertAtomicBlockAfter
+
+```
+insertAtomicBlockAfter: function(
+  editorState: EditorState,
+  entityKey: string,
+  character: string
+): EditorState
+```
