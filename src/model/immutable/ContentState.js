@@ -10,7 +10,6 @@
  * @typechecks
  * @flow
  */
-
 'use strict';
 
 const BlockMapBuilder = require('BlockMapBuilder');
@@ -54,6 +53,17 @@ class ContentState extends ContentStateRecord {
   getBlockForKey(key: string): ContentBlock {
     var block: ContentBlock = this.getBlockMap().get(key);
     return block;
+  }
+
+  getFirstLevelBlocks(): BlockMap {
+    return this.getBlockChildren('');
+  }
+
+  getBlockChildren(key: string): BlockMap {
+    return this.getBlockMap()
+    .filter(function(block) {
+      return block.getParentKey() === key;
+    });
   }
 
   getKeyBefore(key: string): ?string {

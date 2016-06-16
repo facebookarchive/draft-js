@@ -21,11 +21,12 @@ var SelectionState = require('SelectionState');
 import type {BlockMap} from 'BlockMap';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {List, OrderedMap} from 'immutable';
+import type {List} from 'immutable';
 import type {EditorChangeType} from 'EditorChangeType';
 
 var {
   OrderedSet,
+  OrderedMap,
   Record,
   Stack,
 } = Immutable;

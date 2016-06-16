@@ -39,44 +39,60 @@ var CUSTOM_BLOCK_MAP = Immutable.Map({
   'code-block': {
     element: 'pre',
   },
-  'paragraph': {
-    element: 'p',
-  },
   'unstyled': {
     element: 'div',
   },
 });
+function assertInlineStyles(block, comparison) {
+  var styles = block.getCharacterList().map(c => c.getStyle());
+  expect(styles.toJS()).toEqual(comparison);
+}
+
+// Don't want to couple this to a specific way of generating entity IDs so
+// just checking their existance
+function assertEntities(block, comparison) {
+  var entities = block.getCharacterList().map(c => c.getEntity());
+  entities.toJS().forEach((entity, ii) => {
+    expect(comparison[ii]).toBe(!!entity);
+  });
+}
+
+function assertDepths(blocks, comparison) {
+  expect(
+    blocks.map(b => b.getDepth())
+  ).toEqual(
+    comparison
+  );
+}
+
+function assertBlockTypes(blocks, comparison) {
+  expect(
+    blocks.map(b => b.getType())
+  ).toEqual(
+    comparison
+  );
+}
+
+function assertBlockTexts(blocks, comparison) {
+  expect(
+    blocks.map(b => b.getText().trim())
+  ).toEqual(
+    comparison
+  );
+}
+
+function assertBlockIsChildrenOf(block, comparison) {
+  var blockKey = block.getKey();
+  var comparisonKey = comparison.getKey();
+
+  expect(
+    blockKey.indexOf(comparisonKey) !== -1
+  ).toBe(
+    true
+  );
+}
 
 describe('DraftPasteProcessor', function() {
-  function assertInlineStyles(block, comparison) {
-    var styles = block.getCharacterList().map(c => c.getStyle());
-    expect(styles.toJS()).toEqual(comparison);
-  }
-
-  // Don't want to couple this to a specific way of generating entity IDs so
-  // just checking their existance
-  function assertEntities(block, comparison) {
-    var entities = block.getCharacterList().map(c => c.getEntity());
-    entities.toJS().forEach((entity, ii) => {
-      expect(comparison[ii]).toBe(!!entity);
-    });
-  }
-
-  function assertDepths(blocks, comparison) {
-    expect(
-      blocks.map(b => b.getDepth())
-    ).toEqual(
-      comparison
-    );
-  }
-
-  function assertBlockTypes(blocks, comparison) {
-    expect(
-      blocks.map(b => b.getType())
-    ).toEqual(
-      comparison
-    );
-  }
 
   it('must identify italics text', function() {
     var html = '<i>hello</i> hi';
@@ -163,7 +179,7 @@ describe('DraftPasteProcessor', function() {
     var html = '<p><span><span><span>Word</span></span></span>' +
     '<span><span>,</span></span></p>';
     var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
-    assertBlockTypes(output, ['paragraph']);
+    assertBlockTypes(output, ['unstyled']);
   });
 
   it('must preserve spaces', function() {
@@ -198,8 +214,8 @@ describe('DraftPasteProcessor', function() {
     var html = '<div><p>hi</p><p>hello</p></div>';
     var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     assertBlockTypes(output, [
-      'paragraph',
-      'paragraph',
+      'unstyled',
+      'unstyled',
     ]);
   });
 
@@ -371,5 +387,143 @@ describe('DraftPasteProcessor', function() {
       'unordered-list-item',
     ]);
     assertDepths(output, [0, 0, 0, 1, 1, 0]);
+  });
+});
+
+describe('DraftPasteProcessor when nesting support is enabled', function() {
+  const nestingEnabledBlockRenderMap  = CUSTOM_BLOCK_MAP.merge(
+    Immutable.Map({
+      'blockquote': {
+        element: 'blockquote',
+        nestingEnabled: true
+      },
+      'unstyled': {
+        element: 'div',
+        nestingEnabled: true
+      },
+      'unordered-list-item': {
+        element: 'li',
+        nestingEnabled: true
+      },
+      'ordered-list-item' : {
+        element: 'li',
+        nestingEnabled: true
+      },
+      'header-one': {
+        element: 'h1',
+        nestingEnabled: true
+      }
+    })
+  );
+
+  it('must generate blocks with nested keys', function() {
+    var html = `
+    <blockquote>
+      <h1>Nested block</h1>
+    </blockquote>
+    `;
+
+    var output = DraftPasteProcessor.processHTML(
+      html,
+      nestingEnabledBlockRenderMap
+    );
+
+    assertBlockIsChildrenOf(output[1], output[0]);
+
+    assertBlockTypes(output, [
+      'blockquote',
+      'header-one'
+    ]);
+  });
+
+  it('leaft with text and blocks should wrap text on unstyled', function() {
+    var nestingText = 'nesting enabled block';
+    var html = `
+      <li>${nestingText}<h1>foo</h1></li>
+    `;
+
+    var output = DraftPasteProcessor.processHTML(
+      html,
+      nestingEnabledBlockRenderMap
+    );
+
+    var listBlock = output[0];
+    var unstyledBlock = output[1];
+
+    assertBlockTypes(output, [
+      'unordered-list-item',
+      'unstyled',
+      'header-one'
+    ]);
+
+    assertBlockIsChildrenOf(unstyledBlock, listBlock);
+
+    expect(unstyledBlock.getText()).toBe(nestingText);
+  });
+
+  it('should create multiple nesting sibblings', function() {
+    var html = `
+    <h1>Draft.js tree PR demo</h1>
+    <p>This website is a very simple demo of Draft.js working with a Tree data structure.</p>
+    <ul>
+      <li>
+        <h3>Why a Tree data structure</h3>
+        <p>It allows the use of nested blocks inside lists / blockquotes / etc</p>
+      </li>
+      <li>
+        <h3>How to test it?</h3>
+        <p>You can change the input HTML in the textarea below.</p>
+      </li>
+    </ul>
+    `;
+
+    var output = DraftPasteProcessor.processHTML(
+      html,
+      nestingEnabledBlockRenderMap
+    );
+
+    assertBlockTypes(output, [
+      'header-one',
+      'unstyled',
+      'unordered-list-item',
+      'header-three',
+      'unstyled',
+      'unordered-list-item',
+      'header-three',
+      'unstyled'
+    ]);
+  });
+
+  it('should create multiple nesting sibblings and retain their text', function() {
+    var html = `
+    <h1>Draft.js tree PR demo</h1>
+		<p>This website is a very simple demo of Draft.js working with a Tree data structure.</p>
+		<ul>
+			<li>
+				<h3>Why a Tree data structure</h3>
+				<p>It allows the use of nested blocks inside lists / blockquotes / etc</p>
+			</li>
+			<li>
+				<h3>How to test it?</h3>
+				<p>You can change the input HTML in the textarea below.</p>
+			</li>
+		</ul>
+    `;
+
+    var output = DraftPasteProcessor.processHTML(
+      html,
+      nestingEnabledBlockRenderMap
+    );
+
+    assertBlockTexts(output, [
+      'Draft.js tree PR demo',
+      'This website is a very simple demo of Draft.js working with a Tree data structure.',
+      '',
+      'Why a Tree data structure',
+      'It allows the use of nested blocks inside lists / blockquotes / etc',
+      '',
+      'How to test it?',
+      'You can change the input HTML in the textarea below.'
+    ]);
   });
 });

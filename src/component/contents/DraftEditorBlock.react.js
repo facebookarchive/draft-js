@@ -32,6 +32,7 @@ const nullthrows = require('nullthrows');
 
 import type {BidiDirection} from 'UnicodeBidiDirection';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
+import type {BlockMap} from 'BlockMap';
 import type {List} from 'immutable';
 
 const SCROLL_BUFFER = 10;
@@ -57,10 +58,26 @@ type Props = {
  */
 class DraftEditorBlock extends React.Component {
   shouldComponentUpdate(nextProps: Props): boolean {
+    const {
+        block,
+        direction,
+        getBlockChildren,
+        tree
+    } = this.props;
+
+    const nestedBlocks = (
+      getBlockChildren ?
+        getBlockChildren(block.getKey()) :
+        false
+    );
+
+    const hasNestedBlocks = nestedBlocks && nestedBlocks.size;
+
     return (
-      this.props.block !== nextProps.block ||
-      this.props.tree !== nextProps.tree ||
-      this.props.direction !== nextProps.direction ||
+      hasNestedBlocks ||
+      block !== nextProps.block ||
+      tree !== nextProps.tree ||
+      direction !== nextProps.direction ||
       (
         isBlockOnSelectionEdge(
           nextProps.selection,
@@ -193,17 +210,30 @@ class DraftEditorBlock extends React.Component {
     }).toArray();
   }
 
+  _renderBlockMap(
+    blocks: BlockMap
+  ): React.Element {
+    var DraftEditorBlocks = this.props.DraftEditorBlocks;
+    return <DraftEditorBlocks {...this.props} blocksAsArray={blocks.valueSeq().toArray()} />;
+  }
+
   render(): React.Element<any> {
-    const {direction, offsetKey} = this.props;
+    const {direction, offsetKey, getBlockChildren, block} = this.props;
     const className = cx({
       'public/DraftStyleDefault/block': true,
       'public/DraftStyleDefault/ltr': direction === 'LTR',
       'public/DraftStyleDefault/rtl': direction === 'RTL',
     });
 
+    const nestedBlocks = getBlockChildren ? getBlockChildren(block.getKey()) : [];
+
+    // Render nested blocks or text but never both at the same time.
     return (
       <div data-offset-key={offsetKey} className={className}>
-        {this._renderChildren()}
+        {nestedBlocks && nestedBlocks.size && nestedBlocks.size > 0 ?
+          this._renderBlockMap(nestedBlocks) :
+          this._renderChildren()
+        }
       </div>
     );
   }

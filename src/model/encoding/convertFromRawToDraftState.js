@@ -16,35 +16,50 @@ var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
 var DraftEntity = require('DraftEntity');
 
+var DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');
 var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 var generateRandomKey = require('generateRandomKey');
+const generateNestedKey = require('generateNestedKey');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 
-function convertFromRawToDraftState(
-  rawState: RawDraftContentState
-): ContentState {
-  var {blocks, entityMap} = rawState;
+function convertBlocksFromRaw(
+  inputBlocks: Array<RawDraftContentBlock>,
+  fromStorageToLocal: Object,
+  blockRenderMap: DraftBlockRenderMap,
+  parentKey: ?string,
+  parentBlock: ?Object,
+) : Array<ContentBlock> {
+  return inputBlocks.reduce(
+    (result, block) => {
+      var {
+        key,
+        type,
+        text,
+        depth,
+        inlineStyleRanges,
+        entityRanges,
+        blocks
+      } = block;
 
-  var fromStorageToLocal = {};
-  Object.keys(entityMap).forEach(
-    storageKey => {
-      var encodedEntity = entityMap[storageKey];
-      var {type, mutability, data} = encodedEntity;
-      var newKey = DraftEntity.create(type, mutability, data || {});
-      fromStorageToLocal[storageKey] = newKey;
-    }
-  );
+      var parentBlockRenderingConfig = parentBlock ?
+        blockRenderMap.get(parentBlock.type) :
+        null;
 
-  var contentBlocks = blocks.map(
-    block => {
-      var {key, type, text, depth, inlineStyleRanges, entityRanges} = block;
       key = key || generateRandomKey();
       depth = depth || 0;
       inlineStyleRanges = inlineStyleRanges || [];
       entityRanges = entityRanges || [];
+      blocks = blocks || [];
+
+      key = parentKey && parentBlockRenderingConfig &&
+        parentBlockRenderingConfig.nestingEnabled ?
+          generateNestedKey(parentKey) :
+          key;
 
       var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
 
@@ -58,10 +73,42 @@ function convertFromRawToDraftState(
       var entities = decodeEntityRanges(text, filteredEntityRanges);
       var characterList = createCharacterList(inlineStyles, entities);
 
-      return new ContentBlock({key, type, text, depth, characterList});
+      // Push parent block first
+      result.push(new ContentBlock({key, type, text, depth, characterList}));
+
+      // Then push child blocks
+      result = result.concat(
+        convertBlocksFromRaw(
+          blocks,
+          fromStorageToLocal,
+          blockRenderMap,
+          key,
+          block
+        )
+      );
+
+      return result;
+    }, []
+  );
+}
+
+function convertFromRawToDraftState(
+  rawState: RawDraftContentState,
+  blockRenderMap:DraftBlockRenderMap=DefaultDraftBlockRenderMap
+): ContentState {
+  var {blocks, entityMap} = rawState;
+
+  var fromStorageToLocal = {};
+  Object.keys(entityMap).forEach(
+    storageKey => {
+      var encodedEntity = entityMap[storageKey];
+      var {type, mutability, data} = encodedEntity;
+      var newKey = DraftEntity.create(type, mutability, data || {});
+      fromStorageToLocal[storageKey] = newKey;
     }
   );
 
+  var contentBlocks = convertBlocksFromRaw(blocks, fromStorageToLocal, blockRenderMap);
   return ContentState.createFromBlockArray(contentBlocks);
 }
 

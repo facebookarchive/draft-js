@@ -13,16 +13,11 @@
 
 'use strict';
 
-const DraftEditorBlock = require('DraftEditorBlock.react');
-const DraftOffsetKey = require('DraftOffsetKey');
+const DraftEditorBlocks = require('DraftEditorBlocks.react');
 const EditorState = require('EditorState');
 const React = require('React');
-
-const cx = require('cx');
-const joinClasses = require('joinClasses');
 const nullthrows = require('nullthrows');
 
-import type {BidiDirection} from 'UnicodeBidiDirection';
 import type ContentBlock from 'ContentBlock';
 
 type Props = {
@@ -94,6 +89,7 @@ class DraftEditorContents extends React.Component {
     const {
       blockRenderMap,
       blockRendererFn,
+      blockStyleFn,
       customStyleMap,
       editorState,
     } = this.props;
@@ -103,150 +99,23 @@ class DraftEditorContents extends React.Component {
     const forceSelection = editorState.mustForceSelection();
     const decorator = editorState.getDecorator();
     const directionMap = nullthrows(editorState.getDirectionMap());
+    const blocksAsArray = content.getFirstLevelBlocks().toArray();
 
-    const blocksAsArray = content.getBlocksAsArray();
-    const blocks = [];
-    let currentWrapperElement = null;
-    let currentWrapperTemplate = null;
-    let currentDepth = null;
-    let currentWrappedBlocks;
-    let block, key, blockType, child, childProps, wrapperTemplate;
-
-    for (let ii = 0; ii < blocksAsArray.length; ii++) {
-      block = blocksAsArray[ii];
-      key = block.getKey();
-      blockType = block.getType();
-
-      const customRenderer = blockRendererFn(block);
-      let CustomComponent, customProps, customEditable;
-      if (customRenderer) {
-        CustomComponent = customRenderer.component;
-        customProps = customRenderer.props;
-        customEditable = customRenderer.editable;
-      }
-
-      const direction = directionMap.get(key);
-      const offsetKey = DraftOffsetKey.encode(key, 0, 0);
-      const componentProps = {
-        block,
-        blockProps: customProps,
-        customStyleMap,
-        decorator,
-        direction,
-        forceSelection,
-        key,
-        offsetKey,
-        selection,
-        tree: editorState.getBlockTree(key),
-      };
-
-      // Block render map must have a configuration specified for this
-      // block type.
-      const configForType = nullthrows(blockRenderMap.get(blockType));
-
-      wrapperTemplate = configForType.wrapper;
-
-      const useNewWrapper = wrapperTemplate !== currentWrapperTemplate;
-
-      const Element = (
-        blockRenderMap.get(blockType).element ||
-        blockRenderMap.get('unstyled').element
-      );
-
-      const depth = block.getDepth();
-      let className = this.props.blockStyleFn(block);
-
-      // List items are special snowflakes, since we handle nesting and
-      // counters manually.
-      if (Element === 'li') {
-        const shouldResetCount = (
-          useNewWrapper ||
-          currentDepth === null ||
-          depth > currentDepth
-        );
-        className = joinClasses(
-          className,
-          getListItemClasses(blockType, depth, shouldResetCount, direction)
-        );
-      }
-
-      const Component = CustomComponent || DraftEditorBlock;
-      childProps = {
-        className,
-        'data-block': true,
-        'data-editor': this.props.editorKey,
-        'data-offset-key': offsetKey,
-        key,
-      };
-      if (customEditable !== undefined) {
-        childProps = {
-          ...childProps,
-          contentEditable: customEditable,
-          suppressContentEditableWarning: true,
-        };
-      }
-
-      child = React.createElement(
-        Element,
-        childProps,
-        <Component {...componentProps} />,
-      );
-
-      if (wrapperTemplate) {
-        if (useNewWrapper) {
-          currentWrappedBlocks = [];
-          currentWrapperElement = React.cloneElement(
-            wrapperTemplate,
-            {
-              key: key + '-wrap',
-              'data-offset-key': offsetKey,
-            },
-            currentWrappedBlocks
-          );
-          currentWrapperTemplate = wrapperTemplate;
-          blocks.push(currentWrapperElement);
-        }
-        currentDepth = block.getDepth();
-        nullthrows(currentWrappedBlocks).push(child);
-      } else {
-        currentWrappedBlocks = null;
-        currentWrapperElement = null;
-        currentWrapperTemplate = null;
-        currentDepth = null;
-        blocks.push(child);
-      }
-    }
-
-    return <div data-contents="true">{blocks}</div>;
+    return <DraftEditorBlocks
+        type="contents"
+        selection={selection}
+        forceSelection={forceSelection}
+        decorator={decorator}
+        directionMap={directionMap}
+        blocksAsArray={blocksAsArray}
+        blockStyleFn={blockStyleFn}
+        blockRendererFn={blockRendererFn}
+        blockRenderMap={blockRenderMap}
+        customStyleMap={customStyleMap}
+        getBlockTree={editorState.getBlockTree.bind(editorState)}
+        getBlockChildren={content.getBlockChildren.bind(content)}
+      />;
   }
-}
-
-/**
- * Provide default styling for list items. This way, lists will be styled with
- * proper counters and indentation even if the caller does not specify
- * their own styling at all. If more than five levels of nesting are needed,
- * the necessary CSS classes can be provided via `blockStyleFn` configuration.
- */
-function getListItemClasses(
-  type: string,
-  depth: number,
-  shouldResetCount: boolean,
-  direction: BidiDirection
-): string {
-  return cx({
-    'public/DraftStyleDefault/unorderedListItem':
-      type === 'unordered-list-item',
-    'public/DraftStyleDefault/orderedListItem':
-      type === 'ordered-list-item',
-    'public/DraftStyleDefault/reset': shouldResetCount,
-    'public/DraftStyleDefault/depth0': depth === 0,
-    'public/DraftStyleDefault/depth1': depth === 1,
-    'public/DraftStyleDefault/depth2': depth === 2,
-    'public/DraftStyleDefault/depth3': depth === 3,
-    'public/DraftStyleDefault/depth4': depth === 4,
-    'public/DraftStyleDefault/listLTR': direction === 'LTR',
-    'public/DraftStyleDefault/listRTL': direction === 'RTL',
-  });
 }
 
 module.exports = DraftEditorContents;

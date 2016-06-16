@@ -27,4 +27,5 @@ export type RawDraftContentBlock = {
   depth: ?number;
   inlineStyleRanges: ?Array<InlineStyleRange>;
   entityRanges: ?Array<EntityRange>;
+  blocks: ?Array<RawDraftContentBlock>;
 };

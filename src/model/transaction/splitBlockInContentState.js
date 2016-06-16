@@ -13,6 +13,7 @@
 
 'use strict';
 
+var generateNestedKey = require('generateNestedKey');
 var generateRandomKey = require('generateRandomKey');
 var invariant = require('invariant');
 
@@ -32,6 +33,7 @@ function splitBlockInContentState(
   var offset = selectionState.getAnchorOffset();
   var blockMap = contentState.getBlockMap();
   var blockToSplit = blockMap.get(key);
+  var parentKey = blockToSplit.getParentKey();
 
   var text = blockToSplit.getText();
   var chars = blockToSplit.getCharacterList();
@@ -41,7 +43,8 @@ function splitBlockInContentState(
     characterList: chars.slice(0, offset),
   });
 
-  var keyBelow = generateRandomKey();
+  var keyBelow = parentKey ? generateNestedKey(parentKey) : generateRandomKey();
+
   var blockBelow = blockAbove.merge({
     key: keyBelow,
     text: text.slice(offset),

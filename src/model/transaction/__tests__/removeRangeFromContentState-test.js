@@ -15,6 +15,7 @@ jest.disableAutomock();
 
 var Immutable = require('immutable');
 var getSampleStateForTesting = require('getSampleStateForTesting');
+var getSampleStateForTestingNestedBlocks = require('getSampleStateForTestingNestedBlocks');
 var removeRangeFromContentState = require('removeRangeFromContentState');
 var ContentBlock = require('ContentBlock');
 
@@ -423,6 +424,103 @@ describe('removeRangeFromContentState', () => {
       );
 
       checkForCharacterList(alteredBlock);
+    });
+  });
+
+  describe('Removal across nested blocks', () => {
+    var {
+      contentState,
+      selectionState,
+    } = getSampleStateForTestingNestedBlocks();
+
+    it('must preserve parent blocks that do not have all children selected', () => {
+      var selection = selectionState.merge({
+        anchorOffset: 3,
+        focusKey: 'b/c',
+        focusOffset: 3
+      });
+
+      var originalBlockA = contentState.getBlockMap().first();
+      var originalBlockB = contentState.getBlockMap().skip(1).first();
+      var originalBlockBC = contentState.getBlockMap().skip(2).first();
+
+      var afterRemoval = removeRangeFromContentState(contentState, selection);
+      var afterBlockMap = afterRemoval.getBlockMap();
+
+      // we retain the 'b' parent since it has other children 'b/d' and 'b/d/e'
+      expect(afterBlockMap.size).toBe(5);
+
+      var alteredBlock = afterBlockMap.first();
+
+      expect(alteredBlock).not.toBe(originalBlockA);
+      expect(alteredBlock).not.toBe(originalBlockB);
+      expect(alteredBlock).not.toBe(originalBlockBC);
+      expect(alteredBlock.getType()).toBe(originalBlockA.getType());
+      expect(alteredBlock.getText()).toBe(
+        originalBlockA.getText().slice(0, 3) +
+        originalBlockBC.getText().slice(3)
+      );
+
+      var stylesToJS = getInlineStyles(originalBlockA);
+      expect(getInlineStyles(alteredBlock)).toEqual(
+        stylesToJS.slice(0, 3).concat(
+          getInlineStyles(originalBlockBC).slice(3)
+        )
+      );
+
+      var entitiesToJS = getEntities(originalBlockA);
+      expect(getEntities(alteredBlock)).toEqual(
+        entitiesToJS.slice(0, 3).concat(
+          getEntities(originalBlockBC).slice(3)
+        )
+      );
+
+      checkForCharacterList(alteredBlock);
+    });
+
+    it('must remove blocks within the selection while preserving parent of non selected sibblings', () => {
+      var selection = selectionState.merge({
+        anchorOffset: 0,
+        anchorKey: 'b',
+        focusKey: 'b/c',
+        focusOffset: 0
+      });
+
+      var originalBlockB = contentState.getBlockMap().skip(1).first();
+      var originalBlockBC = contentState.getBlockMap().skip(2).first();
+
+      var afterRemoval = removeRangeFromContentState(contentState, selection);
+      var afterBlockMap = afterRemoval.getBlockMap();
+
+      expect(afterBlockMap.size).toBe(5);
+
+      // the block 'b' should still been preserved and remain the second element on the list
+      var retainedBlock = afterBlockMap.skip(1).first();
+      var alteredBlock = afterBlockMap.skip(2).first();
+
+      expect(retainedBlock).toBe(originalBlockB);
+      expect(alteredBlock).not.toBe(originalBlockBC);
+    });
+
+    it('must remove blocks within the selection and their top most common parent', () => {
+      var selection = selectionState.merge({
+        anchorOffset: 4,
+        anchorKey: 'b/c',
+        focusKey: 'b/d/e',
+        focusOffset: 0
+      });
+
+      var originalBlockB = contentState.getBlockMap().skip(1).first();
+
+      var afterRemoval = removeRangeFromContentState(contentState, selection);
+      var afterBlockMap = afterRemoval.getBlockMap();
+
+      var blockKeys = afterBlockMap.keySeq().toArray();
+      var retainedBlock = afterBlockMap.skip(1).first();
+
+      expect(retainedBlock).toBe(originalBlockB);
+      expect(blockKeys.indexOf('b/d')).toBe(-1);
+      expect(blockKeys.indexOf('b/d/e')).toBe(-1);
     });
   });
 });

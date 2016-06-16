@@ -20,6 +20,7 @@ const DraftEntity = require('DraftEntity');
 const Immutable = require('immutable');
 const URI = require('URI');
 
+const generateNestedKey = require('generateNestedKey');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
@@ -33,6 +34,7 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 var {
   List,
   OrderedSet,
+  Repeat,
 } = Immutable;
 
 var NBSP = '&nbsp;';
@@ -72,6 +74,7 @@ type Chunk = {
   inlines: Array<DraftInlineStyle>;
   entities: Array<string>;
   blocks: Array<Block>;
+  keys: Array<string>;
 };
 
 function getEmptyChunk(): Chunk {
@@ -80,6 +83,7 @@ function getEmptyChunk(): Chunk {
     inlines: [],
     entities: [],
     blocks: [],
+    keys: []
   };
 }
 
@@ -93,6 +97,7 @@ function getWhitespaceChunk(inEntity: ?string): Chunk {
     inlines: [OrderedSet()],
     entities,
     blocks: [],
+    keys: []
   };
 }
 
@@ -102,10 +107,11 @@ function getSoftNewlineChunk(): Chunk {
     inlines: [OrderedSet()],
     entities: new Array(1),
     blocks: [],
+    keys: []
   };
 }
 
-function getBlockDividerChunk(block: DraftBlockType, depth: number): Chunk {
+function getBlockDividerChunk(block: DraftBlockType, depth: number, key: string = generateRandomKey()): Chunk {
   return {
     text: '\r',
     inlines: [OrderedSet()],
@@ -114,6 +120,7 @@ function getBlockDividerChunk(block: DraftBlockType, depth: number): Chunk {
       type: block,
       depth: Math.max(0, Math.min(MAX_DEPTH, depth)),
     }],
+    keys: key ? [key] : [],
   };
 }
 
@@ -130,11 +137,17 @@ function getListBlockType(
 function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap
 ): Array<string> {
+  // Some blocks must be treated as unstyled when not present on the blockRenderMap
   const unstyledElement = blockRenderMap.get('unstyled').element;
-  return blockRenderMap
+  const defaultUnstyledSet = new Immutable.Set(['p']);
+  const userDefinedSupportedBlockSet = (
+    blockRenderMap
     .map((config) => config.element)
     .valueSeq()
     .toSet()
+  );
+
+  return defaultUnstyledSet.merge(userDefinedSupportedBlockSet)
     .filter((tag) => tag !== unstyledElement)
     .toArray()
     .sort();
@@ -142,21 +155,23 @@ function getBlockMapSupportedTags(
 
 // custom element conversions
 function getMultiMatchedType(
-  tag: string,
+  tag: ?string,
   lastList: ?string,
   multiMatchExtractor: Array<Function>
 ): ?DraftBlockType {
-  for (let ii = 0; ii < multiMatchExtractor.length; ii++) {
-    const matchType = multiMatchExtractor[ii](tag, lastList);
-    if (matchType) {
-      return matchType;
+  if (tag) {
+    for (let ii = 0; ii < multiMatchExtractor.length; ii++) {
+      const matchType = multiMatchExtractor[ii](tag, lastList);
+      if (matchType) {
+        return matchType;
+      }
     }
   }
   return null;
 }
 
 function getBlockTypeForTag(
-  tag: string,
+  tag: ?string,
   lastList: ?string,
   blockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
@@ -214,7 +229,7 @@ function processInlineTag(
   return currentStyle;
 }
 
-function joinChunks(A: Chunk, B: Chunk): Chunk {
+function joinChunks(A: Chunk, B: Chunk, hasNestedBlock:boolean=false): Chunk {
   // Sometimes two blocks will touch in the DOM and we need to strip the
   // extra delimiter to preserve niceness.
   var lastInA = A.text.slice(-1);
@@ -222,12 +237,14 @@ function joinChunks(A: Chunk, B: Chunk): Chunk {
 
   if (
     lastInA === '\r' &&
-    firstInB === '\r'
+    firstInB === '\r' &&
+    !hasNestedBlock
   ) {
     A.text = A.text.slice(0, -1);
     A.inlines.pop();
     A.entities.pop();
     A.blocks.pop();
+    A.keys.pop();
   }
 
   // Kill whitespace after blocks
@@ -248,6 +265,7 @@ function joinChunks(A: Chunk, B: Chunk): Chunk {
     inlines: A.inlines.concat(B.inlines),
     entities: A.entities.concat(B.entities),
     blocks: A.blocks.concat(B.blocks),
+    keys: A.keys.concat(B.keys)
   };
 }
 
@@ -280,12 +298,16 @@ function genFragment(
   blockTags: Array<string>,
   depth: number,
   blockRenderMap: DraftBlockRenderMap,
-  inEntity?: string
+  inEntity?: string,
+  blockKey?: string
 ): Chunk {
   var nodeName = node.nodeName.toLowerCase();
   var newBlock = false;
   var nextBlockType = 'unstyled';
   var lastLastBlock = lastBlock;
+  var isValidBlock = blockTags.indexOf(nodeName) !== -1;
+  var isListContainer = nodeName === 'ul' || nodeName === 'ol';
+  var inBlockType = getBlockTypeForTag(inBlock, lastList, blockRenderMap);
 
   // Base Case
   if (nodeName === '#text') {
@@ -306,6 +328,7 @@ function genFragment(
       inlines: Array(text.length).fill(inlineStyle),
       entities: Array(text.length).fill(inEntity),
       blocks: [],
+      keys: []
     };
   }
 
@@ -318,10 +341,10 @@ function genFragment(
       lastLastBlock === 'br' &&
       (
         !inBlock ||
-        getBlockTypeForTag(inBlock, lastList, blockRenderMap) === 'unstyled'
+        inBlockType === 'unstyled'
       )
     ) {
-      return getBlockDividerChunk('unstyled', depth);
+      return getBlockDividerChunk('unstyled', depth, blockKey);
     }
     return getSoftNewlineChunk();
   }
@@ -333,31 +356,35 @@ function genFragment(
   inlineStyle = processInlineTag(nodeName, node, inlineStyle);
 
   // Handle lists
-  if (nodeName === 'ul' || nodeName === 'ol') {
+  if (isListContainer) {
     if (lastList) {
       depth += 1;
     }
     lastList = nodeName;
   }
 
-  // Block Tags
-  if (!inBlock && blockTags.indexOf(nodeName) !== -1) {
+  var blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
+  var inBlockConfig = blockRenderMap.get(inBlockType);
+
+  if (lastList && inBlock === 'li' && nodeName === 'li') {
     chunk = getBlockDividerChunk(
-      getBlockTypeForTag(nodeName, lastList, blockRenderMap),
-      depth
+      blockType,
+      depth,
+      blockKey
     );
+    newBlock = !inBlockConfig.nestingEnabled;
     inBlock = nodeName;
-    newBlock = true;
-  } else if (lastList && inBlock === 'li' && nodeName === 'li') {
-    chunk = getBlockDividerChunk(
-      getBlockTypeForTag(nodeName, lastList, blockRenderMap),
-      depth
-    );
-    inBlock = nodeName;
-    newBlock = true;
     nextBlockType = lastList === 'ul' ?
       'unordered-list-item' :
       'ordered-list-item';
+  } else if ((!inBlock || inBlockConfig.nestingEnabled) && blockTags.indexOf(nodeName) !== -1) {
+    chunk = getBlockDividerChunk(
+      blockType,
+      depth,
+      blockKey
+    );
+    newBlock = !inBlockConfig.nestingEnabled;
+    inBlock = nodeName;
   }
 
   // Recurse through children
@@ -368,6 +395,7 @@ function genFragment(
 
   var entityId: ?string = null;
   var href: ?string = null;
+  var hasNestingEnabled: boolean = inBlockConfig && inBlockConfig.nestingEnabled;
 
   while (child) {
     if (nodeName === 'a' && child.href && hasValidLinkText(child)) {
@@ -377,6 +405,25 @@ function genFragment(
       entityId = undefined;
     }
 
+    // if we are on an invalid block we can re-use the key since it wont generate a block
+    isValidBlock = blockTags.indexOf(nodeName) !== -1;
+
+    var insideANestableBlock = (
+      chunk.keys.indexOf(blockKey) !== -1 &&
+      lastBlock && blockRenderMap.get(lastBlock) &&
+      blockRenderMap.get(lastBlock).nestingEnabled
+    );
+
+    var chunkKey = (
+      blockKey  && (hasNestingEnabled || insideANestableBlock) ?
+        (
+          isValidBlock ?
+            generateNestedKey(blockKey) :
+            blockKey
+        ) :
+      isValidBlock ? generateRandomKey() : ''
+    );
+
     newChunk = genFragment(
       child,
       inlineStyle,
@@ -385,17 +432,36 @@ function genFragment(
       blockTags,
       depth,
       blockRenderMap,
-      entityId || inEntity
+      entityId || inEntity,
+      chunkKey
     );
 
-    chunk = joinChunks(chunk, newChunk);
+    if (isValidBlock && !hasNestingEnabled) {
+      // check to see if we have a valid parent that could adopt this child
+      var directParent: ?Node= child.parentNode;
+
+      while (!hasNestingEnabled && directParent) {
+        if (directParent) {
+          blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
+          var parentBlockType = getBlockTypeForTag(directParent.nodeName.toLowerCase(), lastList, blockRenderMap);
+          var parentBlockConfig = blockRenderMap.get(parentBlockType);
+
+          hasNestingEnabled = parentBlockConfig && parentBlockConfig.nestingEnabled;
+        }
+
+        directParent = directParent && directParent.parentNode ? directParent.parentNode : null;
+      }
+    }
+
+    chunk = joinChunks(chunk, newChunk, hasNestingEnabled);
     var sibling: ?Node = child.nextSibling;
 
     // Put in a newline to break up blocks inside blocks
     if (
       sibling &&
-      blockTags.indexOf(nodeName) >= 0 &&
-      inBlock
+      inBlock &&
+      isValidBlock &&
+      chunkKey.split('/').length === 1 // not nested element or invalid
     ) {
       chunk = joinChunks(chunk, getSoftNewlineChunk());
     }
@@ -406,9 +472,14 @@ function genFragment(
   }
 
   if (newBlock) {
+    chunkKey = blockKey && hasNestingEnabled ? generateNestedKey(blockKey) : generateRandomKey();
     chunk = joinChunks(
       chunk,
-      getBlockDividerChunk(nextBlockType, depth)
+      getBlockDividerChunk(
+        nextBlockType,
+        depth,
+        chunkKey
+      )
     );
   }
 
@@ -452,7 +523,6 @@ function getChunkForHTML(
     blockRenderMap
   );
 
-
   // join with previous block to prevent weirdness on paste
   if (chunk.text.indexOf('\r') === 0) {
     chunk = {
@@ -460,6 +530,7 @@ function getChunkForHTML(
       inlines: chunk.inlines.slice(1),
       entities: chunk.entities.slice(1),
       blocks: chunk.blocks,
+      keys: chunk.keys
     };
   }
 
@@ -494,14 +565,14 @@ function convertFromHTMLtoContentBlocks(
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
-
   var chunk = getChunkForHTML(html, DOMBuilder, blockRenderMap);
 
   if (chunk == null) {
     return null;
   }
   var start = 0;
-  return chunk.text.split('\r').map(
+
+  var contentBlocks = chunk.text.split('\r').map(
     (textBlock, ii) => {
       // Make absolutely certain that our text is acceptable.
       textBlock = sanitizeDraftText(textBlock);
@@ -517,17 +588,52 @@ function convertFromHTMLtoContentBlocks(
           return CharacterMetadata.create(data);
         })
       );
+      var key  = nullthrows(chunk).keys[ii];
       start = end + 1;
 
+      var blockType = nullthrows(chunk).blocks[ii].type;
+      var blockConfig = blockRenderMap.get(blockType);
+      var nextChunkKey = nullthrows(chunk).keys[ii+1];
+      var hasChildren = key && nextChunkKey && nextChunkKey.indexOf(key + '/') !== -1;
+
+      if (blockConfig && blockConfig.nestingEnabled && hasChildren) {
+        var character = '';
+        var blockKey = key || generateRandomKey();
+
+        // if we have a valid block that support nesting, that also has children
+        // we should make sure that it's text is converted to an unstyled element
+        // since blocks can only either have text or children an never both
+        if ((hasChildren && textBlock)) {
+          return [
+            new ContentBlock({
+              key: blockKey,
+              type: blockType,
+              depth: nullthrows(chunk).blocks[ii].depth,
+              text: character,
+              characterList: List(Repeat(CharacterMetadata.create(), character.length))
+            }),
+            new ContentBlock({
+              key: generateNestedKey(blockKey),
+              type: 'unstyled',
+              text: textBlock,
+              characterList,
+            })
+          ];
+        }
+      }
+
       return new ContentBlock({
-        key: generateRandomKey(),
-        type: nullthrows(chunk).blocks[ii].type,
+        key: key,
+        type: blockType,
         depth: nullthrows(chunk).blocks[ii].depth,
         text: textBlock,
         characterList,
       });
     }
   );
+
+  // we need to flatten the array
+  return contentBlocks.reduce((a, b) => a.concat(b), []);
 }
 
 module.exports = convertFromHTMLtoContentBlocks;

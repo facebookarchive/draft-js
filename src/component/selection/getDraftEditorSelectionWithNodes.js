@@ -121,7 +121,17 @@ function getDraftEditorSelectionWithNodes(
  * Identify the first leaf descendant for the given node.
  */
 function getFirstLeaf(node: Node): Node {
-  while (node.firstChild && getSelectionOffsetKeyForNode(node.firstChild)) {
+  while (
+    node.firstChild &&
+    (
+      // data-blocks has no offset
+      (
+        node.firstChild instanceof Element &&
+        node.firstChild.getAttribute('data-blocks') === 'true'
+      ) ||
+      getSelectionOffsetKeyForNode(node.firstChild)
+    )
+  ) {
     node = node.firstChild;
   }
   return node;
@@ -131,7 +141,17 @@ function getFirstLeaf(node: Node): Node {
  * Identify the last leaf descendant for the given node.
  */
 function getLastLeaf(node: Node): Node {
-  while (node.lastChild && getSelectionOffsetKeyForNode(node.lastChild)) {
+  while (
+    node.lastChild &&
+    (
+      // data-blocks has no offset
+      (
+        node.lastChild instanceof Element &&
+        node.lastChild.getAttribute('data-blocks') === 'true'
+      ) ||
+      getSelectionOffsetKeyForNode(node.lastChild)
+    )
+  ) {
     node = node.lastChild;
   }
   return node;

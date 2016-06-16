@@ -177,7 +177,8 @@ module.exports = {
       "title": "Modifier",
       "layout": "docs",
       "category": "API Reference",
-      "permalink": "docs/api-reference-modifier.html"
+      "permalink": "docs/api-reference-modifier.html",
+      "next": "experimental-nesting"
     },
     {
       "id": "api-reference-rich-utils",
@@ -194,6 +195,14 @@ module.exports = {
       "category": "API Reference",
       "next": "api-reference-composite-decorator",
       "permalink": "docs/api-reference-selection-state.html"
+    },
+    {
+      "id": "experimental-nesting",
+      "title": "Nesting",
+      "layout": "docs",
+      "category": "Experimental",
+      "next": "api-reference-data-conversion",
+      "permalink": "docs/experimental-nesting.html"
     },
     {
       "id": "getting-started",
