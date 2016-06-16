@@ -52,7 +52,7 @@ const AtomicBlockUtils = {
       'atomic'
     );
 
-    const charData = CharacterMetadata.create({entity: entityKey});
+    const charData = CharacterMetadata.create(entityKey ? {entity: entityKey} : undefined);
 
     const fragmentArray = [
       new ContentBlock({
@@ -92,7 +92,7 @@ const AtomicBlockUtils = {
   ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
-    const charData = CharacterMetadata.create({entity: entityKey});
+    const charData = CharacterMetadata.create(entityKey ? {entity: entityKey} : undefined);
 
     const withAtomicBlock = DraftModifier.insertBlockBefore(contentState, selectionState, new ContentBlock({
       key: generateRandomKey(),
@@ -116,7 +116,7 @@ const AtomicBlockUtils = {
   ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
-    const charData = CharacterMetadata.create({entity: entityKey});
+    const charData = CharacterMetadata.create(entityKey ? {entity: entityKey} : undefined);
 
     const withAtomicBlock = DraftModifier.insertBlockAfter(contentState, selectionState, new ContentBlock({
       key: generateRandomKey(),
