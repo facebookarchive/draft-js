@@ -209,6 +209,12 @@ describe('DraftPasteProcessor', function() {
     expect(output[0].getText()).toBe('hi\nhello');
   });
 
+  it('must strip xml carriages and zero width spaces', function() {
+    var html = 'hi&#13;&#8203;hello';
+    var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    expect(output[0].getText()).toBe('hihello');
+  });
+
   it('must split unstyled blocks on two br tags', function() {
     var html = 'hi<br><br>hello';
     var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
