@@ -101,7 +101,7 @@ function getDraftEditorSelectionWithNodes(
     // cursor from a non-zero offset on one block, through empty blocks,
     // to a matching non-zero offset on other text blocks.
     if (anchorNode === focusNode && anchorOffset === focusOffset) {
-      needsRecovery = anchorNode.firstChild.nodeName !== 'BR';
+      needsRecovery = !!anchorNode.firstChild && anchorNode.firstChild.nodeName !== 'BR';
     }
   }
 
@@ -139,9 +139,10 @@ function getLastLeaf(node: Node): Node {
 
 function getPointForNonTextNode(
   editorRoot: ?HTMLElement,
-  node: Node,
+  startNode: Node,
   childOffset: number
 ): SelectionPoint {
+  let node = startNode;
   var offsetKey: ?string = findAncestorOffsetKey(node);
 
   invariant(

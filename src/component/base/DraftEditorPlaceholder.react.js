@@ -44,7 +44,7 @@ class DraftEditorPlaceholder extends React.Component {
     );
   }
 
-  render(): React.Element {
+  render(): React.Element<any> {
     const hasFocus = this.props.editorState.getSelection().getHasFocus();
 
     const className = cx({

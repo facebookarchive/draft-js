@@ -90,7 +90,7 @@ class DraftEditorContents extends React.Component {
     );
   }
 
-  render(): React.Element {
+  render(): React.Element<any> {
     const {
       blockRenderMap,
       blockRendererFn,

@@ -59,7 +59,7 @@ class Decorator {
   }
 }
 
-var mockLeafRender = jest.fn().mockReturnValue(<span />);
+var mockLeafRender = jest.fn(() => <span />);
 jest.setMock(
   'DraftEditorLeaf.react',
   React.createClass({

@@ -225,11 +225,12 @@ function processInlineTag(
 function joinChunks(A: Chunk, B: Chunk): Chunk {
   // Sometimes two blocks will touch in the DOM and we need to strip the
   // extra delimiter to preserve niceness.
-  var lastInB = B.text.slice(0, 1);
+  var lastInA = A.text.slice(-1);
+  var firstInB = B.text.slice(0, 1);
 
   if (
-    A.text.slice(-1) === '\r' &&
-    lastInB === '\r'
+    lastInA === '\r' &&
+    firstInB === '\r'
   ) {
     A.text = A.text.slice(0, -1);
     A.inlines.pop();
@@ -239,11 +240,11 @@ function joinChunks(A: Chunk, B: Chunk): Chunk {
 
   // Kill whitespace after blocks
   if (
-    A.text.slice(-1) === '\r'
+    lastInA === '\r'
   ) {
     if (B.text === SPACE || B.text === '\n') {
       return A;
-    } else if (lastInB === SPACE || lastInB === '\n') {
+    } else if (firstInB === SPACE || firstInB === '\n') {
       B.text = B.text.slice(1);
       B.inlines.shift();
       B.entities.shift();
@@ -407,7 +408,7 @@ function genFragment(
     );
 
     chunk = joinChunks(chunk, newChunk);
-    var sibling: Node = child.nextSibling;
+    var sibling: ?Node = child.nextSibling;
 
     // Put in a newline to break up blocks inside blocks
     if (
@@ -509,7 +510,7 @@ function convertFromHTMLtoContentBlocks(
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
 ): ?Array<ContentBlock> {
-  // Be ABSOLUTELY SURE that the dom builder you pass hare won't execute
+  // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
