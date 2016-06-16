@@ -52,7 +52,7 @@ const AtomicBlockUtils = {
       'atomic'
     );
 
-    const charData = CharacterMetadata.create({entity: entityKey});
+    const charData = CharacterMetadata.create(entityKey ? {entity: entityKey} : undefined);
 
     const fragmentArray = [
       new ContentBlock({
