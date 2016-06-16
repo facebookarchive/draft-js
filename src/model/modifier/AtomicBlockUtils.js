@@ -61,12 +61,6 @@ const AtomicBlockUtils = {
         text: character,
         characterList: List(Repeat(charData, character.length)),
       }),
-      new ContentBlock({
-        key: generateRandomKey(),
-        type: 'unstyled',
-        text: '',
-        characterList: List(),
-      }),
     ];
 
     const fragment = BlockMapBuilder.createFromArray(fragmentArray);
