@@ -18,20 +18,20 @@ by matching the Draft block render map with the matched tag.
 
 ## Draft default block render map
 
-| HTML element    | Draft block type                        |
+|  HTML element   |            Draft block type             |
 | --------------- | --------------------------------------- |
-| `<h1/>`         | header-one                              |
-| `<h2/>`         | header-two                              |
-| `<h3/>`         | header-three                            |
-| `<h4/>`         | header-four                             |
-| `<h5/>`         | header-five                             |
-| `<h6/>`         | header-six                              |
-| `<h6/>`         | header-six                              |
-| `<blockquote/>` | blockquote                              |
-| `<pre/>`        | code-block                              |
-| `<figure/>`     | atomic                                  |
-| `<li/>`         | unordered-list-item,ordered-list-item** |
-| `<div/>`        | unstyled***                             |
+|     `<h1/>`     |               header-one                |
+|     `<h2/>`     |               header-two                |
+|     `<h3/>`     |              header-three               |
+|     `<h4/>`     |               header-four               |
+|     `<h5/>`     |               header-five               |
+|     `<h6/>`     |               header-six                |
+|     `<h6/>`     |               header-six                |
+| `<blockquote/>` |               blockquote                |
+|    `<pre/>`     |               code-block                |
+|   `<figure/>`   |                 atomic                  |
+|     `<li/>`     | unordered-list-item,ordered-list-item** |
+|    `<div/>`     |               unstyled***               |
 
 \*\* - Block type will be based on the parent `<ul/>` or `<ol/>`
 
@@ -50,23 +50,26 @@ the editor blockRender props.
 // 'heading-two' and 'paragraph' as valid block types and
 // updated the unstyled element to become a paragraph.
 const blockRenderMap = Immutable.Map({
-	'header-two': {
-		element: 'h2'
-	},
-	'paragraph': {
-		element: 'p'
-	},
-	'unstyled': {
-		element: 'p'
-	}
+  'header-two': {
+   element: 'h2'
+  },
+  'paragraph': {
+   element: 'p'
+  },
+  'unstyled': {
+   element: 'p'
+  }
 });
 
 class RichEditor() {
-    ...
-    render() {
-      return (<Editor ...
-                blockRenderMap={blockRenderMap} />);
-    }
+  render() {
+    return (
+      <Editor
+        ...
+        blockRenderMap={blockRenderMap}
+      />
+    );
+  }
 }
 ```
 
@@ -77,12 +80,12 @@ this can be done by using the DefaultDraftBlockRenderMap reference to create a n
 
 ```js
 const blockRenderMap = Immutable.Map({
-	'paragraph': {
-		element: 'p'
-	},
-	'unstyled': {
-		element: 'p'
-	}
+  'paragraph': {
+    element: 'p'
+  },
+  'unstyled': {
+    element: 'p'
+  }
 });
 
 // Include 'paragraph' as a valid block and updated the unstyled element but
@@ -90,11 +93,14 @@ const blockRenderMap = Immutable.Map({
 const extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
 class RichEditor() {
-    ...
-    render() {
-      return (<Editor ...
-                blockRenderMap={extendedBlockRenderMap} />);
-    }
+  render() {
+    return (
+      <Editor
+        ...
+        blockRenderMap={extendedBlockRenderMap}
+      />
+    );
+  }
 }
 ```
 
@@ -115,34 +121,38 @@ to wrap any other custom block type
 
 ```js
 class myCustomBlock {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        return (
-            <div className='MyCustomBlock'>
-                {this.props.children}
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className='MyCustomBlock'>
+        {this.props.children}
+      </div>
+    );
+  }
 }
 
 const blockRenderMap = Immutable.Map({
-	'myCustomBlock': {
-        element: 'section', // will be used during paste or html conversion to auto match your component
-		wrapper: <myCustomBlock {...this.props} />
-	}
+  'myCustomBlock': {
+    element: 'section', // will be used during paste or html conversion to auto match your component
+    wrapper: <myCustomBlock {...this.props} />
+  }
 });
 
 // keep support for other draft default block types and add our myCustomBlock type
 const extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
 class RichEditor() {
-    ...
-    render() {
-      return (<Editor ...
-                blockRenderMap={extendedBlockRenderMap} />);
-    }
+  ...
+  render() {
+    return (
+      <Editor
+        ...
+        blockRenderMap={extendedBlockRenderMap}
+      />
+    );
+  }
 }
 ```
