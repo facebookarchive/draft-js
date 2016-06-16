@@ -13,7 +13,6 @@
 
 'use strict';
 
-var generateRandomKey = require('generateRandomKey');
 var invariant = require('invariant');
 
 import type ContentBlock from 'ContentBlock';
@@ -31,7 +30,6 @@ function insertBlockBeforeInContentState(
   );
 
   var key = selectionState.getAnchorKey();
-  var offset = selectionState.getAnchorOffset();
   var blockMap = contentState.getBlockMap();
   var firstBlockAfterNewBlock = blockMap.get(key);
   var blocksBefore = blockMap.toSeq().takeUntil(v => v === firstBlockAfterNewBlock);
