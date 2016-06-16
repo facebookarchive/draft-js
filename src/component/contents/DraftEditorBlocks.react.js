@@ -40,7 +40,7 @@ class DraftEditorBlocks extends React.Component {
       blockRendererFn,
       blockStyleFn,
       customStyleMap,
-      blocksAsArray,
+      blockMap,
       selection,
       forceSelection,
       decorator,
@@ -56,8 +56,7 @@ class DraftEditorBlocks extends React.Component {
     let currentWrappedBlocks;
     let block, key, blockType, child, childProps, wrapperTemplate;
 
-    for (let ii = 0; ii < blocksAsArray.length; ii++) {
-      block = blocksAsArray[ii];
+    blockMap.forEach((block) => {
       key = block.getKey();
       blockType = block.getType();
 
@@ -85,7 +84,7 @@ class DraftEditorBlocks extends React.Component {
         blockRenderMap,
         blockRendererFn,
         blockStyleFn,
-        blocksAsArray,
+        blockMap,
         getBlockTree,
         getBlockChildren,
         DraftEditorBlocks: DraftEditorBlocks,
@@ -167,7 +166,7 @@ class DraftEditorBlocks extends React.Component {
         currentDepth = null;
         blocks.push(child);
       }
-    }
+    });
 
     const dataContents = type === 'contents' ? true : null;
     const dataBlocks = dataContents ? null : true;

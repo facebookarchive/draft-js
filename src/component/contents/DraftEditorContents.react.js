@@ -99,7 +99,7 @@ class DraftEditorContents extends React.Component {
     const forceSelection = editorState.mustForceSelection();
     const decorator = editorState.getDecorator();
     const directionMap = nullthrows(editorState.getDirectionMap());
-    const blocksAsArray = content.getFirstLevelBlocks().toArray();
+    const blockMap = content.getFirstLevelBlocks();
 
     return <DraftEditorBlocks
         type="contents"
@@ -107,7 +107,7 @@ class DraftEditorContents extends React.Component {
         forceSelection={forceSelection}
         decorator={decorator}
         directionMap={directionMap}
-        blocksAsArray={blocksAsArray}
+        blockMap={blockMap}
         blockStyleFn={blockStyleFn}
         blockRendererFn={blockRendererFn}
         blockRenderMap={blockRenderMap}
