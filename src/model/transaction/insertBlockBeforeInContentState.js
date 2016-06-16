@@ -35,9 +35,9 @@ function insertBlockBeforeInContentState(
   var blockMap = contentState.getBlockMap();
   var firstBlockAfterNewBlock = blockMap.get(key);
   var blocksBefore = blockMap.toSeq().takeUntil(v => v === firstBlockAfterNewBlock);
-  var blocksAfter = blockMap.toSeq().skipUntil(v => v === firstBlockAfterNewBlock).rest();
+  var blocksAfter = blockMap.toSeq().skipUntil(v => v === firstBlockAfterNewBlock);
   var newBlocks = blocksBefore.concat(
-      [[contentBlock.getKey(), contentBlock], [firstBlockAfterNewBlock.getKey(), firstBlockAfterNewBlock]],
+      [[contentBlock.getKey(), contentBlock]],
       blocksAfter
     ).toOrderedMap();
 
