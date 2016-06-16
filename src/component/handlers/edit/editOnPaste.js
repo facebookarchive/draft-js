@@ -124,6 +124,19 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
         );
         return;
       }
+    } else if (
+      internalClipboard &&
+      data.types.includes('com.apple.webarchive') &&
+      !data.types.includes('text/html') &&
+      areTextBlocksAndClipboardEqual(textBlocks, internalClipboard)
+    ) {
+      // Safari does not properly store text/html in some cases.
+      // Use the internalClipboard if present and equal to what is on
+      // the clipboard. See https://bugs.webkit.org/show_bug.cgi?id=19893.
+      this.update(
+        insertFragment(this.props.editorState, internalClipboard)
+      );
+      return;
     }
 
     // If there is html paste data, try to parse that.
@@ -138,6 +151,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
         return;
       }
     }
+
     // Otherwise, create a new fragment from our pasted text. Also
     // empty the internal clipboard, since it's no longer valid.
     this.setClipboard(null);
@@ -176,6 +190,16 @@ function insertFragment(
     editorState,
     newContent,
     'insert-fragment'
+  );
+}
+
+function areTextBlocksAndClipboardEqual(
+  textBlocks: Array<string>,
+  blockMap: BlockMap
+): boolean {
+  return (
+    textBlocks.length === blockMap.size &&
+    blockMap.valueSeq().every((block, ii) => block.getText() === textBlocks[ii])
   );
 }
 

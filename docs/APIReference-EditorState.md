@@ -267,8 +267,7 @@ static push(
 ```
 Returns a new `EditorState` object with the specified `ContentState` applied
 as the new `currentContent`. Based on the `changeType`, this `ContentState`
-may be regarded as a boundary state for undo/redo behavior. See
-[Undo/Redo](/draft-js/docs/advanced-undo-redo.html) discussion for details.
+may be regarded as a boundary state for undo/redo behavior.
 
 All content changes must be applied to the EditorState with this method.
 

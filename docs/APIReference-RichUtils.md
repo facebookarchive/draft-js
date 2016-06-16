@@ -37,7 +37,7 @@ getCurrentBlockType(
 handleKeyCommand(
   editorState: EditorState,
   command: string
-): boolean
+): ?EditorState
 ```
 
 ### insertSoftNewline

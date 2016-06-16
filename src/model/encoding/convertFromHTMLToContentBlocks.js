@@ -143,7 +143,7 @@ function getBlockMapSupportedTags(
     .map((config) => config.element)
     .valueSeq()
     .toSet()
-    .filter((tag) => tag !== unstyledElement)
+    .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
 }
