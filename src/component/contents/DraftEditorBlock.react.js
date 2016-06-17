@@ -61,17 +61,14 @@ class DraftEditorBlock extends React.Component {
     const {
         block,
         direction,
-        getBlockChildren,
+        blockMap,
         tree
     } = this.props;
 
-    const nestedBlocks = (
-      getBlockChildren ?
-        getBlockChildren(block.getKey()) :
-        false
+    const hasNestedBlocks = (
+     blockMap && blockMap.size > 0 ||
+     nextProps.blockMap && nextProps.blockMap.size > 0
     );
-
-    const hasNestedBlocks = nestedBlocks && nestedBlocks.size;
 
     return (
       hasNestedBlocks ||
@@ -218,20 +215,18 @@ class DraftEditorBlock extends React.Component {
   }
 
   render(): React.Element<any> {
-    const {direction, offsetKey, getBlockChildren, block} = this.props;
+    const {direction, offsetKey, blockMap} = this.props;
     const className = cx({
       'public/DraftStyleDefault/block': true,
       'public/DraftStyleDefault/ltr': direction === 'LTR',
       'public/DraftStyleDefault/rtl': direction === 'RTL',
     });
 
-    const nestedBlocks = getBlockChildren(block.getKey());
-
     // Render nested blocks or text but never both at the same time.
     return (
       <div data-offset-key={offsetKey} className={className}>
-        {nestedBlocks && nestedBlocks.size && nestedBlocks.size > 0 ?
-          this._renderBlockMap(nestedBlocks) :
+        {blockMap && blockMap.size && blockMap.size > 0 ?
+          this._renderBlockMap(blockMap) :
           this._renderChildren()
         }
       </div>

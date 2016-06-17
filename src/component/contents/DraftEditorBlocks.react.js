@@ -41,12 +41,14 @@ class DraftEditorBlocks extends React.Component {
       blockStyleFn,
       customStyleMap,
       blockMap,
+      blockMapTree,
       selection,
       forceSelection,
       decorator,
       directionMap,
       getBlockTree,
-      getBlockChildren
+      getBlockChildren,
+      getBlockDescendants
     } = this.props;
 
     const blocks = [];
@@ -54,7 +56,7 @@ class DraftEditorBlocks extends React.Component {
     let currentWrapperTemplate = null;
     let currentDepth = null;
     let currentWrappedBlocks;
-    let block, key, blockType, child, childProps, wrapperTemplate;
+    let key, blockType, child, childProps, wrapperTemplate;
 
     blockMap.forEach((block) => {
       key = block.getKey();
@@ -70,6 +72,8 @@ class DraftEditorBlocks extends React.Component {
 
       const direction = directionMap.get(key);
       const offsetKey = DraftOffsetKey.encode(key, 0, 0);
+      const blockChildren = blockMapTree.get(key);
+
       const componentProps = {
         block,
         blockProps: customProps,
@@ -84,9 +88,11 @@ class DraftEditorBlocks extends React.Component {
         blockRenderMap,
         blockRendererFn,
         blockStyleFn,
-        blockMap,
+        blockMapTree,
+        blockMap: blockChildren,
         getBlockTree,
         getBlockChildren,
+        getBlockDescendants,
         DraftEditorBlocks: DraftEditorBlocks,
         tree: getBlockTree(key)
       };

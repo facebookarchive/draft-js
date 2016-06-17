@@ -409,6 +409,7 @@ function genFragment(
     isValidBlock = blockTags.indexOf(nodeName) !== -1;
 
     var insideANestableBlock = (
+      blockKey &&
       chunk.keys.indexOf(blockKey) !== -1 &&
       lastBlock && blockRenderMap.get(lastBlock) &&
       blockRenderMap.get(lastBlock).nestingEnabled

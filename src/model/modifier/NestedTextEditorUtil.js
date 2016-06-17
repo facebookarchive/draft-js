@@ -18,7 +18,6 @@ const EditorState = require('EditorState');
 const Immutable = require('immutable');
 const generateNestedKey = require('generateNestedKey');
 const generateRandomKey = require('generateRandomKey');
-const splitBlockInContentState = require('splitBlockInContentState');
 const splitBlockWithNestingInContentState = require('splitBlockWithNestingInContentState');
 
 import type {

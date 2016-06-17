@@ -100,6 +100,7 @@ class DraftEditorContents extends React.Component {
     const decorator = editorState.getDecorator();
     const directionMap = nullthrows(editorState.getDirectionMap());
     const blockMap = content.getFirstLevelBlocks();
+    const blockMapTree = content.getBlockDescendants();
 
     return <DraftEditorBlocks
         type="contents"
@@ -108,12 +109,14 @@ class DraftEditorContents extends React.Component {
         decorator={decorator}
         directionMap={directionMap}
         blockMap={blockMap}
+        blockMapTree={blockMapTree}
         blockStyleFn={blockStyleFn}
         blockRendererFn={blockRendererFn}
         blockRenderMap={blockRenderMap}
         customStyleMap={customStyleMap}
         getBlockTree={editorState.getBlockTree.bind(editorState)}
         getBlockChildren={content.getBlockChildren.bind(content)}
+        getBlockDescendants={content.getBlockDescendants.bind(content)}
       />;
   }
 }

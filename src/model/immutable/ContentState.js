@@ -59,6 +59,32 @@ class ContentState extends ContentStateRecord {
     return this.getBlockChildren('');
   }
 
+  getBlockDescendants(): Object {
+    return this.getBlockMap()
+      .reverse()
+      .reduce((treeMap, block) => {
+        const key = block.getKey();
+        const parentKey = block.getParentKey();
+        const blockList = treeMap.set(key, treeMap.get(key) || new Immutable.OrderedMap());
+
+        if (parentKey) {
+          const parentList = blockList.set(parentKey, blockList.get(parentKey) || new Immutable.OrderedMap());
+          const addBlockToParentList = parentList.setIn([parentKey, key], block);
+
+          const mergedParent = (
+            addBlockToParentList.get(key).size ?
+              addBlockToParentList.mergeIn(parentKey, addBlockToParentList.get(key)) :
+              addBlockToParentList
+          );
+
+          return mergedParent;
+        }
+
+        return blockList;
+      }, new Immutable.OrderedMap())
+      .map(blockMap => blockMap.reverse());
+  }
+
   getBlockChildren(key: string): BlockMap {
     return this.getBlockMap()
     .filter(function(block) {
