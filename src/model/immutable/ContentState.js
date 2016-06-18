@@ -59,30 +59,61 @@ class ContentState extends ContentStateRecord {
     return this.getBlockChildren('');
   }
 
-  getBlockDescendants(): Object {
+  /*
+   * This algorithm is used to create the blockMap nesting as well as to
+   * enhance performance checks for nested blocks allowing each block to
+   * know when any of it's children has changed.
+   */
+  getBlockDescendants() {
     return this.getBlockMap()
       .reverse()
       .reduce((treeMap, block) => {
         const key = block.getKey();
         const parentKey = block.getParentKey();
-        const blockList = treeMap.set(key, treeMap.get(key) || new Immutable.OrderedMap());
+
+        // create one if does not exist
+        const blockList = (
+          treeMap.get(key) ?
+            treeMap :
+            treeMap.set(key, new Immutable.Map({
+              firstLevelBlocks: new Immutable.OrderedMap(),
+              childrenBlocks: new Immutable.Set()
+            }))
+        );
 
         if (parentKey) {
-          const parentList = blockList.set(parentKey, blockList.get(parentKey) || new Immutable.OrderedMap());
-          const addBlockToParentList = parentList.setIn([parentKey, key], block);
-
-          const mergedParent = (
-            addBlockToParentList.get(key).size ?
-              addBlockToParentList.mergeIn(parentKey, addBlockToParentList.get(key)) :
-              addBlockToParentList
+          // create one if does not exist
+          const parentList = (
+            blockList.get(parentKey) ?
+              blockList :
+              blockList.set(parentKey, new Immutable.Map({
+                firstLevelBlocks: new Immutable.OrderedMap(),
+                childrenBlocks: new Immutable.Set()
+              }))
           );
 
-          return mergedParent;
-        }
+          // add current block to parent children list
+          const addBlockToParentList = parentList.setIn([parentKey, 'firstLevelBlocks', key], block);
+          const addGrandChildren = addBlockToParentList.setIn(
+            [parentKey, 'childrenBlocks'],
+            addBlockToParentList.getIn([parentKey, 'childrenBlocks'])
+              .add(
+                // we include all the current block children and itself
+                addBlockToParentList.getIn([key, 'firstLevelBlocks']).set(key, block)
+              )
+          );
 
-        return blockList;
-      }, new Immutable.OrderedMap())
-      .map(blockMap => blockMap.reverse());
+          return addGrandChildren;
+        } else {
+          // Since the iteration is done backwards, we either have no children or
+          // we already have all children's defined, we should now revert back the order
+          // since we are doing a reversed loop
+          const currentBlock = blockList.getIn([key, 'firstLevelBlocks']);
+
+          // we reverse it back since we will use this to create our blocks
+          return blockList.setIn([key, 'firstLevelBlocks'], currentBlock.reverse());
+        }
+      }, new Immutable.Map());
   }
 
   getBlockChildren(key: string): BlockMap {

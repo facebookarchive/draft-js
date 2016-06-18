@@ -39,6 +39,7 @@ const SCROLL_BUFFER = 10;
 
 type Props = {
   block: ContentBlock,
+  blockMapTree: Object,
   customStyleMap: Object,
   tree: List<any>,
   selection: SelectionState,
@@ -61,17 +62,14 @@ class DraftEditorBlock extends React.Component {
     const {
         block,
         direction,
-        blockMap,
-        tree
+        blockMapTree,
+        tree,
     } = this.props;
 
-    const hasNestedBlocks = (
-     blockMap && blockMap.size > 0 ||
-     nextProps.blockMap && nextProps.blockMap.size > 0
-    );
+    const key = block.getKey();
 
     return (
-      hasNestedBlocks ||
+      blockMapTree.getIn([key, 'childrenBlocks']) !== nextProps.blockMapTree.getIn([key, 'childrenBlocks']) ||
       block !== nextProps.block ||
       tree !== nextProps.tree ||
       direction !== nextProps.direction ||

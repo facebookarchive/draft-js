@@ -99,6 +99,7 @@ function getSelection() {
 
 function getProps(block, decorator) {
   return {
+    blockMapTree: new Immutable.Map(),
     block,
     tree: BlockTree.generate(block, decorator),
     selection: getSelection(),

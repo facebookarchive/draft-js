@@ -72,7 +72,7 @@ class DraftEditorBlocks extends React.Component {
 
       const direction = directionMap.get(key);
       const offsetKey = DraftOffsetKey.encode(key, 0, 0);
-      const blockChildren = blockMapTree.get(key);
+      const blockChildren = blockMapTree.getIn([key, 'firstLevelBlocks']);
 
       const componentProps = {
         block,
