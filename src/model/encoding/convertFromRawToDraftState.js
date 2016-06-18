@@ -58,7 +58,7 @@ function convertBlocksFromRaw(
 
       key = parentKey && parentBlockRenderingConfig &&
         parentBlockRenderingConfig.nestingEnabled ?
-          generateNestedKey(parentKey) :
+          generateNestedKey(parentKey, key) :
           key;
 
       var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
