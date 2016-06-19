@@ -99,8 +99,8 @@ class DraftEditorContents extends React.Component {
     const forceSelection = editorState.mustForceSelection();
     const decorator = editorState.getDecorator();
     const directionMap = nullthrows(editorState.getDirectionMap());
-    const blockMap = content.getFirstLevelBlocks();
     const blockMapTree = content.getBlockDescendants();
+    const blockMap = blockMapTree.getIn(['__ROOT__', 'firstLevelBlocks']);
 
     return <DraftEditorBlocks
         type="contents"

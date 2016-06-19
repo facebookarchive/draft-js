@@ -70,6 +70,7 @@ class ContentState extends ContentStateRecord {
       .reduce((treeMap, block) => {
         const key = block.getKey();
         const parentKey = block.getParentKey();
+        const rootKey = '__ROOT__';
 
         // create one if does not exist
         const blockList = (
@@ -99,21 +100,38 @@ class ContentState extends ContentStateRecord {
             addBlockToParentList.getIn([parentKey, 'childrenBlocks'])
               .add(
                 // we include all the current block children and itself
-                addBlockToParentList.getIn([key, 'firstLevelBlocks']).set(key, block)
+                addBlockToParentList.getIn([key, 'childrenBlocks']).add(block)
               )
           );
 
           return addGrandChildren;
         } else {
-          // Since the iteration is done backwards, we either have no children or
-          // we already have all children's defined, we should now revert back the order
-          // since we are doing a reversed loop
-          const currentBlock = blockList.getIn([key, 'firstLevelBlocks']);
+          // we are root level block
+          // lets create a new key called firstLevelBlocks
+          const rootLevelBlocks = (
+            blockList.get(rootKey) ?
+              blockList :
+              blockList.set(rootKey, new Immutable.Map({
+                firstLevelBlocks: new Immutable.OrderedMap(),
+                childrenBlocks: new Immutable.Set()
+              }))
+          );
 
-          // we reverse it back since we will use this to create our blocks
-          return blockList.setIn([key, 'firstLevelBlocks'], currentBlock.reverse());
+          const rootFirstLevelBlocks = rootLevelBlocks.setIn([rootKey, 'firstLevelBlocks', key], block);
+
+          const addToRootChildren = rootFirstLevelBlocks.setIn(
+            [rootKey, 'childrenBlocks'],
+            rootFirstLevelBlocks.getIn([rootKey, 'childrenBlocks'])
+              .add(
+                // we include all the current block children and itself
+                rootFirstLevelBlocks.getIn([key, 'childrenBlocks']).add(block)
+              )
+          );
+
+          return addToRootChildren;
         }
-      }, new Immutable.Map());
+      }, new Immutable.Map())
+      .map((block) => block.set('firstLevelBlocks', block.get('firstLevelBlocks').reverse()));
   }
 
   getBlockChildren(key: string): BlockMap {
