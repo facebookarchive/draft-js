@@ -17,7 +17,15 @@
  * Get offset key from a node.
  */
 function getSelectionOffsetKeyForNode(node: Node): ?string {
-  return node instanceof Element ? node.getAttribute('data-offset-key') : null;
+  if (node instanceof Element) {
+    var offsetKey = node.getAttribute('data-offset-key');
+    if (offsetKey) return offsetKey;
+    for (var ii = 0; ii < node.children.length; ii++) {
+      var childOffsetKey = getSelectionOffsetKeyForNode(node.children[ii]);
+      if (childOffsetKey) return childOffsetKey;
+    }
+  }
+  return null;
 }
 
 module.exports = getSelectionOffsetKeyForNode;
