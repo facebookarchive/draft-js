@@ -45,6 +45,8 @@ var MAX_DEPTH = 4;
 var REGEX_CR = new RegExp('\r', 'g');
 var REGEX_LF = new RegExp('\n', 'g');
 var REGEX_NBSP = new RegExp(NBSP, 'g');
+var REGEX_CARRIAGE = new RegExp('&#13;?', 'g');
+var REGEX_ZWS = new RegExp('&#8203;?', 'g');
 
 // Block tag flow is different because LIs do not have
 // a deterministic style ;_;
@@ -423,7 +425,9 @@ function getChunkForHTML(
   html = html
     .trim()
     .replace(REGEX_CR, '')
-    .replace(REGEX_NBSP, SPACE);
+    .replace(REGEX_NBSP, SPACE)
+    .replace(REGEX_CARRIAGE, '')
+    .replace(REGEX_ZWS, '');
 
   const supportedBlockTags = getBlockMapSupportedTags(blockRenderMap);
 
