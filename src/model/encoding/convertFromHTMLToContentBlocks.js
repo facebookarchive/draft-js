@@ -388,7 +388,7 @@ function genFragment(
         }
       });
 
-      entityConfig.url = new URI(entityConfig.href).toString();
+      entityConfig.url = new URI(anchor.href).toString();
 
       entityId = DraftEntity.create('LINK', 'MUTABLE', entityConfig);
     } else {
