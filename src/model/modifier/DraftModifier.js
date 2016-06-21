@@ -15,7 +15,7 @@
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentStateInlineStyle = require('ContentStateInlineStyle');
-var {OrderedSet} = require('immutable');
+var {OrderedSet, Map} = require('immutable');
 
 var applyEntityToContentState = require('applyEntityToContentState');
 var getCharacterRemovalRange = require('getCharacterRemovalRange');
@@ -25,7 +25,7 @@ var insertTextIntoContentState = require('insertTextIntoContentState');
 var invariant = require('invariant');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 var removeRangeFromContentState = require('removeRangeFromContentState');
-var setBlockTypeForContentState = require('setBlockTypeForContentState');
+var modifyBlockForContentState = require('modifyBlockForContentState');
 var splitBlockInContentState = require('splitBlockInContentState');
 
 import type {BlockMap} from 'BlockMap';
@@ -204,12 +204,40 @@ var DraftModifier = {
     selectionState: SelectionState,
     blockType: DraftBlockType
   ): ContentState {
-    return setBlockTypeForContentState(
+    const operation = (block) => block.merge({type: blockType, depth: 0});
+    return modifyBlockForContentState(
       contentState,
       selectionState,
-      blockType
+      operation
     );
   },
+
+  setBlockData: function(
+    contentState: ContentState,
+    selectionState: SelectionState,
+    blockData: Map,
+  ): ContentState {
+    const operation = (block) => block.merge({data: blockData});
+    return modifyBlockForContentState(
+      contentState,
+      selectionState,
+      operation
+    );
+  },
+
+  mergeBlockData: function(
+    contentState: ContentState,
+    selectionState: SelectionState,
+    blockData: Map,
+  ): ContentState {
+    const operation = (block) => block.merge({data: block.getData().merge(blockData)});
+    return modifyBlockForContentState(
+      contentState,
+      selectionState,
+      operation
+    );
+  },
+
 
   applyEntity: function(
     contentState: ContentState,

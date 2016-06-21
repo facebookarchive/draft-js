@@ -24,6 +24,7 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 var {
   List,
   OrderedSet,
+  Map,
   Record,
 } = Immutable;
 
@@ -35,12 +36,14 @@ var defaultRecord: {
   text: string;
   characterList: List<CharacterMetadata>;
   depth: number;
+  data: Map;
 } = {
   key: '',
   type: 'unstyled',
   text: '',
   characterList: List(),
   depth: 0,
+  data: Map(),
 };
 
 var ContentBlockRecord = Record(defaultRecord);
@@ -68,6 +71,10 @@ class ContentBlock extends ContentBlockRecord {
 
   getDepth(): number {
     return this.get('depth');
+  }
+
+  getData(): Map {
+    return this.get('data');
   }
 
   getInlineStyleAt(offset: number): DraftInlineStyle {
