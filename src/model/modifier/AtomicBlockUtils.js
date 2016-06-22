@@ -13,7 +13,6 @@
 
 'use strict';
 
-const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DraftModifier = require('DraftModifier');
@@ -21,6 +20,9 @@ const EditorState = require('EditorState');
 const Immutable = require('immutable');
 
 const generateRandomKey = require('generateRandomKey');
+
+const insertBlockBeforeInContentState = require('insertBlockBeforeInContentState');
+const insertBlockAfterInContentState = require('insertBlockAfterInContentState');
 
 const {
   List,
@@ -43,33 +45,54 @@ const AtomicBlockUtils = {
     );
 
     const targetSelection = afterRemoval.getSelectionAfter();
-    const afterSplit = DraftModifier.splitBlock(afterRemoval, targetSelection);
-    const insertionTarget = afterSplit.getSelectionAfter();
-
-    const asAtomicBlock = DraftModifier.setBlockType(
-      afterSplit,
-      insertionTarget,
-      'atomic'
+    const targetBlock = afterRemoval.getBlockForKey(
+      targetSelection.getFocusKey()
     );
 
-    const charData = CharacterMetadata.create(entityKey ? {entity: entityKey} : undefined);
-
-    const fragmentArray = [
-      new ContentBlock({
-        key: generateRandomKey(),
-        type: 'atomic',
-        text: character,
-        characterList: List(Repeat(charData, character.length)),
-      }),
-    ];
-
-    const fragment = BlockMapBuilder.createFromArray(fragmentArray);
-
-    const withAtomicBlock = DraftModifier.replaceWithFragment(
-      asAtomicBlock,
-      insertionTarget,
-      fragment
+    const charData = CharacterMetadata.create(
+      entityKey ? {entity: entityKey} : undefined
     );
+
+    const atomicBlock = new ContentBlock({
+      key: generateRandomKey(),
+      type: 'atomic',
+      text: character,
+      characterList: List(Repeat(charData, character.length)),
+    });
+
+    var withAtomicBlock;
+
+    if (targetSelection.getStartOffset() === 0) {
+      // If the current selection starts at the very beginning of the currently
+      // focused block, insert the atomic block before
+      withAtomicBlock = insertBlockBeforeInContentState(
+        afterRemoval,
+        targetSelection,
+        atomicBlock
+      );
+    } else if (targetSelection.getEndOffset() === targetBlock.getLength()) {
+      // If the current selection ends at the very end of the currently focused
+      // block, insert the atomic block after
+      withAtomicBlock = insertBlockAfterInContentState(
+        afterRemoval,
+        targetSelection,
+        atomicBlock
+      );
+    } else {
+      // If the current selection is somewhere in the middle of the currently
+      // focused block, split the block apart and insert the atomic block
+      // inbetween
+      const afterSplit = DraftModifier.splitBlock(
+        afterRemoval,
+        targetSelection
+      );
+
+      withAtomicBlock = insertBlockAfterInContentState(
+        afterSplit,
+        targetSelection,
+        atomicBlock
+      );
+    }
 
     const newContent = withAtomicBlock.merge({
       selectionBefore: selectionState,

@@ -16,6 +16,9 @@ const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 const SelectionState = require('SelectionState');
+const ContentBlock = require('ContentBlock');
+
+const insertBlockAfterInContentState = require('insertBlockAfterInContentState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 
@@ -30,6 +33,21 @@ describe('RichTextEditorUtil', () => {
       movedSelection,
       entityKey,
       character,
+    );
+  }
+
+  function insertEmptyBlockAfter(targetEditorState) {
+    const afterInsertBlock = insertBlockAfterInContentState(
+      targetEditorState.getCurrentContent(),
+      targetEditorState.getSelection().merge({
+        anchorOffset: targetEditorState.getSelection().getFocusOffset()
+      }),
+      new ContentBlock()
+    );
+    return EditorState.push(
+      targetEditorState,
+      afterInsertBlock,
+      'insert-fragment'
     );
   }
 
@@ -84,7 +102,8 @@ describe('RichTextEditorUtil', () => {
 
     it('removes a preceding atomic block', () => {
       const withAtomicBlock = insertAtomicBlock(editorState);
-      const afterBackspace = onBackspace(withAtomicBlock);
+      const withEmptyBlock = insertEmptyBlockAfter(withAtomicBlock);
+      const afterBackspace = onBackspace(withEmptyBlock);
       const contentState = afterBackspace.getCurrentContent();
       const blockMap = contentState.getBlockMap();
       expect(blockMap.size).toBe(4);
@@ -146,7 +165,7 @@ describe('RichTextEditorUtil', () => {
         false
       );
 
-      expect(blockMapAfterDelete.size).toBe(4);
+      expect(blockMapAfterDelete.size).toBe(3);
     });
   });
 });

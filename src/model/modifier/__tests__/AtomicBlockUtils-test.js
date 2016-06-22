@@ -43,16 +43,11 @@ describe('AtomicBlockUtils', () => {
       );
       const resultContent = resultEditor.getCurrentContent();
 
-      // Empty block inserted above content.
       const firstBlock = resultContent.getBlockMap().first();
-      expect(firstBlock.getType()).toBe('unstyled');
-      expect(firstBlock.getText()).toBe('');
+      assertAtomicBlock(firstBlock);
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertAtomicBlock(secondBlock);
-
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getText()).toBe(originalFirstBlock.getText());
+      expect(secondBlock.getText()).toBe(originalFirstBlock.getText());
     });
 
     it('must insert atomic within a block, via split', () => {
@@ -88,7 +83,7 @@ describe('AtomicBlockUtils', () => {
       expect(thirdBlock.getText()).toBe(originalFirstBlock.getText().slice(2));
     });
 
-    it('must insert atomic after a block', () => {
+    it('must insert atomic at end of block', () => {
       const targetSelection = selectionState.merge({
         anchorOffset: originalFirstBlock.getLength(),
         focusOffset: originalFirstBlock.getLength(),
@@ -111,10 +106,6 @@ describe('AtomicBlockUtils', () => {
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
       assertAtomicBlock(secondBlock);
-
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(thirdBlock.getText()).toBe('');
     });
   });
 
@@ -137,15 +128,11 @@ describe('AtomicBlockUtils', () => {
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
-      expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(firstBlock.getText()).toBe('');
+      assertAtomicBlock(firstBlock);
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertAtomicBlock(secondBlock);
-
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(thirdBlock.getText()).toBe(originalFirstBlock.getText().slice(2));
+      expect(secondBlock.getType()).toBe(originalFirstBlock.getType());
+      expect(secondBlock.getText()).toBe(originalFirstBlock.getText().slice(2));
     });
 
     it('must insert atomic within a block', () => {
@@ -209,10 +196,6 @@ describe('AtomicBlockUtils', () => {
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
       assertAtomicBlock(secondBlock);
-
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(thirdBlock.getText()).toBe('');
     });
 
     it('must insert atomic for cross-block selection', () => {
