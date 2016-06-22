@@ -142,7 +142,6 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
   );
 
   if (
-    editorState.mustPreventNativeInsertion() ||
     mustPreventDefaultForCharacter(chars) ||
     originalFingerprint !== newFingerprint ||
     (

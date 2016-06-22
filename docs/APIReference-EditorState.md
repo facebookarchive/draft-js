@@ -110,11 +110,6 @@ The list below includes the most commonly used instance methods for `EditorState
       <pre>static setInlineStyleOverride(inlineStyleOverride): EditorState</pre>
     </a>
   </li>
-  <li>
-    <a href="#preventnativeinsertion">
-      <pre>static preventNativeInsertion(editorState, preventNativeInsertion): EditorState</pre>
-    </a>
-  </li>
 </ul>
 
 *Properties*
@@ -168,11 +163,6 @@ The list below includes the most commonly used instance methods for `EditorState
   <li>
     <a href="#nativelyrenderedcontent">
       <pre>nativelyRenderedContent</pre>
-    </a>
-  </li>
-  <li>
-    <a href="#preventnativeinsertion">
-      <pre>preventNativeInsertion</pre>
     </a>
   </li>
   <li>
@@ -359,19 +349,6 @@ static setInlineStyleOverride(inlineStyleOverride: DraftInlineStyle): EditorStat
 Returns a new `EditorState` object with the specified `DraftInlineStyle` applied
 as the set of inline styles to be applied to the next inserted characters.
 
-### preventNativeInsertion
-
-```
-static preventNativeInsertion(
-  editorState: EditorState,
-  preventNativeInsertion: boolean
-): EditorState
-```
-Returns a new `EditorState` object with the specified value applied.
-
-This is intended to be used when EditorState has been updated from within
-`onChange`, to prevent duplicate character insertion.
-
 ## Properties and Getters
 
 In most cases, the instance and static methods above should be sufficient to
@@ -484,17 +461,6 @@ In doing so, we can avoid extra re-renders and preserve spellcheck highlighting.
 When allowing native rendering behavior, it is appropriate to use the
 `nativelyRenderedContent` property to indicate that no re-render is necessary
 for this `EditorState`.
-
-### preventNativeInsertion
-
-```
-preventNativeInsertion: boolean;
-mustPreventNativeInsertion()
-```
-Whether to prevent native insertion.
-
-You should not set this property manually -- see
-[preventNativeInsertion()](#preventnativeinsertion).
 
 ### redoStack
 

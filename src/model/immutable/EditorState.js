@@ -40,7 +40,6 @@ type EditorStateRecordType = {
   inlineStyleOverride: ?DraftInlineStyle;
   lastChangeType: ?EditorChangeType;
   nativelyRenderedContent: ?ContentState;
-  preventNativeInsertion: boolean;
   redoStack: Stack<ContentState>;
   selection: ?SelectionState;
   treeMap: ?OrderedMap<string, List<any>>;
@@ -57,7 +56,6 @@ var defaultRecord: EditorStateRecordType = {
   inlineStyleOverride: null,
   lastChangeType: null,
   nativelyRenderedContent: null,
-  preventNativeInsertion: false,
   redoStack: Stack(),
   selection: null,
   treeMap: null,
@@ -190,10 +188,6 @@ class EditorState {
 
   mustForceSelection(): boolean {
     return this.getImmutable().get('forceSelection');
-  }
-
-  mustPreventNativeInsertion(): boolean {
-    return this.getImmutable().get('preventNativeInsertion');
   }
 
   getNativelyRenderedContent(): ?ContentState {
@@ -337,18 +331,6 @@ class EditorState {
   }
 
   /**
-   * Prevent native insertion. This is intended to be used when EditorState has
-   * been updated from within `onChange`, to prevent duplicate character
-   * insertion.
-   */
-  static preventNativeInsertion(
-    editorState: EditorState,
-    preventNativeInsertion: boolean
-  ): EditorState {
-    return EditorState.set(editorState, {preventNativeInsertion});
-  }
-
-  /**
    * Push the current ContentState onto the undo stack if it should be
    * considered a boundary state, and set the provided ContentState as the
    * new current content.
@@ -356,8 +338,7 @@ class EditorState {
   static push(
     editorState: EditorState,
     contentState: ContentState,
-    changeType: EditorChangeType,
-    preventNativeInsertion: boolean = false
+    changeType: EditorChangeType
   ): EditorState {
     if (editorState.getCurrentContent() === contentState) {
       return editorState;
@@ -377,21 +358,19 @@ class EditorState {
         selection: contentState.getSelectionAfter(),
         forceSelection,
         inlineStyleOverride: null,
-        preventNativeInsertion,
       });
     }
 
     var selection = editorState.getSelection();
     var currentContent = editorState.getCurrentContent();
     var undoStack = editorState.getUndoStack();
-    var redoStack = editorState.getRedoStack();
     var newContent = contentState;
 
     if (
       selection !== currentContent.getSelectionAfter() ||
       mustBecomeBoundary(editorState, changeType)
     ) {
-      undoStack = preventNativeInsertion ? undoStack : undoStack.push(currentContent);
+      undoStack = undoStack.push(currentContent);
       newContent = newContent.set('selectionBefore', selection);
     } else if (
       changeType === 'insert-characters' ||
@@ -416,12 +395,11 @@ class EditorState {
       currentContent: newContent,
       directionMap,
       undoStack,
-      redoStack: preventNativeInsertion ? redoStack : Stack(),
+      redoStack: Stack(),
       lastChangeType: changeType,
       selection: contentState.getSelectionAfter(),
       forceSelection,
       inlineStyleOverride,
-      preventNativeInsertion,
     };
 
     return EditorState.set(editorState, editorStateChanges);
