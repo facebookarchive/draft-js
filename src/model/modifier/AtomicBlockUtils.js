@@ -29,6 +29,22 @@ const {
   Repeat,
 } = Immutable;
 
+function createAtomicBlock(
+  entityKey: string,
+  character: string
+): ContentBlock {
+  const charData = CharacterMetadata.create(
+    entityKey ? {entity: entityKey} : undefined
+  );
+
+  return new ContentBlock({
+    key: generateRandomKey(),
+    type: 'atomic',
+    text: character,
+    characterList: List(Repeat(charData, character.length)),
+  });
+}
+
 const AtomicBlockUtils = {
   insertAtomicBlock: function(
     editorState: EditorState,
@@ -49,16 +65,7 @@ const AtomicBlockUtils = {
       targetSelection.getFocusKey()
     );
 
-    const charData = CharacterMetadata.create(
-      entityKey ? {entity: entityKey} : undefined
-    );
-
-    const atomicBlock = new ContentBlock({
-      key: generateRandomKey(),
-      type: 'atomic',
-      text: character,
-      characterList: List(Repeat(charData, character.length)),
-    });
+    const atomicBlock = createAtomicBlock(entityKey, character);
 
     var withAtomicBlock;
 
@@ -93,6 +100,50 @@ const AtomicBlockUtils = {
         atomicBlock
       );
     }
+
+    const newContent = withAtomicBlock.merge({
+      selectionBefore: selectionState,
+      selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', true),
+    });
+
+    return EditorState.push(editorState, newContent, 'insert-fragment');
+  },
+
+  insertAtomicBlockBefore: function(
+    editorState: EditorState,
+    entityKey: string,
+    character: string
+  ): EditorState {
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+    const atomicBlock = createAtomicBlock(entityKey, character);
+    const withAtomicBlock = insertBlockBeforeInContentState(
+      contentState,
+      selectionState,
+      atomicBlock
+    );
+
+    const newContent = withAtomicBlock.merge({
+      selectionBefore: selectionState,
+      selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', true),
+    });
+
+    return EditorState.push(editorState, newContent, 'insert-fragment');
+  },
+
+  insertAtomicBlockAfter: function(
+    editorState: EditorState,
+    entityKey: string,
+    character: string
+  ): EditorState {
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+    const atomicBlock = createAtomicBlock(entityKey, character);
+    const withAtomicBlock = insertBlockAfterInContentState(
+      contentState,
+      selectionState,
+      atomicBlock
+    );
 
     const newContent = withAtomicBlock.merge({
       selectionBefore: selectionState,

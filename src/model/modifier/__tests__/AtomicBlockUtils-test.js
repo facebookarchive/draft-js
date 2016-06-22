@@ -13,7 +13,7 @@
 
 jest.disableAutomock();
 
-const {insertAtomicBlock} = require('AtomicBlockUtils');
+const {insertAtomicBlock, insertAtomicBlockBefore, insertAtomicBlockAfter} = require('AtomicBlockUtils');
 const EditorState = require('EditorState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
@@ -235,5 +235,36 @@ describe('AtomicBlockUtils', () => {
       expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
       expect(thirdBlock.getText()).toBe(originalThirdBlock.getText().slice(2));
     });
+  });
+
+  it('must insert atomic before a block', () => {
+    const resultEditor = insertAtomicBlockBefore(
+      editorState,
+      entityKey,
+      character
+    );
+    const resultContent = resultEditor.getCurrentContent();
+
+    const firstBlock = resultContent.getBlockMap().first();
+    assertAtomicBlock(firstBlock);
+
+    const secondBlock = resultContent.getBlockMap().skip(1).first();
+    expect(secondBlock.getText()).toBe(originalFirstBlock.getText());
+  });
+
+  it('must insert atomic after a block', () => {
+    const resultEditor = insertAtomicBlockAfter(
+      editorState,
+      entityKey,
+      character
+    );
+    const resultContent = resultEditor.getCurrentContent();
+
+    const firstBlock = resultContent.getBlockMap().first();
+    expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
+    expect(firstBlock.getText()).toBe(originalFirstBlock.getText());
+
+    const secondBlock = resultContent.getBlockMap().skip(1).first();
+    assertAtomicBlock(secondBlock);
   });
 });
