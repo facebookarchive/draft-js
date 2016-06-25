@@ -13,6 +13,6 @@
 'use strict';
 
 export type DraftRange = {
-  start: number;
-  end: number;
+  start: number,
+  end: number,
 };

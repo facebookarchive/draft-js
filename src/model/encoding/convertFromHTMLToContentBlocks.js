@@ -65,15 +65,15 @@ var inlineTags = {
 var lastBlock;
 
 type Block = {
-  type: DraftBlockType;
-  depth: number;
+  type: DraftBlockType,
+  depth: number,
 };
 
 type Chunk = {
-  text: string;
-  inlines: Array<DraftInlineStyle>;
-  entities: Array<string>;
-  blocks: Array<Block>;
+  text: string,
+  inlines: Array<DraftInlineStyle>,
+  entities: Array<string>,
+  blocks: Array<Block>,
 };
 
 function getEmptyChunk(): Chunk {

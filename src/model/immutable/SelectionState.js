@@ -18,12 +18,12 @@ var Immutable = require('immutable');
 var {Record} = Immutable;
 
 var defaultRecord: {
-  anchorKey: string;
-  anchorOffset: number;
-  focusKey: string;
-  focusOffset: number;
-  isBackward: boolean;
-  hasFocus: boolean;
+  anchorKey: string,
+  anchorOffset: number,
+  focusKey: string,
+  focusOffset: number,
+  isBackward: boolean,
+  hasFocus: boolean,
 } = {
   anchorKey: '',
   anchorOffset: 0,

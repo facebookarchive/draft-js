@@ -13,7 +13,7 @@
 'use strict';
 
 export type DraftOffsetKeyPath = {
-  blockKey: string;
-  decoratorKey: number;
-  leafKey: number;
+  blockKey: string,
+  decoratorKey: number,
+  leafKey: number,
 };

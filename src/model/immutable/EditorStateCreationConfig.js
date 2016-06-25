@@ -17,8 +17,8 @@ import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type SelectionState from 'SelectionState';
 
 export type EditorStateCreationConfig = {
-  allowUndo: boolean;
-  currentContent: ContentState;
-  decorator: ?DraftDecoratorType;
-  selection: SelectionState;
+  allowUndo: boolean,
+  currentContent: ContentState,
+  decorator: ?DraftDecoratorType,
+  selection: SelectionState,
 };

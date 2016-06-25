@@ -31,19 +31,19 @@ var {
 } = Immutable;
 
 type EditorStateRecordType = {
-  allowUndo: boolean;
-  currentContent: ?ContentState;
-  decorator: ?DraftDecoratorType;
-  directionMap: ?OrderedMap<string, string>;
-  forceSelection: boolean;
-  inCompositionMode: boolean;
-  inlineStyleOverride: ?DraftInlineStyle;
-  lastChangeType: ?EditorChangeType;
-  nativelyRenderedContent: ?ContentState;
-  redoStack: Stack<ContentState>;
-  selection: ?SelectionState;
-  treeMap: ?OrderedMap<string, List<any>>;
-  undoStack: Stack<ContentState>;
+  allowUndo: boolean,
+  currentContent: ?ContentState,
+  decorator: ?DraftDecoratorType,
+  directionMap: ?OrderedMap<string, string>,
+  forceSelection: boolean,
+  inCompositionMode: boolean,
+  inlineStyleOverride: ?DraftInlineStyle,
+  lastChangeType: ?EditorChangeType,
+  nativelyRenderedContent: ?ContentState,
+  redoStack: Stack<ContentState>,
+  selection: ?SelectionState,
+  treeMap: ?OrderedMap<string, List<any>>,
+  undoStack: Stack<ContentState>,
 };
 
 var defaultRecord: EditorStateRecordType = {

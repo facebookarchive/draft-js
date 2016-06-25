@@ -27,9 +27,9 @@ import type {BlockMap} from 'BlockMap';
 const {List, Record, Repeat} = Immutable;
 
 const defaultRecord: {
-  blockMap: ?BlockMap;
-  selectionBefore: ?SelectionState;
-  selectionAfter: ?SelectionState;
+  blockMap: ?BlockMap,
+  selectionBefore: ?SelectionState,
+  selectionAfter: ?SelectionState,
 } = {
   blockMap: null,
   selectionBefore: null,

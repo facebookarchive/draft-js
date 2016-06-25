@@ -15,6 +15,6 @@
 import type React from 'react';
 
 export type DraftBlockRenderConfig = {
-  element: string;
-  wrapper?: React.Element<any>;
+  element: string,
+  wrapper?: React.Element<any>,
 };

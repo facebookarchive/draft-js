@@ -15,6 +15,6 @@
 import type SelectionState from 'SelectionState';
 
 export type DOMDerivedSelection = {
-  selectionState: SelectionState;
-  needsRecovery: boolean;
+  selectionState: SelectionState,
+  needsRecovery: boolean,
 };

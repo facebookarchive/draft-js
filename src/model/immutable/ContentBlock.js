@@ -30,11 +30,11 @@ var {
 const EMPTY_SET = OrderedSet();
 
 var defaultRecord: {
-  key: string;
-  type: DraftBlockType;
-  text: string;
-  characterList: List<CharacterMetadata>;
-  depth: number;
+  key: string,
+  type: DraftBlockType,
+  text: string,
+  characterList: List<CharacterMetadata>,
+  depth: number,
 } = {
   key: '',
   type: 'unstyled',

@@ -23,8 +23,8 @@ import type {DOMDerivedSelection} from 'DOMDerivedSelection';
 import type EditorState from 'EditorState';
 
 type SelectionPoint = {
-  key: string;
-  offset: number;
+  key: string,
+  offset: number,
 };
 
 /**

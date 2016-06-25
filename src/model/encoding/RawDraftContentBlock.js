@@ -21,10 +21,10 @@ import type {InlineStyleRange} from 'InlineStyleRange';
  * attribution repackaged as range objects.
  */
 export type RawDraftContentBlock = {
-  key: ?string;
-  type: DraftBlockType;
-  text: string;
-  depth: ?number;
-  inlineStyleRanges: ?Array<InlineStyleRange>;
-  entityRanges: ?Array<EntityRange>;
+  key: ?string,
+  type: DraftBlockType,
+  text: string,
+  depth: ?number,
+  inlineStyleRanges: ?Array<InlineStyleRange>,
+  entityRanges: ?Array<EntityRange>,
 };

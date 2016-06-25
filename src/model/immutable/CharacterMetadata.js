@@ -22,8 +22,8 @@ var {
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 type CharacterMetadataConfig = {
-  style?: DraftInlineStyle;
-  entity?: ?string;
+  style?: DraftInlineStyle,
+  entity?: ?string,
 };
 
 const EMPTY_SET = OrderedSet();

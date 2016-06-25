@@ -32,8 +32,8 @@ var returnTrue = emptyFunction.thatReturnsTrue;
 var FINGERPRINT_DELIMITER = '-';
 
 var defaultLeafRange: {
-  start: ?number;
-  end: ?number;
+  start: ?number,
+  end: ?number,
 } = {
   start: null,
   end: null,
@@ -42,10 +42,10 @@ var defaultLeafRange: {
 var LeafRange = Record(defaultLeafRange);
 
 var defaultDecoratorRange: {
-  start: ?number;
-  end: ?number;
-  decoratorKey: ?string;
-  leaves: ?List<LeafRange>;
+  start: ?number,
+  end: ?number,
+  decoratorKey: ?string,
+  leaves: ?List<LeafRange>,
 } = {
   start: null,
   end: null,

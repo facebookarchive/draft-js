@@ -19,7 +19,7 @@
  * a `ComposedText` object, not for use with `DraftEntity.get()`.
  */
 export type EntityRange = {
-  key: number;
-  offset: number;
-  length: number;
+  key: number,
+  offset: number,
+  length: number,
 };
