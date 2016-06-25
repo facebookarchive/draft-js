@@ -150,7 +150,6 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
   if(isIOS && command === 'backspace') {
     // On iOS 'backspace' acts as 'backspace-word'
     // starting the 23rd continous event
-    this._lastBackspaceTimeStamp = e.timeStamp;
     if(this._continuousBackspaceCount++ >= 22) {
       command = 'backspace-word';
     }
