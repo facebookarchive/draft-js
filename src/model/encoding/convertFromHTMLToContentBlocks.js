@@ -132,11 +132,17 @@ function getListBlockType(
 function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap
 ): Array<string> {
+  // Some blocks must be treated as unstyled when not present on the blockRenderMap
   const unstyledElement = blockRenderMap.get('unstyled').element;
-  return blockRenderMap
+  const defaultUnstyledSet = new Immutable.Set(['p']);
+  const userDefinedSupportedBlockSet = (
+    blockRenderMap
     .map((config) => config.element)
     .valueSeq()
     .toSet()
+  );
+
+  return defaultUnstyledSet.merge(userDefinedSupportedBlockSet)
     .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
