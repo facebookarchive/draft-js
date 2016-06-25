@@ -33,6 +33,7 @@ var keyCommandUndo = require('keyCommandUndo');
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 
 var {isOptionKeyCommand} = KeyBindingUtil;
+var continuousBackspaceCount = 0;
 var isChrome = UserAgent.isBrowser('Chrome');
 var isIOS = UserAgent.isPlatform('iOS');
 
@@ -150,14 +151,14 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
   if(isIOS && command === 'backspace') {
     // On iOS 'backspace' acts as 'backspace-word'
     // starting the 23rd continous event
-    if(this._continuousBackspaceCount++ >= 22) {
+    if(continuousBackspaceCount++ >= 22) {
       command = 'backspace-word';
     }
-    setTimeout(function(previousCount) {
-      if(this._continuousBackspaceCount === previousCount) {
-        this._continuousBackspaceCount = 0;
+    setTimeout((previousCount) => {
+      if(continuousBackspaceCount === previousCount) {
+        continuousBackspaceCount = 0;
       }
-    }.bind(this, this._continuousBackspaceCount), 400);
+    }, 400, continuousBackspaceCount);
   }
 
   // Allow components higher up the tree to handle the command first.

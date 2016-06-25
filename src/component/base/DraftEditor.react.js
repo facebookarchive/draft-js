@@ -80,7 +80,6 @@ class DraftEditor extends React.Component {
 
   _blockSelectEvents: boolean;
   _clipboard: ?BlockMap;
-  _continuousBackspaceCount: number;
   _guardAgainstRender: boolean;
   _handler: ?Object;
   _dragCount: number;
@@ -130,7 +129,6 @@ class DraftEditor extends React.Component {
 
     this._blockSelectEvents = false;
     this._clipboard = null;
-    this._continuousBackspaceCount = 0;
     this._guardAgainstRender = false;
     this._handler = null;
     this._dragCount = 0;
