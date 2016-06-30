@@ -21,6 +21,8 @@ const EditorState = require('EditorState');
 const Immutable = require('immutable');
 
 const generateRandomKey = require('generateRandomKey');
+const moveBlockBeforeInContentState = require('moveBlockBeforeInContentState');
+const moveBlockAfterInContentState = require('moveBlockAfterInContentState');
 
 const {
   List,
@@ -83,6 +85,48 @@ const AtomicBlockUtils = {
     });
 
     return EditorState.push(editorState, newContent, 'insert-fragment');
+  },
+
+  moveAtomicBlockBefore: function(
+    editorState: EditorState,
+    contentBlock: ContentBlock
+  ): EditorState {
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+
+    const withMovedAtomicBlock = moveBlockBeforeInContentState(
+      contentState,
+      selectionState,
+      contentBlock
+    );
+
+    const newContent = withMovedAtomicBlock.merge({
+      selectionBefore: selectionState,
+      selectionAfter: withMovedAtomicBlock.getSelectionAfter().set('hasFocus', true),
+    });
+
+    return EditorState.push(editorState, newContent, 'change-fragment');
+  },
+  
+  moveAtomicBlockAfter: function(
+    editorState: EditorState,
+    contentBlock: ContentBlock
+  ): EditorState {
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+
+    const withMovedAtomicBlock = moveBlockAfterInContentState(
+      contentState,
+      selectionState,
+      contentBlock
+    );
+
+    const newContent = withMovedAtomicBlock.merge({
+      selectionBefore: selectionState,
+      selectionAfter: withMovedAtomicBlock.getSelectionAfter().set('hasFocus', true),
+    });
+
+    return EditorState.push(editorState, newContent, 'change-fragment');
   },
 };
 
