@@ -7,7 +7,6 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule ContentBlock
- * @typechecks
  * @flow
  */
 
@@ -23,6 +22,7 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 var {
   List,
+  Map,
   OrderedSet,
   Record,
 } = Immutable;
@@ -35,12 +35,14 @@ var defaultRecord: {
   text: string,
   characterList: List<CharacterMetadata>,
   depth: number,
+  data: Map<any, any>,
 } = {
   key: '',
   type: 'unstyled',
   text: '',
   characterList: List(),
   depth: 0,
+  data: Map(),
 };
 
 var ContentBlockRecord = Record(defaultRecord);
@@ -68,6 +70,10 @@ class ContentBlock extends ContentBlockRecord {
 
   getDepth(): number {
     return this.get('depth');
+  }
+
+  getData(): Map<any, any> {
+    return this.get('data');
   }
 
   getInlineStyleAt(offset: number): DraftInlineStyle {

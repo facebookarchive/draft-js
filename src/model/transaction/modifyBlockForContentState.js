@@ -6,23 +6,25 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule setBlockTypeForContentState
+ * @providesModule modifyBlockForContentState
  * @typechecks
  * @flow
  */
 
 'use strict';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
+import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
 import type SelectionState from 'SelectionState';
 
-function setBlockTypeForContentState(
+const {Map} = Immutable;
+
+function modifyBlockForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-  blockType: DraftBlockType,
+  operation: (block: ContentBlock) => ContentBlock,
 ): ContentState {
   var startKey = selectionState.getStartKey();
   var endKey = selectionState.getEndKey();
@@ -31,8 +33,8 @@ function setBlockTypeForContentState(
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
-    .concat(Immutable.Map([[endKey, blockMap.get(endKey)]]))
-    .map(block => block.merge({type: blockType, depth: 0}));
+    .concat(Map([[endKey, blockMap.get(endKey)]]))
+    .map(operation);
 
   return contentState.merge({
     blockMap: blockMap.merge(newBlocks),
@@ -41,4 +43,4 @@ function setBlockTypeForContentState(
   });
 }
 
-module.exports = setBlockTypeForContentState;
+module.exports = modifyBlockForContentState;

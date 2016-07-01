@@ -13,11 +13,15 @@
 
 'use strict';
 
+var Immutable = require('immutable');
+
 var generateRandomKey = require('generateRandomKey');
 var invariant = require('invariant');
 
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
+
+const {Map} = Immutable;
 
 function splitBlockInContentState(
   contentState: ContentState,
@@ -46,14 +50,15 @@ function splitBlockInContentState(
     key: keyBelow,
     text: text.slice(offset),
     characterList: chars.slice(offset),
+    data: Map(),
   });
 
   var blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
   var blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
   var newBlocks = blocksBefore.concat(
-      [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
-      blocksAfter
-    ).toOrderedMap();
+    [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
+    blocksAfter
+  ).toOrderedMap();
 
   return contentState.merge({
     blockMap: newBlocks,

@@ -68,6 +68,16 @@ will be the same as the input object if no edit was actually performed.
     </a>
   </li>
   <li>
+    <a href="#setblockdata">
+      <pre>setBlockData(...): ContentState</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#mergeblockdata">
+      <pre>mergeBlockData(...): ContentState</pre>
+    </a>
+  </li>
+  <li>
     <a href="#applyentity">
       <pre>applyEntity(...): ContentState</pre>
     </a>
@@ -193,6 +203,28 @@ setBlockType(
 ): ContentState
 ```
 Set the block type for all selected blocks.
+
+### setBlockData
+
+```
+setBlockData(
+  contentState: ContentState,
+  selectionState: SelectionState,
+  blockData: Map<any, any>
+): ContentState
+```
+Set the block data for all selected blocks.
+
+### mergeBlockData
+
+```
+mergeBlockData(
+  contentState: ContentState,
+  selectionState: SelectionState,
+  blockData: Map<any, any>
+): ContentState
+```
+Update block data for all selected blocks.
 
 ### applyEntity
 

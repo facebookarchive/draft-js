@@ -17,14 +17,16 @@ var Immutable = require('immutable');
 var getSampleStateForTesting = require('getSampleStateForTesting');
 var splitBlockInContentState = require('splitBlockInContentState');
 
-describe('removeRangeFromContentState', () => {
+const {List} = Immutable;
+
+describe('splitBlockInContentState', () => {
   var {
     contentState,
     selectionState,
   } = getSampleStateForTesting();
 
   function checkForCharacterList(block) {
-    expect(Immutable.List.isList(block.getCharacterList())).toBe(true);
+    expect(List.isList(block.getCharacterList())).toBe(true);
   }
 
   function getInlineStyles(block) {

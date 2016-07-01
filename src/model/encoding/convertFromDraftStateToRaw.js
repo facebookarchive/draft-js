@@ -50,6 +50,7 @@ function convertFromDraftStateToRaw(
       depth: canHaveDepth(block) ? block.getDepth() : 0,
       inlineStyleRanges: encodeInlineStyleRanges(block),
       entityRanges: encodeEntityRanges(block, entityStorageMap),
+      data: block.getData().toObject(),
     });
   });
 

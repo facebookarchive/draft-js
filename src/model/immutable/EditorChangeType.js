@@ -18,6 +18,7 @@ export type EditorChangeType = (
   'adjust-depth' |
   'apply-entity' |
   'backspace-character' |
+  'change-block-data' |
   'change-block-type' |
   'change-inline-style' |
   'delete-character' |

@@ -84,6 +84,11 @@ methods on a single `List` object.
     </a>
   </li>
   <li>
+    <a href="#getdata">
+      <pre>getData(): Map<any, any></pre>
+    </a>
+  </li>
+  <li>
     <a href="#findstyleranges">
       <pre>findStyleRanges(filterFn: Function, callback: Function): void</pre>
     </a>
@@ -126,6 +131,11 @@ methods on a single `List` object.
   <li>
     <a href="#depth">
       <pre>depth: number</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#data">
+      <pre>data: Map<any, any></pre>
     </a>
   </li>
 </ul>
@@ -201,6 +211,13 @@ getEntityAt(offset: number): ?string
 Returns the entity key value (or `null` if none) at a given offset within this
 `ContentBlock`.
 
+### getData()
+
+```
+getData(): Map<any, any>
+```
+Returns block-level metadata.
+
 ### findStyleRanges()
 
 ```
@@ -244,3 +261,6 @@ See `getCharacterList()`.
 
 ### depth
 See `getDepth()`.
+
+### data
+See `getData()`.

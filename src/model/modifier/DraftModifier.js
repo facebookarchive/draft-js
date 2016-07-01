@@ -15,7 +15,7 @@
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentStateInlineStyle = require('ContentStateInlineStyle');
-var {OrderedSet} = require('immutable');
+var Immutable = require('immutable');
 
 var applyEntityToContentState = require('applyEntityToContentState');
 var getCharacterRemovalRange = require('getCharacterRemovalRange');
@@ -23,9 +23,9 @@ var getContentStateFragment = require('getContentStateFragment');
 var insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 var insertTextIntoContentState = require('insertTextIntoContentState');
 var invariant = require('invariant');
+var modifyBlockForContentState = require('modifyBlockForContentState');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 var removeRangeFromContentState = require('removeRangeFromContentState');
-var setBlockTypeForContentState = require('setBlockTypeForContentState');
 var splitBlockInContentState = require('splitBlockInContentState');
 
 import type {BlockMap} from 'BlockMap';
@@ -33,7 +33,10 @@ import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
+import type {Map} from 'immutable';
 import type SelectionState from 'SelectionState';
+
+const {OrderedSet} = Immutable;
 
 /**
  * `DraftModifier` provides a set of convenience methods that apply
@@ -204,12 +207,37 @@ var DraftModifier = {
     selectionState: SelectionState,
     blockType: DraftBlockType
   ): ContentState {
-    return setBlockTypeForContentState(
+    return modifyBlockForContentState(
       contentState,
       selectionState,
-      blockType
+      (block) => block.merge({type: blockType, depth: 0})
     );
   },
+
+  setBlockData: function(
+    contentState: ContentState,
+    selectionState: SelectionState,
+    blockData: Map<any, any>,
+  ): ContentState {
+    return modifyBlockForContentState(
+      contentState,
+      selectionState,
+      (block) => block.merge({data: blockData})
+    );
+  },
+
+  mergeBlockData: function(
+    contentState: ContentState,
+    selectionState: SelectionState,
+    blockData: Map<any, any>,
+  ): ContentState {
+    return modifyBlockForContentState(
+      contentState,
+      selectionState,
+      (block) => block.merge({data: block.getData().merge(blockData)})
+    );
+  },
+
 
   applyEntity: function(
     contentState: ContentState,
