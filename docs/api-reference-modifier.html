@@ -50,6 +50,16 @@ will be the same as the input object if no edit was actually performed.</p><h2><
     </a>
   </li>
   <li>
+    <a href="#setblockdata">
+      <pre>setBlockData(...): ContentState</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#mergeblockdata">
+      <pre>mergeBlockData(...): ContentState</pre>
+    </a>
+  </li>
+  <li>
     <a href="#applyentity">
       <pre>applyEntity(...): ContentState</pre>
     </a>
@@ -105,7 +115,15 @@ selection is collapsed.</p><h3><a class="anchor" name="applyinlinestyle"></a>app
   contentState<span class="token punctuation">:</span> ContentState<span class="token punctuation">,</span>
   selectionState<span class="token punctuation">:</span> SelectionState<span class="token punctuation">,</span>
   blockType<span class="token punctuation">:</span> DraftBlockType
-<span class="token punctuation">)</span><span class="token punctuation">:</span> ContentState</pre><p>Set the block type for all selected blocks.</p><h3><a class="anchor" name="applyentity"></a>applyEntity <a class="hash-link" href="#applyentity">#</a></h3><pre class="prism language-javascript"><span class="token function">applyEntity<span class="token punctuation">(</span></span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span> ContentState</pre><p>Set the block type for all selected blocks.</p><h3><a class="anchor" name="setblockdata"></a>setBlockData <a class="hash-link" href="#setblockdata">#</a></h3><pre class="prism language-javascript"><span class="token function">setBlockData<span class="token punctuation">(</span></span>
+  contentState<span class="token punctuation">:</span> ContentState<span class="token punctuation">,</span>
+  selectionState<span class="token punctuation">:</span> SelectionState<span class="token punctuation">,</span>
+  blockData<span class="token punctuation">:</span> Map&lt;any<span class="token punctuation">,</span> any<span class="token operator">&gt;</span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span> ContentState</pre><p>Set the block data for all selected blocks.</p><h3><a class="anchor" name="mergeblockdata"></a>mergeBlockData <a class="hash-link" href="#mergeblockdata">#</a></h3><pre class="prism language-javascript"><span class="token function">mergeBlockData<span class="token punctuation">(</span></span>
+  contentState<span class="token punctuation">:</span> ContentState<span class="token punctuation">,</span>
+  selectionState<span class="token punctuation">:</span> SelectionState<span class="token punctuation">,</span>
+  blockData<span class="token punctuation">:</span> Map&lt;any<span class="token punctuation">,</span> any<span class="token operator">&gt;</span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span> ContentState</pre><p>Update block data for all selected blocks.</p><h3><a class="anchor" name="applyentity"></a>applyEntity <a class="hash-link" href="#applyentity">#</a></h3><pre class="prism language-javascript"><span class="token function">applyEntity<span class="token punctuation">(</span></span>
   contentState<span class="token punctuation">:</span> ContentState<span class="token punctuation">,</span>
   selectionState<span class="token punctuation">:</span> SelectionState<span class="token punctuation">,</span>
   entityKey<span class="token punctuation">:</span> <span class="token operator">?</span>string
