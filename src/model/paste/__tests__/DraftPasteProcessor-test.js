@@ -352,6 +352,54 @@ describe('DraftPasteProcessor', function() {
     expect(output[1].getText()).toBe('what');
   });
 
+  it('Should detect when somthing is un-styled in a child', function() {
+    let html = `<b>hello<span style="font-weight:400;">there</span></b>`;
+    let output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    assertInlineStyles(output[0], [
+      ['BOLD'],
+      ['BOLD'],
+      ['BOLD'],
+      ['BOLD'],
+      ['BOLD'],
+      [],
+      [],
+      [],
+      [],
+      [],
+    ]);
+
+    html = `<i>hello<span style="font-style:normal;">there</span></i>`;
+    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    assertInlineStyles(output[0], [
+      ['ITALIC'],
+      ['ITALIC'],
+      ['ITALIC'],
+      ['ITALIC'],
+      ['ITALIC'],
+      [],
+      [],
+      [],
+      [],
+      [],
+    ]);
+
+    // nothing to remove. make sure we don't throw an error
+    html = `<span>hello<span style="font-style:normal;">there</span></span>`;
+    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    assertInlineStyles(output[0], [
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+    ]);
+  });
+
   it('must preserve list formatting', function() {
     var html = `
     what
