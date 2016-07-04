@@ -43,20 +43,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
           this.state = {
             editorState: EditorState.createEmpty(),
+            showURLInput: false,
+            url: '',
+            urlType: '',
           };
 
           this.focus = () => this.refs.editor.focus();
-          this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => {
             const content = this.state.editorState.getCurrentContent();
             console.log(convertToRaw(content));
           };
+          this.onChange = (editorState) => this.setState({editorState});
+          this.onURLChange = (e) => this.setState({urlValue: e.target.value});
 
-          this.handleKeyCommand = this._handleKeyCommand.bind(this);
-          this.addMedia = this._addMedia.bind(this);
           this.addAudio = this._addAudio.bind(this);
           this.addImage = this._addImage.bind(this);
           this.addVideo = this._addVideo.bind(this);
+          this.confirmMedia = this._confirmMedia.bind(this);
+          this.handleKeyCommand = this._handleKeyCommand.bind(this);
+          this.onURLInputKeyDown = this._onURLInputKeyDown.bind(this);
         }
 
         _handleKeyCommand(command) {
@@ -69,34 +74,72 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           return false;
         }
 
-        _addMedia(type) {
-          const src = window.prompt('Enter a URL');
-          if (!src) {
-            return;
+        _confirmMedia(e) {
+          e.preventDefault();
+          const {editorState, urlValue, urlType} = this.state;
+          const entityKey = Entity.create(urlType, 'IMMUTABLE', {src: urlValue})
+
+          this.setState({
+            editorState: AtomicBlockUtils.insertAtomicBlock(
+              editorState,
+              entityKey,
+              ' '
+            ),
+            showURLInput: false,
+            urlValue: '',
+          }, () => {
+            setTimeout(() => this.focus(), 0);
+          });
+        }
+
+        _onURLInputKeyDown(e) {
+          if (e.which === 13) {
+            this._confirmMedia(e);
           }
+        }
 
-          const entityKey = Entity.create(type, 'IMMUTABLE', {src});
-
-          return AtomicBlockUtils.insertAtomicBlock(
-            this.state.editorState,
-            entityKey,
-            ' '
-          );
+        _promptForMedia(type) {
+          const {editorState} = this.state;
+          this.setState({
+            showURLInput: true,
+            urlValue: '',
+            urlType: type,
+          }, () => {
+            setTimeout(() => this.refs.url.focus(), 0);
+          });
         }
 
         _addAudio() {
-          this.onChange(this._addMedia('audio'));
+          this._promptForMedia('audio');
         }
 
         _addImage() {
-          this.onChange(this._addMedia('image'));
+          this._promptForMedia('image');
         }
 
         _addVideo() {
-          this.onChange(this._addMedia('video'));
+          this._promptForMedia('video');
         }
 
         render() {
+          let urlInput;
+          if (this.state.showURLInput) {
+            urlInput =
+              <div style={styles.urlInputContainer}>
+                <input
+                  onChange={this.onURLChange}
+                  ref="url"
+                  style={styles.urlInput}
+                  type="text"
+                  value={this.state.urlValue}
+                  onKeyDown={this.onURLInputKeyDown}
+                />
+                <button onMouseDown={this.confirmMedia}>
+                  Confirm
+                </button>
+              </div>;
+          }
+
           return (
             <div style={styles.root}>
               <div style={{marginBottom: 10}}>
@@ -121,6 +164,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   Add Video
                 </button>
               </div>
+              {urlInput}
               <div style={styles.editor} onClick={this.focus}>
                 <Editor
                   blockRendererFn={mediaBlockRenderer}
@@ -190,6 +234,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
         buttons: {
           marginBottom: 10,
+        },
+        urlInputContainer: {
+          marginBottom: 10,
+        },
+        urlInput: {
+          fontFamily: '\'Georgia\', serif',
+          marginRight: 10,
+          padding: 3,
         },
         editor: {
           border: '1px solid #ccc',
