@@ -20,7 +20,7 @@ export type EditorChangeType = (
   'backspace-character' |
   'change-block-type' |
   'change-inline-style' |
-  'change-fragment' |
+  'move-block' |
   'delete-character' |
   'insert-characters' |
   'insert-fragment' |

@@ -105,7 +105,7 @@ const AtomicBlockUtils = {
       selectionAfter: withMovedAtomicBlock.getSelectionAfter().set('hasFocus', true),
     });
 
-    return EditorState.push(editorState, newContent, 'change-fragment');
+    return EditorState.push(editorState, newContent, 'move-block');
   },
   
   moveAtomicBlockAfter: function(
@@ -126,7 +126,7 @@ const AtomicBlockUtils = {
       selectionAfter: withMovedAtomicBlock.getSelectionAfter().set('hasFocus', true),
     });
 
-    return EditorState.push(editorState, newContent, 'change-fragment');
+    return EditorState.push(editorState, newContent, 'move-block');
   },
 };
 
