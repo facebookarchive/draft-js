@@ -131,7 +131,7 @@ describe('getDraftEditorSelection', function() {
       .map(
         function(decoratorKey, ii) {
           var span = document.createElement('span');
-          // decorator do not have data-offset-key attribute
+          // Decorators may not have `data-offset-key` attribute
           span.setAttribute('decorator-key', '' + decoratorKey);
           span.appendChild(leafs[(ii * 2)]);
           span.appendChild(leafs[(ii * 2) + 1]);
