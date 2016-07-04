@@ -147,7 +147,7 @@ describe('AtomicBlockUtils', () => {
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
-      expect(atomicResultEditor.getLastChangeType(), 'change-fragment');
+      expect(atomicResultEditor.getLastChangeType(), 'move-block');
 
       // Atomic block must be on the first position now
       const atomicResultFirstBlock = atomicResultContent.getBlockMap().first();
@@ -227,7 +227,7 @@ describe('AtomicBlockUtils', () => {
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
-      expect(atomicResultEditor.getLastChangeType(), 'change-fragment');
+      expect(atomicResultEditor.getLastChangeType(), 'move-block');
 
       // Atomic block must be on the last position now
       const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
@@ -400,7 +400,7 @@ describe('AtomicBlockUtils', () => {
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
-      expect(atomicResultEditor.getLastChangeType(), 'change-fragment');
+      expect(atomicResultEditor.getLastChangeType(), 'move-block');
 
       // Atomic block must be on the first position now
       const atomicResultFirstBlock = atomicResultContent.getBlockMap().first();
@@ -480,7 +480,7 @@ describe('AtomicBlockUtils', () => {
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
-      expect(atomicResultEditor.getLastChangeType(), 'change-fragment');
+      expect(atomicResultEditor.getLastChangeType(), 'move-block');
 
       // Atomic block must be on the last position now
       const atomicResultLastBlock = atomicResultContent.getBlockMap().last();

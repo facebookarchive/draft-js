@@ -21,7 +21,7 @@ export type EditorChangeType = (
   'change-block-data' |
   'change-block-type' |
   'change-inline-style' |
-  'change-fragment' |
+  'move-block' |
   'delete-character' |
   'insert-characters' |
   'insert-fragment' |
