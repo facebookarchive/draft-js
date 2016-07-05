@@ -41,6 +41,10 @@ class DraftEntityInstance extends DraftEntityInstanceRecord {
     return this.get('type');
   }
 
+  getContiguity(): DraftEntityMutability {
+    return this.get('contiguous');
+  }
+
   getMutability(): DraftEntityMutability {
     return this.get('mutability');
   }

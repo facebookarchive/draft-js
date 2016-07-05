@@ -59,7 +59,7 @@ function filterKey(
 ): ?string {
   if (entityKey) {
     var entity = DraftEntity.get(entityKey);
-    return entity.getMutability() === 'MUTABLE' ? entityKey : null;
+    return (entity.getMutability() === 'MUTABLE' || entity.getContiguity()) ? entityKey : null;
   }
   return null;
 }
