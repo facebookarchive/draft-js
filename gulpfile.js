@@ -19,13 +19,15 @@ var gulp = require('gulp');
 var gulpUtil = require('gulp-util');
 var header = require('gulp-header');
 var packageData = require('./package.json');
+var rename = require('gulp-rename');
 var runSequence = require('run-sequence');
 var through = require('through2');
 var webpackStream = require('webpack-stream');
 
-var babelOpts = require('./scripts/babel/default-options');
-var babelPluginDEV = require('fbjs-scripts/babel/dev-expression');
+var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
 var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
+
+var moduleMap = require('./scripts/module-map');
 
 var paths = {
   dist: 'dist',
@@ -40,9 +42,23 @@ var paths = {
   ],
 };
 
-// Ensure that we use another plugin that isn't specified in the default Babel
-// options, converting __DEV__.
-babelOpts.plugins.push(babelPluginDEV);
+var babelOptsJS = {
+  presets: [
+    fbjsConfigurePreset({
+      stripDEV: true,
+      rewriteModules: {map: moduleMap},
+    }),
+  ]
+};
+
+var babelOptsFlow = {
+  presets: [
+    fbjsConfigurePreset({
+      target: 'flow',
+      rewriteModules: {map: moduleMap},
+    }),
+  ]
+};
 
 var COPYRIGHT_HEADER = `/**
  * Draft v<%= version %>
@@ -107,8 +123,17 @@ gulp.task('clean', function() {
 gulp.task('modules', function() {
   return gulp
     .src(paths.src)
-    .pipe(babel(babelOpts))
+    .pipe(babel(babelOptsJS))
     .pipe(flatten())
+    .pipe(gulp.dest(paths.lib));
+});
+
+gulp.task('flow', function() {
+  return gulp
+    .src(paths.src)
+    .pipe(babel(babelOptsFlow))
+    .pipe(flatten())
+    .pipe(rename({extname: '.js.flow'}))
     .pipe(gulp.dest(paths.lib));
 });
 
@@ -192,5 +217,5 @@ gulp.task('dev', function() {
 });
 
 gulp.task('default', function(cb) {
-  runSequence('check-dependencies', 'clean', 'modules', ['dist', 'dist:min'], cb);
+  runSequence('check-dependencies', 'clean', ['modules', 'flow'], ['dist', 'dist:min'], cb);
 });
