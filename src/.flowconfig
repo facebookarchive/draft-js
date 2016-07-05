@@ -19,4 +19,4 @@ suppress_type=$FlowIssue
 suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
 
 [version]
-0.27.0
+0.28.0
