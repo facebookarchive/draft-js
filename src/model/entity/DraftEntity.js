@@ -52,7 +52,7 @@ var DraftEntity = {
     data?: Object
   ): string {
     return DraftEntity.add(
-      new DraftEntityInstance({type, mutability, contiguous: true, data: data || {}})
+      new DraftEntityInstance({type, mutability, contiguous: contiguous || true, data: data || {}})
     );
   },
 
