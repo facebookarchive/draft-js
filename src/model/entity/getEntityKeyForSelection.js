@@ -27,14 +27,20 @@ function getEntityKeyForSelection(
   contentState: ContentState,
   targetSelection: SelectionState
 ): ?string {
-  var entityKey;
+  var entityKeyBeforeCaret;
+  var entityKeyAfterCaret;
+  var caretOutsideEntity;
 
   if (targetSelection.isCollapsed()) {
     var key = targetSelection.getAnchorKey();
     var offset = targetSelection.getAnchorOffset();
+
     if (offset > 0) {
-      entityKey = contentState.getBlockForKey(key).getEntityAt(offset - 1);
-      return filterKey(entityKey);
+      entityKeyBeforeCaret = contentState.getBlockForKey(key).getEntityAt(offset - 1);
+      entityKeyAfterCaret = contentState.getBlockForKey(key).getEntityAt(offset);
+      caretOutsideEntity = (entityKeyBeforeCaret !== entityKeyAfterCaret);
+
+      return filterKey(entityKeyBeforeCaret, caretOutsideEntity);
     }
     return null;
   }
@@ -43,23 +49,34 @@ function getEntityKeyForSelection(
   var startOffset = targetSelection.getStartOffset();
   var startBlock = contentState.getBlockForKey(startKey);
 
-  entityKey = startOffset === startBlock.getLength() ?
+  entityKeyBeforeCaret = startOffset === startBlock.getLength() ?
     null :
     startBlock.getEntityAt(startOffset);
 
-  return filterKey(entityKey);
+  return filterKey(entityKeyBeforeCaret);
 }
 
 /**
- * Determine whether an entity key corresponds to a `MUTABLE` entity. If so,
- * return it. If not, return null.
- */
+* Determine whether an entity key corresponds to a `MUTABLE` entity. If so,
+* return it. If not, return null.
+*/
 function filterKey(
-  entityKey: ?string
+  entityKey: ?string,
+  caretOutsideEntity: ?bool,
 ): ?string {
   if (entityKey) {
     var entity = DraftEntity.get(entityKey);
-    return (entity.getMutability() === 'MUTABLE' && entity.getContiguity()) ? entityKey : null;
+
+    // if entity is mutable and caret is inside it, return it
+    if (entity.getMutability() === 'MUTABLE' && !caretOutsideEntity) {
+      return entityKey;
+    }
+
+    // entity is mutable and the caret is outside of the entity
+    // if it is contiguous, return it, else null
+    if (entity.getMutability() === 'MUTABLE' && caretOutsideEntity) {
+      return (entity.getContiguity()) ? entityKey : null;
+    }
   }
   return null;
 }
