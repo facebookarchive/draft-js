@@ -47,17 +47,14 @@ the editor blockRender props.
 
 ```js
 // The example below deliberatly only allows
-// 'heading-two' and 'paragraph' as valid block types and
-// updated the unstyled element to become a paragraph.
+// 'heading-two' as the only valid block type and
+// updates the unstyled element to also become a h2.
 const blockRenderMap = Immutable.Map({
   'header-two': {
    element: 'h2'
   },
-  'paragraph': {
-   element: 'p'
-  },
   'unstyled': {
-   element: 'p'
+    element: 'h2'
   }
 });
 
@@ -80,11 +77,8 @@ this can be done by using the DefaultDraftBlockRenderMap reference to create a n
 
 ```js
 const blockRenderMap = Immutable.Map({
-  'paragraph': {
-    element: 'p'
-  },
-  'unstyled': {
-    element: 'p'
+  'section': {
+    element: 'section'
   }
 });
 
@@ -120,7 +114,7 @@ to wrap any other custom block type
 *example of extending default block render map to use a react component for a custom block:*
 
 ```js
-class myCustomBlock {
+class MyCustomBlock extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -135,9 +129,9 @@ class myCustomBlock {
 }
 
 const blockRenderMap = Immutable.Map({
-  'myCustomBlock': {
+  'MyCustomBlock': {
     element: 'section', // will be used during paste or html conversion to auto match your component
-    wrapper: <myCustomBlock {...this.props} />
+    wrapper: <MyCustomBlock {...this.props} />
   }
 });
 
