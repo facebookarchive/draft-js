@@ -11,6 +11,7 @@ cache:
 
 env:
   matrix:
+    - TEST_TYPE=build
     - TEST_TYPE=test
     - TEST_TYPE=flow
     - TEST_TYPE=lint
