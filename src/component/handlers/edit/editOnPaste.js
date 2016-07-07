@@ -19,6 +19,7 @@ var DraftModifier = require('DraftModifier');
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var EditorState = require('EditorState');
 
+var draftEntityKeyPrefix = require('draftEntityKeyPrefix');
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
@@ -118,6 +119,15 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
           internalClipboard.size === 1 &&
           internalClipboard.first().getText() === text
         )
+      ) {
+        this.update(
+          insertFragment(this.props.editorState, internalClipboard)
+        );
+        return;
+      } else if (
+        // If a draft entity key is present in the pasted HTML, it should be safe to
+        // assume this is an internal paste.
+        html.indexOf(draftEntityKeyPrefix) !== -1
       ) {
         this.update(
           insertFragment(this.props.editorState, internalClipboard)

@@ -12,6 +12,7 @@
  */
 
 var DraftEntityInstance = require('DraftEntityInstance');
+var draftEntityKeyPrefix = require('draftEntityKeyPrefix');
 var Immutable = require('immutable');
 
 var invariant = require('invariant');
@@ -60,7 +61,7 @@ var DraftEntity = {
    * useful when restoring instances from the server.
    */
   add: function(instance: DraftEntityInstance): string {
-    var key = '' + (++instanceKey);
+    var key = draftEntityKeyPrefix + (++instanceKey);
     instances = instances.set(key, instance);
     return key;
   },
