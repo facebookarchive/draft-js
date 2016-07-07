@@ -12,6 +12,8 @@ cache:
 env:
   matrix:
     - TEST_TYPE=test
+    - TEST_TYPE=flow
+    - TEST_TYPE=lint
     - TEST_TYPE=build_website
   global:
     - CXX=g++-4.8
@@ -43,14 +45,10 @@ before_script:
 
 script:
 - |
-  if [ "$TEST_TYPE" = test ]
+  if [ "$TEST_TYPE" != build_website ]
   then
-
-    npm run test-ci
-
-  elif [ "$TEST_TYPE" = build_website ]
-  then
-
+    npm run $TEST_TYPE
+  else
     set -e
     ./node_modules/.bin/gulp
     cd website
