@@ -36,7 +36,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   e.preventDefault();
   var data = new DataTransfer(e.clipboardData);
 
-  let {editorState, pasteUniqueEntities} = this.props;
+  const {editorState, pasteUniqueEntities} = this.props;
 
   // Get files, unless this is likely to be a string the user wants inline.
   if (!data.isRichText()) {
@@ -212,10 +212,10 @@ function cloneEntitiesInFragment(
 ): BlockMap {
 
   // Get all entities referenced in the fragment
-  let entities = {}
+  const entities = {}
   fragment.forEach(block => {
     block.getCharacterList().forEach(character => {
-      let key = character.getEntity();
+      const key = character.getEntity();
       if (key !== null) {
         entities[key] = Entity.get(key);
       }
@@ -224,10 +224,10 @@ function cloneEntitiesInFragment(
 
   // Clone each entity that was referenced and
   // build a map from old entityKeys to new ones
-  let newEntityKeys = {}
+  const newEntityKeys = {}
   Object.keys(entities).forEach((key) => {
-    let entity = entities[key];
-    let newEntityKey = Entity.create(
+    const entity = entities[key];
+    const newEntityKey = Entity.create(
       entity.get('type'),
       entity.get('mutability'),
       entity.get('data')
@@ -235,23 +235,20 @@ function cloneEntitiesInFragment(
     newEntityKeys[key] = newEntityKey;
   })
 
-  function findAllEntityRanges(block, callback) {
-    block.findEntityRanges(
-      (character) => (character.getEntity() !== null),
-      callback
-    )
-  }
-
   // Update all the entity references
   let newFragment = BlockMapBuilder.createFromArray([])
   fragment.forEach((block, blockKey) => {
-    findAllEntityRanges(block, (start, end) => {
-      let entityKey = block.getEntityAt(start);
-      newFragment = newFragment.set(
-        blockKey,
-        applyEntityToContentBlock(block, start, end, newEntityKeys[entityKey])
-      )
-    })
+    block.findEntityRanges(
+      character => character.getEntity() !== null,
+      (start, end) => {
+        const entityKey = block.getEntityAt(start);
+        const newEntityKey = newEntityKeys[entityKey];
+        newFragment = newFragment.set(
+          blockKey,
+          applyEntityToContentBlock(block, start, end, newEntityKey)
+        )
+      }
+    )
   })
 
   return newFragment
