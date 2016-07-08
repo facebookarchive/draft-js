@@ -238,15 +238,14 @@ function cloneEntitiesInFragment(
   // Update all the entity references
   let newFragment = BlockMapBuilder.createFromArray([])
   fragment.forEach((block, blockKey) => {
+    let updatedBlock = block
     block.findEntityRanges(
       character => character.getEntity() !== null,
       (start, end) => {
         const entityKey = block.getEntityAt(start);
         const newEntityKey = newEntityKeys[entityKey];
-        newFragment = newFragment.set(
-          blockKey,
-          applyEntityToContentBlock(block, start, end, newEntityKey)
-        )
+        updatedBlock = applyEntityToContentBlock(updatedBlock, start, end, newEntityKey)
+        newFragment = newFragment.set(blockKey, updatedBlock)
       }
     )
   })
