@@ -76,6 +76,7 @@ class DraftEditor extends React.Component {
     readOnly: false,
     spellCheck: false,
     stripPastedStyles: false,
+    pasteUniqueEntities: false,
   };
 
   _blockSelectEvents: boolean;

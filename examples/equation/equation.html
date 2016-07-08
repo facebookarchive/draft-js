@@ -436,6 +436,7 @@ class BoundlessEditor extends React.Component {
           editorState={editorState}
           customStyleMap={styleMap}
           onChange={(editorState) => this.onChange(editorState)}
+          pasteUniqueEntities={true}
           // handlePastedText={() => this.handlePastedText()}
           {...editorProps} />
 
