@@ -31,7 +31,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <script src="../../node_modules/es6-shim/es6-shim.js"></script>
     <script src="../../node_modules/babel-core/browser.js"></script>
     <script src="../../dist/Draft.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         extensions: ["tex2jax.js"],
@@ -361,37 +360,6 @@ class BoundlessEditor extends React.Component {
     this.hideEquationEditor()
   }
 
-  //
-  // draftjs paste handles equations fine with entire blocks except that the entity gets the same key
-  //
-  handlePastedText(text, html) {
-    const { editorState } = this.state
-    const selection = editorState.getSelection()
-    let content = editorState.getCurrentContent()
-
-    const entity = Entity.create('equation', 'IMMUTABLE', { text: tex })
-
-    // contentBlock.findEntityRanges(
-    //   (character) => {
-    //     const key = character.getEntity()
-    //     return key !== null && Entity.get(key).getType() === 'equation'
-    //   },
-    //   callback
-    // )
-
-    // // Strategy
-    // // - split text around each entity
-    // // - iterate over each chunk calling insertText
-
-    // let currentContent = content
-    // chunks.forEach({text, entity}) => {
-    //   currentContent = Draft.Modifier.insertText(currentContent, selection, " ", null, entity)
-    //   ...
-    // })
-
-    // return true
-  }
-
   hideEquationEditor() {
     this.setState({
       showEquationEdit: false,
@@ -407,12 +375,6 @@ class BoundlessEditor extends React.Component {
   render() {
     const { editorProps } = this.props
     const { editorState, currentEquationEntityKey } = this.state
-    const styleMap = {
-      superscript: {
-        verticalAlign: 'super',
-        fontSize: '1rem',
-      }
-    }
 
     let equationEditor
     if (this.state.showEquationEdit) {
@@ -434,10 +396,8 @@ class BoundlessEditor extends React.Component {
 
         <Editor
           editorState={editorState}
-          customStyleMap={styleMap}
           onChange={(editorState) => this.onChange(editorState)}
           pasteUniqueEntities={true}
-          // handlePastedText={() => this.handlePastedText()}
           {...editorProps} />
 
         <button onClick={() => this.logState()}>Log State</button>
@@ -449,7 +409,7 @@ class BoundlessEditor extends React.Component {
 
 
 
-class EntityEditorExample extends React.Component {
+class EquationEntityExample extends React.Component {
   render() {
     return (
       <div style={styles.root}>
@@ -492,7 +452,7 @@ const TokenSpan = (props) => {
     Entity.get(props.entityKey).getMutability()
   );
   return (
-    <span style={style}>
+    <span id={props.entityKey} style={style}>
       {props.children}
     </span>
   );
@@ -529,7 +489,7 @@ const styles = {
 };
 
 ReactDOM.render(
-  <EntityEditorExample />,
+  <EquationEntityExample />,
   document.getElementById('target')
 );
 
