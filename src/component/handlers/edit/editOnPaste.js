@@ -19,7 +19,6 @@ var DraftModifier = require('DraftModifier');
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var EditorState = require('EditorState');
 var Entity = require('DraftEntity');
-var SelectionState = require('SelectionState');
 
 var draftEntityKeyPrefix = require('draftEntityKeyPrefix');
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
@@ -126,7 +125,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       ) {
         let clipboard = pasteUniqueEntities ?
           cloneEntitiesInFragment(internalClipboard) :
-          internalClipboard
+          internalClipboard;
 
         this.update(
           insertFragment(editorState, clipboard)
@@ -140,7 +139,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       ) {
         let clipboard = pasteUniqueEntities ?
           cloneEntitiesInFragment(internalClipboard) :
-          internalClipboard
+          internalClipboard;
 
         this.update(
           insertFragment(editorState, clipboard)
@@ -160,7 +159,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
 
       let clipboard = pasteUniqueEntities ?
         cloneEntitiesInFragment(internalClipboard) :
-        internalClipboard
+        internalClipboard;
 
       this.update(
         insertFragment(editorState, clipboard)
@@ -212,19 +211,19 @@ function cloneEntitiesInFragment(
 ): BlockMap {
 
   // Get all entities referenced in the fragment
-  const entities = {}
+  const entities = {};
   fragment.forEach(block => {
     block.getCharacterList().forEach(character => {
       const key = character.getEntity();
       if (key !== null) {
         entities[key] = Entity.get(key);
       }
-    })
-  })
+    });
+  });
 
   // Clone each entity that was referenced and
   // build a map from old entityKeys to new ones
-  const newEntityKeys = {}
+  const newEntityKeys = {};
   Object.keys(entities).forEach((key) => {
     const entity = entities[key];
     const newEntityKey = Entity.create(
@@ -233,24 +232,24 @@ function cloneEntitiesInFragment(
       entity.get('data')
     );
     newEntityKeys[key] = newEntityKey;
-  })
+  });
 
   // Update all the entity references
-  let newFragment = BlockMapBuilder.createFromArray([])
+  let newFragment = BlockMapBuilder.createFromArray([]);
   fragment.forEach((block, blockKey) => {
-    let updatedBlock = block
+    let updatedBlock = block;
     block.findEntityRanges(
       character => character.getEntity() !== null,
       (start, end) => {
         const entityKey = block.getEntityAt(start);
         const newEntityKey = newEntityKeys[entityKey];
-        updatedBlock = applyEntityToContentBlock(updatedBlock, start, end, newEntityKey)
-        newFragment = newFragment.set(blockKey, updatedBlock)
+        updatedBlock = applyEntityToContentBlock(updatedBlock, start, end, newEntityKey);
+        newFragment = newFragment.set(blockKey, updatedBlock);
       }
-    )
-  })
+    );
+  });
 
-  return newFragment
+  return newFragment;
 }
 
 function insertFragment(
