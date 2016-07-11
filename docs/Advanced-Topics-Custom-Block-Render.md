@@ -58,7 +58,7 @@ const blockRenderMap = Immutable.Map({
   }
 });
 
-class RichEditor() {
+class RichEditor extends React.Component {
   render() {
     return (
       <Editor
@@ -86,7 +86,7 @@ const blockRenderMap = Immutable.Map({
 // keep support for other draft default block types
 const extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
-class RichEditor() {
+class RichEditor extends React.Component {
   render() {
     return (
       <Editor
@@ -138,7 +138,7 @@ const blockRenderMap = Immutable.Map({
 // keep support for other draft default block types and add our myCustomBlock type
 const extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
-class RichEditor() {
+class RichEditor extends React.Component {
   ...
   render() {
     return (
