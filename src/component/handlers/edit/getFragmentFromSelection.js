@@ -19,12 +19,15 @@ import type EditorState from 'EditorState';
 
 function getFragmentFromSelection(editorState: EditorState): ?BlockMap {
   var selectionState = editorState.getSelection();
-  if (!selectionState.isCollapsed()) {
-    return getContentStateFragment(
-      editorState.getCurrentContent(),
-      selectionState
-    );
+
+  if (selectionState.isCollapsed()) {
+    return null;
   }
+
+  return getContentStateFragment(
+    editorState.getCurrentContent(),
+    selectionState
+  );
 }
 
 module.exports = getFragmentFromSelection;

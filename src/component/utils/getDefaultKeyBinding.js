@@ -42,9 +42,10 @@ function shouldRemoveWord(e: SyntheticKeyboardEvent): boolean {
 function getZCommand(
   e: SyntheticKeyboardEvent
 ): ?DraftEditorCommand {
-  if (hasCommandModifier(e)) {
-    return e.shiftKey ? 'redo' : 'undo';
+  if (!hasCommandModifier(e)) {
+    return null;
   }
+  return e.shiftKey ? 'redo' : 'undo';
 }
 
 function getDeleteCommand(

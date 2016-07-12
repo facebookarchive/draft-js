@@ -353,7 +353,7 @@ describe('DraftPasteProcessor', function() {
   });
 
   it('Should detect when somthing is un-styled in a child', function() {
-    let html = `<b>hello<span style="font-weight:400;">there</span></b>`;
+    let html = '<b>hello<span style="font-weight:400;">there</span></b>';
     let output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     assertInlineStyles(output[0], [
       ['BOLD'],
@@ -368,7 +368,7 @@ describe('DraftPasteProcessor', function() {
       [],
     ]);
 
-    html = `<i>hello<span style="font-style:normal;">there</span></i>`;
+    html = '<i>hello<span style="font-style:normal;">there</span></i>';
     output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     assertInlineStyles(output[0], [
       ['ITALIC'],
@@ -384,7 +384,7 @@ describe('DraftPasteProcessor', function() {
     ]);
 
     // nothing to remove. make sure we don't throw an error
-    html = `<span>hello<span style="font-style:normal;">there</span></span>`;
+    html = '<span>hello<span style="font-style:normal;">there</span></span>';
     output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     assertInlineStyles(output[0], [
       [],

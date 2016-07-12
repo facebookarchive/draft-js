@@ -219,7 +219,6 @@ class DraftEditor extends React.Component {
       'DraftEditor/alignRight': textAlignment === 'right',
       'DraftEditor/alignCenter': textAlignment === 'center',
     });
-    const hasContent = this.props.editorState.getCurrentContent().hasText();
 
     const contentStyle = {
       outline: 'none',
