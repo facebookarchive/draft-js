@@ -36,9 +36,8 @@ function isSelectionAtLeafStart(editorState: EditorState): boolean {
           isAtStart = true;
           return true;
         }
-        if (offset < leafStart) {
-          return false;
-        }
+
+        return false;
       });
     }
 

@@ -48,7 +48,7 @@ var babelOptsJS = {
       stripDEV: true,
       rewriteModules: {map: moduleMap},
     }),
-  ]
+  ],
 };
 
 var babelOptsFlow = {
@@ -57,7 +57,7 @@ var babelOptsFlow = {
       target: 'flow',
       rewriteModules: {map: moduleMap},
     }),
-  ]
+  ],
 };
 
 var COPYRIGHT_HEADER = `/**
