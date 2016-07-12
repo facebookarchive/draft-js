@@ -1,7 +1,7 @@
 {
   "name": "draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "keywords": [
     "draftjs",
     "editor",
@@ -59,6 +59,7 @@
     "jest": "^12.1.1",
     "object-assign": "^4.0.1",
     "react": "^15.0.0-rc.1",
+    "react-addons-test-utils": "^15.2.0",
     "react-dom": "^15.0.0-rc.1",
     "run-sequence": "^1.1.2",
     "through2": "^2.0.1",
