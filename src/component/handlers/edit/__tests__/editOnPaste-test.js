@@ -16,13 +16,11 @@ jest.disableAutomock();
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { renderIntoDocument, Simulate } from 'react-addons-test-utils';
-import { Editor, EditorState, convertFromRaw, BlockMapBuilder, ContentBlock, SelectionState } from 'Draft';
-import editOnPaste from 'editOnPaste';
+import { Editor, EditorState, convertFromRaw, SelectionState } from 'Draft';
 import draftEntityKeyPrefix from 'draftEntityKeyPrefix';
 
 describe('editOnPaste', function() {
 
-  let comp, editorState
   const changeSpy = jasmine.createSpy('changeSpy');
 
   const rawContent = {
@@ -48,19 +46,19 @@ describe('editOnPaste', function() {
   const mockPasteEvent = {
     clipboardData: {
       types: ['text/html', 'text/plain'],
-      getData: () => draftEntityKeyPrefix + '1' ,
+      getData: () => draftEntityKeyPrefix + '1',
     }
   };
 
   class TestEditor extends React.Component {
-    constructor(props){
-      super(props)
+    constructor(props) {
+      super(props);
 
       let editorState = EditorState.createWithContent(
         convertFromRaw(rawContent)
-      )
+      );
 
-      const firstBlock = editorState.getCurrentContent().getBlockMap().first()
+      const firstBlock = editorState.getCurrentContent().getBlockMap().first();
 
       const selection = new SelectionState({
         anchorKey: firstBlock.key,
@@ -68,33 +66,33 @@ describe('editOnPaste', function() {
         focusKey: firstBlock.key,
         focusOffset: 33,
         hasFocus: true
-      })
+      });
 
-      editorState = EditorState.forceSelection(editorState, selection)
+      editorState = EditorState.forceSelection(editorState, selection);
 
-      this.state = { editorState }
+      this.state = { editorState };
     }
 
     onChange(editorState) {
-      changeSpy()
-      this.setState({editorState})
+      changeSpy();
+      this.setState({editorState});
     }
 
     render() {
       return (
         <Editor
-          ref='editor'
+          ref="editor"
           onChange={this.onChange.bind(this)}
           editorState={this.state.editorState}
           pasteUniqueEntities={true} />
-      )
+      );
     }
   }
 
   describe('when copying and pasting a selection containing an entity', function() {
 
     beforeEach(function() {
-      comp = renderIntoDocument(<TestEditor/>);
+      const comp = renderIntoDocument(<TestEditor/>);
       const editorNode = ReactDOM.findDOMNode(comp.refs.editor.refs.editor);
       Simulate.copy(editorNode);
       // console.log('\nINTERNAL CLIPBOARD:\n------\n', comp.refs.editor.getClipboard());
@@ -105,7 +103,6 @@ describe('editOnPaste', function() {
       expect(changeSpy).toHaveBeenCalled();
     });
 
-  })
-
+  });
 
 });
