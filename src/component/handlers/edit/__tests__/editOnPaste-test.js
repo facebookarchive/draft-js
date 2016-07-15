@@ -45,17 +45,10 @@ describe('editOnPaste', function() {
     },
   };
 
-  // const mockPasteEvent = {
-  //   clipboardData: {
-  //     types: ['html'],
-  //     html: draftEntityKeyPrefix + '1',
-  //   }
-  // };
-
   const mockPasteEvent = {
     clipboardData: {
-      getData: () => draftEntityKeyPrefix + '1' ,
       types: ['text/html', 'text/plain'],
+      getData: () => draftEntityKeyPrefix + '1' ,
     }
   };
 
@@ -84,9 +77,6 @@ describe('editOnPaste', function() {
 
     onChange(editorState) {
       changeSpy()
-      // console.log("ON CHANGE CALLED")
-      // console.log("================")
-      // console.log(editorState)
       this.setState({editorState})
     }
 
