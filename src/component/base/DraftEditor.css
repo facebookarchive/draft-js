@@ -11,12 +11,12 @@
 .public/DraftEditor/content {
   height: inherit;
   text-align: initial;
+  -webkit-user-modify: read-write-plaintext-only;
+  user-modify: read-write-plaintext-only;
 }
 
 .DraftEditor/root {
   position: relative;
-  -webkit-user-modify: read-write-plaintext-only;
-  user-modify: read-write-plaintext-only;
 }
 
 /**
