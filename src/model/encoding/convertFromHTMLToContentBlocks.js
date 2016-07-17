@@ -286,7 +286,7 @@ function hasValidLinkText(link: Node): boolean {
     'Link must be an HTMLAnchorElement.'
   );
   var protocol = link.protocol;
-  return protocol === 'http:' || protocol === 'https:';
+  return protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:';
 }
 
 function genFragment(
