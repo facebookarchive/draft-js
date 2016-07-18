@@ -17,18 +17,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { renderIntoDocument, Simulate } from 'react-addons-test-utils';
 import { Editor, EditorState, convertFromRaw, SelectionState } from 'Draft';
+import Entity from 'DraftEntity';
 import draftEntityKeyPrefix from 'draftEntityKeyPrefix';
 
 describe('editOnPaste', function() {
 
+  let globalEditorState;
   const changeSpy = jasmine.createSpy('changeSpy');
+
+  const testText = 'An equation:  !';
 
   const rawContent = {
     blocks: [
       {
-        text: 'This is an immutable equation:  .',
+        text: testText,
         type: 'unstyled',
-        entityRanges: [{offset: 31, length: 1, key: 'first'}],
+        entityRanges: [{offset: 13, length: 1, key: 'first'}],
       },
     ],
 
@@ -43,66 +47,134 @@ describe('editOnPaste', function() {
     },
   };
 
-  const mockPasteEvent = {
-    clipboardData: {
-      types: ['text/html', 'text/plain'],
-      getData: () => draftEntityKeyPrefix + '1',
-    }
-  };
-
   class TestEditor extends React.Component {
     constructor(props) {
       super(props);
-
-      let editorState = EditorState.createWithContent(
-        convertFromRaw(rawContent)
-      );
-
-      const firstBlock = editorState.getCurrentContent().getBlockMap().first();
-
-      const selection = new SelectionState({
-        anchorKey: firstBlock.key,
-        anchorOffset: 21,
-        focusKey: firstBlock.key,
-        focusOffset: 33,
-        hasFocus: true
-      });
-
-      editorState = EditorState.forceSelection(editorState, selection);
-
-      this.state = { editorState };
+      this.state = { editorState: props.editorState };
     }
 
     onChange(editorState) {
       changeSpy();
+      globalEditorState = editorState;
       this.setState({editorState});
+    }
+
+    forceSelection(anchorOffset, focusOffset, block=null) {
+      const { editorState } = this.state;
+      if (block === null) {
+        block = editorState.getCurrentContent().getBlockMap().first();
+      }
+      const selection = new SelectionState({
+        anchorKey: block.key,
+        anchorOffset: anchorOffset,
+        focusKey: block.key,
+        focusOffset: focusOffset,
+      });
+      let newEditorState = EditorState.forceSelection(globalEditorState, selection);
+      this.onChange(newEditorState);
     }
 
     render() {
       return (
         <Editor
-          ref="editor"
+          ref="draftEditor"
           onChange={this.onChange.bind(this)}
           editorState={this.state.editorState}
-          pasteUniqueEntities={true} />
+          pasteUniqueEntities={this.props.pasteUniqueEntities} />
       );
     }
   }
 
-  describe('when copying and pasting a selection containing an entity', function() {
+  describe('copying and pasting a selection containing an entity', function() {
 
-    beforeEach(function() {
-      const comp = renderIntoDocument(<TestEditor/>);
-      const editorNode = ReactDOM.findDOMNode(comp.refs.editor.refs.editor);
-      Simulate.copy(editorNode);
-      // console.log('\nINTERNAL CLIPBOARD:\n------\n', comp.refs.editor.getClipboard());
-      Simulate.paste(editorNode, mockPasteEvent);
+    const mockPasteEvent = {
+      clipboardData: {
+        types: ['text/html', 'text/plain'],
+        getData: () => draftEntityKeyPrefix + '1',
+      }
+    };
+
+    // describe('if pasteUniqueEntities is false', function() {
+
+    //   it('entities should not be cloned', function() {
+    //     // TODO
+    //   });
+
+    // });
+
+    describe('if pasteUniqueEntities is true', function() {
+
+      let comp, editorNode;
+
+      beforeEach(function() {
+        globalEditorState = EditorState.createWithContent(
+          convertFromRaw(rawContent)
+        );
+        comp = renderIntoDocument(
+          <TestEditor
+            pasteUniqueEntities={true}
+            editorState={globalEditorState} />
+        );
+        editorNode = ReactDOM.findDOMNode(comp.refs.draftEditor.refs.editor);
+      });
+
+      it('entities should be cloned', function() {
+        comp.forceSelection(3, 14);
+        Simulate.copy(editorNode);
+        Simulate.paste(editorNode, mockPasteEvent);
+
+        expect(changeSpy).toHaveBeenCalled();
+        expect(globalEditorState instanceof EditorState).toBe(true);
+
+        const blockMap = globalEditorState.getCurrentContent().getBlockMap();
+        const firstBlock = blockMap.first();
+
+        expect(blockMap.size).toBe(1);
+        expect(firstBlock.text).toEqual('An equation:  !');
+
+        const originalEntity = Entity.get(draftEntityKeyPrefix+'1');
+        const clonedEntity = Entity.get(draftEntityKeyPrefix+'2');
+        expect(originalEntity.getData()).toEqual(clonedEntity.getData());
+        expect(clonedEntity.getData()).not.toBe(null);
+      });
+
+      it('entity references should be pasted in the right place', function() {
+        comp.forceSelection(3, 14);
+        Simulate.copy(editorNode);
+        comp.forceSelection(testText.length, testText.length);
+        Simulate.paste(editorNode, mockPasteEvent);
+
+        expect(changeSpy).toHaveBeenCalled();
+        expect(globalEditorState instanceof EditorState).toBe(true);
+
+        const blockMap = globalEditorState.getCurrentContent().getBlockMap();
+        const firstBlock = blockMap.first();
+
+        expect(blockMap.size).toBe(1);
+        expect(firstBlock.text).toEqual('An equation:  !equation:  ');
+
+        const firstEntityChar = firstBlock.get('characterList').get(13);
+        const firstEntityKey = firstEntityChar.getEntity();
+        const firstEntityNumber = parseInt(firstEntityKey[-1], 10);
+        const pastedEntityChar = firstBlock.get('characterList').get(25);
+        const pastedEntityKey = pastedEntityChar.getEntity();
+        const pastedEntityNumber = parseInt(pastedEntityKey[-1], 10);
+
+        expect(firstEntityKey).toBeTruthy();
+        expect(pastedEntityKey).toBeTruthy();
+        expect(pastedEntityNumber).toEqual(firstEntityNumber + 1);
+        expect(pastedEntityKey.indexOf(draftEntityKeyPrefix)).toEqual(0);
+      });
+
+      // it('pasting plain text (non-internal paste) works as expected', function() {
+      //   // TODO
+      // });
+
+      // it('pasting plain HTML (non-internal paste) works as expected', function() {
+      //   // TODO
+      // });
+
+
     });
-
-    it('the entity should be cloned', function() {
-      expect(changeSpy).toHaveBeenCalled();
-    });
-
   });
-
 });
