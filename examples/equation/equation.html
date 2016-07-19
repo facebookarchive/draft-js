@@ -159,6 +159,7 @@ class InlineMath extends React.Component {
       <InlineTex
         style={style}
         id={this.getId()}
+        className={this.props.editorKey}
         onClick={() => this.onClick()}
         contentEditable={false}
         tex={text} />
@@ -304,12 +305,13 @@ class BoundlessEditor extends React.Component {
     })
   }
 
-  componentWillMount() {
+  componentDidMount() {
     let compositeDecorator = new CompositeDecorator([{
       strategy: findTex, // essentially find entity.getType() === 'TEX'
       component: InlineMath,
       props: {
-        onClick: (key) => this.handleEquationClicked(key)
+        onClick: (key) => this.handleEquationClicked(key),
+        editorKey: this.refs.editor.getEditorKey(),
       }
     }, {
       strategy: getEntityStrategy('IMMUTABLE'),
@@ -395,6 +397,7 @@ class BoundlessEditor extends React.Component {
         { equationEditor }
 
         <Editor
+          ref='editor'
           editorState={editorState}
           onChange={(editorState) => this.onChange(editorState)}
           pasteUniqueEntities={true}
