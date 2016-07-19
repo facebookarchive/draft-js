@@ -25,20 +25,13 @@ insertAtomicBlock: function(
 ): EditorState
 ```
 
-### moveAtomicBlockBefore
+### moveAtomicBlock
 
 ```
-moveAtomicBlockBefore: function(
+moveAtomicBlock: function(
   editorState: EditorState,
-  contentBlock: ContentBlock
-): EditorState
-```
-
-### moveAtomicBlockAfter
-
-```
-moveAtomicBlockAfter: function(
-  editorState: EditorState,
-  contentBlock: ContentBlock
+  atomicBlock: ContentBlock,
+  targetRange: SelectionState,
+  insertionMode?: DraftInsertionType
 ): EditorState
 ```
