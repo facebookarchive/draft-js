@@ -11,6 +11,9 @@
 .public/DraftEditor/content {
   height: inherit;
   text-align: initial;
+}
+
+.public/DraftEditor/content {
   -webkit-user-modify: read-write-plaintext-only;
   user-modify: read-write-plaintext-only;
 }
