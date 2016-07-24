@@ -66,6 +66,14 @@ var inlineTags = {
   u: 'UNDERLINE',
 };
 
+var anchorAttr = [
+  'className',
+  'href',
+  'rel',
+  'target',
+  'title',
+];
+
 var lastBlock;
 
 type Block = {
@@ -384,12 +392,22 @@ function genFragment(
   }
 
   var entityId: ?string = null;
-  var href: ?string = null;
 
   while (child) {
-    if (nodeName === 'a' && child.href && hasValidLinkText(child)) {
-      href = new URI(child.href).toString();
-      entityId = DraftEntity.create('LINK', 'MUTABLE', {url: href});
+    if (child instanceof HTMLAnchorElement && child.href && hasValidLinkText(child)) {
+      const anchor: HTMLAnchorElement = child;
+      const entityConfig = {};
+
+      anchorAttr.forEach((attr) => {
+        const anchorAttribute = anchor.getAttribute(attr);
+        if (anchorAttribute) {
+          entityConfig[attr] = anchorAttribute;
+        }
+      });
+
+      entityConfig.url = new URI(anchor.href).toString();
+
+      entityId = DraftEntity.create('LINK', 'MUTABLE', entityConfig);
     } else {
       entityId = undefined;
     }
