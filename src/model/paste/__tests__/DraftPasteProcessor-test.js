@@ -293,8 +293,8 @@ describe('DraftPasteProcessor', function() {
     var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     assertBlockTypes(output, ['unstyled']);
     assertEntities(
-    output[0],
-    Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false))
+      output[0],
+      Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false))
     );
     expect(output[0].getText()).toBe('This is a link, yep.');
     var entityId = output[0].getCharacterList().get(12).getEntity();
@@ -307,12 +307,12 @@ describe('DraftPasteProcessor', function() {
     var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     assertBlockTypes(output, ['unstyled']);
     assertInlineStyles(
-    output[0],
-    Array(2).fill([]).concat(Array(4).fill(['ITALIC']), Array(11).fill([]))
+      output[0],
+      Array(2).fill([]).concat(Array(4).fill(['ITALIC']), Array(11).fill([]))
     );
     assertEntities(
-    output[0],
-    Array(2).fill(false).concat(Array(9).fill(true), Array(6).fill(false))
+      output[0],
+      Array(2).fill(false).concat(Array(9).fill(true), Array(6).fill(false))
     );
     expect(output[0].getText()).toBe('A cool link, yep.');
   });
@@ -323,6 +323,28 @@ describe('DraftPasteProcessor', function() {
     assertBlockTypes(output, ['unstyled']);
     assertEntities(output[0], Array(20).fill(false));
     expect(output[0].getText()).toBe('This is a link, yep.');
+  });
+
+  it('must ignore javascript: links', function() {
+    var html = 'This is a <a href="javascript:void(0)">link</a>, yep.';
+    var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    assertBlockTypes(output, ['unstyled']);
+    assertEntities(output[0], Array(20).fill(false));
+    expect(output[0].getText()).toBe('This is a link, yep.');
+  });
+
+  it('must preserve mailto: links', function() {
+    var html = 'This is a <a href="mailto:example@example.com">link</a>, yep.';
+    var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    assertBlockTypes(output, ['unstyled']);
+    assertEntities(
+      output[0],
+      Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false))
+    );
+    expect(output[0].getText()).toBe('This is a link, yep.');
+    var entityId = output[0].getCharacterList().get(12).getEntity();
+    var entity = DraftEntity.get(entityId);
+    expect(entity.getData().url).toBe('mailto:example@example.com');
   });
 
   it('Tolerate doule BR tags separated by whitespace', function() {
