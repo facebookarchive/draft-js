@@ -98,13 +98,13 @@ const AtomicBlockUtils = {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
 
-    var withMovedAtomicBlock;
+    let withMovedAtomicBlock;
 
     if (insertionMode === 'before' || insertionMode === 'after') {
       const targetBlock = contentState.getBlockForKey(
         insertionMode === 'before' ?
-          targetRange.getAnchorKey() :
-          targetRange.getFocusKey()
+          targetRange.getStartKey() :
+          targetRange.getEndKey()
       );
 
       withMovedAtomicBlock = moveBlockInContentState(

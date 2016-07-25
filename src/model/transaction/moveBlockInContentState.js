@@ -13,7 +13,7 @@
 
 'use strict';
 
-var invariant = require('invariant');
+const invariant = require('invariant');
 
 import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
@@ -30,19 +30,25 @@ function moveBlockInContentState(
     'Block cannot be moved next to itself.'
   );
 
-  var blockMap = contentState.getBlockMap();
-  var blockBefore = blockMap.toSeq().takeUntil(v => v === targetBlock).last();
-  var blockAfter = blockMap.toSeq().skipUntil(v => v === targetBlock).skip(1).first();
+  invariant(
+    insertionMode !== 'replace',
+    'Replacing blocks is not supported.'
+  );
 
-  var blockMapWithoutBlockToBeMoved = blockMap.delete(blockToBeMoved.getKey());
-  var blocksBefore = blockMapWithoutBlockToBeMoved.toSeq().takeUntil(v => v === targetBlock);
-  var blocksAfter = blockMapWithoutBlockToBeMoved.toSeq().skipUntil(v => v === targetBlock).skip(1);
+  const targetKey = targetBlock.getKey();
+  const blockBefore = contentState.getBlockBefore(targetKey);
+  const blockAfter = contentState.getBlockAfter(targetKey);
 
-  var newBlocks;
+  const blockMap = contentState.getBlockMap();
+  const blockMapWithoutBlockToBeMoved = blockMap.delete(blockToBeMoved.getKey());
+  const blocksBefore = blockMapWithoutBlockToBeMoved.toSeq().takeUntil(v => v === targetBlock);
+  const blocksAfter = blockMapWithoutBlockToBeMoved.toSeq().skipUntil(v => v === targetBlock).skip(1);
+
+  let newBlocks;
 
   if (insertionMode === 'before') {
     invariant(
-      (! blockBefore) || blockBefore.getKey() !== blockToBeMoved.getKey(),
+      (!blockBefore) || blockBefore.getKey() !== blockToBeMoved.getKey(),
       'Block cannot be moved next to itself.'
     );
 
@@ -52,7 +58,7 @@ function moveBlockInContentState(
     ).toOrderedMap();
   } else if (insertionMode === 'after') {
     invariant(
-      (! blockAfter) || blockAfter.getKey() !== blockToBeMoved.getKey(),
+      (!blockAfter) || blockAfter.getKey() !== blockToBeMoved.getKey(),
       'Block cannot be moved next to itself.'
     );
 
