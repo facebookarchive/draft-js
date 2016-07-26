@@ -18,6 +18,7 @@ var insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 var getSampleStateForTesting = require('getSampleStateForTesting');
 var BlockMapBuilder = require('BlockMapBuilder');
 var ContentBlock = require('ContentBlock');
+var CharacterMetadata = require('CharacterMetadata');
 
 describe('insertFragmentIntoContentState', () => {
   var sample = getSampleStateForTesting();
@@ -34,7 +35,7 @@ describe('insertFragmentIntoContentState', () => {
         key: 'j',
         type: 'unstyled',
         text: 'xx',
-        characterList: Immutable.List(),
+        characterList: CharacterMetadata.EMPTY,
         data: data
       })
     ];
@@ -47,14 +48,14 @@ describe('insertFragmentIntoContentState', () => {
         key: 'j',
         type: 'unstyled',
         text: 'xx',
-        characterList: Immutable.List(),
+        characterList: CharacterMetadata.EMPTY,
         data: data
       }),
       new ContentBlock({
         key: 'k',
         type: 'unstyled',
         text: 'yy',
-        characterList: Immutable.List(),
+        characterList: CharacterMetadata.EMPTY,
         data: secondData
       })
     ];
@@ -76,7 +77,8 @@ describe('insertFragmentIntoContentState', () => {
     var modified = insertFragmentIntoContentState(
       content,
       selection,
-      fragment);
+      fragment
+    );
 
     var newBlock = modified.getBlockMap().first();
 
@@ -96,7 +98,8 @@ describe('insertFragmentIntoContentState', () => {
     var modified = insertFragmentIntoContentState(
       content,
       target,
-      fragment);
+      fragment
+    );
 
     var newBlock = modified.getBlockMap().first();
 
@@ -116,7 +119,8 @@ describe('insertFragmentIntoContentState', () => {
     var modified = insertFragmentIntoContentState(
       content,
       target,
-      fragment);
+      fragment
+    );
 
     var newBlock = modified.getBlockMap().first();
 
@@ -129,7 +133,8 @@ describe('insertFragmentIntoContentState', () => {
     var modified = insertFragmentIntoContentState(
       content,
       selection,
-      fragment);
+      fragment
+    );
 
     var newBlock = modified.getBlockMap().first();
     var secondBlock = modified.getBlockMap().toArray()[1];
