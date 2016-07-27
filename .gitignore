@@ -1,5 +1,5 @@
 /dist/
-/lib/
+# /lib/
 /node_modules/
 /examples/tex/node_modules/
 /website/build/
