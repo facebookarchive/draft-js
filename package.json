@@ -17,6 +17,7 @@
     "PATENTS"
   ],
   "main": "lib/Draft.js",
+  "style": "dist/Draft.css",
   "repository": "facebook/draft-js",
   "license": "BSD-3-Clause",
   "scripts": {
