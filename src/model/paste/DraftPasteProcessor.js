@@ -21,7 +21,7 @@ const convertFromHTMLtoContentBlocks
   = require('convertFromHTMLToContentBlocks');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
-const sanitizeDraftText = require('sanitizeDraftText');
+// const sanitizeDraftText = require('sanitizeDraftText');
 
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 
@@ -48,7 +48,7 @@ const DraftPasteProcessor = {
   ): Array<ContentBlock> {
     return textBlocks.map(
       textLine => {
-        textLine = sanitizeDraftText(textLine);
+        textLine = textLine.replace(new RegExp('\r', 'g'), '');
         return new ContentBlock({
           key: generateRandomKey(),
           type: 'unstyled',

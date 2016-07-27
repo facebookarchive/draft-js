@@ -20,7 +20,7 @@ const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
-const sanitizeDraftText = require('sanitizeDraftText');
+// const sanitizeDraftText = require('sanitizeDraftText');
 
 import type {BlockMap} from 'BlockMap';
 
@@ -135,7 +135,7 @@ class ContentState extends ContentStateRecord {
     const strings = text.split(delimiter);
     const blocks = strings.map(
       block => {
-        block = sanitizeDraftText(block);
+        block = block.replace(new RegExp('\r', 'g'), '');
         return new ContentBlock({
           key: generateRandomKey(),
           text: block,

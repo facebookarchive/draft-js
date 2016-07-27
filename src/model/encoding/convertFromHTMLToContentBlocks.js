@@ -24,7 +24,7 @@ const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
-const sanitizeDraftText = require('sanitizeDraftText');
+// const sanitizeDraftText = require('sanitizeDraftText');
 
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftBlockType} from 'DraftBlockType';
@@ -541,7 +541,7 @@ function convertFromHTMLtoContentBlocks(
   return chunk.text.split('\r').map(
     (textBlock, ii) => {
       // Make absolutely certain that our text is acceptable.
-      textBlock = sanitizeDraftText(textBlock);
+      textBlock = textBlock.replace(new RegExp('\r', 'g'), '');
       var end = start + textBlock.length;
       var inlines = nullthrows(chunk).inlines.slice(start, end);
       var entities = nullthrows(chunk).entities.slice(start, end);
