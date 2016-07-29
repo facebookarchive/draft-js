@@ -143,7 +143,7 @@ var DraftEditorCompositionHandler = {
     );
 
     if (mustReset) {
-      this.restoreEditorDOM();
+      this.restoreEditorDOM(undefined, ((composedChars && composedChars.length > 0) ? "contentsKey" : "containerKey"));
     }
 
     this.exitCurrentMode();
