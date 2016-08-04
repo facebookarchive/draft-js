@@ -22,19 +22,15 @@ const APP_PORT = 3000;
 // Serve the TeX Editor app
 var compiler = webpack({
   entry: path.resolve(__dirname, 'js', 'app.js'),
-  eslint: {
-    configFile: '.eslintrc',
-  },
   module: {
     loaders: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel',
-      },
-      {
-        test: /\.js$/,
-        loader: 'eslint',
+        query: {
+          presets: ['es2015', 'react'],
+        },
       },
     ],
   },
