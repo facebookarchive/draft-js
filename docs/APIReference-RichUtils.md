@@ -120,5 +120,5 @@ toggleLink(
 ```
 tryToRemoveBlockStyle(
   editorState: EditorState
-): EditorState?
+): ContentState?
 ```
