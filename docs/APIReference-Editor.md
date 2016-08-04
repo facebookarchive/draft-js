@@ -129,6 +129,15 @@ This should be used if your editor does not support rich styles.
 
 Default is `false`.
 
+#### pasteUniqueEntities
+```
+pasteUniqueEntities?: boolean
+```
+Set whether or not to clone pasted entities. If `true`, entity references in pasted text will be updated to point to new cloned versions of the entities.
+
+Default is `false`.
+
+
 ### DOM and Accessibility (Optional)
 
 #### tabIndex

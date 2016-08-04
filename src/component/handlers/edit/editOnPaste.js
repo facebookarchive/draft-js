@@ -18,10 +18,12 @@ var DataTransfer = require('DataTransfer');
 var DraftModifier = require('DraftModifier');
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var EditorState = require('EditorState');
+var Entity = require('DraftEntity');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
+var applyEntityToContentBlock = require('applyEntityToContentBlock');
 
 import type {BlockMap} from 'BlockMap';
 
@@ -31,6 +33,8 @@ import type {BlockMap} from 'BlockMap';
 function editOnPaste(e: SyntheticClipboardEvent): void {
   e.preventDefault();
   var data = new DataTransfer(e.clipboardData);
+
+  const {editorState, pasteUniqueEntities} = this.props;
 
   // Get files, unless this is likely to be a string the user wants inline.
   if (!data.isRichText()) {
@@ -52,7 +56,6 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
           return;
         }
 
-        var {editorState} = this.props;
         var blocks = splitTextIntoTextBlocks(fileText);
         var character = CharacterMetadata.create({
           style: editorState.getCurrentInlineStyle(),
@@ -119,9 +122,14 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
           internalClipboard.first().getText() === text
         )
       ) {
+        let clipboard = pasteUniqueEntities ?
+          cloneEntitiesInFragment(internalClipboard) :
+          internalClipboard;
+
         this.update(
-          insertFragment(this.props.editorState, internalClipboard)
+          insertFragment(editorState, clipboard)
         );
+
         return;
       }
     } else if (
@@ -133,9 +141,15 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       // Safari does not properly store text/html in some cases.
       // Use the internalClipboard if present and equal to what is on
       // the clipboard. See https://bugs.webkit.org/show_bug.cgi?id=19893.
+
+      let clipboard = pasteUniqueEntities ?
+        cloneEntitiesInFragment(internalClipboard) :
+        internalClipboard;
+
       this.update(
-        insertFragment(this.props.editorState, internalClipboard)
+        insertFragment(editorState, clipboard)
       );
+
       return;
     }
 
@@ -147,7 +161,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       );
       if (htmlFragment) {
         var htmlMap = BlockMapBuilder.createFromArray(htmlFragment);
-        this.update(insertFragment(this.props.editorState, htmlMap));
+        this.update(insertFragment(editorState, htmlMap));
         return;
       }
     }
@@ -158,7 +172,6 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   }
 
   if (textBlocks) {
-    var {editorState} = this.props;
     var character = CharacterMetadata.create({
       style: editorState.getCurrentInlineStyle(),
       entity: getEntityKeyForSelection(
@@ -173,8 +186,55 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     );
 
     var textMap = BlockMapBuilder.createFromArray(textFragment);
-    this.update(insertFragment(this.props.editorState, textMap));
+    this.update(insertFragment(editorState, textMap));
   }
+}
+
+
+function cloneEntitiesInFragment(
+  fragment: BlockMap
+): BlockMap {
+
+  // Get all entities referenced in the fragment
+  const entities = {};
+  fragment.forEach(block => {
+    block.getCharacterList().forEach(character => {
+      const key = character.getEntity();
+      if (key !== null) {
+        entities[key] = Entity.get(key);
+      }
+    });
+  });
+
+  // Clone each entity that was referenced and
+  // build a map from old entityKeys to new ones
+  const newEntityKeys = {};
+  Object.keys(entities).forEach((key) => {
+    const entity = entities[key];
+    const newEntityKey = Entity.create(
+      entity.get('type'),
+      entity.get('mutability'),
+      entity.get('data')
+    );
+    newEntityKeys[key] = newEntityKey;
+  });
+
+  // Update all the entity references
+  let newFragment = BlockMapBuilder.createFromArray([]);
+  fragment.forEach((block, blockKey) => {
+    let updatedBlock = block;
+    block.findEntityRanges(
+      character => character.getEntity() !== null,
+      (start, end) => {
+        const entityKey = block.getEntityAt(start);
+        const newEntityKey = newEntityKeys[entityKey];
+        updatedBlock = applyEntityToContentBlock(updatedBlock, start, end, newEntityKey);
+        newFragment = newFragment.set(blockKey, updatedBlock);
+      }
+    );
+  });
+
+  return newFragment;
 }
 
 function insertFragment(

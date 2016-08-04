@@ -1,0 +1,501 @@
+<!--
+Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+
+This file provided by Facebook is for non-commercial testing and evaluation
+purposes only. Facebook reserves all rights not expressly granted.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Draft • Entity Editor</title>
+    <link rel="stylesheet" href="../../dist/Draft.css" />
+    <style>
+      [data-block]{
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="target"></div>
+    <script src="../../node_modules/react/dist/react.js"></script>
+    <script src="../../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="../../node_modules/immutable/dist/immutable.js"></script>
+    <script src="../../node_modules/es6-shim/es6-shim.js"></script>
+    <script src="../../node_modules/babel-core/browser.js"></script>
+    <script src="../../dist/Draft.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+        "HTML-CSS": { availableFonts: ["TeX"] }
+      });
+    </script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+    </script>
+
+    <script type="text/babel">
+
+'use strict';
+
+const {
+  convertFromRaw,
+  convertToRaw,
+  CompositeDecorator,
+  ContentState,
+  Editor,
+  EditorState,
+  Entity,
+} = Draft;
+
+const rawContent = {
+  blocks: [
+    {
+      text: 'This is an "immutable" entity: Superman. Deleting any characters will delete the entire entity. Adding characters will remove the entity from the range.',
+      type: 'unstyled',
+      entityRanges: [{offset: 31, length: 8, key: 'first'}],
+    },
+    {
+      text: 'This is a "mutable" entity: Batman. Characters may be added and removed.',
+      type: 'unstyled',
+      entityRanges: [{offset: 28, length: 6, key: 'second'}],
+    },
+    {
+      text: 'This is a "segmented" entity: Green Lantern. Deleting any characters will delete the current "segment" from the range. Adding characters will remove the entire entity from the range.',
+      type: 'unstyled',
+      entityRanges: [{offset: 30, length: 13, key: 'third'}],
+    },
+    {
+      text: 'This is an immutable equation:  . The equation text is stored in the entity itself and represented by a space in the text.',
+      type: 'unstyled',
+      entityRanges: [{offset: 31, length: 1, key: 'fourth'}],
+    },
+  ],
+
+  entityMap: {
+    first: {
+      type: 'TOKEN',
+      mutability: 'IMMUTABLE',
+    },
+    second: {
+      type: 'TOKEN',
+      mutability: 'MUTABLE',
+    },
+    third: {
+      type: 'TOKEN',
+      mutability: 'SEGMENTED',
+    },
+    fourth: {
+      type: 'equation',
+      mutability: 'IMMUTABLE',
+      data: {
+        text: 'x^2',
+      },
+    },
+  },
+};
+
+function trigger(eventName, data) {
+  let event
+  if (window.CustomEvent) {
+    event = new CustomEvent(eventName, data)
+  } else {
+    event = document.createEvent('CustomEvent')
+    event.initCustomEvent(eventName, true, true, data)
+  }
+  window.dispatchEvent(event)
+}
+
+function on(eventName, callback) {
+  window.addEventListener(eventName, callback)
+}
+
+function off(eventName, callback) {
+  window.removeEventListener(eventName, callback)
+}
+
+class InlineMath extends React.Component {
+
+  // static propTypes = {
+  //   entityKey: PropTypes.string.isRequired,
+  //   onClick: PropTypes.func,
+  // }
+
+  getId() {
+    return `${this.props.entityKey}`
+  }
+
+  componentDidMount() {
+    on(`update-equation-${this.props.entityKey}`, () => this.forceUpdate())
+  }
+
+  componentWillUnmount() {
+    off(`update-equation-${this.props.entityKey}`, () => this.forceUpdate())
+  }
+
+  onClick() {
+    this.props.onClick(this.props.entityKey)
+  }
+
+  render() {
+    const { text } = Entity.get(this.props.entityKey).getData()
+    const style = getDecoratedStyle(
+      Entity.get(this.props.entityKey).getMutability()
+    )
+
+    return (
+      <InlineTex
+        style={style}
+        id={this.getId()}
+        className={this.props.editorKey}
+        onClick={() => this.onClick()}
+        contentEditable={false}
+        tex={text} />
+    )
+  }
+}
+
+class InlineTex extends React.Component {
+
+  // static propTypes = {
+  //   id: PropTypes.string.isRequired,
+  //   tex: PropTypes.string.isRequired,
+  // }
+
+  componentDidMount() {
+    renderMathJax(this.props.id)
+  }
+
+  componentDidUpdate() {
+    renderMathJax(this.props.id)
+  }
+
+  render() {
+    const { id, tex, ...props } = this.props
+    return <span id={id} {...props}>{ "$" + tex + "$" }</span>
+  }
+}
+
+
+function forceUpdateEquation(entityKey) {
+  trigger(`update-equation-${entityKey}`)
+}
+
+function renderMathJax(entityKey) {
+  let node = document.getElementById(`${entityKey}`)
+  if(!!node && node.children.length === 0 ) {
+    MathJax.Hub.Typeset(node)
+  }
+}
+
+
+
+class EquationEditor extends React.Component {
+
+  // static propTypes = {
+  //   entityKey: PropTypes.string,
+  //   onSubmit: PropTypes.func.isRequired,
+  //   onCancel: PropTypes.func.isRequired,
+  // }
+
+  constructor() {
+    super()
+    this.state = {tex: ''}
+  }
+
+  setTexFromEntityKey(entityKey) {
+    if (entityKey) {
+      this.setState({
+        tex: Entity.get(entityKey).getData().text
+      })
+    }
+  }
+
+  componentWillMount() {
+    this.setTexFromEntityKey(this.props.entityKey)
+  }
+
+  componentDidMount() {
+    this.refs.textarea.focus()
+  }
+
+  componentWillReceiveProps(props) {
+    this.refs.textarea.focus()
+    this.setTexFromEntityKey(props.entityKey)
+  }
+
+  onChange(evt) {
+    this.setState({tex: evt.currentTarget.value})
+  }
+
+  onSubmit() {
+    this.props.onSubmit(this.state.tex)
+  }
+
+  render() {
+    const { entityKey, onSubmit, onCancel, onChange } = this.props
+    const { tex } = this.state
+
+    return (
+      <div>
+        <div>
+          <InlineTex id={`${entityKey}-preview`} tex={tex} />
+        </div>
+        <textarea ref='textarea' onChange={(evt) => this.onChange(evt)} value={tex}/>
+        <div>
+          <button onClick={() => this.onSubmit()}>Save</button>
+          <button onClick={onCancel}>Cancel</button>
+        </div>
+      </div>
+    )
+  }
+}
+
+
+
+function findTex(contentBlock, callback) {
+  contentBlock.findEntityRanges(
+    (character) => {
+      const key = character.getEntity()
+      return key !== null && Entity.get(key).getType() === 'equation'
+    },
+    callback
+  )
+}
+
+class BoundlessEditor extends React.Component {
+
+  // static propTypes = {
+  //   contentState: PropTypes.instanceOf(ContentState).isRequired,
+  //   editorProps: PropTypes.object,
+  //   media: PropTypes.array,
+  //   figuresCdn: PropTypes.string,
+  // }
+
+  constructor(props) {
+    super()
+
+    this.state = {
+      editorState: EditorState.createWithContent(props.contentState),
+      showEquationEdit: false,
+      currentEquationEntityKey: null,
+    }
+  }
+
+  onChange(editorState) {
+    this.setState({ editorState })
+  }
+
+  handleEquationClicked(entityKey) {
+    this.setState({
+      showEquationEdit: true,
+      currentEquationEntityKey: entityKey
+    })
+  }
+
+  componentDidMount() {
+    let compositeDecorator = new CompositeDecorator([{
+      strategy: findTex, // essentially find entity.getType() === 'TEX'
+      component: InlineMath,
+      props: {
+        onClick: (key) => this.handleEquationClicked(key),
+        editorKey: this.refs.editor.getEditorKey(),
+      }
+    }, {
+      strategy: getEntityStrategy('IMMUTABLE'),
+      component: TokenSpan,
+    },
+    {
+      strategy: getEntityStrategy('MUTABLE'),
+      component: TokenSpan,
+    },
+    {
+      strategy: getEntityStrategy('SEGMENTED'),
+      component: TokenSpan,
+    }])
+
+    const decoratedState = EditorState.set(this.state.editorState, {decorator: compositeDecorator})
+    this.setState({ editorState: decoratedState })
+  }
+
+  handleClickedInsertEquation() {
+    this.setState({
+      showEquationEdit: true,
+      currentEquationEntityKey: null
+    })
+  }
+
+  insertEquation(tex) {
+    const e = this.state.editorState
+    const currentContent = e.getCurrentContent()
+    const entity = Entity.create('equation', 'IMMUTABLE', { text: tex })
+    const selection = e.getSelection()
+    const textWithEntity = Draft.Modifier.replaceText(currentContent, selection, " ", null, entity)
+
+    this.setState({
+      editorState: EditorState.push(e, textWithEntity, "insert-text")
+    })
+  }
+
+  handleSaveEquation(tex) {
+    const { currentEquationEntityKey } = this.state
+    if (currentEquationEntityKey) {
+      // The user is editing an equation that's already in the editor
+      Entity.mergeData(currentEquationEntityKey, {text: tex})
+      forceUpdateEquation(currentEquationEntityKey)
+    } else {
+      // The user is editing a new equation
+      this.insertEquation(tex)
+    }
+    this.hideEquationEditor()
+  }
+
+  hideEquationEditor() {
+    this.setState({
+      showEquationEdit: false,
+      currentEquationEntityKey: null,
+    })
+  }
+
+  logState() {
+    console.log('props', this.state.editorState.toJS())
+    console.log('state', convertToRaw(this.state.editorState.getCurrentContent()))
+  }
+
+  render() {
+    const { editorProps } = this.props
+    const { editorState, currentEquationEntityKey } = this.state
+
+    let equationEditor
+    if (this.state.showEquationEdit) {
+      equationEditor = (
+        <EquationEditor
+          entityKey={currentEquationEntityKey}
+          onSubmit={(tex) => this.handleSaveEquation(tex)}
+          onCancel={() => this.hideEquationEditor()} />
+      )
+    }
+
+    return (
+      <div>
+        <div style={{marginBottom: '1rem'}}>
+          <button onClick={() => this.handleClickedInsertEquation()}>&Sigma;</button>
+        </div>
+
+        { equationEditor }
+
+        <Editor
+          ref='editor'
+          editorState={editorState}
+          onChange={(editorState) => this.onChange(editorState)}
+          pasteUniqueEntities={true}
+          {...editorProps} />
+
+        <button onClick={() => this.logState()}>Log State</button>
+      </div>
+
+    )
+  }
+}
+
+
+
+class EquationEntityExample extends React.Component {
+  render() {
+    return (
+      <div style={styles.root}>
+        <div style={styles.editor} onClick={this.focus}>
+          <BoundlessEditor
+            withBlockControls={false}
+            contentState={convertFromRaw(rawContent)} />
+        </div>
+      </div>
+    );
+  }
+}
+
+function getEntityStrategy(mutability) {
+  return function(contentBlock, callback) {
+    contentBlock.findEntityRanges(
+      (character) => {
+        const entityKey = character.getEntity();
+        if (entityKey === null) {
+          return false;
+        }
+        return Entity.get(entityKey).getMutability() === mutability;
+      },
+      callback
+    );
+  };
+}
+
+function getDecoratedStyle(mutability) {
+  switch (mutability) {
+    case 'IMMUTABLE': return styles.immutable;
+    case 'MUTABLE': return styles.mutable;
+    case 'SEGMENTED': return styles.segmented;
+    default: return null;
+  }
+}
+
+const TokenSpan = (props) => {
+  const style = getDecoratedStyle(
+    Entity.get(props.entityKey).getMutability()
+  );
+  return (
+    <span id={props.entityKey} style={style}>
+      {props.children}
+    </span>
+  );
+};
+
+const styles = {
+  root: {
+    fontFamily: '\'Helvetica\', sans-serif',
+    padding: 20,
+    width: 600,
+  },
+  editor: {
+    border: '1px solid #ccc',
+    cursor: 'text',
+    minHeight: 80,
+    padding: 10,
+  },
+  button: {
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  immutable: {
+    backgroundColor: 'rgba(0, 0, 0, 0.15)',
+    padding: '2px 0',
+  },
+  mutable: {
+    backgroundColor: 'rgba(204, 204, 255, 1.0)',
+    padding: '2px 0',
+  },
+  segmented: {
+    backgroundColor: 'rgba(248, 222, 126, 1.0)',
+    padding: '2px 0',
+  },
+};
+
+ReactDOM.render(
+  <EquationEntityExample />,
+  document.getElementById('target')
+);
+
+    </script>
+  </body>
+</html>
