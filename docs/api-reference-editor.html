@@ -16,6 +16,9 @@ when it is rendered. See
 for details on usage.</p><h4><a class="anchor" name="customstylemap"></a>customStyleMap <a class="hash-link" href="#customstylemap">#</a></h4><pre class="prism language-javascript">customStyleMap<span class="token operator">?</span><span class="token punctuation">:</span> Object</pre><p>Optionally define a map of inline styles to apply to spans of text with the specified
 style. See
 <a href="/draft-js/docs/advanced-topics-inline-styles.html" target="">Advanced Topics: Inline Styles</a>
+for details on usage.</p><h4><a class="anchor" name="customstylefn"></a>customStyleFn <a class="hash-link" href="#customstylefn">#</a></h4><pre class="prism language-javascript">customStyleFn<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>style<span class="token punctuation">:</span> DraftInlineStyle<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token operator">?</span>Object</pre><p>Optionally define a function to transform inline styles to CSS objects that are applied
+to spans of text. See
+<a href="/draft-js/docs/advanced-topics-inline-styles.html" target="">Advanced Topics: Inline Styles</a>
 for details on usage.</p><h3><a class="anchor" name="behavior-optional"></a>Behavior (Optional) <a class="hash-link" href="#behavior-optional">#</a></h3><h4><a class="anchor" name="readonly"></a>readOnly <a class="hash-link" href="#readonly">#</a></h4><pre class="prism language-javascript">readOnly<span class="token operator">?</span><span class="token punctuation">:</span> boolean</pre><p>Set whether the editor should be rendered as static DOM, with all editability
 disabled.</p><p>This is useful when supporting interaction within
 <a href="/draft-js/docs/advanced-topics-block-components.html" target="">custom block components</a>
