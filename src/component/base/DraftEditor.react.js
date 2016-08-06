@@ -29,7 +29,6 @@ const UserAgent = require('UserAgent');
 
 const cx = require('cx');
 const emptyFunction = require('emptyFunction');
-const generateKey = require('generateKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const nullthrows = require('nullthrows');
 const getScrollPosition = require('getScrollPosition');

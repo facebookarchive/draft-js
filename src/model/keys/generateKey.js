@@ -16,7 +16,7 @@
 let x = 0;
 const MOD = Math.pow(2, 36);
 function generateKey(): string {
-  return 'k' + (x++ % MOD).toString(36)
+  return 'k' + (x++ % MOD).toString(36);
 }
 
 module.exports = generateKey;

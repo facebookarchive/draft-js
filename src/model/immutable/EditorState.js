@@ -160,7 +160,7 @@ class EditorState {
     return this.getImmutable().toJS();
   }
 
-  getKey(): boolean {
+  getKey(): string {
     return this.getImmutable().get('key');
   }
 
