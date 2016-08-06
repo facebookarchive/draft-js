@@ -15,7 +15,7 @@
 
 var Immutable = require('immutable');
 
-var generateRandomKey = require('generateRandomKey');
+var generateKey = require('generateKey');
 var invariant = require('invariant');
 
 import type ContentState from 'ContentState';
@@ -45,7 +45,7 @@ function splitBlockInContentState(
     characterList: chars.slice(0, offset),
   });
 
-  var keyBelow = generateRandomKey();
+  var keyBelow = generateKey();
   var blockBelow = blockAbove.merge({
     key: keyBelow,
     text: text.slice(offset),

@@ -174,7 +174,7 @@ class DraftEditorContents extends React.Component {
       childProps = {
         className,
         'data-block': true,
-        'data-editor': this.props.editorKey,
+        'data-editor': this.props.editorState.getKey(),
         'data-offset-key': offsetKey,
         key,
       };

@@ -20,7 +20,7 @@ var Immutable = require('immutable');
 var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');
 var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
-var generateRandomKey = require('generateRandomKey');
+var generateKey = require('generateKey');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
 
@@ -52,7 +52,7 @@ function convertFromRawToDraftState(
         entityRanges,
         data,
       } = block;
-      key = key || generateRandomKey();
+      key = key || generateKey();
       depth = depth || 0;
       inlineStyleRanges = inlineStyleRanges || [];
       entityRanges = entityRanges || [];

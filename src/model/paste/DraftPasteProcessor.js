@@ -19,7 +19,7 @@ const Immutable = require('immutable');
 
 const convertFromHTMLtoContentBlocks
   = require('convertFromHTMLToContentBlocks');
-const generateRandomKey = require('generateRandomKey');
+const generateKey = require('generateKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
 
@@ -50,7 +50,7 @@ const DraftPasteProcessor = {
       textLine => {
         textLine = sanitizeDraftText(textLine);
         return new ContentBlock({
-          key: generateRandomKey(),
+          key: generateKey(),
           type: 'unstyled',
           text: textLine,
           characterList: List(Repeat(character, textLine.length)),

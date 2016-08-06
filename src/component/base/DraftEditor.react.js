@@ -29,7 +29,7 @@ const UserAgent = require('UserAgent');
 
 const cx = require('cx');
 const emptyFunction = require('emptyFunction');
-const generateRandomKey = require('generateRandomKey');
+const generateKey = require('generateKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const nullthrows = require('nullthrows');
 const getScrollPosition = require('getScrollPosition');
@@ -83,7 +83,6 @@ class DraftEditor extends React.Component {
   _guardAgainstRender: boolean;
   _handler: ?Object;
   _dragCount: number;
-  _editorKey: string;
   _placeholderAccessibilityID: string;
 
   /**
@@ -132,8 +131,7 @@ class DraftEditor extends React.Component {
     this._guardAgainstRender = false;
     this._handler = null;
     this._dragCount = 0;
-    this._editorKey = generateRandomKey();
-    this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
+    this._placeholderAccessibilityID = 'placeholder-' + this.getEditorKey();
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');
     this._onBlur = this._buildHandler('onBlur');
@@ -166,7 +164,7 @@ class DraftEditor extends React.Component {
     this.removeRenderGuard = this._removeRenderGuard.bind(this);
     this.setClipboard = this._setClipboard.bind(this);
     this.getClipboard = this._getClipboard.bind(this);
-    this.getEditorKey = () => this._editorKey;
+    this.getEditorKey = () => this.props.editorState.getKey();
     this.update = this._update.bind(this);
     this.onDragEnter = this._onDragEnter.bind(this);
     this.onDragLeave = this._onDragLeave.bind(this);
@@ -282,7 +280,6 @@ class DraftEditor extends React.Component {
                 {...DefaultDraftInlineStyle, ...this.props.customStyleMap}
               }
               customStyleFn={this.props.customStyleFn}
-              editorKey={this._editorKey}
               editorState={this.props.editorState}
             />
           </div>

@@ -19,7 +19,7 @@ const ContentBlock = require('ContentBlock');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
-const generateRandomKey = require('generateRandomKey');
+const generateKey = require('generateKey');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 import type {BlockMap} from 'BlockMap';
@@ -137,7 +137,7 @@ class ContentState extends ContentStateRecord {
       block => {
         block = sanitizeDraftText(block);
         return new ContentBlock({
-          key: generateRandomKey(),
+          key: generateKey(),
           text: block,
           type: 'unstyled',
           characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
