@@ -448,4 +448,52 @@ describe('DraftPasteProcessor', function() {
     ]);
     assertDepths(output, [0, 0, 0, 1, 1, 0]);
   });
+
+  it('must respect inputTags when present', function() {
+    /**
+     * As a contrived example, h1 and h2 tags are mapped to header-one, and
+     * h3 tags are mapped to header-two.
+     */
+    var blockMapWithInputTags = Immutable.Map({
+      'header-one': {
+        element: 'h1',
+        inputTags: ['h1', 'h2'],
+      },
+      'header-two': {
+        element: 'h2',
+        inputTags: ['h3'],
+      },
+    });
+
+    var html = '<h1>Hello</h1><h2>World</h2><h3>!</h3>';
+    var output = DraftPasteProcessor.processHTML(html, blockMapWithInputTags);
+    assertBlockTypes(output, [
+      'header-one',
+      'header-one',
+      'header-two',
+    ]);
+  });
+
+  it('defaults to element when inputTags is blank', function() {
+    /**
+     * As a contrived example, h1 tags are mapped to header-one, and
+     * h3 tags are mapped to header-two.
+     */
+    var blockMapWithElement = Immutable.Map({
+      'header-one': {
+        element: 'h1',
+      },
+      'header-two': {
+        element: 'h3',
+      },
+    });
+
+    var html = '<h1>Hello</h1><h2>World</h2><h3>!</h3>';
+    var output = DraftPasteProcessor.processHTML(html, blockMapWithElement);
+    assertBlockTypes(output, [
+      'header-one',
+      'unstyled',
+      'header-two',
+    ]);
+  });
 });

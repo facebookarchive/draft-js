@@ -141,15 +141,28 @@ function getListBlockType(
   return null;
 }
 
+function getInputTags(
+  config: {
+    inputTags: ?Array<string>,
+    element: ?string,
+  }
+): Array<string> {
+  if (config.inputTags) {
+    return config.inputTags;
+  } else if (config.element) {
+    return [config.element];
+  } else {
+    return [];
+  }
+}
+
 function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap
 ): Array<string> {
-  const unstyledElement = blockRenderMap.get('unstyled').element;
   return blockRenderMap
-    .map((config) => config.element)
     .valueSeq()
+    .flatMap((config) => getInputTags(config))
     .toSet()
-    .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
 }
@@ -175,7 +188,10 @@ function getBlockTypeForTag(
   blockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
   const matchedTypes = blockRenderMap
-    .filter((config) => config.element === tag || config.wrapper === tag)
+    .filter((config) =>
+      getInputTags(config).includes(tag) ||
+      config.wrapper === tag
+    )
     .keySeq()
     .toSet()
     .toArray()
