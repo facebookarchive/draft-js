@@ -4,6 +4,48 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.8.0 (August 8, 2016)
+
+### Added
+
+* `customStyleFn` for more control over inline style ranges
+* Uses `internalClipboard` for Safari
+* Metadata for `ContentBlock` objects
+* `convertFromHTMLToContentBlocks`:
+  * Support for `mailto` protocol for links
+  * Support "unset" inline styles
+* Run ESLint on examples
+
+
+### Changed
+
+* Removed redundant ESLint module in TeX example
+* Update Travis CI config for readability, Node v4 requirements, and pruning/updating npm dependencies
+* Use `immutable` ~3.7.4 to avoid Flow errors in updated versions
+* Modify `getSelectionOffsetKeyForNode` to search for nested offset-annotated nodes
+* Upgrade eslint to 3.0.1, use fbjs config
+* Update to Flow 0.28
+* Jest
+  * Update to 12.1.1
+  * Replaced `jest.fn().mockReturnValue(x)` with `jest.fn(() => x)`
+* Remove extra spaces from the text decoration style
+* No longer using `nullthrows` for `blockRenderMap`
+* `convertFromHTMLToContentBlocks`:
+  * Improved variable names in `joinChunks`
+  * Additional whitelisted entities such as `className`, `rel`, `target`, `title`
+
+### Fixed
+
+* Fix bug where placeholder text was not being erased in Chrome
+* Fix bug where double click link in Firefox broke selection
+* Kill iOS tooltips
+* removed unnecessary `undefined` checks on `DraftEditorLeaf`
+* `convertFromHTMLToContentBlocks`:
+  * Preserve pasted block type on paste
+  * Strip XML carriage returns and zero-width spaces
+  * `getBlockMapSupportedTags()` will always return a valid array of tags
+* Documentation fixes
+
 ## 0.7.0 (May 3, 2016)
 
 ### Added
