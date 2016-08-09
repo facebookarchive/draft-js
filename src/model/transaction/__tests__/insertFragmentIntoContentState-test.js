@@ -36,8 +36,8 @@ describe('insertFragmentIntoContentState', () => {
         type: 'unstyled',
         text: 'xx',
         characterList: CharacterMetadata.EMPTY,
-        data: data
-      })
+        data: data,
+      }),
     ];
     return BlockMapBuilder.createFromArray(fragmentArray);
   }
@@ -49,15 +49,15 @@ describe('insertFragmentIntoContentState', () => {
         type: 'unstyled',
         text: 'xx',
         characterList: CharacterMetadata.EMPTY,
-        data: data
+        data: data,
       }),
       new ContentBlock({
         key: 'k',
         type: 'unstyled',
         text: 'yy',
         characterList: CharacterMetadata.EMPTY,
-        data: secondData
-      })
+        data: secondData,
+      }),
     ];
     return BlockMapBuilder.createFromArray(fragmentArray);
   }
@@ -68,7 +68,8 @@ describe('insertFragmentIntoContentState', () => {
       insertFragmentIntoContentState(
         content,
         selection,
-        fragment);
+        fragment
+      );
     }).toThrow();
   });
 
