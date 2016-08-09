@@ -59,7 +59,7 @@ function insertFragmentIntoContentState(
         pastedBlock.getCharacterList(),
         targetOffset
       ),
-      data: pastedBlock.getData()
+      data: pastedBlock.getData(),
     });
 
     blockMap = blockMap.set(targetKey, newBlock);
@@ -102,7 +102,7 @@ function insertFragmentIntoContentState(
         text: headText + appendToHead.getText(),
         characterList: headCharacters.concat(appendToHead.getCharacterList()),
         type: headText ? block.getType() : appendToHead.getType(),
-        data: appendToHead.getData()
+        data: appendToHead.getData(),
       });
 
       newBlockArr.push(modifiedHead);
@@ -126,7 +126,7 @@ function insertFragmentIntoContentState(
         characterList: prependToTail
           .getCharacterList()
           .concat(tailCharacters),
-        data: prependToTail.getData()
+        data: prependToTail.getData(),
       });
 
       newBlockArr.push(modifiedTail);

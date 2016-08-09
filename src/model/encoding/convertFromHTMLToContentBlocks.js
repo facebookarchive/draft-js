@@ -294,7 +294,11 @@ function hasValidLinkText(link: Node): boolean {
     'Link must be an HTMLAnchorElement.'
   );
   var protocol = link.protocol;
-  return protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:';
+  return (
+    protocol === 'http:' ||
+    protocol === 'https:' ||
+    protocol === 'mailto:'
+  );
 }
 
 function genFragment(
@@ -394,7 +398,11 @@ function genFragment(
   var entityId: ?string = null;
 
   while (child) {
-    if (child instanceof HTMLAnchorElement && child.href && hasValidLinkText(child)) {
+    if (
+      child instanceof HTMLAnchorElement &&
+      child.href &&
+      hasValidLinkText(child)
+    ) {
       const anchor: HTMLAnchorElement = child;
       const entityConfig = {};
 
