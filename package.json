@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "fbjs": "^0.8.3",
-    "immutable": "~3.7.4"
+    "immutable": "~3.7.4",
+    "object-assign": "^4.1.0"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0-rc",
@@ -63,7 +64,6 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "jest": "^12.1.1",
-    "object-assign": "^4.0.1",
     "react": "^15.0.0-rc.1",
     "react-dom": "^15.0.0-rc.1",
     "run-sequence": "^1.1.2",
