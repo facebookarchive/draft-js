@@ -4,6 +4,13 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.8.1 (August 12, 2016)
+
+### Fixed
+
+* Include `object-assign` in npm dependencies
+* Include `babel-core` in npm dependencies of tex example
+
 ## 0.8.0 (August 8, 2016)
 
 ### Added
