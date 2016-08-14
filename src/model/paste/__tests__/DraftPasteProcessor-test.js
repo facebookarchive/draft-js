@@ -13,7 +13,6 @@
 
 jest.disableAutomock();
 
-var DraftEntity = require('DraftEntity');
 var ContentState = require('ContentState');
 var Immutable = require('immutable');
 
