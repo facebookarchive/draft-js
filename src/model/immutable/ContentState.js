@@ -168,13 +168,14 @@ class ContentState extends ContentStateRecord {
   }
 
   static createFromBlockArray(
-    blocks: Array<ContentBlock>
+    blocks: Array<ContentBlock>,
+    entityMap: ?OrderedMap
   ): ContentState {
     var blockMap = BlockMapBuilder.createFromArray(blocks);
     var selectionState = SelectionState.createEmpty(blockMap.first().getKey());
     return new ContentState({
       blockMap,
-      entityMap: OrderedMap(),
+      entityMap: entityMap || OrderedMap(),
       selectionBefore: selectionState,
       selectionAfter: selectionState,
     });

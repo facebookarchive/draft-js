@@ -82,9 +82,7 @@ function convertFromRawToDraftState(
     }
   );
 
-  const contentState = ContentState.createFromBlockArray(contentBlocks);
-
-  return contentState.set('entityMap', newEntityMap);
+  return ContentState.createFromBlockArray(contentBlocks, newEntityMap);
 }
 
 module.exports = convertFromRawToDraftState;
