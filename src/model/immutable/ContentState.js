@@ -33,10 +33,10 @@ import type DraftEntityInstance from 'DraftEntityInstance';
 const {List, Record, Repeat, OrderedMap} = Immutable;
 
 const defaultRecord: {
-  entityMap: ?EntityMap;
-  blockMap: ?BlockMap;
-  selectionBefore: ?SelectionState;
-  selectionAfter: ?SelectionState;
+  entityMap: ?EntityMap,
+  blockMap: ?BlockMap,
+  selectionBefore: ?SelectionState,
+  selectionAfter: ?SelectionState,
 } = {
   entityMap: null,
   blockMap: null,

@@ -12,7 +12,7 @@
 'use strict';
 
 jest
-  .disableAutomock()
+  .disableAutomock();
 
 var Immutable = require('immutable');
 var applyEntityToContentBlock = require('applyEntityToContentBlock');

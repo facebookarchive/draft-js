@@ -18,7 +18,6 @@ jest
 var BlockMapBuilder = require('BlockMapBuilder');
 var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
-var DraftEntity = require('DraftEntity');
 
 var SINGLE_BLOCK = [
   {text: 'Lorem ipsum', key: 'a'},
