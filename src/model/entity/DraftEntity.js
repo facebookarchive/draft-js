@@ -61,7 +61,7 @@ const DraftEntity = {
     return addEntityToContentState(contentState, instance);
   },
 
-  get: function(contentState: ContentState, key: String): DraftEntityInstance {
+  get: function(contentState: ContentState, key: string): DraftEntityInstance {
     return contentState.getEntityMap().get(key);
   },
 
