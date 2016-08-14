@@ -19,11 +19,16 @@ const ContentBlock = require('ContentBlock');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
+const invariant = require('invariant');
 const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
+const createEntityInContentState = require('createEntityInContentState');
+const addEntityToContentState = require('addEntityToContentState');
+const updateEntityDataInContentState = require('updateEntityDataInContentState');
 
 import type {BlockMap} from 'BlockMap';
 import type {EntityMap} from 'EntityMap';
+import type DraftEntityInstance from 'DraftEntityInstance';
 
 const {List, Record, Repeat, OrderedMap} = Immutable;
 
@@ -126,6 +131,38 @@ class ContentState extends ContentStateRecord {
       blockMap.size > 1 ||
       blockMap.first().getLength() > 0
     );
+  }
+
+  createEntity(
+    type: DraftEntityType,
+    mutability: DraftEntityMutability,
+    data?: Object
+  ): ContentState {
+    return createEntityInContentState(this, type, mutability, data);
+  }
+
+  mergeEntityData(
+    key: string,
+    toMerge: {[key: string]: any}
+  ): ContentState {
+    return updateEntityDataInContentState(this, key, toMerge, true);
+  }
+
+  replaceEntityData(
+    key: string,
+    newData: {[key: string]: any}
+  ): ContentState {
+    return updateEntityDataInContentState(this, key, newData, false);
+  }
+
+  addEntity(instance: DraftEntityInstance): ContentState {
+    return addEntityToContentState(this, instance);
+  }
+
+  getEntity(key: string): DraftEntityInstance {
+    const instance = this.getEntityMap().get(key);
+    invariant(!!instance, 'Unknown DraftEntity key.');
+    return instance;
   }
 
   static createFromBlockArray(
