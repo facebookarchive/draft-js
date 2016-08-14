@@ -29,6 +29,8 @@ const updateEntityDataInContentState = require('updateEntityDataInContentState')
 import type {BlockMap} from 'BlockMap';
 import type {EntityMap} from 'EntityMap';
 import type DraftEntityInstance from 'DraftEntityInstance';
+import type {DraftEntityType} from 'DraftEntityType';
+import type {DraftEntityMutability} from 'DraftEntityMutability';
 
 const {List, Record, Repeat, OrderedMap} = Immutable;
 
