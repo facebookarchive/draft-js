@@ -146,9 +146,21 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
         this.props.blockRenderMap
       );
       if (htmlFragment) {
-        var htmlMap = BlockMapBuilder.createFromArray(htmlFragment);
-        this.update(insertFragment(this.props.editorState, htmlMap));
-        return;
+        const { contentBlocks, contentState } = htmlFragment;
+        if (contentBlocks) {
+          var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
+          this.update(
+            insertFragment(
+              EditorState.push(
+                this.props.editorState,
+                contentState,
+                'insert-fragment'
+              ),
+              htmlMap
+            )
+          );
+          return;
+        }
       }
     }
 
