@@ -122,7 +122,8 @@ class EditorState {
             newContent.getBlockMap(),
             treeMap,
             decorator,
-            existingDecorator
+            existingDecorator,
+            newContent
           );
         } else {
           newTreeMap = generateNewTreeMap(newContent, decorator);
@@ -515,7 +516,7 @@ function generateNewTreeMap(
 ): OrderedMap<string, List<any>> {
   return contentState
     .getBlockMap()
-    .map(block => BlockTree.generate(block, decorator))
+    .map(block => BlockTree.generate(block, decorator, contentState))
     .toOrderedMap();
 }
 
@@ -535,7 +536,7 @@ function regenerateTreeForNewBlocks(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(block, decorator))
+      .map(block => BlockTree.generate(block, decorator, editorState.getCurrentContent()))
   );
 }
 
@@ -551,18 +552,19 @@ function regenerateTreeForNewDecorator(
   blockMap: BlockMap,
   previousTreeMap: OrderedMap<string, List<any>>,
   decorator: DraftDecoratorType,
-  existingDecorator: DraftDecoratorType
+  existingDecorator: DraftDecoratorType,
+  newContent: ContentState
 ): OrderedMap<string, List<any>> {
   return previousTreeMap.merge(
     blockMap
       .toSeq()
       .filter(block => {
         return (
-          decorator.getDecorations(block) !==
-          existingDecorator.getDecorations(block)
+          decorator.getDecorations(block, newContent) !==
+          existingDecorator.getDecorations(block, newContent)
         );
       })
-      .map(block => BlockTree.generate(block, decorator))
+      .map(block => BlockTree.generate(block, decorator, newContent))
   );
 }
 
