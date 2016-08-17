@@ -7,8 +7,8 @@ strings, which then correspond to behaviors within component handlers.</p><p>For
 which then routes our handler to perform an <code>EditorState.undo()</code>.</p><h3><a class="anchor" name="customization"></a>Customization <a class="hash-link" href="#customization">#</a></h3><p>You may provide your own key binding function to supply custom command strings.</p><p>It is recommended that your function use <code>getDefaultKeyBinding</code> as a
 fall-through case, so that your editor may benefit from default commands.</p><p>With your custom command string, you may then implement the <code>handleKeyCommand</code>
 prop function, which allows you to map that command string to your desired
-behavior. If <code>handleKeyCommand</code> returns <code>true</code>, the command is considered
-handled. If it returns <code>false</code>, the command will fall through.</p><h3><a class="anchor" name="example"></a>Example <a class="hash-link" href="#example">#</a></h3><p>Let&#x27;s say we have an editor that should have a &quot;Save&quot; mechanism to periodically
+behavior. If <code>handleKeyCommand</code> returns <code>&#x27;handled&#x27;</code>, the command is considered
+handled. If it returns <code>&#x27;not-handled&#x27;</code>, the command will fall through.</p><h3><a class="anchor" name="example"></a>Example <a class="hash-link" href="#example">#</a></h3><p>Let&#x27;s say we have an editor that should have a &quot;Save&quot; mechanism to periodically
 write your contents to the server as a draft copy.</p><p>First, let&#x27;s define our key binding function:</p><pre class="prism language-javascript">import <span class="token punctuation">{</span>getDefaultKeyBinding<span class="token punctuation">,</span> KeyBindingUtil<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
 const <span class="token punctuation">{</span>hasCommandModifier<span class="token punctuation">}</span> <span class="token operator">=</span> KeyBindingUtil<span class="token punctuation">;</span>
 
@@ -25,13 +25,13 @@ fall through to the default key bindings.</p><p>In our editor component, we can 
 class <span class="token class-name">MyEditor</span> extends <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
  <span class="token comment" spellcheck="true"> // ...
 </span>
-  <span class="token function">handleKeyCommand<span class="token punctuation">(</span></span>command<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> boolean <span class="token punctuation">{</span>
+  <span class="token function">handleKeyCommand<span class="token punctuation">(</span></span>command<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> DraftHandleValue <span class="token punctuation">{</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>command <span class="token operator">===</span> <span class="token string">&#x27;myeditor-save&#x27;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
      <span class="token comment" spellcheck="true"> // Perform a request to save your contents, set
 </span>     <span class="token comment" spellcheck="true"> // a new `editorState`, etc.
-</span>      <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+</span>      <span class="token keyword">return</span> <span class="token string">&#x27;handled&#x27;</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token string">&#x27;not-handled&#x27;</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
 
   <span class="token function">render<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -45,8 +45,8 @@ class <span class="token class-name">MyEditor</span> extends <span class="token 
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></pre><p>The <code>&#x27;myeditor-save&#x27;</code> command can be used for our custom behavior, and returning
-true instructs the editor that the command has been handled and no more work
-is required.</p><p>By returning false in all other cases, default commands are able to fall
+<code>&#x27;handled&#x27;</code> instructs the editor that the command has been handled and no more work
+is required.</p><p>By returning <code>&#x27;not-handled&#x27;</code> in all other cases, default commands are able to fall
 through to default handler behavior.</p></div><div class="docs-prevnext"><a class="docs-next" href="advanced-topics-managing-focus.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2016 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
