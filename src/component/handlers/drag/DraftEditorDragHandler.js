@@ -23,6 +23,7 @@ const getUpdatedSelectionState = require('getUpdatedSelectionState');
 const nullthrows = require('nullthrows');
 
 import type SelectionState from 'SelectionState';
+const isEventHandled = require('isEventHandled');
 
 /**
  * Get a SelectionState for the supplied mouse event.
@@ -87,8 +88,10 @@ var DraftEditorDragHandler = {
 
     const files = data.getFiles();
     if (files.length > 0) {
-      if (this.props.handleDroppedFiles &&
-          this.props.handleDroppedFiles(dropSelection, files)) {
+      if (
+        this.props.handleDroppedFiles &&
+        isEventHandled(this.props.handleDroppedFiles(dropSelection, files))
+      ) {
         return;
       }
 
@@ -107,7 +110,7 @@ var DraftEditorDragHandler = {
     const dragType = this._internalDrag ? 'internal' : 'external';
     if (
       this.props.handleDrop &&
-      this.props.handleDrop(dropSelection, data, dragType)
+      isEventHandled(this.props.handleDrop(dropSelection, data, dragType))
     ) {
       return;
     }

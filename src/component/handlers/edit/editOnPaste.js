@@ -24,6 +24,7 @@ var getTextContentFromFiles = require('getTextContentFromFiles');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 import type {BlockMap} from 'BlockMap';
+const isEventHandled = require('isEventHandled');
 
 /**
  * Paste content.
@@ -39,10 +40,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     if (files.length > 0) {
       // Allow customized paste handling for images, etc. Otherwise, fall
       // through to insert text contents into the editor.
-      if (
-        this.props.handlePastedFiles &&
-        this.props.handlePastedFiles(files)
-      ) {
+      if (this.props.handlePastedFiles && isEventHandled(this.props.handlePastedFiles(files))) {
         return;
       }
 
@@ -88,7 +86,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   const text = data.getText();
   const html = data.getHTML();
 
-  if (this.props.handlePastedText && this.props.handlePastedText(text, html)) {
+  if (this.props.handlePastedText && isEventHandled(this.props.handlePastedText(text, html))) {
     return;
   }
 

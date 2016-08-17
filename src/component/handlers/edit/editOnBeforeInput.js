@@ -22,6 +22,7 @@ var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+const isEventHandled = require('isEventHandled');
 
 // When nothing is focused, Firefox regards two characters, `'` and `/`, as
 // commands that should open and focus the "quickfind" search bar. This should
@@ -86,7 +87,7 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
   // Simple examples: replacing a raw text ':)' with a smile emoji or image
   // decorator, or setting a block to be a list item after typing '- ' at the
   // start of the block.
-  if (this.props.handleBeforeInput && this.props.handleBeforeInput(chars)) {
+  if (this.props.handleBeforeInput && isEventHandled(this.props.handleBeforeInput(chars))) {
     e.preventDefault();
     return;
   }
