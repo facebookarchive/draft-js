@@ -250,7 +250,11 @@ describe('DraftEditorBlock.react', () => {
       );
       var decorator = new Decorator();
 
-      var newTree = BlockTree.generate(ContentState.createFromText(helloBlock.getText()), helloBlock, decorator);
+      var newTree = BlockTree.generate(
+        ContentState.createFromText(helloBlock.getText()),
+        helloBlock,
+        decorator
+      );
       var nextProps = {...props, tree: newTree, decorator};
 
       expect(props.tree).not.toBe(nextProps.tree);
