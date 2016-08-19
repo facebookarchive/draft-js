@@ -11,11 +11,13 @@ objects.</p><h2><a class="anchor" name="functions"></a>Functions <a class="hash-
 restoring contents to use within a Draft editor.</p><h3><a class="anchor" name="converttoraw"></a>convertToRaw <a class="hash-link" href="#converttoraw">#</a></h3><pre class="prism language-javascript"><span class="token function">convertToRaw<span class="token punctuation">(</span></span>contentState<span class="token punctuation">:</span> ContentState<span class="token punctuation">)</span><span class="token punctuation">:</span> RawDraftContentState</pre><p>Given a <code>ContentState</code> object, convert it to a raw JS structure. This is useful
 when saving an editor state for storage, conversion to other formats, or
 other usage within an application.</p><h3><a class="anchor" name="convertfromhtml"></a>convertFromHTML <a class="hash-link" href="#convertfromhtml">#</a></h3><pre class="prism language-javascript"><span class="token function">convertFromHTML<span class="token punctuation">(</span></span>html<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token operator">?</span>Array&lt;ContentBlock<span class="token operator">&gt;</span></pre><p>Given an HTML fragment, convert it to an array of <code>ContentBlock</code> objects.</p></div><div class="docs-prevnext"><a class="docs-next" href="api-reference-rich-utils.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2016 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
+
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-            ga('create', 'UA-387204-10', 'facebook.github.io');
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-44373548-19', 'auto');
             ga('send', 'pageview');
 
             !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)
