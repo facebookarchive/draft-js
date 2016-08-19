@@ -15,7 +15,7 @@
 
 import type ContentState from 'ContentState';
 
-function addEntityToContentState(
+function updateEntityDataInContentState(
   contentState: ContentState,
   key: string,
   data: {[key: string]: any},
@@ -32,4 +32,4 @@ function addEntityToContentState(
   return contentState.set('entityMap', newEntityMap);
 }
 
-module.exports = addEntityToContentState;
+module.exports = updateEntityDataInContentState;
