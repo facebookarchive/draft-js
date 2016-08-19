@@ -13,12 +13,13 @@
 
 'use strict';
 
-const addEntityToContentState = require('addEntityToContentState');
 const DraftEntityInstance = require('DraftEntityInstance');
 
+const addEntityToContentState = require('addEntityToContentState');
+
+import type ContentState from 'ContentState';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
-import type ContentState from 'ContentState';
 
 function createEntityInContentState(
   contentState: ContentState,
