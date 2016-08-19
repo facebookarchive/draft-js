@@ -177,13 +177,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       function findLinkEntities(contentState, contentBlock, callback) {
-        const entityMap = contentState.getEntityMap();
         contentBlock.findEntityRanges(
           (character) => {
             const entityKey = character.getEntity();
             return (
               entityKey !== null &&
-              entityMap.get(entityKey).getType() === 'LINK'
+              contentState.getEntity(entityKey).getType() === 'LINK'
             );
           },
           callback
@@ -191,7 +190,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       const Link = (props) => {
-        const {url} = props.contentState.getEntityMap().get(props.entityKey).getData();
+        const {url} = props.contentState.getEntity(props.entityKey).getData();
         return (
           <a href={url} style={styles.link}>
             {props.children}

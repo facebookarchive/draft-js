@@ -80,7 +80,7 @@ function editOnInput(): void {
   });
 
   const entityKey = block.getEntityAt(start);
-  const entity = entityKey && content.getEntityMap().get(entityKey);
+  const entity = entityKey && content.getEntity(entityKey);
   const entityType = entity && entity.getMutability();
   const preserveEntity = entityType === 'MUTABLE';
 
