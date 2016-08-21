@@ -24,7 +24,7 @@ var getTextContentFromFiles = require('getTextContentFromFiles');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 import type {BlockMap} from 'BlockMap';
-
+import type EntityMap from 'EntityMap';
 /**
  * Paste content.
  */
@@ -146,18 +146,11 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
         this.props.blockRenderMap
       );
       if (htmlFragment) {
-        const { contentBlocks, contentState } = htmlFragment;
+        const { contentBlocks, entityMap } = htmlFragment;
         if (contentBlocks) {
           var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
           this.update(
-            insertFragment(
-              EditorState.push(
-                this.props.editorState,
-                contentState,
-                'insert-fragment'
-              ),
-              htmlMap
-            )
+            insertFragment(this.props.editorState, htmlMap, entityMap)
           );
           return;
         }
@@ -191,16 +184,19 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
 
 function insertFragment(
   editorState: EditorState,
-  fragment: BlockMap
+  fragment: BlockMap,
+  entityMap: ?EntityMap,
 ): EditorState {
   var newContent = DraftModifier.replaceWithFragment(
     editorState.getCurrentContent(),
     editorState.getSelection(),
     fragment
   );
+  const mergedEntityMap = newContent.getEntityMap().merge(entityMap);
+
   return EditorState.push(
     editorState,
-    newContent,
+    newContent.set('entityMap', mergedEntityMap),
     'insert-fragment'
   );
 }

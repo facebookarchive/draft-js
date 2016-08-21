@@ -24,7 +24,7 @@ const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type ContentState from 'ContentState';
+import type EntityMap from 'EntityMap';
 
 const {
   List,
@@ -33,12 +33,10 @@ const {
 
 const DraftPasteProcessor = {
   processHTML(
-    contentState: ContentState,
     html: string,
     blockRenderMap?: DraftBlockRenderMap
-  ): ?{contentBlocks: ?Array<ContentBlock>, contentState: ContentState} {
+  ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
     return convertFromHTMLtoContentBlocks(
-      contentState,
       html,
       getSafeBodyFromHTML,
       blockRenderMap

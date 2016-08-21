@@ -16,9 +16,11 @@
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
+const DraftEntityInstance = require('DraftEntityInstance');
 const Immutable = require('immutable');
 const URI = require('URI');
 
+const addEntityToEntityMap = require('addEntityToEntityMap');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
@@ -28,11 +30,12 @@ const sanitizeDraftText = require('sanitizeDraftText');
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type ContentState from 'ContentState';
+import type EntityMap from 'EntityMap';
 
 var {
   List,
   OrderedSet,
+  OrderedMap,
 } = Immutable;
 
 var NBSP = '&nbsp;';
@@ -302,7 +305,7 @@ function hasValidLinkText(link: Node): boolean {
 }
 
 function genFragment(
-  contentState: ContentState,
+  entityMap: EntityMap,
   node: Node,
   inlineStyle: DraftInlineStyle,
   lastList: string,
@@ -311,18 +314,18 @@ function genFragment(
   depth: number,
   blockRenderMap: DraftBlockRenderMap,
   inEntity?: string
-): {chunk: Chunk, contentState: ContentState} {
+): {chunk: Chunk, entityMap: EntityMap} {
   var nodeName = node.nodeName.toLowerCase();
   var newBlock = false;
   var nextBlockType = 'unstyled';
   var lastLastBlock = lastBlock;
-  let newContentState = contentState;
+  let newEntityMap = entityMap;
 
   // Base Case
   if (nodeName === '#text') {
     var text = node.textContent;
     if (text.trim() === '' && inBlock !== 'pre') {
-      return {chunk: getWhitespaceChunk(inEntity), contentState};
+      return {chunk: getWhitespaceChunk(inEntity), entityMap};
     }
     if (inBlock !== 'pre') {
       // Can't use empty string because MSWord
@@ -339,7 +342,7 @@ function genFragment(
         entities: Array(text.length).fill(inEntity),
         blocks: [],
       },
-      contentState,
+      entityMap,
     };
   }
 
@@ -355,9 +358,9 @@ function genFragment(
         getBlockTypeForTag(inBlock, lastList, blockRenderMap) === 'unstyled'
       )
     ) {
-      return {chunk: getBlockDividerChunk('unstyled', depth), contentState};
+      return {chunk: getBlockDividerChunk('unstyled', depth), entityMap};
     }
-    return {chunk:getSoftNewlineChunk(), contentState};
+    return {chunk:getSoftNewlineChunk(), entityMap};
   }
 
   var chunk = getEmptyChunk();
@@ -419,14 +422,21 @@ function genFragment(
       });
 
       entityConfig.url = new URI(anchor.href).toString();
-      newContentState = newContentState.createEntity('LINK', 'MUTABLE', entityConfig);
-      entityId = newContentState.getLastCreatedEntityKey();
+      newEntityMap = addEntityToEntityMap(
+        newEntityMap,
+        new DraftEntityInstance({
+          type: 'LINK',
+          mutability: 'MUTABLE',
+          data: entityConfig || {},
+        })
+      );
+      entityId = newEntityMap.keySeq().last();
     } else {
       entityId = undefined;
     }
 
-    const { chunk: generatedChunk, contentState: maybeUpdatedContentState } = genFragment(
-      newContentState,
+    const { chunk: generatedChunk, entityMap: maybeUpdatedEntityMap } = genFragment(
+      newEntityMap,
       child,
       inlineStyle,
       lastList,
@@ -438,7 +448,7 @@ function genFragment(
     );
 
     newChunk = generatedChunk;
-    newContentState = maybeUpdatedContentState;
+    newEntityMap = maybeUpdatedEntityMap;
 
     chunk = joinChunks(chunk, newChunk);
     var sibling: ?Node = child.nextSibling;
@@ -464,15 +474,15 @@ function genFragment(
     );
   }
 
-  return {chunk, contentState: newContentState};
+  return {chunk, entityMap: newEntityMap};
 }
 
 function getChunkForHTML(
-  contentState: ContentState,
   html: string,
   DOMBuilder: Function,
-  blockRenderMap: DraftBlockRenderMap
-): ?{chunk: Chunk, contentState: ContentState} {
+  blockRenderMap: DraftBlockRenderMap,
+  entityMap: EntityMap
+): ?{chunk: Chunk, entityMap: EntityMap} {
   html = html
     .trim()
     .replace(REGEX_CR, '')
@@ -499,9 +509,9 @@ function getChunkForHTML(
   // UL block to start with.
   var {
     chunk,
-    contentState: newContentState,
+    entityMap: newEntityMap,
   } = genFragment(
-    contentState,
+    entityMap,
     safeBody,
     OrderedSet(),
     'ul',
@@ -542,20 +552,19 @@ function getChunkForHTML(
     chunk.blocks.unshift({type: 'unstyled', depth: 0});
   }
 
-  return {chunk, contentState: newContentState};
+  return {chunk, entityMap: newEntityMap};
 }
 
 function convertFromHTMLtoContentBlocks(
-  contentState: ContentState,
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
-): ?{contentBlocks: ?Array<ContentBlock>, contentState: ContentState} {
+): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
-  var chunkData = getChunkForHTML(contentState, html, DOMBuilder, blockRenderMap);
+  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, OrderedMap());
 
   if (chunkData == null) {
     return null;
@@ -563,7 +572,7 @@ function convertFromHTMLtoContentBlocks(
 
   const {
     chunk,
-    contentState: newContentState,
+    entityMap: newEntityMap,
   } = chunkData;
 
   var start = 0;
@@ -595,7 +604,7 @@ function convertFromHTMLtoContentBlocks(
         });
       }
     ),
-    contentState: newContentState,
+    entityMap: newEntityMap,
   };
 }
 
