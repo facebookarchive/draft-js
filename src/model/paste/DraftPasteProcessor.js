@@ -24,7 +24,7 @@ const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type EntityMap from 'EntityMap';
+import type {EntityMap} from 'EntityMap';
 
 const {
   List,

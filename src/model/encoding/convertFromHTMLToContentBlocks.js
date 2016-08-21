@@ -30,7 +30,7 @@ const sanitizeDraftText = require('sanitizeDraftText');
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type EntityMap from 'EntityMap';
+import type {EntityMap} from 'EntityMap';
 
 var {
   List,

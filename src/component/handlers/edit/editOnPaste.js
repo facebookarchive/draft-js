@@ -25,7 +25,7 @@ const isEventHandled = require('isEventHandled');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 import type {BlockMap} from 'BlockMap';
-import type EntityMap from 'EntityMap';
+import type {EntityMap} from 'EntityMap';
 /**
  * Paste content.
  */

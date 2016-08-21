@@ -14,7 +14,7 @@
 'use strict';
 
 import type DraftEntityInstance from 'DraftEntityInstance';
-import type EntityMap from 'EntityMap';
+import type {EntityMap} from 'EntityMap';
 
 let key = 0;
 
