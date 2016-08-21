@@ -6,13 +6,16 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftBlockRenderConfig
+ * @providesModule DraftHandleValue
  * @flow
  */
 
+/*eslint-disable no-bitwise*/
+
 'use strict';
 
-export type DraftBlockRenderConfig = {
-  element: string,
-  wrapper?: React$Element<any>,
-};
+/**
+ * A type that allows us to avoid returning boolean values
+ * to indicate whether an event was handled or not.
+ */
+export type DraftHandleValue = 'handled' | 'not-handled';

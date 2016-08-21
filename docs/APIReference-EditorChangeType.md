@@ -38,6 +38,10 @@ An entity is being applied (or removed via `null`) to one or more characters.
 
 A single character is being backward-removed.
 
+#### `change-block-data`
+
+The `data` value of one or more `ContentBlock` objects is being changed.
+
 #### `change-block-type`
 
 The `type` value of one or more `ContentBlock` objects is being changed.

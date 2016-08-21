@@ -18,6 +18,7 @@ import type {DraftDragType} from 'DraftDragType';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftHandleValue} from 'DraftHandleValue';
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
@@ -82,40 +83,40 @@ export type DraftEditorProps = {
 
   /**
    * Cancelable event handlers, handled from the top level down. A handler
-   * that returns true will be the last handler to execute for that event.
+   * that returns `handled` will be the last handler to execute for that event.
    */
 
   // Useful for managing special behavior for pressing the `Return` key. E.g.
   // removing the style from an empty list item.
-  handleReturn?: (e: SyntheticKeyboardEvent) => boolean,
+  handleReturn?: (e: SyntheticKeyboardEvent) => DraftHandleValue,
 
   // Map a key command string provided by your key binding function to a
   // specified behavior.
-  handleKeyCommand?: (command: DraftEditorCommand) => boolean,
+  handleKeyCommand?: (command: DraftEditorCommand) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be
   // useful in cases where the user has entered characters that you would like
   // to trigger some special behavior. E.g. immediately converting `:)` to an
   // emoji Unicode character, or replacing ASCII quote characters with smart
   // quotes.
-  handleBeforeInput?: (chars: string) => boolean,
+  handleBeforeInput?: (chars: string) => DraftHandleValue,
 
-  handlePastedText?: (text: string, html?: string) => boolean,
+  handlePastedText?: (text: string, html?: string) => DraftHandleValue,
 
-  handlePastedFiles?: (files: Array<Blob>) => boolean,
+  handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
 
   // Handle dropped files
   handleDroppedFiles?: (
     selection: SelectionState,
     files: Array<Blob>
-  ) => boolean,
+  ) => DraftHandleValue,
 
   // Handle other drops to prevent default text movement/insertion behaviour
   handleDrop?: (
     selection: SelectionState,
     dataTransfer: Object,
     isInternal: DraftDragType
-  ) => boolean,
+  ) => DraftHandleValue,
 
   /**
    * Non-cancelable event triggers.
