@@ -13,7 +13,7 @@
 
 'use strict';
 
-const generateRandomKey = require('generateRandomKey');
+const addEntityToEntityMap = require('addEntityToEntityMap');
 
 import type ContentState from 'ContentState';
 import type DraftEntityInstance from 'DraftEntityInstance';
@@ -22,9 +22,10 @@ function addEntityToContentState(
   contentState: ContentState,
   instance: DraftEntityInstance
 ): ContentState {
-  const newKey = generateRandomKey();
-  const newEntityMap = contentState.getEntityMap().set(newKey, instance);
-  return contentState.set('entityMap', newEntityMap);
+  return contentState.set(
+    'entityMap',
+    addEntityToEntityMap(contentState.getEntityMap(), instance)
+  );
 }
 
 module.exports = addEntityToContentState;

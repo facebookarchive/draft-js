@@ -103,7 +103,7 @@ describe('ContentState', () => {
 
     it('must create instances', () => {
       const contentState = createLink();
-      expect(typeof contentState.getLastCreatedEntityKey()).toBe('string');
+      expect(typeof contentState.getLastCreatedEntityKey()).toBe('number');
     });
 
     it('must retrieve an instance given a key', () => {
