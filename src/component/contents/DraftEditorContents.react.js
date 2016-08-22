@@ -106,17 +106,14 @@ class DraftEditorContents extends React.Component {
     const directionMap = nullthrows(editorState.getDirectionMap());
 
     const blocksAsArray = content.getBlocksAsArray();
-    const blocks = [];
-    let currentWrapperElement = null;
-    let currentWrapperTemplate = null;
+    const processedBlocks = [];
     let currentDepth = null;
-    let currentWrappedBlocks;
-    let block, key, blockType, child, childProps, wrapperTemplate;
+    let lastWrapperTemplate = null;
 
     for (let ii = 0; ii < blocksAsArray.length; ii++) {
-      block = blocksAsArray[ii];
-      key = block.getKey();
-      blockType = block.getType();
+      const block = blocksAsArray[ii];
+      const key = block.getKey();
+      const blockType = block.getType();
 
       const customRenderer = blockRendererFn(block);
       let CustomComponent, customProps, customEditable;
@@ -143,10 +140,7 @@ class DraftEditorContents extends React.Component {
       };
 
       const configForType = blockRenderMap.get(blockType);
-
-      wrapperTemplate = configForType.wrapper;
-
-      const useNewWrapper = wrapperTemplate !== currentWrapperTemplate;
+      const wrapperTemplate = configForType.wrapper;
 
       const Element = (
         configForType.element ||
@@ -160,7 +154,7 @@ class DraftEditorContents extends React.Component {
       // counters manually.
       if (Element === 'li') {
         const shouldResetCount = (
-          useNewWrapper ||
+          lastWrapperTemplate !== wrapperTemplate ||
           currentDepth === null ||
           depth > currentDepth
         );
@@ -171,7 +165,7 @@ class DraftEditorContents extends React.Component {
       }
 
       const Component = CustomComponent || DraftEditorBlock;
-      childProps = {
+      let childProps = {
         className,
         'data-block': true,
         'data-editor': this.props.editorKey,
@@ -186,38 +180,56 @@ class DraftEditorContents extends React.Component {
         };
       }
 
-      child = React.createElement(
+      const child = React.createElement(
         Element,
         childProps,
         <Component {...componentProps} />,
       );
 
+      processedBlocks.push({
+        block: child,
+        wrapperTemplate,
+        key,
+        offsetKey,
+      });
+
       if (wrapperTemplate) {
-        if (useNewWrapper) {
-          currentWrappedBlocks = [];
-          currentWrapperElement = React.cloneElement(
-            wrapperTemplate,
-            {
-              key: key + '-wrap',
-              'data-offset-key': offsetKey,
-            },
-            currentWrappedBlocks
-          );
-          currentWrapperTemplate = wrapperTemplate;
-          blocks.push(currentWrapperElement);
-        }
         currentDepth = block.getDepth();
-        nullthrows(currentWrappedBlocks).push(child);
       } else {
-        currentWrappedBlocks = null;
-        currentWrapperElement = null;
-        currentWrapperTemplate = null;
         currentDepth = null;
-        blocks.push(child);
+      }
+      lastWrapperTemplate = wrapperTemplate;
+    }
+
+    // Group contiguous runs of blocks that have the same wrapperTemplate
+    const outputBlocks = [];
+    for (let ii = 0; ii < processedBlocks.length; ) {
+      const info = processedBlocks[ii];
+      if (info.wrapperTemplate) {
+        const blocks = [];
+        do {
+          blocks.push(processedBlocks[ii].block);
+          ii++;
+        } while (
+          ii < processedBlocks.length &&
+          processedBlocks[ii].wrapperTemplate === info.wrapperTemplate
+        );
+        const wrapperElement = React.cloneElement(
+          info.wrapperTemplate,
+          {
+            key: info.key + '-wrap',
+            'data-offset-key': info.offsetKey,
+          },
+          blocks
+        );
+        outputBlocks.push(wrapperElement);
+      } else {
+        outputBlocks.push(info.block);
+        ii++;
       }
     }
 
-    return <div data-contents="true">{blocks}</div>;
+    return <div data-contents="true">{outputBlocks}</div>;
   }
 }
 
