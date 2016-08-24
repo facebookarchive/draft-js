@@ -112,7 +112,7 @@ class DraftEditorLeaf extends React.Component<Props> {
   }
 
   shouldComponentUpdate(nextProps: Props): boolean {
-    const leafNode = ReactDOM.findDOMNode(this.refs.leaf);
+    const leafNode = ReactDOM.findDOMNode(this.leaf);
     invariant(leafNode, 'Missing leafNode');
     return (
       leafNode.textContent !== nextProps.text ||
@@ -166,7 +166,7 @@ class DraftEditorLeaf extends React.Component<Props> {
     return (
       <span
         data-offset-key={offsetKey}
-        ref="leaf"
+        ref={(ref) => this.leaf = ref}
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>

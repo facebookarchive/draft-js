@@ -28,7 +28,7 @@ class RichEditorExample extends React.Component {
     super(props);
     this.state = {editorState: EditorState.createEmpty()};
 
-    this.focus = () => this.refs.editor.focus();
+    this.focus = () => this.editor.focus();
     this.onChange = (editorState) => this.setState({editorState});
 
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
@@ -101,7 +101,7 @@ class RichEditorExample extends React.Component {
             onChange={this.onChange}
             onTab={this.onTab}
             placeholder="Tell a story..."
-            ref="editor"
+            ref={(ref) => this.editor = ref}
             spellCheck={true}
           />
         </div>

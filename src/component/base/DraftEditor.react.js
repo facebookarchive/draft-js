@@ -244,7 +244,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         {this._renderPlaceholder()}
         <div
           className={cx('DraftEditor/editorContainer')}
-          ref="editorContainer">
+          ref={(ref) => this.editorContainer = ref}>
           <div
             aria-activedescendant={
               readOnly ? null : this.props.ariaActiveDescendantID
@@ -290,7 +290,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onMouseUp={this._onMouseUp}
             onPaste={this._onPaste}
             onSelect={this._onSelect}
-            ref="editor"
+            ref={(ref) => this.editor = ref}
             role={readOnly ? null : ariaRole}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
@@ -366,7 +366,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _focus(scrollPosition?: DraftScrollPosition): void {
     const {editorState} = this.props;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
-    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
+    const editorNode = ReactDOM.findDOMNode(this.editor);
 
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
@@ -399,12 +399,18 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   }
 
   _blur(): void {
+<<<<<<< HEAD
     const editorNode = ReactDOM.findDOMNode(this.refs.editor);
     invariant(
       editorNode instanceof HTMLElement,
       'editorNode is not an HTMLElement',
     );
     editorNode.blur();
+||||||| parent of 59c9776... Remove string refs
+    ReactDOM.findDOMNode(this.refs.editor).blur();
+=======
+    ReactDOM.findDOMNode(this.editor).blur();
+>>>>>>> 59c9776... Remove string refs
   }
 
   /**
