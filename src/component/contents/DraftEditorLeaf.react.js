@@ -75,6 +75,9 @@ class DraftEditorLeaf extends React.Component<Props> {
    * DOM structure of the DraftEditor component. If leaves had multiple
    * text nodes, this would be harder.
    */
+
+  leaf: () => void;
+
   _setSelection(): void {
     const {selection} = this.props;
 
