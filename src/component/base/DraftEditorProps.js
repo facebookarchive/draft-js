@@ -30,7 +30,7 @@ export type DraftEditorProps = {
    * `onChange` prop is the method in which all state changes are propagated
    * upward to higher-level components.
    *
-   * These props are analagous to `value` and `onChange` in controlled React
+   * These props are analogous to `value` and `onChange` in controlled React
    * text inputs.
    */
   editorState: EditorState,
