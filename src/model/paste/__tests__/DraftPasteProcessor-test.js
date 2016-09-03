@@ -54,7 +54,7 @@ describe('DraftPasteProcessor', function() {
   }
 
   // Don't want to couple this to a specific way of generating entity IDs so
-  // just checking their existance
+  // just checking their existence
   function assertEntities(block, comparison) {
     var entities = block.getCharacterList().map(c => c.getEntity());
     entities.toJS().forEach((entity, ii) => {
