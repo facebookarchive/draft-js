@@ -57,9 +57,9 @@ class MyEditor extends React.Component {
     const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
     if (newState) {
       this.onChange(newState);
-      return true;
+      return 'handled';
     }
-    return false;
+    return 'not-handled';
   }
   render() {
     return (
@@ -78,7 +78,7 @@ class MyEditor extends React.Component {
 > The `command` argument supplied to `handleKeyCommand` is a string value, the
 > name of the command to be executed. This is mapped from a DOM key event. See
 > [Advanced Topics - Key Binding](/draft-js/docs/advanced-topics-key-bindings.html) for more
-> on this, as well as details on why the function returns a boolean.
+> on this, as well as details on why the function returns `handled` or `not-handled`.
 
 ## Styling Controls in UI
 
