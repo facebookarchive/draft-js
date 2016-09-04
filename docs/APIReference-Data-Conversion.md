@@ -49,7 +49,10 @@ other usage within an application.
 ### convertFromHTML
 
 ```
-convertFromHTML(html: string): ?Array<ContentBlock>
+convertFromHTML(
+  html: string,
+  blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap
+): ?Array<ContentBlock>
 ```
 
 Given an HTML fragment, convert it to an array of `ContentBlock` objects.
