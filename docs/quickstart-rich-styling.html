@@ -25,9 +25,9 @@ class <span class="token class-name">MyEditor</span> extends <span class="token 
     const newState <span class="token operator">=</span> RichUtils<span class="token punctuation">.</span><span class="token function">handleKeyCommand<span class="token punctuation">(</span></span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>editorState<span class="token punctuation">,</span> command<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>newState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
       <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">onChange<span class="token punctuation">(</span></span>newState<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> <span class="token string">&#x27;handled&#x27;</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token string">&#x27;not-handled&#x27;</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
   <span class="token function">render<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token punctuation">(</span>
@@ -41,7 +41,7 @@ class <span class="token class-name">MyEditor</span> extends <span class="token 
 <span class="token punctuation">}</span></pre><blockquote><p>handleKeyCommand</p><p>The <code>command</code> argument supplied to <code>handleKeyCommand</code> is a string value, the
 name of the command to be executed. This is mapped from a DOM key event. See
 <a href="/draft-js/docs/advanced-topics-key-bindings.html" target="">Advanced Topics - Key Binding</a> for more
-on this, as well as details on why the function returns a boolean.</p></blockquote><h2><a class="anchor" name="styling-controls-in-ui"></a>Styling Controls in UI <a class="hash-link" href="#styling-controls-in-ui">#</a></h2><p>Within your React component, you can add buttons or other controls to allow
+on this, as well as details on why the function returns <code>handled</code> or <code>not-handled</code>.</p></blockquote><h2><a class="anchor" name="styling-controls-in-ui"></a>Styling Controls in UI <a class="hash-link" href="#styling-controls-in-ui">#</a></h2><p>Within your React component, you can add buttons or other controls to allow
 the user to modify styles within the editor. In the example above, we are using
 known key commands, but we can add more complex UI to provide these rich
 features.</p><p>Here&#x27;s a super-basic example with a &quot;Bold&quot; button to toggle the <code>BOLD</code> style.</p><pre class="prism language-javascript">class <span class="token class-name">MyEditor</span> extends <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
