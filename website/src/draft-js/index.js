@@ -32,6 +32,7 @@ class RichEditorExample extends React.Component {
     this.onChange = (editorState) => this.setState({editorState});
 
     this.handleKeyCommand = (command) => this._handleKeyCommand(command);
+    this.onTab = (e) => this._onTab(e);
     this.toggleBlockType = (type) => this._toggleBlockType(type);
     this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
   }
@@ -44,6 +45,11 @@ class RichEditorExample extends React.Component {
       return true;
     }
     return false;
+  }
+
+  _onTab(e) {
+    const maxDepth = 4;
+    this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
   }
 
   _toggleBlockType(blockType) {
@@ -94,6 +100,7 @@ class RichEditorExample extends React.Component {
             editorState={editorState}
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
+            onTab={this.onTab}
             placeholder="Tell a story..."
             ref="editor"
             spellCheck={true}
@@ -147,6 +154,10 @@ class StyleButton extends React.Component {
 const BLOCK_TYPES = [
   {label: 'H1', style: 'header-one'},
   {label: 'H2', style: 'header-two'},
+  {label: 'H3', style: 'header-three'},
+  {label: 'H4', style: 'header-four'},
+  {label: 'H5', style: 'header-five'},
+  {label: 'H6', style: 'header-six'},
   {label: 'Blockquote', style: 'blockquote'},
   {label: 'UL', style: 'unordered-list-item'},
   {label: 'OL', style: 'ordered-list-item'},
@@ -165,6 +176,7 @@ const BlockStyleControls = (props) => {
     <div className="RichEditor-controls">
       {BLOCK_TYPES.map((type) =>
         <StyleButton
+          key={type.label}
           active={type.style === blockType}
           label={type.label}
           onToggle={props.onToggle}
@@ -188,6 +200,7 @@ const InlineStyleControls = (props) => {
     <div className="RichEditor-controls">
       {INLINE_STYLES.map(type =>
         <StyleButton
+          key={type.label}
           active={currentStyle.has(type.style)}
           label={type.label}
           onToggle={props.onToggle}
