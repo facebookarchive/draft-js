@@ -91,7 +91,10 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
       e.preventDefault();
       // The top-level component may manually handle newline insertion. If
       // no special handling is performed, fall through to command handling.
-      if (this.props.handleReturn && isEventHandled(this.props.handleReturn(e))) {
+      if (
+        this.props.handleReturn &&
+        isEventHandled(this.props.handleReturn(e))
+      ) {
         return;
       }
       break;
@@ -148,7 +151,10 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
   e.preventDefault();
 
   // Allow components higher up the tree to handle the command first.
-  if (this.props.handleKeyCommand && isEventHandled(this.props.handleKeyCommand(command))) {
+  if (
+    this.props.handleKeyCommand &&
+    isEventHandled(this.props.handleKeyCommand(command))
+  ) {
     return;
   }
 

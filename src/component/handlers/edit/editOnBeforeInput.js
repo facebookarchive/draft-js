@@ -87,7 +87,10 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
   // Simple examples: replacing a raw text ':)' with a smile emoji or image
   // decorator, or setting a block to be a list item after typing '- ' at the
   // start of the block.
-  if (this.props.handleBeforeInput && isEventHandled(this.props.handleBeforeInput(chars))) {
+  if (
+    this.props.handleBeforeInput &&
+    isEventHandled(this.props.handleBeforeInput(chars))
+  ) {
     e.preventDefault();
     return;
   }
