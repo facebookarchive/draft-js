@@ -13,12 +13,16 @@
 
 jest.disableAutomock();
 
-var Immutable = require('immutable');
-var insertFragmentIntoContentState = require('insertFragmentIntoContentState');
-var getSampleStateForTesting = require('getSampleStateForTesting');
 var BlockMapBuilder = require('BlockMapBuilder');
-var ContentBlock = require('ContentBlock');
 var CharacterMetadata = require('CharacterMetadata');
+var ContentBlock = require('ContentBlock');
+var Immutable = require('immutable');
+
+var getSampleStateForTesting = require('getSampleStateForTesting');
+var insertFragmentIntoContentState = require('insertFragmentIntoContentState');
+
+const {EMPTY} = CharacterMetadata;
+const {List, Map} = Immutable;
 
 describe('insertFragmentIntoContentState', () => {
   var sample = getSampleStateForTesting();
@@ -26,8 +30,8 @@ describe('insertFragmentIntoContentState', () => {
   var selection = sample.selectionState;
 
   var block = content.getBlockMap().first();
-  var data = new Immutable.Map({a: 1});
-  var secondData = new Immutable.Map({b: 2});
+  var data = new Map({a: 1});
+  var secondData = new Map({b: 2});
 
   function createFragment() {
     var fragmentArray = [
@@ -35,8 +39,8 @@ describe('insertFragmentIntoContentState', () => {
         key: 'j',
         type: 'unstyled',
         text: 'xx',
-        characterList: CharacterMetadata.EMPTY,
-        data: data,
+        characterList: List.of(EMPTY, EMPTY),
+        data,
       }),
     ];
     return BlockMapBuilder.createFromArray(fragmentArray);
@@ -48,14 +52,14 @@ describe('insertFragmentIntoContentState', () => {
         key: 'j',
         type: 'unstyled',
         text: 'xx',
-        characterList: CharacterMetadata.EMPTY,
-        data: data,
+        characterList: List.of(EMPTY, EMPTY),
+        data,
       }),
       new ContentBlock({
         key: 'k',
         type: 'unstyled',
         text: 'yy',
-        characterList: CharacterMetadata.EMPTY,
+        characterList: List.of(EMPTY, EMPTY),
         data: secondData,
       }),
     ];
