@@ -1,7 +1,7 @@
 {
   "name": "draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.7.0",
+  "version": "0.8.1",
   "keywords": [
     "draftjs",
     "editor",
@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "fbjs": "^0.8.3",
-    "immutable": "~3.7.4"
+    "immutable": "~3.7.4",
+    "object-assign": "^4.1.0"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0-rc",
@@ -48,6 +49,7 @@
     "eslint-config-fbjs": "^1.0.0",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-flow-vars": "^0.4.0",
+    "eslint-plugin-flowtype": "^2.16.0",
     "eslint-plugin-react": "^5.2.2",
     "fbjs-scripts": "^0.7.0",
     "flow-bin": "^0.28.0",
@@ -63,7 +65,6 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "jest": "^12.1.1",
-    "object-assign": "^4.0.1",
     "react": "^15.0.0-rc.1",
     "react-dom": "^15.0.0-rc.1",
     "run-sequence": "^1.1.2",

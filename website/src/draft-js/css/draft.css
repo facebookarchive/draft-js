@@ -106,6 +106,30 @@ a:focus {
   outline-offset: -2px;
 }
 
+table {
+  border-collapse: collapse;
+  margin: 15px 16px;
+}
+
+table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 6px 13px;
+  text-align: left;
+}
+
+table th {
+  font-weight: bold;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
 .center {
   text-align: center;
 }

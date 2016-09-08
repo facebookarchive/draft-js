@@ -140,20 +140,20 @@ These props allow you to set accessibility properties on your editor. See
 ### Cancelable Handlers (Optional)
 
 These prop functions are provided to allow custom event handling for a small
-set of useful events. By returning true from your handler, you indicate that
+set of useful events. By returning `'handled'` from your handler, you indicate that
 the event is handled and the Draft core should do nothing more with it. By returning
-false, you defer to Draft to handle the event.
+`'not-handled'`, you defer to Draft to handle the event.
 
 #### handleReturn
 ```
-handleReturn?: (e: SyntheticKeyboardEvent) => boolean
+handleReturn?: (e: SyntheticKeyboardEvent) => DraftHandleValue
 ```
 Handle a `RETURN` keydown event. Example usage: Choosing a mention tag from a
 rendered list of results to trigger applying the mention entity to your content.
 
 #### handleKeyCommand
 ```
-handleKeyCommand?: (command: string) => boolean
+handleKeyCommand?: (command: string) => DraftHandleValue
 ```
 Handle the named editor command. See
 [Advanced Topics: Key Bindings](/draft-js/docs/advanced-topics-key-bindings.html)
@@ -161,9 +161,9 @@ for details on usage.
 
 #### handleBeforeInput
 ```
-handleBeforeInput?: (chars: string) => boolean
+handleBeforeInput?: (chars: string) => DraftHandleValue
 ```
-Handle the characters to be inserted from a `beforeInput` event. Returning `true`
+Handle the characters to be inserted from a `beforeInput` event. Returning `'handled'`
 causes the default behavior of the `beforeInput` event to be prevented (i.e. it is
 the same as calling the `preventDefault` method on the event).
 Example usage: After a user has typed `- ` at the start of a new block, you might
@@ -174,25 +174,25 @@ and to convert typed emoticons into images.
 
 #### handlePastedText
 ```
-handlePastedText?: (text: string, html?: string) => boolean
+handlePastedText?: (text: string, html?: string) => DraftHandleValue
 ```
 Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior. 
 
 #### handlePastedFiles
 ```
-handlePastedFiles?: (files: Array<Blob>) => boolean
+handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue
 ```
 Handle files that have been pasted directly into the editor.
 
 #### handleDroppedFiles
 ```
-handleDroppedFiles?: (selection: SelectionState, files: Array<Blob>) => boolean
+handleDroppedFiles?: (selection: SelectionState, files: Array<Blob>) => DraftHandleValue
 ```
 Handle files that have been dropped into the editor.
 
 #### handleDrop
 ```
-handleDrop?: (selection: SelectionState, dataTransfer: Object, isInternal: DraftDragType) => boolean
+handleDrop?: (selection: SelectionState, dataTransfer: Object, isInternal: DraftDragType) => DraftHandleValue
 ```
 Handle other drop operations.
 

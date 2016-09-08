@@ -34,8 +34,8 @@ fall-through case, so that your editor may benefit from default commands.
 
 With your custom command string, you may then implement the `handleKeyCommand`
 prop function, which allows you to map that command string to your desired
-behavior. If `handleKeyCommand` returns `true`, the command is considered
-handled. If it returns `false`, the command will fall through.
+behavior. If `handleKeyCommand` returns `'handled'`, the command is considered
+handled. If it returns `'not-handled'`, the command will fall through.
 
 ### Example
 
@@ -71,13 +71,13 @@ import {Editor} from 'draft-js';
 class MyEditor extends React.Component {
   // ...
 
-  handleKeyCommand(command: string): boolean {
+  handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
       // Perform a request to save your contents, set
       // a new `editorState`, etc.
-      return true;
+      return 'handled';
     }
-    return false;
+    return 'not-handled';
   }
 
   render() {
@@ -94,8 +94,8 @@ class MyEditor extends React.Component {
 ```
 
 The `'myeditor-save'` command can be used for our custom behavior, and returning
-true instructs the editor that the command has been handled and no more work
+`'handled'` instructs the editor that the command has been handled and no more work
 is required.
 
-By returning false in all other cases, default commands are able to fall
+By returning `'not-handled'` in all other cases, default commands are able to fall
 through to default handler behavior.
