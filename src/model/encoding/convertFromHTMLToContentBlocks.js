@@ -230,9 +230,10 @@ function processInlineTag(
   currentStyle: DraftInlineStyle,
 ): DraftInlineStyle {
   var styleToCheck = inlineTags[tag];
+  var win = node.ownerDocument.defaultView;
   if (styleToCheck) {
     currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
-  } else if (node instanceof HTMLElement) {
+  } else if (node instanceof win.HTMLElement) {
     const htmlElement = node;
     currentStyle = currentStyle.withMutations(style => {
       const fontWeight = htmlElement.style.fontWeight;
@@ -316,8 +317,9 @@ function containsSemanticBlockMarkup(
 }
 
 function hasValidLinkText(link: Node): boolean {
+  const win = link.ownerDocument.defaultView;
   invariant(
-    link instanceof HTMLAnchorElement,
+    link instanceof win.HTMLAnchorElement,
     'Link must be an HTMLAnchorElement.',
   );
   var protocol = link.protocol;
@@ -387,10 +389,12 @@ function genFragment(
     return {chunk: getSoftNewlineChunk(), entityMap};
   }
 
+  const win = node.ownerDocument.defaultView;
+
   // IMG tags
   if (
     nodeName === 'img' &&
-    node instanceof HTMLImageElement &&
+    node instanceof win.HTMLImageElement &&
     node.attributes.getNamedItem('src') &&
     node.attributes.getNamedItem('src').value
   ) {
@@ -462,7 +466,7 @@ function genFragment(
 
   while (child) {
     if (
-      child instanceof HTMLAnchorElement &&
+      child instanceof win.HTMLAnchorElement &&
       child.href &&
       hasValidLinkText(child)
     ) {

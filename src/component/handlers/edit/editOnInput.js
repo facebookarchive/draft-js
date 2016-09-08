@@ -19,6 +19,7 @@ var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
 var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
+var ReactDOM = require('ReactDOM');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
 var nullthrows = require('nullthrows');
@@ -45,7 +46,7 @@ function editOnInput(editor: DraftEditor): void {
     editor._pendingStateFromBeforeInput = undefined;
   }
 
-  var domSelection = global.getSelection();
+  var domSelection = ReactDOM.findDOMNode(editor.refs.editor).ownerDocument.defaultView.getSelection();
 
   var {anchorNode, isCollapsed} = domSelection;
   const isNotTextNode =

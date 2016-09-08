@@ -20,7 +20,7 @@ var getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
  */
 function findAncestorOffsetKey(node: Node): ?string {
   let searchNode = node;
-  while (searchNode && searchNode !== document.documentElement) {
+  while (searchNode && searchNode !== searchNode.ownerDocument.documentElement) {
     var key = getSelectionOffsetKeyForNode(searchNode);
     if (key != null) {
       return key;

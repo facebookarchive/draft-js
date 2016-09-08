@@ -296,9 +296,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             style={contentStyle}
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
-            {
-              }
-            {}
             {/* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
               * error when upgrading Flow's support for React. Common errors
               * found when upgrading Flow's React support are documented at
@@ -333,7 +330,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
      * ie9-beta-minor-change-list.aspx
      */
     if (isIE) {
-      document.execCommand('AutoUrlDetect', false, false);
+      ReactDOM.findDOMNode(this.refs.editor)
+        .ownerDocument.execCommand('AutoUrlDetect', false, false);
     }
   }
 
@@ -376,6 +374,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
+    const {defaultView} = editorNode.ownerDocument;
 
     invariant(
       editorNode instanceof HTMLElement,
@@ -384,8 +383,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     editorNode.focus();
 
     // Restore scroll position
-    if (scrollParent === window) {
-      window.scrollTo(x, y);
+    if (scrollParent === defaultView) {
+      defaultView.scrollTo(x, y);
     } else {
       Scroll.setTop(scrollParent, y);
     }
