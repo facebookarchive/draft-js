@@ -16,6 +16,7 @@
 var Immutable = require('immutable');
 
 import type ContentBlock from 'ContentBlock';
+import type ContentState from 'ContentState';
 import type {DraftDecorator} from 'DraftDecorator';
 
 var {List} = Immutable;
@@ -51,7 +52,7 @@ class CompositeDraftDecorator {
     this._decorators = decorators.slice();
   }
 
-  getDecorations(block: ContentBlock): List<?string> {
+  getDecorations(block: ContentBlock, newContent: ContentState): List<?string> {
     var decorations = Array(block.getText().length).fill(null);
 
     this._decorators.forEach(
@@ -66,7 +67,7 @@ class CompositeDraftDecorator {
             occupySlice(decorations, start, end, ii + DELIMITER + counter);
             counter++;
           }
-        });
+        }, newContent);
       }
     );
 
