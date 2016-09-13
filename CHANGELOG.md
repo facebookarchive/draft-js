@@ -4,6 +4,20 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.9.0 (September 13, 2016)
+
+### Changed
+
+* Return 'handled' or 'not-handled' from cancellable handlers callback
+  * Boolean return value is deprecated
+* Expand and update documentation
+
+### Fixed
+
+* Fix selection of atomic block when it is the last block
+* Preserve the depth of custom block types when converting to raw
+* Stop mutating component children when creating blocks with wrapper elements
+
 ## 0.8.1 (August 12, 2016)
 
 ### Fixed
