@@ -51,6 +51,7 @@ other usage within an application.
 ```
 convertFromHTML(
   html: string,
+  DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap
 ): ?Array<ContentBlock>
 ```
