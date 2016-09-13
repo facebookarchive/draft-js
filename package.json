@@ -63,7 +63,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "jest": "^12.1.1",
+    "jest": "^15.1.1",
     "react": "^15.0.0-rc.1",
     "react-dom": "^15.0.0-rc.1",
     "run-sequence": "^1.1.2",
@@ -76,10 +76,10 @@
     "npm": "2.x || 3.x"
   },
   "jest": {
-    "rootDir": "",
+    "automock": true,
+    "rootDir": "./",
     "scriptPreprocessor": "scripts/jest/preprocessor.js",
-    "setupEnvScriptFile": "node_modules/fbjs-scripts/jest/environment.js",
-    "persistModuleRegistryBetweenSpecs": true,
+    "setupFiles": ["node_modules/fbjs-scripts/jest/environment.js"],
     "modulePathIgnorePatterns": [
       "<rootDir>/lib/",
       "<rootDir>/node_modules/"
