@@ -23,6 +23,7 @@ var DraftEntityInstanceRecord = Record({
   type: 'TOKEN',
   mutability: 'IMMUTABLE',
   data: Object,
+  contiguous: true,
 });
 
 /**
@@ -47,6 +48,10 @@ class DraftEntityInstance extends DraftEntityInstanceRecord {
 
   getData(): Object {
     return this.get('data');
+  }
+
+  getContiguity(): bool {
+    return this.get('contiguous');
   }
 }
 

@@ -48,10 +48,12 @@ var DraftEntity = {
   create: function(
     type: DraftEntityType,
     mutability: DraftEntityMutability,
-    data?: Object
+    data?: Object,
+    contiguous?: bool,
   ): string {
+    var isContiguous = (typeof contiguous !== undefined) ? contiguous : true;
     return DraftEntity.add(
-      new DraftEntityInstance({type, mutability, data: data || {}})
+      new DraftEntityInstance({type, mutability, data: data || {}, contiguous: isContiguous})
     );
   },
 

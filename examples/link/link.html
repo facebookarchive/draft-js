@@ -87,7 +87,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         _confirmLink(e) {
           e.preventDefault();
           const {editorState, urlValue} = this.state;
-          const entityKey = Entity.create('LINK', 'MUTABLE', {url: urlValue});
+          const entityKey = Entity.create('LINK', 'MUTABLE', {url: urlValue}, false);
           this.setState({
             editorState: RichUtils.toggleLink(
               editorState,

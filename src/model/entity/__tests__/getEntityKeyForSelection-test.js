@@ -46,10 +46,45 @@ describe('getEntityKeyForSelection', () => {
 
     it('must return key if mutable', () => {
       DraftEntity.get.mockImplementation(() => {
-        return {getMutability: () => 'MUTABLE'};
+        return {
+          getMutability: () => 'MUTABLE',
+          getContiguity: () => true,
+        };
       });
       var key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe('123');
+    });
+
+    it('must return key if caret inside mutable & non-contiguous', () => {
+      var specialSelection = selectionState.merge({
+        anchorOffset: 4,
+        focusOffset: 4,
+      });
+
+      DraftEntity.get.mockImplementation(() => {
+        return {
+          getMutability: () => 'MUTABLE',
+          getContiguity: () => false,
+        };
+      });
+      var key = getEntityKeyForSelection(contentState, specialSelection);
+      expect(key).toBe('123');
+    });
+
+    it('must not return key if mutable & non-contiguous', () => {
+      var specialSelection = selectionState.merge({
+        anchorOffset: 5,
+        focusOffset: 5,
+      });
+
+      DraftEntity.get.mockImplementation(() => {
+        return {
+          getMutability: () => 'MUTABLE',
+          getContiguity: () => false,
+        };
+      });
+      var key = getEntityKeyForSelection(contentState, specialSelection);
+      expect(key).toBe(null);
     });
 
     it('must not return key if immutable', () => {
@@ -90,7 +125,10 @@ describe('getEntityKeyForSelection', () => {
 
     it('must return key if mutable', () => {
       DraftEntity.get.mockImplementation(() => {
-        return {getMutability: () => 'MUTABLE'};
+        return {
+          getMutability: () => 'MUTABLE',
+          getContiguity: () => true,
+        };
       });
       var key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe('123');
