@@ -286,7 +286,8 @@ const RichTextEditorUtil = {
 
     var hasAtomicBlock = content.getBlockMap()
       .skipWhile((_, k) => k !== startKey)
-      .takeWhile((_, k) => k !== endKey)
+      .reverse()
+      .skipWhile((_, k) => k !== endKey)
       .some(v => v.getType() === 'atomic');
 
     if (hasAtomicBlock) {
