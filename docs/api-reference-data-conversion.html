@@ -12,6 +12,7 @@ restoring contents to use within a Draft editor.</p><h3><a class="anchor" name="
 when saving an editor state for storage, conversion to other formats, or
 other usage within an application.</p><h3><a class="anchor" name="convertfromhtml"></a>convertFromHTML <a class="hash-link" href="#convertfromhtml">#</a></h3><pre class="prism language-javascript"><span class="token function">convertFromHTML<span class="token punctuation">(</span></span>
   html<span class="token punctuation">:</span> string<span class="token punctuation">,</span>
+  DOMBuilder<span class="token punctuation">:</span> Function <span class="token operator">=</span> getSafeBodyFromHTML<span class="token punctuation">,</span>
   blockRenderMap<span class="token operator">?</span><span class="token punctuation">:</span> DraftBlockRenderMap <span class="token operator">=</span> DefaultDraftBlockRenderMap
 <span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token operator">?</span>Array&lt;ContentBlock<span class="token operator">&gt;</span></pre><p>Given an HTML fragment, convert it to an array of <code>ContentBlock</code> objects.</p></div><div class="docs-prevnext"><a class="docs-next" href="api-reference-rich-utils.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2016 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
 
