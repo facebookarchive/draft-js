@@ -61,4 +61,7 @@ module.exports = Map({
   'unstyled': {
     element: 'div',
   },
+  'paragraph': {
+    element: 'p',
+  },
 });
