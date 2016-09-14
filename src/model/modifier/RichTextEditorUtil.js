@@ -120,26 +120,10 @@ const RichTextEditorUtil = {
     var blockBefore = content.getBlockBefore(startKey);
 
     if (blockBefore && blockBefore.getType() === 'atomic') {
-      var atomicBlockTarget = selection.merge({
-        anchorKey: blockBefore.getKey(),
-        anchorOffset: 0,
-      });
-      var asCurrentStyle = DraftModifier.setBlockType(
-        content,
-        atomicBlockTarget,
-        content.getBlockForKey(startKey).getType()
-      );
-      var withoutAtomicBlock = DraftModifier.removeRange(
-        asCurrentStyle,
-        atomicBlockTarget,
-        'backward'
-      );
+      const blockMap = content.getBlockMap().delete(blockBefore.getKey())
+      var withoutAtomicBlock = content.merge({blockMap, selectionAfter: selection});
       if (withoutAtomicBlock !== content) {
-        return EditorState.push(
-          editorState,
-          withoutAtomicBlock,
-          'remove-range'
-        );
+        return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');
       }
     }
 
