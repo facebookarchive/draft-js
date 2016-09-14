@@ -149,14 +149,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       function getEntityStrategy(mutability) {
-        return function(contentBlock, callback) {
+        return function(contentState, contentBlock, callback) {
           contentBlock.findEntityRanges(
             (character) => {
               const entityKey = character.getEntity();
               if (entityKey === null) {
                 return false;
               }
-              return Entity.get(entityKey).getMutability() === mutability;
+              return contentState.getEntity(entityKey).getMutability() === mutability;
             },
             callback
           );
@@ -174,7 +174,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
       const TokenSpan = (props) => {
         const style = getDecoratedStyle(
-          Entity.get(props.entityKey).getMutability()
+          props.contentState.getEntity(props.entityKey).getMutability()
         );
         return (
           <span {...props} style={style}>

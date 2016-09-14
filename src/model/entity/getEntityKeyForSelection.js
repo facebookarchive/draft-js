@@ -13,10 +13,9 @@
 
 'use strict';
 
-var DraftEntity = require('DraftEntity');
-
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
+import type {EntityMap} from 'EntityMap';
 
 /**
  * Return the entity key that should be used when inserting text for the
@@ -34,7 +33,7 @@ function getEntityKeyForSelection(
     var offset = targetSelection.getAnchorOffset();
     if (offset > 0) {
       entityKey = contentState.getBlockForKey(key).getEntityAt(offset - 1);
-      return filterKey(entityKey);
+      return filterKey(contentState.getEntityMap(), entityKey);
     }
     return null;
   }
@@ -47,7 +46,7 @@ function getEntityKeyForSelection(
     null :
     startBlock.getEntityAt(startOffset);
 
-  return filterKey(entityKey);
+  return filterKey(contentState.getEntityMap(), entityKey);
 }
 
 /**
@@ -55,10 +54,11 @@ function getEntityKeyForSelection(
  * return it. If not, return null.
  */
 function filterKey(
+  entityMap: EntityMap,
   entityKey: ?string
 ): ?string {
   if (entityKey) {
-    var entity = DraftEntity.get(entityKey);
+    var entity = entityMap.get(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;
   }
   return null;

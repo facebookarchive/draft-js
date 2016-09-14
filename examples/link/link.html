@@ -87,11 +87,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         _confirmLink(e) {
           e.preventDefault();
           const {editorState, urlValue} = this.state;
-          const entityKey = Entity.create('LINK', 'MUTABLE', {url: urlValue});
+          const contentState = editorState.getCurrentContent();
+          const contentStateWithEntity = Entity.create(contentState, 'LINK', 'MUTABLE', {url: urlValue});
+          const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+          const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
           this.setState({
             editorState: RichUtils.toggleLink(
-              editorState,
-              editorState.getSelection(),
+              newEditorState,
+              newEditorState.getSelection(),
               entityKey
             ),
             showURLInput: false,
@@ -173,13 +176,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
       }
 
-      function findLinkEntities(contentBlock, callback) {
+      function findLinkEntities(contentState, contentBlock, callback) {
         contentBlock.findEntityRanges(
           (character) => {
             const entityKey = character.getEntity();
             return (
               entityKey !== null &&
-              Entity.get(entityKey).getType() === 'LINK'
+              contentState.getEntity(entityKey).getType() === 'LINK'
             );
           },
           callback
@@ -187,7 +190,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       const Link = (props) => {
-        const {url} = Entity.get(props.entityKey).getData();
+        const {url} = props.contentState.getEntity(props.entityKey).getData();
         return (
           <a href={url} style={styles.link}>
             {props.children}

@@ -88,4 +88,71 @@ describe('ContentState', () => {
       expect(state.getBlockForKey('x')).toBe(undefined);
     });
   });
+
+  describe('entities', () => {
+
+    let contentState;
+    beforeEach(() => {
+      contentState = ContentState.createFromText('');
+      jest.resetModuleRegistry();
+    });
+
+    function createLink() {
+      return contentState.createEntity('LINK', 'MUTABLE', {uri: 'zombo.com'});
+    }
+
+    it('must create instances', () => {
+      const contentState = createLink();
+      expect(typeof contentState.getLastCreatedEntityKey()).toBe('string');
+    });
+
+    it('must retrieve an instance given a key', () => {
+      const contentState = createLink();
+      const retrieved = contentState.getEntity(contentState.getLastCreatedEntityKey());
+      expect(retrieved.getType()).toBe('LINK');
+      expect(retrieved.getMutability()).toBe('MUTABLE');
+      expect(retrieved.getData()).toEqual({uri: 'zombo.com'});
+    });
+
+    it('must throw when retrieving for an invalid key', () => {
+      const contentState = createLink();
+      expect(() => contentState.getEntity('asdfzxcvqweriuop')).toThrow();
+      expect(() => contentState.getEntity(null)).toThrow();
+    });
+
+    it('must merge data', () => {
+      const contentState = createLink();
+
+      // Merge new property.
+      const newData = {foo: 'bar'};
+      const key = contentState.getLastCreatedEntityKey();
+      const contentStateWithNewProp = contentState.mergeEntityData(key, newData);
+      const updatedEntity = contentStateWithNewProp.getEntity(key);
+      expect(updatedEntity.getData()).toEqual({
+        uri: 'zombo.com',
+        foo: 'bar',
+      });
+      // Replace existing property.
+      const withNewURI = {uri: 'homestarrunner.com'};
+      const contentStateWithUpdatedProp = contentStateWithNewProp.mergeEntityData(key, withNewURI);
+      const entityWithNewURI = contentStateWithUpdatedProp.getEntity(key);
+      expect(entityWithNewURI.getData()).toEqual({
+        uri: 'homestarrunner.com',
+        foo: 'bar',
+      });
+    });
+
+    it('must replace data', () => {
+      const contentState = createLink();
+      const key = contentState.getLastCreatedEntityKey();
+      const replacedData = {
+        uri: 'something.com',
+        newProp: 'baz',
+      };
+      const updatedContentState = contentState.replaceEntityData(key, replacedData);
+      const entityWithReplacedData = updatedContentState.getEntity(key);
+      expect(entityWithReplacedData.getData()).toEqual(replacedData);
+    });
+
+  });
 });

@@ -19,18 +19,28 @@ const ContentBlock = require('ContentBlock');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
+const invariant = require('invariant');
 const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
+const createEntityInContentState = require('createEntityInContentState');
+const addEntityToContentState = require('addEntityToContentState');
+const updateEntityDataInContentState = require('updateEntityDataInContentState');
 
 import type {BlockMap} from 'BlockMap';
+import type {EntityMap} from 'EntityMap';
+import type DraftEntityInstance from 'DraftEntityInstance';
+import type {DraftEntityType} from 'DraftEntityType';
+import type {DraftEntityMutability} from 'DraftEntityMutability';
 
-const {List, Record, Repeat} = Immutable;
+const {List, Record, Repeat, OrderedMap} = Immutable;
 
 const defaultRecord: {
+  entityMap: ?EntityMap,
   blockMap: ?BlockMap,
   selectionBefore: ?SelectionState,
   selectionAfter: ?SelectionState,
 } = {
+  entityMap: null,
   blockMap: null,
   selectionBefore: null,
   selectionAfter: null,
@@ -39,6 +49,11 @@ const defaultRecord: {
 const ContentStateRecord = Record(defaultRecord);
 
 class ContentState extends ContentStateRecord {
+
+  getEntityMap(): EntityMap {
+    return this.get('entityMap');
+  }
+
   getBlockMap(): BlockMap {
     return this.get('blockMap');
   }
@@ -108,6 +123,10 @@ class ContentState extends ContentStateRecord {
       .join(delimiter || '\n');
   }
 
+  getLastCreatedEntityKey() {
+    return this.getEntityMap().keySeq().last();
+  }
+
   hasText(): boolean {
     var blockMap = this.getBlockMap();
     return (
@@ -116,13 +135,47 @@ class ContentState extends ContentStateRecord {
     );
   }
 
+  createEntity(
+    type: DraftEntityType,
+    mutability: DraftEntityMutability,
+    data?: Object
+  ): ContentState {
+    return createEntityInContentState(this, type, mutability, data);
+  }
+
+  mergeEntityData(
+    key: string,
+    toMerge: {[key: string]: any}
+  ): ContentState {
+    return updateEntityDataInContentState(this, key, toMerge, true);
+  }
+
+  replaceEntityData(
+    key: string,
+    newData: {[key: string]: any}
+  ): ContentState {
+    return updateEntityDataInContentState(this, key, newData, false);
+  }
+
+  addEntity(instance: DraftEntityInstance): ContentState {
+    return addEntityToContentState(this, instance);
+  }
+
+  getEntity(key: string): DraftEntityInstance {
+    const instance = this.getEntityMap().get(key);
+    invariant(!!instance, 'Unknown DraftEntity key.');
+    return instance;
+  }
+
   static createFromBlockArray(
-    blocks: Array<ContentBlock>
+    blocks: Array<ContentBlock>,
+    entityMap: ?OrderedMap
   ): ContentState {
     var blockMap = BlockMapBuilder.createFromArray(blocks);
     var selectionState = SelectionState.createEmpty(blockMap.first().getKey());
     return new ContentState({
       blockMap,
+      entityMap: entityMap || OrderedMap(),
       selectionBefore: selectionState,
       selectionAfter: selectionState,
     });

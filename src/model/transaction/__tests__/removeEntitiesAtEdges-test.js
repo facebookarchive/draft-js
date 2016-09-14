@@ -12,10 +12,8 @@
 'use strict';
 
 jest
-  .disableAutomock()
-  .mock('DraftEntity');
+  .disableAutomock();
 
-var DraftEntity = require('DraftEntity');
 var Immutable = require('immutable');
 var applyEntityToContentBlock = require('applyEntityToContentBlock');
 var getSampleStateForTesting = require('getSampleStateForTesting');
@@ -56,7 +54,7 @@ describe('removeEntitiesAtEdges', () => {
   }
 
   function setEntityMutability(mutability) {
-    DraftEntity.get.mockReturnValue({
+    contentState.getEntityMap().get = () => ({
       getMutability: () => mutability,
     });
   }

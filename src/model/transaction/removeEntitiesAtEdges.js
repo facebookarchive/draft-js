@@ -13,12 +13,12 @@
 'use strict';
 
 var CharacterMetadata = require('CharacterMetadata');
-var DraftEntity = require('DraftEntity');
 
 var findRangesImmutable = require('findRangesImmutable');
 var invariant = require('invariant');
 
 import type ContentBlock from 'ContentBlock';
+import type {EntityMap} from 'EntityMap';
 import type ContentState from 'ContentState';
 import type {List} from 'immutable';
 import type SelectionState from 'SelectionState';
@@ -28,13 +28,14 @@ function removeEntitiesAtEdges(
   selectionState: SelectionState
 ): ContentState {
   var blockMap = contentState.getBlockMap();
+  var entityMap = contentState.getEntityMap();
 
   var updatedBlocks = {};
 
   var startKey = selectionState.getStartKey();
   var startOffset = selectionState.getStartOffset();
   var startBlock = blockMap.get(startKey);
-  var updatedStart = removeForBlock(startBlock, startOffset);
+  var updatedStart = removeForBlock(entityMap, startBlock, startOffset);
 
   if (updatedStart !== startBlock) {
     updatedBlocks[startKey] = updatedStart;
@@ -47,7 +48,7 @@ function removeEntitiesAtEdges(
     endBlock = updatedStart;
   }
 
-  var updatedEnd = removeForBlock(endBlock, endOffset);
+  var updatedEnd = removeForBlock(entityMap, endBlock, endOffset);
 
   if (updatedEnd !== endBlock) {
     updatedBlocks[endKey] = updatedEnd;
@@ -87,6 +88,7 @@ function getRemovalRange(
 }
 
 function removeForBlock(
+  entityMap: EntityMap,
   block: ContentBlock,
   offset: number
 ): ContentBlock {
@@ -97,7 +99,7 @@ function removeForBlock(
   var entityAfterCursor = charAfter ? charAfter.getEntity() : undefined;
 
   if (entityAfterCursor && entityAfterCursor === entityBeforeCursor) {
-    var entity = DraftEntity.get(entityAfterCursor);
+    var entity = entityMap.get(entityAfterCursor);
     if (entity.getMutability() !== 'MUTABLE') {
       var {start, end} = getRemovalRange(chars, entityAfterCursor, offset);
       var current;

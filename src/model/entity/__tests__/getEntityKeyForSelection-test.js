@@ -11,8 +11,6 @@
 
 jest.disableAutomock();
 
-jest.mock('DraftEntity');
-
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getSampleStateForTesting = require('getSampleStateForTesting');
 
@@ -26,8 +24,11 @@ selectionState = selectionState.merge({
   focusKey: 'b',
 });
 
-var DraftEntity = require('DraftEntity');
-
+function setEntityMutability(mutability) {
+  contentState.getEntityMap().get = () => ({
+    getMutability: () => mutability,
+  });
+}
 describe('getEntityKeyForSelection', () => {
   describe('collapsed selection', () => {
     var collapsed = selectionState.merge({
@@ -35,9 +36,6 @@ describe('getEntityKeyForSelection', () => {
       focusOffset: 2,
     });
 
-    beforeEach(() => {
-      DraftEntity.get.mockClear();
-    });
 
     it('must return null at start of block', () => {
       var key = getEntityKeyForSelection(contentState, selectionState);
@@ -45,25 +43,19 @@ describe('getEntityKeyForSelection', () => {
     });
 
     it('must return key if mutable', () => {
-      DraftEntity.get.mockImplementation(() => {
-        return {getMutability: () => 'MUTABLE'};
-      });
+      setEntityMutability('MUTABLE');
       var key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe('123');
     });
 
     it('must not return key if immutable', () => {
-      DraftEntity.get.mockImplementation(() => {
-        return {getMutability: () => 'IMMUTABLE'};
-      });
+      setEntityMutability('IMMUTABLE');
       var key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe(null);
     });
 
     it('must not return key if segmented', () => {
-      DraftEntity.get.mockImplementation(() => {
-        return {getMutability: () => 'SEGMENTED'};
-      });
+      setEntityMutability('SEGMENTED');
       var key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe(null);
     });
@@ -76,10 +68,6 @@ describe('getEntityKeyForSelection', () => {
       focusOffset: 2,
     });
 
-    beforeEach(() => {
-      DraftEntity.get.mockClear();
-    });
-
     it('must return null if start is at end of block', () => {
       var startsAtEnd = nonCollapsed.merge({
         anchorOffset: contentState.getBlockForKey('b').getLength(),
@@ -89,25 +77,19 @@ describe('getEntityKeyForSelection', () => {
     });
 
     it('must return key if mutable', () => {
-      DraftEntity.get.mockImplementation(() => {
-        return {getMutability: () => 'MUTABLE'};
-      });
+      setEntityMutability('MUTABLE');
       var key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe('123');
     });
 
     it('must not return key if immutable', () => {
-      DraftEntity.get.mockImplementation(() => {
-        return {getMutability: () => 'IMMUTABLE'};
-      });
+      setEntityMutability('IMMUTABLE');
       var key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe(null);
     });
 
     it('must not return key if segmented', () => {
-      DraftEntity.get.mockImplementation(() => {
-        return {getMutability: () => 'SEGMENTED'};
-      });
+      setEntityMutability('SEGMENTED');
       var key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe(null);
     });

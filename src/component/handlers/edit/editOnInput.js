@@ -15,7 +15,6 @@
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
 var EditorState = require('EditorState');
-var Entity = require('DraftEntity');
 var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
@@ -81,7 +80,7 @@ function editOnInput(): void {
   });
 
   const entityKey = block.getEntityAt(start);
-  const entity = entityKey && Entity.get(entityKey);
+  const entity = entityKey && content.getEntity(entityKey);
   const entityType = entity && entity.getMutability();
   const preserveEntity = entityType === 'MUTABLE';
 

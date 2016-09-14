@@ -22,7 +22,6 @@ const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 const DraftEditor = require('DraftEditor.react');
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftModifier = require('DraftModifier');
-const DraftEntity = require('DraftEntity');
 const DraftEntityInstance = require('DraftEntityInstance');
 const EditorState = require('EditorState');
 const KeyBindingUtil = require('KeyBindingUtil');
@@ -43,7 +42,6 @@ const DraftPublic = {
   EditorState,
 
   CompositeDecorator: CompositeDraftDecorator,
-  Entity: DraftEntity,
   EntityInstance: DraftEntityInstance,
 
   BlockMapBuilder,
