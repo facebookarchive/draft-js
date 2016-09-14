@@ -2,7 +2,7 @@
 
 **What is the current behavior?**
 
-**If the current behavior is a bug, please provide the steps to reproduce and if possible a minimal demo of the problem via https://jsfiddle.net or similar.**
+**If the current behavior is a bug, please provide the steps to reproduce and if possible a minimal demo of the problem. You can use this jsfiddle to get started: https://jsfiddle.net/stopachka/m6z0xn4r/.**
 
 **What is the expected behavior?**
 
