@@ -166,7 +166,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     this.setClipboard(null);
   }
 
-  if (textBlocks) {
+  if (textBlocks.length) {
     var {editorState} = this.props;
     var character = CharacterMetadata.create({
       style: editorState.getCurrentInlineStyle(),
