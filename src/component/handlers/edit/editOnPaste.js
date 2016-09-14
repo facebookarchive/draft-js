@@ -32,7 +32,6 @@ const isEventHandled = require('isEventHandled');
 function editOnPaste(e: SyntheticClipboardEvent): void {
   e.preventDefault();
   var data = new DataTransfer(e.clipboardData);
-  
   // Get files, unless this is likely to be a string the user wants inline.
   if (!data.isRichText()) {
     var files = data.getFiles();
