@@ -120,7 +120,7 @@ const RichTextEditorUtil = {
     var blockBefore = content.getBlockBefore(startKey);
 
     if (blockBefore && blockBefore.getType() === 'atomic') {
-      const blockMap = content.getBlockMap().delete(blockBefore.getKey())
+      const blockMap = content.getBlockMap().delete(blockBefore.getKey());
       var withoutAtomicBlock = content.merge({blockMap, selectionAfter: selection});
       if (withoutAtomicBlock !== content) {
         return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');

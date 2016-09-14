@@ -8,5 +8,5 @@
  */
 
 module.exports = {
-  extends: 'fbjs',
+  extends: 'fbjs/strict',
 };
