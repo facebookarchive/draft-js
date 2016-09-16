@@ -4,6 +4,13 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.9.1 (September 16, 2016)
+
+### Fixed
+
+* Update Flow version
+* Fix flow error in DraftEditorDragHandler
+
 ## 0.9.0 (September 13, 2016)
 
 ### Changed
