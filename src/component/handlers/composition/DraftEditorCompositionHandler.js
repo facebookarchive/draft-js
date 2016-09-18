@@ -147,7 +147,6 @@ var DraftEditorCompositionHandler = {
     }
 
     this.exitCurrentMode();
-    this.removeRenderGuard();
 
     if (composedChars) {
       // If characters have been composed, re-rendering with the update

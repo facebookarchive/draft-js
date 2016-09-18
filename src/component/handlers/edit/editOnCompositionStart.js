@@ -19,7 +19,6 @@ var EditorState = require('EditorState');
  * allows handling composition input and disables other edit behavior.
  */
 function editOnCompositionStart(): void {
-  this.setRenderGuard();
   this.setMode('composite');
   this.update(
     EditorState.set(this.props.editorState, {inCompositionMode: true})

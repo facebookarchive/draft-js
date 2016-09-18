@@ -47,13 +47,11 @@ function editOnCut(e: SyntheticClipboardEvent): void {
   this.setClipboard(fragment);
 
   // Set `cut` mode to disable all event handling temporarily.
-  this.setRenderGuard();
   this.setMode('cut');
 
   // Let native `cut` behavior occur, then recover control.
   setTimeout(() => {
     this.restoreEditorDOM({x, y});
-    this.removeRenderGuard();
     this.exitCurrentMode();
     this.update(removeFragment(editorState));
   }, 0);
