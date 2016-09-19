@@ -87,6 +87,7 @@ class DraftEditor extends React.Component {
   _editorKey: string;
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
+  _pendingStateFromBeforeInput: ?EditorState;
 
   /**
    * Define proxies that can route events to the current handler.
