@@ -30,7 +30,7 @@ function editOnBlur(e: SyntheticEvent): void {
     global.getSelection().removeAllRanges();
   }
 
-  var editorState = this.props.editorState;
+  var editorState = this._latestEditorState;
   var currentSelection = editorState.getSelection();
   if (!currentSelection.getHasFocus()) {
     return;

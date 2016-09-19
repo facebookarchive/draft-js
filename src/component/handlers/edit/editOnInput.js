@@ -45,7 +45,7 @@ function editOnInput(): void {
   }
 
   var domText = anchorNode.textContent;
-  var {editorState} = this.props;
+  var editorState = this._latestEditorState;
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
   var {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
 

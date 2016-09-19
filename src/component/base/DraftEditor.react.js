@@ -9,6 +9,7 @@
  * @providesModule DraftEditor.react
  * @typechecks
  * @flow
+ * @preventMunge
  */
 
 'use strict';
@@ -84,6 +85,7 @@ class DraftEditor extends React.Component {
   _dragCount: number;
   _editorKey: string;
   _placeholderAccessibilityID: string;
+  _latestEditorState: EditorState;
 
   /**
    * Define proxies that can route events to the current handler.
@@ -130,6 +132,7 @@ class DraftEditor extends React.Component {
     this._dragCount = 0;
     this._editorKey = generateRandomKey();
     this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
+    this._latestEditorState = props.editorState;
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');
     this._onBlur = this._buildHandler('onBlur');
@@ -313,6 +316,7 @@ class DraftEditor extends React.Component {
 
   componentDidUpdate(): void {
     this._blockSelectEvents = false;
+    this._latestEditorState = this.props.editorState;
   }
 
   /**
@@ -416,6 +420,7 @@ class DraftEditor extends React.Component {
    * function.
    */
   _update(editorState: EditorState): void {
+    this._latestEditorState = editorState;
     this.props.onChange(editorState);
   }
 

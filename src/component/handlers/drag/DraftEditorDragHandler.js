@@ -73,7 +73,7 @@ var DraftEditorDragHandler = {
   onDrop: function(e: Object): void {
     const data = new DataTransfer(e.nativeEvent.dataTransfer);
 
-    const editorState: EditorState = this.props.editorState;
+    const editorState: EditorState = this._latestEditorState;
     const dropSelection: ?SelectionState = getSelectionForEvent(
       e.nativeEvent,
       editorState
