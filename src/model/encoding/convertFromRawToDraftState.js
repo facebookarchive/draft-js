@@ -41,7 +41,7 @@ function convertFromRawToDraftState(
       var {type, mutability, data} = encodedEntity;
       const instance = new DraftEntityInstance({type, mutability, data: data || {}});
       const tempEntityMap = addEntityToEntityMap(updatedEntityMap, instance);
-      const newKey = tempEntityMap.keyseq().last();
+      const newKey = tempEntityMap.keySeq().last();
       fromStorageToLocal[storageKey] = newKey;
       return tempEntityMap;
     },
