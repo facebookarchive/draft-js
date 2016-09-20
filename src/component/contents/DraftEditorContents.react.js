@@ -60,6 +60,13 @@ class DraftEditorContents extends React.Component {
       return true;
     }
 
+    if (
+      selectionContainsAtomicBlock(prevEditorState) ||
+      selectionContainsAtomicBlock(nextEditorState)
+    ) {
+      return true;
+    }
+
     const nextNativeContent = nextEditorState.getNativelyRenderedContent();
 
     const wasComposing = prevEditorState.isInCompositionMode();
@@ -109,11 +116,18 @@ class DraftEditorContents extends React.Component {
     const processedBlocks = [];
     let currentDepth = null;
     let lastWrapperTemplate = null;
+    const start = selection.getStartKey();
+    const end = selection.getEndKey();
+    let select = false;
 
     for (let ii = 0; ii < blocksAsArray.length; ii++) {
       const block = blocksAsArray[ii];
       const key = block.getKey();
       const blockType = block.getType();
+
+      if (!select && key === start) {
+        select = true;
+      }
 
       const customRenderer = blockRendererFn(block);
       let CustomComponent, customProps, customEditable;
@@ -125,8 +139,7 @@ class DraftEditorContents extends React.Component {
 
       const direction = directionMap.get(key);
       const offsetKey = DraftOffsetKey.encode(key, 0, 0);
-      const componentProps = {
-        contentState: content,
+      let componentProps = {
         block,
         blockProps: customProps,
         customStyleMap,
@@ -173,6 +186,12 @@ class DraftEditorContents extends React.Component {
         'data-offset-key': offsetKey,
         key,
       };
+      if (blockType === 'atomic') {
+        componentProps = {
+          ...componentProps,
+          select,
+        };
+      }
       if (customEditable !== undefined) {
         childProps = {
           ...childProps,
@@ -200,6 +219,10 @@ class DraftEditorContents extends React.Component {
         currentDepth = null;
       }
       lastWrapperTemplate = wrapperTemplate;
+
+      if (select && key === end) {
+        select = false;
+      }
     }
 
     // Group contiguous runs of blocks that have the same wrapperTemplate
@@ -261,5 +284,22 @@ function getListItemClasses(
     'public/DraftStyleDefault/listRTL': direction === 'RTL',
   });
 }
+
+function selectionContainsAtomicBlock(editorState: EditorState): boolean {
+  const content = editorState.getCurrentContent();
+  const selection = editorState.getSelection();
+  const endKey = selection.getEndKey();
+  let blockKey = selection.getStartKey();
+  let block = content.getBlockForKey(blockKey);
+  while (block.getType() !== 'atomic') {
+    if (blockKey === endKey) {
+      return false;
+    }
+    block = content.getBlockAfter(blockKey);
+    blockKey = block.getKey();
+  }
+  return true;
+}
+
 
 module.exports = DraftEditorContents;
