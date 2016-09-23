@@ -17,6 +17,7 @@ var ContentState = require('ContentState');
 var EditorBidiService = require('EditorBidiService');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
+var generateKey = require('generateKey');
 
 import type {BlockMap} from 'BlockMap';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
@@ -97,6 +98,7 @@ class EditorState {
       ...config,
       treeMap: generateNewTreeMap(currentContent, decorator),
       directionMap: EditorBidiService.getDirectionMap(currentContent),
+      key: `draft-editor-${generateKey()}`,
     };
     return new EditorState(
       new EditorStateRecord(recordConfig)
@@ -159,6 +161,10 @@ class EditorState {
 
   toJS(): Object {
     return this.getImmutable().toJS();
+  }
+
+  getKey(): string {
+    return this.getImmutable().get('key');
   }
 
   getAllowUndo(): boolean {

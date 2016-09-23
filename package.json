@@ -48,6 +48,7 @@
     "eslint": "^3.0.1",
     "eslint-config-fbjs": "^1.1.0",
     "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-flow-vars": "^0.4.0",
     "eslint-plugin-flowtype": "^2.17.1",
     "eslint-plugin-react": "^5.2.2",
     "fbjs-scripts": "^0.7.0",

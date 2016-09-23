@@ -113,7 +113,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       if (
         // If the editorKey is present in the pasted HTML, it should be safe to
         // assume this is an internal paste.
-        html.indexOf(this.getEditorKey()) !== -1 ||
+        html.indexOf(`draft-edtior-"${this.getEditorKey()}`) !== -1 ||
         // The copy may have been made within a single block, in which case the
         // editor key won't be part of the paste. In this case, just check
         // whether the pasted text matches the internal clipboard.

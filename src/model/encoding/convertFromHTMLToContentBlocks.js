@@ -20,8 +20,8 @@ const DraftEntityInstance = require('DraftEntityInstance');
 const Immutable = require('immutable');
 const URI = require('URI');
 
+const generateKey = require('generateKey');
 const addEntityToEntityMap = require('addEntityToEntityMap');
-const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
@@ -596,7 +596,7 @@ function convertFromHTMLtoContentBlocks(
         start = end + 1;
 
         return new ContentBlock({
-          key: generateRandomKey(),
+          key: generateKey(),
           type: nullthrows(chunk).blocks[ii].type,
           depth: nullthrows(chunk).blocks[ii].depth,
           text: textBlock,

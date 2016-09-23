@@ -19,8 +19,8 @@ const ContentBlock = require('ContentBlock');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
+const generateKey = require('generateKey');
 const invariant = require('invariant');
-const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
 const createEntityInContentState = require('createEntityInContentState');
 const addEntityToContentState = require('addEntityToContentState');
@@ -190,7 +190,7 @@ class ContentState extends ContentStateRecord {
       block => {
         block = sanitizeDraftText(block);
         return new ContentBlock({
-          key: generateRandomKey(),
+          key: generateKey(),
           text: block,
           type: 'unstyled',
           characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
