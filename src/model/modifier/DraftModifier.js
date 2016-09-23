@@ -150,6 +150,7 @@ var DraftModifier = {
       var endEntity = block.getEntityAt(endOffset - 1);
       if (startEntity && startEntity === endEntity) {
         var adjustedRemovalRange = getCharacterRemovalRange(
+          contentState.getEntityMap(),
           block,
           rangeToRemove,
           removalDirection

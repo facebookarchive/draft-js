@@ -46,17 +46,6 @@ likely need to replicate much of the default styling.
 
 ## Known Issues
 
-### React ContentEditable Warning
-
-Within the React core, a warning is used to ward off engineers who wish to
-use ContentEditable within their components, since by default the
-browser-controlled nature of ContentEditable does not mesh with strict React
-control over the DOM. The Draft editor resolves this issue, so for our case,
-the warning is noise. You can ignore it for now.
-
-We are currently looking into removing or replacing the warning to alleviate
-the irritation it may cause: https://github.com/facebook/react/issues/6081
-
 ### Custom OSX Keybindings
 
 Because the browser has no access to OS-level custom keybindings, it is not

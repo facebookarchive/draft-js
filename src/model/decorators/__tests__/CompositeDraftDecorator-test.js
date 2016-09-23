@@ -13,6 +13,7 @@
 jest.unmock('CompositeDraftDecorator');
 
 var CompositeDraftDecorator = require('CompositeDraftDecorator');
+const ContentState = require('ContentState');
 
 describe('CompositeDraftDecorator', () => {
   class ContentBlock {
@@ -25,7 +26,7 @@ describe('CompositeDraftDecorator', () => {
   }
 
   function searchWith(regex) {
-    return function(block, callback) {
+    return function(contentState, block, callback) {
       var text = block.getText();
       text.replace(
         regex,
@@ -81,7 +82,8 @@ describe('CompositeDraftDecorator', () => {
     var composite = getCompositeDecorator();
     var text = 'take a sad song and make it better';
     var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    var contentState = ContentState.createFromText(text);
+    var decorations = composite.getDecorations(contentState, content).toArray();
     expect(decorations.length).toBe(text.length);
     expect(decorations).toEqual(Array(text.length).fill(null));
   });
@@ -90,7 +92,8 @@ describe('CompositeDraftDecorator', () => {
     var composite = getCompositeDecorator();
     var text = 'a footballing fool';
     var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    var contentState = ContentState.createFromText(text);
+    var decorations = composite.getDecorations(contentState, content).toArray();
     expect(decorations.length).toBe(text.length);
 
     expect(isOccupied(decorations.slice(2, 5))).toBe(true);
@@ -108,7 +111,8 @@ describe('CompositeDraftDecorator', () => {
     var composite = getCompositeDecorator();
     var text = 'a foosball bar';
     var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    var contentState = ContentState.createFromText(text);
+    var decorations = composite.getDecorations(contentState, content).toArray();
 
     // Match the "Foo" decorator.
     expect(isOccupied(decorations.slice(2, 5))).toBe(true);
@@ -129,7 +133,8 @@ describe('CompositeDraftDecorator', () => {
     var composite = getCompositeDecorator();
     var text = 'some bar food';
     var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    var contentState = ContentState.createFromText(text);
+    var decorations = composite.getDecorations(contentState, content).toArray();
 
     // Match the "Foo" decorator.
     expect(isOccupied(decorations.slice(9, 12))).toBe(true);
@@ -148,7 +153,8 @@ describe('CompositeDraftDecorator', () => {
 
     var text = 'bart has a bar';
     var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    var contentState = ContentState.createFromText(text);
+    var decorations = composite.getDecorations(contentState, content).toArray();
 
     // Even though "bart" matches our "bar" strategy, "bart" comes first
     // in our decoration order and will claim those letters first.
@@ -172,7 +178,8 @@ describe('CompositeDraftDecorator', () => {
 
     var text = 'bart has a bar';
     var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    var contentState = ContentState.createFromText(text);
+    var decorations = composite.getDecorations(contentState, content).toArray();
 
     // "bar" comes first and claims two strings.
     expect(isOccupied(decorations.slice(0, 3))).toBe(true);
@@ -194,7 +201,8 @@ describe('CompositeDraftDecorator', () => {
 
     var text = 'barbarbar';
     var content = new ContentBlock(text);
-    var decorations = composite.getDecorations(content).toArray();
+    var contentState = ContentState.createFromText(text);
+    var decorations = composite.getDecorations(contentState, content).toArray();
 
     expect(isOccupied(decorations.slice(0, 3))).toBe(true);
     expect(decorations[0]).toEqual(decorations[2]);

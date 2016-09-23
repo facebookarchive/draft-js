@@ -22,6 +22,7 @@ var generateKey = require('generateKey');
 import type {BlockMap} from 'BlockMap';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {EntityMap} from 'EntityMap';
 import type {List, OrderedMap} from 'immutable';
 import type {EditorChangeType} from 'EditorChangeType';
 
@@ -121,6 +122,7 @@ class EditorState {
         var newTreeMap;
         if (decorator && existingDecorator) {
           newTreeMap = regenerateTreeForNewDecorator(
+            newContent,
             newContent.getBlockMap(),
             treeMap,
             decorator,
@@ -145,6 +147,7 @@ class EditorState {
           regenerateTreeForNewBlocks(
             editorState,
             newContent.getBlockMap(),
+            newContent.getEntityMap(),
             decorator
           )
         );
@@ -521,7 +524,7 @@ function generateNewTreeMap(
 ): OrderedMap<string, List<any>> {
   return contentState
     .getBlockMap()
-    .map(block => BlockTree.generate(block, decorator))
+    .map(block => BlockTree.generate(contentState, block, decorator))
     .toOrderedMap();
 }
 
@@ -533,15 +536,17 @@ function generateNewTreeMap(
 function regenerateTreeForNewBlocks(
   editorState: EditorState,
   newBlockMap: BlockMap,
+  newEntityMap: EntityMap,
   decorator: ?DraftDecoratorType
 ): OrderedMap<string, List<any>> {
-  var prevBlockMap = editorState.getCurrentContent().getBlockMap();
+  const contentState = editorState.getCurrentContent().set('entityMap', newEntityMap);
+  var prevBlockMap = contentState.getBlockMap();
   var prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(block, decorator))
+      .map(block => BlockTree.generate(contentState, block, decorator))
   );
 }
 
@@ -554,6 +559,7 @@ function regenerateTreeForNewBlocks(
  * List comparison.
  */
 function regenerateTreeForNewDecorator(
+  content: ContentState,
   blockMap: BlockMap,
   previousTreeMap: OrderedMap<string, List<any>>,
   decorator: DraftDecoratorType,
@@ -564,11 +570,11 @@ function regenerateTreeForNewDecorator(
       .toSeq()
       .filter(block => {
         return (
-          decorator.getDecorations(block) !==
-          existingDecorator.getDecorations(block)
+          decorator.getDecorations(content, block) !==
+          existingDecorator.getDecorations(content, block)
         );
       })
-      .map(block => BlockTree.generate(block, decorator))
+      .map(block => BlockTree.generate(content, block, decorator))
   );
 }
 

@@ -84,11 +84,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       const HANDLE_REGEX = /\@[\w]+/g;
       const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
 
-      function handleStrategy(contentBlock, callback) {
+      function handleStrategy(contentState, contentBlock, callback) {
         findWithRegex(HANDLE_REGEX, contentBlock, callback);
       }
 
-      function hashtagStrategy(contentBlock, callback) {
+      function hashtagStrategy(contentState, contentBlock, callback) {
         findWithRegex(HASHTAG_REGEX, contentBlock, callback);
       }
 

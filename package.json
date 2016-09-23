@@ -1,7 +1,7 @@
 {
   "name": "draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "keywords": [
     "draftjs",
     "editor",
@@ -46,13 +46,13 @@
     "envify": "^3.4.0",
     "es6-shim": "^0.34.4",
     "eslint": "^3.0.1",
-    "eslint-config-fbjs": "^1.0.0",
+    "eslint-config-fbjs": "^1.1.0",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-flow-vars": "^0.4.0",
-    "eslint-plugin-flowtype": "^2.16.0",
+    "eslint-plugin-flowtype": "^2.17.1",
     "eslint-plugin-react": "^5.2.2",
     "fbjs-scripts": "^0.7.0",
-    "flow-bin": "^0.28.0",
+    "flow-bin": "^0.32.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.2",
     "gulp-browserify-thin": "^0.1.5",
@@ -64,7 +64,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "jest": "^12.1.1",
+    "jest": "^15.1.1",
     "react": "^15.0.0-rc.1",
     "react-dom": "^15.0.0-rc.1",
     "run-sequence": "^1.1.2",
@@ -77,10 +77,12 @@
     "npm": "2.x || 3.x"
   },
   "jest": {
-    "rootDir": "",
+    "automock": true,
+    "rootDir": "./",
     "scriptPreprocessor": "scripts/jest/preprocessor.js",
-    "setupEnvScriptFile": "node_modules/fbjs-scripts/jest/environment.js",
-    "persistModuleRegistryBetweenSpecs": true,
+    "setupFiles": [
+      "node_modules/fbjs-scripts/jest/environment.js"
+    ],
     "modulePathIgnorePatterns": [
       "<rootDir>/lib/",
       "<rootDir>/node_modules/"

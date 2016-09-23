@@ -13,7 +13,6 @@
 
 'use strict';
 
-const DraftEntity = require('DraftEntity');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
@@ -31,13 +30,15 @@ const RichTextEditorUtil = {
     editorState: EditorState
   ): boolean {
     var selection = editorState.getSelection();
-    return editorState.getCurrentContent()
+    const contentState = editorState.getCurrentContent();
+    const entityMap = contentState.getEntityMap();
+    return contentState
       .getBlockForKey(selection.getAnchorKey())
       .getCharacterList()
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
         var entity = v.getEntity();
-        return !!entity && DraftEntity.get(entity).getType() === 'LINK';
+        return !!entity && entityMap.get(entity).getType() === 'LINK';
       });
   },
 
@@ -119,26 +120,10 @@ const RichTextEditorUtil = {
     var blockBefore = content.getBlockBefore(startKey);
 
     if (blockBefore && blockBefore.getType() === 'atomic') {
-      var atomicBlockTarget = selection.merge({
-        anchorKey: blockBefore.getKey(),
-        anchorOffset: 0,
-      });
-      var asCurrentStyle = DraftModifier.setBlockType(
-        content,
-        atomicBlockTarget,
-        content.getBlockForKey(startKey).getType()
-      );
-      var withoutAtomicBlock = DraftModifier.removeRange(
-        asCurrentStyle,
-        atomicBlockTarget,
-        'backward'
-      );
+      const blockMap = content.getBlockMap().delete(blockBefore.getKey());
+      var withoutAtomicBlock = content.merge({blockMap, selectionAfter: selection});
       if (withoutAtomicBlock !== content) {
-        return EditorState.push(
-          editorState,
-          withoutAtomicBlock,
-          'remove-range'
-        );
+        return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');
       }
     }
 
@@ -286,7 +271,8 @@ const RichTextEditorUtil = {
 
     var hasAtomicBlock = content.getBlockMap()
       .skipWhile((_, k) => k !== startKey)
-      .takeWhile((_, k) => k !== endKey)
+      .reverse()
+      .skipWhile((_, k) => k !== endKey)
       .some(v => v.getType() === 'atomic');
 
     if (hasAtomicBlock) {

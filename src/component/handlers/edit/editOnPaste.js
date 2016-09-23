@@ -21,11 +21,11 @@ var EditorState = require('EditorState');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
+const isEventHandled = require('isEventHandled');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 import type {BlockMap} from 'BlockMap';
-const isEventHandled = require('isEventHandled');
-
+import type {EntityMap} from 'EntityMap';
 /**
  * Paste content.
  */
@@ -150,9 +150,14 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
         this.props.blockRenderMap
       );
       if (htmlFragment) {
-        var htmlMap = BlockMapBuilder.createFromArray(htmlFragment);
-        this.update(insertFragment(this.props.editorState, htmlMap));
-        return;
+        const { contentBlocks, entityMap } = htmlFragment;
+        if (contentBlocks) {
+          var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
+          this.update(
+            insertFragment(this.props.editorState, htmlMap, entityMap)
+          );
+          return;
+        }
       }
     }
 
@@ -161,7 +166,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     this.setClipboard(null);
   }
 
-  if (textBlocks) {
+  if (textBlocks.length) {
     var {editorState} = this.props;
     var character = CharacterMetadata.create({
       style: editorState.getCurrentInlineStyle(),
@@ -183,16 +188,19 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
 
 function insertFragment(
   editorState: EditorState,
-  fragment: BlockMap
+  fragment: BlockMap,
+  entityMap: ?EntityMap,
 ): EditorState {
   var newContent = DraftModifier.replaceWithFragment(
     editorState.getCurrentContent(),
     editorState.getSelection(),
     fragment
   );
+  const mergedEntityMap = newContent.getEntityMap().merge(entityMap);
+
   return EditorState.push(
     editorState,
-    newContent,
+    newContent.set('entityMap', mergedEntityMap),
     'insert-fragment'
   );
 }
