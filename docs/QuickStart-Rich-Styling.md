@@ -23,7 +23,7 @@ However, since your top-level React component is responsible for maintaining the
 state, you also have the freedom to apply changes to that `EditorState` object
 in any way you see fit.
 
-For inline and block style behavior, for example, the [`RichUtils`](/draft-js/docs/api-reference-editor-state.html) module
+For inline and block style behavior, for example, the [`RichUtils`](/draft-js/docs/api-reference-rich-utils.html) module
 provides a number of useful functions to help manipulate state.
 
 Similarly, the [Modifier](/draft-js/docs/api-reference-modifier.html) module also provides a
