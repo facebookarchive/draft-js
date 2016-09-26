@@ -35,7 +35,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         ContentState,
         Editor,
         EditorState,
-        Entity,
         RichUtils,
       } = Draft;
 
@@ -88,7 +87,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           e.preventDefault();
           const {editorState, urlValue} = this.state;
           const contentState = editorState.getCurrentContent();
-          const contentStateWithEntity = Entity.create(contentState, 'LINK', 'MUTABLE', {url: urlValue});
+          const contentStateWithEntity = contentState.createEntity(
+            'LINK',
+            'MUTABLE',
+            {url: urlValue}
+          );
           const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
           const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
           this.setState({
