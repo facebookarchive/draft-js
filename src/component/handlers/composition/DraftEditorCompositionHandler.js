@@ -18,6 +18,7 @@ const Keys = require('Keys');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
+const isSelectionAtSoftNewlineStart = require('isSelectionAtSoftNewlineStart');
 
 import type DraftEditor from 'DraftEditor.react';
 
@@ -121,8 +122,9 @@ var DraftEditorCompositionHandler = {
    * If no characters were composed -- for instance, the user
    * deleted all composed characters and committed nothing new --
    * force a re-render. We also re-render when the composition occurs
-   * at the beginning of a leaf, to ensure that if the browser has
-   * created a new text node for the composition, we will discard it.
+   * at the beginning of a leaf or a soft new line, to ensure that
+   * if the browser has created a new text node for the composition,
+   * we will discard it.
    *
    * Resetting innerHTML will move focus to the beginning of the editor,
    * so we update to force it back to the correct place.
@@ -149,6 +151,7 @@ var DraftEditorCompositionHandler = {
     const mustReset = (
       !composedChars ||
       isSelectionAtLeafStart(editorState) ||
+      isSelectionAtSoftNewlineStart(editorState) ||
       currentStyle.size > 0 ||
       entityKey !== null
     );
