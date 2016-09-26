@@ -36,6 +36,10 @@
   padding: 10px 20px;
 }
 
+.RichEditor-editor .public-DraftStyleDefault-block {
+  margin-bottom: 16px;
+}
+
 .RichEditor-editor .public-DraftStyleDefault-pre {
   background-color: rgba(0, 0, 0, 0.05);
   font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;

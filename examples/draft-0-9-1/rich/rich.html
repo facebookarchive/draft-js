@@ -44,6 +44,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.onChange = (editorState) => this.setState({editorState});
 
           this.handleKeyCommand = (command) => this._handleKeyCommand(command);
+          this.handleReturn = (e) => this._handleReturn(e);
           this.onTab = (e) => this._onTab(e);
           this.toggleBlockType = (type) => this._toggleBlockType(type);
           this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
@@ -54,6 +55,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           const newState = RichUtils.handleKeyCommand(editorState, command);
           if (newState) {
             this.onChange(newState);
+            return true;
+          }
+          return false;
+        }
+
+        _handleReturn(e) {
+          if (e.shiftKey) {
+            const {editorState} = this.state;
+            this.onChange(RichUtils.insertSoftNewline(editorState));
             return true;
           }
           return false;
@@ -112,6 +122,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   editorState={editorState}
                   handleKeyCommand={this.handleKeyCommand}
                   onChange={this.onChange}
+                  handleReturn={this.handleReturn}
                   onTab={this.onTab}
                   placeholder="Tell a story..."
                   ref="editor"
