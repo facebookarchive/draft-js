@@ -291,11 +291,17 @@ function selectionContainsAtomicBlock(editorState: EditorState): boolean {
   const endKey = selection.getEndKey();
   let blockKey = selection.getStartKey();
   let block = content.getBlockForKey(blockKey);
+  if (!block) {
+    return false;
+  }
   while (block.getType() !== 'atomic') {
     if (blockKey === endKey) {
       return false;
     }
     block = content.getBlockAfter(blockKey);
+    if (!block) {
+      return false;
+    }
     blockKey = block.getKey();
   }
   return true;
