@@ -45,7 +45,10 @@ export default class TeXEditorExample extends React.Component {
             },
             onFinishEdit: (blockKey, newContentState) => {
               var {liveTeXEdits} = this.state;
-              this.setState({liveTeXEdits: liveTeXEdits.remove(blockKey), editorState:EditorState.createWithContent(newContentState)});
+              this.setState({
+                liveTeXEdits: liveTeXEdits.remove(blockKey),
+                editorState:EditorState.createWithContent(newContentState),
+              });
             },
             onRemove: (blockKey) => this._removeTeX(blockKey),
           },

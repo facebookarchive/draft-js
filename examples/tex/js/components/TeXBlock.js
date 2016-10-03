@@ -16,7 +16,6 @@
 
 import katex from 'katex';
 import React from 'react';
-import {Entity} from 'draft-js';
 
 class KatexOutput extends React.Component {
   constructor(props) {
