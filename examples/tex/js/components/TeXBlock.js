@@ -93,12 +93,12 @@ export default class TeXBlock extends React.Component {
 
     this._save = () => {
       var entityKey = this.props.block.getEntityAt(0);
-      Entity.mergeData(entityKey, {content: this.state.texValue});
+      var newContentState = this.props.contentState.mergeEntityData(entityKey, {content: this.state.texValue});
       this.setState({
         invalidTeX: false,
         editMode: false,
         texValue: null,
-      }, this._finishEdit);
+      }, this._finishEdit.bind(this, newContentState));
     };
 
     this._remove = () => {
@@ -107,14 +107,14 @@ export default class TeXBlock extends React.Component {
     this._startEdit = () => {
       this.props.blockProps.onStartEdit(this.props.block.getKey());
     };
-    this._finishEdit = () => {
-      this.props.blockProps.onFinishEdit(this.props.block.getKey());
+    this._finishEdit = (newContentState) => {
+      this.props.blockProps.onFinishEdit(this.props.block.getKey(), newContentState);
     };
   }
 
   _getValue() {
-    return Entity
-      .get(this.props.block.getEntityAt(0))
+    return this.props.contentState
+      .getEntity(this.props.block.getEntityAt(0))
       .getData()['content'];
   }
 
