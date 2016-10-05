@@ -102,11 +102,25 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       const HandleSpan = (props) => {
-        return <span {...props} style={styles.handle}>{props.children}</span>;
+        return (
+          <span
+            style={styles.handle}
+            data-offset-key={props.offsetKey}
+          >
+            {props.children}
+          </span>
+        );
       };
 
       const HashtagSpan = (props) => {
-        return <span {...props} style={styles.hashtag}>{props.children}</span>;
+        return (
+          <span
+            style={styles.hashtag}
+            data-offset-key={props.offsetKey}
+          >
+            {props.children}
+          </span>
+        );
       };
 
       const styles = {
