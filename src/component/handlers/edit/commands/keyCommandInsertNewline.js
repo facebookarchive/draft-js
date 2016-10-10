@@ -20,7 +20,16 @@ function keyCommandInsertNewline(editorState: EditorState): EditorState {
     editorState.getCurrentContent(),
     editorState.getSelection()
   );
-  return EditorState.push(editorState, contentState, 'split-block');
+
+  var newEditorState = EditorState.push(
+    editorState,
+    contentState,
+    'split-block');
+
+  // Make sure that any inline style overrides are re-applied.
+  return EditorState.setInlineStyleOverride(
+    newEditorState,
+    editorState.getCurrentInlineStyle());
 }
 
 module.exports = keyCommandInsertNewline;
