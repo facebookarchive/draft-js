@@ -41,7 +41,7 @@
   "devDependencies": {
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.1.2",
-    "babel-preset-fbjs": "^2.0.0",
+    "babel-preset-fbjs": "^2.1.0",
     "del": "^2.2.0",
     "envify": "^3.4.0",
     "es6-shim": "^0.34.4",
