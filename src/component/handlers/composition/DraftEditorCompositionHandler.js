@@ -40,6 +40,7 @@ const RESOLVE_DELAY = 20;
 let resolved = false;
 let stillComposing = false;
 let textInputData = '';
+let formerTextInputData = '';
 
 var DraftEditorCompositionHandler = {
   onBeforeInput: function(e: SyntheticInputEvent): void {
@@ -50,7 +51,8 @@ var DraftEditorCompositionHandler = {
    * A `compositionstart` event has fired while we're still in composition
    * mode. Continue the current composition session to prevent a re-render.
    */
-  onCompositionStart: function(): void {
+  onCompositionStart: function(e): void {
+    formerTextInputData = e.data;
     stillComposing = true;
   },
 
@@ -125,6 +127,9 @@ var DraftEditorCompositionHandler = {
     const composedChars = textInputData;
     textInputData = '';
 
+    const formerComposedChars = formerTextInputData;
+    formerTextInputData = '';
+
     const editorState = EditorState.set(this.props.editorState, {
       inCompositionMode: false,
     });
@@ -149,12 +154,28 @@ var DraftEditorCompositionHandler = {
     this.exitCurrentMode();
     this.removeRenderGuard();
 
+    let contentState = editorState.getCurrentContent();
+    let selection = editorState.getSelection();
+    if (formerComposedChars && selection.isCollapsed()) {
+      var anchorOffset = selection.getAnchorOffset() - formerComposedChars.length;
+      if (anchorOffset < 0) {
+        anchorOffset = 0;
+      }
+      const toRemoveSel = selection.merge({anchorOffset});
+      contentState = DraftModifier.removeRange(
+        editorState.getCurrentContent(),
+        toRemoveSel,
+        'backward',
+      );
+      selection = contentState.getSelectionAfter();
+    }
+
     if (composedChars) {
       // If characters have been composed, re-rendering with the update
       // is sufficient to reset the editor.
-      const contentState = DraftModifier.replaceText(
-        editorState.getCurrentContent(),
-        editorState.getSelection(),
+      contentState = DraftModifier.replaceText(
+        contentState,
+        selection,
         composedChars,
         currentStyle,
         entityKey
