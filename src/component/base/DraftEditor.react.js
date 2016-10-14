@@ -57,6 +57,7 @@ const handlerMap = {
 
 type State = {
   containerKey: number,
+  contentsKey: number,
 };
 
 /**
@@ -114,7 +115,7 @@ class DraftEditor extends React.Component {
   blur: () => void;
   setMode: (mode: DraftEditorModes) => void;
   exitCurrentMode: () => void;
-  restoreEditorDOM: (scrollPosition: DraftScrollPosition) => void;
+  restoreEditorDOM: (scrollPosition: DraftScrollPosition, keyToUse: string) => void;
   setRenderGuard: () => void;
   removeRenderGuard: () => void;
   setClipboard: (clipboard?: BlockMap) => void;
@@ -172,7 +173,7 @@ class DraftEditor extends React.Component {
     this.onDragLeave = this._onDragLeave.bind(this);
 
     // See `_restoreEditorDOM()`.
-    this.state = {containerKey: 0};
+    this.state = {containerKey: 0, contentsKey: 0};
   }
 
   /**
@@ -230,8 +231,8 @@ class DraftEditor extends React.Component {
       <div className={rootClass}>
         {this._renderPlaceholder()}
         <div
-          className={cx('DraftEditor/editorContainer')}
           key={'editor' + this.state.containerKey}
+          className={cx('DraftEditor/editorContainer')}
           ref="editorContainer">
           <div
             aria-activedescendant={
@@ -275,6 +276,7 @@ class DraftEditor extends React.Component {
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
             <DraftEditorContents
+              key={'editor' + this.state.contentsKey}
               blockRenderMap={this.props.blockRenderMap}
               blockRendererFn={this.props.blockRendererFn}
               blockStyleFn={this.props.blockStyleFn}
@@ -388,8 +390,14 @@ class DraftEditor extends React.Component {
    * state (cut command, IME) and we want to make sure that reconciliation
    * occurs on a version of the DOM that is synchronized with our EditorState.
    */
-  _restoreEditorDOM(scrollPosition?: DraftScrollPosition): void {
-    this.setState({containerKey: this.state.containerKey + 1}, () => {
+  _restoreEditorDOM(scrollPosition?: DraftScrollPosition, keyToUse?: string): void {
+    let newState = {};
+    if (typeof(keyToUse) === "undefined") {
+      keyToUse = "containerKey";
+    }
+	newState[keyToUse] = this.state[keyToUse] + 1;
+
+    this.setState(newState, () => {
       this._focus(scrollPosition);
     });
   }
