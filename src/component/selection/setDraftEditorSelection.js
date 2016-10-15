@@ -238,7 +238,7 @@ function addFocusToSelection(
   offset: number,
   selectionState: SelectionState,
 ): void {
-  const activeElement = getActiveElement();
+  const activeElement = getActiveElement(node.ownerDocument);
   if (selection.extend && containsNode(activeElement, node)) {
     // If `extend` is called while another element has focus, an error is
     // thrown. We therefore disable `extend` if the active element is somewhere
