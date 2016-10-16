@@ -103,7 +103,7 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
 
   var start = selection.getStartOffset();
   var end = selection.getEndOffset();
-  if (chars === editorState.getCurrentContent().getPlainText().slice(start,end)) {
+  if (chars === editorState.getCurrentContent().getPlainText().slice(start, end)) {
     e.preventDefault();
     this.update(EditorState.forceSelection(editorState, selection.merge({focusOffset: end})));
     return;
