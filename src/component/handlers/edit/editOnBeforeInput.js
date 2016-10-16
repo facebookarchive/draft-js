@@ -101,6 +101,14 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
   var editorState = this.props.editorState;
   var selection = editorState.getSelection();
 
+  var start = selection.getStartOffset();
+  var end = selection.getEndOffset();
+  if (chars === editorState.getCurrentContent().getPlainText().slice(start,end)) {
+    e.preventDefault();
+    this.update(EditorState.forceSelection(editorState, selection.merge({focusOffset: end})));
+    return;
+  }
+
   if (!selection.isCollapsed()) {
     e.preventDefault();
     this.update(
