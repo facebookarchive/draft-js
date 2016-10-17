@@ -20,7 +20,7 @@ var getFragmentFromSelection = require('getFragmentFromSelection');
  * fragment if no external clipboard data is supplied.
  */
 function editOnCopy(e: SyntheticClipboardEvent): void {
-  var editorState = this.props.editorState;
+  var editorState = this._latestEditorState;
   var selection = editorState.getSelection();
 
   // No selection, so there's nothing to copy.
@@ -29,7 +29,7 @@ function editOnCopy(e: SyntheticClipboardEvent): void {
     return;
   }
 
-  this.setClipboard(getFragmentFromSelection(this.props.editorState));
+  this.setClipboard(getFragmentFromSelection(this._latestEditorState));
 }
 
 module.exports = editOnCopy;

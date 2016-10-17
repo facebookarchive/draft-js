@@ -53,7 +53,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
           return;
         }
 
-        var {editorState} = this.props;
+        var editorState = this._latestEditorState;
         var blocks = splitTextIntoTextBlocks(fileText);
         var character = CharacterMetadata.create({
           style: editorState.getCurrentInlineStyle(),
@@ -124,7 +124,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
         )
       ) {
         this.update(
-          insertFragment(this.props.editorState, internalClipboard)
+          insertFragment(this._latestEditorState, internalClipboard)
         );
         return;
       }
@@ -138,7 +138,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       // Use the internalClipboard if present and equal to what is on
       // the clipboard. See https://bugs.webkit.org/show_bug.cgi?id=19893.
       this.update(
-        insertFragment(this.props.editorState, internalClipboard)
+        insertFragment(this._latestEditorState, internalClipboard)
       );
       return;
     }
@@ -154,7 +154,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
         if (contentBlocks) {
           var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
           this.update(
-            insertFragment(this.props.editorState, htmlMap, entityMap)
+            insertFragment(this._latestEditorState, htmlMap, entityMap)
           );
           return;
         }
@@ -167,7 +167,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   }
 
   if (textBlocks.length) {
-    var {editorState} = this.props;
+    var editorState = this._latestEditorState;
     var character = CharacterMetadata.create({
       style: editorState.getCurrentInlineStyle(),
       entity: getEntityKeyForSelection(
@@ -182,7 +182,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     );
 
     var textMap = BlockMapBuilder.createFromArray(textFragment);
-    this.update(insertFragment(this.props.editorState, textMap));
+    this.update(insertFragment(this._latestEditorState, textMap));
   }
 }
 

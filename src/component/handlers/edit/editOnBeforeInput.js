@@ -98,7 +98,7 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
   // If selection is collapsed, conditionally allow native behavior. This
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
-  var editorState = this.props.editorState;
+  var editorState = this._latestEditorState;
   var selection = editorState.getSelection();
 
   if (!selection.isCollapsed()) {

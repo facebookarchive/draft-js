@@ -84,7 +84,7 @@ function onKeyCommand(
  */
 function editOnKeyDown(e: SyntheticKeyboardEvent): void {
   var keyCode = e.which;
-  var editorState = this.props.editorState;
+  var editorState = this._latestEditorState;
 
   switch (keyCode) {
     case Keys.RETURN:

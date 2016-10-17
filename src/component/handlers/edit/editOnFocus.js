@@ -15,7 +15,7 @@
 var EditorState = require('EditorState');
 
 function editOnFocus(e: SyntheticFocusEvent): void {
-  var editorState = this.props.editorState;
+  var editorState = this._latestEditorState;
   var currentSelection = editorState.getSelection();
   if (currentSelection.getHasFocus()) {
     return;

@@ -84,6 +84,15 @@ var DraftEditorCompositionHandler = {
    * doesn't move, otherwise it will jump back noticeably on re-render.
    */
   onKeyDown: function(e: SyntheticKeyboardEvent): void {
+    if (!stillComposing) {
+      // If a keydown event is received after compositionend but before the
+      // 20ms timer expires (ex: type option-E then backspace, or type A then
+      // backspace in 2-Set Korean), we should immediately resolve the
+      // composition and reinterpret the key press in edit mode.
+      DraftEditorCompositionHandler.resolveComposition.call(this);
+      this._onKeyDown(e);
+      return;
+    }
     if (e.which === Keys.RIGHT || e.which === Keys.LEFT) {
       e.preventDefault();
     }
@@ -125,7 +134,7 @@ var DraftEditorCompositionHandler = {
     const composedChars = textInputData;
     textInputData = '';
 
-    const editorState = EditorState.set(this.props.editorState, {
+    const editorState = EditorState.set(this._latestEditorState, {
       inCompositionMode: false,
     });
 
@@ -147,7 +156,6 @@ var DraftEditorCompositionHandler = {
     }
 
     this.exitCurrentMode();
-    this.removeRenderGuard();
 
     if (composedChars) {
       // If characters have been composed, re-rendering with the update
