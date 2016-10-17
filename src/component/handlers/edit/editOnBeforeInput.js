@@ -100,28 +100,38 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
   // is not collapsed, we will re-render.
   var editorState = this.props.editorState;
   var selection = editorState.getSelection();
-
-  var start = selection.getStartOffset();
-  var end = selection.getEndOffset();
-  if (chars === editorState.getCurrentContent().getPlainText().slice(start, end)) {
-    e.preventDefault();
-    this.update(EditorState.forceSelection(editorState, selection.merge({focusOffset: end})));
-    return;
-  }
+  var selectionStart = selection.getStartOffset();
+  var selectionEnd = selection.getEndOffset();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
-    this.update(
-      replaceText(
-        editorState,
-        chars,
-        editorState.getCurrentInlineStyle(),
-        getEntityKeyForSelection(
-          editorState.getCurrentContent(),
-          editorState.getSelection()
+
+    // If the character that the user is trying to replace with
+    // is the same as the current selection text the just update the `SelectionState`.
+    // Else, update the ContentState with the new text
+    if (chars === editorState.getCurrentContent().getPlainText().slice(selectionStart, selectionEnd)) {
+      this.update(
+        EditorState.forceSelection(
+          editorState,
+          selection.merge({
+            focusOffset: selectionEnd,
+          })
         )
-      )
-    );
+      );
+    } else {
+      this.update(
+        replaceText(
+          editorState,
+          chars,
+          editorState.getCurrentInlineStyle(),
+          getEntityKeyForSelection(
+            editorState.getCurrentContent(),
+            editorState.getSelection()
+          )
+        )
+      );
+    }
+
     return;
   }
 
