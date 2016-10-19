@@ -22,7 +22,7 @@ function editOnSelect(): void {
     return;
   }
 
-  var editorState = this._latestEditorState;
+  var editorState = this.props.editorState;
   var documentSelection = getDraftEditorSelection(
     editorState,
     ReactDOM.findDOMNode(this.refs.editorContainer).firstChild

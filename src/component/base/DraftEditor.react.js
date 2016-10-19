@@ -310,13 +310,13 @@ class DraftEditor extends React.Component {
    * programmatically. We only care about selection events that occur because
    * of browser interaction, not re-renders and forced selections.
    */
-  componentWillUpdate(): void {
+  componentWillUpdate(nextProps: DraftEditorProps): void {
     this._blockSelectEvents = true;
+    this._latestEditorState = nextProps.editorState;
   }
 
   componentDidUpdate(): void {
     this._blockSelectEvents = false;
-    this._latestEditorState = this.props.editorState;
   }
 
   /**
