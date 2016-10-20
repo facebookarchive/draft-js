@@ -122,6 +122,7 @@ class MyCustomBlock extends React.Component {
   render() {
     return (
       <div className='MyCustomBlock'>
+        {/* here, this.props.children contains a <section> container, as that was the matching element */
         {this.props.children}
       </div>
     );
@@ -130,7 +131,9 @@ class MyCustomBlock extends React.Component {
 
 const blockRenderMap = Immutable.Map({
   'MyCustomBlock': {
-    element: 'section', // will be used during paste or html conversion to auto match your component
+    // element is used during paste or html conversion to auto match your component;
+    // it is also retained as part of this.props.children and not stripped out
+    element: 'section',
     wrapper: <MyCustomBlock {...this.props} />
   }
 });
