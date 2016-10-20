@@ -59,6 +59,7 @@ to wrap any other custom block type</p><p><em>example of extending default block
   <span class="token function">render<span class="token punctuation">(</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">return</span> <span class="token punctuation">(</span>
       &lt;div className<span class="token operator">=</span><span class="token string">&#x27;MyCustomBlock&#x27;</span><span class="token operator">&gt;</span>
+        <span class="token punctuation">{</span><span class="token comment" spellcheck="true">/* here, this.props.children contains a &lt;section&gt; container, as that was the matching element */</span>
         <span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>children<span class="token punctuation">}</span>
       &lt;<span class="token operator">/</span>div<span class="token operator">&gt;</span>
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -67,8 +68,10 @@ to wrap any other custom block type</p><p><em>example of extending default block
 
 const blockRenderMap <span class="token operator">=</span> Immutable<span class="token punctuation">.</span><span class="token function">Map<span class="token punctuation">(</span></span><span class="token punctuation">{</span>
   <span class="token string">&#x27;MyCustomBlock&#x27;</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    element<span class="token punctuation">:</span> <span class="token string">&#x27;section&#x27;</span><span class="token punctuation">,</span><span class="token comment" spellcheck="true"> // will be used during paste or html conversion to auto match your component
-</span>    wrapper<span class="token punctuation">:</span> &lt;MyCustomBlock <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
+   <span class="token comment" spellcheck="true"> // element is used during paste or html conversion to auto match your component;
+</span>   <span class="token comment" spellcheck="true"> // it is also retained as part of this.props.children and not stripped out
+</span>    element<span class="token punctuation">:</span> <span class="token string">&#x27;section&#x27;</span><span class="token punctuation">,</span>
+    wrapper<span class="token punctuation">:</span> &lt;MyCustomBlock <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment" spellcheck="true">
