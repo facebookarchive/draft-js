@@ -18,12 +18,12 @@
 export type DraftBlockType = (
   'unstyled' |
   'paragraph' |
-  'header-one' |
-  'header-two' |
-  'header-three' |
-  'header-four' |
-  'header-five' |
-  'header-six' |
+  'heading-one' |
+  'heading-two' |
+  'heading-three' |
+  'heading-four' |
+  'heading-five' |
+  'heading-six' |
   'unordered-list-item' |
   'ordered-list-item' |
   'blockquote' |

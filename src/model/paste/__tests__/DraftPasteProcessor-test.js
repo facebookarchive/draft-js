@@ -17,13 +17,13 @@ var Immutable = require('immutable');
 
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var CUSTOM_BLOCK_MAP = Immutable.Map({
-  'header-one': {
+  'heading-one': {
     element: 'h1',
   },
-  'header-two': {
+  'heading-two': {
     element: 'h2',
   },
-  'header-three': {
+  'heading-three': {
     element: 'h3',
   },
   'unordered-list-item': {
@@ -144,8 +144,8 @@ describe('DraftPasteProcessor', function() {
     var html = '<h1>hi</h1>    <h2>hi</h2>';
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     assertBlockTypes(output, [
-      'header-one',
-      'header-two',
+      'heading-one',
+      'heading-two',
     ]);
   });
 
@@ -153,9 +153,9 @@ describe('DraftPasteProcessor', function() {
     var html = ' <h1> hi </h1><h1> </h1><span> whatever </span> <h2>hi </h2> ';
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     assertBlockTypes(output, [
-      'header-one',
+      'heading-one',
       'unstyled',
-      'header-two',
+      'heading-two',
     ]);
   });
 
