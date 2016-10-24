@@ -142,12 +142,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       const Image = (props) => {
         const {
           height,
-          url,
+          src,
           width,
         } = props.contentState.getEntity(props.entityKey).getData();
 
         return (
-          <img src={url} height={height} width={width} />
+          <img src={src} height={height} width={width} />
         );
       };
 
