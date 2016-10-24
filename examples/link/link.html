@@ -76,8 +76,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           if (!selection.isCollapsed()) {
             const contentState = editorState.getCurrentContent();
             const startKey = editorState.getSelection().getStartKey();
+            const startOffset = editorState.getSelection().getStartOffset();
             const blockWithLinkAtBeginning = contentState.getBlockForKey(startKey);
-            const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
+            const linkKey = blockWithLinkAtBeginning.getEntityAt(startOffset);
 
             let url = '';
             if (linkKey) {
