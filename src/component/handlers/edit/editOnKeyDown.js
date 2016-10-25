@@ -41,7 +41,7 @@ var isChrome = UserAgent.isBrowser('Chrome');
  * Map a `DraftEditorCommand` command value to a corresponding function.
  */
 function onKeyCommand(
-  command: DraftEditorCommand,
+  command: DraftEditorCommand | string,
   editorState: EditorState
 ): EditorState {
   switch (command) {
