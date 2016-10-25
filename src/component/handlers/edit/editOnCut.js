@@ -19,6 +19,8 @@ const Style = require('Style');
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
 
+import type DraftEditor from 'DraftEditor.react';
+
 /**
  * On `cut` events, native behavior is allowed to occur so that the system
  * clipboard is set properly. This means that we need to take steps to recover
@@ -28,8 +30,8 @@ const getScrollPosition = require('getScrollPosition');
  * In addition, we can keep a copy of the removed fragment, including all
  * styles and entities, for use as an internal paste.
  */
-function editOnCut(e: SyntheticClipboardEvent): void {
-  const editorState = this._latestEditorState;
+function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
+  const editorState = editor._latestEditorState;
   const selection = editorState.getSelection();
 
   // No selection, so there's nothing to cut.
@@ -44,16 +46,16 @@ function editOnCut(e: SyntheticClipboardEvent): void {
   const {x, y} = getScrollPosition(scrollParent);
 
   const fragment = getFragmentFromSelection(editorState);
-  this.setClipboard(fragment);
+  editor.setClipboard(fragment);
 
   // Set `cut` mode to disable all event handling temporarily.
-  this.setMode('cut');
+  editor.setMode('cut');
 
   // Let native `cut` behavior occur, then recover control.
   setTimeout(() => {
-    this.restoreEditorDOM({x, y});
-    this.exitCurrentMode();
-    this.update(removeFragment(editorState));
+    editor.restoreEditorDOM({x, y});
+    editor.exitCurrentMode();
+    editor.update(removeFragment(editorState));
   }, 0);
 }
 

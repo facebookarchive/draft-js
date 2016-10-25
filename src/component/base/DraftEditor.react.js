@@ -181,7 +181,7 @@ class DraftEditor extends React.Component {
     return (e) => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
-        method && method.call(this, e);
+        method && method(this, e);
       }
     };
   }
