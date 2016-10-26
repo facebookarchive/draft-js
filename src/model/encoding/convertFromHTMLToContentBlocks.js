@@ -77,6 +77,14 @@ var anchorAttr = [
   'title',
 ];
 
+const imgAttr = [
+  'alt',
+  'className',
+  'height',
+  'src',
+  'width',
+];
+
 var lastBlock;
 
 type Block = {
@@ -360,7 +368,37 @@ function genFragment(
     ) {
       return {chunk: getBlockDividerChunk('unstyled', depth), entityMap};
     }
-    return {chunk:getSoftNewlineChunk(), entityMap};
+    return {chunk: getSoftNewlineChunk(), entityMap};
+  }
+
+  // IMG tags
+  if (
+    nodeName === 'img' &&
+    node instanceof HTMLImageElement &&
+    node.attributes.getNamedItem('src') &&
+    node.attributes.getNamedItem('src').value
+  ) {
+    const image: HTMLImageElement = node;
+    const entityConfig = {};
+
+    imgAttr.forEach((attr) => {
+      const imageAttribute = image.getAttribute(attr);
+      if (imageAttribute) {
+        entityConfig[attr] = imageAttribute;
+      }
+    });
+    const imageURI = new URI(entityConfig.src).toString();
+    node.textContent = imageURI; // Output src if no decorator
+
+    newEntityMap = addEntityToEntityMap(
+      newEntityMap,
+      new DraftEntityInstance({
+        type: 'IMAGE',
+        mutability: 'MUTABLE',
+        data: entityConfig || {},
+      })
+    );
+    inEntity = newEntityMap.keySeq().last();
   }
 
   var chunk = getEmptyChunk();
