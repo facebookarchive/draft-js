@@ -59,6 +59,11 @@ describe('ContentState', () => {
       var state = getSample(SINGLE_BLOCK);
       expect(state instanceof ContentState).toBe(true);
     });
+
+    it('must create properly with an empty block array', () => {
+      var state = ContentState.createFromBlockArray([]);
+      expect(state instanceof ContentState).toBe(true);
+    });
   });
 
   describe('key fetching', () => {

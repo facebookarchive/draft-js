@@ -172,7 +172,9 @@ class ContentState extends ContentStateRecord {
     entityMap: ?OrderedMap
   ): ContentState {
     var blockMap = BlockMapBuilder.createFromArray(blocks);
-    var selectionState = SelectionState.createEmpty(blockMap.first().getKey());
+    var selectionState = blockMap.isEmpty()
+      ? new SelectionState()
+      : SelectionState.createEmpty(blockMap.first().getKey());
     return new ContentState({
       blockMap,
       entityMap: entityMap || OrderedMap(),
