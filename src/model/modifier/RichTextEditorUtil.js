@@ -374,9 +374,9 @@ const RichTextEditorUtil = {
   },
 
   /**
-   * When a collapsed cursor is at the start of an empty styled block, allow
-   * certain key commands (newline, backspace) to simply change the
-   * style of the block instead of the default behavior.
+   * When a collapsed cursor is at the start of the first block or an empty
+   * styled block, allow certain key commands (newline, backspace) to simply
+   * change the style of the block instead of the default behavior.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
     var selection = editorState.getSelection();
@@ -385,7 +385,9 @@ const RichTextEditorUtil = {
       var key = selection.getAnchorKey();
       var content = editorState.getCurrentContent();
       var block = content.getBlockForKey(key);
-      if (block.getLength() > 0) {
+
+      var firstBlock = content.getFirstBlock();
+      if (block.getLength() > 0 && block !== firstBlock) {
         return null;
       }
 
