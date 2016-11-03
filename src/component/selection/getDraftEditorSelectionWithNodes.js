@@ -156,8 +156,9 @@ function getPointForNonTextNode(
   // wrapper.
   if (editorRoot === node) {
     node = node.firstChild;
+    var win = node && node.ownerDocument.defaultView;
     invariant(
-      node instanceof node.ownerDocument.defaultView.Element && node.getAttribute('data-contents') === 'true',
+      win && node instanceof win.Element && node.getAttribute('data-contents') === 'true',
       'Invalid DraftEditorContents structure.',
     );
     if (childOffset > 0) {

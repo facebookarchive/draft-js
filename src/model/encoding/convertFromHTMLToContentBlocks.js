@@ -230,7 +230,7 @@ function processInlineTag(
   currentStyle: DraftInlineStyle,
 ): DraftInlineStyle {
   var styleToCheck = inlineTags[tag];
-  var win = node.ownerDocument.defaultView;
+  var win = node.ownerDocument.defaultView || window;
   if (styleToCheck) {
     currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
   } else if (node instanceof win.HTMLElement) {
@@ -317,7 +317,7 @@ function containsSemanticBlockMarkup(
 }
 
 function hasValidLinkText(link: Node): boolean {
-  const win = link.ownerDocument.defaultView;
+  const win = link.ownerDocument.defaultView || window;
   invariant(
     link instanceof win.HTMLAnchorElement,
     'Link must be an HTMLAnchorElement.',
@@ -358,7 +358,7 @@ function genFragment(
       text = text.replace(REGEX_LF, SPACE);
     }
 
-    // save the last block so we can use it later
+    // Save the last block so we can use it later
     lastBlock = nodeName;
 
     return {
@@ -372,7 +372,7 @@ function genFragment(
     };
   }
 
-  // save the last block so we can use it later
+  // Save the last block so we can use it later
   lastBlock = nodeName;
 
   // BR tags
@@ -389,7 +389,7 @@ function genFragment(
     return {chunk: getSoftNewlineChunk(), entityMap};
   }
 
-  const win = node.ownerDocument.defaultView;
+  const win = node.ownerDocument.defaultView || window;
 
   // IMG tags
   if (
