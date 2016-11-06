@@ -206,8 +206,44 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         {label: 'Monospace', style: 'CODE'},
       ];
 
+      const getSelectedInlineStyles = (editorState) => {
+        const selection = editorState.getSelection();
+
+        if (selection.isCollapsed()) {
+          return editorState.getCurrentInlineStyle();
+        }
+
+        const contentState = editorState.getCurrentContent();
+        const blocks = contentState.getBlockMap()
+          .skipUntil((value, key) => {
+            return key === selection.getStartKey();
+          })
+          .takeUntil((value, key) => {
+            return contentState.getKeyBefore(key) === selection.getEndKey();
+          }
+        );
+
+        return blocks.reduce((styles, block) => {
+          const blockKey = block.getKey();
+          let start = 0;
+          let end = block.getLength() - 1;
+          if (blockKey === selection.getStartKey()) {
+            start = selection.getStartOffset();
+          }
+          if (blockKey === selection.getEndKey()) {
+            end = selection.getEndOffset();
+          }
+
+          for (let i = start; i < end; i++) {
+            styles = styles.intersect(block.getInlineStyleAt(i));
+          }
+
+          return styles;
+        }, blocks.first().getInlineStyleAt(selection.getStartOffset()));
+      };
+
       const InlineStyleControls = (props) => {
-        var currentStyle = props.editorState.getCurrentInlineStyle();
+        var currentStyle = getSelectedInlineStyles(props.editorState);
         return (
           <div className="RichEditor-controls">
             {INLINE_STYLES.map(type =>
