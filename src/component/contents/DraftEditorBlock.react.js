@@ -106,7 +106,8 @@ class DraftEditorBlock extends React.Component {
       if (scrollDelta > 0) {
         window.scrollTo(
           scrollPosition.x,
-          scrollPosition.y + scrollDelta + SCROLL_BUFFER
+          nodePosition.y + SCROLL_BUFFER
+          //scrollPosition.y + scrollDelta + SCROLL_BUFFER
         );
       }
     } else {
