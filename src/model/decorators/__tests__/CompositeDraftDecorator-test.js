@@ -26,7 +26,7 @@ describe('CompositeDraftDecorator', () => {
   }
 
   function searchWith(regex) {
-    return function(contentState, block, callback) {
+    return function(block, callback, contentState) {
       var text = block.getText();
       text.replace(
         regex,
