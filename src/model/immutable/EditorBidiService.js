@@ -19,21 +19,25 @@ var UnicodeBidiService = require('UnicodeBidiService');
 var nullthrows = require('nullthrows');
 
 import type ContentState from 'ContentState';
+import type {DraftDirectionType} from 'DraftDirectionType';
 
 var {OrderedMap} = Immutable;
 
-var bidiService;
+// Holds one bidi service for each default direction ('LTR' or 'RTL').
+var bidiServices = {};
 
 var EditorBidiService = {
   getDirectionMap: function(
     content: ContentState,
+    defaultDir: DraftDirectionType,
     prevBidiMap: ?OrderedMap<any, any>
   ): OrderedMap<any, any> {
-    if (!bidiService) {
-      bidiService = new UnicodeBidiService();
+    if (!bidiServices[defaultDir]) {
+      bidiServices[defaultDir] = new UnicodeBidiService(defaultDir);
     } else {
-      bidiService.reset();
+      bidiServices[defaultDir].reset();
     }
+    var bidiService = bidiServices[defaultDir];
 
     var blockMap = content.getBlockMap();
     var nextBidi = blockMap

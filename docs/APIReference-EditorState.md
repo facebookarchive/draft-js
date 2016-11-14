@@ -136,6 +136,11 @@ The list below includes the most commonly used instance methods for `EditorState
     </a>
   </li>
   <li>
+    <a href="#defaultdirection">
+      <pre>defaultDirection</pre>
+    </a>
+  </li>
+  <li>
     <a href="#directionmap">
       <pre>directionMap</pre>
     </a>
@@ -392,6 +397,19 @@ The current decorator object, if any.
 
 Note that the `ContentState` is independent of your decorator. If a decorator
 is provided, it will be used to decorate ranges of text for rendering.
+
+### defaultDirection
+
+```
+defaultDirection: ?DraftDirectionType;
+getDefaultDirection()
+```
+The default text direction sent to UnicodeBidiService when creating
+directionMap. This will be used if no direction can be detected from the text
+(e.g. for empty texts).
+
+This value should be a strong direction, which is either `'LTR'` or `'LTR'`. The
+default value is `'LTR'`.
 
 ### directionMap
 

@@ -20,6 +20,11 @@ text alignment and direction on a per-block basis.
 Text is rendered with an LTR or RTL direction automatically as the user types.
 You should not need to do anything to set direction yourself.
 
+When it is not possible to detect text direction from the text (for example,
+when the content is empty), a default text direction is used. The initial value
+for this default direction is LTR, but you can change it by setting
+`defaultDirection` property of `EditorState`.
+
 ## Text Alignment
 
 While languages are automatically aligned to the left or right during composition,

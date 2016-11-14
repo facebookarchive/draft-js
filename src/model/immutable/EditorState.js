@@ -20,6 +20,7 @@ var SelectionState = require('SelectionState');
 
 import type {BlockMap} from 'BlockMap';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
+import type {DraftDirectionType} from 'DraftDirectionType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {EntityMap} from 'EntityMap';
 import type {List, OrderedMap} from 'immutable';
@@ -35,6 +36,7 @@ type EditorStateRecordType = {
   allowUndo: boolean,
   currentContent: ?ContentState,
   decorator: ?DraftDecoratorType,
+  defaultDirection: ?DraftDirectionType,
   directionMap: ?OrderedMap<string, string>,
   forceSelection: boolean,
   inCompositionMode: boolean,
@@ -51,6 +53,7 @@ var defaultRecord: EditorStateRecordType = {
   allowUndo: true,
   currentContent: null,
   decorator: null,
+  defaultDirection: 'LTR',
   directionMap: null,
   forceSelection: false,
   inCompositionMode: false,
@@ -93,10 +96,15 @@ class EditorState {
 
   static create(config: Object): EditorState {
     var {currentContent, decorator} = config;
+    var defaultDirection = config.defaultDirection ||
+                           defaultRecord.defaultDirection;
     var recordConfig = {
       ...config,
       treeMap: generateNewTreeMap(currentContent, decorator),
-      directionMap: EditorBidiService.getDirectionMap(currentContent),
+      directionMap: EditorBidiService.getDirectionMap(
+        currentContent,
+        defaultDirection
+      ),
     };
     return new EditorState(
       new EditorStateRecord(recordConfig)
@@ -114,6 +122,24 @@ class EditorState {
       }
 
       var newContent = put.currentContent || editorState.getCurrentContent();
+
+      // If a new direction map is sent in, use that and do nothing about it.
+      if (!put.directionMap) {
+        var currentDefaultDir = state.get('defaultDirection');
+        var newDefaultDir = put.defaultDirection || currentDefaultDir;
+        if (newDefaultDir !== currentDefaultDir) {
+          // If a new default direction is sent and is diffrent from the current
+          // one, recreate the direction map.
+          var newDirectionMap = EditorBidiService.getDirectionMap(
+            newContent,
+            newDefaultDir
+          );
+          state.merge({
+            defaultDirection: newDefaultDir,
+            directionMap: newDirectionMap,
+          });
+        }
+      }
 
       if (decorator !== existingDecorator) {
         var treeMap: OrderedMap<any, any> = state.get('treeMap');
@@ -258,6 +284,10 @@ class EditorState {
     return this.getSelection().hasEdgeWithin(last.getKey(), end, end);
   }
 
+  getDefaultDirection(): DraftDirectionType {
+    return this.getImmutable().get('defaultDirection');
+  }
+
   getDirectionMap(): ?OrderedMap<any, any> {
     return this.getImmutable().get('directionMap');
   }
@@ -350,6 +380,7 @@ class EditorState {
     var forceSelection = changeType !== 'insert-characters';
     var directionMap = EditorBidiService.getDirectionMap(
       contentState,
+      editorState.getDefaultDirection(),
       editorState.getDirectionMap()
     );
 
@@ -426,6 +457,7 @@ class EditorState {
     var currentContent = editorState.getCurrentContent();
     var directionMap = EditorBidiService.getDirectionMap(
       newCurrentContent,
+      editorState.getDefaultDirection(),
       editorState.getDirectionMap()
     );
 
@@ -460,6 +492,7 @@ class EditorState {
     var currentContent = editorState.getCurrentContent();
     var directionMap = EditorBidiService.getDirectionMap(
       newCurrentContent,
+      editorState.getDefaultDirection(),
       editorState.getDirectionMap()
     );
 
