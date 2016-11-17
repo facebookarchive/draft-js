@@ -122,7 +122,7 @@ class ContentState extends ContentStateRecord {
 
   getLastCreatedEntityKey() {
     // TODO: update this when we fully remove DraftEntity
-    return DraftEntity.getLastCreatedEntityKey();
+    return DraftEntity._getLastCreatedEntityKey();
   }
 
   hasText(): boolean {
@@ -139,7 +139,7 @@ class ContentState extends ContentStateRecord {
     data?: Object
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.create(
+    DraftEntity._create(
       type,
       mutability,
       data,
@@ -152,7 +152,7 @@ class ContentState extends ContentStateRecord {
     toMerge: {[key: string]: any}
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.mergeData(key, toMerge);
+    DraftEntity._mergeData(key, toMerge);
     return this;
   }
 
@@ -161,19 +161,19 @@ class ContentState extends ContentStateRecord {
     newData: {[key: string]: any}
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.replaceData(key, newData);
+    DraftEntity._replaceData(key, newData);
     return this;
   }
 
   addEntity(instance: DraftEntityInstance): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.add(instance);
+    DraftEntity._add(instance);
     return this;
   }
 
   getEntity(key: string): DraftEntityInstance {
     // TODO: update this when we fully remove DraftEntity
-    return DraftEntity.get(key);
+    return DraftEntity._get(key);
   }
 
   static createFromBlockArray(
