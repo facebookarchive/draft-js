@@ -55,10 +55,10 @@ const sampleMarkup =
   '<img src="image.png" height="112" width="200" />';
 
 const blocksFromHTML = convertFromHTML(sampleMarkup);
-const state = ContentState.createFromBlockArray(
+const state = ContentState.createFromBlockArray([
   blocksFromHTML.contentBlocks,
   blocksFromHTML.entityMap,
-);
+]);
 
 this.state = {
   editorState: EditorState.createWithContent(state),
