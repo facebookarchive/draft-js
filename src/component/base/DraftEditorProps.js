@@ -36,6 +36,9 @@ export type DraftEditorProps = {
   editorState: EditorState,
   onChange: (editorState: EditorState) => void,
 
+  // specify whether using ssr
+  editorKey?: string,
+
   placeholder?: string,
 
   // Specify whether text alignment should be forced in a direction
