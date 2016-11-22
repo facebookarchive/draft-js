@@ -22,22 +22,22 @@ const OL_WRAP = <ol className={cx('public/DraftStyleDefault/ol')} />;
 const PRE_WRAP = <pre className={cx('public/DraftStyleDefault/pre')} />;
 
 module.exports = Map({
-  'header-one': {
+  'heading-one': {
     element: 'h1',
   },
-  'header-two': {
+  'heading-two': {
     element: 'h2',
   },
-  'header-three': {
+  'heading-three': {
     element: 'h3',
   },
-  'header-four': {
+  'heading-four': {
     element: 'h4',
   },
-  'header-five': {
+  'heading-five': {
     element: 'h5',
   },
-  'header-six': {
+  'heading-six': {
     element: 'h6',
   },
   'unordered-list-item': {

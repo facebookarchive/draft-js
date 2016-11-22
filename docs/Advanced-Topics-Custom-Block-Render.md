@@ -20,13 +20,12 @@ by matching the Draft block render map with the matched tag.
 
 |  HTML element   |            Draft block type             |
 | --------------- | --------------------------------------- |
-|     `<h1/>`     |               header-one                |
-|     `<h2/>`     |               header-two                |
-|     `<h3/>`     |              header-three               |
-|     `<h4/>`     |               header-four               |
-|     `<h5/>`     |               header-five               |
-|     `<h6/>`     |               header-six                |
-|     `<h6/>`     |               header-six                |
+|     `<h1/>`     |               heading-one                |
+|     `<h2/>`     |               heading-two                |
+|     `<h3/>`     |              heading-three               |
+|     `<h4/>`     |               heading-four               |
+|     `<h5/>`     |               heading-five               |
+|     `<h6/>`     |               heading-six                |
 | `<blockquote/>` |               blockquote                |
 |    `<pre/>`     |               code-block                |
 |   `<figure/>`   |                 atomic                  |
@@ -50,7 +49,7 @@ the editor blockRender props.
 // 'heading-two' as the only valid block type and
 // updates the unstyled element to also become a h2.
 const blockRenderMap = Immutable.Map({
-  'header-two': {
+  'heading-two': {
    element: 'h2'
   },
   'unstyled': {
