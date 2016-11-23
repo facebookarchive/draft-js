@@ -26,7 +26,6 @@ by matching the Draft block render map with the matched tag.
 |     `<h4/>`     |               header-four               |
 |     `<h5/>`     |               header-five               |
 |     `<h6/>`     |               header-six                |
-|     `<h6/>`     |               header-six                |
 | `<blockquote/>` |               blockquote                |
 |    `<pre/>`     |               code-block                |
 |   `<figure/>`   |                 atomic                  |
