@@ -57,6 +57,9 @@ function editOnCut(e: SyntheticClipboardEvent): void {
     this.exitCurrentMode();
     this.update(removeFragment(editorState));
   }, 0);
+  if (this.props.onCut) {
+    this.props.onCut(e);
+  }
 }
 
 function removeFragment(editorState: EditorState): EditorState {

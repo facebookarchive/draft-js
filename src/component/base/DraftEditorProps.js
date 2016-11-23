@@ -126,6 +126,9 @@ export type DraftEditorProps = {
   onUpArrow?: (e: SyntheticKeyboardEvent) => void,
   onDownArrow?: (e: SyntheticKeyboardEvent) => void,
 
+  onCopy?: (e: SyntheticEvent) => void,
+  onCut?: (e: SyntheticEvent) => void,
+
   onBlur?: (e: SyntheticEvent) => void,
   onFocus?: (e: SyntheticEvent) => void,
 

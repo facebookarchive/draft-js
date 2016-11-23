@@ -30,6 +30,9 @@ function editOnCopy(e: SyntheticClipboardEvent): void {
   }
 
   this.setClipboard(getFragmentFromSelection(this.props.editorState));
+  if (this.props.onCopy) {
+    this.props.onCopy(e);
+  }
 }
 
 module.exports = editOnCopy;
