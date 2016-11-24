@@ -16,7 +16,7 @@
 
 import {
   AtomicBlockUtils,
-  Entity,
+  EditorState,
 } from 'draft-js';
 
 let count = 0;
@@ -37,11 +37,16 @@ const examples = [
 
 export function insertTeXBlock(editorState) {
   const nextFormula = count++ % examples.length;
-  const entityKey = Entity.create(
+  const contentState = editorState.getCurrentContent();
+  const contentStateWithEntity = contentState.createEntity(
     'TOKEN',
     'IMMUTABLE',
     {content: examples[nextFormula]}
   );
-
-  return AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, ' ');
+  const newEditorState = EditorState.set(
+    editorState,
+    {currentContent: contentStateWithEntity}
+  );
+  const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+  return AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, ' ');
 }
