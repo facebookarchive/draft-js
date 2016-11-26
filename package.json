@@ -35,8 +35,8 @@
     "object-assign": "^4.1.0"
   },
   "peerDependencies": {
-    "react": "^0.14.0 || >=15.0.0-rc.1 <=15.3.2",
-    "react-dom": "^0.14.0 || >=15.0.0-rc.1 <=15.3.2"
+    "react": "^0.14.0 || ^15.0.0-rc",
+    "react-dom": "^0.14.0 || ^15.0.0-rc"
   },
   "devDependencies": {
     "babel-core": "^6.8.0",
@@ -64,8 +64,8 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "jest": "^15.1.1",
-    "react": ">=15.0.0-rc.1 <=15.3.2",
-    "react-dom": ">=15.0.0-rc.1 <=15.3.2",
+    "react": "^15.0.0-rc.1",
+    "react-dom": "^15.0.0-rc.1",
     "run-sequence": "^1.1.2",
     "through2": "^2.0.1",
     "vinyl-buffer": "^1.0.0",
