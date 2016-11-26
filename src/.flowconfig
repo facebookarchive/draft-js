@@ -8,6 +8,7 @@
 ../node_modules/fbjs/lib/
 ../node_modules/immutable
 ../node_modules/react
+../node_modules/react-dom/
 
 [libs]
 ../node_modules/fbjs/flow/lib
@@ -17,6 +18,7 @@ module.system=haste
 esproposal.class_static_fields=enable
 suppress_type=$FlowIssue
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\).*\n
+module.name_mapper='ReactDOM' -> 'react-dom'
 
 [version]
 0.32.0
