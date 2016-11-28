@@ -32,9 +32,9 @@ import type ContentState from 'ContentState';
  */
 export type DraftDecorator = {
   strategy: (
-    contentState: ContentState,
     block: ContentBlock,
-    callback: (start: number, end: number) => void
+    callback: (start: number, end: number) => void,
+    contentState: ContentState,
   ) => void,
   component: Function,
   props?: Object,

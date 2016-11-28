@@ -148,7 +148,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       function getEntityStrategy(mutability) {
-        return function(contentState, contentBlock, callback) {
+        return function(contentBlock, callback, contentState) {
           contentBlock.findEntityRanges(
             (character) => {
               const entityKey = character.getEntity();
@@ -176,7 +176,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           props.contentState.getEntity(props.entityKey).getMutability()
         );
         return (
-          <span {...props} style={style}>
+          <span data-offset-key={props.offsetkey} style={style}>
             {props.children}
           </span>
         );

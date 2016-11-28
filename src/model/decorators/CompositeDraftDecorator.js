@@ -59,7 +59,7 @@ class CompositeDraftDecorator {
       (/*object*/ decorator, /*number*/ ii) => {
         var counter = 0;
         var strategy = decorator.strategy;
-        strategy(contentState, block, (/*number*/ start, /*number*/ end) => {
+        var callback  = (/*number*/ start, /*number*/ end) => {
           // Find out if any of our matching range is already occupied
           // by another decorator. If so, discard the match. Otherwise, store
           // the component key for rendering.
@@ -67,7 +67,8 @@ class CompositeDraftDecorator {
             occupySlice(decorations, start, end, ii + DELIMITER + counter);
             counter++;
           }
-        });
+        };
+        strategy(block, callback, contentState);
       }
     );
 

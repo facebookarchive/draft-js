@@ -16,11 +16,10 @@
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEntityInstance = require('DraftEntityInstance');
+const DraftEntity = require('DraftEntity');
 const Immutable = require('immutable');
 const URI = require('URI');
 
-const addEntityToEntityMap = require('addEntityToEntityMap');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
@@ -35,7 +34,6 @@ import type {EntityMap} from 'EntityMap';
 var {
   List,
   OrderedSet,
-  OrderedMap,
 } = Immutable;
 
 var NBSP = '&nbsp;';
@@ -390,15 +388,12 @@ function genFragment(
     const imageURI = new URI(entityConfig.src).toString();
     node.textContent = imageURI; // Output src if no decorator
 
-    newEntityMap = addEntityToEntityMap(
-      newEntityMap,
-      new DraftEntityInstance({
-        type: 'IMAGE',
-        mutability: 'MUTABLE',
-        data: entityConfig || {},
-      })
+    // TODO: update this when we remove DraftEntity entirely
+    inEntity = DraftEntity.create(
+      'IMAGE',
+      'MUTABLE',
+      entityConfig || {},
     );
-    inEntity = newEntityMap.keySeq().last();
   }
 
   var chunk = getEmptyChunk();
@@ -460,15 +455,12 @@ function genFragment(
       });
 
       entityConfig.url = new URI(anchor.href).toString();
-      newEntityMap = addEntityToEntityMap(
-        newEntityMap,
-        new DraftEntityInstance({
-          type: 'LINK',
-          mutability: 'MUTABLE',
-          data: entityConfig || {},
-        })
+      // TODO: update this when we remove DraftEntity completely
+      entityId = DraftEntity.create(
+        'LINK',
+        'MUTABLE',
+        entityConfig || {},
       );
-      entityId = newEntityMap.keySeq().last();
     } else {
       entityId = undefined;
     }
@@ -602,7 +594,8 @@ function convertFromHTMLtoContentBlocks(
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
-  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, OrderedMap());
+  // TODO: replace DraftEntity with an OrderedMap here
+  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, DraftEntity);
 
   if (chunkData == null) {
     return null;

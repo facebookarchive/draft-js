@@ -196,11 +196,13 @@ function insertFragment(
     editorState.getSelection(),
     fragment
   );
-  const mergedEntityMap = newContent.getEntityMap().merge(entityMap);
+  // TODO: merge the entity map once we stop using DraftEntity
+  // like this:
+  // const mergedEntityMap = newContent.getEntityMap().merge(entityMap);
 
   return EditorState.push(
     editorState,
-    newContent.set('entityMap', mergedEntityMap),
+    newContent.set('entityMap', entityMap),
     'insert-fragment'
   );
 }
