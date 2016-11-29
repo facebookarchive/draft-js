@@ -21,6 +21,9 @@ function editOnSelect(): void {
   if (this._blockSelectEvents) {
     return;
   }
+  if (this._latestEditorState !== this.props.editorState) {
+    return;
+  }
 
   var editorState = this.props.editorState;
   var documentSelection = getDraftEditorSelection(
