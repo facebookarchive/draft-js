@@ -18,6 +18,7 @@ const Keys = require('Keys');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
+const isEventHandled = require('isEventHandled');
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon
@@ -43,7 +44,21 @@ let textInputData = '';
 
 var DraftEditorCompositionHandler = {
   onBeforeInput: function(e: SyntheticInputEvent): void {
-    textInputData = (textInputData || '') + e.data;
+    var chars = e.data;
+
+    // Allow the top-level component to handle the insertion manually. This is
+    // useful when triggering interesting behaviors for a character insertion,
+    // Simple examples: replacing a raw text 'ㅅ_ㅅ' with a smile emoji or image
+    // decorator
+    if (
+      this.props.handleBeforeInput &&
+      isEventHandled(this.props.handleBeforeInput(chars))
+    ) {
+      e.preventDefault();
+      return;
+    }
+
+    textInputData = (textInputData || '') + chars;
   },
 
   /**
