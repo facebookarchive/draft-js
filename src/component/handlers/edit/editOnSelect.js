@@ -17,18 +17,20 @@ var ReactDOM = require('ReactDOM');
 
 var getDraftEditorSelection = require('getDraftEditorSelection');
 
-function editOnSelect(): void {
-  if (this._blockSelectEvents) {
+import type DraftEditor from 'DraftEditor.react';
+
+function editOnSelect(editor: DraftEditor): void {
+  if (editor._blockSelectEvents) {
     return;
   }
   if (this._latestEditorState !== this.props.editorState) {
     return;
   }
 
-  var editorState = this.props.editorState;
+  var editorState = editor.props.editorState;
   var documentSelection = getDraftEditorSelection(
     editorState,
-    ReactDOM.findDOMNode(this.refs.editorContainer).firstChild
+    ReactDOM.findDOMNode(editor.refs.editorContainer).firstChild
   );
   var updatedSelectionState = documentSelection.selectionState;
 
@@ -44,7 +46,7 @@ function editOnSelect(): void {
         updatedSelectionState
       );
     }
-    this.update(editorState);
+    editor.update(editorState);
   }
 }
 

@@ -21,6 +21,7 @@ var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
 
+import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 const isEventHandled = require('isEventHandled');
 
@@ -73,7 +74,7 @@ function replaceText(
  * preserve spellcheck highlighting, which disappears or flashes if re-render
  * occurs on the relevant text nodes.
  */
-function editOnBeforeInput(e: SyntheticInputEvent): void {
+function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   var chars = e.data;
 
   // In some cases (ex: IE ideographic space insertion) no character data
@@ -88,8 +89,8 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
   // decorator, or setting a block to be a list item after typing '- ' at the
   // start of the block.
   if (
-    this.props.handleBeforeInput &&
-    isEventHandled(this.props.handleBeforeInput(chars))
+    editor.props.handleBeforeInput &&
+    isEventHandled(editor.props.handleBeforeInput(chars))
   ) {
     e.preventDefault();
     return;
@@ -98,12 +99,12 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
   // If selection is collapsed, conditionally allow native behavior. This
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
-  var editorState = this._latestEditorState;
+  var editorState = editor._latestEditorState;
   var selection = editorState.getSelection();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
-    this.update(
+    editor.update(
       replaceText(
         editorState,
         chars,
@@ -130,7 +131,7 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
 
   if (!mayAllowNative) {
     e.preventDefault();
-    this.update(newEditorState);
+    editor.update(newEditorState);
     return;
   }
 
@@ -161,7 +162,7 @@ function editOnBeforeInput(e: SyntheticInputEvent): void {
     });
   }
 
-  this.update(newEditorState);
+  editor.update(newEditorState);
 }
 
 module.exports = editOnBeforeInput;

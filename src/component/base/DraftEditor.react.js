@@ -83,6 +83,7 @@ class DraftEditor extends React.Component {
   _clipboard: ?BlockMap;
   _handler: ?Object;
   _dragCount: number;
+  _internalDrag: boolean;
   _editorKey: string;
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
@@ -115,7 +116,7 @@ class DraftEditor extends React.Component {
   blur: () => void;
   setMode: (mode: DraftEditorModes) => void;
   exitCurrentMode: () => void;
-  restoreEditorDOM: (scrollPosition: DraftScrollPosition) => void;
+  restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void;
   setClipboard: (clipboard?: BlockMap) => void;
   getClipboard: () => ?BlockMap;
   getEditorKey: () => string;
@@ -181,7 +182,7 @@ class DraftEditor extends React.Component {
     return (e) => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
-        method && method.call(this, e);
+        method && method(this, e);
       }
     };
   }
