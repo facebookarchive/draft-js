@@ -43,8 +43,11 @@ function getUpdatedSelectionState(
 
   var anchorPath = DraftOffsetKey.decode(anchorKey);
   var anchorBlockKey = anchorPath.blockKey;
-  var anchorLeaf = editorState
-    .getBlockTree(anchorBlockKey)
+  var anchorBlockTree = editorState.getBlockTree(anchorBlockKey);
+  if (!anchorBlockTree) {
+    return selection;
+  }
+  var anchorLeaf = anchorBlockTree
     .getIn([
       anchorPath.decoratorKey,
       'leaves',
@@ -53,8 +56,11 @@ function getUpdatedSelectionState(
 
   var focusPath = DraftOffsetKey.decode(focusKey);
   var focusBlockKey = focusPath.blockKey;
-  var focusLeaf = editorState
-    .getBlockTree(focusBlockKey)
+  var focusBlockTree = editorState.getBlockTree(focusBlockKey);
+  if (!focusBlockTree) {
+    return selection;
+  }
+  var focusLeaf = focusBlockTree
     .getIn([
       focusPath.decoratorKey,
       'leaves',
