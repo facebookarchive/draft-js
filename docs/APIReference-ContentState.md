@@ -141,7 +141,7 @@ static createFromText(
 ): ContentState
 ```
 Generates a `ContentState` from a string, with a delimiter to split the string
-into `ContentBlock` objects. If no delimiter is provided, '\n' is used.
+into `ContentBlock` objects. If no delimiter is provided, '`\n`' is used.
 
 ### createFromBlockArray
 
