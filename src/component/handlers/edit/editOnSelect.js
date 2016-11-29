@@ -23,7 +23,7 @@ function editOnSelect(editor: DraftEditor): void {
   if (editor._blockSelectEvents) {
     return;
   }
-  if (this._latestEditorState !== this.props.editorState) {
+  if (editor._latestEditorState !== editor.props.editorState) {
     return;
   }
 
