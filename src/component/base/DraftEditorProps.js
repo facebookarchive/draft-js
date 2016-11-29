@@ -140,5 +140,10 @@ export type DraftEditorProps = {
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
-  blockRenderMap: DraftBlockRenderMap
+  blockRenderMap: DraftBlockRenderMap,
+
+  // Provide a custom key for this editor instance.
+  // If you have multiple draft-js instances, you should set this key so that
+  // aria-attributes will be able to uniquely identify the correct editor.
+  editorKey?: string
 };
