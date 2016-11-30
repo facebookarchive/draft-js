@@ -44,7 +44,6 @@ var SPACE = ' ';
 // Arbitrary max indent
 var MAX_DEPTH = 4;
 
-//asd
 // used for replacing characters in HTML
 var REGEX_CR = new RegExp('\r', 'g');
 var REGEX_LF = new RegExp('\n', 'g');

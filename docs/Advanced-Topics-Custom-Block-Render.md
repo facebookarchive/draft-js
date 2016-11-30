@@ -97,6 +97,19 @@ class RichEditor extends React.Component {
 }
 ```
 
+There are cases where you want to define an alias for block elements.
+For example we use this internally on the `unstyled` block type
+in order to allow it to also match paragraphs
+
+*example of unstyled block type alias usage*
+
+```
+'unstyled': {
+  element: 'div',
+  aliasedElements: ['p'],
+}
+```
+
 ## Custom block wrappers
 
 By default the html element is used to wrap block types however a react component
