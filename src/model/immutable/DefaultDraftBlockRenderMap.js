@@ -60,5 +60,6 @@ module.exports = Map({
   },
   'unstyled': {
     element: 'div',
+    aliasedElements: ['p'],
   },
 });

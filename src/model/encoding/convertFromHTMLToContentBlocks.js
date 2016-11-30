@@ -26,6 +26,8 @@ const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 const sanitizeDraftText = require('sanitizeDraftText');
 
+const {Set} = require('immutable');
+
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -42,6 +44,7 @@ var SPACE = ' ';
 // Arbitrary max indent
 var MAX_DEPTH = 4;
 
+//asd
 // used for replacing characters in HTML
 var REGEX_CR = new RegExp('\r', 'g');
 var REGEX_LF = new RegExp('\n', 'g');
@@ -155,9 +158,16 @@ function getBlockMapSupportedTags(
 ): Array<string> {
   const unstyledElement = blockRenderMap.get('unstyled').element;
   return blockRenderMap
-    .map((config) => config.element)
-    .valueSeq()
-    .toSet()
+    .reduce((accum, draftBlock, key) => {
+      if (draftBlock.aliasedElements) {
+        draftBlock.aliasedElements.forEach(
+          (alias) => {
+            accum = accum.add(alias);
+          }
+        );
+      }
+      return accum.add(draftBlock.element);
+    }, new Set([]))
     .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
@@ -184,7 +194,14 @@ function getBlockTypeForTag(
   blockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
   const matchedTypes = blockRenderMap
-    .filter((config) => config.element === tag || config.wrapper === tag)
+    .filter((config) => (
+      config.element === tag ||
+      config.wrapper === tag ||
+      (
+        config.aliasedElements &&
+        config.aliasedElements.some(alias => alias === tag)
+      )
+    ))
     .keySeq()
     .toSet()
     .toArray()
