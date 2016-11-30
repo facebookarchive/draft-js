@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "start": "babel-node ./server.js",
-    "postinstall": "npm install ../.."
+    "postinstall": "npm install ../../.."
   },
   "dependencies": {
     "babel": "5.8.23",
