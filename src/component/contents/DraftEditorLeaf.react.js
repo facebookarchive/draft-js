@@ -13,6 +13,7 @@
 
 'use strict';
 
+var ContentBlock = require('ContentBlock');
 var DraftEditorTextNode = require('DraftEditorTextNode.react');
 var React = require('React');
 var ReactDOM = require('ReactDOM');
@@ -23,9 +24,8 @@ var setDraftEditorSelection = require('setDraftEditorSelection');
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 type Props = {
-  // A function passed through from the the top level to define a cx
-  // style map for the provided style value.
-  blockKey: string,
+  // The block that contains this leaf.
+  block: ContentBlock,
 
   // Mapping of style names to CSS declarations.
   customStyleMap: Object,
@@ -81,7 +81,8 @@ class DraftEditorLeaf extends React.Component {
       return;
     }
 
-    const {blockKey, start, text} = this.props;
+    const {block, start, text} = this.props;
+    const blockKey = block.getKey();
     const end = start + text.length;
     if (!selection.hasEdgeWithin(blockKey, start, end)) {
       return;
@@ -122,6 +123,7 @@ class DraftEditorLeaf extends React.Component {
   }
 
   render(): React.Element<any> {
+    const {block} = this.props;
     let {text} = this.props;
 
     // If the leaf is at the end of its block and ends in a soft newline, append
@@ -150,7 +152,7 @@ class DraftEditorLeaf extends React.Component {
     }, {});
 
     if (customStyleFn) {
-      const newStyles = customStyleFn(styleSet);
+      const newStyles = customStyleFn(styleSet, block);
       styleObj = Object.assign(styleObj, newStyles);
     }
 
