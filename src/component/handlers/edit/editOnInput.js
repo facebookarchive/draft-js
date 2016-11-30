@@ -76,7 +76,9 @@ function editOnInput(editor: DraftEditor): void {
 
   // We'll replace the entire leaf with the text content of the target.
   var targetRange = selection.merge({
+    anchorKey: blockKey,
     anchorOffset: start,
+    focusKey: blockKey,
     focusOffset: end,
     isBackward: false,
   });
@@ -118,8 +120,8 @@ function editOnInput(editor: DraftEditor): void {
     // and adjust it based on the number of characters changed during the
     // mutation.
     var charDelta = domText.length - modelText.length;
-    startOffset = selection.getStartOffset();
-    endOffset = selection.getEndOffset();
+    startOffset = targetRange.getStartOffset();
+    endOffset = targetRange.getEndOffset();
 
     anchorOffset = isCollapsed ? endOffset + charDelta : startOffset;
     focusOffset = endOffset + charDelta;
@@ -130,7 +132,7 @@ function editOnInput(editor: DraftEditor): void {
   // after the change, so we are not merging the selection.
   var contentWithAdjustedDOMSelection = newContent.merge({
     selectionBefore: content.getSelectionAfter(),
-    selectionAfter: selection.merge({anchorOffset, focusOffset}),
+    selectionAfter: targetRange.merge({anchorOffset, focusOffset}),
   });
 
   editor.update(
