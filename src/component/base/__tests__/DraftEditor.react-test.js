@@ -36,7 +36,7 @@ describe('DraftEditor.react', () => {
      
       var key = shallow._instance._instance.getEditorKey();
       expect(typeof key).toBe('string');
-      expect(key.length).toBe(5);
+      expect(key.length).toBeGreaterThanOrEqual(4);
     });
 
     it('must has editorKey same as props', () => {
