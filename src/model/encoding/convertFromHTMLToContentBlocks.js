@@ -29,6 +29,7 @@ const sanitizeDraftText = require('sanitizeDraftText');
 const {Set} = require('immutable');
 
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {EntityMap} from 'EntityMap';
@@ -158,7 +159,7 @@ function getBlockMapSupportedTags(
   const unstyledElement = blockRenderMap.get('unstyled').element;
   let tags = new Set([]);
 
-  blockRenderMap.forEach((draftBlock: any) => {
+  blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
     if (draftBlock.aliasedElements) {
       draftBlock.aliasedElements.forEach((tag) => {
         tags = tags.add(tag);
@@ -195,12 +196,12 @@ function getBlockTypeForTag(
   blockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
   const matchedTypes = blockRenderMap
-    .filter((config: any) => (
-      config.element === tag ||
-      config.wrapper === tag ||
+    .filter((draftBlock: DraftBlockRenderConfig) => (
+      draftBlock.element === tag ||
+      draftBlock.wrapper === tag ||
       (
-        config.aliasedElements &&
-        config.aliasedElements.some(alias => alias === tag)
+        draftBlock.aliasedElements &&
+        draftBlock.aliasedElements.some(alias => alias === tag)
       )
     ))
     .keySeq()
