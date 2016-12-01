@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+ui_infra
  */
 
 'use strict';
@@ -14,7 +14,6 @@
 jest.disableAutomock();
 
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
 function testConvertingAdjacentHtmlElementsToContentBlocks(
   tag: string
@@ -31,21 +30,19 @@ function testConvertingAdjacentHtmlElementsToContentBlocks(
   });
 }
 
-function performTestWithDefaultDraftBlockTags(
-  testSpec: Array<Function>
-) {
-  DefaultDraftBlockRenderMap
-    .map((config) => config.element)
-    .valueSeq()
-    .toSet()
-    .toArray()
-    .forEach(tag => testSpec.forEach(func => func(tag)));
-}
-
 describe('convertFromHTMLToContentBlocks', () => {
-  performTestWithDefaultDraftBlockTags([
-    testConvertingAdjacentHtmlElementsToContentBlocks,
-  ]);
-
-  testConvertingAdjacentHtmlElementsToContentBlocks('p');
+  [
+    'blockquote',
+    'div',
+    'figure',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'li',
+    'p',
+    'pre',
+  ].forEach(tag => testConvertingAdjacentHtmlElementsToContentBlocks(tag));
 });

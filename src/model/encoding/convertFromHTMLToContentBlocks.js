@@ -156,17 +156,19 @@ function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap
 ): Array<string> {
   const unstyledElement = blockRenderMap.get('unstyled').element;
-  return blockRenderMap
-    .reduce((accum, draftBlock, key) => {
-      if (draftBlock.aliasedElements) {
-        draftBlock.aliasedElements.forEach(
-          (alias) => {
-            accum = accum.add(alias);
-          }
-        );
-      }
-      return accum.add(draftBlock.element);
-    }, new Set([]))
+  let tags = new Set([]);
+
+  blockRenderMap.forEach((draftBlock: any) => {
+    if (draftBlock.aliasedElements) {
+      draftBlock.aliasedElements.forEach((tag) => {
+        tags = tags.add(tag);
+      });
+    }
+
+    tags = tags.add(draftBlock.element);
+  });
+
+  return tags
     .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
@@ -193,7 +195,7 @@ function getBlockTypeForTag(
   blockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
   const matchedTypes = blockRenderMap
-    .filter((config) => (
+    .filter((config: any) => (
       config.element === tag ||
       config.wrapper === tag ||
       (
