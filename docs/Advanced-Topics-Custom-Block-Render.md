@@ -97,11 +97,11 @@ class RichEditor extends React.Component {
 }
 ```
 
-There are cases where you want to define an alias for block elements.
-For example we use this internally on the `unstyled` block type
-in order to allow it to also match paragraphs
+When Draft parses pasted HTML, it maps from HTML elements back into
+Draft block types. If you want to specify other HTML elements that map to a
+particular block type, you can add an array `aliasedElements` to the block config.
 
-*example of unstyled block type alias usage*
+*example of unstyled block type alias usage:*
 
 ```
 'unstyled': {
