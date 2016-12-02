@@ -46,11 +46,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             {
               strategy: findLinkEntities,
               component: Link,
-            },
-            {
-              strategy: findImageEntities,
-              component: Image,
-            },
+            }
           ]);
 
           const sampleMarkup =
@@ -118,31 +114,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           <a href={url} style={styles.link}>
             {props.children}
           </a>
-        );
-      };
-
-      function findImageEntities(contentBlock, callback, contentState) {
-        contentBlock.findEntityRanges(
-          (character) => {
-            const entityKey = character.getEntity();
-            return (
-              entityKey !== null &&
-              contentState.getEntity(entityKey).getType() === 'IMAGE'
-            );
-          },
-          callback
-        );
-      }
-
-      const Image = (props) => {
-        const {
-          height,
-          src,
-          width,
-        } = props.contentState.getEntity(props.entityKey).getData();
-
-        return (
-          <img src={src} height={height} width={width} />
         );
       };
 
