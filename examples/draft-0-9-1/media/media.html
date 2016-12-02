@@ -16,15 +16,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   <head>
     <meta charset="utf-8" />
     <title>Draft • Media Editor</title>
-    <link rel="stylesheet" href="../../dist/Draft.css" />
+    <link rel="stylesheet" href="../../../dist/Draft.css" />
   </head>
   <body>
     <div id="target"></div>
-    <script src="../../node_modules/react/dist/react.js"></script>
-    <script src="../../node_modules/react-dom/dist/react-dom.js"></script>
-    <script src="../../node_modules/immutable/dist/immutable.js"></script>
+    <script src="../../../node_modules/react/dist/react.js"></script>
+    <script src="../../../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="../../../node_modules/immutable/dist/immutable.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
-    <script src="../../dist/Draft.js"></script>
+    <script src="../../../dist/Draft.js"></script>
     <script type="text/babel">
       'use strict';
 
@@ -32,6 +32,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         AtomicBlockUtils,
         Editor,
         EditorState,
+        Entity,
         RichUtils,
         convertToRaw,
       } = Draft;
@@ -76,21 +77,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         _confirmMedia(e) {
           e.preventDefault();
           const {editorState, urlValue, urlType} = this.state;
-          const contentState = editorState.getCurrentContent();
-          const contentStateWithEntity = contentState.createEntity(
-            urlType,
-            'IMMUTABLE',
-            {src: urlValue}
-          );
-          const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-          const newEditorState = EditorState.set(
-            editorState,
-            {currentContent: contentStateWithEntity}
-          );
+          const entityKey = Entity.create(urlType, 'IMMUTABLE', {src: urlValue})
 
           this.setState({
             editorState: AtomicBlockUtils.insertAtomicBlock(
-              newEditorState,
+              editorState,
               entityKey,
               ' '
             ),
@@ -219,9 +210,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       };
 
       const Media = (props) => {
-        const entity = props.contentState.getEntity(
-          props.block.getEntityAt(0)
-        );
+        const entity = Entity.get(props.block.getEntityAt(0));
         const {src} = entity.getData();
         const type = entity.getType();
 

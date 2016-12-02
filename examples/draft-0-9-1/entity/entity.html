@@ -16,16 +16,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   <head>
     <meta charset="utf-8" />
     <title>Draft • Entity Editor</title>
-    <link rel="stylesheet" href="../../dist/Draft.css" />
+    <link rel="stylesheet" href="../../../dist/Draft.css" />
   </head>
   <body>
     <div id="target"></div>
-    <script src="../../node_modules/react/dist/react.js"></script>
-    <script src="../../node_modules/react-dom/dist/react-dom.js"></script>
-    <script src="../../node_modules/immutable/dist/immutable.js"></script>
-    <script src="../../node_modules/es6-shim/es6-shim.js"></script>
+    <script src="../../../node_modules/react/dist/react.js"></script>
+    <script src="../../../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="../../../node_modules/immutable/dist/immutable.js"></script>
+    <script src="../../../node_modules/es6-shim/es6-shim.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
-    <script src="../../dist/Draft.js"></script>
+    <script src="../../../dist/Draft.js"></script>
     <script type="text/babel">
       'use strict';
 
@@ -36,6 +36,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         ContentState,
         Editor,
         EditorState,
+        Entity,
       } = Draft;
 
       const rawContent = {
@@ -148,14 +149,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       function getEntityStrategy(mutability) {
-        return function(contentBlock, callback, contentState) {
+        return function(contentBlock, callback) {
           contentBlock.findEntityRanges(
             (character) => {
               const entityKey = character.getEntity();
               if (entityKey === null) {
                 return false;
               }
-              return contentState.getEntity(entityKey).getMutability() === mutability;
+              return Entity.get(entityKey).getMutability() === mutability;
             },
             callback
           );
@@ -173,10 +174,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
       const TokenSpan = (props) => {
         const style = getDecoratedStyle(
-          props.contentState.getEntity(props.entityKey).getMutability()
+          Entity.get(props.entityKey).getMutability()
         );
         return (
-          <span data-offset-key={props.offsetkey} style={style}>
+          <span {...props} style={style}>
             {props.children}
           </span>
         );

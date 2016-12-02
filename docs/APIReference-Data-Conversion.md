@@ -65,4 +65,4 @@ this.state = {
 };
 ```
 
-Given an HTML fragment, convert it to an array of `ContentBlock` objects. Construct content state from the array of block elements and then update the editor state with it. Full example available [here](https://github.com/facebook/draft-js/blob/8ac72f723fb2d9102db833a9b060dfd66df65652/examples/convertFromHTML/convert.html).
+Given an HTML fragment, convert it to an array of `ContentBlock` objects. Construct content state from the array of block elements and then update the editor state with it. Full example available [here](https://github.com/facebook/draft-js/blob/8ac72f723fb2d9102db833a9b060dfd66df65652/examples/draft-0-9-1/convertFromHTML/convert.html).

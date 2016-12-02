@@ -2,6 +2,8 @@
 /lib/
 /node_modules/
 /examples/tex/node_modules/
+/examples/draft-0-9-1/tex/node_modules/
+/examples/draft-0-10-0/tex/node_modules/
 /website/build/
 /website/node_modules/
 /website/src/draft-js/lib/
