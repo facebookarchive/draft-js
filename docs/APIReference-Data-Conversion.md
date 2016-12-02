@@ -54,11 +54,7 @@ const sampleMarkup =
   '<a href="http://www.facebook.com">Example link</a><br /><br/ >' +
   '<img src="image.png" height="112" width="200" />';
 
-const blocksFromHTML = convertFromHTML(sampleMarkup);
-const state = ContentState.createFromBlockArray(
-  blocksFromHTML.contentBlocks,
-  blocksFromHTML.entityMap,
-);
+const state = ContentState.createFromBlockArray(convertFromHTML(sampleMarkup));
 
 this.state = {
   editorState: EditorState.createWithContent(state),
