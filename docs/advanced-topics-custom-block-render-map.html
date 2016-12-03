@@ -46,6 +46,11 @@ class <span class="token class-name">RichEditor</span> extends <span class="toke
       <span class="token operator">/</span><span class="token operator">&gt;</span>
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></pre><p>When Draft parses pasted HTML, it maps from HTML elements back into
+Draft block types. If you want to specify other HTML elements that map to a
+particular block type, you can add an array <code>aliasedElements</code> to the block config.</p><p><em>example of unstyled block type alias usage:</em></p><pre class="prism language-javascript"><span class="token string">&#x27;unstyled&#x27;</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+  element<span class="token punctuation">:</span> <span class="token string">&#x27;div&#x27;</span><span class="token punctuation">,</span>
+  aliasedElements<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">&#x27;p&#x27;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
 <span class="token punctuation">}</span></pre><h2><a class="anchor" name="custom-block-wrappers"></a>Custom block wrappers <a class="hash-link" href="#custom-block-wrappers">#</a></h2><p>By default the html element is used to wrap block types however a react component
 can also be provided to the <em>blockRenderMap</em> to wrap the EditorBlock.</p><p>During pasting or when using the
 <a href="https://facebook.github.io/draft-js/docs/api-reference-data-conversion.html#convertfromhtml" target="_blank">convertFromHTML</a>
