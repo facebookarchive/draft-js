@@ -3,10 +3,10 @@ like comments and chat messages, but it also powers richer editor experiences
 like <a href="https://www.facebook.com/notes/" target="_blank">Facebook Notes</a>.</p><p>Users can embed images within their Notes, either loading from their existing
 Facebook photos or by uploading new images from the desktop. To that end,
 the Draft framework supports custom rendering at the block level, to render
-content like rich media in place of plain text.</p><p>The <a href="https://github.com/facebook/draft-js/tree/master/examples/tex" target="_blank">TeX editor</a>
+content like rich media in place of plain text.</p><p>The <a href="https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/tex" target="_blank">TeX editor</a>
 in the Draft repository provides a live example of custom block rendering, with
 TeX syntax translated on the fly into editable embedded formula rendering via the
-<a href="https://khan.github.io/KaTeX/" target="_blank">KaTeX library</a>.</p><p>A <a href="https://github.com/facebook/draft-js/tree/master/examples/media" target="_blank">media example</a> is also
+<a href="https://khan.github.io/KaTeX/" target="_blank">KaTeX library</a>.</p><p>A <a href="https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/media" target="_blank">media example</a> is also
 available, which showcases custom block rendering of audio, image, and video.</p><p>By using a custom block renderer, it is possible to introduce complex rich
 interactions within the frame of your editor.</p><h2><a class="anchor" name="custom-block-components"></a>Custom Block Components <a class="hash-link" href="#custom-block-components">#</a></h2><p>Within the <code>Editor</code> component, one may specify the <code>blockRendererFn</code> prop.
 This prop function allows a higher-level component to define custom React
