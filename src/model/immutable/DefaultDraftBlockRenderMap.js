@@ -12,6 +12,8 @@
 
 'use strict';
 
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+
 const {Map} = require('immutable');
 const React = require('React');
 
@@ -21,7 +23,7 @@ const UL_WRAP = <ul className={cx('public/DraftStyleDefault/ul')} />;
 const OL_WRAP = <ol className={cx('public/DraftStyleDefault/ol')} />;
 const PRE_WRAP = <pre className={cx('public/DraftStyleDefault/pre')} />;
 
-module.exports = Map({
+const DefaultDraftBlockRenderMap: DraftBlockRenderMap = Map({
   'header-one': {
     element: 'h1',
   },
@@ -63,3 +65,5 @@ module.exports = Map({
     aliasedElements: ['p'],
   },
 });
+
+module.exports = DefaultDraftBlockRenderMap;
