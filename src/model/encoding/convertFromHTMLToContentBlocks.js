@@ -26,7 +26,10 @@ const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 const sanitizeDraftText = require('sanitizeDraftText');
 
+const {Set} = require('immutable');
+
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {EntityMap} from 'EntityMap';
@@ -154,10 +157,19 @@ function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap
 ): Array<string> {
   const unstyledElement = blockRenderMap.get('unstyled').element;
-  return blockRenderMap
-    .map((config) => config.element)
-    .valueSeq()
-    .toSet()
+  let tags = new Set([]);
+
+  blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
+    if (draftBlock.aliasedElements) {
+      draftBlock.aliasedElements.forEach((tag) => {
+        tags = tags.add(tag);
+      });
+    }
+
+    tags = tags.add(draftBlock.element);
+  });
+
+  return tags
     .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
@@ -184,7 +196,14 @@ function getBlockTypeForTag(
   blockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
   const matchedTypes = blockRenderMap
-    .filter((config) => config.element === tag || config.wrapper === tag)
+    .filter((draftBlock: DraftBlockRenderConfig) => (
+      draftBlock.element === tag ||
+      draftBlock.wrapper === tag ||
+      (
+        draftBlock.aliasedElements &&
+        draftBlock.aliasedElements.some(alias => alias === tag)
+      )
+    ))
     .keySeq()
     .toSet()
     .toArray()

@@ -97,6 +97,19 @@ class RichEditor extends React.Component {
 }
 ```
 
+When Draft parses pasted HTML, it maps from HTML elements back into
+Draft block types. If you want to specify other HTML elements that map to a
+particular block type, you can add an array `aliasedElements` to the block config.
+
+*example of unstyled block type alias usage:*
+
+```
+'unstyled': {
+  element: 'div',
+  aliasedElements: ['p'],
+}
+```
+
 ## Custom block wrappers
 
 By default the html element is used to wrap block types however a react component
