@@ -37,8 +37,9 @@ class MyEditor extends React.Component {
     this.onChange = (editorState) => this.setState({editorState});
   }
   render() {
-    const {editorState} = this.state;
-    return <Editor editorState={editorState} onChange={this.onChange} />;
+    return (
+        <Editor editorState={this.state.editorState} onChange={this.onChange} />
+    );
   }
 }
 
