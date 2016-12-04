@@ -25,6 +25,19 @@ var instances: Map<string, DraftEntityInstance> = Map();
 var instanceKey = 0;
 
 /**
+ * Temporary utility for generating the warnings
+ */
+function logWarning(oldMethodCall, newMethodCall) {
+  console.warn(
+    'WARNING: '
+    + oldMethodCall
+    + ' will be deprecated soon!\nPlease use "'
+    + newMethodCall
+    + '" instead.'
+  );
+}
+
+/**
  * A "document entity" is an object containing metadata associated with a
  * piece of text in a ContentBlock.
  *
@@ -39,15 +52,25 @@ var instanceKey = 0;
  */
 var DraftEntity = {
   /**
+   * WARNING: This method will be deprecated soon!
+   * Please use 'contentState.getLastCreatedEntityKey' instead.
+   * ---
    * Get the random key string from whatever entity was last created.
    * We need this to support the new API, as part of transitioning to put Entity
    * storage in contentState.
    */
   getLastCreatedEntityKey: function(): string {
-    return '' + instanceKey;
+    logWarning(
+      'DraftEntity.getLastCreatedEntityKey',
+      'contentState.getLastCreatedEntityKey',
+    );
+    return DraftEntity._getLastCreatedEntityKey();
   },
 
   /**
+   * WARNING: This method will be deprecated soon!
+   * Please use 'contentState.createEntity' instead.
+   * ---
    * Create a DraftEntityInstance and store it for later retrieval.
    *
    * A random key string will be generated and returned. This key may
@@ -59,7 +82,104 @@ var DraftEntity = {
     mutability: DraftEntityMutability,
     data?: Object,
   ): string {
-    return DraftEntity.add(
+    logWarning(
+      'DraftEntity.create',
+      'contentState.createEntity',
+    );
+    return DraftEntity._create(type, mutability, data);
+  },
+
+  /**
+   * WARNING: This method will be deprecated soon!
+   * Please use 'contentState.addEntity' instead.
+   * ---
+   * Add an existing DraftEntityInstance to the DraftEntity map. This is
+   * useful when restoring instances from the server.
+   */
+  add: function(instance: DraftEntityInstance): string {
+    logWarning(
+      'DraftEntity.add',
+      'contentState.addEntity',
+    );
+    return DraftEntity._add(instance);
+  },
+
+  /**
+   * WARNING: This method will be deprecated soon!
+   * Please use 'contentState.getEntity' instead.
+   * ---
+   * Retrieve the entity corresponding to the supplied key string.
+   */
+  get: function(key: string): DraftEntityInstance {
+    logWarning(
+      'DraftEntity.get',
+      'contentState.getEntity',
+    );
+    return DraftEntity._get(key);
+  },
+
+  /**
+   * WARNING: This method will be deprecated soon!
+   * Please use 'contentState.mergeEntityData' instead.
+   * ---
+   * Entity instances are immutable. If you need to update the data for an
+   * instance, this method will merge your data updates and return a new
+   * instance.
+   */
+  mergeData: function(
+    key: string,
+    toMerge: {[key: string]: any}
+  ): DraftEntityInstance {
+    logWarning(
+      'DraftEntity.mergeData',
+      'contentState.mergeEntityData',
+    );
+    return DraftEntity._mergeData(key, toMerge);
+  },
+
+  /**
+   * WARNING: This method will be deprecated soon!
+   * Please use 'contentState.replaceEntityData' instead.
+   * ---
+   * Completely replace the data for a given instance.
+   */
+  replaceData: function(
+    key: string,
+    newData: {[key: string]: any}
+  ): DraftEntityInstance {
+    logWarning(
+      'DraftEntity.replaceData',
+      'contentState.replaceEntityData',
+    );
+    return DraftEntity._replaceData(key, newData);
+  },
+
+  // ***********************************WARNING******************************
+  // --- the above public API will be deprecated in the next version of Draft!
+  // The methods below this line are private - don't call them directly.
+
+  /**
+   * Get the random key string from whatever entity was last created.
+   * We need this to support the new API, as part of transitioning to put Entity
+   * storage in contentState.
+   */
+  _getLastCreatedEntityKey: function(): string {
+    return '' + instanceKey;
+  },
+
+  /**
+   * Create a DraftEntityInstance and store it for later retrieval.
+   *
+   * A random key string will be generated and returned. This key may
+   * be used to track the entity's usage in a ContentBlock, and for
+   * retrieving data about the entity at render time.
+   */
+  _create: function(
+    type: DraftEntityType,
+    mutability: DraftEntityMutability,
+    data?: Object,
+  ): string {
+    return DraftEntity._add(
       new DraftEntityInstance({type, mutability, data: data || {}})
     );
   },
@@ -68,7 +188,7 @@ var DraftEntity = {
    * Add an existing DraftEntityInstance to the DraftEntity map. This is
    * useful when restoring instances from the server.
    */
-  add: function(instance: DraftEntityInstance): string {
+  _add: function(instance: DraftEntityInstance): string {
     var key = '' + (++instanceKey);
     instances = instances.set(key, instance);
     return key;
@@ -77,7 +197,7 @@ var DraftEntity = {
   /**
    * Retrieve the entity corresponding to the supplied key string.
    */
-  get: function(key: string): DraftEntityInstance {
+  _get: function(key: string): DraftEntityInstance {
     var instance = instances.get(key);
     invariant(!!instance, 'Unknown DraftEntity key.');
     return instance;
@@ -88,11 +208,11 @@ var DraftEntity = {
    * instance, this method will merge your data updates and return a new
    * instance.
    */
-  mergeData: function(
+  _mergeData: function(
     key: string,
     toMerge: {[key: string]: any}
   ): DraftEntityInstance {
-    var instance = DraftEntity.get(key);
+    var instance = DraftEntity._get(key);
     var newData = {...instance.getData(), ...toMerge};
     var newInstance = instance.set('data', newData);
     instances = instances.set(key, newInstance);
@@ -102,11 +222,11 @@ var DraftEntity = {
   /**
    * Completely replace the data for a given instance.
    */
-  replaceData: function(
+  _replaceData: function(
     key: string,
     newData: {[key: string]: any}
   ): DraftEntityInstance {
-    const instance = DraftEntity.get(key);
+    const instance = DraftEntity._get(key);
     const newInstance = instance.set('data', newData);
     instances = instances.set(key, newInstance);
     return newInstance;

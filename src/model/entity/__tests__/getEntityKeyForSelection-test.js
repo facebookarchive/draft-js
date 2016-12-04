@@ -25,7 +25,7 @@ selectionState = selectionState.merge({
 });
 
 function setEntityMutability(mutability) {
-  contentState.getEntityMap().get = () => ({
+  contentState.getEntityMap()._get = () => ({
     getMutability: () => mutability,
   });
 }

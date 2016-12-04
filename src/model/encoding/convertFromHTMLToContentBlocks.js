@@ -408,7 +408,7 @@ function genFragment(
     node.textContent = imageURI; // Output src if no decorator
 
     // TODO: update this when we remove DraftEntity entirely
-    inEntity = DraftEntity.create(
+    inEntity = DraftEntity._create(
       'IMAGE',
       'MUTABLE',
       entityConfig || {},
@@ -475,7 +475,7 @@ function genFragment(
 
       entityConfig.url = new URI(anchor.href).toString();
       // TODO: update this when we remove DraftEntity completely
-      entityId = DraftEntity.create(
+      entityId = DraftEntity._create(
         'LINK',
         'MUTABLE',
         entityConfig || {},

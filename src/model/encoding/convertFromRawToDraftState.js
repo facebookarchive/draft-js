@@ -38,7 +38,7 @@ function convertFromRawToDraftState(
     storageKey => {
       var encodedEntity = entityMap[storageKey];
       var {type, mutability, data} = encodedEntity;
-      var newKey = DraftEntity.create(type, mutability, data || {});
+      var newKey = DraftEntity._create(type, mutability, data || {});
       fromStorageToLocal[storageKey] = newKey;
     }
   );
