@@ -177,10 +177,13 @@ class ContentState extends ContentStateRecord {
   }
 
   static createFromBlockArray(
-    blocks: Array<ContentBlock>,
+    // TODO: update flow type when we completely deprecate the old entity API
+    blocks: Array<ContentBlock> | {contentBlocks: Array<ContentBlock>},
     entityMap: ?any,
   ): ContentState {
-    var blockMap = BlockMapBuilder.createFromArray(blocks);
+    // TODO: remove this when we completely deprecate the old entity API
+    const theBlocks = Array.isArray(blocks) ? blocks : blocks.contentBlocks;
+    var blockMap = BlockMapBuilder.createFromArray(theBlocks);
     var selectionState = blockMap.isEmpty()
       ? new SelectionState()
       : SelectionState.createEmpty(blockMap.first().getKey());
