@@ -18,6 +18,7 @@ const Keys = require('Keys');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
+const isEventHandled = require('isEventHandled');
 
 import type DraftEditor from 'DraftEditor.react';
 
@@ -45,7 +46,21 @@ let textInputData = '';
 
 var DraftEditorCompositionHandler = {
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent): void {
-    textInputData = (textInputData || '') + e.data;
+    var chars = e.data;
+
+    // Allow the top-level component to handle the insertion manually. This is
+    // useful when triggering interesting behaviors for a character insertion,
+    // Simple examples: replacing a raw text 'ㅅ_ㅅ' with a smile emoji or image
+    // decorator
+    if (
+      editor.props.handleBeforeInput &&
+      isEventHandled(editor.props.handleBeforeInput(chars))
+    ) {
+      e.preventDefault();
+      return;
+    }
+
+    textInputData = (textInputData || '') + chars;
   },
 
   /**
