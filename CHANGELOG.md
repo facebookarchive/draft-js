@@ -4,6 +4,40 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.10.0 (Dec. 16, 2016)
+
+### Added
+
+* Add improved API for entity manipulation to contentState
+* Add deprecation warnings to old Entity module API
+* Add image support to convertFromHTML
+* Add option of 'aliasedElements' in block render map
+
+### Changed
+
+* This version supports both the old and new Entity API; we
+  are deprecating the Entity module in favor of
+  using contentState.
+
+### Fixed
+
+* Fix bug where block data was not removed when deleting atomic block
+* Fix bug preventing pasting from clipboard
+* Fix dead key deletion and deletion in 2-Set Korean
+* Fix ContentState.createFromBlockArray to allow taking an empty array
+* Improve typing in Korean on Windows
+
+## 0.9.1 (September 16, 2016)
+
+### Added
+
+* `customStyleFn` for more control over inline style ranges
+
+### Fixed
+
+* Update Flow version
+* Fix flow error in DraftEditorDragHandler
+
 ## 0.9.0 (September 13, 2016)
 
 ### Changed
