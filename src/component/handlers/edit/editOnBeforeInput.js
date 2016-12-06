@@ -155,14 +155,16 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     )
   ) {
     e.preventDefault();
+    editor.update(newEditorState);
   } else {
-    // The native event is allowed to occur.
-    newEditorState = EditorState.set(newEditorState, {
+    // The native event is allowed to occur. To allow user onChange handlers to
+    // change the inserted text, we wait until the text is actually inserted
+    // before we actually update our state. That way when we rerender, the text
+    // we see in the DOM will already have been inserted properly.
+    editor._pendingStateFromBeforeInput = EditorState.set(newEditorState, {
       nativelyRenderedContent: newEditorState.getCurrentContent(),
     });
   }
-
-  editor.update(newEditorState);
 }
 
 module.exports = editOnBeforeInput;
