@@ -21,7 +21,7 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "prepublish": "npm run build",
-    "publish": "npm version patch && npm pack && s3-deploy *.tgz --region us-east-1 --bucket textio-web-deps",
+    "publish": "npm version prerelease && npm pack && s3-deploy *.tgz --region us-east-1 --bucket textio-web-deps",
     "postpublish": "git push && git push --tags",
     "pretest": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "build": "gulp",
