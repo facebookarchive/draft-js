@@ -37,6 +37,52 @@ function logWarning(oldMethodCall, newMethodCall) {
   );
 }
 
+export type DraftEntityMapObject = {
+  getLastCreatedEntityKey: () => string,
+
+  create: (
+    type: DraftEntityType,
+    mutability: DraftEntityMutability,
+    data?: Object,
+  ) => string,
+
+  add: (instance: DraftEntityInstance) => string,
+
+  get: (key: string) => DraftEntityInstance,
+
+  mergeData: (
+    key: string,
+    toMerge: {[key: string]: any},
+  ) => DraftEntityInstance,
+
+  replaceData: (
+    key: string,
+    newData: {[key: string]: any},
+  ) => DraftEntityInstance,
+
+  _getLastCreatedEntityKey: () => string,
+
+  _create: (
+    type: DraftEntityType,
+    mutability: DraftEntityMutability,
+    data?: Object,
+  ) => string,
+
+  _add: (instance: DraftEntityInstance) => string,
+
+  _get: (key: string) => DraftEntityInstance,
+
+  _mergeData: (
+    key: string,
+    toMerge: {[key: string]: any}
+  ) => DraftEntityInstance,
+
+  _replaceData: (
+    key: string,
+    newData: {[key: string]: any}
+  ) => DraftEntityInstance,
+};
+
 /**
  * A "document entity" is an object containing metadata associated with a
  * piece of text in a ContentBlock.
@@ -50,7 +96,7 @@ function logWarning(oldMethodCall, newMethodCall) {
  * generated via DraftEntity.create() and used to obtain entity metadata
  * via DraftEntity.get().
  */
-var DraftEntity = {
+var DraftEntity:DraftEntityMapObject = {
   /**
    * WARNING: This method will be deprecated soon!
    * Please use 'contentState.getLastCreatedEntityKey' instead.
