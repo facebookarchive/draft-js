@@ -126,7 +126,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
         )
       ) {
         editor.update(
-          insertFragment(editor._latestEditorState, internalClipboard)
+          insertFragment(editor._latestEditorState, internalClipboard),
         );
         return;
       }
@@ -140,7 +140,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
       // Use the internalClipboard if present and equal to what is on
       // the clipboard. See https://bugs.webkit.org/show_bug.cgi?id=19893.
       editor.update(
-        insertFragment(editor._latestEditorState, internalClipboard)
+        insertFragment(editor._latestEditorState, internalClipboard),
       );
       return;
     }
@@ -149,14 +149,14 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
     if (html) {
       var htmlFragment = DraftPasteProcessor.processHTML(
         html,
-        editor.props.blockRenderMap
+        editor.props.blockRenderMap,
       );
       if (htmlFragment) {
         const { contentBlocks, entityMap } = htmlFragment;
         if (contentBlocks) {
           var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
           editor.update(
-            insertFragment(editor._latestEditorState, htmlMap, entityMap)
+            insertFragment(editor._latestEditorState, htmlMap, entityMap),
           );
           return;
         }

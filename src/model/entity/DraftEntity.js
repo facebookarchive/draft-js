@@ -33,7 +33,7 @@ function logWarning(oldMethodCall, newMethodCall) {
     + oldMethodCall
     + ' will be deprecated soon!\nPlease use "'
     + newMethodCall
-    + '" instead.'
+    + '" instead.',
   );
 }
 
@@ -128,7 +128,7 @@ var DraftEntity = {
    */
   mergeData: function(
     key: string,
-    toMerge: {[key: string]: any}
+    toMerge: {[key: string]: any},
   ): DraftEntityInstance {
     logWarning(
       'DraftEntity.mergeData',
@@ -145,7 +145,7 @@ var DraftEntity = {
    */
   replaceData: function(
     key: string,
-    newData: {[key: string]: any}
+    newData: {[key: string]: any},
   ): DraftEntityInstance {
     logWarning(
       'DraftEntity.replaceData',

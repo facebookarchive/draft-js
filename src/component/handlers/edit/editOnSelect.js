@@ -30,7 +30,7 @@ function editOnSelect(editor: DraftEditor): void {
   var editorState = editor.props.editorState;
   var documentSelection = getDraftEditorSelection(
     editorState,
-    ReactDOM.findDOMNode(editor.refs.editorContainer).firstChild
+    ReactDOM.findDOMNode(editor.refs.editorContainer).firstChild,
   );
   var updatedSelectionState = documentSelection.selectionState;
 
@@ -38,12 +38,12 @@ function editOnSelect(editor: DraftEditor): void {
     if (documentSelection.needsRecovery) {
       editorState = EditorState.forceSelection(
         editorState,
-        updatedSelectionState
+        updatedSelectionState,
       );
     } else {
       editorState = EditorState.acceptSelection(
         editorState,
-        updatedSelectionState
+        updatedSelectionState,
       );
     }
     editor.update(editorState);

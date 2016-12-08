@@ -530,7 +530,7 @@ function getChunkForHTML(
   html: string,
   DOMBuilder: Function,
   blockRenderMap: DraftBlockRenderMap,
-  entityMap: EntityMap
+  entityMap: EntityMap,
 ): ?{chunk: Chunk, entityMap: EntityMap} {
   html = html
     .trim()
@@ -641,7 +641,7 @@ function convertFromHTMLtoContentBlocks(
               data.entity = entities[ii];
             }
             return CharacterMetadata.create(data);
-          })
+          }),
         );
         start = end + 1;
 
@@ -652,7 +652,7 @@ function convertFromHTMLtoContentBlocks(
           text: textBlock,
           characterList,
         });
-      }
+      },
     ),
     entityMap: newEntityMap,
   };

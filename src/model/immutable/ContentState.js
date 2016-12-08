@@ -136,7 +136,7 @@ class ContentState extends ContentStateRecord {
   createEntity(
     type: DraftEntityType,
     mutability: DraftEntityMutability,
-    data?: Object
+    data?: Object,
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity._create(
@@ -149,7 +149,7 @@ class ContentState extends ContentStateRecord {
 
   mergeEntityData(
     key: string,
-    toMerge: {[key: string]: any}
+    toMerge: {[key: string]: any},
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity._mergeData(key, toMerge);
@@ -158,7 +158,7 @@ class ContentState extends ContentStateRecord {
 
   replaceEntityData(
     key: string,
-    newData: {[key: string]: any}
+    newData: {[key: string]: any},
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity._replaceData(key, newData);

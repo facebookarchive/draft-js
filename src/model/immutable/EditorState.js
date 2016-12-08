@@ -540,7 +540,7 @@ function regenerateTreeForNewBlocks(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(contentState, block, decorator))
+      .map(block => BlockTree.generate(contentState, block, decorator)),
   );
 }
 
@@ -568,7 +568,7 @@ function regenerateTreeForNewDecorator(
           existingDecorator.getDecorations(content, block)
         );
       })
-      .map(block => BlockTree.generate(content, block, decorator))
+      .map(block => BlockTree.generate(content, block, decorator)),
   );
 }
 
