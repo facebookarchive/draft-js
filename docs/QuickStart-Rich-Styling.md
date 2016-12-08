@@ -10,7 +10,7 @@ permalink: docs/quickstart-rich-styling.html
 Now that we have established the basics of the top-level API, we can go a step
 further and examine how basic rich styling can be added to a `Draft` editor.
 
-A [rich text example](https://github.com/facebook/draft-js/tree/master/examples/rich)
+A [rich text example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/rich)
 is also available to follow along.
 
 ## EditorState: Yours to Command
@@ -23,7 +23,7 @@ However, since your top-level React component is responsible for maintaining the
 state, you also have the freedom to apply changes to that `EditorState` object
 in any way you see fit.
 
-For inline and block style behavior, for example, the [`RichUtils`](/draft-js/docs/api-reference-editor-state.html) module
+For inline and block style behavior, for example, the [`RichUtils`](/draft-js/docs/api-reference-rich-utils.html) module
 provides a number of useful functions to help manipulate state.
 
 Similarly, the [Modifier](/draft-js/docs/api-reference-modifier.html) module also provides a

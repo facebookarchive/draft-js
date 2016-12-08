@@ -70,6 +70,7 @@ var selectionState = new SelectionState({
 var blockMap = BlockMapBuilder.createFromArray(BLOCKS);
 var contentState = new ContentState({
   blockMap,
+  entityMap: Immutable.OrderedMap(),
   selectionBefore: selectionState,
   selectionAfter: selectionState,
 });

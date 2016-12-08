@@ -13,6 +13,7 @@
 'use strict';
 
 import type ContentBlock from 'ContentBlock';
+import type ContentState from 'ContentState';
 
 /**
  * A DraftDecorator is a strategy-component pair intended for use when
@@ -32,7 +33,8 @@ import type ContentBlock from 'ContentBlock';
 export type DraftDecorator = {
   strategy: (
     block: ContentBlock,
-    callback: (start: number, end: number) => void
+    callback: (start: number, end: number) => void,
+    contentState: ContentState,
   ) => void,
   component: Function,
   props?: Object,

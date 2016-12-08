@@ -39,6 +39,10 @@ Draft.js is used in production on Facebook, including status and
 comment inputs, [Notes](https://www.facebook.com/notes/), and
 [messenger.com](https://www.messenger.com).
 
+## Resources and Ecosystem
+
+Check out this curated list of articles and open-sourced projects/utilities: [Awesome Draft-JS](https://github.com/nikgraf/awesome-draft-js).
+
 ## Discussion and Support
 
 Join our [Slack team](https://draftjs.herokuapp.com)!

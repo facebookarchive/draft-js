@@ -22,6 +22,7 @@ const getTextContentFromFiles = require('getTextContentFromFiles');
 const getUpdatedSelectionState = require('getUpdatedSelectionState');
 const nullthrows = require('nullthrows');
 
+import type DraftEditor from 'DraftEditor.react';
 import type SelectionState from 'SelectionState';
 const isEventHandled = require('isEventHandled');
 
@@ -63,24 +64,24 @@ var DraftEditorDragHandler = {
   /**
    * Drag originating from input terminated.
    */
-  onDragEnd: function(): void {
-    this.exitCurrentMode();
+  onDragEnd: function(editor: DraftEditor): void {
+    editor.exitCurrentMode();
   },
 
   /**
    * Handle data being dropped.
    */
-  onDrop: function(e: Object): void {
+  onDrop: function(editor: DraftEditor, e: Object): void {
     const data = new DataTransfer(e.nativeEvent.dataTransfer);
 
-    const editorState: EditorState = this.props.editorState;
+    const editorState: EditorState = editor._latestEditorState;
     const dropSelection: ?SelectionState = getSelectionForEvent(
       e.nativeEvent,
       editorState
     );
 
     e.preventDefault();
-    this.exitCurrentMode();
+    editor.exitCurrentMode();
 
     if (dropSelection == null) {
       return;
@@ -89,14 +90,14 @@ var DraftEditorDragHandler = {
     const files = data.getFiles();
     if (files.length > 0) {
       if (
-        this.props.handleDroppedFiles &&
-        isEventHandled(this.props.handleDroppedFiles(dropSelection, files))
+        editor.props.handleDroppedFiles &&
+        isEventHandled(editor.props.handleDroppedFiles(dropSelection, files))
       ) {
         return;
       }
 
       getTextContentFromFiles(files, fileText => {
-        fileText && this.update(
+        fileText && editor.update(
           insertTextAtSelection(
             editorState,
             nullthrows(dropSelection), // flow wtf
@@ -107,20 +108,20 @@ var DraftEditorDragHandler = {
       return;
     }
 
-    const dragType = this._internalDrag ? 'internal' : 'external';
+    const dragType = editor._internalDrag ? 'internal' : 'external';
     if (
-      this.props.handleDrop &&
-      isEventHandled(this.props.handleDrop(dropSelection, data, dragType))
+      editor.props.handleDrop &&
+      isEventHandled(editor.props.handleDrop(dropSelection, data, dragType))
     ) {
       return;
     }
 
-    if (this._internalDrag) {
-      this.update(moveText(editorState, dropSelection));
+    if (editor._internalDrag) {
+      editor.update(moveText(editorState, dropSelection));
       return;
     }
 
-    this.update(
+    editor.update(
       insertTextAtSelection(editorState, dropSelection, data.getText())
     );
   },

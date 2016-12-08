@@ -9,6 +9,7 @@
  * @providesModule DraftEditor.react
  * @typechecks
  * @flow
+ * @preventMunge
  */
 
 'use strict';
@@ -80,11 +81,12 @@ class DraftEditor extends React.Component {
 
   _blockSelectEvents: boolean;
   _clipboard: ?BlockMap;
-  _guardAgainstRender: boolean;
   _handler: ?Object;
   _dragCount: number;
+  _internalDrag: boolean;
   _editorKey: string;
   _placeholderAccessibilityID: string;
+  _latestEditorState: EditorState;
 
   /**
    * Define proxies that can route events to the current handler.
@@ -114,9 +116,7 @@ class DraftEditor extends React.Component {
   blur: () => void;
   setMode: (mode: DraftEditorModes) => void;
   exitCurrentMode: () => void;
-  restoreEditorDOM: (scrollPosition: DraftScrollPosition) => void;
-  setRenderGuard: () => void;
-  removeRenderGuard: () => void;
+  restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void;
   setClipboard: (clipboard?: BlockMap) => void;
   getClipboard: () => ?BlockMap;
   getEditorKey: () => string;
@@ -129,11 +129,11 @@ class DraftEditor extends React.Component {
 
     this._blockSelectEvents = false;
     this._clipboard = null;
-    this._guardAgainstRender = false;
     this._handler = null;
     this._dragCount = 0;
     this._editorKey = generateRandomKey();
     this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
+    this._latestEditorState = props.editorState;
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');
     this._onBlur = this._buildHandler('onBlur');
@@ -162,8 +162,6 @@ class DraftEditor extends React.Component {
     this.setMode = this._setMode.bind(this);
     this.exitCurrentMode = this._exitCurrentMode.bind(this);
     this.restoreEditorDOM = this._restoreEditorDOM.bind(this);
-    this.setRenderGuard = this._setRenderGuard.bind(this);
-    this.removeRenderGuard = this._removeRenderGuard.bind(this);
     this.setClipboard = this._setClipboard.bind(this);
     this.getClipboard = this._getClipboard.bind(this);
     this.getEditorKey = () => this._editorKey;
@@ -184,7 +182,7 @@ class DraftEditor extends React.Component {
     return (e) => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
-        method && method.call(this, e);
+        method && method(this, e);
       }
     };
   }
@@ -313,8 +311,9 @@ class DraftEditor extends React.Component {
    * programmatically. We only care about selection events that occur because
    * of browser interaction, not re-renders and forced selections.
    */
-  componentWillUpdate(): void {
+  componentWillUpdate(nextProps: DraftEditorProps): void {
     this._blockSelectEvents = true;
+    this._latestEditorState = nextProps.editorState;
   }
 
   componentDidUpdate(): void {
@@ -395,19 +394,6 @@ class DraftEditor extends React.Component {
   }
 
   /**
-   * Guard against rendering. Intended for use when we need to manually
-   * reset editor contents, to ensure that no outside influences lead to
-   * React reconciliation when we are in an uncertain state.
-   */
-  _setRenderGuard(): void {
-    this._guardAgainstRender = true;
-  }
-
-  _removeRenderGuard(): void {
-    this._guardAgainstRender = false;
-  }
-
-  /**
    * Used via `this.setClipboard(...)`.
    *
    * Set the clipboard state for a cut/copy event.
@@ -435,6 +421,7 @@ class DraftEditor extends React.Component {
    * function.
    */
   _update(editorState: EditorState): void {
+    this._latestEditorState = editorState;
     this.props.onChange(editorState);
   }
 

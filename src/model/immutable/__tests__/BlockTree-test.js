@@ -16,6 +16,7 @@ jest.disableAutomock();
 var BlockTree = require('BlockTree');
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
+const ContentState = require('ContentState');
 var Immutable = require('immutable');
 var {BOLD} = require('SampleDraftInlineStyle');
 
@@ -58,7 +59,6 @@ function assertLeafValues(leaf, values) {
 describe('BlockTree', () => {
   class Decorator {}
   Decorator.prototype.getDecorations = jest.fn();
-
   beforeEach(() => {
     jest.resetModuleRegistry();
   });
@@ -75,7 +75,8 @@ describe('BlockTree', () => {
       var block = new ContentBlock(PLAIN_BLOCK);
       var length = PLAIN_BLOCK.text.length;
       var decorator = getDecorator(length);
-      var tree = BlockTree.generate(block, decorator);
+      const contentState = ContentState.createFromText(PLAIN_BLOCK.text);
+      var tree = BlockTree.generate(contentState, block, decorator);
 
       // No decorations, so only one leaf set.
       expect(tree.size).toBe(1);
@@ -99,7 +100,8 @@ describe('BlockTree', () => {
       var block = new ContentBlock(STYLED_BLOCK);
       var length = STYLED_BLOCK.text.length;
       var decorator = getDecorator(length);
-      var tree = BlockTree.generate(block, decorator);
+      const contentState = ContentState.createFromText(STYLED_BLOCK.text);
+      var tree = BlockTree.generate(contentState, block, decorator);
 
       // No decorations, so only one leaf set.
       expect(tree.size).toBe(1);
@@ -142,7 +144,8 @@ describe('BlockTree', () => {
       var block = new ContentBlock(PLAIN_BLOCK);
       var length = PLAIN_BLOCK.text.length;
       var decorator = getDecorator(length);
-      var tree = BlockTree.generate(block, decorator);
+      const contentState = ContentState.createFromText(PLAIN_BLOCK.text);
+      var tree = BlockTree.generate(contentState, block, decorator);
 
       // One leaf set for each decoration range.
       expect(tree.size).toBe(3);
@@ -173,7 +176,8 @@ describe('BlockTree', () => {
       var block = new ContentBlock(STYLED_BLOCK);
       var length = STYLED_BLOCK.text.length;
       var decorator = getDecorator(length);
-      var tree = BlockTree.generate(block, decorator);
+      const contentState = ContentState.createFromText(STYLED_BLOCK.text);
+      var tree = BlockTree.generate(contentState, block, decorator);
 
       // Leaf Sets: ['Was', 'hin', 'gton']
       // Set 0 leaves (null entity): ['Was'] with NONE
@@ -227,7 +231,8 @@ describe('BlockTree', () => {
       var block = new ContentBlock(PLAIN_BLOCK);
       var length = PLAIN_BLOCK.text.length;
       var decorator = getDecorator(length);
-      var tree = BlockTree.generate(block, decorator);
+      const contentState = ContentState.createFromText(PLAIN_BLOCK.text);
+      var tree = BlockTree.generate(contentState, block, decorator);
 
       // One leaf set for each decoration range.
       expect(tree.size).toBe(3);
@@ -258,7 +263,8 @@ describe('BlockTree', () => {
       var block = new ContentBlock(STYLED_BLOCK);
       var length = STYLED_BLOCK.text.length;
       var decorator = getDecorator(length);
-      var tree = BlockTree.generate(block, decorator);
+      const contentState = ContentState.createFromText(STYLED_BLOCK.text);
+      var tree = BlockTree.generate(contentState, block, decorator);
 
       // Leaf Sets: ['Was', 'hin', 'gton']
       // Set 0 leaves ('y' entity): ['Was'] with NONE

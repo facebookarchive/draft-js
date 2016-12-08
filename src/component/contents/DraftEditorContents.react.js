@@ -126,6 +126,7 @@ class DraftEditorContents extends React.Component {
       const direction = directionMap.get(key);
       const offsetKey = DraftOffsetKey.encode(key, 0, 0);
       const componentProps = {
+        contentState: content,
         block,
         blockProps: customProps,
         customStyleMap,

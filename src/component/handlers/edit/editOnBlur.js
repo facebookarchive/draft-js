@@ -17,9 +17,11 @@ var UserAgent = require('UserAgent');
 
 var getActiveElement = require('getActiveElement');
 
+import type DraftEditor from 'DraftEditor.react';
+
 var isWebKit = UserAgent.isEngine('WebKit');
 
-function editOnBlur(e: SyntheticEvent): void {
+function editOnBlur(editor: DraftEditor, e: SyntheticEvent): void {
   // Webkit has a bug in which blurring a contenteditable by clicking on
   // other active elements will trigger the `blur` event but will not remove
   // the DOM selection from the contenteditable. We therefore force the
@@ -30,15 +32,15 @@ function editOnBlur(e: SyntheticEvent): void {
     global.getSelection().removeAllRanges();
   }
 
-  var editorState = this.props.editorState;
+  var editorState = editor._latestEditorState;
   var currentSelection = editorState.getSelection();
   if (!currentSelection.getHasFocus()) {
     return;
   }
 
   var selection = currentSelection.set('hasFocus', false);
-  this.props.onBlur && this.props.onBlur(e);
-  this.update(EditorState.acceptSelection(editorState, selection));
+  editor.props.onBlur && editor.props.onBlur(e);
+  editor.update(EditorState.acceptSelection(editorState, selection));
 }
 
 module.exports = editOnBlur;

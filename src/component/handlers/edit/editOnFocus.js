@@ -14,15 +14,17 @@
 
 var EditorState = require('EditorState');
 
-function editOnFocus(e: SyntheticFocusEvent): void {
-  var editorState = this.props.editorState;
+import type DraftEditor from 'DraftEditor.react';
+
+function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent): void {
+  var editorState = editor._latestEditorState;
   var currentSelection = editorState.getSelection();
   if (currentSelection.getHasFocus()) {
     return;
   }
 
   var selection = currentSelection.set('hasFocus', true);
-  this.props.onFocus && this.props.onFocus(e);
+  editor.props.onFocus && editor.props.onFocus(e);
 
   // When the tab containing this text editor is hidden and the user does a
   // find-in-page in a _different_ tab, Chrome on Mac likes to forget what the
@@ -30,7 +32,7 @@ function editOnFocus(e: SyntheticFocusEvent): void {
   // moves the cursor back to the beginning of the editor, so we force the
   // selection here instead of simply accepting it in order to preserve the
   // old cursor position. See https://crbug.com/540004.
-  this.update(EditorState.forceSelection(editorState, selection));
+  editor.update(EditorState.forceSelection(editorState, selection));
 }
 
 module.exports = editOnFocus;

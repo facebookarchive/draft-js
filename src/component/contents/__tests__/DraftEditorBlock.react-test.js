@@ -18,6 +18,7 @@ jest.disableAutomock()
   .mock('getScrollPosition')
   .mock('getViewportDimensions');
 
+var ContentState = require('ContentState');
 var BlockTree = require('BlockTree');
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
@@ -100,7 +101,7 @@ function getSelection() {
 function getProps(block, decorator) {
   return {
     block,
-    tree: BlockTree.generate(block, decorator),
+    tree: BlockTree.generate(ContentState.createFromText(''), block, decorator),
     selection: getSelection(),
     decorator: decorator || null,
     forceSelection: false,
@@ -249,7 +250,11 @@ describe('DraftEditorBlock.react', () => {
       );
       var decorator = new Decorator();
 
-      var newTree = BlockTree.generate(helloBlock, decorator);
+      var newTree = BlockTree.generate(
+        ContentState.createFromText(helloBlock.getText()),
+        helloBlock,
+        decorator
+      );
       var nextProps = {...props, tree: newTree, decorator};
 
       expect(props.tree).not.toBe(nextProps.tree);

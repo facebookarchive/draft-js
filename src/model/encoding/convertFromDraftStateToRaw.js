@@ -12,7 +12,6 @@
 
 'use strict';
 
-var DraftEntity = require('DraftEntity');
 var DraftStringKey = require('DraftStringKey');
 
 var encodeEntityRanges = require('encodeEntityRanges');
@@ -58,7 +57,7 @@ function convertFromDraftStateToRaw(
   var entityKeys = Object.keys(entityStorageMap);
   var flippedStorageMap = {};
   entityKeys.forEach((key, jj) => {
-    var entity = DraftEntity.get(DraftStringKey.unstringify(key));
+    var entity = contentState.getEntity(DraftStringKey.unstringify(key));
     flippedStorageMap[jj] = {
       type: entity.getType(),
       mutability: entity.getMutability(),

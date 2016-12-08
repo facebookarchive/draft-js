@@ -1,0 +1,145 @@
+<!--
+Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+
+This file provided by Facebook is for non-commercial testing and evaluation
+purposes only. Facebook reserves all rights not expressly granted.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Draft • Convert from HTML</title>
+    <link rel="stylesheet" href="../../../dist/Draft.css" />
+  </head>
+  <body>
+    <div id="target"></div>
+    <script src="../../../node_modules/react/dist/react.js"></script>
+    <script src="../../../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="../../../node_modules/immutable/dist/immutable.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
+    <script src="../../../dist/Draft.js"></script>
+    <script type="text/babel">
+      'use strict';
+
+      const {
+        CompositeDecorator,
+        ContentBlock,
+        ContentState,
+        Editor,
+        EditorState,
+        Entity,
+        convertFromHTML,
+        convertToRaw,
+      } = Draft;
+
+      class HTMLConvertExample extends React.Component {
+        constructor(props) {
+          super(props);
+
+          const decorator = new CompositeDecorator([
+            {
+              strategy: findLinkEntities,
+              component: Link,
+            }
+          ]);
+
+          const sampleMarkup =
+            '<b>Bold text</b>, <i>Italic text</i><br/ ><br />' +
+            '<a href="http://www.facebook.com">Example link</a>';
+
+          const blocksFromHTML = convertFromHTML(sampleMarkup);
+          const state = ContentState.createFromBlockArray(blocksFromHTML);
+
+          this.state = {
+            editorState: EditorState.createWithContent(
+              state,
+              decorator,
+            ),
+          };
+
+          this.focus = () => this.refs.editor.focus();
+          this.onChange = (editorState) => this.setState({editorState});
+          this.logState = () => {
+            const content = this.state.editorState.getCurrentContent();
+            console.log(convertToRaw(content));
+          };
+        }
+
+        render() {
+          return (
+            <div style={styles.root}>
+              <div style={{marginBottom: 10}}>
+                Sample HTML converted into Draft content state
+              </div>
+              <div style={styles.editor} onClick={this.focus}>
+                <Editor
+                  editorState={this.state.editorState}
+                  onChange={this.onChange}
+                  ref="editor"
+                />
+              </div>
+              <input
+                onClick={this.logState}
+                style={styles.button}
+                type="button"
+                value="Log State"
+              />
+            </div>
+          );
+        }
+      }
+
+      function findLinkEntities(contentBlock, callback) {
+        contentBlock.findEntityRanges(
+          (character) => {
+            const entityKey = character.getEntity();
+            return (
+              entityKey !== null &&
+              Entity.get(entityKey).getType() === 'LINK'
+            );
+          },
+          callback
+        );
+      }
+
+      const Link = (props) => {
+        const {url} = Entity.get(props.entityKey).getData();
+        return (
+          <a href={url} style={styles.link}>
+            {props.children}
+          </a>
+        );
+      };
+
+      const styles = {
+        root: {
+          fontFamily: '\'Helvetica\', sans-serif',
+          padding: 20,
+          width: 600,
+        },
+        editor: {
+          border: '1px solid #ccc',
+          cursor: 'text',
+          minHeight: 80,
+          padding: 10,
+        },
+        button: {
+          marginTop: 10,
+          textAlign: 'center',
+        },
+      };
+
+      ReactDOM.render(
+        <HTMLConvertExample />,
+        document.getElementById('target')
+      );
+    </script>
+  </body>
+</html>

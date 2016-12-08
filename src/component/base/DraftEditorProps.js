@@ -53,7 +53,7 @@ export type DraftEditorProps = {
   // A function that accepts a synthetic key event and returns
   // the matching DraftEditorCommand constant, or null if no command should
   // be invoked.
-  keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string,
+  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
 
   // Set whether the `DraftEditor` component should be editable. Useful for
   // temporarily disabling edit behavior or allowing `DraftEditor` rendering
@@ -92,7 +92,7 @@ export type DraftEditorProps = {
 
   // Map a key command string provided by your key binding function to a
   // specified behavior.
-  handleKeyCommand?: (command: DraftEditorCommand) => DraftHandleValue,
+  handleKeyCommand?: (command: DraftEditorCommand | string) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be
   // useful in cases where the user has entered characters that you would like

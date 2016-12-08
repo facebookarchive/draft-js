@@ -107,7 +107,7 @@ The list below includes the most commonly used instance methods for `EditorState
   </li>
   <li>
     <a href="#setinlinestyleoverride">
-      <pre>static setInlineStyleOverride(inlineStyleOverride): EditorState</pre>
+      <pre>static setInlineStyleOverride(editorState, inlineStyleOverride): EditorState</pre>
     </a>
   </li>
 </ul>
@@ -343,7 +343,7 @@ and it makes sense to allow the user to continue working seamlessly.
 ### setInlineStyleOverride
 
 ```
-static setInlineStyleOverride(inlineStyleOverride: DraftInlineStyle): EditorState
+static setInlineStyleOverride(editorState: EditorState, inlineStyleOverride: DraftInlineStyle): EditorState
 ```
 Returns a new `EditorState` object with the specified `DraftInlineStyle` applied
 as the set of inline styles to be applied to the next inserted characters.

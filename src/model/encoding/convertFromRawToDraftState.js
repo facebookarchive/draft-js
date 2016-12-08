@@ -15,12 +15,12 @@
 var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
 var DraftEntity = require('DraftEntity');
-var Immutable = require('immutable');
 
 var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');
 var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 var generateRandomKey = require('generateRandomKey');
+var Immutable = require('immutable');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
 
@@ -32,11 +32,13 @@ function convertFromRawToDraftState(
   var {blocks, entityMap} = rawState;
 
   var fromStorageToLocal = {};
+
+  // TODO: Update this once we completely remove DraftEntity
   Object.keys(entityMap).forEach(
     storageKey => {
       var encodedEntity = entityMap[storageKey];
       var {type, mutability, data} = encodedEntity;
-      var newKey = DraftEntity.create(type, mutability, data || {});
+      var newKey = DraftEntity._create(type, mutability, data || {});
       fromStorageToLocal[storageKey] = newKey;
     }
   );

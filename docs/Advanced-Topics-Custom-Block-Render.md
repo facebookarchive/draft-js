@@ -26,7 +26,6 @@ by matching the Draft block render map with the matched tag.
 |     `<h4/>`     |               header-four               |
 |     `<h5/>`     |               header-five               |
 |     `<h6/>`     |               header-six                |
-|     `<h6/>`     |               header-six                |
 | `<blockquote/>` |               blockquote                |
 |    `<pre/>`     |               code-block                |
 |   `<figure/>`   |                 atomic                  |
@@ -98,6 +97,19 @@ class RichEditor extends React.Component {
 }
 ```
 
+When Draft parses pasted HTML, it maps from HTML elements back into
+Draft block types. If you want to specify other HTML elements that map to a
+particular block type, you can add an array `aliasedElements` to the block config.
+
+*example of unstyled block type alias usage:*
+
+```
+'unstyled': {
+  element: 'div',
+  aliasedElements: ['p'],
+}
+```
+
 ## Custom block wrappers
 
 By default the html element is used to wrap block types however a react component
@@ -122,6 +134,7 @@ class MyCustomBlock extends React.Component {
   render() {
     return (
       <div className='MyCustomBlock'>
+        {/* here, this.props.children contains a <section> container, as that was the matching element */}
         {this.props.children}
       </div>
     );
@@ -130,7 +143,9 @@ class MyCustomBlock extends React.Component {
 
 const blockRenderMap = Immutable.Map({
   'MyCustomBlock': {
-    element: 'section', // will be used during paste or html conversion to auto match your component
+    // element is used during paste or html conversion to auto match your component;
+    // it is also retained as part of this.props.children and not stripped out
+    element: 'section',
     wrapper: <MyCustomBlock {...this.props} />
   }
 });

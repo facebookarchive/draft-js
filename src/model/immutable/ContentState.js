@@ -16,6 +16,7 @@
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
+const DraftEntity = require('DraftEntity');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
@@ -23,14 +24,19 @@ const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 import type {BlockMap} from 'BlockMap';
+import type DraftEntityInstance from 'DraftEntityInstance';
+import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
 
 const {List, Record, Repeat} = Immutable;
 
 const defaultRecord: {
+  entityMap: ?any,
   blockMap: ?BlockMap,
   selectionBefore: ?SelectionState,
   selectionAfter: ?SelectionState,
 } = {
+  entityMap: null,
   blockMap: null,
   selectionBefore: null,
   selectionAfter: null,
@@ -39,6 +45,12 @@ const defaultRecord: {
 const ContentStateRecord = Record(defaultRecord);
 
 class ContentState extends ContentStateRecord {
+
+  getEntityMap(): any {
+    // TODO: update this when we fully remove DraftEntity
+    return DraftEntity;
+  }
+
   getBlockMap(): BlockMap {
     return this.get('blockMap');
   }
@@ -108,6 +120,11 @@ class ContentState extends ContentStateRecord {
       .join(delimiter || '\n');
   }
 
+  getLastCreatedEntityKey() {
+    // TODO: update this when we fully remove DraftEntity
+    return DraftEntity._getLastCreatedEntityKey();
+  }
+
   hasText(): boolean {
     var blockMap = this.getBlockMap();
     return (
@@ -116,13 +133,63 @@ class ContentState extends ContentStateRecord {
     );
   }
 
-  static createFromBlockArray(
-    blocks: Array<ContentBlock>
+  createEntity(
+    type: DraftEntityType,
+    mutability: DraftEntityMutability,
+    data?: Object
   ): ContentState {
-    var blockMap = BlockMapBuilder.createFromArray(blocks);
-    var selectionState = SelectionState.createEmpty(blockMap.first().getKey());
+    // TODO: update this when we fully remove DraftEntity
+    DraftEntity._create(
+      type,
+      mutability,
+      data,
+    );
+    return this;
+  }
+
+  mergeEntityData(
+    key: string,
+    toMerge: {[key: string]: any}
+  ): ContentState {
+    // TODO: update this when we fully remove DraftEntity
+    DraftEntity._mergeData(key, toMerge);
+    return this;
+  }
+
+  replaceEntityData(
+    key: string,
+    newData: {[key: string]: any}
+  ): ContentState {
+    // TODO: update this when we fully remove DraftEntity
+    DraftEntity._replaceData(key, newData);
+    return this;
+  }
+
+  addEntity(instance: DraftEntityInstance): ContentState {
+    // TODO: update this when we fully remove DraftEntity
+    DraftEntity._add(instance);
+    return this;
+  }
+
+  getEntity(key: string): DraftEntityInstance {
+    // TODO: update this when we fully remove DraftEntity
+    return DraftEntity._get(key);
+  }
+
+  static createFromBlockArray(
+    // TODO: update flow type when we completely deprecate the old entity API
+    blocks: Array<ContentBlock> | {contentBlocks: Array<ContentBlock>},
+    entityMap: ?any,
+  ): ContentState {
+    // TODO: remove this when we completely deprecate the old entity API
+    const theBlocks = Array.isArray(blocks) ? blocks : blocks.contentBlocks;
+    var blockMap = BlockMapBuilder.createFromArray(theBlocks);
+    var selectionState = blockMap.isEmpty()
+      ? new SelectionState()
+      : SelectionState.createEmpty(blockMap.first().getKey());
     return new ContentState({
       blockMap,
+      entityMap: entityMap || DraftEntity,
       selectionBefore: selectionState,
       selectionAfter: selectionState,
     });

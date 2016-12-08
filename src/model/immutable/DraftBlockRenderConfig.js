@@ -15,4 +15,5 @@
 export type DraftBlockRenderConfig = {
   element: string,
   wrapper?: React$Element<any>,
+  aliasedElements?: Array<string>,
 };
