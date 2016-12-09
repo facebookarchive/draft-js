@@ -21,7 +21,7 @@ describe('DraftEntity', () => {
   });
 
   function createLink() {
-    return DraftEntity._create('LINK', 'MUTABLE', {uri: 'zombo.com'});
+    return DraftEntity.__create('LINK', 'MUTABLE', {uri: 'zombo.com'});
   }
 
   it('must create instances', () => {
@@ -31,7 +31,7 @@ describe('DraftEntity', () => {
 
   it('must retrieve an instance given a key', () => {
     var key = createLink();
-    var retrieved = DraftEntity._get(key);
+    var retrieved = DraftEntity.__get(key);
     expect(retrieved.getType()).toBe('LINK');
     expect(retrieved.getMutability()).toBe('MUTABLE');
     expect(retrieved.getData()).toEqual({uri: 'zombo.com'});
@@ -39,8 +39,8 @@ describe('DraftEntity', () => {
 
   it('must throw when retrieving for an invalid key', () => {
     createLink();
-    expect(() => DraftEntity._get('asdfzxcvqweriuop')).toThrow();
-    expect(() => DraftEntity._get(null)).toThrow();
+    expect(() => DraftEntity.__get('asdfzxcvqweriuop')).toThrow();
+    expect(() => DraftEntity.__get(null)).toThrow();
   });
 
   it('must merge data', () => {
@@ -48,8 +48,8 @@ describe('DraftEntity', () => {
 
     // Merge new property.
     var newData = {foo: 'bar'};
-    DraftEntity._mergeData(key, newData);
-    var newEntity = DraftEntity._get(key);
+    DraftEntity.__mergeData(key, newData);
+    var newEntity = DraftEntity.__get(key);
     expect(newEntity.getData()).toEqual({
       uri: 'zombo.com',
       foo: 'bar',
@@ -57,8 +57,8 @@ describe('DraftEntity', () => {
 
     // Replace existing property.
     var withNewURI = {uri: 'homestarrunner.com'};
-    DraftEntity._mergeData(key, withNewURI);
-    var entityWithNewURI = DraftEntity._get(key);
+    DraftEntity.__mergeData(key, withNewURI);
+    var entityWithNewURI = DraftEntity.__get(key);
     expect(entityWithNewURI.getData()).toEqual({
       uri: 'homestarrunner.com',
       foo: 'bar',
