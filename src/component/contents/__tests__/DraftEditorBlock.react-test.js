@@ -253,7 +253,7 @@ describe('DraftEditorBlock.react', () => {
       var newTree = BlockTree.generate(
         ContentState.createFromText(helloBlock.getText()),
         helloBlock,
-        decorator
+        decorator,
       );
       var nextProps = {...props, tree: newTree, decorator};
 

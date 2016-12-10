@@ -12,7 +12,9 @@
 
 'use strict';
 
-import type DraftEntityInstance from 'DraftEntityInstance';
-import type {OrderedMap} from 'immutable';
+import type {DraftEntityMapObject} from 'DraftEntity';
 
-export type EntityMap = OrderedMap<string, DraftEntityInstance>;
+// TODO: when removing the deprecated Entity api
+// change this to be
+// OrderedMap<string, DraftEntityInstance>;
+export type EntityMap = DraftEntityMapObject;

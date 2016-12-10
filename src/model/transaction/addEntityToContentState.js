@@ -24,7 +24,7 @@ function addEntityToContentState(
 ): ContentState {
   return contentState.set(
     'entityMap',
-    addEntityToEntityMap(contentState.getEntityMap(), instance)
+    addEntityToEntityMap(contentState.getEntityMap(), instance),
   );
 }
 

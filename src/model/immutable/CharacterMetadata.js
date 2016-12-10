@@ -21,9 +21,13 @@ var {
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
+// Immutable.map is typed such that the value for every key in the map
+// must be the same type
+type CharacterMetadataConfigValueType = DraftInlineStyle | ?string;
+
 type CharacterMetadataConfig = {
-  style?: DraftInlineStyle,
-  entity?: ?string,
+  style?: CharacterMetadataConfigValueType,
+  entity?: CharacterMetadataConfigValueType,
 };
 
 const EMPTY_SET = OrderedSet();
@@ -50,7 +54,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
 
   static applyStyle(
     record: CharacterMetadata,
-    style: string
+    style: string,
   ): CharacterMetadata {
     var withStyle = record.set('style', record.getStyle().add(style));
     return CharacterMetadata.create(withStyle);
@@ -58,7 +62,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
 
   static removeStyle(
     record: CharacterMetadata,
-    style: string
+    style: string,
   ): CharacterMetadata {
     var withoutStyle = record.set('style', record.getStyle().remove(style));
     return CharacterMetadata.create(withoutStyle);
@@ -66,7 +70,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
 
   static applyEntity(
     record: CharacterMetadata,
-    entityKey: ?string
+    entityKey: ?string,
   ): CharacterMetadata {
     var withEntity = record.getEntity() === entityKey ?
       record :
@@ -85,9 +89,11 @@ class CharacterMetadata extends CharacterMetadataRecord {
       return EMPTY;
     }
 
+    const defaultConfig: CharacterMetadataConfig =
+      {style: EMPTY_SET, entity: (null: ?string)};
+
     // Fill in unspecified properties, if necessary.
-    var configMap =
-      Map({style: EMPTY_SET, entity: (null: ?string)}).merge(config);
+    var configMap = Map(defaultConfig).merge(config);
 
     var existing: ?CharacterMetadata = pool.get(configMap);
     if (existing) {

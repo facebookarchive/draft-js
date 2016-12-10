@@ -25,11 +25,11 @@ function createEntityInContentState(
   contentState: ContentState,
   type: DraftEntityType,
   mutability: DraftEntityMutability,
-  data?: Object
+  data?: Object,
 ): ContentState {
   return addEntityToContentState(
     contentState,
-    new DraftEntityInstance({type, mutability, data: data || {}})
+    new DraftEntityInstance({type, mutability, data: data || {}}),
   );
 }
 
