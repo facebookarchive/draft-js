@@ -388,7 +388,11 @@ class DraftEditor extends React.Component {
    * state (cut command, IME) and we want to make sure that reconciliation
    * occurs on a version of the DOM that is synchronized with our EditorState.
    */
-  _restoreEditorDOM(scrollPosition?: DraftScrollPosition): void {
+  _restoreEditorDOM(scrollPosition?: DraftScrollPosition): void {    
+    if (!scrollPosition) {
+      const scrollParent = Style.getScrollParent(ReactDOM.findDOMNode(this.refs.editor));
+      scrollPosition = getScrollPosition(scrollParent);
+    }
     this.setState({containerKey: this.state.containerKey + 1}, () => {
       this._focus(scrollPosition);
     });
