@@ -90,8 +90,16 @@ features.
 Here's a super-basic example with a "Bold" button to toggle the `BOLD` style.
 
 ```js
+import {Editor, EditorState, RichUtils} from 'draft-js';
+
 class MyEditor extends React.Component {
-  // …
+  constructor(props) {
+    super(props);
+    this.state = {editorState: EditorState.createEmpty()};
+    this.onChange = (editorState) => this.setState({editorState});
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+    this._onBoldClick = this._onBoldClick.bind(this);
+  }
 
   _onBoldClick() {
     this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
@@ -100,7 +108,7 @@ class MyEditor extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={this._onBoldClick.bind(this)}>Bold</button>
+        <button onClick={this._onBoldClick}>Bold</button>
         <Editor
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}

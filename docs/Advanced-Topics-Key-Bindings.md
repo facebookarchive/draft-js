@@ -67,9 +67,14 @@ In our editor component, we can then make use of the command via the
 `handleKeyCommand` prop:
 
 ```js
-import {Editor} from 'draft-js';
+import {Editor, EditorState} from 'draft-js';
+
 class MyEditor extends React.Component {
-  // ...
+  constructor(props) {
+    super(props);
+    this.state = {editorState: EditorState.createEmpty()};
+    this.handleKeyCommand = this.handleKeyCommand.bind(this);
+  }
 
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
@@ -84,7 +89,7 @@ class MyEditor extends React.Component {
     return (
       <Editor
         editorState={this.state.editorState}
-        handleKeyCommand={this.handleKeyCommand.bind(this)}
+        handleKeyCommand={this.handleKeyCommand}
         keyBindingFn={myKeyBindingFn}
         ...
       />
