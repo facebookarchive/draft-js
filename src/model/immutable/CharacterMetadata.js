@@ -49,7 +49,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
   }
 
   hasStyle(style: string): boolean {
-    return this.getStyle().has(style);
+    return this.getStyle().includes(style);
   }
 
   static applyStyle(
