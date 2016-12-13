@@ -28,6 +28,15 @@ isOptionKeyCommand: function(
 ): boolean
 ```
 
+### usesMacOSHeuristics
+
+```
+usesMacOSHeuristics: function(): boolean
+```
+
+Check whether heuristics that only apply to macOS are used internally, for
+example when determining the key combination used as command modifier.
+
 ### hasCommandModifier
 
 ```
