@@ -58,7 +58,7 @@ Because Draft.js supports unicode, you must have the following meta tag in the `
 ```
 Further examples of how Draft.js can be used are provided below. 
 
-## Examples
+### Examples
 
 Visit https://facebook.github.io/draft-js/ to try out a simple rich editor example.
 
