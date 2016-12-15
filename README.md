@@ -17,7 +17,48 @@ for scalable memory usage.
 
 [Learn how to use Draft.js in your own project.](https://facebook.github.io/draft-js/docs/overview.html)
 
-## Examples
+## Getting Started
+
+Currently Draft.js is distributed via npm. It depends on React and React DOM which must also be installed.
+
+```
+npm install --save draft-js react react-dom
+```
+
+### Using Draft.js 
+
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Editor, EditorState} from 'draft-js';
+
+class MyEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {editorState: EditorState.createEmpty()};
+    this.onChange = (editorState) => this.setState({editorState});
+  }
+  render() {
+    return (
+        <Editor editorState={this.state.editorState} onChange={this.onChange} />
+    );
+  }
+}
+
+ReactDOM.render(
+  <MyEditor />,
+  document.getElementById('container')
+);
+```
+
+Because Draft.js supports unicode, you must have the following meta tag in the `<head>` `</head>` block of your HTML file:
+
+```
+<meta charset="utf-8" />
+```
+Further examples of how Draft.js can be used are provided below. 
+
+### Examples
 
 Visit https://facebook.github.io/draft-js/ to try out a simple rich editor example.
 
