@@ -60,8 +60,8 @@ content. For instance, the `Modifier` module contains an `applyEntity` method:
 const key = Entity.create('LINK', 'MUTABLE', {href: 'http://www.zombo.com'});
 const contentStateWithLink = Modifier.applyEntity(
   contentState,
-  targetRange,
-  key
+  selectionState,
+  entityKey
 );
 ```
 
