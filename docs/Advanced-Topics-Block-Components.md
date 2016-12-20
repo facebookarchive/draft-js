@@ -66,8 +66,9 @@ If no custom renderer object is returned by the `blockRendererFn` function,
 
 The `component` property defines the component to be used, while the optional
 `props` object includes props that will be passed through to the rendered
-custom component. In addition, the optional `editable` property determines
-whether the custom component is `contentEditable`.
+custom component via the `props.blockProps` sub property object. In addition,
+the optional `editable` property determines whether the custom component is
+`contentEditable`.
 
 It is strongly recommended that you use `editable: false` if your custom
 component will not contain text.
