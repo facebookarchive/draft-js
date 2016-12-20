@@ -17,6 +17,10 @@ for scalable memory usage.
 
 [Learn how to use Draft.js in your own project.](https://facebook.github.io/draft-js/docs/overview.html)
 
+## API Notice
+
+Before getting started, please be aware that we are changing the API of Entity storage in Draft. Currently, the master branch supports both the old and new API. We hope to release this soon, as `v0.10.0`. Following that up will be `v0.11.0` which will remove the old API. This update will also include documentation on how to upgrade. If you are interested in helping out, or tracking the progress, please follow  [issue 839](https://github.com/facebook/draft-js/issues/839).
+
 ## Getting Started
 
 Currently Draft.js is distributed via npm. It depends on React and React DOM which must also be installed.
@@ -25,7 +29,7 @@ Currently Draft.js is distributed via npm. It depends on React and React DOM whi
 npm install --save draft-js react react-dom
 ```
 
-### Using Draft.js 
+### Using Draft.js
 
 ```
 import React from 'react';
@@ -56,7 +60,7 @@ Because Draft.js supports unicode, you must have the following meta tag in the `
 ```
 <meta charset="utf-8" />
 ```
-Further examples of how Draft.js can be used are provided below. 
+Further examples of how Draft.js can be used are provided below.
 
 ### Examples
 
