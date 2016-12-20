@@ -35,8 +35,9 @@ class <span class="token class-name">EditorWithMedia</span> extends <span class=
 <span class="token punctuation">}</span></pre><p>If no custom renderer object is returned by the <code>blockRendererFn</code> function,
 <code>Editor</code> will render the default <code>DraftEditorBlock</code> text block component.</p><p>The <code>component</code> property defines the component to be used, while the optional
 <code>props</code> object includes props that will be passed through to the rendered
-custom component. In addition, the optional <code>editable</code> property determines
-whether the custom component is <code>contentEditable</code>.</p><p>It is strongly recommended that you use <code>editable: false</code> if your custom
+custom component via the <code>props.blockProps</code> sub property object. In addition,
+the optional <code>editable</code> property determines whether the custom component is
+<code>contentEditable</code>.</p><p>It is strongly recommended that you use <code>editable: false</code> if your custom
 component will not contain text.</p><p>If your component contains text as provided by your <code>ContentState</code>, your custom
 component should compose a <code>DraftEditorBlock</code> component. This will allow the
 Draft framework to properly maintain cursor behavior within your contents.</p><p>By defining this function within the context of a higher-level component,
