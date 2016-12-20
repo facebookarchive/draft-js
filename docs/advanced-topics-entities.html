@@ -26,8 +26,8 @@ be used to refer to the entity.</p><p>This key is the value that should be used 
 content. For instance, the <code>Modifier</code> module contains an <code>applyEntity</code> method:</p><pre class="prism language-javascript">const key <span class="token operator">=</span> Entity<span class="token punctuation">.</span><span class="token function">create<span class="token punctuation">(</span></span><span class="token string">&#x27;LINK&#x27;</span><span class="token punctuation">,</span> <span class="token string">&#x27;MUTABLE&#x27;</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>href<span class="token punctuation">:</span> <span class="token string">&#x27;http://www.zombo.com&#x27;</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 const contentStateWithLink <span class="token operator">=</span> Modifier<span class="token punctuation">.</span><span class="token function">applyEntity<span class="token punctuation">(</span></span>
   contentState<span class="token punctuation">,</span>
-  targetRange<span class="token punctuation">,</span>
-  key
+  selectionState<span class="token punctuation">,</span>
+  entityKey
 <span class="token punctuation">)</span><span class="token punctuation">;</span></pre><p>For a given range of text, then, you can extract its associated entity key by using
 the <code>getEntityAt()</code> method on a <code>ContentBlock</code> object, passing in the target
 offset value.</p><pre class="prism language-javascript">const blockWithLinkAtBeginning <span class="token operator">=</span> contentState<span class="token punctuation">.</span><span class="token function">getBlockForKey<span class="token punctuation">(</span></span><span class="token string">&#x27;...&#x27;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
