@@ -358,8 +358,8 @@ as the set of inline styles to be applied to the next inserted characters.
 ```
 static set(editorState: EditorState, options: EditorStateRecordType): EditorState
 ```
-Returns a new `EditorState` object with new options passed in. The method
-technically lives on the Immutable `record` API.
+Returns a new `EditorState` object with new options passed in. 'The method is
+inherited from the Immutable `record` API.
 
 ## Properties and Getters
 
