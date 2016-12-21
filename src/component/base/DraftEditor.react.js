@@ -37,7 +37,7 @@ const getScrollPosition = require('getScrollPosition');
 
 import type {BlockMap} from 'BlockMap';
 import type {DraftEditorModes} from 'DraftEditorModes';
-import type {DraftEditorProps} from 'DraftEditorProps';
+import type {DraftEditorProps, DraftEditorDefaultProps} from 'DraftEditorProps';
 import type {DraftScrollPosition} from 'DraftScrollPosition';
 
 const isIE = UserAgent.isBrowser('IE');
@@ -69,7 +69,7 @@ class DraftEditor extends React.Component {
   props: DraftEditorProps;
   state: State;
 
-  static defaultProps = {
+  static defaultProps: DraftEditorDefaultProps = {
     blockRenderMap: DefaultDraftBlockRenderMap,
     blockRendererFn: emptyFunction.thatReturnsNull,
     blockStyleFn: emptyFunction.thatReturns(''),

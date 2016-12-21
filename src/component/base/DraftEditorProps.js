@@ -142,3 +142,13 @@ export type DraftEditorProps = {
   // is used for both rendering and paste processing.
   blockRenderMap: DraftBlockRenderMap
 };
+
+export type DraftEditorDefaultProps = {
+  blockRenderMap: DraftBlockRenderMap,
+  blockRendererFn: (block: ContentBlock) => ?Object,
+  blockStyleFn: (type: number) => string,
+  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
+  readOnly: boolean,
+  spellCheck: boolean,
+  stripPastedStyles: boolean,
+};
