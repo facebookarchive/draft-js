@@ -52,7 +52,7 @@ const AtomicBlockUtils = {
       'atomic'
     );
 
-    const charData = CharacterMetadata.create({entity: entityKey});
+    const charData = CharacterMetadata.create(entityKey ? {entity: entityKey} : undefined);
 
     const fragmentArray = [
       new ContentBlock({
@@ -76,6 +76,54 @@ const AtomicBlockUtils = {
       insertionTarget,
       fragment
     );
+
+    const newContent = withAtomicBlock.merge({
+      selectionBefore: selectionState,
+      selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', true),
+    });
+
+    return EditorState.push(editorState, newContent, 'insert-fragment');
+  },
+
+  insertAtomicBlockBefore: function(
+    editorState: EditorState,
+    entityKey: string,
+    character: string
+  ): EditorState {
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+    const charData = CharacterMetadata.create(entityKey ? {entity: entityKey} : undefined);
+
+    const withAtomicBlock = DraftModifier.insertBlockBefore(contentState, selectionState, new ContentBlock({
+      key: generateRandomKey(),
+      type: 'atomic',
+      text: character,
+      characterList: List(Repeat(charData, character.length)),
+    }));
+
+    const newContent = withAtomicBlock.merge({
+      selectionBefore: selectionState,
+      selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', true),
+    });
+
+    return EditorState.push(editorState, newContent, 'insert-fragment');
+  },
+  
+  insertAtomicBlockAfter: function(
+    editorState: EditorState,
+    entityKey: string,
+    character: string
+  ): EditorState {
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+    const charData = CharacterMetadata.create(entityKey ? {entity: entityKey} : undefined);
+
+    const withAtomicBlock = DraftModifier.insertBlockAfter(contentState, selectionState, new ContentBlock({
+      key: generateRandomKey(),
+      type: 'atomic',
+      text: character,
+      characterList: List(Repeat(charData, character.length)),
+    }));
 
     const newContent = withAtomicBlock.merge({
       selectionBefore: selectionState,
