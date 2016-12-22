@@ -12,69 +12,17 @@
 
 'use strict';
 
-var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
-var DraftEntity = require('DraftEntity');
 
-var createCharacterList = require('createCharacterList');
-var decodeEntityRanges = require('decodeEntityRanges');
-var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
-var generateRandomKey = require('generateRandomKey');
-var Immutable = require('immutable');
+var convertFromRawToContentBlock = require('convertFromRawToContentBlock');
 
 import type {RawDraftContentState} from 'RawDraftContentState';
-
-var {Map} = Immutable;
 
 function convertFromRawToDraftState(
   rawState: RawDraftContentState
 ): ContentState {
   var {blocks, entityMap} = rawState;
-
-  var fromStorageToLocal = {};
-
-  // TODO: Update this once we completely remove DraftEntity
-  Object.keys(entityMap).forEach(
-    storageKey => {
-      var encodedEntity = entityMap[storageKey];
-      var {type, mutability, data} = encodedEntity;
-      var newKey = DraftEntity._create(type, mutability, data || {});
-      fromStorageToLocal[storageKey] = newKey;
-    }
-  );
-
-  var contentBlocks = blocks.map(
-    block => {
-      var {
-        key,
-        type,
-        text,
-        depth,
-        inlineStyleRanges,
-        entityRanges,
-        data,
-      } = block;
-      key = key || generateRandomKey();
-      depth = depth || 0;
-      inlineStyleRanges = inlineStyleRanges || [];
-      entityRanges = entityRanges || [];
-      data = Map(data);
-
-      var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
-
-      // Translate entity range keys to the DraftEntity map.
-      var filteredEntityRanges = entityRanges
-        .filter(range => fromStorageToLocal.hasOwnProperty(range.key))
-        .map(range => {
-          return {...range, key: fromStorageToLocal[range.key]};
-        });
-
-      var entities = decodeEntityRanges(text, filteredEntityRanges);
-      var characterList = createCharacterList(inlineStyles, entities);
-
-      return new ContentBlock({key, type, text, depth, characterList, data});
-    }
-  );
+  var contentBlocks = blocks.map(block => convertFromRawToContentBlock(block, entityMap));
 
   return ContentState.createFromBlockArray(contentBlocks);
 }

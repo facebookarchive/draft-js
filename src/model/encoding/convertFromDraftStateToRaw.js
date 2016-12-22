@@ -14,43 +14,15 @@
 
 var DraftStringKey = require('DraftStringKey');
 
-var encodeEntityRanges = require('encodeEntityRanges');
-var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
-
 import type ContentState from 'ContentState';
 import type {RawDraftContentState} from 'RawDraftContentState';
+import convertFromContentBlockToRaw from 'convertFromContentBlockToRaw';
 
 function convertFromDraftStateToRaw(
   contentState: ContentState
 ): RawDraftContentState {
-  var entityStorageKey = 0;
   var entityStorageMap = {};
-  var rawBlocks = [];
-
-  contentState.getBlockMap().forEach((block, blockKey) => {
-    block.findEntityRanges(
-      character => character.getEntity() !== null,
-      start => {
-        // Stringify to maintain order of otherwise numeric keys.
-        var stringifiedEntityKey = DraftStringKey.stringify(
-          block.getEntityAt(start)
-        );
-        if (!entityStorageMap.hasOwnProperty(stringifiedEntityKey)) {
-          entityStorageMap[stringifiedEntityKey] = '' + (entityStorageKey++);
-        }
-      }
-    );
-
-    rawBlocks.push({
-      key: blockKey,
-      text: block.getText(),
-      type: block.getType(),
-      depth: block.getDepth(),
-      inlineStyleRanges: encodeInlineStyleRanges(block),
-      entityRanges: encodeEntityRanges(block, entityStorageMap),
-      data: block.getData().toObject(),
-    });
-  });
+  var rawBlocks = contentState.getBlocksAsArray().map(convertFromContentBlockToRaw);
 
   // Flip storage map so that our storage keys map to global
   // DraftEntity keys.
