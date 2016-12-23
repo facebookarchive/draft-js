@@ -98,6 +98,8 @@ class DraftEditorLeaf extends React.Component {
       targetNode = child;
     } else if (child.tagName === 'BR') {
       targetNode = node;
+    } else if (child.nodeType === Node.ELEMENT_NODE && child.querySelector('[data-text="true"]')) {
+      targetNode = child.querySelector('[data-text="true"]').firstChild;
     } else {
       targetNode = child.firstChild;
     }

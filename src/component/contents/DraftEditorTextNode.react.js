@@ -86,8 +86,12 @@ class DraftEditorTextNode extends React.Component {
       return this._forceFlag ? NEWLINE_A : NEWLINE_B;
     }
     return (
-      <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
-        {this.props.children}
+      <span>
+        <span dangerouslySetInnerHTML={{__html: '<!-- oh, gecko -->' }}></span>
+        <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
+          {this.props.children}
+        </span>
+        <span dangerouslySetInnerHTML={{__html: '<!-- oh, gecko-y -->' }}></span>
       </span>
     );
   }
