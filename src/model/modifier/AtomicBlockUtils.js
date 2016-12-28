@@ -13,7 +13,6 @@
 
 'use strict';
 
-const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DraftModifier = require('DraftModifier');
@@ -22,10 +21,29 @@ const Immutable = require('immutable');
 
 const generateRandomKey = require('generateRandomKey');
 
+const insertBlockBeforeInContentState = require('insertBlockBeforeInContentState');
+const insertBlockAfterInContentState = require('insertBlockAfterInContentState');
+
 const {
   List,
   Repeat,
 } = Immutable;
+
+function createAtomicBlock(
+  entityKey: string,
+  character: string
+): ContentBlock {
+  const charData = CharacterMetadata.create(
+    entityKey ? {entity: entityKey} : undefined
+  );
+
+  return new ContentBlock({
+    key: generateRandomKey(),
+    type: 'atomic',
+    text: character,
+    characterList: List(Repeat(charData, character.length)),
+  });
+}
 
 const AtomicBlockUtils = {
   insertAtomicBlock: function(
@@ -43,38 +61,88 @@ const AtomicBlockUtils = {
     );
 
     const targetSelection = afterRemoval.getSelectionAfter();
-    const afterSplit = DraftModifier.splitBlock(afterRemoval, targetSelection);
-    const insertionTarget = afterSplit.getSelectionAfter();
-
-    const asAtomicBlock = DraftModifier.setBlockType(
-      afterSplit,
-      insertionTarget,
-      'atomic'
+    const targetBlock = afterRemoval.getBlockForKey(
+      targetSelection.getFocusKey()
     );
 
-    const charData = CharacterMetadata.create({entity: entityKey});
+    const atomicBlock = createAtomicBlock(entityKey, character);
 
-    const fragmentArray = [
-      new ContentBlock({
-        key: generateRandomKey(),
-        type: 'atomic',
-        text: character,
-        characterList: List(Repeat(charData, character.length)),
-      }),
-      new ContentBlock({
-        key: generateRandomKey(),
-        type: 'unstyled',
-        text: '',
-        characterList: List(),
-      }),
-    ];
+    var withAtomicBlock;
 
-    const fragment = BlockMapBuilder.createFromArray(fragmentArray);
+    if (targetSelection.getStartOffset() === 0) {
+      // If the current selection starts at the very beginning of the currently
+      // focused block, insert the atomic block before
+      withAtomicBlock = insertBlockBeforeInContentState(
+        afterRemoval,
+        targetSelection,
+        atomicBlock
+      );
+    } else if (targetSelection.getEndOffset() === targetBlock.getLength()) {
+      // If the current selection ends at the very end of the currently focused
+      // block, insert the atomic block after
+      withAtomicBlock = insertBlockAfterInContentState(
+        afterRemoval,
+        targetSelection,
+        atomicBlock
+      );
+    } else {
+      // If the current selection is somewhere in the middle of the currently
+      // focused block, split the block apart and insert the atomic block
+      // inbetween
+      const afterSplit = DraftModifier.splitBlock(
+        afterRemoval,
+        targetSelection
+      );
 
-    const withAtomicBlock = DraftModifier.replaceWithFragment(
-      asAtomicBlock,
-      insertionTarget,
-      fragment
+      withAtomicBlock = insertBlockAfterInContentState(
+        afterSplit,
+        targetSelection,
+        atomicBlock
+      );
+    }
+
+    const newContent = withAtomicBlock.merge({
+      selectionBefore: selectionState,
+      selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', true),
+    });
+
+    return EditorState.push(editorState, newContent, 'insert-fragment');
+  },
+
+  insertAtomicBlockBefore: function(
+    editorState: EditorState,
+    entityKey: string,
+    character: string
+  ): EditorState {
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+    const atomicBlock = createAtomicBlock(entityKey, character);
+    const withAtomicBlock = insertBlockBeforeInContentState(
+      contentState,
+      selectionState,
+      atomicBlock
+    );
+
+    const newContent = withAtomicBlock.merge({
+      selectionBefore: selectionState,
+      selectionAfter: withAtomicBlock.getSelectionAfter().set('hasFocus', true),
+    });
+
+    return EditorState.push(editorState, newContent, 'insert-fragment');
+  },
+
+  insertAtomicBlockAfter: function(
+    editorState: EditorState,
+    entityKey: string,
+    character: string
+  ): EditorState {
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+    const atomicBlock = createAtomicBlock(entityKey, character);
+    const withAtomicBlock = insertBlockAfterInContentState(
+      contentState,
+      selectionState,
+      atomicBlock
     );
 
     const newContent = withAtomicBlock.merge({
