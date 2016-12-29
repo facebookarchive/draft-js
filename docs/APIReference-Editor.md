@@ -85,7 +85,7 @@ for details on usage.
 
 #### customStyleFn
 ```
-customStyleFn?: (style: DraftInlineStyle) => ?Object
+customStyleFn?: (style: DraftInlineStyle, block: ContentBlock) => ?Object
 ```
 Optionally define a function to transform inline styles to CSS objects that are applied
 to spans of text. See
