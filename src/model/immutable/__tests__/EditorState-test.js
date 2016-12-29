@@ -16,6 +16,7 @@ jest.disableAutomock();
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
+var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
@@ -156,6 +157,31 @@ describe('EditorState', () => {
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
 
         editor = RichTextEditorUtil.toggleBlockType(editor, 'test-block');
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
+      });
+
+      it('does not discard style override when adjusting depth', () => {
+        var editor = EditorState.createEmpty();
+
+        editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
+
+        editor = RichTextEditorUtil.onTab({ preventDefault: () => {} }, editor, 1);
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
+      });
+
+      it('does not discard style override when splitting block', () => {
+        var editor = EditorState.createEmpty();
+
+        editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
+
+        var contentState = DraftModifier.splitBlock(
+          editor.getCurrentContent(),
+          editor.getSelection()
+        );
+
+        editor = EditorState.push(editor, contentState, 'split-block');
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
       });
     });
