@@ -31,7 +31,7 @@ npm install --save draft-js react react-dom
 
 ### Using Draft.js
 
-```
+```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState} from 'draft-js';
@@ -57,7 +57,7 @@ ReactDOM.render(
 
 Because Draft.js supports unicode, you must have the following meta tag in the `<head>` `</head>` block of your HTML file:
 
-```
+```html
 <meta charset="utf-8" />
 ```
 Further examples of how Draft.js can be used are provided below.
