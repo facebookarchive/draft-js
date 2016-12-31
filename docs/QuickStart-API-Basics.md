@@ -8,7 +8,7 @@ permalink: docs/quickstart-api-basics.html
 ---
 
 This document provides an overview of the basics of the `Draft` API. A
-[working example](https://github.com/facebook/draft-js/tree/master/examples/plaintext)
+[working example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/plaintext)
 is also available to follow along.
 
 ## Controlled Inputs

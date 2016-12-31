@@ -16,12 +16,12 @@ Facebook photos or by uploading new images from the desktop. To that end,
 the Draft framework supports custom rendering at the block level, to render
 content like rich media in place of plain text.
 
-The [TeX editor](https://github.com/facebook/draft-js/tree/master/examples/tex)
+The [TeX editor](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/tex)
 in the Draft repository provides a live example of custom block rendering, with
 TeX syntax translated on the fly into editable embedded formula rendering via the
 [KaTeX library](https://khan.github.io/KaTeX/).
 
-A [media example](https://github.com/facebook/draft-js/tree/master/examples/media) is also
+A [media example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/media) is also
 available, which showcases custom block rendering of audio, image, and video.
 
 By using a custom block renderer, it is possible to introduce complex rich
@@ -66,8 +66,9 @@ If no custom renderer object is returned by the `blockRendererFn` function,
 
 The `component` property defines the component to be used, while the optional
 `props` object includes props that will be passed through to the rendered
-custom component. In addition, the optional `editable` property determines
-whether the custom component is `contentEditable`.
+custom component via the `props.blockProps` sub property object. In addition,
+the optional `editable` property determines whether the custom component is
+`contentEditable`.
 
 It is strongly recommended that you use `editable: false` if your custom
 component will not contain text.

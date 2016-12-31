@@ -54,7 +54,7 @@ describe('removeEntitiesAtEdges', () => {
   }
 
   function setEntityMutability(mutability) {
-    contentState.getEntityMap().get = () => ({
+    contentState.getEntityMap().__get = () => ({
       getMutability: () => mutability,
     });
   }

@@ -49,11 +49,16 @@ other usage within an application.
 ### convertFromHTML
 
 ```
-convertFromHTML(
-  html: string,
-  DOMBuilder: Function = getSafeBodyFromHTML,
-  blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap
-): ?Array<ContentBlock>
+const sampleMarkup =
+  '<b>Bold text</b>, <i>Italic text</i><br/ ><br />' +
+  '<a href="http://www.facebook.com">Example link</a>';
+
+const blocksFromHTML = convertFromHTML(sampleMarkup);
+const state = ContentState.createFromBlockArray(blocksFromHTML);
+
+this.state = {
+  editorState: EditorState.createWithContent(state),
+};
 ```
 
-Given an HTML fragment, convert it to an array of `ContentBlock` objects.
+Given an HTML fragment, convert it to an array of `ContentBlock` objects. Construct content state from the array of block elements and then update the editor state with it. Full example available [here](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/convertFromHTML).

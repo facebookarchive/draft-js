@@ -53,7 +53,7 @@ export type DraftEditorProps = {
   // A function that accepts a synthetic key event and returns
   // the matching DraftEditorCommand constant, or null if no command should
   // be invoked.
-  keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string,
+  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
 
   // Set whether the `DraftEditor` component should be editable. Useful for
   // temporarily disabling edit behavior or allowing `DraftEditor` rendering
@@ -92,7 +92,7 @@ export type DraftEditorProps = {
 
   // Map a key command string provided by your key binding function to a
   // specified behavior.
-  handleKeyCommand?: (command: DraftEditorCommand) => DraftHandleValue,
+  handleKeyCommand?: (command: DraftEditorCommand | string) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be
   // useful in cases where the user has entered characters that you would like
@@ -135,10 +135,20 @@ export type DraftEditorProps = {
 
   // Provide a function that will construct CSS style objects given inline
   // style names.
-  customStyleFn?: (style: DraftInlineStyle) => ?Object,
+  customStyleFn?: (style: DraftInlineStyle, block: ContentBlock) => ?Object,
 
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
   blockRenderMap: DraftBlockRenderMap
+};
+
+export type DraftEditorDefaultProps = {
+  blockRenderMap: DraftBlockRenderMap,
+  blockRendererFn: (block: ContentBlock) => ?Object,
+  blockStyleFn: (type: number) => string,
+  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
+  readOnly: boolean,
+  spellCheck: boolean,
+  stripPastedStyles: boolean,
 };

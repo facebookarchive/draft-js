@@ -36,5 +36,5 @@ of the click event. It is therefore recommended that you use a click listener
 on your container component, and use the `focus()` method described above to
 apply focus to your editor.
 
-The [plaintext editor example](https://github.com/facebook/draft-js/tree/master/examples/plaintext),
+The [plaintext editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/plaintext),
 for instance, uses this pattern.

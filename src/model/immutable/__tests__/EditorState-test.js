@@ -16,6 +16,7 @@ jest.disableAutomock();
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
+var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
@@ -158,6 +159,31 @@ describe('EditorState', () => {
         editor = RichTextEditorUtil.toggleBlockType(editor, 'test-block');
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
       });
+
+      it('does not discard style override when adjusting depth', () => {
+        var editor = EditorState.createEmpty();
+
+        editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
+
+        editor = RichTextEditorUtil.onTab({ preventDefault: () => {} }, editor, 1);
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
+      });
+
+      it('does not discard style override when splitting block', () => {
+        var editor = EditorState.createEmpty();
+
+        editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
+
+        var contentState = DraftModifier.splitBlock(
+          editor.getCurrentContent(),
+          editor.getSelection()
+        );
+
+        editor = EditorState.push(editor, contentState, 'split-block');
+        expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
+      });
     });
 
     describe('Non-collapsed selection', () => {
@@ -226,7 +252,7 @@ describe('EditorState', () => {
 
     beforeEach(() => {
       Decorator.prototype.getDecorations.mockClear();
-      Decorator.prototype.getDecorations.mockImplementation((c, v) => {
+      Decorator.prototype.getDecorations.mockImplementation((v, c) => {
         return v === boldBlock ? boldA : List(Repeat(undefined, v.getLength()));
       });
     });
@@ -236,11 +262,11 @@ describe('EditorState', () => {
       var editorState = getDecoratedEditorState(decorator);
       expect(decorator.getDecorations.mock.calls.length).toBe(2);
 
-      Decorator.prototype.getDecorations.mockImplementation((c, v) => {
+      Decorator.prototype.getDecorations.mockImplementation((v, c) => {
         return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
       });
       var newDecorator = new NextDecorator();
-      NextDecorator.prototype.getDecorations.mockImplementation((c, v) => {
+      NextDecorator.prototype.getDecorations.mockImplementation((v, c) => {
         return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
       });
 

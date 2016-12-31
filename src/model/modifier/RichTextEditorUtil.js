@@ -38,7 +38,7 @@ const RichTextEditorUtil = {
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
         var entity = v.getEntity();
-        return !!entity && entityMap.get(entity).getType() === 'LINK';
+        return !!entity && entityMap.__get(entity).getType() === 'LINK';
       });
   },
 
@@ -55,7 +55,7 @@ const RichTextEditorUtil = {
 
   handleKeyCommand: function(
     editorState: EditorState,
-    command: DraftEditorCommand
+    command: DraftEditorCommand | string,
   ): ?EditorState {
     switch (command) {
       case 'bold':
@@ -74,7 +74,7 @@ const RichTextEditorUtil = {
       case 'delete-word':
       case 'delete-to-end-of-block':
         return RichTextEditorUtil.onDelete(editorState);
-      default:
+      default: // they may have custom editor commands; ignore those
         return null;
     }
   },

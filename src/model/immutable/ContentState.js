@@ -16,26 +16,22 @@
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
+const DraftEntity = require('DraftEntity');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
-const invariant = require('invariant');
 const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
-const createEntityInContentState = require('createEntityInContentState');
-const addEntityToContentState = require('addEntityToContentState');
-const updateEntityDataInContentState = require('updateEntityDataInContentState');
 
 import type {BlockMap} from 'BlockMap';
-import type {EntityMap} from 'EntityMap';
 import type DraftEntityInstance from 'DraftEntityInstance';
-import type {DraftEntityType} from 'DraftEntityType';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
 
-const {List, Record, Repeat, OrderedMap} = Immutable;
+const {List, Record, Repeat} = Immutable;
 
 const defaultRecord: {
-  entityMap: ?EntityMap,
+  entityMap: ?any,
   blockMap: ?BlockMap,
   selectionBefore: ?SelectionState,
   selectionAfter: ?SelectionState,
@@ -50,8 +46,9 @@ const ContentStateRecord = Record(defaultRecord);
 
 class ContentState extends ContentStateRecord {
 
-  getEntityMap(): EntityMap {
-    return this.get('entityMap');
+  getEntityMap(): any {
+    // TODO: update this when we fully remove DraftEntity
+    return DraftEntity;
   }
 
   getBlockMap(): BlockMap {
@@ -124,7 +121,8 @@ class ContentState extends ContentStateRecord {
   }
 
   getLastCreatedEntityKey() {
-    return this.getEntityMap().keySeq().last();
+    // TODO: update this when we fully remove DraftEntity
+    return DraftEntity.__getLastCreatedEntityKey();
   }
 
   hasText(): boolean {
@@ -138,46 +136,60 @@ class ContentState extends ContentStateRecord {
   createEntity(
     type: DraftEntityType,
     mutability: DraftEntityMutability,
-    data?: Object
+    data?: Object,
   ): ContentState {
-    return createEntityInContentState(this, type, mutability, data);
+    // TODO: update this when we fully remove DraftEntity
+    DraftEntity.__create(
+      type,
+      mutability,
+      data,
+    );
+    return this;
   }
 
   mergeEntityData(
     key: string,
-    toMerge: {[key: string]: any}
+    toMerge: {[key: string]: any},
   ): ContentState {
-    return updateEntityDataInContentState(this, key, toMerge, true);
+    // TODO: update this when we fully remove DraftEntity
+    DraftEntity.__mergeData(key, toMerge);
+    return this;
   }
 
   replaceEntityData(
     key: string,
-    newData: {[key: string]: any}
+    newData: {[key: string]: any},
   ): ContentState {
-    return updateEntityDataInContentState(this, key, newData, false);
+    // TODO: update this when we fully remove DraftEntity
+    DraftEntity.__replaceData(key, newData);
+    return this;
   }
 
   addEntity(instance: DraftEntityInstance): ContentState {
-    return addEntityToContentState(this, instance);
+    // TODO: update this when we fully remove DraftEntity
+    DraftEntity.__add(instance);
+    return this;
   }
 
   getEntity(key: string): DraftEntityInstance {
-    const instance = this.getEntityMap().get(key);
-    invariant(!!instance, 'Unknown DraftEntity key.');
-    return instance;
+    // TODO: update this when we fully remove DraftEntity
+    return DraftEntity.__get(key);
   }
 
   static createFromBlockArray(
-    blocks: Array<ContentBlock>,
-    entityMap: ?OrderedMap
+    // TODO: update flow type when we completely deprecate the old entity API
+    blocks: Array<ContentBlock> | {contentBlocks: Array<ContentBlock>},
+    entityMap: ?any,
   ): ContentState {
-    var blockMap = BlockMapBuilder.createFromArray(blocks);
+    // TODO: remove this when we completely deprecate the old entity API
+    const theBlocks = Array.isArray(blocks) ? blocks : blocks.contentBlocks;
+    var blockMap = BlockMapBuilder.createFromArray(theBlocks);
     var selectionState = blockMap.isEmpty()
       ? new SelectionState()
       : SelectionState.createEmpty(blockMap.first().getKey());
     return new ContentState({
       blockMap,
-      entityMap: entityMap || OrderedMap(),
+      entityMap: entityMap || DraftEntity,
       selectionBefore: selectionState,
       selectionAfter: selectionState,
     });

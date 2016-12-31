@@ -28,7 +28,7 @@ describe('decodeEntityRanges', () => {
         offset: 2,
         length: 2,
         key: '6',
-      }]
+      }],
     );
     expect(decoded).toEqual([null, null, '6', '6', null]);
   });

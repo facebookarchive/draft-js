@@ -50,6 +50,10 @@ The `type` value of one or more `ContentBlock` objects is being changed.
 
 An inline style is being applied or removed for one or more characters.
 
+#### `move-block`
+
+A block is being moved within the [BlockMap](https://github.com/facebook/draft-js/blob/master/src/model/immutable/BlockMap.js).
+
 #### `delete-character`
 
 A single character is being forward-removed.

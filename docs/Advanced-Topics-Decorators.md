@@ -12,7 +12,7 @@ want to add to our editor. The Facebook comment input, for example, provides
 blue background highlights for mentions and hashtags.
 
 To support flexibility for custom rich text, Draft provides a "decorator"
-system. The [tweet example](https://github.com/facebook/draft-js/tree/master/examples/tweet)
+system. The [tweet example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/tweet)
 offers a live example of decorators in action.
 
 ## CompositeDecorator
@@ -109,7 +109,7 @@ Note that `props.children` is passed through to the rendered output. This is
 done to ensure that the text is rendered within the decorated `span`.
 
 You can use the same approach for links, as demonstrated in our
-[link example](https://github.com/facebook/draft-js/tree/master/examples/link).
+[link example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/link).
 
 ### Beyond CompositeDecorator
 

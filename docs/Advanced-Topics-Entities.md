@@ -13,9 +13,9 @@ richness beyond styled text to their editors. Links, mentions, and embedded
 content can all be implemented using entities.
 
 In the Draft repository, the
-[link editor](https://github.com/facebook/draft-js/tree/master/examples/link)
+[link editor](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/link)
 and
-[entity demo](https://github.com/facebook/draft-js/tree/master/examples/entity)
+[entity demo](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/entity)
 provide live code examples to help clarify how entities can be used, as well
 as their built-in behavior.
 
@@ -60,8 +60,8 @@ content. For instance, the `Modifier` module contains an `applyEntity` method:
 const key = Entity.create('LINK', 'MUTABLE', {href: 'http://www.zombo.com'});
 const contentStateWithLink = Modifier.applyEntity(
   contentState,
-  targetRange,
-  key
+  selectionState,
+  entityKey
 );
 ```
 
@@ -132,5 +132,5 @@ while the latter completely swaps in the new data object.
 The next article in this section covers the usage of decorator objects, which
 can be used to retrieve entities for rendering purposes.
 
-The [link editor example](https://github.com/facebook/draft-js/tree/master/examples/link)
+The [link editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/link)
 provides a working example of entity creation and decoration in use.

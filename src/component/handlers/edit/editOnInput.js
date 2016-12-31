@@ -20,6 +20,8 @@ var UserAgent = require('UserAgent');
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
 var nullthrows = require('nullthrows');
 
+import type DraftEditor from 'DraftEditor.react';
+
 var isGecko = UserAgent.isEngine('Gecko');
 
 var DOUBLE_NEWLINE = '\n\n';
@@ -36,7 +38,12 @@ var DOUBLE_NEWLINE = '\n\n';
  * when an `input` change leads to a DOM/model mismatch, the change should be
  * due to a spellcheck change, and we can incorporate it into our model.
  */
-function editOnInput(): void {
+function editOnInput(editor: DraftEditor): void {
+  if (editor._pendingStateFromBeforeInput !== undefined) {
+    editor.update(editor._pendingStateFromBeforeInput);
+    editor._pendingStateFromBeforeInput = undefined;
+  }
+
   var domSelection = global.getSelection();
 
   var {anchorNode, isCollapsed} = domSelection;
@@ -45,7 +52,7 @@ function editOnInput(): void {
   }
 
   var domText = anchorNode.textContent;
-  var editorState = this._latestEditorState;
+  var editorState = editor._latestEditorState;
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
   var {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
 
@@ -131,7 +138,7 @@ function editOnInput(): void {
     selectionAfter: selection.merge({anchorOffset, focusOffset}),
   });
 
-  this.update(
+  editor.update(
     EditorState.push(
       editorState,
       contentWithAdjustedDOMSelection,

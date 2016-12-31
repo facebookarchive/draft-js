@@ -16,18 +16,20 @@
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEntityInstance = require('DraftEntityInstance');
+const DraftEntity = require('DraftEntity');
 const Immutable = require('immutable');
 const URI = require('URI');
 
-const addEntityToEntityMap = require('addEntityToEntityMap');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 const sanitizeDraftText = require('sanitizeDraftText');
 
+const {Set} = require('immutable');
+
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {EntityMap} from 'EntityMap';
@@ -35,7 +37,6 @@ import type {EntityMap} from 'EntityMap';
 var {
   List,
   OrderedSet,
-  OrderedMap,
 } = Immutable;
 
 var NBSP = '&nbsp;';
@@ -156,10 +157,19 @@ function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap
 ): Array<string> {
   const unstyledElement = blockRenderMap.get('unstyled').element;
-  return blockRenderMap
-    .map((config) => config.element)
-    .valueSeq()
-    .toSet()
+  let tags = new Set([]);
+
+  blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
+    if (draftBlock.aliasedElements) {
+      draftBlock.aliasedElements.forEach((tag) => {
+        tags = tags.add(tag);
+      });
+    }
+
+    tags = tags.add(draftBlock.element);
+  });
+
+  return tags
     .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
@@ -186,7 +196,14 @@ function getBlockTypeForTag(
   blockRenderMap: DraftBlockRenderMap
 ): DraftBlockType {
   const matchedTypes = blockRenderMap
-    .filter((config) => config.element === tag || config.wrapper === tag)
+    .filter((draftBlock: DraftBlockRenderConfig) => (
+      draftBlock.element === tag ||
+      draftBlock.wrapper === tag ||
+      (
+        draftBlock.aliasedElements &&
+        draftBlock.aliasedElements.some(alias => alias === tag)
+      )
+    ))
     .keySeq()
     .toSet()
     .toArray()
@@ -390,15 +407,12 @@ function genFragment(
     const imageURI = new URI(entityConfig.src).toString();
     node.textContent = imageURI; // Output src if no decorator
 
-    newEntityMap = addEntityToEntityMap(
-      newEntityMap,
-      new DraftEntityInstance({
-        type: 'IMAGE',
-        mutability: 'MUTABLE',
-        data: entityConfig || {},
-      })
+    // TODO: update this when we remove DraftEntity entirely
+    inEntity = DraftEntity.__create(
+      'IMAGE',
+      'MUTABLE',
+      entityConfig || {},
     );
-    inEntity = newEntityMap.keySeq().last();
   }
 
   var chunk = getEmptyChunk();
@@ -460,15 +474,12 @@ function genFragment(
       });
 
       entityConfig.url = new URI(anchor.href).toString();
-      newEntityMap = addEntityToEntityMap(
-        newEntityMap,
-        new DraftEntityInstance({
-          type: 'LINK',
-          mutability: 'MUTABLE',
-          data: entityConfig || {},
-        })
+      // TODO: update this when we remove DraftEntity completely
+      entityId = DraftEntity.__create(
+        'LINK',
+        'MUTABLE',
+        entityConfig || {},
       );
-      entityId = newEntityMap.keySeq().last();
     } else {
       entityId = undefined;
     }
@@ -519,7 +530,7 @@ function getChunkForHTML(
   html: string,
   DOMBuilder: Function,
   blockRenderMap: DraftBlockRenderMap,
-  entityMap: EntityMap
+  entityMap: EntityMap,
 ): ?{chunk: Chunk, entityMap: EntityMap} {
   html = html
     .trim()
@@ -602,7 +613,8 @@ function convertFromHTMLtoContentBlocks(
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
-  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, OrderedMap());
+  // TODO: replace DraftEntity with an OrderedMap here
+  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, DraftEntity);
 
   if (chunkData == null) {
     return null;
@@ -629,7 +641,7 @@ function convertFromHTMLtoContentBlocks(
               data.entity = entities[ii];
             }
             return CharacterMetadata.create(data);
-          })
+          }),
         );
         start = end + 1;
 
@@ -640,7 +652,7 @@ function convertFromHTMLtoContentBlocks(
           text: textBlock,
           characterList,
         });
-      }
+      },
     ),
     entityMap: newEntityMap,
   };

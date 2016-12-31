@@ -37,7 +37,7 @@ const getScrollPosition = require('getScrollPosition');
 
 import type {BlockMap} from 'BlockMap';
 import type {DraftEditorModes} from 'DraftEditorModes';
-import type {DraftEditorProps} from 'DraftEditorProps';
+import type {DraftEditorProps, DraftEditorDefaultProps} from 'DraftEditorProps';
 import type {DraftScrollPosition} from 'DraftScrollPosition';
 
 const isIE = UserAgent.isBrowser('IE');
@@ -69,7 +69,7 @@ class DraftEditor extends React.Component {
   props: DraftEditorProps;
   state: State;
 
-  static defaultProps = {
+  static defaultProps: DraftEditorDefaultProps = {
     blockRenderMap: DefaultDraftBlockRenderMap,
     blockRendererFn: emptyFunction.thatReturnsNull,
     blockStyleFn: emptyFunction.thatReturns(''),
@@ -83,9 +83,11 @@ class DraftEditor extends React.Component {
   _clipboard: ?BlockMap;
   _handler: ?Object;
   _dragCount: number;
+  _internalDrag: boolean;
   _editorKey: string;
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
+  _pendingStateFromBeforeInput: void | EditorState;
 
   /**
    * Define proxies that can route events to the current handler.
@@ -115,8 +117,8 @@ class DraftEditor extends React.Component {
   blur: () => void;
   setMode: (mode: DraftEditorModes) => void;
   exitCurrentMode: () => void;
-  restoreEditorDOM: (scrollPosition: DraftScrollPosition) => void;
-  setClipboard: (clipboard?: BlockMap) => void;
+  restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void;
+  setClipboard: (clipboard: ?BlockMap) => void;
   getClipboard: () => ?BlockMap;
   getEditorKey: () => string;
   update: (editorState: EditorState) => void;
@@ -181,7 +183,7 @@ class DraftEditor extends React.Component {
     return (e) => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
-        method && method.call(this, e);
+        method && method(this, e);
       }
     };
   }

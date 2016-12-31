@@ -58,7 +58,7 @@ function filterKey(
   entityKey: ?string
 ): ?string {
   if (entityKey) {
-    var entity = entityMap.get(entityKey);
+    var entity = entityMap.__get(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;
   }
   return null;

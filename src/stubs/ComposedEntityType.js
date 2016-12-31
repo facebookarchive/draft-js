@@ -16,6 +16,7 @@ var ComposedEntityType = {
   'LINK': true,
   'TOKEN': true,
   'PHOTO': true,
+  'IMAGE': true,
 };
 
 module.exports = ComposedEntityType;

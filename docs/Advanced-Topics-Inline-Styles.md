@@ -12,8 +12,8 @@ behavior that goes well beyond the bold/italic/underline basics. For instance,
 you may want to support variety with color, font families, font sizes, and more.
 Further, your desired styles may overlap or be mutually exclusive.
 
-The [Rich Editor](http://github.com/facebook/draft-js/tree/master/examples/rich) and
-[Colorful Editor](http://github.com/facebook/draft-js/tree/master/examples/color)
+The [Rich Editor](http://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/rich) and
+[Colorful Editor](http://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/color)
 examples demonstrate complex inline style behavior in action.
 
 ### Model
@@ -79,7 +79,7 @@ defaults, or you may override the default style objects for the basic styles.
 
 Within your `Editor` use case, you may provide the `customStyleMap` prop
 to define your style objects. (See
-[Colorful Editor](http://github.com/facebook/draft-js/tree/master/examples/color)
+[Colorful Editor](http://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/color)
 for a live example.)
 
 For example, you may want to add a `'STRIKETHROUGH'` style. To do so, define a

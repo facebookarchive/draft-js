@@ -45,7 +45,7 @@ function getCharacterRemovalRange(
     return selectionState;
   }
 
-  var entity = entityMap.get(entityKey);
+  var entity = entityMap.__get(entityKey);
   var mutability = entity.getMutability();
 
   // `MUTABLE` entities can just have the specified range of text removed
