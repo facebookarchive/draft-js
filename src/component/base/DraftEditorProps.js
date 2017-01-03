@@ -118,8 +118,6 @@ export type DraftEditorProps = {
     isInternal: DraftDragType
   ) => DraftHandleValue,
 
-  allowNativeInsertion?: boolean,
-
   /**
    * Non-cancelable event triggers.
    */
