@@ -17,6 +17,7 @@ var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
 
+var editOnInput = require('editOnInput');
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
@@ -35,6 +36,8 @@ const isEventHandled = require('isEventHandled');
 var FF_QUICKFIND_CHAR = '\'';
 var FF_QUICKFIND_LINK_CHAR = '\/';
 var isFirefox = UserAgent.isBrowser('Firefox');
+
+var isIE = UserAgent.isBrowser('IE');
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
@@ -165,6 +168,17 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     editor._pendingStateFromBeforeInput = EditorState.set(newEditorState, {
       nativelyRenderedContent: newEditorState.getCurrentContent(),
     });
+
+    if (isIE) {
+      // Internet Explorer doesn't support the input event for contenteditable.
+      // in all other browsers this function would return and we'd bubble back
+      // up to the root scope to give the browser a chance to perform the
+      // insertion and to send the input event. We'll have to kick the event
+      // ourselves in this case.
+      setTimeout(function() {
+        editOnInput(editor);
+      }, 0);
+    }
   }
 }
 
