@@ -21,6 +21,7 @@ var editOnInput = require('editOnInput');
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
+var setImmediate = require('setImmediate');
 
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -174,9 +175,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
       // up to the root scope to give the browser a chance to perform the
       // insertion and to send the input event. We'll have to kick the event
       // ourselves in this case.
-      setTimeout(function() {
-        editOnInput(editor);
-      }, 0);
+      setImmediate(() => editOnInput(editor));
     }
   }
 }
