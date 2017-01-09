@@ -156,7 +156,6 @@ function getListBlockType(
 function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap
 ): Array<string> {
-  const unstyledElement = blockRenderMap.get('unstyled').element;
   let tags = new Set([]);
 
   blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
@@ -170,7 +169,6 @@ function getBlockMapSupportedTags(
   });
 
   return tags
-    .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
 }
@@ -430,7 +428,13 @@ function genFragment(
   }
 
   // Block Tags
-  if (!inBlock && blockTags.indexOf(nodeName) !== -1) {
+  if (
+      (
+        !inBlock ||
+        getBlockTypeForTag(inBlock, lastList, blockRenderMap) === 'unstyled'
+      ) &&
+      blockTags.indexOf(nodeName) !== -1
+    ) {
     chunk = getBlockDividerChunk(
       getBlockTypeForTag(nodeName, lastList, blockRenderMap),
       depth
