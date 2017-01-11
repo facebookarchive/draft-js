@@ -21,6 +21,12 @@ const UserAgent = require('UserAgent');
 // with only a newline character, we can be sure to render a single line.
 const useNewlineChar = UserAgent.isBrowser('IE <= 11');
 
+
+// In Firefox, spellcheck handling under certain circumstances causes our "data-offset-key" spans to be destroyed.
+// These spans are necessary to recover what the spellcheck replacement did during the onInput handler. If we add
+// an extra span with a comment in it, Gecko's code doesn't destroy our content.
+const isGecko = UserAgent.isEngine('Gecko');
+
 /**
  * Check whether the node should be considered a newline.
  */
@@ -85,13 +91,11 @@ class DraftEditorTextNode extends React.Component {
     if (this.props.children === '') {
       return this._forceFlag ? NEWLINE_A : NEWLINE_B;
     }
+
     return (
-      <span>
-        <span dangerouslySetInnerHTML={{__html: '<!-- oh, gecko -->' }}></span>
-        <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
-          {this.props.children}
-        </span>
-        <span dangerouslySetInnerHTML={{__html: '<!-- oh, gecko-y -->' }}></span>
+      <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
+        <span className="gecko-patch-comment" dangerouslySetInnerHTML={{__html: '<!-- gecko patch -->' }}></span>
+        {this.props.children}
       </span>
     );
   }
