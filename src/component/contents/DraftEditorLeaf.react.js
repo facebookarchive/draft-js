@@ -99,7 +99,9 @@ class DraftEditorLeaf extends React.Component {
     } else if (child.tagName === 'BR') {
       targetNode = node;
     } else {
-      targetNode = child.firstChild;
+      // We've added an extra span (see DraftEditorTextNode.react.js) to prevent Firefox spellcheck from destroying
+      // our content. Skip past the span and the react text comment to get to the real text node.
+      targetNode = child.firstChild.nextSibling.nextSibling;
     }
 
     setDraftEditorSelection(selection, targetNode, blockKey, start, end);

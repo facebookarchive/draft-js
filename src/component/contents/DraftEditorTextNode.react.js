@@ -85,8 +85,13 @@ class DraftEditorTextNode extends React.Component {
     if (this.props.children === '') {
       return this._forceFlag ? NEWLINE_A : NEWLINE_B;
     }
+
+    // In Firefox, spellcheck handling under certain circumstances causes our "data-offset-key" spans to be destroyed.
+    // These spans are necessary to recover what the spellcheck replacement did during the onInput handler. If we add
+    // an extra span with a comment in it, Gecko's code doesn't destroy our content.
     return (
       <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
+        <span dangerouslySetInnerHTML={{__html: '<!-- gecko patch -->' }}></span>
         {this.props.children}
       </span>
     );
