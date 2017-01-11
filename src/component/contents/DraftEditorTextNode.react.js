@@ -91,7 +91,7 @@ class DraftEditorTextNode extends React.Component {
     // an extra span with a comment in it, Gecko's code doesn't destroy our content.
     return (
       <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
-        <span className="gecko-patch-comment" dangerouslySetInnerHTML={{__html: '<!-- gecko patch -->' }}></span>
+        <span dangerouslySetInnerHTML={{__html: '<!-- gecko patch -->' }}></span>
         {this.props.children}
       </span>
     );

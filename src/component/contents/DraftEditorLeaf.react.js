@@ -98,12 +98,10 @@ class DraftEditorLeaf extends React.Component {
       targetNode = child;
     } else if (child.tagName === 'BR') {
       targetNode = node;
-    } else if (child.firstChild && child.firstChild.className === 'gecko-patch-comment') {
+    } else {
       // We've added an extra span (see DraftEditorTextNode.react.js) to prevent Firefox spellcheck from destroying
       // our content. Skip past the span and the react text comment to get to the real text node.
       targetNode = child.firstChild.nextSibling.nextSibling;
-    } else {
-      targetNode = child.firstChild;
     }
 
     setDraftEditorSelection(selection, targetNode, blockKey, start, end);
