@@ -53,6 +53,8 @@ var REGEX_CARRIAGE = new RegExp('&#13;?', 'g');
 var REGEX_ZWS = new RegExp('&#8203;?', 'g');
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight
+// According to the MDN page, for fonts which provide only normal and bold
+// 100-500 are normal and 600-900 are bold.
 const boldValues = ['bold', 'bolder', '600', '700', '800', '900'];
 const notBoldValues = ['normal', 'light', 'lighter', '100', '200', '300', '400', '500'];
 
