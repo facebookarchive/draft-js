@@ -53,8 +53,8 @@ var REGEX_CARRIAGE = new RegExp('&#13;?', 'g');
 var REGEX_ZWS = new RegExp('&#8203;?', 'g');
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight
-const boldValues = ['bold', 'bolder', '500', '600', '700', '800', '900'];
-const notBoldValues = ['normal', 'light', 'lighter', '100', '200', '300', '400'];
+const boldValues = ['bold', 'bolder', '600', '700', '800', '900'];
+const notBoldValues = ['normal', 'light', 'lighter', '100', '200', '300', '400', '500'];
 
 // Block tag flow is different because LIs do not have
 // a deterministic style ;_;
