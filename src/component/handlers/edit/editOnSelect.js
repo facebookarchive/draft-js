@@ -20,10 +20,8 @@ var getDraftEditorSelection = require('getDraftEditorSelection');
 import type DraftEditor from 'DraftEditor.react';
 
 function editOnSelect(editor: DraftEditor): void {
-  if (editor._blockSelectEvents) {
-    return;
-  }
-  if (editor._latestEditorState !== editor.props.editorState) {
+  if (editor._blockSelectEvents ||
+      editor._latestEditorState !== editor.props.editorState) {
     return;
   }
 
