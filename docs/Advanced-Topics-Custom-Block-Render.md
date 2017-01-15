@@ -50,7 +50,7 @@ the editor blockRender props.
 // updates the unstyled element to also become a h2.
 const blockRenderMap = Immutable.Map({
   'header-two': {
-   element: 'h2'
+    element: 'h2'
   },
   'unstyled': {
     element: 'h2'
