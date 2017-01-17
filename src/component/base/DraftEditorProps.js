@@ -48,12 +48,12 @@ export type DraftEditorProps = {
   blockRendererFn?: (block: ContentBlock) => ?Object,
 
   // Function that returns a cx map corresponding to block-level styles.
-  blockStyleFn?: (type: number) => string,
+  blockStyleFn?: (block: ContentBlock) => string,
 
   // A function that accepts a synthetic key event and returns
   // the matching DraftEditorCommand constant, or null if no command should
   // be invoked.
-  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
+  keyBindingFn: (e: SyntheticKeyboardEvent) => ?DraftEditorCommand,
 
   // Set whether the `DraftEditor` component should be editable. Useful for
   // temporarily disabling edit behavior or allowing `DraftEditor` rendering
