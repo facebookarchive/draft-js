@@ -27,6 +27,10 @@ Currently Draft.js is distributed via npm. It depends on React and React DOM whi
 
 ```
 npm install --save draft-js react react-dom
+
+or
+
+yarn add draft-js react react-dom
 ```
 
 ### Using Draft.js
