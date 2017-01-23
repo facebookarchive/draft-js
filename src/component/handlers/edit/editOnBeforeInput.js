@@ -17,10 +17,10 @@ var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
 
-var editOnInput = require('editOnInput');
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
+var setImmediate = require('setImmediate');
 
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -36,8 +36,6 @@ const isEventHandled = require('isEventHandled');
 var FF_QUICKFIND_CHAR = '\'';
 var FF_QUICKFIND_LINK_CHAR = '\/';
 var isFirefox = UserAgent.isBrowser('Firefox');
-
-var isIE = UserAgent.isBrowser('IE');
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
@@ -78,6 +76,11 @@ function replaceText(
  * occurs on the relevant text nodes.
  */
 function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
+  if (editor._pendingStateFromBeforeInput !== undefined) {
+    editor.update(editor._pendingStateFromBeforeInput);
+    editor._pendingStateFromBeforeInput = undefined;
+  }
+
   var chars = e.data;
 
   // In some cases (ex: IE ideographic space insertion) no character data
@@ -161,24 +164,20 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     e.preventDefault();
     editor.update(newEditorState);
   } else {
+    newEditorState = EditorState.set(newEditorState, {
+      nativelyRenderedContent: newEditorState.getCurrentContent(),
+    });
     // The native event is allowed to occur. To allow user onChange handlers to
     // change the inserted text, we wait until the text is actually inserted
     // before we actually update our state. That way when we rerender, the text
     // we see in the DOM will already have been inserted properly.
-    editor._pendingStateFromBeforeInput = EditorState.set(newEditorState, {
-      nativelyRenderedContent: newEditorState.getCurrentContent(),
+    editor._pendingStateFromBeforeInput = newEditorState;
+    setImmediate(() => {
+      if (editor._pendingStateFromBeforeInput !== undefined) {
+        editor.update(editor._pendingStateFromBeforeInput);
+        editor._pendingStateFromBeforeInput = undefined;
+      }
     });
-
-    if (isIE) {
-      // Internet Explorer doesn't support the input event for contenteditable.
-      // in all other browsers this function would return and we'd bubble back
-      // up to the root scope to give the browser a chance to perform the
-      // insertion and to send the input event. We'll have to kick the event
-      // ourselves in this case.
-      setTimeout(function() {
-        editOnInput(editor);
-      }, 0);
-    }
   }
 }
 
