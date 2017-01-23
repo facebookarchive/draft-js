@@ -26,9 +26,6 @@ function editOnSelect(editor: DraftEditor): void {
   if (editor._latestEditorState !== editor.props.editorState) {
     return;
   }
-  if (editor._pendingStateFromBeforeInput !== undefined) {
-    return;
-  }
 
   var editorState = editor.props.editorState;
   var documentSelection = getDraftEditorSelection(
