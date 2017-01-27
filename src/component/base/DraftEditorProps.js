@@ -48,11 +48,11 @@ export type DraftEditorProps = {
   blockRendererFn?: (block: ContentBlock) => ?Object,
 
   // Function that returns a cx map corresponding to block-level styles.
-  blockStyleFn?: (type: number) => string,
+  blockStyleFn?: (block: ContentBlock) => string,
 
   // A function that accepts a synthetic key event and returns
-  // the matching DraftEditorCommand constant, or null if no command should
-  // be invoked.
+  // the matching DraftEditorCommand constant, or a custom string,
+  // or null if no command should be invoked.
   keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
 
   // Set whether the `DraftEditor` component should be editable. Useful for
@@ -140,13 +140,13 @@ export type DraftEditorProps = {
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
-  blockRenderMap: DraftBlockRenderMap
+  blockRenderMap: DraftBlockRenderMap,
 };
 
 export type DraftEditorDefaultProps = {
   blockRenderMap: DraftBlockRenderMap,
   blockRendererFn: (block: ContentBlock) => ?Object,
-  blockStyleFn: (type: number) => string,
+  blockStyleFn: (block: ContentBlock) => string,
   keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
   readOnly: boolean,
   spellCheck: boolean,
