@@ -22,4 +22,4 @@ module.name_mapper='ReactDOM' -> 'react-dom'
 module.name_mapper='setImmediate' -> 'fbjs/lib/setImmediate'
 
 [version]
-0.32.0
+0.38.0
