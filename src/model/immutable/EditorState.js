@@ -69,7 +69,7 @@ class EditorState {
   _immutable: EditorStateRecord;
 
   static createEmpty(
-    decorator?: DraftDecoratorType
+    decorator?: ?DraftDecoratorType
   ): EditorState {
     return EditorState.createWithContent(
       ContentState.createFromText(''),
@@ -79,7 +79,7 @@ class EditorState {
 
   static createWithContent(
     contentState: ContentState,
-    decorator?: DraftDecoratorType
+    decorator?: ?DraftDecoratorType
   ): EditorState {
     var firstKey = contentState.getBlockMap().first().getKey();
     return EditorState.create({
@@ -514,7 +514,7 @@ function updateSelection(
  */
 function generateNewTreeMap(
   contentState: ContentState,
-  decorator: ?DraftDecoratorType
+  decorator?: ?DraftDecoratorType
 ): OrderedMap<string, List<any>> {
   return contentState
     .getBlockMap()
@@ -531,7 +531,7 @@ function regenerateTreeForNewBlocks(
   editorState: EditorState,
   newBlockMap: BlockMap,
   newEntityMap: EntityMap,
-  decorator: ?DraftDecoratorType
+  decorator?: ?DraftDecoratorType
 ): OrderedMap<string, List<any>> {
   const contentState = editorState.getCurrentContent().set('entityMap', newEntityMap);
   var prevBlockMap = contentState.getBlockMap();
