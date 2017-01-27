@@ -24,7 +24,9 @@ Complete your CLA here: <https://code.facebook.com/cla>
 
 ## Issues
 We use GitHub issues to track public bugs. Please ensure your description is
-clear and has sufficient instructions to be able to reproduce the issue.
+clear and has sufficient instructions to be able to reproduce the issue. 
+If possible please provide a minimal demo of the problem. You can use this 
+jsfiddle to get started: https://jsfiddle.net/stopachka/m6z0xn4r/.
 
 Facebook has a [bounty program](https://www.facebook.com/whitehat/) for the safe
 disclosure of security bugs. In those cases, please go through the process
