@@ -159,8 +159,8 @@ gulp.task('css', function() {
         /\bvar\(([\w-]+)\)/g,
         function(match, name) {
           var vars = {
-            'fbui-desktop-text-placeholder': '#9197a3',
-            'fbui-desktop-text-placeholder-focused': '#bdc1c9',
+            'fig-secondary-text': '#9197a3',
+            'fig-light-20': '#bdc1c9',
           };
           if (vars[name]) {
             return vars[name];
