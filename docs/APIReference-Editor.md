@@ -226,7 +226,6 @@ onUpArrow?: (e: SyntheticKeyboardEvent) => void
 onRightArrow?: (e: SyntheticKeyboardEvent) => DraftHandleValue
 ```
 
-
 #### onDownArrow
 ```
 onDownArrow?: (e: SyntheticKeyboardEvent) => void
