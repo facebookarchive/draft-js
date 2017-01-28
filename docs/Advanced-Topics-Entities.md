@@ -3,7 +3,7 @@ id: advanced-topics-entities
 title: Entities
 layout: docs
 category: Advanced Topics
-next: advanced-topics-decorators
+next: v0-10-api-migration
 permalink: docs/advanced-topics-entities.html
 ---
 
@@ -23,6 +23,10 @@ The [Entity API Reference](/draft-js/docs/api-reference-entity.html) provides
 details on the static methods to be used when creating, retrieving, or updating
 entity objects.
 
+For information about recent changes to the Entity API, and examples of how to
+update your application,
+[see our v0.10 API Migration Guide](http://localhost:8080/draft-js/docs/v0-10-api-migration.html#content).
+
 ## Introduction
 
 An entity is an object that represents metadata for a range of text within a
@@ -38,10 +42,12 @@ greater detail below.
 a `'LINK'` entity might contain a `data` object that contains the `href` value
 for that link.
 
-All entities are stored in a single object store within the `Entity` module,
-and are referenced by key within `ContentState` and React components used to
-decorate annotated ranges. _(We are considering future changes to bring
-the entity store into `EditorState` or `ContentState`.)_
+All entities are stored in the ContentState record. The entites  are referenced
+by key within `ContentState` and React components used to decorate annotated
+ranges. (We are currently deprecating a previous API for accessing Entities; see
+issue
+[#839](https://github.com/facebook/draft-js/issues/839)
+.)
 
 Using [decorators](/draft-js/docs/advanced-topics-decorators.html) or
 [custom block components](/draft-js/docs/advanced-topics-block-components.html), you can
@@ -49,15 +55,21 @@ add rich rendering to your editor based on entity metadata.
 
 ## Creating and Retrieving Entities
 
-Entities should be created using `Entity.create`, which accepts the three
-properties above as arguments. This method returns a string key, which can then
-be used to refer to the entity.
+Entities should be created using `contentState.createEntity`, which accepts the
+three properties above as arguments. This method returns a string key, which can
+then be used to refer to the entity.
 
 This key is the value that should be used when applying entities to your
 content. For instance, the `Modifier` module contains an `applyEntity` method:
 
 ```js
-const key = Entity.create('LINK', 'MUTABLE', {href: 'http://www.zombo.com'});
+const contentState = editorState.getCurrentContent();
+const contentStateWithEntity = constentState.createEntity(
+  'LINK',
+  'MUTABLE',
+  {href: 'http://www.zombo.com'}
+);
+const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 const contentStateWithLink = Modifier.applyEntity(
   contentState,
   selectionState,
@@ -72,7 +84,8 @@ offset value.
 ```js
 const blockWithLinkAtBeginning = contentState.getBlockForKey('...');
 const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
-const linkInstance = Entity.get(linkKey);
+const contentState = editorState.getCurrentContent();
+const linkInstance = contentState.getEntity(linkKey);
 const {href} = linkInstance.getData();
 ```
 ## "Mutability"
