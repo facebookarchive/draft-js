@@ -38,10 +38,12 @@ greater detail below.
 a `'LINK'` entity might contain a `data` object that contains the `href` value
 for that link.
 
-All entities are stored in a single object store within the `Entity` module,
-and are referenced by key within `ContentState` and React components used to
-decorate annotated ranges. _(We are considering future changes to bring
-the entity store into `EditorState` or `ContentState`.)_
+All entities are stored in the ContentState record. The entites  are referenced
+by key within `ContentState` and React components used to decorate annotated
+ranges. (We are currently deprecating a previous API for accessing Entities; see
+issue
+[#839](https://github.com/facebook/draft-js/issues/839)
+.)
 
 Using [decorators](/draft-js/docs/advanced-topics-decorators.html) or
 [custom block components](/draft-js/docs/advanced-topics-block-components.html), you can
@@ -49,15 +51,21 @@ add rich rendering to your editor based on entity metadata.
 
 ## Creating and Retrieving Entities
 
-Entities should be created using `Entity.create`, which accepts the three
-properties above as arguments. This method returns a string key, which can then
-be used to refer to the entity.
+Entities should be created using `contentState.createEntity`, which accepts the
+three properties above as arguments. This method returns a string key, which can
+then be used to refer to the entity.
 
 This key is the value that should be used when applying entities to your
 content. For instance, the `Modifier` module contains an `applyEntity` method:
 
 ```js
-const key = Entity.create('LINK', 'MUTABLE', {href: 'http://www.zombo.com'});
+const contentState = editorState.getCurrentContent();
+const contentStateWithEntity = constentState.createEntity(
+  'LINK',
+  'MUTABLE',
+  {href: 'http://www.zombo.com'}
+);
+const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 const contentStateWithLink = Modifier.applyEntity(
   contentState,
   selectionState,
@@ -72,7 +80,8 @@ offset value.
 ```js
 const blockWithLinkAtBeginning = contentState.getBlockForKey('...');
 const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
-const linkInstance = Entity.get(linkKey);
+const contentState = editorState.getCurrentContent();
+const linkInstance = contentState.getEntity(linkKey);
 const {href} = linkInstance.getData();
 ```
 ## "Mutability"
