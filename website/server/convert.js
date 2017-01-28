@@ -90,13 +90,13 @@ function execute() {
         var targetFile = 'src/draft-js/' + metadata.permalink.replace(/\.html$/, '.js');
         mkdirp.sync(targetFile.replace(new RegExp('/[^/]*$'), ''));
         fs.writeFileSync(targetFile, content);
-      }
+      };
 
       if (extension === '.json') {
         var content = fs.readFileSync(file, {encoding: 'utf8'});
         metadatas[path.basename(file, '.json')] = JSON.parse(content);
       }
-    });
+    })
 
     fs.writeFileSync(
       'core/metadata.js',
@@ -105,12 +105,12 @@ function execute() {
       ' * @providesModule Metadata\n' +
       ' */\n' +
       'module.exports = ' + JSON.stringify(metadatas, null, 2) + ';'
-    );
+    )
   });
 
   fs.writeFileSync('src/draft-js/lib/Draft.css', fs.readFileSync('../dist/Draft.css'));
   fs.writeFileSync('src/draft-js/lib/Draft.js', fs.readFileSync('../dist/Draft.js'));
-  fs.writeFileSync('src/draft-js/lib/RichEditor.css', fs.readFileSync('../examples/draft-0-9-1/rich/RichEditor.css'));
+  fs.writeFileSync('src/draft-js/lib/RichEditor.css', fs.readFileSync('../examples/draft-0-10-0/rich/RichEditor.css'));
 }
 
 if (argv.convert) {
