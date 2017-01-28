@@ -3,7 +3,7 @@ id: advanced-topics-entities
 title: Entities
 layout: docs
 category: Advanced Topics
-next: advanced-topics-decorators
+next: v0-10-api-migration
 permalink: docs/advanced-topics-entities.html
 ---
 
@@ -22,6 +22,10 @@ as their built-in behavior.
 The [Entity API Reference](/draft-js/docs/api-reference-entity.html) provides
 details on the static methods to be used when creating, retrieving, or updating
 entity objects.
+
+For information about recent changes to the Entity API, and examples of how to
+update your application,
+[see our v0.10 API Migration Guide](http://localhost:8080/draft-js/docs/v0-10-api-migration.html#content).
 
 ## Introduction
 

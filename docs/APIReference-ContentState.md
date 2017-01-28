@@ -202,7 +202,6 @@ the content.
 ```
 getEntityMap(): EntityMap
 ```
-_New in v0.10.0:_
 Returns an object store containing all `DraftEntity` records that have been
 created.  In upcoming v0.11.0 the map returned will be an Immutable ordered map
 of `DraftEntity` records.
