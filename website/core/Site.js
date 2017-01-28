@@ -15,12 +15,13 @@ var HeaderLinks = require('HeaderLinks');
 
 var Site = React.createClass({
   render: function() {
+    const titlePrefix = this.props.pageTitle ? this.props.pageTitle.concat(' | ') : '';
     return (
       <html>
         <head>
           <meta charSet="utf-8" />
           <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-          <title>Draft.js | Rich Text Editor Framework for React</title>
+          <title>{`${titlePrefix}Draft.js | Rich Text Editor Framework for React`}</title>
           <meta name="viewport" content="width=device-width" />
           <meta property="og:title" content="Draft.js | Rich Text Editor Framework for React" />
           <meta property="og:type" content="website" />
