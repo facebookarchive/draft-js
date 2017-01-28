@@ -108,7 +108,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
       return;
     case Keys.LEFT:
       if (
-        editor.props.onLeftArrow && 
+        editor.props.onLeftArrow &&
         isEventHandled(editor.props.onLeftArrow(e))
       ) {
         return;
@@ -119,7 +119,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
       return;
     case Keys.RIGHT:
       if (
-        editor.props.onRightArrow && 
+        editor.props.onRightArrow &&
         isEventHandled(editor.props.onRightArrow(e))
       ) {
         return;
