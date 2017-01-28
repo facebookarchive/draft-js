@@ -211,10 +211,21 @@ onEscape?: (e: SyntheticKeyboardEvent) => void
 onTab?: (e: SyntheticKeyboardEvent) => void
 ```
 
+#### onLeftArrow
+```
+onLeftArrow?: (e: SyntheticKeyboardEvent) => DraftHandleValue
+```
+
 #### onUpArrow
 ```
 onUpArrow?: (e: SyntheticKeyboardEvent) => void
 ```
+
+#### onRightArrow
+```
+onRightArrow?: (e: SyntheticKeyboardEvent) => DraftHandleValue
+```
+
 
 #### onDownArrow
 ```

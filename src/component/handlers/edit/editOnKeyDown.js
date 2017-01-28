@@ -106,9 +106,25 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
     case Keys.TAB:
       editor.props.onTab && editor.props.onTab(e);
       return;
+    case Keys.LEFT:
+      if (
+        editor.props.onLeftArrow && 
+        isEventHandled(editor.props.onLeftArrow(e))
+      ) {
+        return;
+      }
+      break;
     case Keys.UP:
       editor.props.onUpArrow && editor.props.onUpArrow(e);
       return;
+    case Keys.RIGHT:
+      if (
+        editor.props.onRightArrow && 
+        isEventHandled(editor.props.onRightArrow(e))
+      ) {
+        return;
+      }
+      break;
     case Keys.DOWN:
       editor.props.onDownArrow && editor.props.onDownArrow(e);
       return;
