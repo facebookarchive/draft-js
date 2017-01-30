@@ -21,10 +21,10 @@ const entityKey <span class="token operator">=</span> contentStateWithEntity<spa
 <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre><p><strong>New Syntax</strong></p><pre class="prism language-javascript">const compositeDecorator <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CompositeDecorator</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
   <span class="token punctuation">{</span>
     strategy<span class="token punctuation">:</span> <span class="token punctuation">(</span>
-      contentState<span class="token punctuation">,</span>
       contentBlock<span class="token punctuation">,</span>
-      callback
-    <span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token function">exampleFindTextRange<span class="token punctuation">(</span></span>contentBlock<span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">,</span>
+      callback<span class="token punctuation">,</span>
+      contentState
+    <span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token function">exampleFindTextRange<span class="token punctuation">(</span></span>contentBlock<span class="token punctuation">,</span> callback<span class="token punctuation">,</span> contentState<span class="token punctuation">)</span><span class="token punctuation">,</span>
     component<span class="token punctuation">:</span> ExampleTokenComponent<span class="token punctuation">,</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre><p>Note that ExampleTokenComponent will receive contentState as a prop.</p><p>Why does the &#x27;contentState&#x27; get passed into the decorator strategy now? Because we may need it if our strategy is to  find certain entities in the contentBlock:</p><pre class="prism language-javascript">const mutableEntityStrategy <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>contentBlock<span class="token punctuation">,</span> callback<span class="token punctuation">,</span> contentState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
