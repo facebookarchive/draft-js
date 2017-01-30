@@ -28,7 +28,7 @@ add rich rendering to your editor based on entity metadata.</p><h2><a class="anc
 three properties above as arguments. This method returns a string key, which can
 then be used to refer to the entity.</p><p>This key is the value that should be used when applying entities to your
 content. For instance, the <code>Modifier</code> module contains an <code>applyEntity</code> method:</p><pre class="prism language-javascript">const contentState <span class="token operator">=</span> editorState<span class="token punctuation">.</span><span class="token function">getCurrentContent<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-const contentStateWithEntity <span class="token operator">=</span> constentState<span class="token punctuation">.</span><span class="token function">createEntity<span class="token punctuation">(</span></span>
+const contentStateWithEntity <span class="token operator">=</span> contentState<span class="token punctuation">.</span><span class="token function">createEntity<span class="token punctuation">(</span></span>
   <span class="token string">&#x27;LINK&#x27;</span><span class="token punctuation">,</span>
   <span class="token string">&#x27;MUTABLE&#x27;</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span>href<span class="token punctuation">:</span> <span class="token string">&#x27;http://www.zombo.com&#x27;</span><span class="token punctuation">}</span>
