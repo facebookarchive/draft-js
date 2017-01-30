@@ -28,11 +28,11 @@ matches, then for hashtag matches.</p><pre class="prism language-javascript"><sp
 </span>const HANDLE_REGEX <span class="token operator">=</span> <span class="token regex">/\@[\w]+/g</span><span class="token punctuation">;</span>
 const HASHTAG_REGEX <span class="token operator">=</span> <span class="token regex">/\#[\w\u0590-\u05ff]+/g</span><span class="token punctuation">;</span>
 
-<span class="token keyword">function</span> <span class="token function">handleStrategy<span class="token punctuation">(</span></span>contentState<span class="token punctuation">,</span> contentBlock<span class="token punctuation">,</span> callback<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">function</span> <span class="token function">handleStrategy<span class="token punctuation">(</span></span>contentBlock<span class="token punctuation">,</span> callback<span class="token punctuation">,</span> contentState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token function">findWithRegex<span class="token punctuation">(</span></span>HANDLE_REGEX<span class="token punctuation">,</span> contentBlock<span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">function</span> <span class="token function">hashtagStrategy<span class="token punctuation">(</span></span>contentState<span class="token punctuation">,</span> contentBlock<span class="token punctuation">,</span> callback<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">function</span> <span class="token function">hashtagStrategy<span class="token punctuation">(</span></span>contentBlock<span class="token punctuation">,</span> callback<span class="token punctuation">,</span> contentState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token function">findWithRegex<span class="token punctuation">(</span></span>HASHTAG_REGEX<span class="token punctuation">,</span> contentBlock<span class="token punctuation">,</span> callback<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
