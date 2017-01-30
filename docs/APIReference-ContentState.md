@@ -116,27 +116,27 @@ objects.
     </a>
   </li>
   <li>
-    <a href="#createEntity">
+    <a href="#createentity">
       <pre>createEntity(...)</pre>
     </a>
   </li>
   <li>
-    <a href="#getEntity">
+    <a href="#getentity">
       <pre>getEntity(...)</pre>
     </a>
   </li>
   <li>
-    <a href="#mergeEntityData">
+    <a href="#mergeentitydata">
       <pre>mergeEntityData(...)</pre>
     </a>
   </li>
   <li>
-    <a href="#replaceEntityData">
+    <a href="#replaceentitydata">
       <pre>replaceEntityData(...)</pre>
     </a>
   </li>
   <li>
-    <a href="#addEntity">
+    <a href="#addentity">
       <pre>addEntity(...)</pre>
     </a>
   </li>
