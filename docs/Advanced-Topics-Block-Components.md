@@ -16,12 +16,12 @@ Facebook photos or by uploading new images from the desktop. To that end,
 the Draft framework supports custom rendering at the block level, to render
 content like rich media in place of plain text.
 
-The [TeX editor](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-1/tex)
+The [TeX editor](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/tex)
 in the Draft repository provides a live example of custom block rendering, with
 TeX syntax translated on the fly into editable embedded formula rendering via the
 [KaTeX library](https://khan.github.io/KaTeX/).
 
-A [media example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-1/media) is also
+A [media example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/media) is also
 available, which showcases custom block rendering of audio, image, and video.
 
 By using a custom block renderer, it is possible to introduce complex rich
