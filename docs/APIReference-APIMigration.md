@@ -81,10 +81,10 @@ const compositeDecorator = new CompositeDecorator([
 const compositeDecorator = new CompositeDecorator([
   {
     strategy: (
-      contentState,
       contentBlock,
-      callback
-    ) => exampleFindTextRange(contentBlock, callback),
+      callback,
+      contentState
+    ) => exampleFindTextRange(contentBlock, callback, contentState),
     component: ExampleTokenComponent,
   },
 ]);
