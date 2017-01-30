@@ -64,7 +64,7 @@ content. For instance, the `Modifier` module contains an `applyEntity` method:
 
 ```js
 const contentState = editorState.getCurrentContent();
-const contentStateWithEntity = constentState.createEntity(
+const contentStateWithEntity = contentState.createEntity(
   'LINK',
   'MUTABLE',
   {href: 'http://www.zombo.com'}
