@@ -135,7 +135,7 @@ function findLinkEntities(contentBlock, callback) {
 **New Syntax**
 
 ```
-function findLinkEntities(contentState, contentBlock, callback) {
+function findLinkEntities(contentBlock, callback, contentState) {
   contentBlock.findEntityRanges(
     (character) => {
       const entityKey = character.getEntity();

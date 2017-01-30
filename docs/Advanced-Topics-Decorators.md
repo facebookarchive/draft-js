@@ -64,11 +64,11 @@ matches, then for hashtag matches.
 const HANDLE_REGEX = /\@[\w]+/g;
 const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
 
-function handleStrategy(contentState, contentBlock, callback) {
+function handleStrategy(contentBlock, callback, contentState) {
   findWithRegex(HANDLE_REGEX, contentBlock, callback);
 }
 
-function hashtagStrategy(contentState, contentBlock, callback) {
+function hashtagStrategy(contentBlock, callback, contentState) {
   findWithRegex(HASHTAG_REGEX, contentBlock, callback);
 }
 
