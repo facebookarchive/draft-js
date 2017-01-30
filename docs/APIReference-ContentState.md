@@ -140,11 +140,6 @@ objects.
       <pre>addEntity(...)</pre>
     </a>
   </li>
-  <li>
-    <a href="#getentity">
-      <pre>getEntity(...)</pre>
-    </a>
-  </li>
 </ul>
 
 *Properties*
