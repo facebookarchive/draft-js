@@ -12,7 +12,7 @@ want to add to our editor. The Facebook comment input, for example, provides
 blue background highlights for mentions and hashtags.
 
 To support flexibility for custom rich text, Draft provides a "decorator"
-system. The [tweet example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-1/tweet)
+system. The [tweet example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/tweet)
 offers a live example of decorators in action.
 
 ## CompositeDecorator
