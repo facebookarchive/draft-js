@@ -54,6 +54,7 @@ const handlerMap = {
   'drag': DraftEditorDragHandler,
   'cut': null,
   'render': null,
+  'paste': null,
 };
 
 type State = {
@@ -225,6 +226,14 @@ class DraftEditor extends React.Component {
       wordWrap: 'break-word',
     };
 
+    const pasteTrapStyle = {
+      maxWidth: '1px',
+      maxHeight: '1px',
+      overflow: 'hidden',
+      position: 'absolute',
+      opacity: '0.01',
+    };
+
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
@@ -265,7 +274,6 @@ class DraftEditor extends React.Component {
             onKeyPress={this._onKeyPress}
             onKeyUp={this._onKeyUp}
             onMouseUp={this._onMouseUp}
-            onPaste={this._onPaste}
             onSelect={this._onSelect}
             ref="editor"
             role={readOnly ? null : (this.props.role || 'textbox')}
@@ -286,12 +294,25 @@ class DraftEditor extends React.Component {
             />
           </div>
         </div>
+        <div
+          contentEditable={true}
+          style={pasteTrapStyle}
+          ref={ref => this._pasteTrap = ref }
+          suppressContentEditableWarning>
+        </div>
       </div>
     );
   }
 
   componentDidMount(): void {
     this.setMode('edit');
+
+    // Unfortunately, due to https://github.com/facebook/react/issues/8909
+    // it is not possible to set up an onPaste handler through react.
+    // Manually use addEventListener and removeEventListener below.
+    // See the comments in editOnPaste for why this is needed.
+    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
+    editorNode.addEventListener('paste', this._onPaste);
 
     /**
      * IE has a hardcoded "feature" that attempts to convert link text into
@@ -303,6 +324,11 @@ class DraftEditor extends React.Component {
     if (isIE) {
       document.execCommand('AutoUrlDetect', false, false);
     }
+  }
+
+  componentWillUnmount(): void {
+    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
+    editorNode.removeEventListener('paste', this._onPaste);
   }
 
   /**
