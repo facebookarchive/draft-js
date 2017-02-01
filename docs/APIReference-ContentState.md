@@ -192,7 +192,7 @@ the content.
 
 ## Methods
 
-### getBlockMap
+### getEntityMap
 
 ```
 getEntityMap(): EntityMap
