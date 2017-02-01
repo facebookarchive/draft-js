@@ -25,7 +25,7 @@ entity objects.
 
 For information about recent changes to the Entity API, and examples of how to
 update your application,
-[see our v0.10 API Migration Guide](http://localhost:8080/draft-js/docs/v0-10-api-migration.html#content).
+[see our v0.10 API Migration Guide](/draft-js/docs/v0-10-api-migration.html#content).
 
 ## Introduction
 
