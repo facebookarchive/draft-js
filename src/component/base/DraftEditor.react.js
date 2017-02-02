@@ -226,7 +226,7 @@ class DraftEditor extends React.Component {
       wordWrap: 'break-word',
     };
 
-    const pasteTrapStyle = {
+    const trapDivStyle = {
       maxWidth: '1px',
       maxHeight: '1px',
       overflow: 'hidden',
@@ -297,8 +297,14 @@ class DraftEditor extends React.Component {
         </div>
         <div
           contentEditable={true}
-          style={pasteTrapStyle}
+          style={trapDivStyle}
           ref={ref => this._pasteTrap = ref }
+          suppressContentEditableWarning>
+        </div>
+        <div
+          contentEditable={true}
+          style={trapDivStyle}
+          ref={ref => this._copyTrap = ref }
           suppressContentEditableWarning>
         </div>
       </div>
