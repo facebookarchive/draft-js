@@ -18,6 +18,8 @@ const Style = require('Style');
 
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
+const setImmediate = require('setImmediate');
+const setClipboardData = require('setClipboardData');
 
 import type DraftEditor from 'DraftEditor.react';
 
@@ -52,13 +54,17 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   editor.setMode('cut');
 
   // Let native `cut` behavior occur, then recover control.
-  setTimeout(() => {
+  setImmediate(() => {
     editor.restoreEditorDOM({x, y});
     editor.exitCurrentMode();
     editor.update(removeFragment(editorState));
-  }, 0);
-  if (editor.props.onCut) {
-    editor.props.onCut(e);
+  });
+
+  if (editor.props.convertBlockMapToClipboard) {
+    const clipboardDataToSet = editor.props.convertBlockMapToClipboard(fragment);
+    setClipboardData(e, clipboardDataToSet);
+
+    e.preventDefault();
   }
 }
 
