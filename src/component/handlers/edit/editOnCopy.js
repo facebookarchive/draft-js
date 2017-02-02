@@ -35,11 +35,10 @@ function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent): void {
 
   const fragment = getFragmentFromSelection(editor._latestEditorState);
   editor.setClipboard(fragment);
+
   if (editor.props.convertBlockMapToClipboard) {
     const clipboardDataToSet = editor.props.convertBlockMapToClipboard(fragment);
-    setClipboardData(e, clipboardDataToSet);
-
-    e.preventDefault();
+    setClipboardData(e, editor, clipboardDataToSet);
   }
 }
 

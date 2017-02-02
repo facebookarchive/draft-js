@@ -62,9 +62,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
 
   if (editor.props.convertBlockMapToClipboard) {
     const clipboardDataToSet = editor.props.convertBlockMapToClipboard(fragment);
-    setClipboardData(e, clipboardDataToSet);
-
-    e.preventDefault();
+    setClipboardData(e, editor, clipboardDataToSet);
   }
 }
 
