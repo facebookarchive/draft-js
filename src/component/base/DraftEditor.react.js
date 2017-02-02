@@ -86,6 +86,7 @@ class DraftEditor extends React.Component {
   _dragCount: number;
   _internalDrag: boolean;
   _editorKey: string;
+  _editor: React.Element<any>;
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
   _pendingStateFromBeforeInput: void | EditorState;
@@ -158,6 +159,8 @@ class DraftEditor extends React.Component {
     this._onPaste = this._buildHandler('onPaste');
     this._onSelect = this._buildHandler('onSelect');
 
+    this._setEditorRef = this._setEditorRef.bind(this);
+
     // Manual binding for public and internal methods.
     this.focus = this._focus.bind(this);
     this.blur = this._blur.bind(this);
@@ -209,6 +212,23 @@ class DraftEditor extends React.Component {
       );
     }
     return null;
+  }
+
+  _setEditorRef(ref: React.Element<any>): void {
+    // Unfortunately, due to https://github.com/facebook/react/issues/8909
+    // it is not possible to set up an onPaste handler through react.
+    // Manually use addEventListener and removeEventListener below.
+    // See the comments in editOnPaste for why this is needed.
+    if (this._editor) {
+      const editorNode = ReactDOM.findDOMNode(this._editor);
+      editorNode.removeEventListener('paste', this._onPaste);
+    }
+
+    this._editor = ref;
+    if (this._editor) {
+      const editorNode = ReactDOM.findDOMNode(this._editor);
+      editorNode.addEventListener('paste', this._onPaste);
+    }
   }
 
   render(): React.Element<any> {
@@ -276,7 +296,7 @@ class DraftEditor extends React.Component {
             onKeyUp={this._onKeyUp}
             onMouseUp={this._onMouseUp}
             onSelect={this._onSelect}
-            ref="editor"
+            ref={this._setEditorRef}
             role={readOnly ? null : (this.props.role || 'textbox')}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
@@ -314,13 +334,6 @@ class DraftEditor extends React.Component {
   componentDidMount(): void {
     this.setMode('edit');
 
-    // Unfortunately, due to https://github.com/facebook/react/issues/8909
-    // it is not possible to set up an onPaste handler through react.
-    // Manually use addEventListener and removeEventListener below.
-    // See the comments in editOnPaste for why this is needed.
-    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
-    editorNode.addEventListener('paste', this._onPaste);
-
     /**
      * IE has a hardcoded "feature" that attempts to convert link text into
      * anchors in contentEditable DOM. This breaks the editor's expectations of
@@ -331,11 +344,6 @@ class DraftEditor extends React.Component {
     if (isIE) {
       document.execCommand('AutoUrlDetect', false, false);
     }
-  }
-
-  componentWillUnmount(): void {
-    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
-    editorNode.removeEventListener('paste', this._onPaste);
   }
 
   /**
@@ -368,7 +376,7 @@ class DraftEditor extends React.Component {
   _focus(scrollPosition?: DraftScrollPosition): void {
     const {editorState} = this.props;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
-    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
+    const editorNode = ReactDOM.findDOMNode(this._editor);
 
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
@@ -395,7 +403,7 @@ class DraftEditor extends React.Component {
   }
 
   _blur(): void {
-    ReactDOM.findDOMNode(this.refs.editor).blur();
+    ReactDOM.findDOMNode(this._editor).blur();
   }
 
   /**
