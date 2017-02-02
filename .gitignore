@@ -10,3 +10,5 @@
 /website/src/draft-js/docs/
 npm-debug.log
 /*.tgz
+/*.idea
+/*.iml
