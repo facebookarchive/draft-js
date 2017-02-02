@@ -19,6 +19,7 @@ const Style = require('Style');
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
 const setImmediate = require('setImmediate');
+const setClipboardData = require('setClipboardData');
 
 import type DraftEditor from 'DraftEditor.react';
 
@@ -60,22 +61,8 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   });
 
   if (editor.props.convertBlockMapToClipboard) {
-    const clipboardDataToPush = editor.props.convertBlockMapToClipboard(fragment);
-
-    // IE doesn't pass a clipboardData object in the event and instead has a non-standard one attached to window
-    let clipboard = window.clipboardData;
-    if (!clipboard) {
-      clipboard = e.nativeEvent.clipboardData;
-    }
-
-    // see copy for note about why html/plain order matters here
-    try {
-      clipboard.setData(`text/html`, clipboardDataToPush.html);
-      clipboard.setData(`text/plain`, clipboardDataToPush.text);
-    }
-    catch (err) {
-      clipboard.setData(`Text`, clipboardDataToPush.text);
-    }
+    const clipboardDataToSet = editor.props.convertBlockMapToClipboard(fragment);
+    setClipboardData(e, clipboardDataToSet);
 
     e.preventDefault();
   }
