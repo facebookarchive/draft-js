@@ -379,9 +379,25 @@ class DraftEditor extends React.Component {
     const editorNode = ReactDOM.findDOMNode(this._editor);
 
     const scrollParent = Style.getScrollParent(editorNode);
-    const {x, y} = scrollPosition || getScrollPosition(scrollParent);
+    const originalScrollPosition = getScrollPosition(scrollParent);
+    const originalMarginTop = Style.get(editorNode, 'marginTop');
+    const {x, y} = scrollPosition || originalScrollPosition;
+
+    if (isIE) {
+      // IE will briefly scroll a content editable element to the top and back
+      // when it is given focus programmatically. To account for this we must
+      // first scroll it to the top but pretend that it hasn't using the margin.
+      editorNode.style.margin = `${-originalScrollPosition.y}px`;
+      Scroll.setTop(scrollParent, 0);
+    }
 
     editorNode.focus();
+
+    if (isIE) {
+      // Reset the margin
+      editorNode.style.margin = originalMarginTop;
+    }
+
     if (scrollParent === window) {
       window.scrollTo(x, y);
     } else {
