@@ -24,7 +24,7 @@ function setClipboardData(e: SyntheticClipboardEvent, editor: DraftEditor, {text
 
   if (clipboard) {
 
-    const testClipboardString = 'draft js clipboard set works' + Math.floor(Math.random() * 100000);
+    const testClipboardString = 'setting the clipboard works';
     clipboard.setData('Text', testClipboardString);
 
     if (clipboard.getData('Text') !== testClipboardString) {
@@ -36,7 +36,7 @@ function setClipboardData(e: SyntheticClipboardEvent, editor: DraftEditor, {text
       editor._copyTrap.innerHTML = html;
 
       var selection = window.getSelection();
-      var originalRange = selection.getRangeAt(0).cloneRange();
+      var originalRange = selection.rangeNum > 0 ? selection.getRangeAt(0).cloneRange() : null;
 
       var copyTrapRange = document.createRange();
       copyTrapRange.selectNodeContents(editor._copyTrap);
@@ -51,7 +51,10 @@ function setClipboardData(e: SyntheticClipboardEvent, editor: DraftEditor, {text
         editor.focus();
         selection = window.getSelection();
         selection.removeAllRanges();
-        selection.addRange(originalRange);
+
+        if (originalRange) {
+          selection.addRange(originalRange);
+        }
         editor.exitCurrentMode();
         editor._copyTrap.innerHtml = '';
       });
