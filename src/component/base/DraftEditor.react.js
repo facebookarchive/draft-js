@@ -53,6 +53,7 @@ const handlerMap = {
   'composite': DraftEditorCompositionHandler,
   'drag': DraftEditorDragHandler,
   'cut': null,
+  'copy': null,
   'render': null,
   'paste': null,
 };
