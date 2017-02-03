@@ -28,7 +28,7 @@ function setClipboardData(e: SyntheticClipboardEvent, editor: DraftEditor, {text
     clipboard.setData('Text', testClipboardString);
 
     if (clipboard.getData('Text') !== testClipboardString) {
-      console.log('bad stuff detected');
+
       // We can't always set the clipboard data in IE because of various Group Policies that might be applied.
       // We need to populate a "copy trap" div with the new HTML and switch focus so the native copy can go
       // through into that div
