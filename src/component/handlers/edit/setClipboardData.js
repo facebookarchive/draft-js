@@ -36,7 +36,7 @@ function setClipboardData(e: SyntheticClipboardEvent, editor: DraftEditor, {text
       editor._copyTrap.innerHTML = html;
 
       var selection = window.getSelection();
-      var originalRange = selection.rangeNum > 0 ? selection.getRangeAt(0).cloneRange() : null;
+      var originalRange = selection.rangeCount > 0 ? selection.getRangeAt(0).cloneRange() : null;
 
       var copyTrapRange = document.createRange();
       copyTrapRange.selectNodeContents(editor._copyTrap);
