@@ -253,7 +253,7 @@ class DraftEditor extends React.Component {
       overflow: 'hidden',
       position: 'fixed',
       opacity: '0.01',
-      left: '0px',
+      left: '-999px',
       top: '0px',
     };
 
