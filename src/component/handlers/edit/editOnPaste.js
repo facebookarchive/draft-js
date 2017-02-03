@@ -224,8 +224,8 @@ function getHTML(data: DataTransfer) {
 function needsClipboardPolyfill() {
   const isEdge = UserAgent.isBrowser('Edge');
   const isIE = UserAgent.isBrowser('IE');
-  const isOldSafari = UserAgent.isBrowser('Safari < 10');
-  return isEdge || isIE || isOldSafari;
+  const isSafari = UserAgent.isBrowser('Safari');
+  return isEdge || isIE || isSafari;
 }
 
 function insertFragment(
