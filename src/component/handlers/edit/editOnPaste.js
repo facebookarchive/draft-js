@@ -224,7 +224,7 @@ function getHTML(data: DataTransfer) {
 function needsClipboardPolyfill() {
   const isEdge = UserAgent.isBrowser('Edge');
   const isIE = UserAgent.isBrowser('IE');
-  const isSafari = UserAgent.isBrowser('Safari');
+  const isSafari = UserAgent.isBrowser('Safari < 10');
   return isEdge || isIE || isSafari;
 }
 
