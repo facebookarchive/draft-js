@@ -301,7 +301,7 @@ describe('EditorState', () => {
 
     it('must call decorator with correct argument types and order', () => {
       var decorator = new Decorator();
-      var editorState = getDecoratedEditorState(decorator);
+      getDecoratedEditorState(decorator);
       decorator.getDecorations.mock.calls.forEach((call) => {
         expect(call[0] instanceof ContentBlock).toBe(true);
         expect(call[1] instanceof ContentState).toBe(true);
