@@ -3,7 +3,7 @@ id: advanced-topics-entities
 title: Entities
 layout: docs
 category: Advanced Topics
-next: advanced-topics-decorators
+next: v0-10-api-migration
 permalink: docs/advanced-topics-entities.html
 ---
 
@@ -13,15 +13,19 @@ richness beyond styled text to their editors. Links, mentions, and embedded
 content can all be implemented using entities.
 
 In the Draft repository, the
-[link editor](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/link)
+[link editor](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/link)
 and
-[entity demo](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/entity)
+[entity demo](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/entity)
 provide live code examples to help clarify how entities can be used, as well
 as their built-in behavior.
 
 The [Entity API Reference](/draft-js/docs/api-reference-entity.html) provides
 details on the static methods to be used when creating, retrieving, or updating
 entity objects.
+
+For information about recent changes to the Entity API, and examples of how to
+update your application,
+[see our v0.10 API Migration Guide](/draft-js/docs/v0-10-api-migration.html#content).
 
 ## Introduction
 
@@ -38,10 +42,12 @@ greater detail below.
 a `'LINK'` entity might contain a `data` object that contains the `href` value
 for that link.
 
-All entities are stored in a single object store within the `Entity` module,
-and are referenced by key within `ContentState` and React components used to
-decorate annotated ranges. _(We are considering future changes to bring
-the entity store into `EditorState` or `ContentState`.)_
+All entities are stored in the ContentState record. The entites  are referenced
+by key within `ContentState` and React components used to decorate annotated
+ranges. (We are currently deprecating a previous API for accessing Entities; see
+issue
+[#839](https://github.com/facebook/draft-js/issues/839)
+.)
 
 Using [decorators](/draft-js/docs/advanced-topics-decorators.html) or
 [custom block components](/draft-js/docs/advanced-topics-block-components.html), you can
@@ -49,15 +55,21 @@ add rich rendering to your editor based on entity metadata.
 
 ## Creating and Retrieving Entities
 
-Entities should be created using `Entity.create`, which accepts the three
-properties above as arguments. This method returns a string key, which can then
-be used to refer to the entity.
+Entities should be created using `contentState.createEntity`, which accepts the
+three properties above as arguments. This method returns a string key, which can
+then be used to refer to the entity.
 
 This key is the value that should be used when applying entities to your
 content. For instance, the `Modifier` module contains an `applyEntity` method:
 
 ```js
-const key = Entity.create('LINK', 'MUTABLE', {href: 'http://www.zombo.com'});
+const contentState = editorState.getCurrentContent();
+const contentStateWithEntity = contentState.createEntity(
+  'LINK',
+  'MUTABLE',
+  {href: 'http://www.zombo.com'}
+);
+const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 const contentStateWithLink = Modifier.applyEntity(
   contentState,
   selectionState,
@@ -72,10 +84,10 @@ offset value.
 ```js
 const blockWithLinkAtBeginning = contentState.getBlockForKey('...');
 const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
-const linkInstance = Entity.get(linkKey);
+const contentState = editorState.getCurrentContent();
+const linkInstance = contentState.getEntity(linkKey);
 const {href} = linkInstance.getData();
 ```
-
 ## "Mutability"
 
 Entities may have one of three "mutability" values. The difference between them
@@ -132,5 +144,5 @@ while the latter completely swaps in the new data object.
 The next article in this section covers the usage of decorator objects, which
 can be used to retrieve entities for rendering purposes.
 
-The [link editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/link)
+The [link editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/link)
 provides a working example of entity creation and decoration in use.

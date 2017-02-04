@@ -16,12 +16,12 @@ Facebook photos or by uploading new images from the desktop. To that end,
 the Draft framework supports custom rendering at the block level, to render
 content like rich media in place of plain text.
 
-The [TeX editor](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/tex)
+The [TeX editor](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/tex)
 in the Draft repository provides a live example of custom block rendering, with
 TeX syntax translated on the fly into editable embedded formula rendering via the
 [KaTeX library](https://khan.github.io/KaTeX/).
 
-A [media example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/media) is also
+A [media example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/media) is also
 available, which showcases custom block rendering of audio, image, and video.
 
 By using a custom block renderer, it is possible to introduce complex rich
@@ -90,21 +90,20 @@ then retrieve the metadata for that key in your custom component `render()`
 code.
 
 ```js
-import {Entity} from 'draft-js';
 class MediaComponent extends React.Component {
   render() {
-    const {block} = this.props;
+    const {block, contentState} = this.props;
     const {foo} = this.props.blockProps;
-    const data = Entity.get(block.getEntityAt(0)).getData();
+    const data = contentState.getEntity(block.getEntityAt(0)).getData();
     // Return a <figure> or some other content using this data.
   }
 }
 ```
 
-The `ContentBlock` object is made available within the custom component, along
-with the props defined at the top level. By extracting entity information from
-the `ContentBlock` and the `Entity` map, you can obtain the metadata required to
-render your custom component.
+The `ContentBlock` object and the `ContentState` record are made available
+within the custom component, along with the props defined at the top level. By
+extracting entity information from the `ContentBlock` and the `Entity` map, you
+can obtain the metadata required to render your custom component.
 
 _Retrieving the entity from the block is admittedly a bit of an awkward API,
 and is worth revisiting._

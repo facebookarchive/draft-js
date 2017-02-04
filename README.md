@@ -19,7 +19,11 @@ for scalable memory usage.
 
 ## API Notice
 
-Before getting started, please be aware that we are changing the API of Entity storage in Draft. Currently, the master branch supports both the old and new API. We hope to release this soon, as `v0.10.0`. Following that up will be `v0.11.0` which will remove the old API. This update will also include documentation on how to upgrade. If you are interested in helping out, or tracking the progress, please follow  [issue 839](https://github.com/facebook/draft-js/issues/839).
+Before getting started, please be aware that we recently changed the API of
+Entity storage in Draft. The latest version, `v0.10.0`, supports both the old
+and new API.  Following that up will be `v0.11.0` which will remove the old API.
+If you are interested in helping out, or tracking the progress, please follow
+[issue 839](https://github.com/facebook/draft-js/issues/839).
 
 ## Getting Started
 
@@ -27,6 +31,10 @@ Currently Draft.js is distributed via npm. It depends on React and React DOM whi
 
 ```
 npm install --save draft-js react react-dom
+
+or
+
+yarn add draft-js react react-dom
 ```
 
 ### Using Draft.js
