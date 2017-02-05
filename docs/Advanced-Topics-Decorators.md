@@ -109,7 +109,7 @@ Note that `props.children` is passed through to the rendered output. This is
 done to ensure that the text is rendered within the decorated `span`.
 
 You can use the same approach for links, as demonstrated in our
-[link example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-1/link).
+[link example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/link).
 
 ### Beyond CompositeDecorator
 
