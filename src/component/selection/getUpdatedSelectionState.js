@@ -53,6 +53,9 @@ function getUpdatedSelectionState(
       'leaves',
       anchorPath.leafKey,
     ]);
+  if (!anchorLeaf) {
+    return selection;
+  }
 
   var focusPath = DraftOffsetKey.decode(focusKey);
   var focusBlockKey = focusPath.blockKey;
@@ -66,12 +69,15 @@ function getUpdatedSelectionState(
       'leaves',
       focusPath.leafKey,
     ]);
+  if (!focusLeaf) {
+    return selection;
+  }
 
   var anchorLeafStart: number = anchorLeaf.get('start');
   var focusLeafStart: number = focusLeaf.get('start');
 
-  var anchorBlockOffset = anchorLeaf ? anchorLeafStart + anchorOffset : null;
-  var focusBlockOffset = focusLeaf ? focusLeafStart + focusOffset : null;
+  var anchorBlockOffset = anchorLeafStart + anchorOffset;
+  var focusBlockOffset = focusLeafStart + focusOffset;
 
   var areEqual = (
     selection.getAnchorKey() === anchorBlockKey &&
