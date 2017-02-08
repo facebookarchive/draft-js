@@ -39,9 +39,14 @@ var DOUBLE_NEWLINE = '\n\n';
  * due to a spellcheck change, and we can incorporate it into our model.
  */
 function editOnInput(editor: DraftEditor): void {
-  if (editor._pendingStateFromBeforeInput !== undefined) {
-    editor.update(editor._pendingStateFromBeforeInput);
-    editor._pendingStateFromBeforeInput = undefined;
+
+  // We have already updated our internal state appropriately for this input
+  // event. See editOnBeforeInput() for more info
+  if (editor._waitingOnInput) {
+    if (!editor._renderNativeContent) {
+      return;
+    }
+    editor._waitingOnInput = false;
   }
 
   var domSelection = global.getSelection();

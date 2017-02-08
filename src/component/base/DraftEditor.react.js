@@ -87,7 +87,8 @@ class DraftEditor extends React.Component {
   _editorKey: string;
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
-  _pendingStateFromBeforeInput: void | EditorState;
+  _renderNativeContent: boolean;
+  _waitingOnInput: boolean;
 
   /**
    * Define proxies that can route events to the current handler.
@@ -422,7 +423,8 @@ class DraftEditor extends React.Component {
    * an `onChange` prop to receive state updates passed along from this
    * function.
    */
-  _update(editorState: EditorState): void {
+  _update(editorState: EditorState, renderNativeContent: boolean = false): void {
+    this._renderNativeContent = renderNativeContent;
     this._latestEditorState = editorState;
     this.props.onChange(editorState);
   }
