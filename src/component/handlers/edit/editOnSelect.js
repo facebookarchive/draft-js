@@ -21,8 +21,7 @@ import type DraftEditor from 'DraftEditor.react';
 
 function editOnSelect(editor: DraftEditor): void {
   if (editor._blockSelectEvents ||
-      editor._latestEditorState !== editor.props.editorState ||
-      editor._pendingStateFromBeforeInput !== undefined) {
+      editor._latestEditorState !== editor.props.editorState) {
     return;
   }
 
