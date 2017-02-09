@@ -50,7 +50,7 @@ the editor blockRender props.
 // updates the unstyled element to also become a h2.
 const blockRenderMap = Immutable.Map({
   'header-two': {
-   element: 'h2'
+    element: 'h2'
   },
   'unstyled': {
     element: 'h2'
@@ -94,6 +94,19 @@ class RichEditor extends React.Component {
       />
     );
   }
+}
+```
+
+When Draft parses pasted HTML, it maps from HTML elements back into
+Draft block types. If you want to specify other HTML elements that map to a
+particular block type, you can add an array `aliasedElements` to the block config.
+
+*example of unstyled block type alias usage:*
+
+```
+'unstyled': {
+  element: 'div',
+  aliasedElements: ['p'],
 }
 ```
 

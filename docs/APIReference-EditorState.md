@@ -110,6 +110,11 @@ The list below includes the most commonly used instance methods for `EditorState
       <pre>static setInlineStyleOverride(editorState, inlineStyleOverride): EditorState</pre>
     </a>
   </li>
+  <li>
+    <a href="#set">
+      <pre>static set(editorState, EditorStateRecordType): EditorState</pre>
+    </a>
+  </li>
 </ul>
 
 *Properties*
@@ -347,6 +352,14 @@ static setInlineStyleOverride(editorState: EditorState, inlineStyleOverride: Dra
 ```
 Returns a new `EditorState` object with the specified `DraftInlineStyle` applied
 as the set of inline styles to be applied to the next inserted characters.
+
+### set
+
+```
+static set(editorState: EditorState, options: EditorStateRecordType): EditorState
+```
+Returns a new `EditorState` object with new options passed in. 'The method is
+inherited from the Immutable `record` API.
 
 ## Properties and Getters
 

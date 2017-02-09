@@ -48,12 +48,12 @@ export type DraftEditorProps = {
   blockRendererFn?: (block: ContentBlock) => ?Object,
 
   // Function that returns a cx map corresponding to block-level styles.
-  blockStyleFn?: (type: number) => string,
+  blockStyleFn?: (block: ContentBlock) => string,
 
   // A function that accepts a synthetic key event and returns
-  // the matching DraftEditorCommand constant, or null if no command should
-  // be invoked.
-  keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string,
+  // the matching DraftEditorCommand constant, or a custom string,
+  // or null if no command should be invoked.
+  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
 
   // Set whether the `DraftEditor` component should be editable. Useful for
   // temporarily disabling edit behavior or allowing `DraftEditor` rendering
@@ -92,7 +92,7 @@ export type DraftEditorProps = {
 
   // Map a key command string provided by your key binding function to a
   // specified behavior.
-  handleKeyCommand?: (command: DraftEditorCommand) => DraftHandleValue,
+  handleKeyCommand?: (command: DraftEditorCommand | string) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be
   // useful in cases where the user has entered characters that you would like
@@ -135,7 +135,7 @@ export type DraftEditorProps = {
 
   // Provide a function that will construct CSS style objects given inline
   // style names.
-  customStyleFn?: (style: DraftInlineStyle) => ?Object,
+  customStyleFn?: (style: DraftInlineStyle, block: ContentBlock) => ?Object,
 
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration
@@ -146,4 +146,14 @@ export type DraftEditorProps = {
   // If you have multiple draft-js instances, you should set this key so that
   // aria-attributes will be able to uniquely identify the correct editor.
   editorKey?: string
+};
+
+export type DraftEditorDefaultProps = {
+  blockRenderMap: DraftBlockRenderMap,
+  blockRendererFn: (block: ContentBlock) => ?Object,
+  blockStyleFn: (block: ContentBlock) => string,
+  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
+  readOnly: boolean,
+  spellCheck: boolean,
+  stripPastedStyles: boolean,
 };

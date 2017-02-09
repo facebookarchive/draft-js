@@ -52,7 +52,7 @@ class CompositeDraftDecorator {
     this._decorators = decorators.slice();
   }
 
-  getDecorations(contentState: ContentState, block: ContentBlock): List<?string> {
+  getDecorations(block: ContentBlock, contentState: ContentState): List<?string> {
     var decorations = Array(block.getText().length).fill(null);
 
     this._decorators.forEach(

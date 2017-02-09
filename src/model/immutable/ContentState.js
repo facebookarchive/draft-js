@@ -122,7 +122,7 @@ class ContentState extends ContentStateRecord {
 
   getLastCreatedEntityKey() {
     // TODO: update this when we fully remove DraftEntity
-    return DraftEntity.getLastCreatedEntityKey();
+    return DraftEntity.__getLastCreatedEntityKey();
   }
 
   hasText(): boolean {
@@ -136,10 +136,10 @@ class ContentState extends ContentStateRecord {
   createEntity(
     type: DraftEntityType,
     mutability: DraftEntityMutability,
-    data?: Object
+    data?: Object,
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.create(
+    DraftEntity.__create(
       type,
       mutability,
       data,
@@ -149,38 +149,41 @@ class ContentState extends ContentStateRecord {
 
   mergeEntityData(
     key: string,
-    toMerge: {[key: string]: any}
+    toMerge: {[key: string]: any},
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.mergeData(key, toMerge);
+    DraftEntity.__mergeData(key, toMerge);
     return this;
   }
 
   replaceEntityData(
     key: string,
-    newData: {[key: string]: any}
+    newData: {[key: string]: any},
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.replaceData(key, newData);
+    DraftEntity.__replaceData(key, newData);
     return this;
   }
 
   addEntity(instance: DraftEntityInstance): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.add(instance);
+    DraftEntity.__add(instance);
     return this;
   }
 
   getEntity(key: string): DraftEntityInstance {
     // TODO: update this when we fully remove DraftEntity
-    return DraftEntity.get(key);
+    return DraftEntity.__get(key);
   }
 
   static createFromBlockArray(
-    blocks: Array<ContentBlock>,
+    // TODO: update flow type when we completely deprecate the old entity API
+    blocks: Array<ContentBlock> | {contentBlocks: Array<ContentBlock>},
     entityMap: ?any,
   ): ContentState {
-    var blockMap = BlockMapBuilder.createFromArray(blocks);
+    // TODO: remove this when we completely deprecate the old entity API
+    const theBlocks = Array.isArray(blocks) ? blocks : blocks.contentBlocks;
+    var blockMap = BlockMapBuilder.createFromArray(theBlocks);
     var selectionState = blockMap.isEmpty()
       ? new SelectionState()
       : SelectionState.createEmpty(blockMap.first().getKey());

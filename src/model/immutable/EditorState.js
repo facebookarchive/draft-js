@@ -69,7 +69,7 @@ class EditorState {
   _immutable: EditorStateRecord;
 
   static createEmpty(
-    decorator?: DraftDecoratorType
+    decorator?: ?DraftDecoratorType
   ): EditorState {
     return EditorState.createWithContent(
       ContentState.createFromText(''),
@@ -79,7 +79,7 @@ class EditorState {
 
   static createWithContent(
     contentState: ContentState,
-    decorator?: DraftDecoratorType
+    decorator?: ?DraftDecoratorType
   ): EditorState {
     var firstKey = contentState.getBlockMap().first().getKey();
     return EditorState.create({
@@ -389,8 +389,10 @@ class EditorState {
 
     let inlineStyleOverride = editorState.getInlineStyleOverride();
 
-    // Don't discard inline style overrides on block type or depth changes.
-    if (changeType !== 'adjust-depth' && changeType !== 'change-block-type') {
+    // Don't discard inline style overrides for the following change types:
+    var overrideChangeTypes = ['adjust-depth', 'change-block-type', 'split-block'];
+
+    if (overrideChangeTypes.indexOf(changeType) === -1) {
       inlineStyleOverride = null;
     }
 
@@ -514,7 +516,7 @@ function updateSelection(
  */
 function generateNewTreeMap(
   contentState: ContentState,
-  decorator: ?DraftDecoratorType
+  decorator?: ?DraftDecoratorType
 ): OrderedMap<string, List<any>> {
   return contentState
     .getBlockMap()
@@ -531,7 +533,7 @@ function regenerateTreeForNewBlocks(
   editorState: EditorState,
   newBlockMap: BlockMap,
   newEntityMap: EntityMap,
-  decorator: ?DraftDecoratorType
+  decorator?: ?DraftDecoratorType
 ): OrderedMap<string, List<any>> {
   const contentState = editorState.getCurrentContent().set('entityMap', newEntityMap);
   var prevBlockMap = contentState.getBlockMap();
@@ -540,7 +542,7 @@ function regenerateTreeForNewBlocks(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(contentState, block, decorator))
+      .map(block => BlockTree.generate(contentState, block, decorator)),
   );
 }
 
@@ -564,11 +566,11 @@ function regenerateTreeForNewDecorator(
       .toSeq()
       .filter(block => {
         return (
-          decorator.getDecorations(content, block) !==
-          existingDecorator.getDecorations(content, block)
+          decorator.getDecorations(block, content) !==
+          existingDecorator.getDecorations(block, content)
         );
       })
-      .map(block => BlockTree.generate(content, block, decorator))
+      .map(block => BlockTree.generate(content, block, decorator)),
   );
 }
 

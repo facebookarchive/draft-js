@@ -301,7 +301,7 @@ describe('DraftPasteProcessor', function() {
     );
     expect(output[0].getText()).toBe('This is a link, yep.');
     var entityId = output[0].getCharacterList().get(12).getEntity();
-    var entity = entityMap.get(entityId);
+    var entity = entityMap.__get(entityId);
     expect(entity.getData().url).toBe('http://www.facebook.com/');
   });
 
@@ -349,7 +349,7 @@ describe('DraftPasteProcessor', function() {
     );
     expect(output[0].getText()).toBe('This is a link, yep.');
     var entityId = output[0].getCharacterList().get(12).getEntity();
-    var entity = entityMap.get(entityId);
+    var entity = entityMap.__get(entityId);
     expect(entity.getData().url).toBe('mailto:example@example.com');
   });
 

@@ -110,7 +110,7 @@ function execute() {
 
   fs.writeFileSync('src/draft-js/lib/Draft.css', fs.readFileSync('../dist/Draft.css'));
   fs.writeFileSync('src/draft-js/lib/Draft.js', fs.readFileSync('../dist/Draft.js'));
-  fs.writeFileSync('src/draft-js/lib/RichEditor.css', fs.readFileSync('../examples/rich/RichEditor.css'));
+  fs.writeFileSync('src/draft-js/lib/RichEditor.css', fs.readFileSync('../examples/draft-0-9-1/rich/RichEditor.css'));
 }
 
 if (argv.convert) {

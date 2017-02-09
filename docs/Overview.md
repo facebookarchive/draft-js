@@ -23,6 +23,14 @@ Currently Draft.js is distributed via npm. It depends on React and React DOM whi
 npm install --save draft-js react react-dom
 ```
 
+### API Changes Notice
+
+Before getting started, please be aware that we recently changed the API of
+Entity storage in Draft. The latest version, `v0.10.0`, supports both the old
+and new API.  Following that up will be `v0.11.0` which will remove the old API.
+If you are interested in helping out, or tracking the progress, please follow
+[issue 839](https://github.com/facebook/draft-js/issues/839).
+
 ### Usage
 
 ```js
@@ -37,8 +45,9 @@ class MyEditor extends React.Component {
     this.onChange = (editorState) => this.setState({editorState});
   }
   render() {
-    const {editorState} = this.state;
-    return <Editor editorState={editorState} onChange={this.onChange} />;
+    return (
+        <Editor editorState={this.state.editorState} onChange={this.onChange} />
+    );
   }
 }
 
