@@ -173,10 +173,22 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     editor._waitingOnInput = true;
     editor.update(newEditorState, true);
 
-    if (isIE) {
-      setImmediate(() => {
-        editOnInput(editor);
-      });
+    var finalEditorState = editor._latestEditorState;
+    var finalContent = finalEditorState.getCurrentContent();
+    var finalNativelyRenderedContent = finalEditorState.getNativelyRenderedContent();
+
+    if (finalNativelyRenderedContent && finalNativelyRenderedContent === finalContent) {
+      if (isIE) {
+        setImmediate(() => {
+          editOnInput(editor);
+        });
+      }
+    } else {
+      // Outside callers (via the editor.onChange prop) have changed the editorState
+      // No longer allow native insertion.
+      e.preventDefault();
+      editor._waitingOnInput = false;
+      editor._renderNativeContent = false;
     }
   }
 }
