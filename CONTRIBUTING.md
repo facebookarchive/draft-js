@@ -41,6 +41,18 @@ outlined on that page and do not file a public issue.
 * 80 character line length
 * Run `npm run lint` to conform to our lint rules
 
+## Stability
+Our philosophy regarding API changes is as follows:
+ * We will avoid changing APIs and core behaviors in general
+ * In order to avoid stagnation we will allow for API changes in cases where
+ there is no other way to achieve a high priority bug fix or improvement.
+ * When there is an API change:
+    * Changes will have a clearly documented reason and migration path
+    * When deprecating a pattern, these steps will be followed:
+        * We will test the change internally first at FB
+        * A version will be released that supports both, with deprecation warnings
+        * The following version will fully remove the deprecated pattern
+
 ## License
 By contributing to Draft.js, you agree that your contributions will be licensed
 under its BSD license.
