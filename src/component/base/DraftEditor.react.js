@@ -230,6 +230,10 @@ class DraftEditor extends React.Component {
     if (this._editor) {
       const editorNode = ReactDOM.findDOMNode(this._editor);
       editorNode.addEventListener('paste', this._onPaste);
+
+      // Add ignore attribute for an IESpell, an obscure plugin that doesn't respect spellcheck="false" on a
+      // contenteditable div
+      editorNode.setAttribute(`ieSpell_ignored`, `true`);
     }
   }
 
