@@ -39,7 +39,7 @@ placeholder?: string
 Optional placeholder string to display when the editor is empty.
 
 Note: You can use CSS to style or hide your placeholder as needed. For instance,
-in the [rich editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/rich),
+in the [rich editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/rich),
 the placeholder is hidden when the user changes block styling in an empty editor.
 This is because the placeholder may not line up with the cursor when the style
 is changed.
@@ -176,7 +176,7 @@ and to convert typed emoticons into images.
 ```
 handlePastedText?: (text: string, html?: string) => DraftHandleValue
 ```
-Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior. 
+Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior.
 
 #### handlePastedFiles
 ```

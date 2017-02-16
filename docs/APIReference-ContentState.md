@@ -41,6 +41,11 @@ objects.
 
 <ul class="apiIndex">
   <li>
+    <a href="#getentitymap">
+      <pre>getEntityMap()</pre>
+    </a>
+  </li>
+  <li>
     <a href="#getblockmap">
       <pre>getBlockMap()</pre>
     </a>
@@ -101,8 +106,38 @@ objects.
     </a>
   </li>
   <li>
+    <a href="#getlastcreatedentitykey">
+      <pre>getLastCreatedEntityKey()</pre>
+    </a>
+  </li>
+  <li>
     <a href="#hastext">
       <pre>hasText()</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#createentity">
+      <pre>createEntity(...)</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#getentity">
+      <pre>getEntity(...)</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#mergeentitydata">
+      <pre>mergeEntityData(...)</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#replaceentitydata">
+      <pre>replaceEntityData(...)</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#addentity">
+      <pre>addEntity(...)</pre>
     </a>
   </li>
 </ul>
@@ -146,13 +181,29 @@ into `ContentBlock` objects. If no delimiter is provided, '`\n`' is used.
 ### createFromBlockArray
 
 ```
-static createFromBlockArray(blocks: Array<ContentBlock>): ContentState
+static createFromBlockArray(
+  blocks: Array<ContentBlock>,
+  entityMap: ?OrderedMap
+): ContentState
 ```
 Generates a `ContentState` from an array of `ContentBlock` objects. The default
 `selectionBefore` and `selectionAfter` states have the cursor at the start of
 the content.
 
 ## Methods
+
+### getEntityMap
+
+```
+getEntityMap(): EntityMap
+```
+Returns an object store containing all `DraftEntity` records that have been
+created.  In upcoming v0.11.0 the map returned will be an Immutable ordered map
+of `DraftEntity` records.
+
+In most cases, you should be able to use the convenience methods below to target
+specific `DraftEntity` records or obtain information about the state of the
+content.
 
 ### getBlockMap
 
@@ -203,21 +254,21 @@ var selectedBlockType = editorState
   .getType();
 ```
 
-### getKeyBefore()
+### getKeyBefore
 
 ```
 getKeyBefore(key: string): ?string
 ```
 Returns the key before the specified key in `blockMap`, or null if this is the first key.
 
-### getKeyAfter()
+### getKeyAfter
 
 ```
 getKeyAfter(key: string): ?string
 ```
 Returns the key after the specified key in `blockMap`, or null if this is the last key.
 
-### getBlockBefore()
+### getBlockBefore
 
 ```
 getBlockBefore(key: string): ?ContentBlock
@@ -225,14 +276,14 @@ getBlockBefore(key: string): ?ContentBlock
 Returns the `ContentBlock` before the specified key in `blockMap`, or null if this is
 the first key.
 
-### getBlockAfter()
+### getBlockAfter
 
 ```
 getBlockAfter(key: string): ?ContentBlock
 ```
 Returns the `ContentBlock` after the specified key in `blockMap`, or null if this is the last key.
 
-### getBlocksAsArray()
+### getBlocksAsArray
 
 ```
 getBlocksAsArray(): Array<ContentBlock>
@@ -241,21 +292,21 @@ Returns the values of `blockMap` as an array.
 
 You generally won't need to use this method, since `getBlockMap` provides an `OrderedMap` that you should use for iteration.
 
-### getFirstBlock()
+### getFirstBlock
 
 ```
 getFirstBlock(): ContentBlock
 ```
 Returns the first `ContentBlock`.
 
-### getLastBlock()
+### getLastBlock
 
 ```
 getLastBlock(): ContentBlock
 ```
 Returns the last `ContentBlock`.
 
-### getPlainText()
+### getPlainText
 
 ```
 getPlainText(delimiter?: string): string
@@ -263,12 +314,78 @@ getPlainText(delimiter?: string): string
 Returns the full plaintext value of the contents, joined with a delimiter. If no
 delimiter is specified, the line feed character (`\u000A`) is used.
 
-### hasText()
+### getLastCreatedEntityKey
+
+```
+getLastCreatedEntityKey(): string
+```
+Returns the string key that can be used to reference the most recently created
+`DraftEntity` record. This is because entities are referenced by their string
+key in ContentState. The string value should be used within CharacterMetadata
+objects to track the entity for annotated characters.
+
+### hasText
 
 ```
 hasText(): boolean
 ```
 Returns whether the contents contain any text at all.
+
+### createEntity
+
+```
+createEntity(
+  type: DraftEntityType,
+  mutability: DraftEntityMutability,
+  data?: Object
+): ContentState
+```
+Returns new `ContentState` record updated to include the newly created
+DraftEntity record in it's `EntityMap`. Call `getLastCreatedEntityKey` to get
+the key of the newly created `DraftEntity` record.
+
+### getEntity
+
+```
+getEntity(key: string): DraftEntityInstance
+```
+Returns the DraftEntityInstance for the specified key. Throws if no instance exists for that key.
+
+### mergeEntityData
+
+```
+mergeEntityData(
+  key: string,
+  toMerge: {[key: string]: any}
+): ContentState
+```
+Since DraftEntityInstance objects are immutable, you cannot update an entity's
+metadata through typical mutative means.
+
+The mergeData method allows you to apply updates to the specified entity.
+
+### replaceEntityData
+
+```
+replaceEntityData(
+  key: string,
+  newData: {[key: string]: any}
+): ContentState
+```
+The replaceData method is similar to the mergeData method, except it will totally discard the existing data value for the instance and replace it with the specified newData.
+
+### addEntity
+
+```
+addEntity(instance: DraftEntityInstance): ContentState
+```
+In most cases, you will use contentState.createEntity(). This is a convenience
+method that you probably will not need in typical Draft usage.
+
+The add function is useful in cases where the instances have already been
+created, and now need to be added to the Entity store. This may occur in cases
+where a vanilla JavaScript representation of a ContentState is being revived for
+editing.
 
 ## Properties
 

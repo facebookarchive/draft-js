@@ -55,6 +55,7 @@ function convertFromRawToDraftState(
         data,
       } = block;
       key = key || generateRandomKey();
+      type = type || 'unstyled';
       depth = depth || 0;
       inlineStyleRanges = inlineStyleRanges || [];
       entityRanges = entityRanges || [];

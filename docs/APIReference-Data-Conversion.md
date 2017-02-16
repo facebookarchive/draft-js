@@ -54,11 +54,18 @@ const sampleMarkup =
   '<a href="http://www.facebook.com">Example link</a>';
 
 const blocksFromHTML = convertFromHTML(sampleMarkup);
-const state = ContentState.createFromBlockArray(blocksFromHTML);
+const state = ContentState.createFromBlockArray(
+  blocksFromHTML.contentBlocks,
+  blocksFromHTML.entityMap
+);
 
 this.state = {
   editorState: EditorState.createWithContent(state),
 };
 ```
 
-Given an HTML fragment, convert it to an array of `ContentBlock` objects. Construct content state from the array of block elements and then update the editor state with it. Full example available [here](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/convertFromHTML).
+Given an HTML fragment, convert it to an object with two keys; one holding the
+array of `ContentBlock` objects, and the other holding a reference to the
+entityMap. Construct content state from the array of block elements and the
+entityMap, and then update the editor state with it. Full example available
+[here](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/convertFromHTML).
