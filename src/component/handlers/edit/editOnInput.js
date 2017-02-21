@@ -18,6 +18,7 @@ var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
 
 var editOnSelect = require('editOnSelect');
+var EditorBidiService = require('EditorBidiService');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
 var nullthrows = require('nullthrows');
@@ -41,6 +42,8 @@ var DOUBLE_NEWLINE = '\n\n';
  * due to a spellcheck change, and we can incorporate it into our model.
  */
 function editOnInput(editor: DraftEditor): void {
+
+  // Ensure the selection is synced with the DOM as it may have changed since editOnBeforeInput was called
   editOnSelect(editor);
   var editorState = editor._latestEditorState;
 
@@ -58,9 +61,20 @@ function editOnInput(editor: DraftEditor): void {
       // optimistically updated block is no longer valid.
       // Replace it with the non-updated block and let the input fall through.
       const currentContent = editorState.getCurrentContent();
+      const contentWithOldBlock = currentContent.set(
+        'blockMap',
+        currentContent.getBlockMap().set(oldBlock.getKey(), oldBlock)
+      );
+
+      var directionMap = EditorBidiService.getDirectionMap(
+        contentWithOldBlock,
+        editorState.getDirectionMap()
+      );
+
       editor.update(
         EditorState.set({
-          currentContent: currentContent.set('blockMap', currentContent.getBlockMap().set(oldBlock.getKey(), oldBlock)),
+          currentContent: contentWithOldBlock,
+          directionMap,
         })
       );
     }
@@ -73,7 +87,6 @@ function editOnInput(editor: DraftEditor): void {
   if (anchorNode.nodeType !== Node.TEXT_NODE) {
     return;
   }
-
 
   var domText = anchorNode.textContent;
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));

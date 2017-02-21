@@ -180,8 +180,6 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     var contentStateAfterUpdate = editorStateAfterUpdate.getCurrentContent();
     var expectedContentStateAfterUpdate = editorStateAfterUpdate.getNativelyRenderedContent();
 
-
-
     if (expectedContentStateAfterUpdate && expectedContentStateAfterUpdate === contentStateAfterUpdate) {
       if (isIE) {
         setImmediate(() => {
