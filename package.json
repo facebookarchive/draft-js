@@ -1,7 +1,7 @@
 {
   "name": "draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.9.0",
+  "version": "0.11.0-alpha",
   "keywords": [
     "draftjs",
     "editor",
@@ -52,7 +52,7 @@
     "eslint-plugin-react": "^5.2.2",
     "fbjs-scripts": "^0.7.0",
     "flow-bin": "^0.38.0",
-    "gulp": "^3.9.0",
+    "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-browserify-thin": "^0.1.5",
     "gulp-clean-css": "^2.0.3",

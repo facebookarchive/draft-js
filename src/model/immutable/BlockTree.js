@@ -81,7 +81,7 @@ var BlockTree = {
 
     var leafSets = [];
     var decorations = decorator ?
-      decorator.getDecorations(block, contentState) :
+      decorator.getDecorations(contentState, block) :
       List(Repeat(null, textLength));
 
     var chars = block.getCharacterList();

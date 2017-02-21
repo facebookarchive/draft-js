@@ -52,7 +52,7 @@ class CompositeDraftDecorator {
     this._decorators = decorators.slice();
   }
 
-  getDecorations(block: ContentBlock, contentState: ContentState): List<?string> {
+  getDecorations(contentState: ContentState, block: ContentBlock): List<?string> {
     var decorations = Array(block.getText().length).fill(null);
 
     this._decorators.forEach(
@@ -68,7 +68,7 @@ class CompositeDraftDecorator {
             counter++;
           }
         };
-        strategy(block, callback, contentState);
+        strategy(contentState, block, callback);
       }
     );
 

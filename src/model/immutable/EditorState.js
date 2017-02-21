@@ -566,8 +566,8 @@ function regenerateTreeForNewDecorator(
       .toSeq()
       .filter(block => {
         return (
-          decorator.getDecorations(block, content) !==
-          existingDecorator.getDecorations(block, content)
+          decorator.getDecorations(content, block) !==
+          existingDecorator.getDecorations(content, block)
         );
       })
       .map(block => BlockTree.generate(content, block, decorator)),

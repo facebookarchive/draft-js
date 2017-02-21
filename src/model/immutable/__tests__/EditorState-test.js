@@ -252,7 +252,7 @@ describe('EditorState', () => {
 
     beforeEach(() => {
       Decorator.prototype.getDecorations.mockClear();
-      Decorator.prototype.getDecorations.mockImplementation((v, c) => {
+      Decorator.prototype.getDecorations.mockImplementation((c, v) => {
         return v === boldBlock ? boldA : List(Repeat(undefined, v.getLength()));
       });
     });
@@ -262,11 +262,11 @@ describe('EditorState', () => {
       var editorState = getDecoratedEditorState(decorator);
       expect(decorator.getDecorations.mock.calls.length).toBe(2);
 
-      Decorator.prototype.getDecorations.mockImplementation((v, c) => {
+      Decorator.prototype.getDecorations.mockImplementation((c, v) => {
         return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
       });
       var newDecorator = new NextDecorator();
-      NextDecorator.prototype.getDecorations.mockImplementation((v, c) => {
+      NextDecorator.prototype.getDecorations.mockImplementation((c, v) => {
         return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
       });
 

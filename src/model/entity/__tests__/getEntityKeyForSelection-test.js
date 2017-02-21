@@ -25,7 +25,7 @@ selectionState = selectionState.merge({
 });
 
 function setEntityMutability(mutability) {
-  contentState.getEntityMap().__get = () => ({
+  contentState.getEntityMap().get = () => ({
     getMutability: () => mutability,
   });
 }
@@ -35,7 +35,6 @@ describe('getEntityKeyForSelection', () => {
       anchorOffset: 2,
       focusOffset: 2,
     });
-
 
     it('must return null at start of block', () => {
       var key = getEntityKeyForSelection(contentState, selectionState);
