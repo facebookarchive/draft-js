@@ -15,7 +15,6 @@ jest.disableAutomock();
 
 const {insertAtomicBlock, moveAtomicBlock} = require('AtomicBlockUtils');
 const EditorState = require('EditorState');
-const Entity = require('DraftEntity');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
@@ -27,7 +26,9 @@ describe('AtomicBlockUtils', () => {
     selectionState,
   } = getSampleStateForTesting();
   const originalFirstBlock = contentState.getBlockMap().first();
-  const entityKey = Entity.create('TOKEN', 'MUTABLE');
+
+  contentState.createEntity('LINK', 'MUTABLE', {});
+  const entityKey = contentState.getLastCreatedEntityKey();
   const character = ' ';
 
   function assertAtomicBlock(block) {

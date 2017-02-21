@@ -303,8 +303,8 @@ describe('EditorState', () => {
       var decorator = new Decorator();
       getDecoratedEditorState(decorator);
       decorator.getDecorations.mock.calls.forEach((call) => {
-        expect(call[0] instanceof ContentBlock).toBe(true);
-        expect(call[1] instanceof ContentState).toBe(true);
+        expect(call[0] instanceof ContentState).toBe(true);
+        expect(call[1] instanceof ContentBlock).toBe(true);
       });
     });
 
