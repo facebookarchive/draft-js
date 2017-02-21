@@ -17,6 +17,8 @@ var DraftOffsetKey = require('DraftOffsetKey');
 var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
 
+var editOnSelect = require('editOnSelect');
+
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
 var nullthrows = require('nullthrows');
 
@@ -39,14 +41,30 @@ var DOUBLE_NEWLINE = '\n\n';
  * due to a spellcheck change, and we can incorporate it into our model.
  */
 function editOnInput(editor: DraftEditor): void {
+  editOnSelect(editor);
+  var editorState = editor._latestEditorState;
 
   // We have already updated our internal state appropriately for this input
   // event. See editOnBeforeInput() for more info
-  if (editor._waitingOnInput) {
+  if (editor._updatedNativeInsertionBlock) {
     if (!editor._renderNativeContent) {
       return;
     }
-    editor._waitingOnInput = false;
+
+    const oldBlock = editor._updatedNativeInsertionBlock;
+    if (editorState.getSelection().getAnchorKey() !== oldBlock.getKey()) {
+
+      // The selection has changed between editOnBeforeInput and now, and our
+      // optimistically updated block is no longer valid.
+      // Replace it with the non-updated block and let the input fall through.
+      const currentContent = editorState.getCurrentContent();
+      editor.update(
+        EditorState.set({
+          currentContent: currentContent.set('blockMap', currentContent.getBlockMap().set(oldBlock.getKey(), oldBlock)),
+        })
+      );
+    }
+    editor._updatedNativeInsertionBlock = false;
   }
 
   var domSelection = global.getSelection();
@@ -56,8 +74,8 @@ function editOnInput(editor: DraftEditor): void {
     return;
   }
 
+
   var domText = anchorNode.textContent;
-  var editorState = editor._latestEditorState;
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
   var {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
 
