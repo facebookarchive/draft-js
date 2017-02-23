@@ -196,7 +196,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
       // Outside callers (via the editor.onChange prop) have changed the editorState
       // No longer allow native insertion.
       e.preventDefault();
-      editor._updatedNativeInsertionBlock = false;
+      editor._updatedNativeInsertionBlock = null;
       editor._renderNativeContent = false;
     }
   }

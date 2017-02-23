@@ -44,7 +44,7 @@ function editOnInput(editor: DraftEditor): void {
   // We have already updated our internal state appropriately for this input
   // event. See editOnBeforeInput() for more info
   if (editor._updatedNativeInsertionBlock && !editor._renderNativeContent) {
-    editor._updatedNativeInsertionBlock = false;
+    editor._updatedNativeInsertionBlock = null;
     return;
   }
 
@@ -53,7 +53,7 @@ function editOnInput(editor: DraftEditor): void {
 
   if (editor._updatedNativeInsertionBlock) {
     const oldBlock = editor._updatedNativeInsertionBlock;
-    if (editorState.getSelection().getAnchorKey() !== oldBlock.getKey()) {
+    if (editorState.getSelection().getFocusKey() !== oldBlock.getKey()) {
 
       // The selection has changed between editOnBeforeInput and now, and our
       // optimistically updated block is no longer valid.
@@ -82,7 +82,7 @@ function editOnInput(editor: DraftEditor): void {
 
       editorState = editor._latestEditorState;
     }
-    editor._updatedNativeInsertionBlock = false;
+    editor._updatedNativeInsertionBlock = null;
   }
 
   var domSelection = global.getSelection();
@@ -143,10 +143,7 @@ function editOnInput(editor: DraftEditor): void {
     domText,
     block.getInlineStyleAt(start),
     preserveEntity ? block.getEntityAt(start) : null,
-  ).merge({
-    selectionBefore: content.getSelectionBefore(),
-    selectionAfter: content.getSelectionAfter(),
-  });
+  );
 
   editor.update(
     EditorState.push(
