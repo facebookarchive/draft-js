@@ -137,6 +137,9 @@ function editOnInput(editor: DraftEditor): void {
   // native browser undo.
   const changeType = preserveEntity ? 'spellcheck-change' : 'apply-entity';
 
+  // Replace the full text of the leaf and set the selection to the value calculated in editOnSelect() above,
+  // because replacing the leaf will move the selection to the end of the leaf rather than the end of the
+  // changed text
   const newContent = DraftModifier.replaceText(
     content,
     targetRange,
