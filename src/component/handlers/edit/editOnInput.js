@@ -48,6 +48,7 @@ function editOnInput(editor: DraftEditor): void {
     return;
   }
 
+  editOnSelect(editor);
   var editorState = editor._latestEditorState;
 
   if (editor._updatedNativeInsertionBlock) {
