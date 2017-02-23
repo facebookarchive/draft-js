@@ -50,7 +50,7 @@ var Site = React.createClass({
             {this.props.children}
 
             <footer className="wrap">
-              <div className="right">&copy; 2016 Facebook Inc.</div>
+              <div className="right">&copy; 2017 Facebook Inc.</div>
             </footer>
           </div>
 
