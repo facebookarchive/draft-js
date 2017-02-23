@@ -143,7 +143,9 @@ function editOnInput(editor: DraftEditor): void {
     domText,
     block.getInlineStyleAt(start),
     preserveEntity ? block.getEntityAt(start) : null,
-  );
+  )
+    .set('selectionBefore', content.getSelectionBefore())
+    .set('selectionAfter', content.getSelectionAfter());
 
   editor.update(
     EditorState.push(
