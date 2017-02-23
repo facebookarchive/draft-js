@@ -25,8 +25,6 @@ var nullthrows = require('nullthrows');
 
 import type DraftEditor from 'DraftEditor.react';
 
-var isGecko = UserAgent.isEngine('Gecko');
-
 var DOUBLE_NEWLINE = '\n\n';
 
 /**
@@ -43,17 +41,16 @@ var DOUBLE_NEWLINE = '\n\n';
  */
 function editOnInput(editor: DraftEditor): void {
 
-  // Ensure the selection is synced with the DOM as it may have changed since editOnBeforeInput was called
-  editOnSelect(editor);
-  var editorState = editor._latestEditorState;
-
   // We have already updated our internal state appropriately for this input
   // event. See editOnBeforeInput() for more info
-  if (editor._updatedNativeInsertionBlock) {
-    if (!editor._renderNativeContent) {
-      return;
-    }
+  if (editor._updatedNativeInsertionBlock && !editor._renderNativeContent) {
+    editor._updatedNativeInsertionBlock = false;
+    return;
+  }
 
+  var editorState = editor._latestEditorState;
+
+  if (editor._updatedNativeInsertionBlock) {
     const oldBlock = editor._updatedNativeInsertionBlock;
     if (editorState.getSelection().getAnchorKey() !== oldBlock.getKey()) {
 
@@ -61,10 +58,11 @@ function editOnInput(editor: DraftEditor): void {
       // optimistically updated block is no longer valid.
       // Replace it with the non-updated block and let the input fall through.
       const currentContent = editorState.getCurrentContent();
-      const contentWithOldBlock = currentContent.set(
-        'blockMap',
-        currentContent.getBlockMap().set(oldBlock.getKey(), oldBlock)
-      );
+      const contentWithOldBlock = currentContent.merge({
+        blockMap: currentContent.getBlockMap().set(oldBlock.getKey(), oldBlock),
+        selectionBefore: currentContent.getSelectionBefore(),
+        selectionAfter: currentContent.getSelectionAfter(),
+      });
 
       var directionMap = EditorBidiService.getDirectionMap(
         contentWithOldBlock,
@@ -72,18 +70,23 @@ function editOnInput(editor: DraftEditor): void {
       );
 
       editor.update(
-        EditorState.set({
-          currentContent: contentWithOldBlock,
-          directionMap,
-        })
+        EditorState.set(
+          editorState,
+          {
+            currentContent: contentWithOldBlock,
+            directionMap,
+          }
+        )
       );
+
+      editorState = editor._latestEditorState;
     }
     editor._updatedNativeInsertionBlock = false;
   }
 
   var domSelection = global.getSelection();
 
-  var {anchorNode, isCollapsed} = domSelection;
+  var {anchorNode} = domSelection;
   if (anchorNode.nodeType !== Node.TEXT_NODE) {
     return;
   }
@@ -139,45 +142,15 @@ function editOnInput(editor: DraftEditor): void {
     domText,
     block.getInlineStyleAt(start),
     preserveEntity ? block.getEntityAt(start) : null,
-  );
-
-  var anchorOffset, focusOffset, startOffset, endOffset;
-
-  if (isGecko) {
-    // Firefox selection does not change while the context menu is open, so
-    // we preserve the anchor and focus values of the DOM selection.
-    anchorOffset = domSelection.anchorOffset;
-    focusOffset = domSelection.focusOffset;
-    startOffset = start + Math.min(anchorOffset, focusOffset);
-    endOffset = startOffset + Math.abs(anchorOffset - focusOffset);
-    anchorOffset = startOffset;
-    focusOffset = endOffset;
-  } else {
-    // Browsers other than Firefox may adjust DOM selection while the context
-    // menu is open, and Safari autocorrect is prone to providing an inaccurate
-    // DOM selection. Don't trust it. Instead, use our existing SelectionState
-    // and adjust it based on the number of characters changed during the
-    // mutation.
-    var charDelta = domText.length - modelText.length;
-    startOffset = selection.getStartOffset();
-    endOffset = selection.getEndOffset();
-
-    anchorOffset = isCollapsed ? endOffset + charDelta : startOffset;
-    focusOffset = endOffset + charDelta;
-  }
-
-  // Segmented entities are completely or partially removed when their
-  // text content changes. For this case we do not want any text to be selected
-  // after the change, so we are not merging the selection.
-  var contentWithAdjustedDOMSelection = newContent.merge({
-    selectionBefore: content.getSelectionAfter(),
-    selectionAfter: selection.merge({anchorOffset, focusOffset}),
+  ).merge({
+    selectionBefore: content.getSelectionBefore(),
+    selectionAfter: content.getSelectionAfter(),
   });
 
   editor.update(
     EditorState.push(
       editorState,
-      contentWithAdjustedDOMSelection,
+      newContent,
       changeType
     )
   );

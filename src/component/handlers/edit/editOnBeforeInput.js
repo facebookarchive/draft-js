@@ -22,6 +22,7 @@ var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
 var setImmediate = require('setImmediate');
 var editOnInput = require('editOnInput');
+var editOnSelect = require('editOnSelect');
 
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -78,6 +79,11 @@ function replaceText(
  * occurs on the relevant text nodes.
  */
 function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
+
+  // React doesn't fire a selection event until mouseUp, so it's possible to click to change selection, hold the mouse
+  // down, and type a character without React registering it. Let's sync the selection manually now.
+  editOnSelect(editor);
+
   var chars = e.data;
 
   // In some cases (ex: IE ideographic space insertion) no character data
