@@ -12,73 +12,13 @@
 
 'use strict';
 
-var BlockTree = require('BlockTree');
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
-var UserAgent = require('UserAgent');
-
-var getEntityKeyForSelection = require('getEntityKeyForSelection');
-var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-var nullthrows = require('nullthrows');
-var setImmediate = require('setImmediate');
-
 import type DraftEditor from 'DraftEditor.react';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
 const isEventHandled = require('isEventHandled');
 
-// When nothing is focused, Firefox regards two characters, `'` and `/`, as
-// commands that should open and focus the "quickfind" search bar. This should
-// *never* happen while a contenteditable is focused, but as of v28, it
-// sometimes does, even when the keypress event target is the contenteditable.
-// This breaks the input. Special case these characters to ensure that when
-// they are typed, we prevent default on the event to make sure not to
-// trigger quickfind.
-var FF_QUICKFIND_CHAR = '\'';
-var FF_QUICKFIND_LINK_CHAR = '\/';
-var isFirefox = UserAgent.isBrowser('Firefox');
-
-function mustPreventDefaultForCharacter(character: string): boolean {
-  return (
-    isFirefox && (
-      character == FF_QUICKFIND_CHAR ||
-      character == FF_QUICKFIND_LINK_CHAR
-    )
-  );
-}
-
-/**
- * Replace the current selection with the specified text string, with the
- * inline style and entity key applied to the newly inserted text.
- */
-function replaceText(
-  editorState: EditorState,
-  text: string,
-  inlineStyle: DraftInlineStyle,
-  entityKey: ?string
-): EditorState {
-  var contentState = DraftModifier.replaceText(
-    editorState.getCurrentContent(),
-    editorState.getSelection(),
-    text,
-    inlineStyle,
-    entityKey
-  );
-  return EditorState.push(editorState, contentState, 'insert-characters');
-}
-
-/**
- * When `onBeforeInput` executes, the browser is attempting to insert a
- * character into the editor. Apply this character data to the document,
- * allowing native insertion if possible.
- *
- * Native insertion is encouraged in order to limit re-rendering and to
- * preserve spellcheck highlighting, which disappears or flashes if re-render
- * occurs on the relevant text nodes.
- */
 function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
-  if (editor._pendingStateFromBeforeInput !== undefined) {
-    editor.update(editor._pendingStateFromBeforeInput);
-    editor._pendingStateFromBeforeInput = undefined;
+  var editorState = editor._latestEditorState;
+  if (editorState.isInCompositionMode()) {
+    return;
   }
 
   var chars = e.data;
@@ -100,83 +40,6 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   ) {
     e.preventDefault();
     return;
-  }
-
-  // If selection is collapsed, conditionally allow native behavior. This
-  // reduces re-renders and preserves spellcheck highlighting. If the selection
-  // is not collapsed, we will re-render.
-  var editorState = editor._latestEditorState;
-  var selection = editorState.getSelection();
-
-  if (!selection.isCollapsed()) {
-    e.preventDefault();
-    editor.update(
-      replaceText(
-        editorState,
-        chars,
-        editorState.getCurrentInlineStyle(),
-        getEntityKeyForSelection(
-          editorState.getCurrentContent(),
-          editorState.getSelection()
-        )
-      )
-    );
-    return;
-  }
-
-  var mayAllowNative = !isSelectionAtLeafStart(editorState);
-  var newEditorState = replaceText(
-    editorState,
-    chars,
-    editorState.getCurrentInlineStyle(),
-    getEntityKeyForSelection(
-      editorState.getCurrentContent(),
-      editorState.getSelection()
-    )
-  );
-
-  if (!mayAllowNative) {
-    e.preventDefault();
-    editor.update(newEditorState);
-    return;
-  }
-
-  var anchorKey = selection.getAnchorKey();
-  var anchorTree = editorState.getBlockTree(anchorKey);
-
-  // Check the old and new "fingerprints" of the current block to determine
-  // whether this insertion requires any addition or removal of text nodes,
-  // in which case we would prevent the native character insertion.
-  var originalFingerprint = BlockTree.getFingerprint(anchorTree);
-  var newFingerprint = BlockTree.getFingerprint(
-    newEditorState.getBlockTree(anchorKey)
-  );
-
-  if (
-    mustPreventDefaultForCharacter(chars) ||
-    originalFingerprint !== newFingerprint ||
-    (
-      nullthrows(newEditorState.getDirectionMap()).get(anchorKey) !==
-      nullthrows(editorState.getDirectionMap()).get(anchorKey)
-    )
-  ) {
-    e.preventDefault();
-    editor.update(newEditorState);
-  } else {
-    newEditorState = EditorState.set(newEditorState, {
-      nativelyRenderedContent: newEditorState.getCurrentContent(),
-    });
-    // The native event is allowed to occur. To allow user onChange handlers to
-    // change the inserted text, we wait until the text is actually inserted
-    // before we actually update our state. That way when we rerender, the text
-    // we see in the DOM will already have been inserted properly.
-    editor._pendingStateFromBeforeInput = newEditorState;
-    setImmediate(() => {
-      if (editor._pendingStateFromBeforeInput !== undefined) {
-        editor.update(editor._pendingStateFromBeforeInput);
-        editor._pendingStateFromBeforeInput = undefined;
-      }
-    });
   }
 }
 

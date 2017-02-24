@@ -18,6 +18,7 @@ var getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 var getUpdatedSelectionState = require('getUpdatedSelectionState');
 var invariant = require('invariant');
 var nullthrows = require('nullthrows');
+var getTextContent = require('getTextContent');
 
 import type {DOMDerivedSelection} from 'DOMDerivedSelection';
 import type EditorState from 'EditorState';
@@ -210,7 +211,7 @@ function getPointForNonTextNode(
  * render newlines instead of break tags.
  */
 function getTextContentLength(node: Node): number {
-  var textContent = node.textContent;
+  var textContent = getTextContent(node);
   return textContent === '\n' ? 0 : textContent.length;
 }
 

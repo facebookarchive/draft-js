@@ -18,7 +18,7 @@ var DraftEditorTextNode = require('DraftEditorTextNode.react');
 var React = require('React');
 var ReactDOM = require('ReactDOM');
 var SelectionState = require('SelectionState');
-
+var getTextContent = require('getTextContent');
 var setDraftEditorSelection = require('setDraftEditorSelection');
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -97,8 +97,6 @@ class DraftEditorLeaf extends React.Component {
 
     if (child.nodeType === Node.TEXT_NODE) {
       targetNode = child;
-    } else if (child.tagName === 'BR') {
-      targetNode = node;
     } else {
       targetNode = child.firstChild;
     }
@@ -108,7 +106,7 @@ class DraftEditorLeaf extends React.Component {
 
   shouldComponentUpdate(nextProps: Props): boolean {
     return (
-      ReactDOM.findDOMNode(this.refs.leaf).textContent !== nextProps.text ||
+      getTextContent(ReactDOM.findDOMNode(this.refs.leaf)) !== nextProps.text ||
       nextProps.styleSet !== this.props.styleSet ||
       nextProps.forceSelection
     );

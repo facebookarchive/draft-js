@@ -12,9 +12,12 @@
 'use strict';
 
 jest.unmock('DraftEditorTextNode.react')
+  .unmock('dummyText')
+  .unmock('getTextContent')
   .mock('UserAgent');
 
-var BLOCK_DELIMITER_CHAR = '\n';
+var BLOCK_DELIMITER_CHAR_FOR_IE = '\n';
+var BLOCK_DELIMITER_CHAR_FOR_NONE_IE = '\u0001';
 var TEST_A = 'Hello';
 var TEST_B = ' World!';
 
@@ -50,20 +53,20 @@ describe('DraftEditorTextNode', function() {
     expect(node.firstChild.textContent).toBe(testString);
   }
 
-  it('must initialize correctly with an empty string, non-IE', function() {
-    initializeAsNonIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{''}</DraftEditorTextNode>
-    );
-    expect(ReactDOM.findDOMNode(stub).tagName).toBe('BR');
-  });
-
   it('must initialize correctly with an empty string, IE', function() {
     initializeAsIE();
     var stub = renderIntoContainer(
       <DraftEditorTextNode>{''}</DraftEditorTextNode>
     );
-    expectPopulatedSpan(stub, BLOCK_DELIMITER_CHAR);
+    expectPopulatedSpan(stub, BLOCK_DELIMITER_CHAR_FOR_IE);
+  });
+
+  it('must initialize correctly with an empty string, non-IE', function() {
+    initializeAsNonIE();
+    var stub = renderIntoContainer(
+      <DraftEditorTextNode>{''}</DraftEditorTextNode>
+    );
+    expectPopulatedSpan(stub, BLOCK_DELIMITER_CHAR_FOR_NONE_IE);
   });
 
   it('must initialize correctly with a string, non-IE', function() {
@@ -177,7 +180,7 @@ describe('DraftEditorTextNode', function() {
 
     renderIntoContainer(<DraftEditorTextNode>{''}</DraftEditorTextNode>);
 
-    expect(ReactDOM.findDOMNode(stub).tagName).toBe('BR');
+    expectPopulatedSpan(stub, BLOCK_DELIMITER_CHAR_FOR_NONE_IE);
   });
 
   it('must update from non-empty to empty, IE', function() {
@@ -188,7 +191,7 @@ describe('DraftEditorTextNode', function() {
 
     renderIntoContainer(<DraftEditorTextNode>{''}</DraftEditorTextNode>);
 
-    expectPopulatedSpan(stub, BLOCK_DELIMITER_CHAR);
+    expectPopulatedSpan(stub, BLOCK_DELIMITER_CHAR_FOR_IE);
   });
 
   it('must render properly into a parent DOM node', function() {

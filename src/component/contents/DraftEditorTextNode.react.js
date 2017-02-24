@@ -15,19 +15,8 @@
 
 const React = require('React');
 const ReactDOM = require('ReactDOM');
-const UserAgent = require('UserAgent');
-
-// In IE, spans with <br> tags render as two newlines. By rendering a span
-// with only a newline character, we can be sure to render a single line.
-const useNewlineChar = UserAgent.isBrowser('IE <= 11');
-
-/**
- * Check whether the node should be considered a newline.
- */
-function isNewline(node: Element): boolean {
-  return useNewlineChar ? node.textContent === '\n' : node.tagName === 'BR';
-}
-
+const dummyText = require('dummyText');
+const getTextContent = require('getTextContent');
 /**
  * Placeholder elements for empty text content.
  *
@@ -39,13 +28,6 @@ function isNewline(node: Element): boolean {
  * See http://jsfiddle.net/9khdavod/ for the failure case, and
  * http://jsfiddle.net/7pg143f7/ for the fixed case.
  */
-const NEWLINE_A = useNewlineChar ?
-  <span key="A" data-text="true">{'\n'}</span> :
-  <br key="A" data-text="true" />;
-
-const NEWLINE_B = useNewlineChar ?
-  <span key="B" data-text="true">{'\n'}</span> :
-  <br key="B" data-text="true" />;
 
 type Props = {
   children: string,
@@ -68,11 +50,12 @@ class DraftEditorTextNode extends React.Component {
 
   shouldComponentUpdate(nextProps: Props): boolean {
     const node = ReactDOM.findDOMNode(this);
-    const shouldBeNewline = nextProps.children === '';
-    if (shouldBeNewline) {
-      return !isNewline(node);
+    let nodeText = getTextContent(node);
+    // Re-rendering empty node
+    if ( this.props.children !== ' ' && nextProps.children === '') {
+      return true;
     }
-    return node.textContent !== nextProps.children;
+    return nodeText !== nextProps.children;
   }
 
   componentWillUpdate(): void {
@@ -80,14 +63,11 @@ class DraftEditorTextNode extends React.Component {
     // React to remount this node every time it rerenders.
     this._forceFlag = !this._forceFlag;
   }
-
   render(): React.Element<any> {
-    if (this.props.children === '') {
-      return this._forceFlag ? NEWLINE_A : NEWLINE_B;
-    }
+    let text = this.props.children === '' ? dummyText : this.props.children;
     return (
       <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
-        {this.props.children}
+        {text}
       </span>
     );
   }

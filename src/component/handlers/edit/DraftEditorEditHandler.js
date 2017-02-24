@@ -11,10 +11,11 @@
  */
 
 'use strict';
+import type DraftEditor from 'DraftEditor.react';
 
+const draftInputHandler = require('DraftInputHandler');
 const onBeforeInput = require('editOnBeforeInput');
 const onBlur = require('editOnBlur');
-const onCompositionStart = require('editOnCompositionStart');
 const onCopy = require('editOnCopy');
 const onCut = require('editOnCut');
 const onDragOver = require('editOnDragOver');
@@ -25,19 +26,45 @@ const onKeyDown = require('editOnKeyDown');
 const onPaste = require('editOnPaste');
 const onSelect = require('editOnSelect');
 
-const DraftEditorEditHandler = {
+// The array of handlers called in sequence.
+let handlers = [{
   onBeforeInput,
   onBlur,
-  onCompositionStart,
   onCopy,
   onCut,
   onDragOver,
   onDragStart,
   onFocus,
-  onInput,
   onKeyDown,
   onPaste,
   onSelect,
-};
+}, draftInputHandler, {
+  // onInput should be handled after inputHandler
+  onInput,
+}];
+
+const DraftEditorEditHandler = [
+  'onBeforeInput',
+  'onBlur',
+  'onCompositionStart',
+  'onCompositionEnd',
+  'onCopy',
+  'onCut',
+  'onDragOver',
+  'onDragStart',
+  'onFocus',
+  'onInput',
+  'onKeyUp',
+  'onKeyDown',
+  'onPaste',
+  'onSelect',
+].reduce((prev, key) => {
+  prev[key] = function(editor: DraftEditor, e: SyntheticKeyboardEvent) {
+    handlers.forEach((handler: {[key: string]: (editor: DraftEditor, e: any)=>void}) => {
+      handler[key] && handler[key](editor, e);
+    });
+  };
+  return prev;
+}, {});
 
 module.exports = DraftEditorEditHandler;

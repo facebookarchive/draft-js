@@ -20,11 +20,6 @@ export type DraftEditorModes = (
   'edit' |
 
   /**
-   * `composite` mode handles IME text entry.
-   */
-  'composite' |
-
-  /**
    * `drag` mode handles editor behavior while a drag event is occurring.
    */
   'drag' |

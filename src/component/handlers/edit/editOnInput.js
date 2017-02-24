@@ -19,6 +19,7 @@ var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
 var nullthrows = require('nullthrows');
+var getTextContent = require('getTextContent');
 
 import type DraftEditor from 'DraftEditor.react';
 
@@ -39,11 +40,6 @@ var DOUBLE_NEWLINE = '\n\n';
  * due to a spellcheck change, and we can incorporate it into our model.
  */
 function editOnInput(editor: DraftEditor): void {
-  if (editor._pendingStateFromBeforeInput !== undefined) {
-    editor.update(editor._pendingStateFromBeforeInput);
-    editor._pendingStateFromBeforeInput = undefined;
-  }
-
   var domSelection = global.getSelection();
 
   var {anchorNode, isCollapsed} = domSelection;
@@ -51,7 +47,7 @@ function editOnInput(editor: DraftEditor): void {
     return;
   }
 
-  var domText = anchorNode.textContent;
+  var domText = getTextContent(anchorNode);
   var editorState = editor._latestEditorState;
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
   var {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);

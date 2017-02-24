@@ -16,7 +16,6 @@
 
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
-const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
 const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
@@ -50,7 +49,6 @@ const allowSpellCheck = !isIE;
 // of editor behavior.
 const handlerMap = {
   'edit': DraftEditorEditHandler,
-  'composite': DraftEditorCompositionHandler,
   'drag': DraftEditorDragHandler,
   'cut': null,
   'render': null,
@@ -87,7 +85,6 @@ class DraftEditor extends React.Component {
   _editorKey: string;
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
-  _pendingStateFromBeforeInput: void | EditorState;
 
   /**
    * Define proxies that can route events to the current handler.

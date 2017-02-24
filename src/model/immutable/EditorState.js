@@ -38,6 +38,7 @@ type EditorStateRecordType = {
   directionMap: ?OrderedMap<string, string>,
   forceSelection: boolean,
   inCompositionMode: boolean,
+  compositionEndTimeoutId: ?number,
   inlineStyleOverride: ?DraftInlineStyle,
   lastChangeType: ?EditorChangeType,
   nativelyRenderedContent: ?ContentState,
@@ -54,6 +55,7 @@ var defaultRecord: EditorStateRecordType = {
   directionMap: null,
   forceSelection: false,
   inCompositionMode: false,
+  compositionEndTimeoutId: null,
   inlineStyleOverride: null,
   lastChangeType: null,
   nativelyRenderedContent: null,
@@ -187,6 +189,10 @@ class EditorState {
 
   isInCompositionMode(): boolean {
     return this.getImmutable().get('inCompositionMode');
+  }
+
+  getCompositionEndTimeoutId(): ?number {
+    return this.getImmutable().get('compositionEndTimeoutId');
   }
 
   mustForceSelection(): boolean {

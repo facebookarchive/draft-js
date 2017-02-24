@@ -62,7 +62,6 @@ class DraftEditorContents extends React.Component {
 
     const nextNativeContent = nextEditorState.getNativelyRenderedContent();
 
-    const wasComposing = prevEditorState.isInCompositionMode();
     const nowComposing = nextEditorState.isInCompositionMode();
 
     // If the state is unchanged or we're currently rendering a natively
@@ -73,7 +72,7 @@ class DraftEditorContents extends React.Component {
         nextNativeContent !== null &&
         nextEditorState.getCurrentContent() === nextNativeContent
       ) ||
-      (wasComposing && nowComposing)
+      nowComposing
     ) {
       return false;
     }
@@ -83,7 +82,6 @@ class DraftEditorContents extends React.Component {
     const prevDecorator = prevEditorState.getDecorator();
     const nextDecorator = nextEditorState.getDecorator();
     return (
-      wasComposing !== nowComposing ||
       prevContent !== nextContent ||
       prevDecorator !== nextDecorator ||
       nextEditorState.mustForceSelection()
