@@ -88,7 +88,7 @@ class DraftEditor extends React.Component {
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
   _renderNativeContent: boolean;
-  _waitingOnInput: boolean;
+  _updatedNativeInsertionBlock: boolean;
 
   /**
    * Define proxies that can route events to the current handler.

@@ -22,6 +22,7 @@ var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
 var setImmediate = require('setImmediate');
 var editOnInput = require('editOnInput');
+var editOnSelect = require('editOnSelect');
 
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -78,6 +79,11 @@ function replaceText(
  * occurs on the relevant text nodes.
  */
 function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
+
+  // React doesn't fire a selection event until mouseUp, so it's possible to click to change selection, hold the mouse
+  // down, and type a character without React registering it. Let's sync the selection manually now.
+  editOnSelect(editor);
+
   var chars = e.data;
 
   // In some cases (ex: IE ideographic space insertion) no character data
@@ -164,19 +170,22 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
       nativelyRenderedContent: newEditorState.getCurrentContent(),
     });
 
+    editor._updatedNativeInsertionBlock = editorState.getCurrentContent().getBlockForKey(
+      editorState.getSelection().getAnchorKey()
+    );
+
     // Allow the native insertion to occur and update our internal state
     // to match. If editor.update() does something like changing a typed
     // 'x' to 'abc' in an onChange() handler, we don't want our editOnInput()
     // logic to squash that change in favor of the typed 'x'. Set a flag to
     // ignore the next editOnInput() event in favor of what's in our internal state.
-    editor._waitingOnInput = true;
     editor.update(newEditorState, true);
 
-    var finalEditorState = editor._latestEditorState;
-    var finalContent = finalEditorState.getCurrentContent();
-    var finalNativelyRenderedContent = finalEditorState.getNativelyRenderedContent();
+    var editorStateAfterUpdate = editor._latestEditorState;
+    var contentStateAfterUpdate = editorStateAfterUpdate.getCurrentContent();
+    var expectedContentStateAfterUpdate = editorStateAfterUpdate.getNativelyRenderedContent();
 
-    if (finalNativelyRenderedContent && finalNativelyRenderedContent === finalContent) {
+    if (expectedContentStateAfterUpdate && expectedContentStateAfterUpdate === contentStateAfterUpdate) {
       if (isIE) {
         setImmediate(() => {
           editOnInput(editor);
@@ -186,7 +195,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
       // Outside callers (via the editor.onChange prop) have changed the editorState
       // No longer allow native insertion.
       e.preventDefault();
-      editor._waitingOnInput = false;
+      editor._updatedNativeInsertionBlock = null;
       editor._renderNativeContent = false;
     }
   }
