@@ -70,9 +70,8 @@ In our editor component, we can then make use of the command via the
 import {Editor} from 'draft-js';
 class MyEditor extends React.Component {
 
-    constructor(props) {
+  constructor(props) {
     super(props);
-
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
   }
   // ...
