@@ -6,6 +6,6 @@
 /examples/draft-0-10-0/tex/node_modules/
 /website/build/
 /website/node_modules/
-/website/src/draft-js/lib/
-/website/src/draft-js/docs/
+/website/src/lib/
+/website/src/docs/
 npm-debug.log

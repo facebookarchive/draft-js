@@ -12,7 +12,7 @@ The block rendering is used to define supported block types and their respective
 renderers, as well as converting pasted content to known Draft block types.
 
 When pasting content or when using the
-[convertFromHTML](https://facebook.github.io/draft-js/docs/api-reference-data-conversion.html#convertfromhtml)
+[convertFromHTML](/docs/api-reference-data-conversion.html#convertfromhtml)
 Draft will then convert the pasted content to the respective block rendering type
 by matching the Draft block render map with the matched tag.
 
@@ -116,7 +116,7 @@ By default the html element is used to wrap block types however a react componen
 can also be provided to the _blockRenderMap_ to wrap the EditorBlock.
 
 During pasting or when using the
-[convertFromHTML](https://facebook.github.io/draft-js/docs/api-reference-data-conversion.html#convertfromhtml)
+[convertFromHTML](/docs/api-reference-data-conversion.html#convertfromhtml)
 the html will be scanned for matching tag elements. A wrapper will be used when there is a definition for
 it on the _blockRenderMap_ to wrap that particular block type. For example:
 

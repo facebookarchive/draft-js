@@ -1,4 +1,4 @@
-# [Draft.js](https://facebook.github.io/draft-js/) [![Build Status](https://img.shields.io/travis/facebook/draft-js/master.svg?style=flat)](https://travis-ci.org/facebook/draft-js) [![npm version](https://img.shields.io/npm/v/draft-js.svg?style=flat)](https://www.npmjs.com/package/draft-js)
+# [Draft.js](http://draftjs.org/) [![Build Status](https://img.shields.io/travis/facebook/draft-js/master.svg?style=flat)](https://travis-ci.org/facebook/draft-js) [![npm version](https://img.shields.io/npm/v/draft-js.svg?style=flat)](https://www.npmjs.com/package/draft-js)
 
 Draft.js is a JavaScript rich text editor framework, built for React and
 backed by an immutable model.
@@ -15,7 +15,7 @@ with [immutable-js](https://facebook.github.io/immutable-js/), offering
 an API with functional state updates and aggressively leveraging data persistence
 for scalable memory usage.
 
-[Learn how to use Draft.js in your own project.](https://facebook.github.io/draft-js/docs/overview.html)
+[Learn how to use Draft.js in your own project.](http://draftjs.org/docs/overview.html)
 
 ## API Notice
 
@@ -72,7 +72,7 @@ Further examples of how Draft.js can be used are provided below.
 
 ### Examples
 
-Visit https://facebook.github.io/draft-js/ to try out a simple rich editor example.
+Visit http://draftjs.org/ to try out a simple rich editor example.
 
 The repository includes a variety of different editor examples to demonstrate
 some of the features offered by the framework.

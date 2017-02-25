@@ -51,7 +51,7 @@ a rich editor.
 2. There is no such `onChange` event available for a ContentEditable element.
 
 State is therefore represented as a single immutable
-[EditorState](/draft-js/docs/api-reference-editor-state.html) object, and
+[EditorState](/docs/api-reference-editor-state.html) object, and
 `onChange` is implemented within the `Editor` core to provide this state
 value to the top level.
 

@@ -15,7 +15,7 @@ component itself, `Editor`. Props are defined within
 
 ### Basics
 
-See [API Basics](/draft-js/docs/quickstart-api-basics.html) for an introduction.
+See [API Basics](/docs/quickstart-api-basics.html) for an introduction.
 
 #### editorState
 ```
@@ -62,7 +62,7 @@ the editor, on a per-block basis.
 blockRendererFn?: (block: ContentBlock) => ?Object
 ```
 Optionally set a function to define custom block rendering. See
-[Advanced Topics: Block Components](/draft-js/docs/advanced-topics-block-components.html)
+[Advanced Topics: Block Components](/docs/advanced-topics-block-components.html)
 for details on usage.
 
 #### blockStyleFn
@@ -71,7 +71,7 @@ blockStyleFn?: (block: ContentBlock) => string
 ```
 Optionally set a function to define class names to apply to the given block
 when it is rendered. See
-[Advanced Topics: Block Styling](/draft-js/docs/advanced-topics-block-styling.html)
+[Advanced Topics: Block Styling](/docs/advanced-topics-block-styling.html)
 for details on usage.
 
 #### customStyleMap
@@ -80,7 +80,7 @@ customStyleMap?: Object
 ```
 Optionally define a map of inline styles to apply to spans of text with the specified
 style. See
-[Advanced Topics: Inline Styles](/draft-js/docs/advanced-topics-inline-styles.html)
+[Advanced Topics: Inline Styles](/docs/advanced-topics-inline-styles.html)
 for details on usage.
 
 #### customStyleFn
@@ -89,7 +89,7 @@ customStyleFn?: (style: DraftInlineStyle, block: ContentBlock) => ?Object
 ```
 Optionally define a function to transform inline styles to CSS objects that are applied
 to spans of text. See
-[Advanced Topics: Inline Styles](/draft-js/docs/advanced-topics-inline-styles.html)
+[Advanced Topics: Inline Styles](/docs/advanced-topics-inline-styles.html)
 for details on usage.
 
 ### Behavior (Optional)
@@ -102,7 +102,7 @@ Set whether the editor should be rendered as static DOM, with all editability
 disabled.
 
 This is useful when supporting interaction within
-[custom block components](/draft-js/docs/advanced-topics-block-components.html)
+[custom block components](/docs/advanced-topics-block-components.html)
 or if you just want to display content for a static use case.
 
 Default is `false`.
@@ -156,7 +156,7 @@ rendered list of results to trigger applying the mention entity to your content.
 handleKeyCommand?: (command: string) => DraftHandleValue
 ```
 Handle the named editor command. See
-[Advanced Topics: Key Bindings](/draft-js/docs/advanced-topics-key-bindings.html)
+[Advanced Topics: Key Bindings](/docs/advanced-topics-key-bindings.html)
 for details on usage.
 
 #### handleBeforeInput
