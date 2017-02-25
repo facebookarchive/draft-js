@@ -26,10 +26,10 @@ var Site = React.createClass({
           <meta name="viewport" content="width=device-width" />
           <meta property="og:title" content={title} />
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="http://facebook.github.io/draft-js/index.html" />
+          <meta property="og:url" content="http://draftjs.org/index.html" />
           <meta property="og:description" content="Rich Text Editor Framework for React" />
 
-          <link rel="stylesheet" href="/draft-js/css/draft.css" />
+          <link rel="stylesheet" href="/css/draft.css" />
 
           <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script>
           <script type="text/javascript">{'try{Typekit.load();}catch(e){}'}</script>
@@ -40,7 +40,7 @@ var Site = React.createClass({
           <div className="container">
             <div className="nav-main">
               <div className="wrap">
-                <a className="nav-home" href="/draft-js/">
+                <a className="nav-home" href="/">
                   Draft.js
                 </a>
                 <HeaderLinks section={this.props.section} />

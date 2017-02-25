@@ -171,7 +171,7 @@ any styling, decoration, or HTML information.
 getCharacterList(): List<CharacterMetadata>
 ```
 Returns an immutable `List` of `CharacterMetadata` objects, one for each
-character in the `ContentBlock`. (See [CharacterMetadata](/draft-js/docs/api-reference-character-metadata.html)
+character in the `ContentBlock`. (See [CharacterMetadata](/docs/api-reference-character-metadata.html)
 for details.)
 
 This `List` contains all styling and entity information for the block.

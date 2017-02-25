@@ -23,10 +23,10 @@ However, since your top-level React component is responsible for maintaining the
 state, you also have the freedom to apply changes to that `EditorState` object
 in any way you see fit.
 
-For inline and block style behavior, for example, the [`RichUtils`](/draft-js/docs/api-reference-rich-utils.html) module
+For inline and block style behavior, for example, the [`RichUtils`](/docs/api-reference-rich-utils.html) module
 provides a number of useful functions to help manipulate state.
 
-Similarly, the [Modifier](/draft-js/docs/api-reference-modifier.html) module also provides a
+Similarly, the [Modifier](/docs/api-reference-modifier.html) module also provides a
 number of common operations that allow you to apply edits, including changes
 to text, styles, and more. This module is a suite of edit functions that
 compose simpler, smaller edit functions to return the desired `EditorState`
@@ -77,7 +77,7 @@ class MyEditor extends React.Component {
 >
 > The `command` argument supplied to `handleKeyCommand` is a string value, the
 > name of the command to be executed. This is mapped from a DOM key event. See
-> [Advanced Topics - Key Binding](/draft-js/docs/advanced-topics-key-bindings.html) for more
+> [Advanced Topics - Key Binding](/docs/advanced-topics-key-bindings.html) for more
 > on this, as well as details on why the function returns `handled` or `not-handled`.
 
 ## Styling Controls in UI

@@ -28,7 +28,7 @@ function backtickify(str) {
 function execute() {
   var MD_DIR = '../docs/';
 
-  glob('src/draft-js/docs/*.*', function(er, files) {
+  glob('src/docs/*.*', function(er, files) {
     files.forEach(function(file) {
       try {
         fs.unlinkSync(file);
@@ -87,7 +87,7 @@ function execute() {
           'module.exports = Post;\n'
         );
 
-        var targetFile = 'src/draft-js/' + metadata.permalink.replace(/\.html$/, '.js');
+        var targetFile = 'src/' + metadata.permalink.replace(/\.html$/, '.js');
         mkdirp.sync(targetFile.replace(new RegExp('/[^/]*$'), ''));
         fs.writeFileSync(targetFile, content);
       }
@@ -108,9 +108,9 @@ function execute() {
     );
   });
 
-  fs.writeFileSync('src/draft-js/lib/Draft.css', fs.readFileSync('../dist/Draft.css'));
-  fs.writeFileSync('src/draft-js/lib/Draft.js', fs.readFileSync('../dist/Draft.js'));
-  fs.writeFileSync('src/draft-js/lib/RichEditor.css', fs.readFileSync('../examples/draft-0-9-1/rich/RichEditor.css'));
+  fs.writeFileSync('src/lib/Draft.css', fs.readFileSync('../dist/Draft.css'));
+  fs.writeFileSync('src/lib/Draft.js', fs.readFileSync('../dist/Draft.js'));
+  fs.writeFileSync('src/lib/RichEditor.css', fs.readFileSync('../examples/draft-0-9-1/rich/RichEditor.css'));
 }
 
 if (argv.convert) {

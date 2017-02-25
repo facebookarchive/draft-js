@@ -56,7 +56,7 @@ glob('src/**/*.*', function(er, files) {
   });
 
   queue = queue.then(function() {
-    console.log('It is live at: http://facebook.github.io/draft-js/');
+    console.log('It is live at: http://draftjs.org/');
   }).finally(function() {
     server.close();
   }).catch(function(e) {
