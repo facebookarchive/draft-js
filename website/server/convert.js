@@ -2,19 +2,20 @@ var fs = require('fs')
 var glob = require('glob');
 var mkdirp = require('mkdirp');
 var optimist = require('optimist');
+var os = require('os');
 var path = require('path');
 var argv = optimist.argv;
 
 function splitHeader(content) {
-  var lines = content.split('\n');
+  var lines = content.split(os.EOL);
   for (var i = 1; i < lines.length - 1; ++i) {
     if (lines[i] === '---') {
       break;
     }
   }
   return {
-    header: lines.slice(1, i + 1).join('\n'),
-    content: lines.slice(i + 1).join('\n')
+    header: lines.slice(1, i + 1).join(os.EOL),
+    content: lines.slice(i + 1).join(os.EOL)
   };
 }
 
@@ -51,7 +52,7 @@ function execute() {
 
         // Extract markdown metadata header
         var both = splitHeader(content);
-        var lines = both.header.split('\n');
+        var lines = both.header.split(os.EOL);
         for (var i = 0; i < lines.length - 1; ++i) {
           var keyvalue = lines[i].split(':');
           var key = keyvalue[0].trim();
