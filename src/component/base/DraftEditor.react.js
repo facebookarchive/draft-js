@@ -58,6 +58,7 @@ const handlerMap = {
 
 type State = {
   containerKey: number,
+  editorKey: string,
 };
 
 /**
@@ -85,7 +86,7 @@ class DraftEditor extends React.Component {
   _dragCount: number;
   _internalDrag: boolean;
   _editorKey: string;
-  _placeholderAccessibilityID: string;
+  _placeholderAccessibilityPrefix: string;
   _latestEditorState: EditorState;
   _pendingStateFromBeforeInput: void | EditorState;
 
@@ -121,6 +122,7 @@ class DraftEditor extends React.Component {
   setClipboard: (clipboard: ?BlockMap) => void;
   getClipboard: () => ?BlockMap;
   getEditorKey: () => string;
+  getAccessibilityId: () => string;
   update: (editorState: EditorState) => void;
   onDragEnter: () => void;
   onDragLeave: () => void;
@@ -132,8 +134,8 @@ class DraftEditor extends React.Component {
     this._clipboard = null;
     this._handler = null;
     this._dragCount = 0;
-    this._editorKey = generateRandomKey();
-    this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
+
+    this._placeholderAccessibilityPrefix = 'placeholder-';
     this._latestEditorState = props.editorState;
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');
@@ -165,13 +167,17 @@ class DraftEditor extends React.Component {
     this.restoreEditorDOM = this._restoreEditorDOM.bind(this);
     this.setClipboard = this._setClipboard.bind(this);
     this.getClipboard = this._getClipboard.bind(this);
-    this.getEditorKey = () => this._editorKey;
+    this.getEditorKey = () => this.state.editorKey || this.state.editorKey;
+    this.getAccessibilityId = () => this._placeholderAccessibilityPrefix + this.state.editorKey;
     this.update = this._update.bind(this);
     this.onDragEnter = this._onDragEnter.bind(this);
     this.onDragLeave = this._onDragLeave.bind(this);
 
     // See `_restoreEditorDOM()`.
-    this.state = {containerKey: 0};
+    this.state = {
+      containerKey: 0,
+      editorKey: props.editorKey || '',
+    };
   }
 
   /**
@@ -203,7 +209,7 @@ class DraftEditor extends React.Component {
           text={nullthrows(this.props.placeholder)}
           editorState={this.props.editorState}
           textAlignment={this.props.textAlignment}
-          accessibilityID={this._placeholderAccessibilityID}
+          accessibilityID={this.getAccessibilityId()}
         />
       );
     }
@@ -238,7 +244,7 @@ class DraftEditor extends React.Component {
             }
             aria-autocomplete={readOnly ? null : this.props.ariaAutoComplete}
             aria-describedby={
-              this._showPlaceholder() ? this._placeholderAccessibilityID : null
+              this._showPlaceholder() ? this.getAccessibilityId() : null
             }
             aria-expanded={readOnly ? null : this.props.ariaExpanded}
             aria-haspopup={readOnly ? null : this.props.ariaHasPopup}
@@ -281,7 +287,7 @@ class DraftEditor extends React.Component {
                 {...DefaultDraftInlineStyle, ...this.props.customStyleMap}
               }
               customStyleFn={this.props.customStyleFn}
-              editorKey={this._editorKey}
+              editorKey={this.state.editorKey}
               editorState={this.props.editorState}
             />
           </div>
@@ -303,6 +309,7 @@ class DraftEditor extends React.Component {
     if (isIE) {
       document.execCommand('AutoUrlDetect', false, false);
     }
+    this.setState({editorKey: generateRandomKey()});
   }
 
   /**
