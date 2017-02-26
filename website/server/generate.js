@@ -22,7 +22,7 @@ server.noconvert = true;
 // requests.
 var queue = Promise.resolve();
 
-glob('src/**/*', function(er, files) {
+glob('src/**/*', {nodir: true}, function(er, files) {
   files.forEach(function(file) {
     var targetFile = file.replace(/^src/, 'build');
 
