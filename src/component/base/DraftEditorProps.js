@@ -71,6 +71,11 @@ export type DraftEditorProps = {
 
   tabIndex?: number,
 
+  // exposed especially to help improve mobile web behaviors
+  autoCapitalize?: string,
+  autoComplete?: string,
+  autoCorrect?: string,
+
   ariaActiveDescendantID?: string,
   ariaAutoComplete?: string,
   ariaDescribedBy?: string,
