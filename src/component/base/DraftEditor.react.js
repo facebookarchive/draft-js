@@ -283,6 +283,7 @@ class DraftEditor extends React.Component {
               editorKey={this._editorKey}
               editorState={this.props.editorState}
               key={'contents' + this.state.contentsKey}
+              textDirectionality={this.props.textDirectionality}
             />
           </div>
         </div>
@@ -355,8 +356,8 @@ class DraftEditor extends React.Component {
       this.update(
         EditorState.forceSelection(
           editorState,
-          editorState.getSelection()
-        )
+          editorState.getSelection(),
+        ),
       );
     }
   }

@@ -17,6 +17,7 @@ import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDragType} from 'DraftDragType';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type {DraftTextAlignment} from 'DraftTextAlignment';
+import type {DraftTextDirectionality} from 'DraftTextDirectionality';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftHandleValue} from 'DraftHandleValue';
 import type EditorState from 'EditorState';
@@ -41,6 +42,10 @@ export type DraftEditorProps = {
   // Specify whether text alignment should be forced in a direction
   // regardless of input characters.
   textAlignment?: DraftTextAlignment,
+
+  // Specify whether text directionality should be forced in a direction
+  // regardless of input characters.
+  textDirectionality?: DraftTextDirectionality,
 
   // For a given `ContentBlock` object, return an object that specifies
   // a custom block component and/or props. If no object is returned,
