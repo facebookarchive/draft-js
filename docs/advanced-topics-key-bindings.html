@@ -23,6 +23,11 @@ key for OSX, or the control key otherwise.</p><p>If the command is a match, retu
 fall through to the default key bindings.</p><p>In our editor component, we can then make use of the command via the
 <code>handleKeyCommand</code> prop:</p><pre class="prism language-javascript">import <span class="token punctuation">{</span>Editor<span class="token punctuation">}</span> from <span class="token string">&#x27;draft-js&#x27;</span><span class="token punctuation">;</span>
 class <span class="token class-name">MyEditor</span> extends <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
+
+  <span class="token function">constructor<span class="token punctuation">(</span></span>props<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">super<span class="token punctuation">(</span></span>props<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>handleKeyCommand <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>handleKeyCommand<span class="token punctuation">.</span><span class="token function">bind<span class="token punctuation">(</span></span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
  <span class="token comment" spellcheck="true"> // ...
 </span>
   <span class="token function">handleKeyCommand<span class="token punctuation">(</span></span>command<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> DraftHandleValue <span class="token punctuation">{</span>
@@ -38,7 +43,7 @@ class <span class="token class-name">MyEditor</span> extends <span class="token 
     <span class="token keyword">return</span> <span class="token punctuation">(</span>
       &lt;Editor
         editorState<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>editorState<span class="token punctuation">}</span>
-        handleKeyCommand<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleKeyCommand<span class="token punctuation">.</span><span class="token function">bind<span class="token punctuation">(</span></span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+        handleKeyCommand<span class="token operator">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>handleKeyCommand<span class="token punctuation">}</span>
         keyBindingFn<span class="token operator">=</span><span class="token punctuation">{</span>myKeyBindingFn<span class="token punctuation">}</span>
         <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
       <span class="token operator">/</span><span class="token operator">&gt;</span>
