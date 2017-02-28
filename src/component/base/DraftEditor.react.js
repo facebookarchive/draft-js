@@ -21,6 +21,7 @@ const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
+const ContentBlock = require('ContentBlock');
 const EditorState = require('EditorState');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
@@ -88,7 +89,7 @@ class DraftEditor extends React.Component {
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
   _renderNativeContent: boolean;
-  _updatedNativeInsertionBlock: boolean;
+  _updatedNativeInsertionBlock: null | ContentBlock;
 
   /**
    * Define proxies that can route events to the current handler.
