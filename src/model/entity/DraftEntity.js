@@ -33,9 +33,55 @@ function logWarning(oldMethodCall, newMethodCall) {
     + oldMethodCall
     + ' will be deprecated soon!\nPlease use "'
     + newMethodCall
-    + '" instead.'
+    + '" instead.',
   );
 }
+
+export type DraftEntityMapObject = {
+  getLastCreatedEntityKey: () => string,
+
+  create: (
+    type: DraftEntityType,
+    mutability: DraftEntityMutability,
+    data?: Object,
+  ) => string,
+
+  add: (instance: DraftEntityInstance) => string,
+
+  get: (key: string) => DraftEntityInstance,
+
+  mergeData: (
+    key: string,
+    toMerge: {[key: string]: any},
+  ) => DraftEntityInstance,
+
+  replaceData: (
+    key: string,
+    newData: {[key: string]: any},
+  ) => DraftEntityInstance,
+
+  __getLastCreatedEntityKey: () => string,
+
+  __create: (
+    type: DraftEntityType,
+    mutability: DraftEntityMutability,
+    data?: Object,
+  ) => string,
+
+  __add: (instance: DraftEntityInstance) => string,
+
+  __get: (key: string) => DraftEntityInstance,
+
+  __mergeData: (
+    key: string,
+    toMerge: {[key: string]: any}
+  ) => DraftEntityInstance,
+
+  __replaceData: (
+    key: string,
+    newData: {[key: string]: any}
+  ) => DraftEntityInstance,
+};
 
 /**
  * A "document entity" is an object containing metadata associated with a
@@ -50,7 +96,7 @@ function logWarning(oldMethodCall, newMethodCall) {
  * generated via DraftEntity.create() and used to obtain entity metadata
  * via DraftEntity.get().
  */
-var DraftEntity = {
+var DraftEntity:DraftEntityMapObject = {
   /**
    * WARNING: This method will be deprecated soon!
    * Please use 'contentState.getLastCreatedEntityKey' instead.
@@ -64,7 +110,7 @@ var DraftEntity = {
       'DraftEntity.getLastCreatedEntityKey',
       'contentState.getLastCreatedEntityKey',
     );
-    return DraftEntity._getLastCreatedEntityKey();
+    return DraftEntity.__getLastCreatedEntityKey();
   },
 
   /**
@@ -86,7 +132,7 @@ var DraftEntity = {
       'DraftEntity.create',
       'contentState.createEntity',
     );
-    return DraftEntity._create(type, mutability, data);
+    return DraftEntity.__create(type, mutability, data);
   },
 
   /**
@@ -101,7 +147,7 @@ var DraftEntity = {
       'DraftEntity.add',
       'contentState.addEntity',
     );
-    return DraftEntity._add(instance);
+    return DraftEntity.__add(instance);
   },
 
   /**
@@ -115,7 +161,7 @@ var DraftEntity = {
       'DraftEntity.get',
       'contentState.getEntity',
     );
-    return DraftEntity._get(key);
+    return DraftEntity.__get(key);
   },
 
   /**
@@ -128,13 +174,13 @@ var DraftEntity = {
    */
   mergeData: function(
     key: string,
-    toMerge: {[key: string]: any}
+    toMerge: {[key: string]: any},
   ): DraftEntityInstance {
     logWarning(
       'DraftEntity.mergeData',
       'contentState.mergeEntityData',
     );
-    return DraftEntity._mergeData(key, toMerge);
+    return DraftEntity.__mergeData(key, toMerge);
   },
 
   /**
@@ -145,13 +191,13 @@ var DraftEntity = {
    */
   replaceData: function(
     key: string,
-    newData: {[key: string]: any}
+    newData: {[key: string]: any},
   ): DraftEntityInstance {
     logWarning(
       'DraftEntity.replaceData',
       'contentState.replaceEntityData',
     );
-    return DraftEntity._replaceData(key, newData);
+    return DraftEntity.__replaceData(key, newData);
   },
 
   // ***********************************WARNING******************************
@@ -163,7 +209,7 @@ var DraftEntity = {
    * We need this to support the new API, as part of transitioning to put Entity
    * storage in contentState.
    */
-  _getLastCreatedEntityKey: function(): string {
+  __getLastCreatedEntityKey: function(): string {
     return '' + instanceKey;
   },
 
@@ -174,12 +220,12 @@ var DraftEntity = {
    * be used to track the entity's usage in a ContentBlock, and for
    * retrieving data about the entity at render time.
    */
-  _create: function(
+  __create: function(
     type: DraftEntityType,
     mutability: DraftEntityMutability,
     data?: Object,
   ): string {
-    return DraftEntity._add(
+    return DraftEntity.__add(
       new DraftEntityInstance({type, mutability, data: data || {}})
     );
   },
@@ -188,7 +234,7 @@ var DraftEntity = {
    * Add an existing DraftEntityInstance to the DraftEntity map. This is
    * useful when restoring instances from the server.
    */
-  _add: function(instance: DraftEntityInstance): string {
+  __add: function(instance: DraftEntityInstance): string {
     var key = '' + (++instanceKey);
     instances = instances.set(key, instance);
     return key;
@@ -197,7 +243,7 @@ var DraftEntity = {
   /**
    * Retrieve the entity corresponding to the supplied key string.
    */
-  _get: function(key: string): DraftEntityInstance {
+  __get: function(key: string): DraftEntityInstance {
     var instance = instances.get(key);
     invariant(!!instance, 'Unknown DraftEntity key.');
     return instance;
@@ -208,11 +254,11 @@ var DraftEntity = {
    * instance, this method will merge your data updates and return a new
    * instance.
    */
-  _mergeData: function(
+  __mergeData: function(
     key: string,
     toMerge: {[key: string]: any}
   ): DraftEntityInstance {
-    var instance = DraftEntity._get(key);
+    var instance = DraftEntity.__get(key);
     var newData = {...instance.getData(), ...toMerge};
     var newInstance = instance.set('data', newData);
     instances = instances.set(key, newInstance);
@@ -222,11 +268,11 @@ var DraftEntity = {
   /**
    * Completely replace the data for a given instance.
    */
-  _replaceData: function(
+  __replaceData: function(
     key: string,
     newData: {[key: string]: any}
   ): DraftEntityInstance {
-    const instance = DraftEntity._get(key);
+    const instance = DraftEntity.__get(key);
     const newInstance = instance.set('data', newData);
     instances = instances.set(key, newInstance);
     return newInstance;

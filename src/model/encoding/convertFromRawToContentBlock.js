@@ -36,7 +36,7 @@ function convertFromRawToContentBlock(
     storageKey => {
       var encodedEntity = entityMap[storageKey];
       var {type, mutability, data} = encodedEntity;
-      var newKey = DraftEntity._create(type, mutability, data || {});
+      var newKey = DraftEntity.__create(type, mutability, data || {});
       fromStorageToLocal[storageKey] = newKey;
     }
   );
@@ -50,6 +50,7 @@ function convertFromRawToContentBlock(
     data,
   } = block;
   key = key || generateRandomKey();
+  type = type || 'unstyled';
   depth = depth || 0;
   inlineStyleRanges = inlineStyleRanges || [];
   entityRanges = entityRanges || [];

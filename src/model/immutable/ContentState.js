@@ -122,7 +122,7 @@ class ContentState extends ContentStateRecord {
 
   getLastCreatedEntityKey() {
     // TODO: update this when we fully remove DraftEntity
-    return DraftEntity._getLastCreatedEntityKey();
+    return DraftEntity.__getLastCreatedEntityKey();
   }
 
   hasText(): boolean {
@@ -136,10 +136,10 @@ class ContentState extends ContentStateRecord {
   createEntity(
     type: DraftEntityType,
     mutability: DraftEntityMutability,
-    data?: Object
+    data?: Object,
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity._create(
+    DraftEntity.__create(
       type,
       mutability,
       data,
@@ -149,31 +149,31 @@ class ContentState extends ContentStateRecord {
 
   mergeEntityData(
     key: string,
-    toMerge: {[key: string]: any}
+    toMerge: {[key: string]: any},
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity._mergeData(key, toMerge);
+    DraftEntity.__mergeData(key, toMerge);
     return this;
   }
 
   replaceEntityData(
     key: string,
-    newData: {[key: string]: any}
+    newData: {[key: string]: any},
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity._replaceData(key, newData);
+    DraftEntity.__replaceData(key, newData);
     return this;
   }
 
   addEntity(instance: DraftEntityInstance): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity._add(instance);
+    DraftEntity.__add(instance);
     return this;
   }
 
   getEntity(key: string): DraftEntityInstance {
     // TODO: update this when we fully remove DraftEntity
-    return DraftEntity._get(key);
+    return DraftEntity.__get(key);
   }
 
   static createFromBlockArray(

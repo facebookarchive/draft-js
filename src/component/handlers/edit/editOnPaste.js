@@ -164,7 +164,7 @@ function handleTextualPaste(editor, text, html) {
         )
       ) {
         editor.update(
-          insertFragment(editor._latestEditorState, internalClipboard)
+          insertFragment(editor._latestEditorState, internalClipboard),
         );
         return;
       }
@@ -174,14 +174,14 @@ function handleTextualPaste(editor, text, html) {
     if (html) {
       var htmlFragment = DraftPasteProcessor.processHTML(
         html,
-        editor.props.blockRenderMap
+        editor.props.blockRenderMap,
       );
       if (htmlFragment) {
         const { contentBlocks, entityMap } = htmlFragment;
         if (contentBlocks) {
           var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
           editor.update(
-            insertFragment(editor._latestEditorState, htmlMap, entityMap)
+            insertFragment(editor._latestEditorState, htmlMap, entityMap),
           );
           return;
         }

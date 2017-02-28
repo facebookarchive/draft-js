@@ -408,7 +408,7 @@ function genFragment(
     node.textContent = imageURI; // Output src if no decorator
 
     // TODO: update this when we remove DraftEntity entirely
-    inEntity = DraftEntity._create(
+    inEntity = DraftEntity.__create(
       'IMAGE',
       'MUTABLE',
       entityConfig || {},
@@ -481,7 +481,7 @@ function genFragment(
 
       entityConfig.url = new URI(anchor.href).toString();
       // TODO: update this when we remove DraftEntity completely
-      entityId = DraftEntity._create(
+      entityId = DraftEntity.__create(
         'LINK',
         'MUTABLE',
         entityConfig || {},
@@ -536,7 +536,7 @@ function getChunkForHTML(
   html: string,
   DOMBuilder: Function,
   blockRenderMap: DraftBlockRenderMap,
-  entityMap: EntityMap
+  entityMap: EntityMap,
 ): ?{chunk: Chunk, entityMap: EntityMap} {
   html = html
     .trim()
@@ -647,7 +647,7 @@ function convertFromHTMLtoContentBlocks(
               data.entity = entities[ii];
             }
             return CharacterMetadata.create(data);
-          })
+          }),
         );
         start = end + 1;
 
@@ -658,7 +658,7 @@ function convertFromHTMLtoContentBlocks(
           text: textBlock,
           characterList,
         });
-      }
+      },
     ),
     entityMap: newEntityMap,
   };

@@ -8,7 +8,7 @@ permalink: docs/quickstart-api-basics.html
 ---
 
 This document provides an overview of the basics of the `Draft` API. A
-[working example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/plaintext)
+[working example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/plaintext)
 is also available to follow along.
 
 ## Controlled Inputs
@@ -51,7 +51,7 @@ a rich editor.
 2. There is no such `onChange` event available for a ContentEditable element.
 
 State is therefore represented as a single immutable
-[EditorState](/draft-js/docs/api-reference-editor-state.html) object, and
+[EditorState](/docs/api-reference-editor-state.html) object, and
 `onChange` is implemented within the `Editor` core to provide this state
 value to the top level.
 

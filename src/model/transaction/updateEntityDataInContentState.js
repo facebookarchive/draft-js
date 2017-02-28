@@ -19,7 +19,7 @@ function updateEntityDataInContentState(
   contentState: ContentState,
   key: string,
   data: {[key: string]: any},
-  merge: boolean
+  merge: boolean,
 ): ContentState {
   const instance = contentState.getEntity(key);
   const entityData = instance.getData();

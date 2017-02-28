@@ -6,15 +6,14 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule EntityMap
+ * @providesModule DraftInsertionType
  * @flow
  */
 
 'use strict';
 
-import type {DraftEntityMapObject} from 'DraftEntity';
-
-// TODO: when removing the deprecated Entity api
-// change this to be
-// OrderedMap<string, DraftEntityInstance>;
-export type EntityMap = DraftEntityMapObject;
+/**
+ * A type that defines if an fragment shall be inserted before or after
+ * another fragment or if the selected fragment shall be replaced
+ */
+export type DraftInsertionType = 'replace' | 'before' | 'after';
