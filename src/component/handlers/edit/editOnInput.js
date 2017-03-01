@@ -24,6 +24,8 @@ var nullthrows = require('nullthrows');
 
 import type DraftEditor from 'DraftEditor.react';
 
+var isGecko = UserAgent.isEngine('Gecko');
+
 var DOUBLE_NEWLINE = '\n\n';
 
 /**
@@ -47,12 +49,16 @@ function editOnInput(editor: DraftEditor): void {
     return;
   }
 
+  var selectionBeforeInput = editor._latestEditorState.getSelection();
   editOnSelect(editor);
   var editorState = editor._latestEditorState;
+  var blockChangedSinceBeforeInput = false;
 
   if (editor._updatedNativeInsertionBlock) {
     const oldBlock = editor._updatedNativeInsertionBlock;
     if (editorState.getSelection().getFocusKey() !== oldBlock.getKey()) {
+
+      blockChangedSinceBeforeInput = true;
 
       // The selection has changed between editOnBeforeInput and now, and our
       // optimistically updated block is no longer valid.
@@ -86,7 +92,7 @@ function editOnInput(editor: DraftEditor): void {
 
   var domSelection = global.getSelection();
 
-  var {anchorNode} = domSelection;
+  var {anchorNode, isCollapsed} = domSelection;
   if (anchorNode.nodeType !== Node.TEXT_NODE) {
     return;
   }
@@ -145,14 +151,58 @@ function editOnInput(editor: DraftEditor): void {
     domText,
     block.getInlineStyleAt(start),
     preserveEntity ? block.getEntityAt(start) : null,
-  )
-    .set('selectionBefore', content.getSelectionBefore())
-    .set('selectionAfter', content.getSelectionAfter());
+  );
+
+  let contentWithAdjustedDOMSelection;
+
+  if (blockChangedSinceBeforeInput) {
+    // Trust window.getSelection() because that's all we have
+
+    contentWithAdjustedDOMSelection = newContent.merge({
+      selectionBefore: content.getSelectionBefore(),
+      selectionAfter: content.getSelectionAfter(),
+    });
+  } else {
+
+    // Fix up the selection ourselves because that's more reliable that window.getSelection()
+    var anchorOffset, focusOffset, startOffset, endOffset;
+
+    if (isGecko) {
+      // Firefox selection does not change while the context menu is open, so
+      // we preserve the anchor and focus values of the DOM selection.
+      anchorOffset = domSelection.anchorOffset;
+      focusOffset = domSelection.focusOffset;
+      startOffset = start + Math.min(anchorOffset, focusOffset);
+      endOffset = startOffset + Math.abs(anchorOffset - focusOffset);
+      anchorOffset = startOffset;
+      focusOffset = endOffset;
+    } else {
+      // Browsers other than Firefox may adjust DOM selection while the context
+      // menu is open, and Safari autocorrect is prone to providing an inaccurate
+      // DOM selection. Don't trust it. Instead, use our existing SelectionState
+      // and adjust it based on the number of characters changed during the
+      // mutation.
+      var charDelta = domText.length - modelText.length;
+      startOffset = selectionBeforeInput.getStartOffset();
+      endOffset = selectionBeforeInput.getEndOffset();
+
+      anchorOffset = isCollapsed ? endOffset + charDelta : startOffset;
+      focusOffset = endOffset + charDelta;
+    }
+
+    // Segmented entities are completely or partially removed when their
+    // text content changes. For this case we do not want any text to be selected
+    // after the change, so we are not merging the selection.
+    contentWithAdjustedDOMSelection = newContent.merge({
+      selectionBefore: content.getSelectionAfter(),
+      selectionAfter: selectionBeforeInput.merge({anchorOffset, focusOffset}),
+    });
+  }
 
   editor.update(
     EditorState.push(
       editorState,
-      newContent,
+      contentWithAdjustedDOMSelection,
       changeType
     )
   );
