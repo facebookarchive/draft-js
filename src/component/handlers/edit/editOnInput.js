@@ -15,6 +15,7 @@
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
 var EditorState = require('EditorState');
+var UserAgent = require('UserAgent');
 
 var editOnSelect = require('editOnSelect');
 var EditorBidiService = require('EditorBidiService');
