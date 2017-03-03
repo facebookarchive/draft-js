@@ -374,13 +374,19 @@ describe('DraftPasteProcessor', function() {
     ]);
   });
 
-  it('Strip whitespace after block dividers', function() {
+  it('must strip whitespace between body and its first child element', function() {
+    var html = '<body> <p>hello</p></body>';
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    expect(output[0].getText()).toBe('hello');
+  });
+
+  it('must strip whitespace after block dividers', function() {
     var html = '<p>hello</p> <p> what</p>';
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     expect(output[1].getText()).toBe('what');
   });
 
-  it('Should detect when somthing is un-styled in a child', function() {
+  it('must detect when something is un-styled in a child', function() {
     let html = '<b>hello<span style="font-weight:400;">there</span></b>';
     let output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     assertInlineStyles(output.contentBlocks[0], [

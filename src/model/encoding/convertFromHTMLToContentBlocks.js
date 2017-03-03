@@ -350,6 +350,9 @@ function genFragment(
   if (nodeName === '#text') {
     var text = node.textContent;
     if (text.trim() === '' && inBlock !== 'pre') {
+      if (!inBlock && !node.previousSibling) {
+        return { chunk: getEmptyChunk(), entityMap: entityMap };
+      }
       return {chunk: getWhitespaceChunk(inEntity), entityMap};
     }
     if (inBlock !== 'pre') {
