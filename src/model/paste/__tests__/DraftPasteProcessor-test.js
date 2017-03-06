@@ -375,7 +375,13 @@ describe('DraftPasteProcessor', function() {
   });
 
   it('must strip whitespace between body and its first child element', function() {
-    var html = '<body> <p>hello</p></body>';
+    var html = '<html><body> <p>hello</p></body></html>';
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    expect(output[0].getText()).toBe('hello');
+  });
+
+  it('must strip whitespace between html comment and next element', function() {
+    var html = '<html><body><!--comment--> <p>hello</p></body></html>';
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
     expect(output[0].getText()).toBe('hello');
   });

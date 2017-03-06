@@ -350,7 +350,8 @@ function genFragment(
   if (nodeName === '#text') {
     var text = node.textContent;
     if (text.trim() === '' && inBlock !== 'pre') {
-      if (!inBlock && !node.previousSibling) {
+      // whitespace after body or html comment
+      if (!inBlock && (!node.previousSibling || node.previousSibling.nodeName === '#comment')) {
         return { chunk: getEmptyChunk(), entityMap: entityMap };
       }
       return {chunk: getWhitespaceChunk(inEntity), entityMap};
