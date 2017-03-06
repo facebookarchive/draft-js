@@ -102,71 +102,73 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
     textBlocks = splitTextIntoTextBlocks(text);
   }
 
-  if (!editor.props.stripPastedStyles) {
-    // If the text from the paste event is rich content that matches what we
-    // already have on the internal clipboard, assume that we should just use
-    // the clipboard fragment for the paste. This will allow us to preserve
-    // styling and entities, if any are present. Note that newlines are
-    // stripped during comparison -- this is because copy/paste within the
-    // editor in Firefox and IE will not include empty lines. The resulting
-    // paste will preserve the newlines correctly.
-    const internalClipboard = editor.getClipboard();
-    if (data.isRichText() && internalClipboard) {
-      if (
-        // If the editorKey is present in the pasted HTML, it should be safe to
-        // assume this is an internal paste.
-        html.indexOf(editor.getEditorKey()) !== -1 ||
-        // The copy may have been made within a single block, in which case the
-        // editor key won't be part of the paste. In this case, just check
-        // whether the pasted text matches the internal clipboard.
-        (
-          textBlocks.length === 1 &&
-          internalClipboard.size === 1 &&
-          internalClipboard.first().getText() === text
-        )
-      ) {
-        editor.update(
-          insertFragment(editor._latestEditorState, internalClipboard),
-        );
-        return;
-      }
-    } else if (
-      internalClipboard &&
-      data.types.includes('com.apple.webarchive') &&
-      !data.types.includes('text/html') &&
-      areTextBlocksAndClipboardEqual(textBlocks, internalClipboard)
+  // If the text from the paste event is rich content that matches what we
+  // already have on the internal clipboard, assume that we should just use
+  // the clipboard fragment for the paste. This will allow us to preserve
+  // styling and entities, if any are present. Note that newlines are
+  // stripped during comparison -- this is because copy/paste within the
+  // editor in Firefox and IE will not include empty lines. The resulting
+  // paste will preserve the newlines correctly.
+  const internalClipboard = editor.getClipboard();
+  if (data.isRichText() && internalClipboard) {
+    if (
+      // If the editorKey is present in the pasted HTML, it should be safe to
+      // assume this is an internal paste.
+      html.indexOf(editor.getEditorKey()) !== -1 ||
+      // The copy may have been made within a single block, in which case the
+      // editor key won't be part of the paste. In this case, just check
+      // whether the pasted text matches the internal clipboard.
+      (
+        textBlocks.length === 1 &&
+        internalClipboard.size === 1 &&
+        internalClipboard.first().getText() === text
+      )
     ) {
-      // Safari does not properly store text/html in some cases.
-      // Use the internalClipboard if present and equal to what is on
-      // the clipboard. See https://bugs.webkit.org/show_bug.cgi?id=19893.
       editor.update(
         insertFragment(editor._latestEditorState, internalClipboard),
       );
       return;
     }
+  } else if (
+    internalClipboard &&
+    data.types.includes('com.apple.webarchive') &&
+    !data.types.includes('text/html') &&
+    areTextBlocksAndClipboardEqual(textBlocks, internalClipboard)
+  ) {
+    // Safari does not properly store text/html in some cases.
+    // Use the internalClipboard if present and equal to what is on
+    // the clipboard. See https://bugs.webkit.org/show_bug.cgi?id=19893.
+    editor.update(
+      insertFragment(editor._latestEditorState, internalClipboard),
+    );
+    return;
+  }
 
-    // If there is html paste data, try to parse that.
-    if (html) {
-      var htmlFragment = DraftPasteProcessor.processHTML(
-        html,
-        editor.props.blockRenderMap,
-      );
-      if (htmlFragment) {
-        const { contentBlocks, entityMap } = htmlFragment;
-        if (contentBlocks) {
-          var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
-          editor.update(
-            insertFragment(editor._latestEditorState, htmlMap, entityMap),
-          );
-          return;
-        }
+  // If there is html paste data, try to parse that.
+  if (html) {
+    const blockRenderMap = editor.props.pasteSupport.blockTypes.filter(
+      (blockType: string) =>
+        editor.props.blockRenderMap.hasOwnProperty(blockType)
+    );
+    var htmlFragment = DraftPasteProcessor.processHTML(
+      html,
+      blockRenderMap,
+    );
+    if (htmlFragment) {
+      const { contentBlocks, entityMap } = htmlFragment;
+      if (contentBlocks) {
+        var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
+        editor.update(
+          insertFragment(editor._latestEditorState, htmlMap, entityMap),
+        );
+        return;
       }
     }
-
-    // Otherwise, create a new fragment from our pasted text. Also
-    // empty the internal clipboard, since it's no longer valid.
-    editor.setClipboard(null);
   }
+
+  // Otherwise, create a new fragment from our pasted text. Also
+  // empty the internal clipboard, since it's no longer valid.
+  editor.setClipboard(null);
 
   if (textBlocks.length) {
     var editorState = editor._latestEditorState;

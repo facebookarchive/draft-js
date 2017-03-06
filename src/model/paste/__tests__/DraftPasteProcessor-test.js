@@ -119,6 +119,23 @@ describe('DraftPasteProcessor', function() {
     ]);
   });
 
+  it('must identify only specified block types', function() {
+    var blockRenderMap = Immutable.Map({
+      'header-one': {
+        element: 'h1',
+      },
+      'unstyled': {
+        element: 'div',
+      },
+    });
+    var html = '<h1>yes</h1><h2>no</h2><div>yes</div><pre>no</pre>';
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, blockRenderMap);
+    assertBlockTypes(output, [
+      'header-one',
+      'unstyled',
+    ]);
+  });
+
   it('must collapse nested blocks to the topmost level', function() {
     var html = '<ul><li><h2>what</h2></li></ul>';
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);

@@ -16,6 +16,7 @@
 
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
+const DefaultDraftPasteSupport = require('DefaultDraftPasteSupport');
 const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
 const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
@@ -74,9 +75,9 @@ class DraftEditor extends React.Component {
     blockRendererFn: emptyFunction.thatReturnsNull,
     blockStyleFn: emptyFunction.thatReturns(''),
     keyBindingFn: getDefaultKeyBinding,
+    pasteSupport: DefaultDraftPasteSupport,
     readOnly: false,
     spellCheck: false,
-    stripPastedStyles: false,
   };
 
   _blockSelectEvents: boolean;

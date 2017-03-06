@@ -19,6 +19,7 @@ import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftHandleValue} from 'DraftHandleValue';
+import type {DraftPasteSupport} from 'DraftPasteSupport';
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
@@ -64,10 +65,15 @@ export type DraftEditorProps = {
   // autocorrect is enabled as well.
   spellCheck?: boolean,
 
-  // Set whether to remove all style information from pasted content. If your
-  // use case should not have any block or inline styles, it is recommended
-  // that you set this to `true`.
-  stripPastedStyles?: boolean,
+  // Configuration object that specifies which inline styles, block types and
+  // links should be retained on paste. If your use case should not have any
+  // blocks, inline styles and links, it is recommended that you set this to
+  // {
+  //   inlineStyles: List(),
+  //   blockTypes: List(),
+  //   links: false,
+  // }
+  pasteSupport: DraftPasteSupport,
 
   tabIndex?: number,
 
@@ -148,7 +154,7 @@ export type DraftEditorDefaultProps = {
   blockRendererFn: (block: ContentBlock) => ?Object,
   blockStyleFn: (block: ContentBlock) => string,
   keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
+  pasteSupport: DraftPasteSupport,
   readOnly: boolean,
   spellCheck: boolean,
-  stripPastedStyles: boolean,
 };
