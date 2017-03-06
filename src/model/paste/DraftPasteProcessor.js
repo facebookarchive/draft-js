@@ -35,12 +35,14 @@ const DraftPasteProcessor = {
   processHTML(
     html: string,
     blockRenderMap?: DraftBlockRenderMap,
+    allowedStyles: Array<string>,
     allowLinks: boolean
   ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
     return convertFromHTMLtoContentBlocks(
       html,
       getSafeBodyFromHTML,
       blockRenderMap,
+      allowedStyles,
       allowLinks
     );
   },

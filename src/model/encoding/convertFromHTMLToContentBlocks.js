@@ -228,10 +228,11 @@ function getBlockTypeForTag(
 function processInlineTag(
   tag: string,
   node: Node,
-  currentStyle: DraftInlineStyle
+  currentStyle: DraftInlineStyle,
+  allowedStyles: Array<string>
 ): DraftInlineStyle {
   var styleToCheck = inlineTags[tag];
-  if (styleToCheck) {
+  if (styleToCheck && allowedStyles.includes(styleToCheck)) {
     currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
   } else if (node instanceof HTMLElement) {
     const htmlElement = node;
@@ -240,22 +241,22 @@ function processInlineTag(
       const fontStyle = htmlElement.style.fontStyle;
       const textDecoration = htmlElement.style.textDecoration;
 
-      if (boldValues.indexOf(fontWeight) >= 0) {
+      if (allowedStyles.includes('BOLD') && boldValues.indexOf(fontWeight) >= 0) {
         style.add('BOLD');
       } else if (notBoldValues.indexOf(fontWeight) >= 0) {
         style.remove('BOLD');
       }
 
-      if (fontStyle === 'italic') {
+      if (allowedStyles.includes('ITALIC') && fontStyle === 'italic') {
         style.add('ITALIC');
       } else if (fontStyle === 'normal') {
         style.remove('ITALIC');
       }
 
-      if (textDecoration === 'underline') {
+      if (allowedStyles.includes('UNDERLINE') && textDecoration === 'underline') {
         style.add('UNDERLINE');
       }
-      if (textDecoration === 'line-through') {
+      if (allowedStyles.includes('STRIKETHROUGH') && textDecoration === 'line-through') {
         style.add('STRIKETHROUGH');
       }
       if (textDecoration === 'none') {
@@ -338,6 +339,7 @@ function genFragment(
   blockTags: Array<string>,
   depth: number,
   blockRenderMap: DraftBlockRenderMap,
+  allowedStyles: Array<string>,
   allowLinks: boolean,
   inEntity?: string
 ): {chunk: Chunk, entityMap: EntityMap} {
@@ -420,7 +422,7 @@ function genFragment(
   var newChunk: ?Chunk = null;
 
   // Inline tags
-  inlineStyle = processInlineTag(nodeName, node, inlineStyle);
+  inlineStyle = processInlineTag(nodeName, node, inlineStyle, allowedStyles);
 
   // Handle lists
   if (nodeName === 'ul' || nodeName === 'ol') {
@@ -495,6 +497,7 @@ function genFragment(
       blockTags,
       depth,
       blockRenderMap,
+      allowedStyles,
       allowLinks,
       entityId || inEntity
     );
@@ -534,7 +537,8 @@ function getChunkForHTML(
   DOMBuilder: Function,
   blockRenderMap: DraftBlockRenderMap,
   entityMap: EntityMap,
-  allowLinks,
+  allowedStyles: Array<string>,
+  allowLinks: boolean,
 ): ?{chunk: Chunk, entityMap: EntityMap} {
   html = html
     .trim()
@@ -572,6 +576,7 @@ function getChunkForHTML(
     workingBlocks,
     -1,
     blockRenderMap,
+    allowedStyles,
     allowLinks
   );
 
@@ -613,6 +618,7 @@ function convertFromHTMLtoContentBlocks(
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
+  allowedStyles: Array<string> = [],
   allowLinks: boolean,
 ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
@@ -620,7 +626,14 @@ function convertFromHTMLtoContentBlocks(
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
   // TODO: replace DraftEntity with an OrderedMap here
-  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, DraftEntity, allowLinks);
+  var chunkData = getChunkForHTML(
+    html,
+    DOMBuilder,
+    blockRenderMap,
+    DraftEntity,
+    allowedStyles,
+    allowLinks
+  );
 
   if (chunkData == null) {
     return null;

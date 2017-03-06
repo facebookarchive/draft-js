@@ -14,17 +14,15 @@
 
 import type {DraftPasteSupport} from 'DraftPasteSupport';
 
-const {List} = require('immutable');
-
 const DefaultDraftPasteSupport: DraftPasteSupport = {
-  inlineStyles: List(
+  inlineStyles: [
     'BOLD',
     'CODE',
     'ITALIC',
     'STRIKETHROUGH',
     'UNDERLINE',
-  ),
-  blockTypes: List(
+  ],
+  blockTypes: [
     'header-one',
     'header-two',
     'header-three',
@@ -37,7 +35,7 @@ const DefaultDraftPasteSupport: DraftPasteSupport = {
     'atomic',
     'code-block',
     'unstyled',
-  ),
+  ],
   links: true,
 };
 
