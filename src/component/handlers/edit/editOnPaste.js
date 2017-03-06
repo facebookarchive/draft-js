@@ -147,9 +147,8 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   // If there is html paste data, try to parse that.
   if (html) {
     const { blockTypes, inlineStyles, links } = editor.props.pasteSupport;
-    const blockRenderMap = blockTypes.filter(
-      (blockType: string) =>
-        editor.props.blockRenderMap.hasOwnProperty(blockType)
+    const blockRenderMap = editor.props.blockRenderMap.filter(
+      (block?: Object, blockType: string) => blockTypes.includes(blockType)
     );
 
     var htmlFragment = DraftPasteProcessor.processHTML(
