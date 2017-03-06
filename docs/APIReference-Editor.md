@@ -119,11 +119,20 @@ needed to observe spellcheck events are not fired in IE.
 
 Default is `false`.
 
-#### stripPastedStyles
+#### pasteSupport
 ```
-stripPastedStyles?: boolean
+stripPastedStyles?: Object
 ```
-Set whether to remove all information except plaintext from pasted content.
+Optionally define which inline styles, block types and links should be retained on paste.
+
+If your use case should not have any blocks, inline styles and links, set this to
+```
+{
+  inlineStyles: []
+  blockTypes: [],
+  links: false,
+}
+```
 
 This should be used if your editor does not support rich styles.
 
