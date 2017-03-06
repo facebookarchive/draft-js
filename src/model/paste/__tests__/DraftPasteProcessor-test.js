@@ -305,36 +305,67 @@ describe('DraftPasteProcessor', function() {
     expect(output[0].getText()).toBe('Bold Italic.');
   });
 
-  it('must detect links in pasted content', function() {
-    var html = 'This is a <a href="http://www.facebook.com">link</a>, yep.';
-    var {
-      contentBlocks: output,
-      entityMap,
-    } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
-    assertBlockTypes(output, ['unstyled']);
-    assertEntities(
-      output[0],
-      Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false))
-    );
-    expect(output[0].getText()).toBe('This is a link, yep.');
-    var entityId = output[0].getCharacterList().get(12).getEntity();
-    var entity = entityMap.__get(entityId);
-    expect(entity.getData().url).toBe('http://www.facebook.com/');
+  describe('`allowLinks` prop is true', function() {
+    it('must detect links in pasted content', function() {
+      var html = 'This is a <a href="http://www.facebook.com">link</a>, yep.';
+      var {
+        contentBlocks: output,
+        entityMap,
+      } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, true);
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(
+        output[0],
+        Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false))
+      );
+      expect(output[0].getText()).toBe('This is a link, yep.');
+      var entityId = output[0].getCharacterList().get(12).getEntity();
+      var entity = entityMap.__get(entityId);
+      expect(entity.getData().url).toBe('http://www.facebook.com/');
+    });
+
+    it('must preserve styles inside links in a good way', function() {
+      var html = 'A <a href="http://www.facebook.com"><i>cool</i> link</a>, yep.';
+      var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, true);
+      assertBlockTypes(output, ['unstyled']);
+      assertInlineStyles(
+        output[0],
+        Array(2).fill([]).concat(Array(4).fill(['ITALIC']), Array(11).fill([]))
+      );
+      assertEntities(
+        output[0],
+        Array(2).fill(false).concat(Array(9).fill(true), Array(6).fill(false))
+      );
+      expect(output[0].getText()).toBe('A cool link, yep.');
+    });
+
+    it('must preserve mailto: links', function() {
+      var html = 'This is a <a href="mailto:example@example.com">link</a>, yep.';
+      var {
+        contentBlocks: output,
+        entityMap,
+      } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, true);
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(
+        output[0],
+        Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false))
+      );
+      expect(output[0].getText()).toBe('This is a link, yep.');
+      var entityId = output[0].getCharacterList().get(12).getEntity();
+      var entity = entityMap.__get(entityId);
+      expect(entity.getData().url).toBe('mailto:example@example.com');
+    });
   });
 
-  it('must preserve styles inside links in a good way', function() {
-    var html = 'A <a href="http://www.facebook.com"><i>cool</i> link</a>, yep.';
-    var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
-    assertBlockTypes(output, ['unstyled']);
-    assertInlineStyles(
-      output[0],
-      Array(2).fill([]).concat(Array(4).fill(['ITALIC']), Array(11).fill([]))
-    );
-    assertEntities(
-      output[0],
-      Array(2).fill(false).concat(Array(9).fill(true), Array(6).fill(false))
-    );
-    expect(output[0].getText()).toBe('A cool link, yep.');
+  describe('`allowLinks` prop is false', function() {
+    it('must ignore links in pasted content', function() {
+      var html = 'This is a <a href="http://www.facebook.com">link</a>, yep.';
+      var { contentBlocks: output } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, false);
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(output[0], Array(20).fill(false));
+      expect(output[0].getText()).toBe('This is a link, yep.');
+      var entityId = output[0].getCharacterList().get(12).getEntity();
+      expect(entityId).toBe(null);
+    });
   });
 
   it('must ignore links that do not actually link anywhere', function() {
@@ -351,23 +382,6 @@ describe('DraftPasteProcessor', function() {
     assertBlockTypes(output, ['unstyled']);
     assertEntities(output[0], Array(20).fill(false));
     expect(output[0].getText()).toBe('This is a link, yep.');
-  });
-
-  it('must preserve mailto: links', function() {
-    var html = 'This is a <a href="mailto:example@example.com">link</a>, yep.';
-    var {
-      contentBlocks: output,
-      entityMap,
-    } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
-    assertBlockTypes(output, ['unstyled']);
-    assertEntities(
-      output[0],
-      Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false))
-    );
-    expect(output[0].getText()).toBe('This is a link, yep.');
-    var entityId = output[0].getCharacterList().get(12).getEntity();
-    var entity = entityMap.__get(entityId);
-    expect(entity.getData().url).toBe('mailto:example@example.com');
   });
 
   it('Tolerate doule BR tags separated by whitespace', function() {

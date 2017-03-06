@@ -338,6 +338,7 @@ function genFragment(
   blockTags: Array<string>,
   depth: number,
   blockRenderMap: DraftBlockRenderMap,
+  allowLinks: boolean,
   inEntity?: string
 ): {chunk: Chunk, entityMap: EntityMap} {
   var nodeName = node.nodeName.toLowerCase();
@@ -459,6 +460,7 @@ function genFragment(
 
   while (child) {
     if (
+      allowLinks &&
       child instanceof HTMLAnchorElement &&
       child.href &&
       hasValidLinkText(child)
@@ -493,6 +495,7 @@ function genFragment(
       blockTags,
       depth,
       blockRenderMap,
+      allowLinks,
       entityId || inEntity
     );
 
@@ -531,6 +534,7 @@ function getChunkForHTML(
   DOMBuilder: Function,
   blockRenderMap: DraftBlockRenderMap,
   entityMap: EntityMap,
+  allowLinks,
 ): ?{chunk: Chunk, entityMap: EntityMap} {
   html = html
     .trim()
@@ -567,7 +571,8 @@ function getChunkForHTML(
     null,
     workingBlocks,
     -1,
-    blockRenderMap
+    blockRenderMap,
+    allowLinks
   );
 
 
@@ -608,13 +613,14 @@ function convertFromHTMLtoContentBlocks(
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
+  allowLinks: boolean,
 ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
   // TODO: replace DraftEntity with an OrderedMap here
-  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, DraftEntity);
+  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, DraftEntity, allowLinks);
 
   if (chunkData == null) {
     return null;
