@@ -119,10 +119,10 @@ describe('DraftPasteProcessor', function() {
   });
 
   it('must identity only specified inline styles', function() {
-    var inlineStyles = [
+    var inlineStyles = Immutable.List([
       'BOLD',
       'ITALIC',
-    ];
+    ]);
     var html = '<em>1</em><strong>2</strong><code>3</code><strike>4</strike><u>5</u>';
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, inlineStyles);
     var block = output[0];
