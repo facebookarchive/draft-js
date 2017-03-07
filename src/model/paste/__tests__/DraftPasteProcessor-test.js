@@ -47,13 +47,13 @@ var CUSTOM_BLOCK_MAP = Immutable.Map({
   },
 });
 
-var INLINE_STYLES = [
+var INLINE_STYLES = Immutable.List([
   'BOLD',
   'CODE',
   'ITALIC',
   'STRIKETHROUGH',
   'UNDERLINE',
-];
+]);
 
 describe('DraftPasteProcessor', function() {
   function assertInlineStyles(block, comparison) {

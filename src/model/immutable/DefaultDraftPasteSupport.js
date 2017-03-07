@@ -13,16 +13,17 @@
 'use strict';
 
 import type {DraftPasteSupport} from 'DraftPasteSupport';
+import {List} from 'immutable';
 
 const DefaultDraftPasteSupport: DraftPasteSupport = {
-  inlineStyles: [
+  inlineStyles: List([
     'BOLD',
     'CODE',
     'ITALIC',
     'STRIKETHROUGH',
     'UNDERLINE',
-  ],
-  blockTypes: [
+  ]),
+  blockTypes: List([
     'header-one',
     'header-two',
     'header-three',
@@ -35,7 +36,7 @@ const DefaultDraftPasteSupport: DraftPasteSupport = {
     'atomic',
     'code-block',
     'unstyled',
-  ],
+  ]),
   links: true,
 };
 

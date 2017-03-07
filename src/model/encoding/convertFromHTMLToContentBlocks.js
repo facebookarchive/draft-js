@@ -229,7 +229,7 @@ function processInlineTag(
   tag: string,
   node: Node,
   currentStyle: DraftInlineStyle,
-  allowedStyles: Array<string>
+  allowedStyles: List<string>
 ): DraftInlineStyle {
   var styleToCheck = inlineTags[tag];
   if (styleToCheck && allowedStyles.includes(styleToCheck)) {
@@ -339,7 +339,7 @@ function genFragment(
   blockTags: Array<string>,
   depth: number,
   blockRenderMap: DraftBlockRenderMap,
-  allowedStyles: Array<string>,
+  allowedStyles: List<string>,
   allowLinks: boolean,
   inEntity?: string
 ): {chunk: Chunk, entityMap: EntityMap} {
@@ -537,7 +537,7 @@ function getChunkForHTML(
   DOMBuilder: Function,
   blockRenderMap: DraftBlockRenderMap,
   entityMap: EntityMap,
-  allowedStyles: Array<string>,
+  allowedStyles: List<string>,
   allowLinks: boolean,
 ): ?{chunk: Chunk, entityMap: EntityMap} {
   html = html
@@ -618,7 +618,7 @@ function convertFromHTMLtoContentBlocks(
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
-  allowedStyles: Array<string> = [],
+  allowedStyles: List<string> = List(),
   allowLinks: boolean,
 ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute

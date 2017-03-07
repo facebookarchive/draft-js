@@ -128,8 +128,8 @@ Optionally define which inline styles, block types and links should be retained 
 If your use case should not have any blocks, inline styles and links, set this to
 ```
 {
-  inlineStyles: []
-  blockTypes: [],
+  inlineStyles: List()
+  blockTypes: List(),
   links: false,
 }
 ```

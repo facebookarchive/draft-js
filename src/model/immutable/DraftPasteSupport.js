@@ -12,8 +12,10 @@
 
 'use strict';
 
+import type {List} from 'immutable';
+
 export type DraftPasteSupport = {
-  inlineStyles: Array<string>,
-  blockTypes: Array<string>,
+  inlineStyles: List<string>,
+  blockTypes: List<string>,
   links: boolean,
 };
