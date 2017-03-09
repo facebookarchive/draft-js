@@ -14,7 +14,9 @@ renderers, as well as converting pasted content to known Draft block types.
 When pasting content or when using the
 [convertFromHTML](/docs/api-reference-data-conversion.html#convertfromhtml)
 Draft will then convert the pasted content to the respective block rendering type
-by matching the Draft block render map with the matched tag.
+by matching the Draft block render map with the matched tag. When pasting content
+Draft can optionally strip unwanted block types (see
+[Advanced Topics: Paste Support](/docs/advanced-topics-paste-support.html)).
 
 ## Draft default block render map
 
