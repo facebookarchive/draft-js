@@ -23,17 +23,7 @@ block render map is provided, it will be used to define supported block types.
 
 For your editor, you may provide the `pasteSupport` prop to define the lists
 of `inlineStyles` and `blockTypes` you want to support on paste. Also you can
-disable links support.
-
-If your use case should not have any blocks, inline styles and links, set
-`pasteSupport` prop to:
-```js
-{
-  inlineStyles: Immutable.List(),
-  blockTypes: Immutable.List(),
-  links: false,
-}
-```
+disable images and links support.
 
 ## pasteSupport object properties
 
@@ -51,6 +41,14 @@ blockTypes?: List<string>
 Optionally define the list of block types supported on paste. If omitted, all
 block types defined in `blockRenderMap` will be supported.
 
+#### images
+```
+images?: boolean
+```
+Optionally disable images support (set to `false`).
+
+Default is `true`.
+
 #### links
 ```
 links?: boolean
@@ -61,8 +59,8 @@ Default is `true`.
 
 ## Example
 
-You may want to ignore underlined text, h4-h6 headers and blockquotes on paste.
-To do so, define a custom `pasteSupport` object:
+You may want to ignore underlined text, h4-h6 headers, blockquotes and images
+on paste. To do so, define a custom `pasteSupport` object:
 
 ```js
 import {Editor} from 'draft-js';
@@ -85,6 +83,7 @@ const pasteSupport = {
     'code-block',
     'unstyled',
   ]),
+  images: false,
 };
 
 class MyEditor extends React.Component {
@@ -98,5 +97,16 @@ class MyEditor extends React.Component {
       />
     );
   }
+}
+```
+
+If your use case should not have any blocks, inline styles, images and links, set
+`pasteSupport` prop to:
+```js
+{
+  inlineStyles: Immutable.List(),
+  blockTypes: Immutable.List(),
+  images: false,
+  links: false,
 }
 ```

@@ -128,6 +128,9 @@ paste, and what to strip:
   - images
   - links
 
+See [Advanced Topics: Paste Support](/docs/advanced-topics-paste-support.html)
+for details on usage.
+
 ### DOM and Accessibility (Optional)
 
 #### tabIndex
