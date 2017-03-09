@@ -19,6 +19,7 @@ import {List} from 'immutable';
 
 const DefaultDraftPasteSupport: DraftPasteSupport = {
   inlineStyles: List(Object.keys(DefaultDraftInlineStyle)),
+  images: true,
   links: true,
 };
 

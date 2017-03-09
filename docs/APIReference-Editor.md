@@ -123,13 +123,10 @@ Default is `false`.
 ```
 pasteSupport?: Object
 ```
-Optionally define which inline styles, block types and links should be retained on paste.
-See [Advanced Topics: Paste Support](/docs/advanced-topics-paste-support.html)
-for details on usage.
-
-This should be used if your editor does not support rich styles.
-
-Default is `false`.
+Optionally define which inline styles and block types should be retained on
+paste, and what to strip:
+  - images
+  - links
 
 ### DOM and Accessibility (Optional)
 

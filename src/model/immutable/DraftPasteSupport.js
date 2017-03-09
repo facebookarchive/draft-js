@@ -17,5 +17,6 @@ import type {List} from 'immutable';
 export type DraftPasteSupport = {
   inlineStyles: List<string>,
   blockTypes: List<string>,
+  images: boolean,
   links: boolean,
 };

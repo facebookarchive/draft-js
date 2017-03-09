@@ -330,13 +330,49 @@ describe('DraftPasteProcessor', function() {
     expect(output[0].getText()).toBe('Bold Italic.');
   });
 
+  describe('`allowImages` prop is true', function() {
+    it('must detect images in pasted content', function() {
+      var html = 'This is an image <img src="http://www.facebook.com/image.jpg" />, yep.';
+      var {
+        contentBlocks: output,
+        entityMap,
+      } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, true);
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(
+        output[0],
+        Array(17).fill(false).concat(Array(33).fill(true), Array(6).fill(false))
+      );
+      expect(output[0].getText()).toBe('This is an image http://www.facebook.com/image.jpg, yep.');
+      var entityId = output[0].getCharacterList().get(19).getEntity();
+      var entity = entityMap.__get(entityId);
+      expect(entity.getData().src).toBe('http://www.facebook.com/image.jpg');
+    });
+  });
+
+  describe('`allowImages` prop is false', function() {
+    it('must ignore images in pasted content', function() {
+      var html = 'This is an image <img src="http://www.facebook.com/image.jpg" />, yep.';
+      var {
+        contentBlocks: output,
+      } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, false);
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(
+        output[0],
+        Array(56).fill(false)
+      );
+      expect(output[0].getText()).toBe('This is an image , yep.');
+      var entityId = output[0].getCharacterList().get(19).getEntity();
+      expect(entityId).toBe(null);
+    });
+  });
+
   describe('`allowLinks` prop is true', function() {
     it('must detect links in pasted content', function() {
       var html = 'This is a <a href="http://www.facebook.com">link</a>, yep.';
       var {
         contentBlocks: output,
         entityMap,
-      } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, true);
+      } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, true, true);
       assertBlockTypes(output, ['unstyled']);
       assertEntities(
         output[0],
@@ -350,7 +386,7 @@ describe('DraftPasteProcessor', function() {
 
     it('must preserve styles inside links in a good way', function() {
       var html = 'A <a href="http://www.facebook.com"><i>cool</i> link</a>, yep.';
-      var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, true);
+      var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, true, true);
       assertBlockTypes(output, ['unstyled']);
       assertInlineStyles(
         output[0],
@@ -368,7 +404,7 @@ describe('DraftPasteProcessor', function() {
       var {
         contentBlocks: output,
         entityMap,
-      } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, true);
+      } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, true, true);
       assertBlockTypes(output, ['unstyled']);
       assertEntities(
         output[0],
@@ -384,7 +420,9 @@ describe('DraftPasteProcessor', function() {
   describe('`allowLinks` prop is false', function() {
     it('must ignore links in pasted content', function() {
       var html = 'This is a <a href="http://www.facebook.com">link</a>, yep.';
-      var { contentBlocks: output } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, false);
+      var {
+        contentBlocks: output,
+      } = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES, false);
       assertBlockTypes(output, ['unstyled']);
       assertEntities(output[0], Array(20).fill(false));
       expect(output[0].getText()).toBe('This is a link, yep.');

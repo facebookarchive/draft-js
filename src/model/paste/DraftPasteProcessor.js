@@ -36,6 +36,7 @@ const DraftPasteProcessor = {
     html: string,
     blockRenderMap?: DraftBlockRenderMap,
     allowedStyles: List<string>,
+    allowImages: boolean,
     allowLinks: boolean
   ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
     return convertFromHTMLtoContentBlocks(
@@ -43,6 +44,7 @@ const DraftPasteProcessor = {
       getSafeBodyFromHTML,
       blockRenderMap,
       allowedStyles,
+      allowImages,
       allowLinks
     );
   },
