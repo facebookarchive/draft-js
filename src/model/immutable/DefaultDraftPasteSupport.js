@@ -12,31 +12,13 @@
 
 'use strict';
 
+const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
+
 import type {DraftPasteSupport} from 'DraftPasteSupport';
 import {List} from 'immutable';
 
 const DefaultDraftPasteSupport: DraftPasteSupport = {
-  inlineStyles: List([
-    'BOLD',
-    'CODE',
-    'ITALIC',
-    'STRIKETHROUGH',
-    'UNDERLINE',
-  ]),
-  blockTypes: List([
-    'header-one',
-    'header-two',
-    'header-three',
-    'header-four',
-    'header-five',
-    'header-six',
-    'unordered-list-item',
-    'ordered-list-item',
-    'blockquote',
-    'atomic',
-    'code-block',
-    'unstyled',
-  ]),
+  inlineStyles: List(Object.keys(DefaultDraftInlineStyle)),
   links: true,
 };
 

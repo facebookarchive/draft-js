@@ -149,9 +149,11 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   if (html) {
     const pasteSupport = Object.assign(DefaultDraftPasteSupport, editor.props.pasteSupport);
     const { blockTypes, inlineStyles, links } = pasteSupport;
-    const blockRenderMap = editor.props.blockRenderMap.filter(
+
+    // if supported block types are specified, support only them
+    const blockRenderMap = blockTypes ? editor.props.blockRenderMap.filter(
       (block?: Object, blockType: string) => blockTypes.includes(blockType)
-    );
+    ) : editor.props.blockRenderMap;
 
     var htmlFragment = DraftPasteProcessor.processHTML(
       html,
