@@ -12,20 +12,22 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
 var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
+const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
 var nullthrows = require('nullthrows');
 
-import type DraftEditor from 'DraftEditor.react';
+const isGecko = UserAgent.isEngine('Gecko');
+const isAndroid = UserAgent.isPlatform('Android');
 
-var isGecko = UserAgent.isEngine('Gecko');
 
 var DOUBLE_NEWLINE = '\n\n';
-
 /**
  * This function is intended to handle spellcheck and autocorrect changes,
  * which occur in the DOM natively without any opportunity to observe or
@@ -59,6 +61,37 @@ function editOnInput(editor: DraftEditor): void {
   var {start, end} = editorState
     .getBlockTree(blockKey)
     .getIn([decoratorKey, 'leaves', leafKey]);
+  var selection = editorState.getSelection();
+
+  // We'll replace the entire leaf with the text content of the target.
+  var targetRange = selection.merge({
+    anchorOffset: start,
+    focusOffset: end,
+    isBackward: false,
+  });
+  const editorStateEnd = selection.getAnchorOffset();
+
+  // An Android backspace has occurred that places the caret behind an entity
+  // or was done with a selection including an entity
+  if (isAndroid && (editorStateEnd > end)) {
+    start = end;
+    end = editorStateEnd;
+
+    targetRange = selection.merge({
+      anchorOffset: start,
+      focusOffset: end,
+      isBackward: false,
+    });
+    const newSelectionEditorState = EditorState.acceptSelection(
+      editorState,
+      targetRange,
+    );
+    const newEditorState = keyCommandPlainBackspace(newSelectionEditorState);
+    if (newEditorState !== newSelectionEditorState) {
+      editor.update(newEditorState);
+    }
+    return;
+  }
 
   var content = editorState.getCurrentContent();
   var block = content.getBlockForKey(blockKey);
@@ -77,33 +110,32 @@ function editOnInput(editor: DraftEditor): void {
     return;
   }
 
-  var selection = editorState.getSelection();
-
-  // We'll replace the entire leaf with the text content of the target.
-  var targetRange = selection.merge({
-    anchorOffset: start,
-    focusOffset: end,
-    isBackward: false,
-  });
-
   const entityKey = block.getEntityAt(start);
   const entity = entityKey && content.getEntity(entityKey);
   const entityType = entity && entity.getMutability();
-  const preserveEntity = entityType === 'MUTABLE';
+  const isMutableEntity = entityType === 'MUTABLE';
 
   // Immutable or segmented entities cannot properly be handled by the
   // default browser undo, so we have to use a different change type to
   // force using our internal undo method instead of falling through to the
   // native browser undo.
-  const changeType = preserveEntity ? 'spellcheck-change' : 'apply-entity';
+  const changeType = isMutableEntity ? 'spellcheck-change' : 'apply-entity';
 
-  const newContent = DraftModifier.replaceText(
-    content,
-    targetRange,
-    domText,
-    block.getInlineStyleAt(start),
-    preserveEntity ? block.getEntityAt(start) : null,
-  );
+  if (!isMutableEntity) {
+    const newEditorState = keyCommandPlainBackspace(editorState);
+    if (newEditorState !== editorState) {
+      editor.update(newEditorState);
+    }
+    return;
+  } else {
+    var newContent = DraftModifier.replaceText(
+      content,
+      targetRange,
+      domText,
+      block.getInlineStyleAt(start),
+      isMutableEntity ? block.getEntityAt(start) : null,
+    );
+  }
 
   var anchorOffset, focusOffset, startOffset, endOffset;
 
@@ -142,8 +174,8 @@ function editOnInput(editor: DraftEditor): void {
     EditorState.push(
       editorState,
       contentWithAdjustedDOMSelection,
-      changeType
-    )
+      changeType,
+    ),
   );
 }
 
