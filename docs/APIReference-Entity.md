@@ -12,12 +12,12 @@ updating entity objects, which are used for annotating text ranges with metadata
 This module also houses the single store used to maintain entity data.
 
 This article is dedicated to covering the details of the API. See the
-[advanced topics article on entities](/draft-js/docs/advanced-topics-entities.html)
+[advanced topics article on entities](/docs/advanced-topics-entities.html)
 for more detail on how entities may be used.
 
 Please note that the API for entity storage and management has changed recently;
 for details on updating your application
-[see our v0.10 API Migration Guide](/draft-js/docs/v0-10-api-migration.html#content).
+[see our v0.10 API Migration Guide](/docs/v0-10-api-migration.html#content).
 
 Entity objects returned by `Entity` methods are represented as
 [DraftEntityInstance](https://github.com/facebook/draft-js/blob/master/src/model/entity/DraftEntityInstance.js) immutable records. These have a simple set of getter functions and should

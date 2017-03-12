@@ -30,8 +30,10 @@ function getSafeBodyFromHTML(html: string): ?Element {
     document.implementation.createHTMLDocument
   ) {
     doc = document.implementation.createHTMLDocument('foo');
-    doc.documentElement.innerHTML = html;
-    root = doc.getElementsByTagName('body')[0];
+    if (doc.documentElement) {
+      doc.documentElement.innerHTML = html;
+      root = doc.getElementsByTagName('body')[0];
+    }
   }
   return root;
 }
