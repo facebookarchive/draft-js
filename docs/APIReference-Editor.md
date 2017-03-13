@@ -174,9 +174,9 @@ and to convert typed emoticons into images.
 
 #### handlePastedText
 ```
-handlePastedText?: (text: string, html?: string) => DraftHandleValue
+handlePastedText?: (text: string, html?: string, callback: (modifiedText: string, modifiedHtml?: string)) => DraftHandleValue
 ```
-Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior.
+Handle text and html (for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior.
 
 #### handlePastedFiles
 ```

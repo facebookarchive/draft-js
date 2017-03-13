@@ -91,7 +91,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   let text = data.getText();
   let html = data.getHTML();
 
-  const modifyPastedText = (modifiedText, modifiedHtml) => {
+  const modifyPastedText = (modifiedText: string, modifiedHtml?: string) => {
     text = modifiedText;
     html = modifiedHtml;
   };
