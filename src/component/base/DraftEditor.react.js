@@ -132,7 +132,7 @@ class DraftEditor extends React.Component {
     this._clipboard = null;
     this._handler = null;
     this._dragCount = 0;
-    this._editorKey = generateRandomKey();
+    this._editorKey = props.editorKey || generateRandomKey();
     this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
     this._latestEditorState = props.editorState;
 
