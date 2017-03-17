@@ -1,7 +1,7 @@
 {
   "name": "draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.9.0",
+  "version": "0.10.43",
   "keywords": [
     "draftjs",
     "editor",
@@ -21,6 +21,10 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "prepublish": "npm run build",
+    "deploy": "npm pack && s3-deploy *.tgz --region us-east-1 --bucket textio-web-deps",
+    "rev": "npm run prepublish && npm version patch && npm run deploy && npm run postpublish",
+    "revbeta": "npm run prepublish && npm version prerelease && npm run deploy && npm run postpublish",
+    "postpublish": "git push && git push --tags",
     "pretest": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "build": "gulp",
     "postbuild": "node node_modules/fbjs-scripts/node/check-lib-requires.js lib",
@@ -67,6 +71,7 @@
     "react": "^15.0.0-rc.1",
     "react-dom": "^15.0.0-rc.1",
     "run-sequence": "^1.1.2",
+    "s3-deploy": "^0.7.3",
     "through2": "^2.0.1",
     "vinyl-buffer": "^1.0.0",
     "webpack-stream": "^3.0.0"

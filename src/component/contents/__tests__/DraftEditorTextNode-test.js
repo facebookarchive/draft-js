@@ -46,8 +46,10 @@ describe('DraftEditorTextNode', function() {
   function expectPopulatedSpan(stub, testString) {
     var node = ReactDOM.findDOMNode(stub);
     expect(node.tagName).toBe('SPAN');
-    expect(node.childNodes.length).toBe(1);
-    expect(node.firstChild.textContent).toBe(testString);
+
+    var hasGeckoComments = testString !== BLOCK_DELIMITER_CHAR;
+    expect(node.childNodes.length).toBe(hasGeckoComments ? 2 : 1);
+    expect(node.lastChild.textContent).toBe(testString);
   }
 
   it('must initialize correctly with an empty string, non-IE', function() {

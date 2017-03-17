@@ -53,7 +53,9 @@ const handlerMap = {
   'composite': DraftEditorCompositionHandler,
   'drag': DraftEditorDragHandler,
   'cut': null,
+  'copy': null,
   'render': null,
+  'paste': null,
 };
 
 type State = {
@@ -85,9 +87,11 @@ class DraftEditor extends React.Component {
   _dragCount: number;
   _internalDrag: boolean;
   _editorKey: string;
+  _editor: React.Element<any>;
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
-  _pendingStateFromBeforeInput: void | EditorState;
+  _renderNativeContent: boolean;
+  _updatedNativeInsertionBlock: boolean;
 
   /**
    * Define proxies that can route events to the current handler.
@@ -157,6 +161,8 @@ class DraftEditor extends React.Component {
     this._onPaste = this._buildHandler('onPaste');
     this._onSelect = this._buildHandler('onSelect');
 
+    this._setEditorRef = this._setEditorRef.bind(this);
+
     // Manual binding for public and internal methods.
     this.focus = this._focus.bind(this);
     this.blur = this._blur.bind(this);
@@ -210,6 +216,27 @@ class DraftEditor extends React.Component {
     return null;
   }
 
+  _setEditorRef(ref: React.Element<any>): void {
+    // Unfortunately, due to https://github.com/facebook/react/issues/8909
+    // it is not possible to set up an onPaste handler through react.
+    // Manually use addEventListener and removeEventListener below.
+    // See the comments in editOnPaste for why this is needed.
+    if (this._editor) {
+      const editorNode = ReactDOM.findDOMNode(this._editor);
+      editorNode.removeEventListener('paste', this._onPaste);
+    }
+
+    this._editor = ref;
+    if (this._editor) {
+      const editorNode = ReactDOM.findDOMNode(this._editor);
+      editorNode.addEventListener('paste', this._onPaste);
+
+      // Add ignore attribute for an IESpell, an obscure plugin that doesn't respect spellcheck="false" on a
+      // contenteditable div
+      editorNode.setAttribute(`ieSpell_ignored`, `true`);
+    }
+  }
+
   render(): React.Element<any> {
     const {readOnly, textAlignment} = this.props;
     const rootClass = cx({
@@ -223,6 +250,16 @@ class DraftEditor extends React.Component {
       outline: 'none',
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
+    };
+
+    const trapDivStyle = {
+      maxWidth: '1px',
+      maxHeight: '1px',
+      overflow: 'hidden',
+      position: 'fixed',
+      opacity: '0.01',
+      left: '-999px',
+      top: '0px',
     };
 
     return (
@@ -264,9 +301,8 @@ class DraftEditor extends React.Component {
             onKeyPress={this._onKeyPress}
             onKeyUp={this._onKeyUp}
             onMouseUp={this._onMouseUp}
-            onPaste={this._onPaste}
             onSelect={this._onSelect}
-            ref="editor"
+            ref={this._setEditorRef}
             role={readOnly ? null : (this.props.role || 'textbox')}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
@@ -285,6 +321,18 @@ class DraftEditor extends React.Component {
               key={'contents' + this.state.contentsKey}
             />
           </div>
+        </div>
+        <div
+          contentEditable={true}
+          style={trapDivStyle}
+          ref={ref => this._pasteTrap = ref }
+          suppressContentEditableWarning>
+        </div>
+        <div
+          contentEditable={true}
+          style={trapDivStyle}
+          ref={ref => this._copyTrap = ref }
+          suppressContentEditableWarning>
         </div>
       </div>
     );
@@ -335,12 +383,28 @@ class DraftEditor extends React.Component {
   _focus(scrollPosition?: DraftScrollPosition): void {
     const {editorState} = this.props;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
-    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
+    const editorNode = ReactDOM.findDOMNode(this._editor);
 
     const scrollParent = Style.getScrollParent(editorNode);
-    const {x, y} = scrollPosition || getScrollPosition(scrollParent);
+    const originalScrollPosition = getScrollPosition(scrollParent);
+    const originalMarginTop = Style.get(editorNode, 'marginTop');
+    const {x, y} = scrollPosition || originalScrollPosition;
+
+    if (isIE) {
+      // IE will briefly scroll a content editable element to the top and back
+      // when it is given focus programmatically. To account for this we must
+      // first scroll it to the top but pretend that it hasn't using the margin.
+      editorNode.style.marginTop = `${-originalScrollPosition.y}px`;
+      Scroll.setTop(scrollParent, 0);
+    }
 
     editorNode.focus();
+
+    if (isIE) {
+      // Reset the margin
+      editorNode.style.marginTop = originalMarginTop;
+    }
+
     if (scrollParent === window) {
       window.scrollTo(x, y);
     } else {
@@ -362,7 +426,7 @@ class DraftEditor extends React.Component {
   }
 
   _blur(): void {
-    ReactDOM.findDOMNode(this.refs.editor).blur();
+    ReactDOM.findDOMNode(this._editor).blur();
   }
 
   /**
@@ -422,7 +486,8 @@ class DraftEditor extends React.Component {
    * an `onChange` prop to receive state updates passed along from this
    * function.
    */
-  _update(editorState: EditorState): void {
+  _update(editorState: EditorState, renderNativeContent: boolean = false): void {
+    this._renderNativeContent = renderNativeContent;
     this._latestEditorState = editorState;
     this.props.onChange(editorState);
   }

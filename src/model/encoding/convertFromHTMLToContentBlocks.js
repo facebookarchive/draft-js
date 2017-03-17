@@ -53,8 +53,10 @@ var REGEX_CARRIAGE = new RegExp('&#13;?', 'g');
 var REGEX_ZWS = new RegExp('&#8203;?', 'g');
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight
-const boldValues = ['bold', 'bolder', '500', '600', '700', '800', '900'];
-const notBoldValues = ['light', 'lighter', '100', '200', '300', '400'];
+// According to the MDN page, for fonts which provide only normal and bold
+// 100-500 are normal and 600-900 are bold.
+const boldValues = ['bold', 'bolder', '600', '700', '800', '900'];
+const notBoldValues = ['normal', 'light', 'lighter', '100', '200', '300', '400', '500'];
 
 // Block tag flow is different because LIs do not have
 // a deterministic style ;_;
@@ -156,7 +158,6 @@ function getListBlockType(
 function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap
 ): Array<string> {
-  const unstyledElement = blockRenderMap.get('unstyled').element;
   let tags = new Set([]);
 
   blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
@@ -170,7 +171,6 @@ function getBlockMapSupportedTags(
   });
 
   return tags
-    .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
 }
@@ -430,7 +430,13 @@ function genFragment(
   }
 
   // Block Tags
-  if (!inBlock && blockTags.indexOf(nodeName) !== -1) {
+  if (
+    (
+      !inBlock ||
+      getBlockTypeForTag(inBlock, lastList, blockRenderMap) === 'unstyled'
+    ) &&
+    blockTags.indexOf(nodeName) !== -1
+  ) {
     chunk = getBlockDividerChunk(
       getBlockTypeForTag(nodeName, lastList, blockRenderMap),
       depth
