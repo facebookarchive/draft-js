@@ -124,7 +124,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     return;
   }
 
-  var mayAllowNative = !isSelectionAtLeafStart(editorState);
+  var mayAllowNative = editor.allowNativeInsertion && !isSelectionAtLeafStart(editorState);
   var newEditorState = replaceText(
     editorState,
     chars,

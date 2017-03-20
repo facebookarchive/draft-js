@@ -57,6 +57,9 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
     editor.exitCurrentMode();
     editor.update(removeFragment(editorState));
   }, 0);
+  if (editor.props.onCut) {
+    editor.props.onCut(e);
+  }
 }
 
 function removeFragment(editorState: EditorState): EditorState {

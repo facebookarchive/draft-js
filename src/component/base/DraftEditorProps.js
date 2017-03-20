@@ -121,6 +121,8 @@ export type DraftEditorProps = {
     isInternal: DraftDragType
   ) => DraftHandleValue,
 
+  allowNativeInsertion?: boolean,
+
   /**
    * Non-cancelable event triggers.
    */
@@ -128,6 +130,9 @@ export type DraftEditorProps = {
   onTab?: (e: SyntheticKeyboardEvent) => void,
   onUpArrow?: (e: SyntheticKeyboardEvent) => void,
   onDownArrow?: (e: SyntheticKeyboardEvent) => void,
+
+  onCopy?: (e: SyntheticEvent) => void,
+  onCut?: (e: SyntheticEvent) => void,
 
   onBlur?: (e: SyntheticEvent) => void,
   onFocus?: (e: SyntheticEvent) => void,

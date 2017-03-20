@@ -29,6 +29,7 @@ const KeyBindingUtil = require('KeyBindingUtil');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 const SelectionState = require('SelectionState');
 
+const convertFromContentBlockToRaw = require('convertFromContentBlockToRaw');
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const convertFromHTMLToContentBlocks =
   require('convertFromHTMLToContentBlocks');
@@ -63,6 +64,7 @@ const DraftPublic = {
   convertFromHTML: convertFromHTMLToContentBlocks,
   convertFromRaw: convertFromRawToDraftState,
   convertToRaw: convertFromDraftStateToRaw,
+  convertFromContentBlockToRaw,
   genKey: generateRandomKey,
   getDefaultKeyBinding,
   getVisibleSelectionRect,
