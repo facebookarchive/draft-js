@@ -63,9 +63,7 @@ function getEncodedInlinesForType(
  * Retrieve the encoded arrays of inline styles, with each individual style
  * treated separately.
  */
-function encodeInlineStyleRanges(
-  block: ContentBlock
-): Array<InlineStyleRange> {
+function encodeInlineStyleRanges(block: ContentBlock): Array<InlineStyleRange> {
   var styleList = block.getCharacterList().map(c => c.getStyle()).toList();
   var ranges = styleList
     .flatten()

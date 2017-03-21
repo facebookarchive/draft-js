@@ -246,32 +246,49 @@ var index = React.createClass({
             </p>
 
             <p>
-              In Draft.js, everything is customizable &ndash; we provide the
+              In Draft.js, everything is customizable – we provide the
               building blocks so that you have full control over the user
               interface. Here's a simple example of a rich text editor built in
               Draft.js:
             </p>
 
-            <div id="rich-example"></div>
+            <div id="rich-example" />
           </section>
 
           <section className="home-bottom-section">
             <div className="buttons-unit">
-              <a href="docs/overview.html#content" className="button">Learn more about Draft</a>
+              <a href="docs/overview.html#content" className="button">
+                Learn more about Draft
+              </a>
             </div>
           </section>
         </section>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.6/immutable.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
-        <script src="lib/Draft.js"></script>
-        <style dangerouslySetInnerHTML={{__html: `
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"
+        />
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"
+        />
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.6/immutable.js"
+        />
+        <script
+          src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"
+        />
+        <script src="lib/Draft.js" />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           @import "lib/Draft.css";
           @import "lib/RichEditor.css";
-        `}} />
-        <script type="text/babel" dangerouslySetInnerHTML={{__html: richExample}} />
+        `,
+          }}
+        />
+        <script
+          type="text/babel"
+          dangerouslySetInnerHTML={{__html: richExample}}
+        />
       </Site>
     );
   },

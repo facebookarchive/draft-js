@@ -24,7 +24,7 @@ const {Map} = Immutable;
 function modifyBlockForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-  operation: (block: ContentBlock) => ContentBlock,
+  operation: (block: ContentBlock) => ContentBlock
 ): ContentState {
   var startKey = selectionState.getStartKey();
   var endKey = selectionState.getEndKey();

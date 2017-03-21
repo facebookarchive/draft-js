@@ -38,10 +38,7 @@ function getRangesForDraftEntity(
     }
   );
 
-  invariant(
-    !!ranges.length,
-    'Entity key not found in this range.'
-  );
+  invariant(!!ranges.length, 'Entity key not found in this range.');
 
   return ranges;
 }

@@ -60,18 +60,11 @@ type Props = {
  */
 class DraftEditorBlock extends React.Component {
   shouldComponentUpdate(nextProps: Props): boolean {
-    return (
-      this.props.block !== nextProps.block ||
+    return this.props.block !== nextProps.block ||
       this.props.tree !== nextProps.tree ||
       this.props.direction !== nextProps.direction ||
-      (
-        isBlockOnSelectionEdge(
-          nextProps.selection,
-          nextProps.block.getKey()
-        ) &&
-        nextProps.forceSelection
-      )
-    );
+      (isBlockOnSelectionEdge(nextProps.selection, nextProps.block.getKey()) &&
+        nextProps.forceSelection);
   }
 
   /**
@@ -129,73 +122,78 @@ class DraftEditorBlock extends React.Component {
     var lastLeafSet = this.props.tree.size - 1;
     var hasSelection = isBlockOnSelectionEdge(this.props.selection, blockKey);
 
-    return this.props.tree.map((leafSet, ii) => {
-      var leavesForLeafSet = leafSet.get('leaves');
-      var lastLeaf = leavesForLeafSet.size - 1;
-      var leaves = leavesForLeafSet.map((leaf, jj) => {
-        var offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
-        var start = leaf.get('start');
-        var end = leaf.get('end');
-        return (
-          <DraftEditorLeaf
-            key={offsetKey}
-            offsetKey={offsetKey}
-            block={block}
-            start={start}
-            selection={hasSelection ? this.props.selection : undefined}
-            forceSelection={this.props.forceSelection}
-            text={text.slice(start, end)}
-            styleSet={block.getInlineStyleAt(start)}
-            customStyleMap={this.props.customStyleMap}
-            customStyleFn={this.props.customStyleFn}
-            isLast={ii === lastLeafSet && jj === lastLeaf}
-          />
+    return this.props.tree
+      .map((leafSet, ii) => {
+        var leavesForLeafSet = leafSet.get('leaves');
+        var lastLeaf = leavesForLeafSet.size - 1;
+        var leaves = leavesForLeafSet
+          .map((leaf, jj) => {
+            var offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
+            var start = leaf.get('start');
+            var end = leaf.get('end');
+            return (
+              <DraftEditorLeaf
+                key={offsetKey}
+                offsetKey={offsetKey}
+                block={block}
+                start={start}
+                selection={hasSelection ? this.props.selection : undefined}
+                forceSelection={this.props.forceSelection}
+                text={text.slice(start, end)}
+                styleSet={block.getInlineStyleAt(start)}
+                customStyleMap={this.props.customStyleMap}
+                customStyleFn={this.props.customStyleFn}
+                isLast={ii === lastLeafSet && jj === lastLeaf}
+              />
+            );
+          })
+          .toArray();
+
+        var decoratorKey = leafSet.get('decoratorKey');
+        if (decoratorKey == null) {
+          return leaves;
+        }
+
+        if (!this.props.decorator) {
+          return leaves;
+        }
+
+        var decorator = nullthrows(this.props.decorator);
+
+        var DecoratorComponent = decorator.getComponentForKey(decoratorKey);
+        if (!DecoratorComponent) {
+          return leaves;
+        }
+
+        var decoratorProps = decorator.getPropsForKey(decoratorKey);
+        var decoratorOffsetKey = DraftOffsetKey.encode(blockKey, ii, 0);
+        var decoratedText = text.slice(
+          leavesForLeafSet.first().get('start'),
+          leavesForLeafSet.last().get('end')
         );
-      }).toArray();
 
-      var decoratorKey = leafSet.get('decoratorKey');
-      if (decoratorKey == null) {
-        return leaves;
-      }
+        // Resetting dir to the same value on a child node makes Chrome/Firefox
+        // confused on cursor movement. See http://jsfiddle.net/d157kLck/3/
+        var dir = UnicodeBidiDirection.getHTMLDirIfDifferent(
+          UnicodeBidi.getDirection(decoratedText),
+          this.props.direction
+        );
 
-      if (!this.props.decorator) {
-        return leaves;
-      }
-
-      var decorator = nullthrows(this.props.decorator);
-
-      var DecoratorComponent = decorator.getComponentForKey(decoratorKey);
-      if (!DecoratorComponent) {
-        return leaves;
-      }
-
-      var decoratorProps = decorator.getPropsForKey(decoratorKey);
-      var decoratorOffsetKey = DraftOffsetKey.encode(blockKey, ii, 0);
-      var decoratedText = text.slice(
-        leavesForLeafSet.first().get('start'),
-        leavesForLeafSet.last().get('end')
-      );
-
-      // Resetting dir to the same value on a child node makes Chrome/Firefox
-      // confused on cursor movement. See http://jsfiddle.net/d157kLck/3/
-      var dir = UnicodeBidiDirection.getHTMLDirIfDifferent(
-        UnicodeBidi.getDirection(decoratedText),
-        this.props.direction,
-      );
-
-      return (
-        <DecoratorComponent
-          {...decoratorProps}
-          contentState={this.props.contentState}
-          decoratedText={decoratedText}
-          dir={dir}
-          key={decoratorOffsetKey}
-          entityKey={block.getEntityAt(leafSet.get('start'))}
-          offsetKey={decoratorOffsetKey}>
-          {leaves}
-        </DecoratorComponent>
-      );
-    }).toArray();
+        return (
+          <DecoratorComponent
+            {...decoratorProps}
+            contentState={this.props.contentState}
+            decoratedText={decoratedText}
+            dir={dir}
+            key={decoratorOffsetKey}
+            entityKey={block.getEntityAt(leafSet.get('start'))}
+            offsetKey={decoratorOffsetKey}
+          >
+            {leaves}
+          </DecoratorComponent>
+        );
+      })
+      .toArray();
   }
 
   render(): React.Element<any> {
@@ -221,10 +219,7 @@ function isBlockOnSelectionEdge(
   selection: SelectionState,
   key: string
 ): boolean {
-  return (
-    selection.getAnchorKey() === key ||
-    selection.getFocusKey() === key
-  );
+  return selection.getAnchorKey() === key || selection.getFocusKey() === key;
 }
 
 module.exports = DraftEditorBlock;

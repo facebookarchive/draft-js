@@ -15,7 +15,9 @@ var HeaderLinks = require('HeaderLinks');
 
 var Site = React.createClass({
   render: function() {
-    const titlePrefix = this.props.pageTitle ? this.props.pageTitle.concat(' | ') : '';
+    const titlePrefix = this.props.pageTitle
+      ? this.props.pageTitle.concat(' | ')
+      : '';
     const title = `${titlePrefix}Draft.js | Rich Text Editor Framework for React`;
     return (
       <html>
@@ -27,13 +29,21 @@ var Site = React.createClass({
           <meta property="og:title" content={title} />
           <meta property="og:type" content="website" />
           <meta property="og:url" content="http://draftjs.org/index.html" />
-          <meta property="og:description" content="Rich Text Editor Framework for React" />
+          <meta
+            property="og:description"
+            content="Rich Text Editor Framework for React"
+          />
 
           <link rel="stylesheet" href="/css/draft.css" />
 
-          <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script>
-          <script type="text/javascript">{'try{Typekit.load();}catch(e){}'}</script>
-          <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.34.4/es6-shim.min.js"></script>
+          <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js" />
+          <script type="text/javascript">
+            {'try{Typekit.load();}catch(e){}'}
+          </script>
+          <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.34.4/es6-shim.min.js"
+          />
         </head>
         <body>
 
@@ -50,12 +60,14 @@ var Site = React.createClass({
             {this.props.children}
 
             <footer className="wrap">
-              <div className="right">&copy; 2017 Facebook Inc.</div>
+              <div className="right">© 2017 Facebook Inc.</div>
             </footer>
           </div>
 
           <div id="fb-root" />
-          <script dangerouslySetInnerHTML={{__html: `
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
 
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -68,7 +80,9 @@ var Site = React.createClass({
             !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)
             ){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
             fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-          `}} />
+          `,
+            }}
+          />
         </body>
       </html>
     );

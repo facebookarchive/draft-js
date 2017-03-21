@@ -50,17 +50,17 @@ const DefaultDraftBlockRenderMap: DraftBlockRenderMap = Map({
     element: 'li',
     wrapper: OL_WRAP,
   },
-  'blockquote': {
+  blockquote: {
     element: 'blockquote',
   },
-  'atomic': {
+  atomic: {
     element: 'figure',
   },
   'code-block': {
     element: 'pre',
     wrapper: PRE_WRAP,
   },
-  'unstyled': {
+  unstyled: {
     element: 'div',
     aliasedElements: ['p'],
   },

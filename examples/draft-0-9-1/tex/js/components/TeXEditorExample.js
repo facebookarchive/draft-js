@@ -33,21 +33,21 @@ export default class TeXEditorExample extends React.Component {
       liveTeXEdits: Map(),
     };
 
-    this._blockRenderer = (block) => {
+    this._blockRenderer = block => {
       if (block.getType() === 'atomic') {
         return {
           component: TeXBlock,
           editable: false,
           props: {
-            onStartEdit: (blockKey) => {
+            onStartEdit: blockKey => {
               var {liveTeXEdits} = this.state;
               this.setState({liveTeXEdits: liveTeXEdits.set(blockKey, true)});
             },
-            onFinishEdit: (blockKey) => {
+            onFinishEdit: blockKey => {
               var {liveTeXEdits} = this.state;
               this.setState({liveTeXEdits: liveTeXEdits.remove(blockKey)});
             },
-            onRemove: (blockKey) => this._removeTeX(blockKey),
+            onRemove: blockKey => this._removeTeX(blockKey),
           },
         };
       }
@@ -55,7 +55,7 @@ export default class TeXEditorExample extends React.Component {
     };
 
     this._focus = () => this.refs.editor.focus();
-    this._onChange = (editorState) => this.setState({editorState});
+    this._onChange = editorState => this.setState({editorState});
 
     this._handleKeyCommand = command => {
       var {editorState} = this.state;
@@ -67,7 +67,7 @@ export default class TeXEditorExample extends React.Component {
       return false;
     };
 
-    this._removeTeX = (blockKey) => {
+    this._removeTeX = blockKey => {
       var {editorState, liveTeXEdits} = this.state;
       this.setState({
         liveTeXEdits: liveTeXEdits.remove(blockKey),

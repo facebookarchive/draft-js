@@ -96,7 +96,6 @@ function getDecoratedEditorState(decorator) {
 }
 
 describe('EditorState', () => {
-
   describe('getCurrentInlineStyle', () => {
     var mainEditor = getUndecoratedEditorState();
 
@@ -166,7 +165,11 @@ describe('EditorState', () => {
         editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
 
-        editor = RichTextEditorUtil.onTab({ preventDefault: () => {} }, editor, 1);
+        editor = RichTextEditorUtil.onTab(
+          {preventDefault: () => {}},
+          editor,
+          1
+        );
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
       });
 
@@ -286,15 +289,11 @@ describe('EditorState', () => {
       expect(withNewDecorator.getDecorator()).toBe(newDecorator);
 
       // Preserve block trees that had the same decorator list.
-      expect(
-        editorState.getBlockTree(boldBlock.getKey())
-      ).toBe(
+      expect(editorState.getBlockTree(boldBlock.getKey())).toBe(
         withNewDecorator.getBlockTree(boldBlock.getKey())
       );
 
-      expect(
-        editorState.getBlockTree(italicBlock.getKey())
-      ).not.toBe(
+      expect(editorState.getBlockTree(italicBlock.getKey())).not.toBe(
         withNewDecorator.getBlockTree(italicBlock.getKey())
       );
     });
@@ -302,7 +301,7 @@ describe('EditorState', () => {
     it('must call decorator with correct argument types and order', () => {
       var decorator = new Decorator();
       getDecoratedEditorState(decorator);
-      decorator.getDecorations.mock.calls.forEach((call) => {
+      decorator.getDecorations.mock.calls.forEach(call => {
         expect(call[0] instanceof ContentBlock).toBe(true);
         expect(call[1] instanceof ContentState).toBe(true);
       });

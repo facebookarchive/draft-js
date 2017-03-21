@@ -26,9 +26,7 @@ import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type URI from 'URI';
 
 const RichTextEditorUtil = {
-  currentBlockContainsLink: function(
-    editorState: EditorState
-  ): boolean {
+  currentBlockContainsLink: function(editorState: EditorState): boolean {
     var selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
     const entityMap = contentState.getEntityMap();
@@ -44,7 +42,8 @@ const RichTextEditorUtil = {
 
   getCurrentBlockType: function(editorState: EditorState): DraftBlockType {
     var selection = editorState.getSelection();
-    return editorState.getCurrentContent()
+    return editorState
+      .getCurrentContent()
       .getBlockForKey(selection.getStartKey())
       .getType();
   },
@@ -55,7 +54,7 @@ const RichTextEditorUtil = {
 
   handleKeyCommand: function(
     editorState: EditorState,
-    command: DraftEditorCommand | string,
+    command: DraftEditorCommand | string
   ): ?EditorState {
     switch (command) {
       case 'bold':
@@ -74,7 +73,8 @@ const RichTextEditorUtil = {
       case 'delete-word':
       case 'delete-to-end-of-block':
         return RichTextEditorUtil.onDelete(editorState);
-      default: // they may have custom editor commands; ignore those
+      default:
+        // they may have custom editor commands; ignore those
         return null;
     }
   },
@@ -121,9 +121,16 @@ const RichTextEditorUtil = {
 
     if (blockBefore && blockBefore.getType() === 'atomic') {
       const blockMap = content.getBlockMap().delete(blockBefore.getKey());
-      var withoutAtomicBlock = content.merge({blockMap, selectionAfter: selection});
+      var withoutAtomicBlock = content.merge({
+        blockMap,
+        selectionAfter: selection,
+      });
       if (withoutAtomicBlock !== content) {
-        return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');
+        return EditorState.push(
+          editorState,
+          withoutAtomicBlock,
+          'remove-range'
+        );
       }
     }
 
@@ -177,11 +184,7 @@ const RichTextEditorUtil = {
     );
 
     if (withoutAtomicBlock !== content) {
-      return EditorState.push(
-        editorState,
-        withoutAtomicBlock,
-        'remove-range'
-      );
+      return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');
     }
 
     return null;
@@ -216,8 +219,7 @@ const RichTextEditorUtil = {
 
     var typeAbove = blockAbove.getType();
     if (
-      typeAbove !== 'unordered-list-item' &&
-      typeAbove !== 'ordered-list-item'
+      typeAbove !== 'unordered-list-item' && typeAbove !== 'ordered-list-item'
     ) {
       return editorState;
     }
@@ -236,11 +238,7 @@ const RichTextEditorUtil = {
       maxDepth
     );
 
-    return EditorState.push(
-      editorState,
-      withAdjustment,
-      'adjust-depth'
-    );
+    return EditorState.push(editorState, withAdjustment, 'adjust-depth');
   },
 
   toggleBlockType: function(
@@ -269,7 +267,8 @@ const RichTextEditorUtil = {
       });
     }
 
-    var hasAtomicBlock = content.getBlockMap()
+    var hasAtomicBlock = content
+      .getBlockMap()
       .skipWhile((_, k) => k !== startKey)
       .reverse()
       .skipWhile((_, k) => k !== endKey)
@@ -279,9 +278,9 @@ const RichTextEditorUtil = {
       return editorState;
     }
 
-    var typeToSet = content.getBlockForKey(startKey).getType() === blockType ?
-      'unstyled' :
-      blockType;
+    var typeToSet = content.getBlockForKey(startKey).getType() === blockType
+      ? 'unstyled'
+      : blockType;
 
     return EditorState.push(
       editorState,
@@ -323,7 +322,7 @@ const RichTextEditorUtil = {
         editorState,
         currentStyle.has(inlineStyle)
           ? currentStyle.remove(inlineStyle)
-          : currentStyle.add(inlineStyle),
+          : currentStyle.add(inlineStyle)
       );
     }
 
@@ -338,21 +337,17 @@ const RichTextEditorUtil = {
       newContent = DraftModifier.removeInlineStyle(
         content,
         selection,
-        inlineStyle,
+        inlineStyle
       );
     } else {
       newContent = DraftModifier.applyInlineStyle(
         content,
         selection,
-        inlineStyle,
+        inlineStyle
       );
     }
 
-    return EditorState.push(
-      editorState,
-      newContent,
-      'change-inline-style'
-    );
+    return EditorState.push(editorState, newContent, 'change-inline-style');
   },
 
   toggleLink: function(
@@ -366,11 +361,7 @@ const RichTextEditorUtil = {
       entityKey
     );
 
-    return EditorState.push(
-      editorState,
-      withoutLink,
-      'apply-entity'
-    );
+    return EditorState.push(editorState, withoutLink, 'apply-entity');
   },
 
   /**

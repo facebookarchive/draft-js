@@ -62,13 +62,9 @@ var _ = {
       var ret = {};
 
       for (var token in grammar) {
-
         if (grammar.hasOwnProperty(token)) {
-
           if (token == before) {
-
             for (var newToken in insert) {
-
               if (insert.hasOwnProperty(newToken)) {
                 ret[newToken] = insert[newToken];
               }
@@ -79,7 +75,7 @@ var _ = {
         }
       }
 
-      return root[inside] = ret;
+      return (root[inside] = ret);
     },
 
     // Traverse a language definition with Depth First Search
@@ -121,7 +117,8 @@ var _ = {
 
       pattern = pattern.pattern || pattern;
 
-      for (var i=0; i<strarr.length; i++) { // Don't cache length as it changes during the loop
+      for (var i = 0; i < strarr.length; i++) {
+        // Don't cache length as it changes during the loop
 
         var str = strarr[i];
 
@@ -144,9 +141,9 @@ var _ = {
           }
 
           var from = match.index - 1 + lookbehindLength,
-              match = match[0].slice(lookbehindLength),
-              len = match.length,
-              to = from + len,
+            match = match[0].slice(lookbehindLength),
+            len = match.length,
+            to = from + len,
             before = str.slice(0, from + 1),
             after = str.slice(to + 1);
 
@@ -156,7 +153,10 @@ var _ = {
             args.push(before);
           }
 
-          var wrapped = new Token(token, inside? _.tokenize(match, inside) : match);
+          var wrapped = new Token(
+            token,
+            inside ? _.tokenize(match, inside) : match
+          );
 
           args.push(wrapped);
 
@@ -190,17 +190,17 @@ var _ = {
         return;
       }
 
-      for (var i=0, callback; callback = callbacks[i++];) {
+      for (var i = 0, callback; (callback = callbacks[i++]); ) {
         callback(env);
       }
     },
   },
 };
 
-var Token = _.Token = function(type, content) {
+var Token = (_.Token = function(type, content) {
   this.type = type;
   this.content = content;
-};
+});
 
 Token.reactify = function(o, key) {
   if (typeof o == 'string') {
@@ -225,61 +225,60 @@ Token.reactify = function(o, key) {
 };
 
 _.languages.markup = {
-  'comment': /&lt;!--[\w\W]*?-->/g,
-  'prolog': /&lt;\?.+?\?>/,
-  'doctype': /&lt;!DOCTYPE.+?>/,
-  'cdata': /&lt;!\[CDATA\[[\w\W]*?]]>/i,
-  'tag': {
+  comment: /&lt;!--[\w\W]*?-->/g,
+  prolog: /&lt;\?.+?\?>/,
+  doctype: /&lt;!DOCTYPE.+?>/,
+  cdata: /&lt;!\[CDATA\[[\w\W]*?]]>/i,
+  tag: {
     pattern: /&lt;\/?[\w:-]+\s*(?:\s+[\w:-]+(?:=(?:("|')(\\?[\w\W])*?\1|[^\s'">=]+))?\s*)*\/?>/gi,
     inside: {
-      'tag': {
+      tag: {
         pattern: /^&lt;\/?[\w:-]+/i,
         inside: {
-          'punctuation': /^&lt;\/?/,
-          'namespace': /^[\w-]+?:/,
+          punctuation: /^&lt;\/?/,
+          namespace: /^[\w-]+?:/,
         },
       },
       'attr-value': {
         pattern: /=(?:('|")[\w\W]*?(\1)|[^\s>]+)/gi,
         inside: {
-          'punctuation': /=|>|"/g,
+          punctuation: /=|>|"/g,
         },
       },
-      'punctuation': /\/?>/g,
+      punctuation: /\/?>/g,
       'attr-name': {
         pattern: /[\w:-]+/g,
         inside: {
-          'namespace': /^[\w-]+?:/,
+          namespace: /^[\w-]+?:/,
         },
       },
-
     },
   },
-  'entity': /&amp;#?[\da-z]{1,8};/gi,
+  entity: /&amp;#?[\da-z]{1,8};/gi,
 };
 
 _.languages.css = {
-  'comment': /\/\*[\w\W]*?\*\//g,
-  'atrule': {
+  comment: /\/\*[\w\W]*?\*\//g,
+  atrule: {
     pattern: /@[\w-]+?.*?(;|(?=\s*{))/gi,
     inside: {
-      'punctuation': /[;:]/g,
+      punctuation: /[;:]/g,
     },
   },
-  'url': /url\((["']?).*?\1\)/gi,
-  'selector': /[^\{\}\s][^\{\};]*(?=\s*\{)/g,
-  'property': /(\b|\B)[\w-]+(?=\s*:)/ig,
-  'string': /("|')(\\?.)*?\1/g,
-  'important': /\B!important\b/gi,
-  'ignore': /&(lt|gt|amp);/gi,
-  'punctuation': /[\{\};:]/g,
+  url: /url\((["']?).*?\1\)/gi,
+  selector: /[^\{\}\s][^\{\};]*(?=\s*\{)/g,
+  property: /(\b|\B)[\w-]+(?=\s*:)/ig,
+  string: /("|')(\\?.)*?\1/g,
+  important: /\B!important\b/gi,
+  ignore: /&(lt|gt|amp);/gi,
+  punctuation: /[\{\};:]/g,
 };
 
 _.languages.insertBefore('markup', 'tag', {
-  'style': {
+  style: {
     pattern: /(&lt;|<)style[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/style(>|&gt;)/ig,
     inside: {
-      'tag': {
+      tag: {
         pattern: /(&lt;|<)style[\w\W]*?(>|&gt;)|(&lt;|<)\/style(>|&gt;)/ig,
         inside: _.languages.markup.tag.inside,
       },
@@ -289,11 +288,11 @@ _.languages.insertBefore('markup', 'tag', {
 });
 
 _.languages.clike = {
-  'comment': {
+  comment: {
     pattern: /(^|[^\\])(\/\*[\w\W]*?\*\/|(^|[^:])\/\/.*?(\r?\n|$))/g,
     lookbehind: true,
   },
-  'string': /("|')(\\?.)*?\1/g,
+  string: /("|')(\\?.)*?\1/g,
   'class-name': {
     pattern: /((?:(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/ig,
     lookbehind: true,
@@ -301,37 +300,37 @@ _.languages.clike = {
       punctuation: /(\.|\\)/,
     },
   },
-  'keyword': /\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/g,
-  'boolean': /\b(true|false)\b/g,
-  'function': {
+  keyword: /\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/g,
+  boolean: /\b(true|false)\b/g,
+  function: {
     pattern: /[a-z0-9_]+\(/ig,
     inside: {
       punctuation: /\(/,
     },
   },
-  'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?)\b/g,
-  'operator': /[-+]{1,2}|!|&lt;=?|>=?|={1,3}|(&amp;){1,2}|\|?\||\?|\*|\/|\~|\^|\%/g,
-  'ignore': /&(lt|gt|amp);/gi,
-  'punctuation': /[{}[\];(),.:]/g,
+  number: /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?)\b/g,
+  operator: /[-+]{1,2}|!|&lt;=?|>=?|={1,3}|(&amp;){1,2}|\|?\||\?|\*|\/|\~|\^|\%/g,
+  ignore: /&(lt|gt|amp);/gi,
+  punctuation: /[{}[\];(),.:]/g,
 };
 
 _.languages.javascript = _.languages.extend('clike', {
-  'keyword': /\b(var|let|if|else|while|do|for|return|in|instanceof|function|get|set|new|with|typeof|try|throw|catch|finally|null|break|continue|this)\b/g,
-  'number': /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?|NaN|-?Infinity)\b/g,
+  keyword: /\b(var|let|if|else|while|do|for|return|in|instanceof|function|get|set|new|with|typeof|try|throw|catch|finally|null|break|continue|this)\b/g,
+  number: /\b-?(0x[\dA-Fa-f]+|\d*\.?\d+([Ee]-?\d+)?|NaN|-?Infinity)\b/g,
 });
 
 _.languages.insertBefore('javascript', 'keyword', {
-  'regex': {
+  regex: {
     pattern: /(^|[^/])\/(?!\/)(\[.+?]|\\.|[^/\r\n])+\/[gim]{0,3}(?=\s*($|[\r\n,.;})]))/g,
     lookbehind: true,
   },
 });
 
 _.languages.insertBefore('markup', 'tag', {
-  'script': {
+  script: {
     pattern: /(&lt;|<)script[\w\W]*?(>|&gt;)[\w\W]*?(&lt;|<)\/script(>|&gt;)/ig,
     inside: {
-      'tag': {
+      tag: {
         pattern: /(&lt;|<)script[\w\W]*?(>|&gt;)|(&lt;|<)\/script(>|&gt;)/ig,
         inside: _.languages.markup.tag.inside,
       },

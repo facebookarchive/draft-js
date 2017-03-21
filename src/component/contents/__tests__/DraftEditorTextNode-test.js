@@ -11,8 +11,7 @@
 
 'use strict';
 
-jest.unmock('DraftEditorTextNode.react')
-  .mock('UserAgent');
+jest.unmock('DraftEditorTextNode.react').mock('UserAgent');
 
 var BLOCK_DELIMITER_CHAR = '\n';
 var TEST_A = 'Hello';

@@ -35,13 +35,9 @@ type Props = {
  */
 class DraftEditorPlaceholder extends React.Component {
   shouldComponentUpdate(nextProps: Props): boolean {
-    return (
-      this.props.text !== nextProps.text ||
-      (
-        this.props.editorState.getSelection().getHasFocus() !==
-        nextProps.editorState.getSelection().getHasFocus()
-      )
-    );
+    return this.props.text !== nextProps.text ||
+      this.props.editorState.getSelection().getHasFocus() !==
+        nextProps.editorState.getSelection().getHasFocus();
   }
 
   render(): React.Element<any> {
@@ -56,7 +52,8 @@ class DraftEditorPlaceholder extends React.Component {
       <div className={className}>
         <div
           className={cx('public/DraftEditorPlaceholder/inner')}
-          id={this.props.accessibilityID}>
+          id={this.props.accessibilityID}
+        >
           {this.props.text}
         </div>
       </div>

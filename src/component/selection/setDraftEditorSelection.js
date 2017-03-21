@@ -59,17 +59,13 @@ function setDraftEditorSelection(
     isBackward = false;
   }
 
-  var hasAnchor = (
-    anchorKey === blockKey &&
+  var hasAnchor = anchorKey === blockKey &&
     nodeStart <= anchorOffset &&
-    nodeEnd >= anchorOffset
-  );
+    nodeEnd >= anchorOffset;
 
-  var hasFocus = (
-    focusKey === blockKey &&
+  var hasFocus = focusKey === blockKey &&
     nodeStart <= focusOffset &&
-    nodeEnd >= focusOffset
-  );
+    nodeEnd >= focusOffset;
 
   // If the selection is entirely bound within this node, set the selection
   // and be done.

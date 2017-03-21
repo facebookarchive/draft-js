@@ -44,9 +44,12 @@ function keyCommandUndo(
 
   // Wait to ensure that the re-render has occurred before performing
   // the undo action.
-  setTimeout(() => {
-    updateFn(undoneState);
-  }, 0);
+  setTimeout(
+    () => {
+      updateFn(undoneState);
+    },
+    0
+  );
 }
 
 module.exports = keyCommandUndo;

@@ -45,9 +45,9 @@ describe('ContentBlock', () => {
       var block = new ContentBlock();
       expect(block.getType()).toBe('unstyled');
       expect(block.getText()).toBe('');
-      expect(
-        Immutable.is(block.getCharacterList(), Immutable.List())
-      ).toBe(true);
+      expect(Immutable.is(block.getCharacterList(), Immutable.List())).toBe(
+        true
+      );
     });
 
     it('must retrieve properties', () => {

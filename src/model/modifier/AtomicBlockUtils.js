@@ -102,9 +102,9 @@ const AtomicBlockUtils = {
 
     if (insertionMode === 'before' || insertionMode === 'after') {
       const targetBlock = contentState.getBlockForKey(
-        insertionMode === 'before' ?
-          targetRange.getStartKey() :
-          targetRange.getEndKey()
+        insertionMode === 'before'
+          ? targetRange.getStartKey()
+          : targetRange.getEndKey()
       );
 
       withMovedAtomicBlock = moveBlockInContentState(
@@ -132,7 +132,9 @@ const AtomicBlockUtils = {
           targetBlock,
           'before'
         );
-      } else if (selectionAfterRemoval.getEndOffset() === targetBlock.getLength()) {
+      } else if (
+        selectionAfterRemoval.getEndOffset() === targetBlock.getLength()
+      ) {
         withMovedAtomicBlock = moveBlockInContentState(
           afterRemoval,
           atomicBlock,
@@ -161,7 +163,9 @@ const AtomicBlockUtils = {
 
     const newContent = withMovedAtomicBlock.merge({
       selectionBefore: selectionState,
-      selectionAfter: withMovedAtomicBlock.getSelectionAfter().set('hasFocus', true),
+      selectionAfter: withMovedAtomicBlock
+        .getSelectionAfter()
+        .set('hasFocus', true),
     });
 
     return EditorState.push(editorState, newContent, 'move-block');

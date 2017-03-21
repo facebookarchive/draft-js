@@ -33,17 +33,13 @@ const isEventHandled = require('isEventHandled');
 // This breaks the input. Special case these characters to ensure that when
 // they are typed, we prevent default on the event to make sure not to
 // trigger quickfind.
-var FF_QUICKFIND_CHAR = '\'';
+var FF_QUICKFIND_CHAR = "'";
 var FF_QUICKFIND_LINK_CHAR = '\/';
 var isFirefox = UserAgent.isBrowser('Firefox');
 
 function mustPreventDefaultForCharacter(character: string): boolean {
-  return (
-    isFirefox && (
-      character == FF_QUICKFIND_CHAR ||
-      character == FF_QUICKFIND_LINK_CHAR
-    )
-  );
+  return isFirefox &&
+    (character == FF_QUICKFIND_CHAR || character == FF_QUICKFIND_LINK_CHAR);
 }
 
 /**
@@ -155,10 +151,8 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   if (
     mustPreventDefaultForCharacter(chars) ||
     originalFingerprint !== newFingerprint ||
-    (
-      nullthrows(newEditorState.getDirectionMap()).get(anchorKey) !==
+    nullthrows(newEditorState.getDirectionMap()).get(anchorKey) !==
       nullthrows(editorState.getDirectionMap()).get(anchorKey)
-    )
   ) {
     e.preventDefault();
     editor.update(newEditorState);

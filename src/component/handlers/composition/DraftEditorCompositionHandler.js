@@ -73,11 +73,14 @@ var DraftEditorCompositionHandler = {
   onCompositionEnd: function(editor: DraftEditor): void {
     resolved = false;
     stillComposing = false;
-    setTimeout(() => {
-      if (!resolved) {
-        DraftEditorCompositionHandler.resolveComposition(editor);
-      }
-    }, RESOLVE_DELAY);
+    setTimeout(
+      () => {
+        if (!resolved) {
+          DraftEditorCompositionHandler.resolveComposition(editor);
+        }
+      },
+      RESOLVE_DELAY
+    );
   },
 
   /**
@@ -146,12 +149,10 @@ var DraftEditorCompositionHandler = {
       editorState.getSelection()
     );
 
-    const mustReset = (
-      !composedChars ||
+    const mustReset = !composedChars ||
       isSelectionAtLeafStart(editorState) ||
       currentStyle.size > 0 ||
-      entityKey !== null
-    );
+      entityKey !== null;
 
     if (mustReset) {
       editor.restoreEditorDOM();
@@ -170,11 +171,7 @@ var DraftEditorCompositionHandler = {
         entityKey
       );
       editor.update(
-        EditorState.push(
-          editorState,
-          contentState,
-          'insert-characters'
-        )
+        EditorState.push(editorState, contentState, 'insert-characters')
       );
       return;
     }

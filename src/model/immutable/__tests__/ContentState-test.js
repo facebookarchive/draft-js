@@ -11,17 +11,13 @@
 
 'use strict';
 
-jest
-  .disableAutomock()
-  .mock('SelectionState');
+jest.disableAutomock().mock('SelectionState');
 
 var BlockMapBuilder = require('BlockMapBuilder');
 var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
 
-var SINGLE_BLOCK = [
-  {text: 'Lorem ipsum', key: 'a'},
-];
+var SINGLE_BLOCK = [{text: 'Lorem ipsum', key: 'a'}];
 var MULTI_BLOCK = [
   {text: 'Four score', key: 'b'},
   {text: 'and seven', key: 'c'},
@@ -49,9 +45,7 @@ describe('ContentState', () => {
   }
 
   function getSample(textBlocks) {
-    return getSampleFromConfig(
-      getConfigForText(textBlocks)
-    );
+    return getSampleFromConfig(getConfigForText(textBlocks));
   }
 
   describe('creation and retrieval', () => {
@@ -95,7 +89,6 @@ describe('ContentState', () => {
   });
 
   describe('entities', () => {
-
     let contentState;
     beforeEach(() => {
       contentState = ContentState.createFromText('');
@@ -113,7 +106,9 @@ describe('ContentState', () => {
 
     it('must retrieve an instance given a key', () => {
       const contentState = createLink();
-      const retrieved = contentState.getEntity(contentState.getLastCreatedEntityKey());
+      const retrieved = contentState.getEntity(
+        contentState.getLastCreatedEntityKey()
+      );
       expect(retrieved.getType()).toBe('LINK');
       expect(retrieved.getMutability()).toBe('MUTABLE');
       expect(retrieved.getData()).toEqual({uri: 'zombo.com'});
@@ -131,7 +126,10 @@ describe('ContentState', () => {
       // Merge new property.
       const newData = {foo: 'bar'};
       const key = contentState.getLastCreatedEntityKey();
-      const contentStateWithNewProp = contentState.mergeEntityData(key, newData);
+      const contentStateWithNewProp = contentState.mergeEntityData(
+        key,
+        newData
+      );
       const updatedEntity = contentStateWithNewProp.getEntity(key);
       expect(updatedEntity.getData()).toEqual({
         uri: 'zombo.com',
@@ -139,7 +137,10 @@ describe('ContentState', () => {
       });
       // Replace existing property.
       const withNewURI = {uri: 'homestarrunner.com'};
-      const contentStateWithUpdatedProp = contentStateWithNewProp.mergeEntityData(key, withNewURI);
+      const contentStateWithUpdatedProp = contentStateWithNewProp.mergeEntityData(
+        key,
+        withNewURI
+      );
       const entityWithNewURI = contentStateWithUpdatedProp.getEntity(key);
       expect(entityWithNewURI.getData()).toEqual({
         uri: 'homestarrunner.com',
@@ -154,10 +155,12 @@ describe('ContentState', () => {
         uri: 'something.com',
         newProp: 'baz',
       };
-      const updatedContentState = contentState.replaceEntityData(key, replacedData);
+      const updatedContentState = contentState.replaceEntityData(
+        key,
+        replacedData
+      );
       const entityWithReplacedData = updatedContentState.getEntity(key);
       expect(entityWithReplacedData.getData()).toEqual(replacedData);
     });
-
   });
 });

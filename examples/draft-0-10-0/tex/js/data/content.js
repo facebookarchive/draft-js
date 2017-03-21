@@ -25,10 +25,8 @@ var rawContent = {
       type: 'unstyled',
     },
     {
-      text: (
-        'Each TeX block below is represented as a DraftEntity object and ' +
-        'rendered using Khan Academy\'s KaTeX library.'
-      ),
+      text: 'Each TeX block below is represented as a DraftEntity object and ' +
+        "rendered using Khan Academy's KaTeX library.",
       type: 'unstyled',
     },
     {
@@ -55,11 +53,9 @@ var rawContent = {
       type: 'TOKEN',
       mutability: 'IMMUTABLE',
       data: {
-        content: (
-          '\\left( \\sum_{k=1}^n a_k b_k \\right)^{\\!\\!2} \\leq\n' +
+        content: '\\left( \\sum_{k=1}^n a_k b_k \\right)^{\\!\\!2} \\leq\n' +
           '\\left( \\sum_{k=1}^n a_k^2 \\right)\n' +
-          '\\left( \\sum_{k=1}^n b_k^2 \\right)'
-        ),
+          '\\left( \\sum_{k=1}^n b_k^2 \\right)',
       },
     },
   },

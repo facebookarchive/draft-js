@@ -45,7 +45,6 @@ const defaultRecord: {
 const ContentStateRecord = Record(defaultRecord);
 
 class ContentState extends ContentStateRecord {
-
   getEntityMap(): any {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity;
@@ -86,10 +85,7 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlockAfter(key: string): ?ContentBlock {
-    return this.getBlockMap()
-      .skipUntil((_, k) => k === key)
-      .skip(1)
-      .first();
+    return this.getBlockMap().skipUntil((_, k) => k === key).skip(1).first();
   }
 
   getBlockBefore(key: string): ?ContentBlock {
@@ -127,39 +123,26 @@ class ContentState extends ContentStateRecord {
 
   hasText(): boolean {
     var blockMap = this.getBlockMap();
-    return (
-      blockMap.size > 1 ||
-      blockMap.first().getLength() > 0
-    );
+    return blockMap.size > 1 || blockMap.first().getLength() > 0;
   }
 
   createEntity(
     type: DraftEntityType,
     mutability: DraftEntityMutability,
-    data?: Object,
+    data?: Object
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.__create(
-      type,
-      mutability,
-      data,
-    );
+    DraftEntity.__create(type, mutability, data);
     return this;
   }
 
-  mergeEntityData(
-    key: string,
-    toMerge: {[key: string]: any},
-  ): ContentState {
+  mergeEntityData(key: string, toMerge: {[key: string]: any}): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity.__mergeData(key, toMerge);
     return this;
   }
 
-  replaceEntityData(
-    key: string,
-    newData: {[key: string]: any},
-  ): ContentState {
+  replaceEntityData(key: string, newData: {[key: string]: any}): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity.__replaceData(key, newData);
     return this;
@@ -179,7 +162,7 @@ class ContentState extends ContentStateRecord {
   static createFromBlockArray(
     // TODO: update flow type when we completely deprecate the old entity API
     blocks: Array<ContentBlock> | {contentBlocks: Array<ContentBlock>},
-    entityMap: ?any,
+    entityMap: ?any
   ): ContentState {
     // TODO: remove this when we completely deprecate the old entity API
     const theBlocks = Array.isArray(blocks) ? blocks : blocks.contentBlocks;
@@ -197,20 +180,18 @@ class ContentState extends ContentStateRecord {
 
   static createFromText(
     text: string,
-    delimiter: string | RegExp = /\r\n?|\n/g,
+    delimiter: string | RegExp = /\r\n?|\n/g
   ): ContentState {
     const strings = text.split(delimiter);
-    const blocks = strings.map(
-      block => {
-        block = sanitizeDraftText(block);
-        return new ContentBlock({
-          key: generateRandomKey(),
-          text: block,
-          type: 'unstyled',
-          characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
-        });
-      }
-    );
+    const blocks = strings.map(block => {
+      block = sanitizeDraftText(block);
+      return new ContentBlock({
+        key: generateRandomKey(),
+        text: block,
+        type: 'unstyled',
+        characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
+      });
+    });
     return ContentState.createFromBlockArray(blocks);
   }
 }

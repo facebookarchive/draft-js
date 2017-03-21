@@ -121,10 +121,7 @@ var DraftModifier = {
     fragment: BlockMap
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
-    var withoutText = removeRangeFromContentState(
-      withoutEntities,
-      targetRange
-    );
+    var withoutText = removeRangeFromContentState(withoutEntities, targetRange);
 
     return insertFragmentIntoContentState(
       withoutText,
@@ -162,7 +159,7 @@ var DraftModifier = {
           startBlock,
           endBlock,
           rangeToRemove,
-          removalDirection,
+          removalDirection
         );
         return removeRangeFromContentState(contentState, adjustedRemovalRange);
       }
@@ -173,12 +170,12 @@ var DraftModifier = {
       startBlock,
       endBlock,
       rangeToRemove,
-      removalDirection,
+      removalDirection
     );
 
     var withoutEntities = removeEntitiesAtEdges(
       contentState,
-      adjustedRemovalRange,
+      adjustedRemovalRange
     );
     return removeRangeFromContentState(withoutEntities, adjustedRemovalRange);
   },
@@ -228,37 +225,27 @@ var DraftModifier = {
     selectionState: SelectionState,
     blockType: DraftBlockType
   ): ContentState {
-    return modifyBlockForContentState(
-      contentState,
-      selectionState,
-      (block) => block.merge({type: blockType, depth: 0})
-    );
+    return modifyBlockForContentState(contentState, selectionState, block =>
+      block.merge({type: blockType, depth: 0}));
   },
 
   setBlockData: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    blockData: Map<any, any>,
+    blockData: Map<any, any>
   ): ContentState {
-    return modifyBlockForContentState(
-      contentState,
-      selectionState,
-      (block) => block.merge({data: blockData})
-    );
+    return modifyBlockForContentState(contentState, selectionState, block =>
+      block.merge({data: blockData}));
   },
 
   mergeBlockData: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    blockData: Map<any, any>,
+    blockData: Map<any, any>
   ): ContentState {
-    return modifyBlockForContentState(
-      contentState,
-      selectionState,
-      (block) => block.merge({data: block.getData().merge(blockData)})
-    );
+    return modifyBlockForContentState(contentState, selectionState, block =>
+      block.merge({data: block.getData().merge(blockData)}));
   },
-
 
   applyEntity: function(
     contentState: ContentState,

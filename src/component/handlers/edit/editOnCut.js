@@ -52,11 +52,14 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   editor.setMode('cut');
 
   // Let native `cut` behavior occur, then recover control.
-  setTimeout(() => {
-    editor.restoreEditorDOM({x, y});
-    editor.exitCurrentMode();
-    editor.update(removeFragment(editorState));
-  }, 0);
+  setTimeout(
+    () => {
+      editor.restoreEditorDOM({x, y});
+      editor.exitCurrentMode();
+      editor.update(removeFragment(editorState));
+    },
+    0
+  );
 }
 
 function removeFragment(editorState: EditorState): EditorState {

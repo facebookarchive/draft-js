@@ -32,9 +32,9 @@ var KeyBindingUtil = {
   },
 
   hasCommandModifier: function(e: SyntheticKeyboardEvent): boolean {
-    return isOSX ?
-      (!!e.metaKey && !e.altKey) :
-      KeyBindingUtil.isCtrlKeyCommand(e);
+    return isOSX
+      ? !!e.metaKey && !e.altKey
+      : KeyBindingUtil.isCtrlKeyCommand(e);
   },
 };
 

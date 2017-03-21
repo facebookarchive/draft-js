@@ -54,7 +54,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
 
   static applyStyle(
     record: CharacterMetadata,
-    style: string,
+    style: string
   ): CharacterMetadata {
     var withStyle = record.set('style', record.getStyle().add(style));
     return CharacterMetadata.create(withStyle);
@@ -62,7 +62,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
 
   static removeStyle(
     record: CharacterMetadata,
-    style: string,
+    style: string
   ): CharacterMetadata {
     var withoutStyle = record.set('style', record.getStyle().remove(style));
     return CharacterMetadata.create(withoutStyle);
@@ -70,11 +70,11 @@ class CharacterMetadata extends CharacterMetadataRecord {
 
   static applyEntity(
     record: CharacterMetadata,
-    entityKey: ?string,
+    entityKey: ?string
   ): CharacterMetadata {
-    var withEntity = record.getEntity() === entityKey ?
-      record :
-      record.set('entity', entityKey);
+    var withEntity = record.getEntity() === entityKey
+      ? record
+      : record.set('entity', entityKey);
     return CharacterMetadata.create(withEntity);
   }
 
@@ -89,8 +89,10 @@ class CharacterMetadata extends CharacterMetadataRecord {
       return EMPTY;
     }
 
-    const defaultConfig: CharacterMetadataConfig =
-      {style: EMPTY_SET, entity: (null: ?string)};
+    const defaultConfig: CharacterMetadataConfig = {
+      style: EMPTY_SET,
+      entity: (null: ?string),
+    };
 
     // Fill in unspecified properties, if necessary.
     var configMap = Map(defaultConfig).merge(config);
@@ -107,7 +109,9 @@ class CharacterMetadata extends CharacterMetadataRecord {
 }
 
 var EMPTY = new CharacterMetadata();
-var pool: Map<Map<any, any>, CharacterMetadata> = Map([[Map(defaultRecord), EMPTY]]);
+var pool: Map<Map<any, any>, CharacterMetadata> = Map([
+  [Map(defaultRecord), EMPTY],
+]);
 
 CharacterMetadata.EMPTY = EMPTY;
 
