@@ -36,7 +36,13 @@ export type DraftEditorProps = {
   editorState: EditorState,
   onChange: (editorState: EditorState) => void,
 
-  // specify whether using ssr
+  // specify editorKey when rendering serverside. If you do not set this prop
+  // react will complain that there is a server/client mismatch because Draft
+  // will generate a random editorKey when rendering in each context. The key
+  // is used to figure out if content is being pasted within a draft block to
+  // better apply formatting and styles.  If two editors share the same key &
+  // `stripPastedStyles` is false, draft will assume both editors share their
+  // styling and formatting when re-applying styles.
   editorKey?: string,
 
   placeholder?: string,
