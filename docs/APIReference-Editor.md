@@ -137,6 +137,23 @@ Default is `false`.
 These props allow you to set accessibility properties on your editor. See
 [DraftEditorProps](https://github.com/facebook/draft-js/blob/master/src/component/base/DraftEditorProps.js) for the exhaustive list of supported attributes.
 
+#### editorKey
+```
+editorKey?: string
+```
+
+You probably won't set `editorKey` on an `<Editor />` manually unless you're
+rendering a Draft component serverside. If you _are_, you must set this prop
+to avoid server/client mismatches.
+
+If the key is not set, it is generated automatically when the component
+renders and assigned as a prop of the Editor's `<DraftEditorContents />`
+component.
+
+If you _do_ set this prop, the key should be unique _per-editor_, as it is
+used to determine if styles should be preserved when pasting text within an
+editor.
+
 ### Cancelable Handlers (Optional)
 
 These prop functions are provided to allow custom event handling for a small
