@@ -26,7 +26,30 @@ the editor state may fail to remain in sync with the DOM.</p><p>Certain old ad b
 API -- a bad idea no matter what! -- and since Draft depends on this API to
 maintain controlled selection state, this can cause trouble for editor
 interaction.</p><h3><a class="anchor" name="ime-and-internet-explorer"></a>IME and Internet Explorer <a class="hash-link" href="#ime-and-internet-explorer">#</a></h3><p>As of IE11, Internet Explorer demonstrates notable issues with certain international
-input methods, most significantly Korean input.</p><h3><a class="anchor" name="polyfills"></a>Polyfills <a class="hash-link" href="#polyfills">#</a></h3><p>Some of Draft&#x27;s code and that of its dependencies make use of ES2015 language features. Syntax features like <code>class</code> are compiled away via Babel, but new polyfillable APIs are left intact. One example of this is <code>String.prototype.startsWith</code>. As a result, it is expected that your browser supports these APIs, either natively or with the assistance of a polyfill. One such polyfill is <a href="https://github.com/es-shims/es6-shim" target="_blank">es6-shim</a>, which we are using in our examples.</p></div><div class="docs-prevnext"><a class="docs-next" href="api-reference-editor.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2017 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
+input methods, most significantly Korean input.</p><h3><a class="anchor" name="polyfills"></a>Polyfills <a class="hash-link" href="#polyfills">#</a></h3><p>Some of Draft&#x27;s code and that of its dependencies make use of ES2015 language
+features. Syntax features like <code>class</code> are compiled away via Babel when Draft is
+built, but it does not include polyfills for APIs now included in many modern
+browsers (for instance: <code>String.prototype.startsWith</code>). We expect your browser
+supports these APIs natively or with the assistance of a polyfill. One such
+polyfill is <a href="https://github.com/es-shims/es6-shim" target="_blank">es6-shim</a>, which we use in
+many examples but you are free to use <a href="https://babeljs.io/docs/usage/polyfill/" target="_blank">babel-
+polyfill</a> if that&#x27;s more your scene.</p><p>When using either polyfill/shim, you should include it as early as possibly in
+your application&#x27;s entrypoint (at the very minimum, before you import Draft).
+For instance, using [create-react-app](<a href="https://github.com/facebookincubator">https://github.com/facebookincubator</a>
+/create-react-app) and targeting ie11, <code>src/index.js</code> is probably a good spot to
+import your polyfill:</p><p><strong>src/index.js</strong></p><pre class="prism language-javascript">import <span class="token string">&#x27;babel-polyfill&#x27;</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">
+// or
+</span>import <span class="token string">&#x27;es6-shim&#x27;</span><span class="token punctuation">;</span>
+
+import React from <span class="token string">&#x27;react&#x27;</span><span class="token punctuation">;</span>
+import ReactDOM from <span class="token string">&#x27;react-dom&#x27;</span><span class="token punctuation">;</span>
+import App from <span class="token string">&#x27;./App&#x27;</span><span class="token punctuation">;</span>
+import <span class="token string">&#x27;./index.css&#x27;</span><span class="token punctuation">;</span>
+
+ReactDOM<span class="token punctuation">.</span><span class="token function">render<span class="token punctuation">(</span></span>
+  &lt;App <span class="token operator">/</span><span class="token operator">&gt;</span><span class="token punctuation">,</span>
+  document<span class="token punctuation">.</span><span class="token function">getElementById<span class="token punctuation">(</span></span><span class="token string">&#x27;root&#x27;</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span></pre></div><div class="docs-prevnext"><a class="docs-next" href="api-reference-editor.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2017 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
 
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
