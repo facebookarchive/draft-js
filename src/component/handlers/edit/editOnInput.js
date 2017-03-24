@@ -47,7 +47,10 @@ function editOnInput(editor: DraftEditor): void {
   var domSelection = global.getSelection();
 
   var {anchorNode, isCollapsed} = domSelection;
-  if (anchorNode.nodeType !== Node.TEXT_NODE) {
+
+  const isNotTextOrElementNode = anchorNode.nodeType !== Node.TEXT_NODE
+    && anchorNode.nodeType !== Node.ELEMENT_NODE;
+  if (isNotTextOrElementNode) {
     return;
   }
 
