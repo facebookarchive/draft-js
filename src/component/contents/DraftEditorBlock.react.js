@@ -171,10 +171,9 @@ class DraftEditorBlock extends React.Component {
 
       var decoratorProps = decorator.getPropsForKey(decoratorKey);
       var decoratorOffsetKey = DraftOffsetKey.encode(blockKey, ii, 0);
-      var decoratedText = text.slice(
-        leavesForLeafSet.first().get('start'),
-        leavesForLeafSet.last().get('end')
-      );
+      var start = leavesForLeafSet.first().get('start');
+      var end = leavesForLeafSet.first().get('end');
+      var decoratedText = text.slice(start, end);
 
       // Resetting dir to the same value on a child node makes Chrome/Firefox
       // confused on cursor movement. See http://jsfiddle.net/d157kLck/3/
@@ -188,6 +187,8 @@ class DraftEditorBlock extends React.Component {
           {...decoratorProps}
           contentState={this.props.contentState}
           decoratedText={decoratedText}
+          start={start}
+          end={end}
           dir={dir}
           key={decoratorOffsetKey}
           entityKey={block.getEntityAt(leafSet.get('start'))}
