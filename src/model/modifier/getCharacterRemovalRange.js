@@ -42,7 +42,7 @@ function getCharacterRemovalRange(
   var start = selectionState.getStartOffset();
   var end = selectionState.getEndOffset();
   var startEntityKey = startBlock.getEntityAt(start);
-  var endEntityKey = endBlock.getEntityAt(end);
+  var endEntityKey = endBlock.getEntityAt(end - 1);
   if (!startEntityKey && !endEntityKey) {
     return selectionState;
   }
