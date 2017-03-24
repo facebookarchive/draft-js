@@ -34,93 +34,17 @@ import type {EntityMap} from 'EntityMap';
  */
 function getCharacterRemovalRange(
   entityMap: EntityMap,
-  startBlock: ContentBlock,
-  endBlock: ContentBlock,
-  selectionState: SelectionState,
-  direction: DraftRemovalDirection,
-): SelectionState {
-  var start = selectionState.getStartOffset();
-  var end = selectionState.getEndOffset();
-  var startEntityKey = startBlock.getEntityAt(start);
-  var endEntityKey = endBlock.getEntityAt(end);
-  if (!startEntityKey && !endEntityKey) {
-    return selectionState;
-  }
-  var newSelectionState = selectionState;
-  if (selectionState.getIsBackward()) {
-    newSelectionState = selectionState.merge({
-      anchorKey: selectionState.getFocusKey(),
-      anchorOffset: selectionState.getFocusOffset(),
-      focusKey: selectionState.getAnchorKey(),
-      focusOffset: selectionState.getAnchorOffset(),
-      isBackward: false,
-    });
-  }
-  if (startEntityKey && (startEntityKey === endEntityKey)) {
-    newSelectionState = getEntityRemovalRange(
-      entityMap,
-      startBlock,
-      newSelectionState,
-      direction,
-      startEntityKey,
-    );
-  } else if (startEntityKey && endEntityKey) {
-    const startSelectionState = getEntityRemovalRange(
-      entityMap,
-      startBlock,
-      newSelectionState,
-      direction,
-      startEntityKey,
-    );
-    const endSelectionState = getEntityRemovalRange(
-      entityMap,
-      endBlock,
-      newSelectionState,
-      direction,
-      endEntityKey,
-    );
-    newSelectionState = newSelectionState.merge({
-      anchorOffset: startSelectionState.getAnchorOffset(),
-      focusOffset: endSelectionState.getFocusOffset(),
-      isBackward: false,
-    });
-  } else if (startEntityKey) {
-    const startSelectionState = getEntityRemovalRange(
-      entityMap,
-      startBlock,
-      newSelectionState,
-      direction,
-      startEntityKey,
-    );
-    newSelectionState = newSelectionState.merge({
-      anchorOffset: startSelectionState.getStartOffset(),
-      isBackward: false,
-    });
-  } else if (endEntityKey) {
-    const endSelectionState = getEntityRemovalRange(
-      entityMap,
-      endBlock,
-      newSelectionState,
-      direction,
-      endEntityKey,
-    );
-    newSelectionState = newSelectionState.merge({
-      focusOffset: endSelectionState.getEndOffset(),
-      isBackward: false,
-    });
-  }
-  return newSelectionState;
-}
-
-function getEntityRemovalRange(
-  entityMap: EntityMap,
   block: ContentBlock,
   selectionState: SelectionState,
-  direction: DraftRemovalDirection,
-  entityKey: string,
+  direction: DraftRemovalDirection
 ): SelectionState {
   var start = selectionState.getStartOffset();
   var end = selectionState.getEndOffset();
+  var entityKey = block.getEntityAt(start);
+  if (!entityKey) {
+    return selectionState;
+  }
+
   var entity = entityMap.__get(entityKey);
   var mutability = entity.getMutability();
 
@@ -132,12 +56,12 @@ function getEntityRemovalRange(
 
   // Find the entity range that overlaps with our removal range.
   var entityRanges = getRangesForDraftEntity(block, entityKey).filter(
-    (range) => start < range.end && end > range.start,
+    (range) => start < range.end && end > range.start
   );
 
   invariant(
     entityRanges.length == 1,
-    'There should only be one entity range within this removal range.',
+    'There should only be one entity range within this removal range.'
   );
 
   var entityRange = entityRanges[0];
@@ -158,7 +82,7 @@ function getEntityRemovalRange(
     end,
     block.getText().slice(entityRange.start, entityRange.end),
     entityRange.start,
-    direction,
+    direction
   );
 
   return selectionState.merge({
