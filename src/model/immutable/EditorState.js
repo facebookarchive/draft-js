@@ -68,9 +68,7 @@ var EditorStateRecord = Record(defaultRecord);
 class EditorState {
   _immutable: EditorStateRecord;
 
-  static createEmpty(
-    decorator?: ?DraftDecoratorType
-  ): EditorState {
+  static createEmpty(decorator?: ?DraftDecoratorType): EditorState {
     return EditorState.createWithContent(
       ContentState.createFromText(''),
       decorator
@@ -98,9 +96,7 @@ class EditorState {
       treeMap: generateNewTreeMap(currentContent, decorator),
       directionMap: EditorBidiService.getDirectionMap(currentContent),
     };
-    return new EditorState(
-      new EditorStateRecord(recordConfig)
-    );
+    return new EditorState(new EditorStateRecord(recordConfig));
   }
 
   static set(editorState: EditorState, put: Object): EditorState {
@@ -390,7 +386,11 @@ class EditorState {
     let inlineStyleOverride = editorState.getInlineStyleOverride();
 
     // Don't discard inline style overrides for the following change types:
-    var overrideChangeTypes = ['adjust-depth', 'change-block-type', 'split-block'];
+    var overrideChangeTypes = [
+      'adjust-depth',
+      'change-block-type',
+      'split-block',
+    ];
 
     if (overrideChangeTypes.indexOf(changeType) === -1) {
       inlineStyleOverride = null;
@@ -535,14 +535,16 @@ function regenerateTreeForNewBlocks(
   newEntityMap: EntityMap,
   decorator?: ?DraftDecoratorType
 ): OrderedMap<string, List<any>> {
-  const contentState = editorState.getCurrentContent().set('entityMap', newEntityMap);
+  const contentState = editorState
+    .getCurrentContent()
+    .set('entityMap', newEntityMap);
   var prevBlockMap = contentState.getBlockMap();
   var prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(contentState, block, decorator)),
+      .map(block => BlockTree.generate(contentState, block, decorator))
   );
 }
 
@@ -565,12 +567,10 @@ function regenerateTreeForNewDecorator(
     blockMap
       .toSeq()
       .filter(block => {
-        return (
-          decorator.getDecorations(block, content) !==
-          existingDecorator.getDecorations(block, content)
-        );
+        return decorator.getDecorations(block, content) !==
+          existingDecorator.getDecorations(block, content);
       })
-      .map(block => BlockTree.generate(content, block, decorator)),
+      .map(block => BlockTree.generate(content, block, decorator))
   );
 }
 
@@ -584,14 +584,10 @@ function mustBecomeBoundary(
   changeType: EditorChangeType
 ): boolean {
   var lastChangeType = editorState.getLastChangeType();
-  return (
-    changeType !== lastChangeType ||
-    (
-      changeType !== 'insert-characters' &&
+  return changeType !== lastChangeType ||
+    (changeType !== 'insert-characters' &&
       changeType !== 'backspace-character' &&
-      changeType !== 'delete-character'
-    )
-  );
+      changeType !== 'delete-character');
 }
 
 function getInlineStyleForCollapsedSelection(

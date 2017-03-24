@@ -27,7 +27,14 @@
     "lint": "eslint .",
     "flow": "flow src",
     "test": "NODE_ENV=test jest",
-    "test-ci": "NODE_ENV=test npm run lint && npm run flow && npm run test"
+    "test-ci": "NODE_ENV=test npm run lint && npm run flow && npm run test",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --single-quote --bracket-spacing false --trailing-comma es5 --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "fbjs": "^0.8.7",

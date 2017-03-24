@@ -29,13 +29,10 @@ function getLineHeightPx(element: Element): number {
   div.style.lineHeight = computed.lineHeight;
   div.style.position = 'absolute';
   div.textContent = 'M';
-  
+
   var documentBody = document.body;
-  
-  invariant(
-    documentBody,
-    'Unexpected empty document.body.'
-  );
+
+  invariant(documentBody, 'Unexpected empty document.body.');
 
   // forced layout here
   documentBody.appendChild(div);
@@ -84,10 +81,9 @@ function areRectsOnOneLine(
     maxBottom = Math.max(maxBottom, rect.bottom);
   }
 
-  return (
-    maxTop <= minBottom &&
-    maxTop - minTop < lineHeight && maxBottom - minBottom < lineHeight
-  );
+  return maxTop <= minBottom &&
+    maxTop - minTop < lineHeight &&
+    maxBottom - minBottom < lineHeight;
 }
 
 /**
@@ -147,8 +143,10 @@ function expandRangeToStartOfLine(range: Range): Range {
       'Found unexpected detached subtree when traversing.'
     );
     range.setStartBefore(bestContainer);
-    if (bestContainer.nodeType === 1 &&
-        getComputedStyle((bestContainer: any)).display !== 'inline') {
+    if (
+      bestContainer.nodeType === 1 &&
+      getComputedStyle((bestContainer: any)).display !== 'inline'
+    ) {
       // The start of the line is never in a different block-level container.
       break;
     }
@@ -170,8 +168,11 @@ function expandRangeToStartOfLine(range: Range): Range {
     var nodeValue = currentContainer.nodeValue;
 
     for (var ii = maxIndexToConsider; ii >= 0; ii--) {
-      if (nodeValue != null && ii > 0 &&
-          UnicodeUtils.isSurrogatePair(nodeValue, ii - 1)) {
+      if (
+        nodeValue != null &&
+        ii > 0 &&
+        UnicodeUtils.isSurrogatePair(nodeValue, ii - 1)
+      ) {
         // We're in the middle of a surrogate pair -- skip over so we never
         // return a range with an endpoint in the middle of a code point.
         continue;

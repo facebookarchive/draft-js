@@ -36,7 +36,6 @@ describe('getEntityKeyForSelection', () => {
       focusOffset: 2,
     });
 
-
     it('must return null at start of block', () => {
       var key = getEntityKeyForSelection(contentState, selectionState);
       expect(key).toBe(null);

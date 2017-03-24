@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
   const page = `<!doctype html>
 <html>
   <body>
-    <div id="react-content">${ rendered }</div>
+    <div id="react-content">${rendered}</div>
     <script src="/static/bundle.js"></script>
   </body>
 </html>

@@ -37,7 +37,7 @@ function getCharacterRemovalRange(
   startBlock: ContentBlock,
   endBlock: ContentBlock,
   selectionState: SelectionState,
-  direction: DraftRemovalDirection,
+  direction: DraftRemovalDirection
 ): SelectionState {
   var start = selectionState.getStartOffset();
   var end = selectionState.getEndOffset();
@@ -56,13 +56,13 @@ function getCharacterRemovalRange(
       isBackward: false,
     });
   }
-  if (startEntityKey && (startEntityKey === endEntityKey)) {
+  if (startEntityKey && startEntityKey === endEntityKey) {
     newSelectionState = getEntityRemovalRange(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
-      startEntityKey,
+      startEntityKey
     );
   } else if (startEntityKey && endEntityKey) {
     const startSelectionState = getEntityRemovalRange(
@@ -70,14 +70,14 @@ function getCharacterRemovalRange(
       startBlock,
       newSelectionState,
       direction,
-      startEntityKey,
+      startEntityKey
     );
     const endSelectionState = getEntityRemovalRange(
       entityMap,
       endBlock,
       newSelectionState,
       direction,
-      endEntityKey,
+      endEntityKey
     );
     newSelectionState = newSelectionState.merge({
       anchorOffset: startSelectionState.getAnchorOffset(),
@@ -90,7 +90,7 @@ function getCharacterRemovalRange(
       startBlock,
       newSelectionState,
       direction,
-      startEntityKey,
+      startEntityKey
     );
     newSelectionState = newSelectionState.merge({
       anchorOffset: startSelectionState.getStartOffset(),
@@ -102,7 +102,7 @@ function getCharacterRemovalRange(
       endBlock,
       newSelectionState,
       direction,
-      endEntityKey,
+      endEntityKey
     );
     newSelectionState = newSelectionState.merge({
       focusOffset: endSelectionState.getEndOffset(),
@@ -117,7 +117,7 @@ function getEntityRemovalRange(
   block: ContentBlock,
   selectionState: SelectionState,
   direction: DraftRemovalDirection,
-  entityKey: string,
+  entityKey: string
 ): SelectionState {
   var start = selectionState.getStartOffset();
   var end = selectionState.getEndOffset();
@@ -132,12 +132,12 @@ function getEntityRemovalRange(
 
   // Find the entity range that overlaps with our removal range.
   var entityRanges = getRangesForDraftEntity(block, entityKey).filter(
-    (range) => start < range.end && end > range.start,
+    range => start < range.end && end > range.start
   );
 
   invariant(
     entityRanges.length == 1,
-    'There should only be one entity range within this removal range.',
+    'There should only be one entity range within this removal range.'
   );
 
   var entityRange = entityRanges[0];
@@ -158,7 +158,7 @@ function getEntityRemovalRange(
     end,
     block.getText().slice(entityRange.start, entityRange.end),
     entityRange.start,
-    direction,
+    direction
   );
 
   return selectionState.merge({

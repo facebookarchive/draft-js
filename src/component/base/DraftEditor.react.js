@@ -49,11 +49,11 @@ const allowSpellCheck = !isIE;
 // Define a set of handler objects to correspond to each possible `mode`
 // of editor behavior.
 const handlerMap = {
-  'edit': DraftEditorEditHandler,
-  'composite': DraftEditorCompositionHandler,
-  'drag': DraftEditorDragHandler,
-  'cut': null,
-  'render': null,
+  edit: DraftEditorEditHandler,
+  composite: DraftEditorCompositionHandler,
+  drag: DraftEditorDragHandler,
+  cut: null,
+  render: null,
 };
 
 type State = {
@@ -180,7 +180,7 @@ class DraftEditor extends React.Component {
    * editor mode, if any has been specified.
    */
   _buildHandler(eventName: string): Function {
-    return (e) => {
+    return e => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
         method && method(this, e);
@@ -189,11 +189,9 @@ class DraftEditor extends React.Component {
   }
 
   _showPlaceholder(): boolean {
-    return (
-      !!this.props.placeholder &&
+    return !!this.props.placeholder &&
       !this.props.editorState.isInCompositionMode() &&
-      !this.props.editorState.getCurrentContent().hasText()
-    );
+      !this.props.editorState.getCurrentContent().hasText();
   }
 
   _renderPlaceholder(): ?React.Element<any> {
@@ -230,7 +228,8 @@ class DraftEditor extends React.Component {
         {this._renderPlaceholder()}
         <div
           className={cx('DraftEditor/editorContainer')}
-          ref="editorContainer">
+          ref="editorContainer"
+        >
           <div
             aria-activedescendant={
               readOnly ? null : this.props.ariaActiveDescendantID
@@ -267,18 +266,20 @@ class DraftEditor extends React.Component {
             onPaste={this._onPaste}
             onSelect={this._onSelect}
             ref="editor"
-            role={readOnly ? null : (this.props.role || 'textbox')}
+            role={readOnly ? null : this.props.role || 'textbox'}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
             suppressContentEditableWarning
-            tabIndex={this.props.tabIndex}>
+            tabIndex={this.props.tabIndex}
+          >
             <DraftEditorContents
               blockRenderMap={this.props.blockRenderMap}
               blockRendererFn={this.props.blockRendererFn}
               blockStyleFn={this.props.blockStyleFn}
-              customStyleMap={
-                {...DefaultDraftInlineStyle, ...this.props.customStyleMap}
-              }
+              customStyleMap={{
+                ...DefaultDraftInlineStyle,
+                ...this.props.customStyleMap,
+              }}
               customStyleFn={this.props.customStyleFn}
               editorKey={this._editorKey}
               editorState={this.props.editorState}
@@ -353,10 +354,7 @@ class DraftEditor extends React.Component {
     // Put the cursor back where it was before the blur.
     if (!alreadyHasFocus) {
       this.update(
-        EditorState.forceSelection(
-          editorState,
-          editorState.getSelection()
-        )
+        EditorState.forceSelection(editorState, editorState.getSelection())
       );
     }
   }

@@ -22,7 +22,7 @@ let key = 0;
 
 function addEntityToEntityMap(
   entityMap: OrderedMap<*, *>,
-  instance: DraftEntityInstance,
+  instance: DraftEntityInstance
 ): OrderedMap<*, *> {
   return entityMap.set(`${++key}`, instance);
 }

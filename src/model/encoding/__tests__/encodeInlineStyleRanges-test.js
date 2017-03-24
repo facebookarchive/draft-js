@@ -47,7 +47,7 @@ describe('encodeInlineStyleRanges', () => {
       type: 'unstyled',
       characterList: createCharacterList(
         inlineStyles.toArray(),
-        Repeat(null, text.length).toArray(),
+        Repeat(null, text.length).toArray()
       ),
     });
   }
@@ -70,15 +70,10 @@ describe('encodeInlineStyleRanges', () => {
   it('must encode for a flat styled document', () => {
     expect(
       encodeInlineStyleRanges(createBlock(' '.repeat(20), Repeat(BOLD, 20)))
-    ).toEqual([
-      {offset: 0, length: 20, style: 'BOLD'},
-    ]);
+    ).toEqual([{offset: 0, length: 20, style: 'BOLD'}]);
     expect(
       encodeInlineStyleRanges(
-        createBlock(
-          ' '.repeat(20),
-          Repeat(BOLD_ITALIC, 20)
-        )
+        createBlock(' '.repeat(20), Repeat(BOLD_ITALIC, 20))
       )
     ).toEqual([
       {offset: 0, length: 20, style: 'BOLD'},
@@ -108,10 +103,16 @@ describe('encodeInlineStyleRanges', () => {
 
   it('must encode for a complex styled document', () => {
     var complex = List([
-      BOLD, BOLD, BOLD, BOLD, NONE,         // "four "
-      BOLD_ITALIC, BOLD_ITALIC,         // "sc"
-      ITALIC_UNDERLINE, BOLD_UNDERLINE, // "or"
-      BOLD_ITALIC_UNDERLINE,            // "e"
+      BOLD,
+      BOLD,
+      BOLD,
+      BOLD,
+      NONE, // "four "
+      BOLD_ITALIC,
+      BOLD_ITALIC, // "sc"
+      ITALIC_UNDERLINE,
+      BOLD_UNDERLINE, // "or"
+      BOLD_ITALIC_UNDERLINE, // "e"
     ]);
 
     expect(
@@ -129,15 +130,26 @@ describe('encodeInlineStyleRanges', () => {
   it('must encode for strings with surrogate pairs', () => {
     var str = 'Take a \uD83D\uDCF7 #selfie';
     var styles = List([
-      NONE, NONE, NONE, NONE, // `Take`
-      BOLD, BOLD, BOLD_ITALIC, BOLD_ITALIC, BOLD_ITALIC, // ` a [camera]`
-      ITALIC, ITALIC, ITALIC, ITALIC, ITALIC, ITALIC,  // ` #self`
-      NONE, NONE, // `ie`
+      NONE,
+      NONE,
+      NONE,
+      NONE, // `Take`
+      BOLD,
+      BOLD,
+      BOLD_ITALIC,
+      BOLD_ITALIC,
+      BOLD_ITALIC, // ` a [camera]`
+      ITALIC,
+      ITALIC,
+      ITALIC,
+      ITALIC,
+      ITALIC,
+      ITALIC, // ` #self`
+      NONE,
+      NONE, // `ie`
     ]);
 
-    expect(
-      encodeInlineStyleRanges(createBlock(str, styles))
-    ).toEqual([
+    expect(encodeInlineStyleRanges(createBlock(str, styles))).toEqual([
       {offset: 4, length: 4, style: 'BOLD'},
       {offset: 6, length: 8, style: 'ITALIC'},
     ]);

@@ -39,23 +39,19 @@ describe('removeRangeFromContentState', () => {
   function expectBlockToBeSlice(block, comparison, start, end) {
     expect(block.getType()).toBe(comparison.getType());
     expect(block.getText()).toBe(comparison.getText().slice(start, end));
-    expect(
-      getInlineStyles(block)
-    ).toEqual(
+    expect(getInlineStyles(block)).toEqual(
       getInlineStyles(comparison).slice(start, end)
     );
-    expect(
-      getEntities(block)
-    ).toEqual(
+    expect(getEntities(block)).toEqual(
       getEntities(comparison).slice(start, end)
     );
     checkForCharacterList(block);
   }
 
   it('must return the input ContentState if selection is collapsed', () => {
-    expect(
-      removeRangeFromContentState(contentState, selectionState)
-    ).toBe(contentState);
+    expect(removeRangeFromContentState(contentState, selectionState)).toBe(
+      contentState
+    );
   });
 
   describe('Removal within a single block', () => {
@@ -84,8 +80,7 @@ describe('removeRangeFromContentState', () => {
       expect(alteredBlock).not.toBe(originalBlock);
       expect(alteredBlock.getType()).toBe(originalBlock.getType());
       expect(alteredBlock.getText()).toBe(
-        originalBlock.getText().slice(0, 2) +
-        originalBlock.getText().slice(4)
+        originalBlock.getText().slice(0, 2) + originalBlock.getText().slice(4)
       );
 
       var stylesToJS = getInlineStyles(originalBlock);
@@ -195,8 +190,7 @@ describe('removeRangeFromContentState', () => {
         expect(alteredBlock).not.toBe(originalBlockB);
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
         expect(alteredBlock.getText()).toBe(
-          originalBlockA.getText().slice(0, 3) +
-          originalBlockB.getText()
+          originalBlockA.getText().slice(0, 3) + originalBlockB.getText()
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
@@ -229,20 +223,18 @@ describe('removeRangeFromContentState', () => {
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
         expect(alteredBlock.getText()).toBe(
           originalBlockA.getText().slice(0, 3) +
-          originalBlockB.getText().slice(3)
+            originalBlockB.getText().slice(3)
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
-          stylesToJS.slice(0, 3).concat(
-            getInlineStyles(originalBlockB).slice(3)
-          )
+          stylesToJS
+            .slice(0, 3)
+            .concat(getInlineStyles(originalBlockB).slice(3))
         );
         var entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
-          entitiesToJS.slice(0, 3).concat(
-            getEntities(originalBlockB).slice(3)
-          )
+          entitiesToJS.slice(0, 3).concat(getEntities(originalBlockB).slice(3))
         );
 
         checkForCharacterList(alteredBlock);
@@ -270,13 +262,9 @@ describe('removeRangeFromContentState', () => {
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
-        expect(getInlineStyles(alteredBlock)).toEqual(
-          stylesToJS.slice(0, 3)
-        );
+        expect(getInlineStyles(alteredBlock)).toEqual(stylesToJS.slice(0, 3));
         var entitiesToJS = getEntities(originalBlockA);
-        expect(getEntities(alteredBlock)).toEqual(
-          entitiesToJS.slice(0, 3)
-        );
+        expect(getEntities(alteredBlock)).toEqual(entitiesToJS.slice(0, 3));
 
         checkForCharacterList(alteredBlock);
       });
@@ -306,8 +294,7 @@ describe('removeRangeFromContentState', () => {
         expect(alteredBlock).not.toBe(originalBlockB);
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
         expect(alteredBlock.getText()).toBe(
-          originalBlockA.getText() +
-          originalBlockB.getText()
+          originalBlockA.getText() + originalBlockB.getText()
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
@@ -339,21 +326,16 @@ describe('removeRangeFromContentState', () => {
         expect(alteredBlock).not.toBe(originalBlockB);
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
         expect(alteredBlock.getText()).toBe(
-          originalBlockA.getText() +
-          originalBlockB.getText().slice(3)
+          originalBlockA.getText() + originalBlockB.getText().slice(3)
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
-          stylesToJS.concat(
-            getInlineStyles(originalBlockB).slice(3)
-          )
+          stylesToJS.concat(getInlineStyles(originalBlockB).slice(3))
         );
         var entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
-          entitiesToJS.concat(
-            getEntities(originalBlockB).slice(3)
-          )
+          entitiesToJS.concat(getEntities(originalBlockB).slice(3))
         );
         checkForCharacterList(alteredBlock);
       });
@@ -405,21 +387,16 @@ describe('removeRangeFromContentState', () => {
       expect(alteredBlock).not.toBe(originalBlockC);
       expect(alteredBlock.getType()).toBe(originalBlockA.getType());
       expect(alteredBlock.getText()).toBe(
-        originalBlockA.getText().slice(0, 3) +
-        originalBlockC.getText().slice(3)
+        originalBlockA.getText().slice(0, 3) + originalBlockC.getText().slice(3)
       );
 
       var stylesToJS = getInlineStyles(originalBlockA);
       expect(getInlineStyles(alteredBlock)).toEqual(
-        stylesToJS.slice(0, 3).concat(
-          getInlineStyles(originalBlockC).slice(3)
-        )
+        stylesToJS.slice(0, 3).concat(getInlineStyles(originalBlockC).slice(3))
       );
       var entitiesToJS = getEntities(originalBlockA);
       expect(getEntities(alteredBlock)).toEqual(
-        entitiesToJS.slice(0, 3).concat(
-          getEntities(originalBlockC).slice(3)
-        )
+        entitiesToJS.slice(0, 3).concat(getEntities(originalBlockC).slice(3))
       );
 
       checkForCharacterList(alteredBlock);

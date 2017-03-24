@@ -19,9 +19,7 @@ var center = React.createClass({
     var {style, ...props} = this.props;
     style = assign({}, style, {textAlign: 'center'});
 
-    return (
-      <div {...props} style={style}>{this.props.children}</div>
-    );
+    return <div {...props} style={style}>{this.props.children}</div>;
   },
 });
 

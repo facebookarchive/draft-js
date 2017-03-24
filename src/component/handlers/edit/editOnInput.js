@@ -102,7 +102,7 @@ function editOnInput(editor: DraftEditor): void {
     targetRange,
     domText,
     block.getInlineStyleAt(start),
-    preserveEntity ? block.getEntityAt(start) : null,
+    preserveEntity ? block.getEntityAt(start) : null
   );
 
   var anchorOffset, focusOffset, startOffset, endOffset;
@@ -139,11 +139,7 @@ function editOnInput(editor: DraftEditor): void {
   });
 
   editor.update(
-    EditorState.push(
-      editorState,
-      contentWithAdjustedDOMSelection,
-      changeType
-    )
+    EditorState.push(editorState, contentWithAdjustedDOMSelection, changeType)
   );
 }
 

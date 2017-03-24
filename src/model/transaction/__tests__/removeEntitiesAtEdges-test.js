@@ -11,8 +11,7 @@
 
 'use strict';
 
-jest
-  .disableAutomock();
+jest.disableAutomock();
 
 var Immutable = require('immutable');
 var applyEntityToContentBlock = require('applyEntityToContentBlock');
@@ -46,9 +45,7 @@ describe('removeEntitiesAtEdges', () => {
   }
 
   function expectNullEntities(block) {
-    expect(
-      getEntities(block)
-    ).toEqual(
+    expect(getEntities(block)).toEqual(
       List(Repeat(null, block.getLength())).toJS()
     );
   }

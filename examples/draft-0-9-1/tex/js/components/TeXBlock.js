@@ -29,13 +29,14 @@ class KatexOutput extends React.Component {
       clearTimeout(this._timer);
     }
 
-    this._timer = setTimeout(() => {
-      katex.render(
-        this.props.content,
-        this.refs.container,
-        {displayMode: true}
-      );
-    }, 0);
+    this._timer = setTimeout(
+      () => {
+        katex.render(this.props.content, this.refs.container, {
+          displayMode: true,
+        });
+      },
+      0
+    );
   }
 
   componentDidMount() {
@@ -68,12 +69,15 @@ export default class TeXBlock extends React.Component {
         return;
       }
 
-      this.setState({
-        editMode: true,
-        texValue: this._getValue(),
-      }, () => {
-        this._startEdit();
-      });
+      this.setState(
+        {
+          editMode: true,
+          texValue: this._getValue(),
+        },
+        () => {
+          this._startEdit();
+        }
+      );
     };
 
     this._onValueChange = evt => {
@@ -94,11 +98,14 @@ export default class TeXBlock extends React.Component {
     this._save = () => {
       var entityKey = this.props.block.getEntityAt(0);
       Entity.mergeData(entityKey, {content: this.state.texValue});
-      this.setState({
-        invalidTeX: false,
-        editMode: false,
-        texValue: null,
-      }, this._finishEdit);
+      this.setState(
+        {
+          invalidTeX: false,
+          editMode: false,
+          texValue: null,
+        },
+        this._finishEdit
+      );
     };
 
     this._remove = () => {
@@ -113,9 +120,7 @@ export default class TeXBlock extends React.Component {
   }
 
   _getValue() {
-    return Entity
-      .get(this.props.block.getEntityAt(0))
-      .getData()['content'];
+    return Entity.get(this.props.block.getEntityAt(0)).getData()['content'];
   }
 
   render() {
@@ -142,7 +147,7 @@ export default class TeXBlock extends React.Component {
         buttonClass += ' TeXEditor-invalidButton';
       }
 
-      editPanel =
+      editPanel = (
         <div className="TeXEditor-panel">
           <textarea
             className="TeXEditor-texValue"
@@ -154,14 +159,16 @@ export default class TeXBlock extends React.Component {
             <button
               className={buttonClass}
               disabled={this.state.invalidTeX}
-              onClick={this._save}>
+              onClick={this._save}
+            >
               {this.state.invalidTeX ? 'Invalid TeX' : 'Done'}
             </button>
             <button className="TeXEditor-removeButton" onClick={this._remove}>
               Remove
             </button>
           </div>
-        </div>;
+        </div>
+      );
     }
 
     return (

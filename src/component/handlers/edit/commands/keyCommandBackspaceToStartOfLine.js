@@ -50,11 +50,7 @@ function keyCommandBackspaceToStartOfLine(
     return editorState;
   }
 
-  return EditorState.push(
-    editorState,
-    afterRemoval,
-    'remove-range'
-  );
+  return EditorState.push(editorState, afterRemoval, 'remove-range');
 }
 
 module.exports = keyCommandBackspaceToStartOfLine;

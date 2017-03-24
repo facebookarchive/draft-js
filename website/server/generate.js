@@ -30,19 +30,24 @@ glob('src/**/*', {nodir: true}, function(er, files) {
       targetFile = targetFile.replace(/\.js$/, '.html');
       queue = queue.then(function() {
         return new Promise(function(resolve, reject) {
-          request('http://localhost:8079/' + targetFile.replace(/^build\//, ''), function(error, response, body) {
-            if (error) {
-              reject(error);
-              return;
+          request(
+            'http://localhost:8079/' + targetFile.replace(/^build\//, ''),
+            function(error, response, body) {
+              if (error) {
+                reject(error);
+                return;
+              }
+              if (response.statusCode != 200) {
+                reject(
+                  new Error('Status ' + response.statusCode + ':\n' + body)
+                );
+                return;
+              }
+              mkdirp.sync(targetFile.replace(new RegExp('/[^/]*$'), ''));
+              fs.writeFileSync(targetFile, body);
+              resolve();
             }
-            if (response.statusCode != 200) {
-              reject(new Error('Status ' + response.statusCode + ':\n' + body));
-              return;
-            }
-            mkdirp.sync(targetFile.replace(new RegExp('/[^/]*$'), ''));
-            fs.writeFileSync(targetFile, body);
-            resolve();
-          });
+          );
         });
       });
     } else {
@@ -55,12 +60,15 @@ glob('src/**/*', {nodir: true}, function(er, files) {
     }
   });
 
-  queue = queue.then(function() {
-    console.log('It is live at: http://draftjs.org/');
-  }).finally(function() {
-    server.close();
-  }).catch(function(e) {
-    console.error(e);
-    process.exit(1);
-  });
+  queue = queue
+    .then(function() {
+      console.log('It is live at: http://draftjs.org/');
+    })
+    .finally(function() {
+      server.close();
+    })
+    .catch(function(e) {
+      console.error(e);
+      process.exit(1);
+    });
 });

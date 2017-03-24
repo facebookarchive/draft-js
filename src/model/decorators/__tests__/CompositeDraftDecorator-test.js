@@ -20,7 +20,7 @@ describe('CompositeDraftDecorator', () => {
     constructor(/*string*/ text) {
       this._text = text;
     }
-    getText() /*string*/ {
+    getText(/*string*/) {
       return this._text;
     }
   }
@@ -28,12 +28,9 @@ describe('CompositeDraftDecorator', () => {
   function searchWith(regex) {
     return function(block, callback, contentState) {
       var text = block.getText();
-      text.replace(
-        regex,
-        function(/*string*/ match, /*number*/ offset) {
-          callback(offset, offset + match.length);
-        }
-      );
+      text.replace(regex, function(/*string*/ match, /*number*/ offset) {
+        callback(offset, offset + match.length);
+      });
     };
   }
 

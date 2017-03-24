@@ -123,11 +123,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
           '\u00a0'
         );
         editor.update(
-          EditorState.push(
-            editorState,
-            contentState,
-            'insert-characters'
-          )
+          EditorState.push(editorState, contentState, 'insert-characters')
         );
         return;
       }

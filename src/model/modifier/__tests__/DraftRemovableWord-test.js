@@ -46,7 +46,7 @@ describe('DraftRemovableWord', function() {
   });
 
   it('must identify words with apostrophes looking forward', function() {
-    expect(forward('you\'re correct.')).toBe('you\'re');
+    expect(forward("you're correct.")).toBe("you're");
   });
 
   it('must identify words with curly quotes looking forward', function() {
@@ -106,7 +106,7 @@ describe('DraftRemovableWord', function() {
   });
 
   it('must identify words with apostrophes looking backward', function() {
-    expect(backward('you don\'t')).toBe('don\'t');
+    expect(backward("you don't")).toBe("don't");
   });
 
   it('must identify words ended by spaces looking backward', function() {

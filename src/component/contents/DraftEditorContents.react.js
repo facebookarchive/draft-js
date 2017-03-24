@@ -69,10 +69,8 @@ class DraftEditorContents extends React.Component {
     // rendered state, there's nothing new to be done.
     if (
       prevEditorState === nextEditorState ||
-      (
-        nextNativeContent !== null &&
-        nextEditorState.getCurrentContent() === nextNativeContent
-      ) ||
+      (nextNativeContent !== null &&
+        nextEditorState.getCurrentContent() === nextNativeContent) ||
       (wasComposing && nowComposing)
     ) {
       return false;
@@ -82,12 +80,10 @@ class DraftEditorContents extends React.Component {
     const nextContent = nextEditorState.getCurrentContent();
     const prevDecorator = prevEditorState.getDecorator();
     const nextDecorator = nextEditorState.getDecorator();
-    return (
-      wasComposing !== nowComposing ||
+    return wasComposing !== nowComposing ||
       prevContent !== nextContent ||
       prevDecorator !== nextDecorator ||
-      nextEditorState.mustForceSelection()
-    );
+      nextEditorState.mustForceSelection();
   }
 
   render(): React.Element<any> {
@@ -143,10 +139,8 @@ class DraftEditorContents extends React.Component {
       const configForType = blockRenderMap.get(blockType);
       const wrapperTemplate = configForType.wrapper;
 
-      const Element = (
-        configForType.element ||
-        blockRenderMap.get('unstyled').element
-      );
+      const Element = configForType.element ||
+        blockRenderMap.get('unstyled').element;
 
       const depth = block.getDepth();
       let className = this.props.blockStyleFn(block);
@@ -154,11 +148,9 @@ class DraftEditorContents extends React.Component {
       // List items are special snowflakes, since we handle nesting and
       // counters manually.
       if (Element === 'li') {
-        const shouldResetCount = (
-          lastWrapperTemplate !== wrapperTemplate ||
+        const shouldResetCount = lastWrapperTemplate !== wrapperTemplate ||
           currentDepth === null ||
-          depth > currentDepth
-        );
+          depth > currentDepth;
         className = joinClasses(
           className,
           getListItemClasses(blockType, depth, shouldResetCount, direction)
@@ -184,7 +176,7 @@ class DraftEditorContents extends React.Component {
       const child = React.createElement(
         Element,
         childProps,
-        <Component {...componentProps} />,
+        <Component {...componentProps} />
       );
 
       processedBlocks.push({
@@ -211,10 +203,8 @@ class DraftEditorContents extends React.Component {
         do {
           blocks.push(processedBlocks[ii].block);
           ii++;
-        } while (
-          ii < processedBlocks.length &&
-          processedBlocks[ii].wrapperTemplate === info.wrapperTemplate
-        );
+        } while (ii < processedBlocks.length &&
+          processedBlocks[ii].wrapperTemplate === info.wrapperTemplate);
         const wrapperElement = React.cloneElement(
           info.wrapperTemplate,
           {
@@ -247,10 +237,9 @@ function getListItemClasses(
   direction: BidiDirection
 ): string {
   return cx({
-    'public/DraftStyleDefault/unorderedListItem':
-      type === 'unordered-list-item',
-    'public/DraftStyleDefault/orderedListItem':
-      type === 'ordered-list-item',
+    'public/DraftStyleDefault/unorderedListItem': type ===
+      'unordered-list-item',
+    'public/DraftStyleDefault/orderedListItem': type === 'ordered-list-item',
     'public/DraftStyleDefault/reset': shouldResetCount,
     'public/DraftStyleDefault/depth0': depth === 0,
     'public/DraftStyleDefault/depth1': depth === 1,

@@ -1,4 +1,4 @@
-var fs = require('fs')
+var fs = require('fs');
 var glob = require('glob');
 var mkdirp = require('mkdirp');
 var optimist = require('optimist');
@@ -15,7 +15,7 @@ function splitHeader(content) {
   }
   return {
     header: lines.slice(1, i + 1).join(os.EOL),
-    content: lines.slice(i + 1).join(os.EOL)
+    content: lines.slice(i + 1).join(os.EOL),
   };
 }
 
@@ -32,7 +32,7 @@ function execute() {
   glob.sync('src/docs/*.*').forEach(function(file) {
     try {
       fs.unlinkSync(file);
-    } catch(e) {
+    } catch (e) {
       /* seriously, unlink throws when the file doesn't exist :( */
     }
   });
@@ -56,7 +56,9 @@ function execute() {
         var key = keyvalue[0].trim();
         var value = keyvalue.slice(1).join(':').trim();
         // Handle the case where you have "Community #10"
-        try { value = JSON.parse(value); } catch(e) { }
+        try {
+          value = JSON.parse(value);
+        } catch (e) {}
         metadata[key] = value;
       }
       metadatas.files.push(metadata);
@@ -66,25 +68,31 @@ function execute() {
       }
 
       // Create a dummy .js version that just calls the associated layout
-      var layout = metadata.layout[0].toUpperCase() + metadata.layout.substr(1) + 'Layout';
+      var layout = metadata.layout[0].toUpperCase() +
+        metadata.layout.substr(1) +
+        'Layout';
 
-      var content = (
-        '/**\n' +
+      var content = '/**\n' +
         ' * @generated\n' +
         ' */\n' +
         'var React = require("React");\n' +
-        'var Layout = require("' + layout + '");\n' +
-        'var content = ' + backtickify(both.content) + '\n' +
+        'var Layout = require("' +
+        layout +
+        '");\n' +
+        'var content = ' +
+        backtickify(both.content) +
+        '\n' +
         'var Post = React.createClass({\n' +
         '  statics: {\n' +
         '    content: content\n' +
         '  },\n' +
         '  render: function() {\n' +
-        '    return <Layout metadata={' + JSON.stringify(metadata) + '}>{content}</Layout>;\n' +
+        '    return <Layout metadata={' +
+        JSON.stringify(metadata) +
+        '}>{content}</Layout>;\n' +
         '  }\n' +
         '});\n' +
-        'module.exports = Post;\n'
-      );
+        'module.exports = Post;\n';
 
       var targetFile = 'src/' + metadata.permalink.replace(/\.html$/, '.js');
       mkdirp.sync(targetFile.replace(new RegExp('/[^/]*$'), ''));
@@ -100,19 +108,24 @@ function execute() {
   fs.writeFileSync(
     'core/metadata.js',
     '/**\n' +
-    ' * @generated\n' +
-    ' * @providesModule Metadata\n' +
-    ' */\n' +
-    'module.exports = ' + JSON.stringify(metadatas, null, 2) + ';'
+      ' * @generated\n' +
+      ' * @providesModule Metadata\n' +
+      ' */\n' +
+      'module.exports = ' +
+      JSON.stringify(metadatas, null, 2) +
+      ';'
   );
 
   fs.writeFileSync('src/lib/Draft.css', fs.readFileSync('../dist/Draft.css'));
   fs.writeFileSync('src/lib/Draft.js', fs.readFileSync('../dist/Draft.js'));
-  fs.writeFileSync('src/lib/RichEditor.css', fs.readFileSync('../examples/draft-0-9-1/rich/RichEditor.css'));
+  fs.writeFileSync(
+    'src/lib/RichEditor.css',
+    fs.readFileSync('../examples/draft-0-9-1/rich/RichEditor.css')
+  );
 }
 
 if (argv.convert) {
-  console.log('convert!')
+  console.log('convert!');
   execute();
 }
 

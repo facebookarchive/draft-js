@@ -97,13 +97,14 @@ var DraftEditorDragHandler = {
       }
 
       getTextContentFromFiles(files, fileText => {
-        fileText && editor.update(
-          insertTextAtSelection(
-            editorState,
-            nullthrows(dropSelection), // flow wtf
-            fileText
-          )
-        );
+        fileText &&
+          editor.update(
+            insertTextAtSelection(
+              editorState,
+              nullthrows(dropSelection), // flow wtf
+              fileText
+            )
+          );
       });
       return;
     }
@@ -125,7 +126,6 @@ var DraftEditorDragHandler = {
       insertTextAtSelection(editorState, dropSelection, data.getText())
     );
   },
-
 };
 
 function moveText(
@@ -137,11 +137,7 @@ function moveText(
     editorState.getSelection(),
     targetSelection
   );
-  return EditorState.push(
-    editorState,
-    newContentState,
-    'insert-fragment'
-  );
+  return EditorState.push(editorState, newContentState, 'insert-fragment');
 }
 
 /**
@@ -158,11 +154,7 @@ function insertTextAtSelection(
     text,
     editorState.getCurrentInlineStyle()
   );
-  return EditorState.push(
-    editorState,
-    newContentState,
-    'insert-fragment'
-  );
+  return EditorState.push(editorState, newContentState, 'insert-fragment');
 }
 
 module.exports = DraftEditorDragHandler;

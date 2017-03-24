@@ -27,8 +27,17 @@ var DocsLayout = React.createClass({
             <h1>{metadata.title}</h1>
             <Marked>{content}</Marked>
             <div className="docs-prevnext">
-              {metadata.previous && <a className="docs-prev" href={metadata.previous + '.html#content'}>&larr; Prev</a>}
-              {metadata.next && <a className="docs-next" href={metadata.next + '.html#content'}>Next &rarr;</a>}
+              {metadata.previous &&
+                <a
+                  className="docs-prev"
+                  href={metadata.previous + '.html#content'}
+                >
+                  ← Prev
+                </a>}
+              {metadata.next &&
+                <a className="docs-next" href={metadata.next + '.html#content'}>
+                  Next →
+                </a>}
             </div>
           </div>
         </section>

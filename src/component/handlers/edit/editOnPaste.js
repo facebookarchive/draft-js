@@ -75,11 +75,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
         );
 
         editor.update(
-          EditorState.push(
-            editorState,
-            withInsertedText,
-            'insert-fragment'
-          )
+          EditorState.push(editorState, withInsertedText, 'insert-fragment')
         );
       });
 
@@ -119,14 +115,12 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
         // The copy may have been made within a single block, in which case the
         // editor key won't be part of the paste. In this case, just check
         // whether the pasted text matches the internal clipboard.
-        (
-          textBlocks.length === 1 &&
+        (textBlocks.length === 1 &&
           internalClipboard.size === 1 &&
-          internalClipboard.first().getText() === text
-        )
+          internalClipboard.first().getText() === text)
       ) {
         editor.update(
-          insertFragment(editor._latestEditorState, internalClipboard),
+          insertFragment(editor._latestEditorState, internalClipboard)
         );
         return;
       }
@@ -140,7 +134,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
       // Use the internalClipboard if present and equal to what is on
       // the clipboard. See https://bugs.webkit.org/show_bug.cgi?id=19893.
       editor.update(
-        insertFragment(editor._latestEditorState, internalClipboard),
+        insertFragment(editor._latestEditorState, internalClipboard)
       );
       return;
     }
@@ -149,14 +143,14 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
     if (html) {
       var htmlFragment = DraftPasteProcessor.processHTML(
         html,
-        editor.props.blockRenderMap,
+        editor.props.blockRenderMap
       );
       if (htmlFragment) {
-        const { contentBlocks, entityMap } = htmlFragment;
+        const {contentBlocks, entityMap} = htmlFragment;
         if (contentBlocks) {
           var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
           editor.update(
-            insertFragment(editor._latestEditorState, htmlMap, entityMap),
+            insertFragment(editor._latestEditorState, htmlMap, entityMap)
           );
           return;
         }
@@ -178,10 +172,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
       ),
     });
 
-    var textFragment = DraftPasteProcessor.processText(
-      textBlocks,
-      character
-    );
+    var textFragment = DraftPasteProcessor.processText(textBlocks, character);
 
     var textMap = BlockMapBuilder.createFromArray(textFragment);
     editor.update(insertFragment(editor._latestEditorState, textMap));
@@ -191,7 +182,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
 function insertFragment(
   editorState: EditorState,
   fragment: BlockMap,
-  entityMap: ?EntityMap,
+  entityMap: ?EntityMap
 ): EditorState {
   var newContent = DraftModifier.replaceWithFragment(
     editorState.getCurrentContent(),
@@ -213,10 +204,10 @@ function areTextBlocksAndClipboardEqual(
   textBlocks: Array<string>,
   blockMap: BlockMap
 ): boolean {
-  return (
-    textBlocks.length === blockMap.size &&
-    blockMap.valueSeq().every((block, ii) => block.getText() === textBlocks[ii])
-  );
+  return textBlocks.length === blockMap.size &&
+    blockMap
+      .valueSeq()
+      .every((block, ii) => block.getText() === textBlocks[ii]);
 }
 
 module.exports = editOnPaste;

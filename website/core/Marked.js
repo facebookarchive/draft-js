@@ -37,16 +37,28 @@ block.bullet = /(?:[*+-]|\d+\.)/;
 block.item = /^( *)(bull) [^\n]*(?:\n(?!\1bull )[^\n]*)*/;
 block.item = replace(block.item, 'gm')(/bull/g, block.bullet)();
 
-block.list = replace(block.list)(/bull/g, block.bullet)('hr', /\n+(?=(?: *[-*_]){3,} *(?:\n+|$))/)();
+block.list = replace(block.list)(/bull/g, block.bullet)(
+  'hr',
+  /\n+(?=(?: *[-*_]){3,} *(?:\n+|$))/
+)();
 
-block._tag = '(?!(?:'
-  + 'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code'
-  + '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo'
-  + '|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|@)\\b';
+block._tag = '(?!(?:' +
+  'a|em|strong|small|s|cite|q|dfn|abbr|data|time|code' +
+  '|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo' +
+  '|span|br|wbr|ins|del|img)\\b)\\w+(?!:/|@)\\b';
 
-block.html = replace(block.html)('comment', /<!--[\s\S]*?-->/)('closed', /<(tag)[\s\S]+?<\/\1>/)('closing', /<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)(/tag/g, block._tag)();
+block.html = replace(block.html)('comment', /<!--[\s\S]*?-->/)(
+  'closed',
+  /<(tag)[\s\S]+?<\/\1>/
+)('closing', /<tag(?:"[^"]*"|'[^']*'|[^'">])*?>/)(/tag/g, block._tag)();
 
-block.paragraph = replace(block.paragraph)('hr', block.hr)('heading', block.heading)('lheading', block.lheading)('blockquote', block.blockquote)('tag', '<' + block._tag)('def', block.def)();
+block.paragraph = replace(block.paragraph)('hr', block.hr)(
+  'heading',
+  block.heading
+)('lheading', block.lheading)('blockquote', block.blockquote)(
+  'tag',
+  '<' + block._tag
+)('def', block.def)();
 
 /**
  * Normal Block Grammar
@@ -63,7 +75,10 @@ block.gfm = merge({}, block.normal, {
   paragraph: /^/,
 });
 
-block.gfm.paragraph = replace(block.paragraph)('(?!', '(?!' + block.gfm.fences.source.replace('\\1', '\\2') + '|')();
+block.gfm.paragraph = replace(block.paragraph)(
+  '(?!',
+  '(?!' + block.gfm.fences.source.replace('\\1', '\\2') + '|'
+)();
 
 /**
  * GFM + Tables Block Grammar
@@ -127,20 +142,20 @@ Lexer.prototype.lex = function(src) {
  */
 
 Lexer.prototype.token = function(src, top) {
-  var src = src.replace(/^ +$/gm, '')
-    , next
-    , loose
-    , cap
-    , bull
-    , b
-    , item
-    , space
-    , i
-    , l;
+  var src = src.replace(/^ +$/gm, ''),
+    next,
+    loose,
+    cap,
+    bull,
+    b,
+    item,
+    space,
+    i,
+    l;
 
   while (src) {
     // newline
-    if (cap = this.rules.newline.exec(src)) {
+    if ((cap = this.rules.newline.exec(src))) {
       src = src.substring(cap[0].length);
       if (cap[0].length > 1) {
         this.tokens.push({
@@ -150,20 +165,18 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // code
-    if (cap = this.rules.code.exec(src)) {
+    if ((cap = this.rules.code.exec(src))) {
       src = src.substring(cap[0].length);
       cap = cap[0].replace(/^ {4}/gm, '');
       this.tokens.push({
         type: 'code',
-        text: !this.options.pedantic
-          ? cap.replace(/\n+$/, '')
-          : cap,
+        text: !this.options.pedantic ? cap.replace(/\n+$/, '') : cap,
       });
       continue;
     }
 
     // fences (gfm)
-    if (cap = this.rules.fences.exec(src)) {
+    if ((cap = this.rules.fences.exec(src))) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'code',
@@ -174,7 +187,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // heading
-    if (cap = this.rules.heading.exec(src)) {
+    if ((cap = this.rules.heading.exec(src))) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'heading',
@@ -217,7 +230,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // lheading
-    if (cap = this.rules.lheading.exec(src)) {
+    if ((cap = this.rules.lheading.exec(src))) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'heading',
@@ -228,7 +241,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // hr
-    if (cap = this.rules.hr.exec(src)) {
+    if ((cap = this.rules.hr.exec(src))) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'hr',
@@ -237,7 +250,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // blockquote
-    if (cap = this.rules.blockquote.exec(src)) {
+    if ((cap = this.rules.blockquote.exec(src))) {
       src = src.substring(cap[0].length);
 
       this.tokens.push({
@@ -259,7 +272,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // list
-    if (cap = this.rules.list.exec(src)) {
+    if ((cap = this.rules.list.exec(src))) {
       src = src.substring(cap[0].length);
       bull = cap[2];
 
@@ -295,7 +308,7 @@ Lexer.prototype.token = function(src, top) {
         // Determine whether the next list item belongs here.
         // Backpedal if it does not belong in this list.
         if (this.options.smartLists && i !== l - 1) {
-          b = block.bullet.exec(cap[i+1])[0];
+          b = block.bullet.exec(cap[i + 1])[0];
           if (bull !== b && !(bull.length > 1 && b.length > 1)) {
             src = cap.slice(i + 1).join('\n') + src;
             i = l - 1;
@@ -307,14 +320,12 @@ Lexer.prototype.token = function(src, top) {
         // for discount behavior.
         loose = next || /\n\n(?!\s*$)/.test(item);
         if (i !== l - 1) {
-          next = item[item.length-1] === '\n';
+          next = item[item.length - 1] === '\n';
           if (!loose) loose = next;
         }
 
         this.tokens.push({
-          type: loose
-            ? 'loose_item_start'
-            : 'list_item_start',
+          type: loose ? 'loose_item_start' : 'list_item_start',
         });
 
         // Recurse.
@@ -333,12 +344,10 @@ Lexer.prototype.token = function(src, top) {
     }
 
     // html
-    if (cap = this.rules.html.exec(src)) {
+    if ((cap = this.rules.html.exec(src))) {
       src = src.substring(cap[0].length);
       this.tokens.push({
-        type: this.options.sanitize
-          ? 'paragraph'
-          : 'html',
+        type: this.options.sanitize ? 'paragraph' : 'html',
         pre: cap[1] === 'pre' || cap[1] === 'script',
         text: cap[0],
       });
@@ -394,15 +403,13 @@ Lexer.prototype.token = function(src, top) {
       src = src.substring(cap[0].length);
       this.tokens.push({
         type: 'paragraph',
-        text: cap[1][cap[1].length-1] === '\n'
-          ? cap[1].slice(0, -1)
-          : cap[1],
+        text: cap[1][cap[1].length - 1] === '\n' ? cap[1].slice(0, -1) : cap[1],
       });
       continue;
     }
 
     // text
-    if (cap = this.rules.text.exec(src)) {
+    if ((cap = this.rules.text.exec(src))) {
       // Top-level should never reach here.
       src = src.substring(cap[0].length);
       this.tokens.push({
@@ -413,8 +420,7 @@ Lexer.prototype.token = function(src, top) {
     }
 
     if (src) {
-      throw new
-        Error('Infinite loop on byte: ' + src.charCodeAt(0));
+      throw new Error('Infinite loop on byte: ' + src.charCodeAt(0));
     }
   }
 
@@ -444,7 +450,10 @@ var inline = {
 inline._inside = /(?:\[[^\]]*\]|[^\]]|\](?=[^\[]*\]))*/;
 inline._href = /\s*<?([^\s]*?)>?(?:\s+['"]([\s\S]*?)['"])?\s*/;
 
-inline.link = replace(inline.link)('inside', inline._inside)('href', inline._href)();
+inline.link = replace(inline.link)('inside', inline._inside)(
+  'href',
+  inline._href
+)();
 
 inline.reflink = replace(inline.reflink)('inside', inline._inside)();
 
@@ -493,8 +502,7 @@ function InlineLexer(links, options) {
   this.rules = inline.normal;
 
   if (!this.links) {
-    throw new
-      Error('Tokens array requires a `links` property.');
+    throw new Error('Tokens array requires a `links` property.');
   }
 
   if (this.options.gfm) {
@@ -528,27 +536,21 @@ InlineLexer.output = function(src, links, options) {
  */
 
 InlineLexer.prototype.output = function(src) {
-  var out = []
-    , link
-    , text
-    , href
-    , cap;
+  var out = [], link, text, href, cap;
 
   while (src) {
     // escape
-    if (cap = this.rules.escape.exec(src)) {
+    if ((cap = this.rules.escape.exec(src))) {
       src = src.substring(cap[0].length);
       out.push(cap[1]);
       continue;
     }
 
     // autolink
-    if (cap = this.rules.autolink.exec(src)) {
+    if ((cap = this.rules.autolink.exec(src))) {
       src = src.substring(cap[0].length);
       if (cap[2] === '@') {
-        text = cap[1][6] === ':'
-          ? cap[1].substring(7)
-          : cap[1];
+        text = cap[1][6] === ':' ? cap[1].substring(7) : cap[1];
         href = 'mailto:' + text;
       } else {
         text = cap[1];
@@ -559,7 +561,7 @@ InlineLexer.prototype.output = function(src) {
     }
 
     // url (gfm)
-    if (cap = this.rules.url.exec(src)) {
+    if ((cap = this.rules.url.exec(src))) {
       src = src.substring(cap[0].length);
       text = cap[1];
       href = text;
@@ -568,7 +570,7 @@ InlineLexer.prototype.output = function(src) {
     }
 
     // tag
-    if (cap = this.rules.tag.exec(src)) {
+    if ((cap = this.rules.tag.exec(src))) {
       src = src.substring(cap[0].length);
       // TODO(alpert): Don't escape if sanitize is false
       out.push(cap[0]);
@@ -576,18 +578,22 @@ InlineLexer.prototype.output = function(src) {
     }
 
     // link
-    if (cap = this.rules.link.exec(src)) {
+    if ((cap = this.rules.link.exec(src))) {
       src = src.substring(cap[0].length);
-      out.push(this.outputLink(cap, {
-        href: cap[2],
-        title: cap[3],
-      }));
+      out.push(
+        this.outputLink(cap, {
+          href: cap[2],
+          title: cap[3],
+        })
+      );
       continue;
     }
 
     // reflink, nolink
-    if ((cap = this.rules.reflink.exec(src))
-        || (cap = this.rules.nolink.exec(src))) {
+    if (
+      (cap = this.rules.reflink.exec(src)) ||
+      (cap = this.rules.nolink.exec(src))
+    ) {
       src = src.substring(cap[0].length);
       link = (cap[2] || cap[1]).replace(/\s+/g, ' ');
       link = this.links[link.toLowerCase()];
@@ -601,50 +607,49 @@ InlineLexer.prototype.output = function(src) {
     }
 
     // strong
-    if (cap = this.rules.strong.exec(src)) {
+    if ((cap = this.rules.strong.exec(src))) {
       src = src.substring(cap[0].length);
       out.push(React.DOM.strong(null, this.output(cap[2] || cap[1])));
       continue;
     }
 
     // em
-    if (cap = this.rules.em.exec(src)) {
+    if ((cap = this.rules.em.exec(src))) {
       src = src.substring(cap[0].length);
       out.push(React.DOM.em(null, this.output(cap[2] || cap[1])));
       continue;
     }
 
     // code
-    if (cap = this.rules.code.exec(src)) {
+    if ((cap = this.rules.code.exec(src))) {
       src = src.substring(cap[0].length);
       out.push(React.DOM.code(null, cap[2]));
       continue;
     }
 
     // br
-    if (cap = this.rules.br.exec(src)) {
+    if ((cap = this.rules.br.exec(src))) {
       src = src.substring(cap[0].length);
       out.push(React.DOM.br(null, null));
       continue;
     }
 
     // del (gfm)
-    if (cap = this.rules.del.exec(src)) {
+    if ((cap = this.rules.del.exec(src))) {
       src = src.substring(cap[0].length);
       out.push(React.DOM.del(null, this.output(cap[1])));
       continue;
     }
 
     // text
-    if (cap = this.rules.text.exec(src)) {
+    if ((cap = this.rules.text.exec(src))) {
       src = src.substring(cap[0].length);
       out.push(this.smartypants(cap[0]));
       continue;
     }
 
     if (src) {
-      throw new
-        Error('Infinite loop on byte: ' + src.charCodeAt(0));
+      throw new Error('Infinite loop on byte: ' + src.charCodeAt(0));
     }
   }
 
@@ -659,9 +664,10 @@ InlineLexer.prototype.sanitizeUrl = function(url) {
   if (this.options.sanitize) {
     try {
       var prot = decodeURIComponent(url)
-          .replace(/[^A-Za-z0-9:]/g, '')
-          .toLowerCase();
-      if (prot.indexOf('javascript:') === 0) { // eslint-disable-line
+        .replace(/[^A-Za-z0-9:]/g, '')
+        .toLowerCase();
+      if (prot.indexOf('javascript:') === 0) {
+        // eslint-disable-line
         return '#';
       }
     } catch (e) {
@@ -677,21 +683,26 @@ InlineLexer.prototype.sanitizeUrl = function(url) {
 
 InlineLexer.prototype.outputLink = function(cap, link) {
   if (cap[0][0] !== '!') {
-    var shouldOpenInNewWindow =
-      link.href.charAt(0) !== '/'
-      && link.href.charAt(0) !== '#';
+    var shouldOpenInNewWindow = link.href.charAt(0) !== '/' &&
+      link.href.charAt(0) !== '#';
 
-    return React.DOM.a({
-      href: this.sanitizeUrl(link.href),
-      title: link.title,
-      target: shouldOpenInNewWindow ? '_blank' : '',
-    }, this.output(cap[1]));
+    return React.DOM.a(
+      {
+        href: this.sanitizeUrl(link.href),
+        title: link.title,
+        target: shouldOpenInNewWindow ? '_blank' : '',
+      },
+      this.output(cap[1])
+    );
   } else {
-    return React.DOM.img({
-      src: this.sanitizeUrl(link.href),
-      alt: cap[1],
-      title: link.title,
-    }, null);
+    return React.DOM.img(
+      {
+        src: this.sanitizeUrl(link.href),
+        alt: cap[1],
+        title: link.title,
+      },
+      null
+    );
   }
 };
 
@@ -748,7 +759,7 @@ Parser.prototype.parse = function(src) {
  */
 
 Parser.prototype.next = function() {
-  return this.token = this.tokens.pop();
+  return (this.token = this.tokens.pop());
 };
 
 /**
@@ -756,7 +767,7 @@ Parser.prototype.next = function() {
  */
 
 Parser.prototype.peek = function() {
-  return this.tokens[this.tokens.length-1] || 0;
+  return this.tokens[this.tokens.length - 1] || 0;
 };
 
 /**
@@ -796,23 +807,19 @@ Parser.prototype.tok = function() {
       return <Prism>{this.token.text}</Prism>;
     }
     case 'table': {
-      var table = []
-        , body = []
-        , row = []
-        , heading
-        , i
-        , cells
-        , j;
+      var table = [], body = [], row = [], heading, i, cells, j;
 
       // header
       for (i = 0; i < this.token.header.length; i++) {
         heading = this.inline.output(this.token.header[i]);
-        row.push(React.DOM.th(
-          this.token.align[i]
-            ? {style: {textAlign: this.token.align[i]}}
-            : null,
-          heading
-        ));
+        row.push(
+          React.DOM.th(
+            this.token.align[i]
+              ? {style: {textAlign: this.token.align[i]}}
+              : null,
+            heading
+          )
+        );
       }
       table.push(React.DOM.thead(null, React.DOM.tr(null, row)));
 
@@ -821,12 +828,14 @@ Parser.prototype.tok = function() {
         row = [];
         cells = this.token.cells[i];
         for (j = 0; j < cells.length; j++) {
-          row.push(React.DOM.td(
-            this.token.align[j]
-              ? {style: {textAlign: this.token.align[j]}}
-              : null,
-            this.inline.output(cells[j])
-          ));
+          row.push(
+            React.DOM.td(
+              this.token.align[j]
+                ? {style: {textAlign: this.token.align[j]}}
+                : null,
+              this.inline.output(cells[j])
+            )
+          );
         }
         body.push(React.DOM.tr(null, row));
       }
@@ -844,8 +853,7 @@ Parser.prototype.tok = function() {
       return React.DOM.blockquote(null, body);
     }
     case 'list_start': {
-      var type = this.token.ordered ? 'ol' : 'ul'
-        , body = [];
+      var type = this.token.ordered ? 'ol' : 'ul', body = [];
 
       while (this.next().type !== 'list_end') {
         body.push(this.tok());
@@ -857,9 +865,7 @@ Parser.prototype.tok = function() {
       var body = [];
 
       while (this.next().type !== 'list_item_end') {
-        body.push(this.token.type === 'text'
-          ? this.parseText()
-          : this.tok());
+        body.push(this.token.type === 'text' ? this.parseText() : this.tok());
       }
 
       return React.DOM.li(null, body);
@@ -882,7 +888,10 @@ Parser.prototype.tok = function() {
     }
     case 'paragraph': {
       return this.options.paragraphFn
-        ? this.options.paragraphFn.call(null, this.inline.output(this.token.text))
+        ? this.options.paragraphFn.call(
+            null,
+            this.inline.output(this.token.text)
+          )
         : React.DOM.p(null, this.inline.output(this.token.text));
     }
     case 'text': {
@@ -922,9 +931,7 @@ function noop() {}
 noop.exec = noop;
 
 function merge(obj) {
-  var i = 1
-    , target
-    , key;
+  var i = 1, target, key;
 
   for (; i < arguments.length; i++) {
     target = arguments[i];
@@ -951,10 +958,7 @@ function marked(src, opt, callback) {
 
     if (opt) opt = merge({}, marked.defaults, opt);
 
-    var highlight = opt.highlight
-      , tokens
-      , pending
-      , i = 0;
+    var highlight = opt.highlight, tokens, pending, i = 0;
 
     try {
       tokens = Lexer.lex(src, opt);
@@ -979,9 +983,7 @@ function marked(src, opt, callback) {
 
       opt.highlight = highlight;
 
-      return err
-        ? callback(err)
-        : callback(null, out);
+      return err ? callback(err) : callback(null, out);
     };
 
     if (!highlight || highlight.length < 3) {
@@ -1014,8 +1016,10 @@ function marked(src, opt, callback) {
   } catch (e) {
     e.message += '\nPlease report this to https://github.com/chjj/marked.';
     if ((opt || marked.defaults).silent) {
-      return [React.DOM.p(null, 'An error occurred:'),
-        React.DOM.pre(null, e.message)];
+      return [
+        React.DOM.p(null, 'An error occurred:'),
+        React.DOM.pre(null, e.message),
+      ];
     }
     throw e;
   }
@@ -1025,11 +1029,10 @@ function marked(src, opt, callback) {
  * Options
  */
 
-marked.options =
-marked.setOptions = function(opt) {
+marked.options = (marked.setOptions = function(opt) {
   merge(marked.defaults, opt);
   return marked;
-};
+});
 
 marked.defaults = {
   gfm: true,

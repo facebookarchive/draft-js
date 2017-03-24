@@ -32,7 +32,11 @@ var DocsSidebar = React.createClass({
       var metadata = metadatas[i];
       if (metadata.next) {
         if (!articles[metadata.next]) {
-          throw '`next: ' + metadata.next + '` in ' + metadata.id + ' doesn\'t exist';
+          throw '`next: ' +
+            metadata.next +
+            '` in ' +
+            metadata.id +
+            " doesn't exist";
         }
         previous[articles[metadata.next].id] = metadata.id;
       }
@@ -77,26 +81,31 @@ var DocsSidebar = React.createClass({
   },
 
   render: function() {
-    return <div className="nav-docs">
-      {this.getCategories().map((category) =>
-        <div className="nav-docs-section" key={category.name}>
-          <h3>{category.name}</h3>
-          <ul>
-            {category.links.map((metadata) =>
-              <li key={metadata.id}>
-                <a
-                  target={metadata.permalink.match(/^https?:/) && '_blank'}
-                  style={{marginLeft: metadata.indent ? 20 : 0}}
-                  className={metadata.id === this.props.metadata.id ? 'active' : ''}
-                  href={this.getLink(metadata)}>
-                  {metadata.title}
-                </a>
-              </li>
-            )}
-          </ul>
-        </div>
-      )}
-    </div>;
+    return (
+      <div className="nav-docs">
+        {this.getCategories().map(category => (
+          <div className="nav-docs-section" key={category.name}>
+            <h3>{category.name}</h3>
+            <ul>
+              {category.links.map(metadata => (
+                <li key={metadata.id}>
+                  <a
+                    target={metadata.permalink.match(/^https?:/) && '_blank'}
+                    style={{marginLeft: metadata.indent ? 20 : 0}}
+                    className={
+                      metadata.id === this.props.metadata.id ? 'active' : ''
+                    }
+                    href={this.getLink(metadata)}
+                  >
+                    {metadata.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    );
   },
 });
 

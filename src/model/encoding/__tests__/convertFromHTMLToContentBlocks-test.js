@@ -15,9 +15,7 @@ jest.disableAutomock();
 
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 
-function testConvertingAdjacentHtmlElementsToContentBlocks(
-  tag: string,
-) {
+function testConvertingAdjacentHtmlElementsToContentBlocks(tag: string) {
   it(`must not merge tags when converting adjacent <${tag} />`, () => {
     const html_string = `
       <${tag}>a</${tag}>

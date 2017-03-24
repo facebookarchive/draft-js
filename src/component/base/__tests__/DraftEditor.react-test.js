@@ -12,9 +12,7 @@
 
 'use strict';
 
-jest
-  .unmock('DraftEditor.react')
-  .unmock('generateRandomKey');
+jest.unmock('DraftEditor.react').unmock('generateRandomKey');
 
 var React = require('React');
 var ReactTestUtils = require('ReactTestUtils');
@@ -30,20 +28,16 @@ describe('DraftEditor.react', () => {
 
   describe('Basic rendering', () => {
     it('must has generated editorKey', () => {
-      shallow.render(
-        <DraftEditor />
-      );
-     
+      shallow.render(<DraftEditor />);
+
       var key = shallow._instance._instance.getEditorKey();
       expect(typeof key).toBe('string');
       expect(key.length).toBeGreaterThanOrEqual(4);
     });
 
     it('must has editorKey same as props', () => {
-      shallow.render(
-        <DraftEditor editorKey="hash" />
-      );
-      
+      shallow.render(<DraftEditor editorKey="hash" />);
+
       var key = shallow._instance._instance.getEditorKey();
       expect(key).toBe('hash');
     });

@@ -107,11 +107,10 @@ class DraftEditorLeaf extends React.Component {
   }
 
   shouldComponentUpdate(nextProps: Props): boolean {
-    return (
-      ReactDOM.findDOMNode(this.refs.leaf).textContent !== nextProps.text ||
+    return ReactDOM.findDOMNode(this.refs.leaf).textContent !==
+      nextProps.text ||
       nextProps.styleSet !== this.props.styleSet ||
-      nextProps.forceSelection
-    );
+      nextProps.forceSelection;
   }
 
   componentDidUpdate(): void {
@@ -135,21 +134,27 @@ class DraftEditorLeaf extends React.Component {
     }
 
     const {customStyleMap, customStyleFn, offsetKey, styleSet} = this.props;
-    let styleObj = styleSet.reduce((map, styleName) => {
-      const mergedStyles = {};
-      const style = customStyleMap[styleName];
+    let styleObj = styleSet.reduce(
+      (map, styleName) => {
+        const mergedStyles = {};
+        const style = customStyleMap[styleName];
 
-      if (
-        style !== undefined &&
-        map.textDecoration !== style.textDecoration
-      ) {
-        // .trim() is necessary for IE9/10/11 and Edge
-        mergedStyles.textDecoration =
-          [map.textDecoration, style.textDecoration].join(' ').trim();
-      }
+        if (
+          style !== undefined && map.textDecoration !== style.textDecoration
+        ) {
+          // .trim() is necessary for IE9/10/11 and Edge
+          mergedStyles.textDecoration = [
+            map.textDecoration,
+            style.textDecoration,
+          ]
+            .join(' ')
+            .trim();
+        }
 
-      return Object.assign(map, style, mergedStyles);
-    }, {});
+        return Object.assign(map, style, mergedStyles);
+      },
+      {}
+    );
 
     if (customStyleFn) {
       const newStyles = customStyleFn(styleSet, block);
@@ -157,10 +162,7 @@ class DraftEditorLeaf extends React.Component {
     }
 
     return (
-      <span
-        data-offset-key={offsetKey}
-        ref="leaf"
-        style={styleObj}>
+      <span data-offset-key={offsetKey} ref="leaf" style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>
     );
