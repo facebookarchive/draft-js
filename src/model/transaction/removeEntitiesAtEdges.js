@@ -65,18 +65,35 @@ function removeEntitiesAtEdges(
   });
 }
 
+/**
+ * Given a list of characters and an offset that is in the middle of an entity,
+ * returns the start and end of the entity that is overlapping the offset.
+ * Note: This method requires that the offset be in an entity range.
+ */
 function getRemovalRange(
   characters: List<CharacterMetadata>,
-  key: ?string,
-  offset: number,
-): Object {
+  entityKey: ?string,
+  offset: number
+): ?{
+  start: ?,
+  end: ?,
+  }{
   var removalRange;
+
+  // Iterates through a list looking for ranges of matching items
+  // based on the 'isEqual' callback.
+  // Then instead of returning the result, call the 'found' callback
+  // with each range.
+  // Then filters those ranges based on the 'filter' callback
+  //
+  // Here we use it to find ranges of characters with the same entity key.
   findRangesImmutable(
-    characters,
-    (a, b) => a.getEntity() === b.getEntity(),
-    element => element.getEntity() === key,
-    (start, end) => {
+    characters, // the list to iterate through
+    (a, b) => a.getEntity() === b.getEntity(),    // 'isEqual' callback
+    element => element.getEntity() === entityKey, // 'filter' callback
+    (start, end) => {                             // 'found' callback
       if (start <= offset && end >= offset) {
+        // this entity overlaps the offset index
         removalRange = {start, end};
       }
     },
