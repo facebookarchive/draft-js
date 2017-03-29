@@ -15,6 +15,7 @@
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentStateInlineStyle = require('ContentStateInlineStyle');
+const DraftFeatureFlags = require('DraftFeatureFlags');
 var Immutable = require('immutable');
 
 var applyEntityToContentState = require('applyEntityToContentState');
@@ -138,29 +139,53 @@ var DraftModifier = {
     rangeToRemove: SelectionState,
     removalDirection: DraftRemovalDirection
   ): ContentState {
+    let startKey, endKey, startBlock, endBlock;
+    startKey = removalDirection === 'forward'
+      ? rangeToRemove.getAnchorKey()
+      : rangeToRemove.getFocusKey();
+    endKey = removalDirection === 'forward'
+      ? rangeToRemove.getFocusKey()
+      : rangeToRemove.getAnchorKey();
+    startBlock = contentState.getBlockForKey(startKey);
+    endBlock = contentState.getBlockForKey(endKey);
+    const startOffset = rangeToRemove.getStartOffset();
+    const endOffset = rangeToRemove.getEndOffset();
+
+    const startEntityKey = startBlock.getEntityAt(startOffset);
+    const endEntityKey = endBlock.getEntityAt(endOffset - 1);
+
     // Check whether the selection state overlaps with a single entity.
     // If so, try to remove the appropriate substring of the entity text.
-    if (rangeToRemove.getAnchorKey() === rangeToRemove.getFocusKey()) {
-      var key = rangeToRemove.getAnchorKey();
-      var startOffset = rangeToRemove.getStartOffset();
-      var endOffset = rangeToRemove.getEndOffset();
-      var block = contentState.getBlockForKey(key);
-
-      var startEntity = block.getEntityAt(startOffset);
-      var endEntity = block.getEntityAt(endOffset - 1);
-      if (startEntity && startEntity === endEntity) {
-        var adjustedRemovalRange = getCharacterRemovalRange(
+    if (startKey === endKey) {
+      if (startEntityKey && startEntityKey === endEntityKey) {
+        const adjustedRemovalRange = getCharacterRemovalRange(
           contentState.getEntityMap(),
-          block,
+          startBlock,
+          endBlock,
           rangeToRemove,
-          removalDirection
+          removalDirection,
         );
         return removeRangeFromContentState(contentState, adjustedRemovalRange);
       }
     }
+    let adjustedRemovalRange = rangeToRemove;
+    if (DraftFeatureFlags.draft_segmented_entities_behavior) {
+      // Adjust the selection to properly delete segemented and immutable
+      // entities
+      adjustedRemovalRange = getCharacterRemovalRange(
+        contentState.getEntityMap(),
+        startBlock,
+        endBlock,
+        rangeToRemove,
+        removalDirection,
+      );
+    }
 
-    var withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
-    return removeRangeFromContentState(withoutEntities, rangeToRemove);
+    var withoutEntities = removeEntitiesAtEdges(
+      contentState,
+      adjustedRemovalRange,
+    );
+    return removeRangeFromContentState(withoutEntities, adjustedRemovalRange);
   },
 
   splitBlock: function(
