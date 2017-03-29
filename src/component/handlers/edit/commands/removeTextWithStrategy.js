@@ -26,7 +26,7 @@ import type SelectionState from 'SelectionState';
 function removeTextWithStrategy(
   editorState: EditorState,
   strategy: (editorState: EditorState) => SelectionState,
-  direction: DraftRemovalDirection
+  direction: DraftRemovalDirection,
 ): ContentState {
   var selection = editorState.getSelection();
   var content = editorState.getCurrentContent();

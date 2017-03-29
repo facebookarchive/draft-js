@@ -26,11 +26,11 @@ import type SelectionState from 'SelectionState';
 function insertFragmentIntoContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-  fragment: BlockMap
+  fragment: BlockMap,
 ): ContentState {
   invariant(
     selectionState.isCollapsed(),
-    '`insertFragment` should only be called with a collapsed selection state.'
+    '`insertFragment` should only be called with a collapsed selection state.',
   );
 
   var targetKey = selectionState.getStartKey();
@@ -57,7 +57,7 @@ function insertFragmentIntoContentState(
       characterList: insertIntoList(
         chars,
         pastedBlock.getCharacterList(),
-        targetOffset
+        targetOffset,
       ),
       data: pastedBlock.getData(),
     });
@@ -111,7 +111,7 @@ function insertFragmentIntoContentState(
       fragment.slice(1, fragmentSize - 1).forEach(
         fragmentBlock => {
           newBlockArr.push(fragmentBlock.set('key', generateRandomKey()));
-        }
+        },
       );
 
       // Modify tail portion of block.
@@ -130,7 +130,7 @@ function insertFragmentIntoContentState(
       });
 
       newBlockArr.push(modifiedTail);
-    }
+    },
   );
 
   finalOffset = fragment.last().getLength();

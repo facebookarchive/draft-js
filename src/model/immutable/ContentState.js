@@ -209,7 +209,7 @@ class ContentState extends ContentStateRecord {
           type: 'unstyled',
           characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
         });
-      }
+      },
     );
     return ContentState.createFromBlockArray(blocks);
   }

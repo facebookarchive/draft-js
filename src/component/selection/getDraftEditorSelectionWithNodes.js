@@ -37,7 +37,7 @@ function getDraftEditorSelectionWithNodes(
   anchorNode: Node,
   anchorOffset: number,
   focusNode: Node,
-  focusOffset: number
+  focusOffset: number,
 ): DOMDerivedSelection {
   var anchorIsTextNode = anchorNode.nodeType === Node.TEXT_NODE;
   var focusIsTextNode = focusNode.nodeType === Node.TEXT_NODE;
@@ -52,7 +52,7 @@ function getDraftEditorSelectionWithNodes(
         nullthrows(findAncestorOffsetKey(anchorNode)),
         anchorOffset,
         nullthrows(findAncestorOffsetKey(focusNode)),
-        focusOffset
+        focusOffset,
       ),
       needsRecovery: false,
     };
@@ -111,7 +111,7 @@ function getDraftEditorSelectionWithNodes(
       anchorPoint.key,
       anchorPoint.offset,
       focusPoint.key,
-      focusPoint.offset
+      focusPoint.offset,
     ),
     needsRecovery,
   };
@@ -140,7 +140,7 @@ function getLastLeaf(node: Node): Node {
 function getPointForNonTextNode(
   editorRoot: ?HTMLElement,
   startNode: Node,
-  childOffset: number
+  childOffset: number,
 ): SelectionPoint {
   let node = startNode;
   var offsetKey: ?string = findAncestorOffsetKey(node);
@@ -148,7 +148,7 @@ function getPointForNonTextNode(
   invariant(
     offsetKey != null ||
     editorRoot && (editorRoot === node || editorRoot.firstChild === node),
-    'Unknown node in selection range.'
+    'Unknown node in selection range.',
   );
 
   // If the editorRoot is the selection, step downward into the content
@@ -157,7 +157,7 @@ function getPointForNonTextNode(
     node = node.firstChild;
     invariant(
       node instanceof Element && node.getAttribute('data-contents') === 'true',
-      'Invalid DraftEditorContents structure.'
+      'Invalid DraftEditorContents structure.',
     );
     if (childOffset > 0) {
       childOffset = node.childNodes.length;

@@ -355,8 +355,8 @@ class DraftEditor extends React.Component {
       this.update(
         EditorState.forceSelection(
           editorState,
-          editorState.getSelection()
-        )
+          editorState.getSelection(),
+        ),
       );
     }
   }

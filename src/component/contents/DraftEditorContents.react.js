@@ -161,7 +161,7 @@ class DraftEditorContents extends React.Component {
         );
         className = joinClasses(
           className,
-          getListItemClasses(blockType, depth, shouldResetCount, direction)
+          getListItemClasses(blockType, depth, shouldResetCount, direction),
         );
       }
 
@@ -221,7 +221,7 @@ class DraftEditorContents extends React.Component {
             key: info.key + '-wrap',
             'data-offset-key': info.offsetKey,
           },
-          blocks
+          blocks,
         );
         outputBlocks.push(wrapperElement);
       } else {
@@ -244,7 +244,7 @@ function getListItemClasses(
   type: string,
   depth: number,
   shouldResetCount: boolean,
-  direction: BidiDirection
+  direction: BidiDirection,
 ): string {
   return cx({
     'public/DraftStyleDefault/unorderedListItem':

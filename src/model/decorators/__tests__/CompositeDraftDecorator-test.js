@@ -32,7 +32,7 @@ describe('CompositeDraftDecorator', () => {
         regex,
         function(/*string*/ match, /*number*/ offset) {
           callback(offset, offset + match.length);
-        }
+        },
       );
     };
   }

@@ -31,7 +31,7 @@ describe('DraftEditor.react', () => {
   describe('Basic rendering', () => {
     it('must has generated editorKey', () => {
       shallow.render(
-        <DraftEditor />
+        <DraftEditor />,
       );
      
       var key = shallow._instance._instance.getEditorKey();
@@ -41,7 +41,7 @@ describe('DraftEditor.react', () => {
 
     it('must has editorKey same as props', () => {
       shallow.render(
-        <DraftEditor editorKey="hash" />
+        <DraftEditor editorKey="hash" />,
       );
       
       var key = shallow._instance._instance.getEditorKey();

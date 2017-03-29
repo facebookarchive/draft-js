@@ -54,14 +54,14 @@ function replaceText(
   editorState: EditorState,
   text: string,
   inlineStyle: DraftInlineStyle,
-  entityKey: ?string
+  entityKey: ?string,
 ): EditorState {
   var contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),
     editorState.getSelection(),
     text,
     inlineStyle,
-    entityKey
+    entityKey,
   );
   return EditorState.push(editorState, contentState, 'insert-characters');
 }
@@ -117,9 +117,9 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
         editorState.getCurrentInlineStyle(),
         getEntityKeyForSelection(
           editorState.getCurrentContent(),
-          editorState.getSelection()
-        )
-      )
+          editorState.getSelection(),
+        ),
+      ),
     );
     return;
   }
@@ -131,8 +131,8 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     editorState.getCurrentInlineStyle(),
     getEntityKeyForSelection(
       editorState.getCurrentContent(),
-      editorState.getSelection()
-    )
+      editorState.getSelection(),
+    ),
   );
 
   if (!mayAllowNative) {
@@ -149,7 +149,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   // in which case we would prevent the native character insertion.
   var originalFingerprint = BlockTree.getFingerprint(anchorTree);
   var newFingerprint = BlockTree.getFingerprint(
-    newEditorState.getBlockTree(anchorKey)
+    newEditorState.getBlockTree(anchorKey),
   );
 
   if (

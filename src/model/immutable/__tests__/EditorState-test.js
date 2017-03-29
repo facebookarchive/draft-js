@@ -178,7 +178,7 @@ describe('EditorState', () => {
 
         var contentState = DraftModifier.splitBlock(
           editor.getCurrentContent(),
-          editor.getSelection()
+          editor.getSelection(),
         );
 
         editor = EditorState.push(editor, contentState, 'split-block');
@@ -233,7 +233,7 @@ describe('EditorState', () => {
             focusKey: 'c',
             focusOffset: 3,
             isBackward: false,
-          })
+          }),
         );
         expect(editor.getCurrentInlineStyle()).toBe(NONE);
       });
@@ -287,15 +287,15 @@ describe('EditorState', () => {
 
       // Preserve block trees that had the same decorator list.
       expect(
-        editorState.getBlockTree(boldBlock.getKey())
+        editorState.getBlockTree(boldBlock.getKey()),
       ).toBe(
-        withNewDecorator.getBlockTree(boldBlock.getKey())
+        withNewDecorator.getBlockTree(boldBlock.getKey()),
       );
 
       expect(
-        editorState.getBlockTree(italicBlock.getKey())
+        editorState.getBlockTree(italicBlock.getKey()),
       ).not.toBe(
-        withNewDecorator.getBlockTree(italicBlock.getKey())
+        withNewDecorator.getBlockTree(italicBlock.getKey()),
       );
     });
 

@@ -53,7 +53,7 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
 
   invariant(
     false,
-    'Found an unexpected detached subtree when getting range client rects.'
+    'Found an unexpected detached subtree when getting range client rects.',
   );
 }
 /* eslint-enable consistent-return */

@@ -55,12 +55,12 @@ var DraftModifier = {
     rangeToReplace: SelectionState,
     text: string,
     inlineStyle?: DraftInlineStyle,
-    entityKey?: ?string
+    entityKey?: ?string,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, rangeToReplace);
     var withoutText = removeRangeFromContentState(
       withoutEntities,
-      rangeToReplace
+      rangeToReplace,
     );
 
     var character = CharacterMetadata.create({
@@ -72,7 +72,7 @@ var DraftModifier = {
       withoutText,
       withoutText.getSelectionAfter(),
       text,
-      character
+      character,
     );
   },
 
@@ -81,63 +81,63 @@ var DraftModifier = {
     targetRange: SelectionState,
     text: string,
     inlineStyle?: DraftInlineStyle,
-    entityKey?: ?string
+    entityKey?: ?string,
   ): ContentState {
     invariant(
       targetRange.isCollapsed(),
-      'Target range must be collapsed for `insertText`.'
+      'Target range must be collapsed for `insertText`.',
     );
     return DraftModifier.replaceText(
       contentState,
       targetRange,
       text,
       inlineStyle,
-      entityKey
+      entityKey,
     );
   },
 
   moveText: function(
     contentState: ContentState,
     removalRange: SelectionState,
-    targetRange: SelectionState
+    targetRange: SelectionState,
   ): ContentState {
     var movedFragment = getContentStateFragment(contentState, removalRange);
 
     var afterRemoval = DraftModifier.removeRange(
       contentState,
       removalRange,
-      'backward'
+      'backward',
     );
 
     return DraftModifier.replaceWithFragment(
       afterRemoval,
       targetRange,
-      movedFragment
+      movedFragment,
     );
   },
 
   replaceWithFragment: function(
     contentState: ContentState,
     targetRange: SelectionState,
-    fragment: BlockMap
+    fragment: BlockMap,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
     var withoutText = removeRangeFromContentState(
       withoutEntities,
-      targetRange
+      targetRange,
     );
 
     return insertFragmentIntoContentState(
       withoutText,
       withoutText.getSelectionAfter(),
-      fragment
+      fragment,
     );
   },
 
   removeRange: function(
     contentState: ContentState,
     rangeToRemove: SelectionState,
-    removalDirection: DraftRemovalDirection
+    removalDirection: DraftRemovalDirection,
   ): ContentState {
     let startKey, endKey, startBlock, endBlock;
     startKey = removalDirection === 'forward'
@@ -190,53 +190,53 @@ var DraftModifier = {
 
   splitBlock: function(
     contentState: ContentState,
-    selectionState: SelectionState
+    selectionState: SelectionState,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     var withoutText = removeRangeFromContentState(
       withoutEntities,
-      selectionState
+      selectionState,
     );
 
     return splitBlockInContentState(
       withoutText,
-      withoutText.getSelectionAfter()
+      withoutText.getSelectionAfter(),
     );
   },
 
   applyInlineStyle: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    inlineStyle: string
+    inlineStyle: string,
   ): ContentState {
     return ContentStateInlineStyle.add(
       contentState,
       selectionState,
-      inlineStyle
+      inlineStyle,
     );
   },
 
   removeInlineStyle: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    inlineStyle: string
+    inlineStyle: string,
   ): ContentState {
     return ContentStateInlineStyle.remove(
       contentState,
       selectionState,
-      inlineStyle
+      inlineStyle,
     );
   },
 
   setBlockType: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    blockType: DraftBlockType
+    blockType: DraftBlockType,
   ): ContentState {
     return modifyBlockForContentState(
       contentState,
       selectionState,
-      (block) => block.merge({type: blockType, depth: 0})
+      (block) => block.merge({type: blockType, depth: 0}),
     );
   },
 
@@ -248,7 +248,7 @@ var DraftModifier = {
     return modifyBlockForContentState(
       contentState,
       selectionState,
-      (block) => block.merge({data: blockData})
+      (block) => block.merge({data: blockData}),
     );
   },
 
@@ -260,7 +260,7 @@ var DraftModifier = {
     return modifyBlockForContentState(
       contentState,
       selectionState,
-      (block) => block.merge({data: block.getData().merge(blockData)})
+      (block) => block.merge({data: block.getData().merge(blockData)}),
     );
   },
 
@@ -268,13 +268,13 @@ var DraftModifier = {
   applyEntity: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    entityKey: ?string
+    entityKey: ?string,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     return applyEntityToContentState(
       withoutEntities,
       selectionState,
-      entityKey
+      entityKey,
     );
   },
 };

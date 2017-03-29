@@ -47,7 +47,7 @@ describe('decodeEntityRanges', () => {
           length: 2,
           key: '8',
         },
-      ]
+      ],
     );
     expect(decoded).toEqual([null, null, '6', '6', null, '8', '8', null]);
   });
@@ -66,7 +66,7 @@ describe('decodeEntityRanges', () => {
           length: 2,
           key: '6',
         },
-      ]
+      ],
     );
     expect(decoded).toEqual([null, null, '6', '6', null, '6', '6', null]);
   });
@@ -85,7 +85,7 @@ describe('decodeEntityRanges', () => {
           length: 2,
           key: '8',
         },
-      ]
+      ],
     );
 
     var entities = [

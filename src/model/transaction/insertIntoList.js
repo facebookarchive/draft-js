@@ -20,7 +20,7 @@ import type {List} from 'immutable';
 function insertIntoList<T>(
   targetList: List<T>,
   toInsert: List<T>,
-  offset: number
+  offset: number,
 ): List<T> {
   if (offset === targetList.count()) {
     toInsert.forEach(c => {

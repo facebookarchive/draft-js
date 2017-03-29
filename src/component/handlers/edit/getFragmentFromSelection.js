@@ -26,7 +26,7 @@ function getFragmentFromSelection(editorState: EditorState): ?BlockMap {
 
   return getContentStateFragment(
     editorState.getCurrentContent(),
-    selectionState
+    selectionState,
   );
 }
 

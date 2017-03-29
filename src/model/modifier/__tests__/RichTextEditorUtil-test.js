@@ -39,16 +39,16 @@ describe('RichTextEditorUtil', () => {
     it('does not handle non-zero-offset or non-collapsed selections', () => {
       const nonZero = selectionState.merge({anchorOffset: 2, focusOffset: 2});
       expect(
-        onBackspace(EditorState.forceSelection(editorState, nonZero))
+        onBackspace(EditorState.forceSelection(editorState, nonZero)),
       ).toBe(
-        null
+        null,
       );
 
       const nonCollapsed = nonZero.merge({anchorOffset: 0});
       expect(
-        onBackspace(EditorState.forceSelection(editorState, nonCollapsed))
+        onBackspace(EditorState.forceSelection(editorState, nonCollapsed)),
       ).toBe(
-        null
+        null,
       );
     });
 
@@ -89,9 +89,9 @@ describe('RichTextEditorUtil', () => {
       const blockMap = contentState.getBlockMap();
       expect(blockMap.size).toBe(4);
       expect(
-        blockMap.some((block) => block.getType() === 'atomic')
+        blockMap.some((block) => block.getType() === 'atomic'),
       ).toBe(
-        false
+        false,
       );
     });
   });
@@ -102,16 +102,16 @@ describe('RichTextEditorUtil', () => {
     it('does not handle non-block-end or non-collapsed selections', () => {
       const nonZero = selectionState.merge({anchorOffset: 2, focusOffset: 2});
       expect(
-        onDelete(EditorState.forceSelection(editorState, nonZero))
+        onDelete(EditorState.forceSelection(editorState, nonZero)),
       ).toBe(
-        null
+        null,
       );
 
       const nonCollapsed = nonZero.merge({anchorOffset: 0});
       expect(
-        onDelete(EditorState.forceSelection(editorState, nonCollapsed))
+        onDelete(EditorState.forceSelection(editorState, nonCollapsed)),
       ).toBe(
-        null
+        null,
       );
     });
 
@@ -134,16 +134,16 @@ describe('RichTextEditorUtil', () => {
           anchorOffset: lengthBefore,
           focusKey: keyBefore,
           focusOffset: lengthBefore,
-        })
+        }),
       );
 
       const afterDelete = onDelete(withSelectionAboveAtomic);
       const blockMapAfterDelete = afterDelete.getCurrentContent().getBlockMap();
 
       expect(
-        blockMapAfterDelete.some((block) => block.getType() === 'atomic')
+        blockMapAfterDelete.some((block) => block.getType() === 'atomic'),
       ).toBe(
-        false
+        false,
       );
 
       expect(blockMapAfterDelete.size).toBe(4);

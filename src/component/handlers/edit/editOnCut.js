@@ -63,7 +63,7 @@ function removeFragment(editorState: EditorState): EditorState {
   const newContent = DraftModifier.removeRange(
     editorState.getCurrentContent(),
     editorState.getSelection(),
-    'forward'
+    'forward',
   );
   return EditorState.push(editorState, newContent, 'remove-range');
 }

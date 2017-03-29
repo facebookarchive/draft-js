@@ -88,7 +88,7 @@ var buildDist = function(opts) {
     plugins: [
       new webpackStream.webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(
-          opts.debug ? 'development' : 'production'
+          opts.debug ? 'development' : 'production',
         ),
       }),
       new webpackStream.webpack.optimize.OccurenceOrderPlugin(),
@@ -103,7 +103,7 @@ var buildDist = function(opts) {
           screw_ie8: true,
           warnings: false,
         },
-      })
+      }),
     );
   }
   return webpackStream(webpackOpts, null, function(err, stats) {
@@ -152,7 +152,7 @@ gulp.task('css', function() {
           } else {
             return match;
           }
-        }
+        },
       );
       replaced = replaced.replace(
         // MakeHasteCssVariablesTransform
@@ -167,7 +167,7 @@ gulp.task('css', function() {
           } else {
             throw new Error('Unknown CSS variable ' + name);
           }
-        }
+        },
       );
       file.contents = new Buffer(replaced);
       callback(null, file);

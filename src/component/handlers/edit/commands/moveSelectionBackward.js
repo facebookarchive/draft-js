@@ -25,7 +25,7 @@ import type SelectionState from 'SelectionState';
  */
 function moveSelectionBackward(
   editorState: EditorState,
-  maxDistance: number
+  maxDistance: number,
 ): SelectionState {
   var selection = editorState.getSelection();
   var content = editorState.getCurrentContent();

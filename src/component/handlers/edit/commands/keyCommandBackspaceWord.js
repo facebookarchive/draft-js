@@ -38,10 +38,10 @@ function keyCommandBackspaceWord(editorState: EditorState): EditorState {
       var toRemove = DraftRemovableWord.getBackward(text);
       return moveSelectionBackward(
         strategyState,
-        toRemove.length || 1
+        toRemove.length || 1,
       );
     },
-    'backward'
+    'backward',
   );
 
   if (afterRemoval === editorState.getCurrentContent()) {

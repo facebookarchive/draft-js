@@ -22,7 +22,7 @@ import type SelectionState from 'SelectionState';
 
 function getContentStateFragment(
   contentState: ContentState,
-  selectionState: SelectionState
+  selectionState: SelectionState,
 ): BlockMap {
   var startKey = selectionState.getStartKey();
   var startOffset = selectionState.getStartOffset();
@@ -34,7 +34,7 @@ function getContentStateFragment(
   // preserve entities that are entirely within the selection range.
   var contentWithoutEdgeEntities = removeEntitiesAtEdges(
     contentState,
-    selectionState
+    selectionState,
   );
 
   var blockMap = contentWithoutEdgeEntities.getBlockMap();

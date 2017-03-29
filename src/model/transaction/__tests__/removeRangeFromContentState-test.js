@@ -40,21 +40,21 @@ describe('removeRangeFromContentState', () => {
     expect(block.getType()).toBe(comparison.getType());
     expect(block.getText()).toBe(comparison.getText().slice(start, end));
     expect(
-      getInlineStyles(block)
+      getInlineStyles(block),
     ).toEqual(
-      getInlineStyles(comparison).slice(start, end)
+      getInlineStyles(comparison).slice(start, end),
     );
     expect(
-      getEntities(block)
+      getEntities(block),
     ).toEqual(
-      getEntities(comparison).slice(start, end)
+      getEntities(comparison).slice(start, end),
     );
     checkForCharacterList(block);
   }
 
   it('must return the input ContentState if selection is collapsed', () => {
     expect(
-      removeRangeFromContentState(contentState, selectionState)
+      removeRangeFromContentState(contentState, selectionState),
     ).toBe(contentState);
   });
 
@@ -85,16 +85,16 @@ describe('removeRangeFromContentState', () => {
       expect(alteredBlock.getType()).toBe(originalBlock.getType());
       expect(alteredBlock.getText()).toBe(
         originalBlock.getText().slice(0, 2) +
-        originalBlock.getText().slice(4)
+        originalBlock.getText().slice(4),
       );
 
       var stylesToJS = getInlineStyles(originalBlock);
       expect(getInlineStyles(alteredBlock)).toEqual(
-        stylesToJS.slice(0, 2).concat(stylesToJS.slice(4))
+        stylesToJS.slice(0, 2).concat(stylesToJS.slice(4)),
       );
       var entitiesToJS = getEntities(originalBlock);
       expect(getEntities(alteredBlock)).toEqual(
-        entitiesToJS.slice(0, 2).concat(entitiesToJS.slice(4))
+        entitiesToJS.slice(0, 2).concat(entitiesToJS.slice(4)),
       );
     });
 
@@ -127,7 +127,7 @@ describe('removeRangeFromContentState', () => {
         var blockB = contentState.getBlockMap().skip(1).first();
         var sameContentDifferentType = blockB.set(
           'type',
-          contentState.getBlockMap().first().getType()
+          contentState.getBlockMap().first().getType(),
         );
 
         expectBlockToBeSlice(alteredBlock, sameContentDifferentType, 0);
@@ -149,7 +149,7 @@ describe('removeRangeFromContentState', () => {
         var blockB = contentState.getBlockMap().skip(1).first();
         var sameContentDifferentType = blockB.set(
           'type',
-          contentState.getBlockMap().first().getType()
+          contentState.getBlockMap().first().getType(),
         );
 
         expectBlockToBeSlice(alteredBlock, sameContentDifferentType, 3);
@@ -196,16 +196,16 @@ describe('removeRangeFromContentState', () => {
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
         expect(alteredBlock.getText()).toBe(
           originalBlockA.getText().slice(0, 3) +
-          originalBlockB.getText()
+          originalBlockB.getText(),
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
-          stylesToJS.slice(0, 3).concat(getInlineStyles(originalBlockB))
+          stylesToJS.slice(0, 3).concat(getInlineStyles(originalBlockB)),
         );
         var entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
-          entitiesToJS.slice(0, 3).concat(getEntities(originalBlockB))
+          entitiesToJS.slice(0, 3).concat(getEntities(originalBlockB)),
         );
 
         checkForCharacterList(alteredBlock);
@@ -229,20 +229,20 @@ describe('removeRangeFromContentState', () => {
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
         expect(alteredBlock.getText()).toBe(
           originalBlockA.getText().slice(0, 3) +
-          originalBlockB.getText().slice(3)
+          originalBlockB.getText().slice(3),
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
           stylesToJS.slice(0, 3).concat(
-            getInlineStyles(originalBlockB).slice(3)
-          )
+            getInlineStyles(originalBlockB).slice(3),
+          ),
         );
         var entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
           entitiesToJS.slice(0, 3).concat(
-            getEntities(originalBlockB).slice(3)
-          )
+            getEntities(originalBlockB).slice(3),
+          ),
         );
 
         checkForCharacterList(alteredBlock);
@@ -266,16 +266,16 @@ describe('removeRangeFromContentState', () => {
         expect(alteredBlock).not.toBe(originalBlockB);
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
         expect(alteredBlock.getText()).toBe(
-          originalBlockA.getText().slice(0, 3)
+          originalBlockA.getText().slice(0, 3),
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
-          stylesToJS.slice(0, 3)
+          stylesToJS.slice(0, 3),
         );
         var entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
-          entitiesToJS.slice(0, 3)
+          entitiesToJS.slice(0, 3),
         );
 
         checkForCharacterList(alteredBlock);
@@ -307,16 +307,16 @@ describe('removeRangeFromContentState', () => {
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
         expect(alteredBlock.getText()).toBe(
           originalBlockA.getText() +
-          originalBlockB.getText()
+          originalBlockB.getText(),
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
-          stylesToJS.concat(getInlineStyles(originalBlockB))
+          stylesToJS.concat(getInlineStyles(originalBlockB)),
         );
         var entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
-          entitiesToJS.concat(getEntities(originalBlockB))
+          entitiesToJS.concat(getEntities(originalBlockB)),
         );
 
         checkForCharacterList(alteredBlock);
@@ -340,20 +340,20 @@ describe('removeRangeFromContentState', () => {
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
         expect(alteredBlock.getText()).toBe(
           originalBlockA.getText() +
-          originalBlockB.getText().slice(3)
+          originalBlockB.getText().slice(3),
         );
 
         var stylesToJS = getInlineStyles(originalBlockA);
         expect(getInlineStyles(alteredBlock)).toEqual(
           stylesToJS.concat(
-            getInlineStyles(originalBlockB).slice(3)
-          )
+            getInlineStyles(originalBlockB).slice(3),
+          ),
         );
         var entitiesToJS = getEntities(originalBlockA);
         expect(getEntities(alteredBlock)).toEqual(
           entitiesToJS.concat(
-            getEntities(originalBlockB).slice(3)
-          )
+            getEntities(originalBlockB).slice(3),
+          ),
         );
         checkForCharacterList(alteredBlock);
       });
@@ -406,20 +406,20 @@ describe('removeRangeFromContentState', () => {
       expect(alteredBlock.getType()).toBe(originalBlockA.getType());
       expect(alteredBlock.getText()).toBe(
         originalBlockA.getText().slice(0, 3) +
-        originalBlockC.getText().slice(3)
+        originalBlockC.getText().slice(3),
       );
 
       var stylesToJS = getInlineStyles(originalBlockA);
       expect(getInlineStyles(alteredBlock)).toEqual(
         stylesToJS.slice(0, 3).concat(
-          getInlineStyles(originalBlockC).slice(3)
-        )
+          getInlineStyles(originalBlockC).slice(3),
+        ),
       );
       var entitiesToJS = getEntities(originalBlockA);
       expect(getEntities(alteredBlock)).toEqual(
         entitiesToJS.slice(0, 3).concat(
-          getEntities(originalBlockC).slice(3)
-        )
+          getEntities(originalBlockC).slice(3),
+        ),
       );
 
       checkForCharacterList(alteredBlock);

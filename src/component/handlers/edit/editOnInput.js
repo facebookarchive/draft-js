@@ -155,8 +155,8 @@ function editOnInput(editor: DraftEditor): void {
     EditorState.push(
       editorState,
       contentWithAdjustedDOMSelection,
-      changeType
-    )
+      changeType,
+    ),
   );
 }
 

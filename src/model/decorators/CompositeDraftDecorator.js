@@ -69,7 +69,7 @@ class CompositeDraftDecorator {
           }
         };
         strategy(block, callback, contentState);
-      }
+      },
     );
 
     return List(decorations);
@@ -93,7 +93,7 @@ class CompositeDraftDecorator {
 function canOccupySlice(
   decorations: Array<?string>,
   start: number,
-  end: number
+  end: number,
 ): boolean {
   for (var ii = start; ii < end; ii++) {
     if (decorations[ii] != null) {
@@ -111,7 +111,7 @@ function occupySlice(
   targetArr: Array<?string>,
   start: number,
   end: number,
-  componentKey: string
+  componentKey: string,
 ): void {
   for (var ii = start; ii < end; ii++) {
     targetArr[ii] = componentKey;

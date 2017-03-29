@@ -34,10 +34,10 @@ function keyCommandPlainBackspace(editorState: EditorState): EditorState {
       var charBehind = content.getBlockForKey(key).getText()[offset - 1];
       return moveSelectionBackward(
         strategyState,
-        charBehind ? UnicodeUtils.getUTF16Length(charBehind, 0) : 1
+        charBehind ? UnicodeUtils.getUTF16Length(charBehind, 0) : 1,
       );
     },
-    'backward'
+    'backward',
   );
 
   if (afterRemoval === editorState.getCurrentContent()) {
@@ -48,7 +48,7 @@ function keyCommandPlainBackspace(editorState: EditorState): EditorState {
   return EditorState.push(
     editorState,
     afterRemoval.set('selectionBefore', selection),
-    selection.isCollapsed() ? 'backspace-character' : 'remove-range'
+    selection.isCollapsed() ? 'backspace-character' : 'remove-range',
   );
 }
 

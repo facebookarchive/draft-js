@@ -34,7 +34,7 @@ function getLineHeightPx(element: Element): number {
   
   invariant(
     documentBody,
-    'Unexpected empty document.body.'
+    'Unexpected empty document.body.',
   );
 
   // forced layout here
@@ -59,7 +59,7 @@ function getLineHeightPx(element: Element): number {
  */
 function areRectsOnOneLine(
   rects: Array<ClientRect>,
-  lineHeight: number
+  lineHeight: number,
 ): boolean {
   var minTop = Infinity;
   var minBottom = Infinity;
@@ -114,7 +114,7 @@ function getNodeLength(node: Node): number {
 function expandRangeToStartOfLine(range: Range): Range {
   invariant(
     range.collapsed,
-    'expandRangeToStartOfLine: Provided range is not collapsed.'
+    'expandRangeToStartOfLine: Provided range is not collapsed.',
   );
   range = range.cloneRange();
 
@@ -144,7 +144,7 @@ function expandRangeToStartOfLine(range: Range): Range {
     bestOffset = range.startOffset;
     invariant(
       bestContainer.parentNode,
-      'Found unexpected detached subtree when traversing.'
+      'Found unexpected detached subtree when traversing.',
     );
     range.setStartBefore(bestContainer);
     if (bestContainer.nodeType === 1 &&
