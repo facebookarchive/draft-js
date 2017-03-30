@@ -29,6 +29,7 @@ type Props = {
   blockRendererFn: Function,
   blockStyleFn: (block: ContentBlock) => string,
   editorState: EditorState,
+  textDirectionality?: BidiDirection,
 };
 
 /**
@@ -123,7 +124,10 @@ class DraftEditorContents extends React.Component {
         customEditable = customRenderer.editable;
       }
 
-      const direction = directionMap.get(key);
+      const {textDirectionality} = this.props;
+      const direction = textDirectionality
+        ? textDirectionality
+        : directionMap.get(key);
       const offsetKey = DraftOffsetKey.encode(key, 0, 0);
       const componentProps = {
         contentState: content,

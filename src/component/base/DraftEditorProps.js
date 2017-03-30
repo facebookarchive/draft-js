@@ -12,6 +12,7 @@
 
 'use strict';
 
+import type {BidiDirection} from 'UnicodeBidiDirection';
 import type ContentBlock from 'ContentBlock';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDragType} from 'DraftDragType';
@@ -50,6 +51,10 @@ export type DraftEditorProps = {
   // Specify whether text alignment should be forced in a direction
   // regardless of input characters.
   textAlignment?: DraftTextAlignment,
+
+  // Specify whether text directionality should be forced in a direction
+  // regardless of input characters.
+  textDirectionality?: BidiDirection,
 
   // For a given `ContentBlock` object, return an object that specifies
   // a custom block component and/or props. If no object is returned,
