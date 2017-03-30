@@ -334,14 +334,16 @@ class EditorState {
   }
 
   /**
-   * Push the current ContentState onto the undo stack if it should be
-   * considered a boundary state, and set the provided ContentState as the
-   * new current content.
+   * Set the provided ContentState as the new current content.
+   * The old ContentState is pushed onto the undo stack or not, depending on
+   * the value of boundaryState optional parameter, if it is given, or on
+   * the base of changeType, if it is not.
    */
   static push(
     editorState: EditorState,
     contentState: ContentState,
-    changeType: EditorChangeType
+    changeType: EditorChangeType,
+    boundaryState: ?boolean
   ): EditorState {
     if (editorState.getCurrentContent() === contentState) {
       return editorState;
@@ -369,17 +371,16 @@ class EditorState {
     var undoStack = editorState.getUndoStack();
     var newContent = contentState;
 
-    if (
-      selection !== currentContent.getSelectionAfter() ||
-      mustBecomeBoundary(editorState, changeType)
-    ) {
+
+    if (boundaryState === undefined) {
+      boundaryState = selection !== currentContent.getSelectionAfter() ||
+        mustBecomeBoundary(editorState, changeType);
+    }
+
+    if (boundaryState) {
       undoStack = undoStack.push(currentContent);
       newContent = newContent.set('selectionBefore', selection);
-    } else if (
-      changeType === 'insert-characters' ||
-      changeType === 'backspace-character' ||
-      changeType === 'delete-character'
-    ) {
+    } else {
       // Preserve the previous selection.
       newContent = newContent.set(
         'selectionBefore',

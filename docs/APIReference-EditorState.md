@@ -72,7 +72,7 @@ The list below includes the most commonly used instance methods for `EditorState
   </li>
   <li>
     <a href="#push">
-      <pre>static push(editorState, contentState, changeType): EditorState</pre>
+      <pre>static push(editorState, contentState, changeType, ?boundaryState): EditorState</pre>
     </a>
   </li>
   <li>
@@ -267,12 +267,14 @@ if you need custom configuration not available via the methods above.
 static push(
   editorState: EditorState,
   contentState: ContentState,
-  changeType: EditorChangeType
+  changeType: EditorChangeType,
+  ?boundaryState: boolean
 ): EditorState
 ```
 Returns a new `EditorState` object with the specified `ContentState` applied
-as the new `currentContent`. Based on the `changeType`, this `ContentState`
-may be regarded as a boundary state for undo/redo behavior.
+as the new `currentContent`. Based on `boundaryState`, if given, or on
+the `changeType`, if not, this `ContentState`may be regarded as a boundary
+state for undo/redo behavior.
 
 All content changes must be applied to the EditorState with this method.
 
