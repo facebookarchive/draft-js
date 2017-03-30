@@ -3,3 +3,5 @@ dist/
 docs/
 node_modules/
 website/
+gulpfile.js
+scripts/module-map.js

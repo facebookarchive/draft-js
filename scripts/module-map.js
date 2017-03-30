@@ -18,5 +18,5 @@ module.exports = Object.assign(
     reactComponentExpect: 'react-dom/lib/reactComponentExpect',
   },
   require('fbjs/module-map'),
-  require('fbjs-scripts/third-party-module-map'),
+  require('fbjs-scripts/third-party-module-map')
 );
