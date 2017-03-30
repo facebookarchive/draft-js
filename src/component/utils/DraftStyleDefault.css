@@ -36,8 +36,7 @@
 /**
  * Default spacing for list container elements. Override with CSS as needed.
  */
-.public/DraftStyleDefault/ul,
-.public/DraftStyleDefault/ol {
+.public/DraftStyleDefault/list {
   margin: 16px 0;
   padding: 0;
 }
