@@ -22,7 +22,7 @@ var {List} = Immutable;
 
 function createCharacterList(
   inlineStyles: Array<DraftInlineStyle>,
-  entities: Array<?string>
+  entities: Array<?string>,
 ): List<CharacterMetadata> {
   var characterArray = inlineStyles.map((style, ii) => {
     var entity = entities[ii];

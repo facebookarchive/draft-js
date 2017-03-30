@@ -67,7 +67,7 @@ class DraftEditorBlock extends React.Component {
       (
         isBlockOnSelectionEdge(
           nextProps.selection,
-          nextProps.block.getKey()
+          nextProps.block.getKey(),
         ) &&
         nextProps.forceSelection
       )
@@ -106,7 +106,7 @@ class DraftEditorBlock extends React.Component {
       if (scrollDelta > 0) {
         window.scrollTo(
           scrollPosition.x,
-          scrollPosition.y + scrollDelta + SCROLL_BUFFER
+          scrollPosition.y + scrollDelta + SCROLL_BUFFER,
         );
       }
     } else {
@@ -116,7 +116,7 @@ class DraftEditorBlock extends React.Component {
       if (scrollDelta > 0) {
         Scroll.setTop(
           scrollParent,
-          Scroll.getTop(scrollParent) + scrollDelta + SCROLL_BUFFER
+          Scroll.getTop(scrollParent) + scrollDelta + SCROLL_BUFFER,
         );
       }
     }
@@ -173,7 +173,7 @@ class DraftEditorBlock extends React.Component {
       var decoratorOffsetKey = DraftOffsetKey.encode(blockKey, ii, 0);
       var decoratedText = text.slice(
         leavesForLeafSet.first().get('start'),
-        leavesForLeafSet.last().get('end')
+        leavesForLeafSet.last().get('end'),
       );
 
       // Resetting dir to the same value on a child node makes Chrome/Firefox
@@ -219,7 +219,7 @@ class DraftEditorBlock extends React.Component {
  */
 function isBlockOnSelectionEdge(
   selection: SelectionState,
-  key: string
+  key: string,
 ): boolean {
   return (
     selection.getAnchorKey() === key ||

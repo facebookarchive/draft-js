@@ -20,7 +20,7 @@ import type DraftEntityInstance from 'DraftEntityInstance';
 
 function addEntityToContentState(
   contentState: ContentState,
-  instance: DraftEntityInstance
+  instance: DraftEntityInstance,
 ): ContentState {
   return contentState.set(
     'entityMap',

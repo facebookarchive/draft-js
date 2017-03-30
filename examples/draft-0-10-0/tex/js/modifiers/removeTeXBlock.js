@@ -31,7 +31,7 @@ export function removeTeXBlock(editorState, blockKey) {
   var resetBlock = Modifier.setBlockType(
     withoutTeX,
     withoutTeX.getSelectionAfter(),
-    'unstyled'
+    'unstyled',
   );
 
   var newState = EditorState.push(editorState, resetBlock, 'remove-range');

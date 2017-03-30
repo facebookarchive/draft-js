@@ -46,7 +46,7 @@ describe('decodeInlineStyleRanges', function() {
     };
     var decoded = decodeInlineStyleRanges(
       block.text,
-      block.inlineStyleRanges
+      block.inlineStyleRanges,
     );
     areEqual(decoded, Array(block.text.length).fill(BOLD));
   });
@@ -63,7 +63,7 @@ describe('decodeInlineStyleRanges', function() {
     };
     var decoded = decodeInlineStyleRanges(
       block.text,
-      block.inlineStyleRanges
+      block.inlineStyleRanges,
     );
     areEqual(decoded, [
       BOLD_UNDERLINE,
@@ -85,7 +85,7 @@ describe('decodeInlineStyleRanges', function() {
 
     var decoded = decodeInlineStyleRanges(
       block.text,
-      block.inlineStyleRanges
+      block.inlineStyleRanges,
     );
 
     areEqual(decoded, [

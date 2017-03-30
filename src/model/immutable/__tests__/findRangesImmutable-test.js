@@ -25,7 +25,7 @@ describe('findRangesImmutable', () => {
       Immutable.List(),
       returnTrue,
       returnTrue,
-      cb
+      cb,
     );
     expect(cb.mock.calls.length).toBe(0);
   });
@@ -48,7 +48,7 @@ describe('findRangesImmutable', () => {
         list,
         areEqual, // never equal
         returnTrue,
-        cb
+        cb,
       );
       var calls = cb.mock.calls;
       expect(calls.length).toBe(5);
@@ -65,7 +65,7 @@ describe('findRangesImmutable', () => {
         list,
         returnTrue,
         () => false, // never an accepted filter result
-        cb
+        cb,
       );
       var calls = cb.mock.calls;
       expect(calls.length).toBe(0);
@@ -81,7 +81,7 @@ describe('findRangesImmutable', () => {
         list,
         (a, b) => a === b,
         returnTrue,
-        cb
+        cb,
       );
       var calls = cb.mock.calls;
       expect(calls.length).toBe(4);

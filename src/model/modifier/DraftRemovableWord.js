@@ -43,7 +43,7 @@ var BACKSPACE_REGEX = new RegExp(BACKSPACE_STRING);
 
 function getRemovableWord(
   text: string,
-  isBackward: boolean
+  isBackward: boolean,
 ): string {
   var matches = isBackward ?
     BACKSPACE_REGEX.exec(text) :

@@ -64,17 +64,17 @@ describe('DraftPasteProcessor', function() {
 
   function assertDepths(blocks, comparison) {
     expect(
-      blocks.map(b => b.getDepth())
+      blocks.map(b => b.getDepth()),
     ).toEqual(
-      comparison
+      comparison,
     );
   }
 
   function assertBlockTypes(blocks, comparison) {
     expect(
-      blocks.map(b => b.getType())
+      blocks.map(b => b.getType()),
     ).toEqual(
-      comparison
+      comparison,
     );
   }
 
@@ -297,7 +297,7 @@ describe('DraftPasteProcessor', function() {
     assertBlockTypes(output, ['unstyled']);
     assertEntities(
       output[0],
-      Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false))
+      Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false)),
     );
     expect(output[0].getText()).toBe('This is a link, yep.');
     var entityId = output[0].getCharacterList().get(12).getEntity();
@@ -311,11 +311,11 @@ describe('DraftPasteProcessor', function() {
     assertBlockTypes(output, ['unstyled']);
     assertInlineStyles(
       output[0],
-      Array(2).fill([]).concat(Array(4).fill(['ITALIC']), Array(11).fill([]))
+      Array(2).fill([]).concat(Array(4).fill(['ITALIC']), Array(11).fill([])),
     );
     assertEntities(
       output[0],
-      Array(2).fill(false).concat(Array(9).fill(true), Array(6).fill(false))
+      Array(2).fill(false).concat(Array(9).fill(true), Array(6).fill(false)),
     );
     expect(output[0].getText()).toBe('A cool link, yep.');
   });
@@ -345,7 +345,7 @@ describe('DraftPasteProcessor', function() {
     assertBlockTypes(output, ['unstyled']);
     assertEntities(
       output[0],
-      Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false))
+      Array(10).fill(false).concat(Array(4).fill(true), Array(6).fill(false)),
     );
     expect(output[0].getText()).toBe('This is a link, yep.');
     var entityId = output[0].getCharacterList().get(12).getEntity();

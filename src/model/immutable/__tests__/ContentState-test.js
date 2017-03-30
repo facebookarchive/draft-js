@@ -50,7 +50,7 @@ describe('ContentState', () => {
 
   function getSample(textBlocks) {
     return getSampleFromConfig(
-      getConfigForText(textBlocks)
+      getConfigForText(textBlocks),
     );
   }
 

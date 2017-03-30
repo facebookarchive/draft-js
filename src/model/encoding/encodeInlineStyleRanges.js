@@ -32,7 +32,7 @@ var EMPTY_ARRAY = [];
 function getEncodedInlinesForType(
   block: ContentBlock,
   styleList: List<DraftInlineStyle>,
-  styleToEncode: string
+  styleToEncode: string,
 ): Array<InlineStyleRange> {
   var ranges = [];
 
@@ -53,7 +53,7 @@ function getEncodedInlinesForType(
         length: UnicodeUtils.strlen(text.slice(start, end)),
         style: styleToEncode,
       });
-    }
+    },
   );
 
   return ranges;
@@ -64,7 +64,7 @@ function getEncodedInlinesForType(
  * treated separately.
  */
 function encodeInlineStyleRanges(
-  block: ContentBlock
+  block: ContentBlock,
 ): Array<InlineStyleRange> {
   var styleList = block.getCharacterList().map(c => c.getStyle()).toList();
   var ranges = styleList

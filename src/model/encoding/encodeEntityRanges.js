@@ -26,7 +26,7 @@ var {strlen} = UnicodeUtils;
  */
 function encodeEntityRanges(
   block: ContentBlock,
-  storageMap: Object
+  storageMap: Object,
 ): Array<EntityRange> {
   var encoded = [];
   block.findEntityRanges(
@@ -40,7 +40,7 @@ function encodeEntityRanges(
         // Encode the key as a number for range storage.
         key: Number(storageMap[DraftStringKey.stringify(key)]),
       });
-    }
+    },
   );
   return encoded;
 }

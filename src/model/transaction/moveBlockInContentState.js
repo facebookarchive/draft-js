@@ -23,16 +23,16 @@ function moveBlockInContentState(
   contentState: ContentState,
   blockToBeMoved: ContentBlock,
   targetBlock: ContentBlock,
-  insertionMode: DraftInsertionType
+  insertionMode: DraftInsertionType,
 ): ContentState {
   invariant(
     blockToBeMoved.getKey() !== targetBlock.getKey(),
-    'Block cannot be moved next to itself.'
+    'Block cannot be moved next to itself.',
   );
 
   invariant(
     insertionMode !== 'replace',
-    'Replacing blocks is not supported.'
+    'Replacing blocks is not supported.',
   );
 
   const targetKey = targetBlock.getKey();
@@ -49,22 +49,22 @@ function moveBlockInContentState(
   if (insertionMode === 'before') {
     invariant(
       (!blockBefore) || blockBefore.getKey() !== blockToBeMoved.getKey(),
-      'Block cannot be moved next to itself.'
+      'Block cannot be moved next to itself.',
     );
 
     newBlocks = blocksBefore.concat(
       [[blockToBeMoved.getKey(), blockToBeMoved], [targetBlock.getKey(), targetBlock]],
-      blocksAfter
+      blocksAfter,
     ).toOrderedMap();
   } else if (insertionMode === 'after') {
     invariant(
       (!blockAfter) || blockAfter.getKey() !== blockToBeMoved.getKey(),
-      'Block cannot be moved next to itself.'
+      'Block cannot be moved next to itself.',
     );
 
     newBlocks = blocksBefore.concat(
       [[targetBlock.getKey(), targetBlock], [blockToBeMoved.getKey(), blockToBeMoved]],
-      blocksAfter
+      blocksAfter,
     ).toOrderedMap();
   }
 

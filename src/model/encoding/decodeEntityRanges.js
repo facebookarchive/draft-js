@@ -22,7 +22,7 @@ var {substr} = UnicodeUtils;
  */
 function decodeEntityRanges(
   text: string,
-  ranges: Array<Object>
+  ranges: Array<Object>,
 ): Array<?string> {
   var entities = Array(text.length).fill(null);
   if (ranges) {
@@ -35,7 +35,7 @@ function decodeEntityRanges(
         for (var ii = start; ii < end; ii++) {
           entities[ii] = range.key;
         }
-      }
+      },
     );
   }
   return entities;

@@ -94,28 +94,28 @@ describe('CharacterMetadata', () => {
       expect(CharacterMetadata.create()).toBe(empty);
       expect(CharacterMetadata.create({style: BOLD})).toBe(withStyle);
       expect(
-        CharacterMetadata.create({style: BOLD_ITALIC})
+        CharacterMetadata.create({style: BOLD_ITALIC}),
       ).toBe(
-        withTwoStyles
+        withTwoStyles,
       );
       expect(CharacterMetadata.create({entity: '1234'})).toBe(withEntity);
       expect(
-        CharacterMetadata.create({entity: '1234', style: BOLD})
+        CharacterMetadata.create({entity: '1234', style: BOLD}),
       ).toBe(
-        withStyleAndEntity
+        withStyleAndEntity,
       );
     });
 
     it('must reuse objects by defaulting config properties', () => {
       expect(
-        CharacterMetadata.create({style: BOLD, entity: null})
+        CharacterMetadata.create({style: BOLD, entity: null}),
       ).toBe(
-        withStyle
+        withStyle,
       );
       expect(
-        CharacterMetadata.create({style: NONE, entity: '1234'})
+        CharacterMetadata.create({style: NONE, entity: '1234'}),
       ).toBe(
-        withEntity
+        withEntity,
       );
 
       var underlined = CharacterMetadata.create({
@@ -124,9 +124,9 @@ describe('CharacterMetadata', () => {
       });
 
       expect(
-        CharacterMetadata.create({style: UNDERLINE})
+        CharacterMetadata.create({style: UNDERLINE}),
       ).toBe(
-        underlined
+        underlined,
       );
     });
   });

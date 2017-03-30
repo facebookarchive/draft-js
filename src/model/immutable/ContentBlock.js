@@ -91,13 +91,13 @@ class ContentBlock extends ContentBlockRecord {
    */
   findStyleRanges(
     filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void
+    callback: (start: number, end: number) => void,
   ): void {
     findRangesImmutable(
       this.getCharacterList(),
       haveEqualStyle,
       filterFn,
-      callback
+      callback,
     );
   }
 
@@ -106,27 +106,27 @@ class ContentBlock extends ContentBlockRecord {
    */
   findEntityRanges(
     filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void
+    callback: (start: number, end: number) => void,
   ): void {
     findRangesImmutable(
       this.getCharacterList(),
       haveEqualEntity,
       filterFn,
-      callback
+      callback,
     );
   }
 }
 
 function haveEqualStyle(
   charA: CharacterMetadata,
-  charB: CharacterMetadata
+  charB: CharacterMetadata,
 ): boolean {
   return charA.getStyle() === charB.getStyle();
 }
 
 function haveEqualEntity(
   charA: CharacterMetadata,
-  charB: CharacterMetadata
+  charB: CharacterMetadata,
 ): boolean {
   return charA.getEntity() === charB.getEntity();
 }

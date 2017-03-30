@@ -25,7 +25,7 @@ import type SelectionState from 'SelectionState';
  */
 function moveSelectionForward(
   editorState: EditorState,
-  maxDistance: number
+  maxDistance: number,
 ): SelectionState {
   var selection = editorState.getSelection();
   var key = selection.getStartKey();
