@@ -16,6 +16,7 @@ const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 const SelectionState = require('SelectionState');
+const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 
@@ -82,17 +83,31 @@ describe('RichTextEditorUtil', () => {
       expect(lastBlockNow.getText()).toBe('');
     });
 
-    it('removes a preceding atomic block', () => {
-      const withAtomicBlock = insertAtomicBlock(editorState);
-      const afterBackspace = onBackspace(withAtomicBlock);
-      const contentState = afterBackspace.getCurrentContent();
-      const blockMap = contentState.getBlockMap();
-      expect(blockMap.size).toBe(4);
-      expect(
-        blockMap.some((block) => block.getType() === 'atomic')
-      ).toBe(
-        false
-      );
+    it('removes a preceding or current atomic block', () => {
+      const withPrecedingAtomicBlock = insertAtomicBlock(editorState);
+      const withCurrentAtomicBlock = createFigureAtomicBlock(editorState);
+      [withPrecedingAtomicBlock, withCurrentAtomicBlock].forEach(editorState => {
+        const afterBackspace = onBackspace(editorState);
+        const contentState = afterBackspace.getCurrentContent();
+        const blockMap = contentState.getBlockMap();
+        expect(blockMap.size).toBe(4);
+        expect(
+          blockMap.some((block) => block.getType() === 'atomic')
+        ).toBe(
+          false
+        );
+      });
+      function createFigureAtomicBlock(editorState) {
+        const figureBlock = convertFromHTMLToContentBlocks(
+          '<figure><img src="1.jpg" /></figure>'
+        ).contentBlocks[0];
+        const content = editorState.getCurrentContent();
+        const entityKey = figureBlock.getKey();
+        const blockMap = content.getBlockMap().set(entityKey, figureBlock);
+        const selectionAfter = SelectionState.createEmpty(entityKey);
+        const newContent = content.merge({blockMap, selectionAfter});
+        return EditorState.push(editorState, newContent, 'apply-entity');
+      }
     });
   });
 

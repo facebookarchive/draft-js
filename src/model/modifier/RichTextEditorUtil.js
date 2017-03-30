@@ -13,6 +13,7 @@
 
 'use strict';
 
+const ContentBlock = require('ContentBlock');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
@@ -114,16 +115,29 @@ const RichTextEditorUtil = {
       return null;
     }
 
-    // First, try to remove a preceding atomic block.
     var content = editorState.getCurrentContent();
     var startKey = selection.getStartKey();
-    var blockBefore = content.getBlockBefore(startKey);
 
+    // First, try to remove a preceding atomic block.
+    var blockBefore = content.getBlockBefore(startKey);
     if (blockBefore && blockBefore.getType() === 'atomic') {
       const blockMap = content.getBlockMap().delete(blockBefore.getKey());
-      var withoutAtomicBlock = content.merge({blockMap, selectionAfter: selection});
+      const withoutAtomicBlock = content.merge({blockMap, selectionAfter: selection});
       if (withoutAtomicBlock !== content) {
         return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');
+      }
+    }
+
+    // or a current atomic block
+    if (RichTextEditorUtil.getCurrentBlockType(editorState) === 'atomic') {
+      const blockMap = content.getBlockMap()
+      .set(
+        startKey,
+        new ContentBlock().merge({key: startKey})
+      );
+      const withoutAtomicBlock = content.merge({blockMap, selectionAfter: selection});
+      if (withoutAtomicBlock !== content) {
+        return EditorState.push(editorState, withoutAtomicBlock, 'apply-entity');
       }
     }
 
