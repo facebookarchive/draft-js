@@ -81,7 +81,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     editor._pendingStateFromBeforeInput = undefined;
   }
 
-  var editorState = editor._latestEditorState;
+  const editorState = editor._latestEditorState;
 
   var chars = e.data;
 

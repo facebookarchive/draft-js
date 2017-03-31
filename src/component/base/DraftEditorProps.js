@@ -107,7 +107,10 @@ export type DraftEditorProps = {
 
   // Useful for managing special behavior for pressing the `Return` key. E.g.
   // removing the style from an empty list item.
-  handleReturn?: (e: SyntheticKeyboardEvent) => DraftHandleValue,
+  handleReturn?: (
+    e: SyntheticKeyboardEvent,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
   // Map a key command string provided by your key binding function to a
   // specified behavior.
@@ -121,9 +124,16 @@ export type DraftEditorProps = {
   // to trigger some special behavior. E.g. immediately converting `:)` to an
   // emoji Unicode character, or replacing ASCII quote characters with smart
   // quotes.
-  handleBeforeInput?: (chars: string) => DraftHandleValue,
+  handleBeforeInput?: (
+    chars: string,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
-  handlePastedText?: (text: string, html?: string) => DraftHandleValue,
+  handlePastedText?: (
+    text: string,
+    html?: string,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
   handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
 
