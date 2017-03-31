@@ -154,7 +154,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
   // Allow components higher up the tree to handle the command first.
   if (
     editor.props.handleKeyCommand &&
-    isEventHandled(editor.props.handleKeyCommand(command))
+    isEventHandled(editor.props.handleKeyCommand(command, editorState))
   ) {
     return;
   }

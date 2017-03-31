@@ -81,6 +81,8 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     editor._pendingStateFromBeforeInput = undefined;
   }
 
+  var editorState = editor._latestEditorState;
+
   var chars = e.data;
 
   // In some cases (ex: IE ideographic space insertion) no character data
@@ -96,7 +98,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   // start of the block.
   if (
     editor.props.handleBeforeInput &&
-    isEventHandled(editor.props.handleBeforeInput(chars))
+    isEventHandled(editor.props.handleBeforeInput(chars, editorState))
   ) {
     e.preventDefault();
     return;
@@ -105,7 +107,6 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   // If selection is collapsed, conditionally allow native behavior. This
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
-  var editorState = editor._latestEditorState;
   var selection = editorState.getSelection();
 
   if (!selection.isCollapsed()) {

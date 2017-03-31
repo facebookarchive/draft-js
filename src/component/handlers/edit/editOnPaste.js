@@ -90,10 +90,11 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   let textBlocks: Array<string> = [];
   const text = data.getText();
   const html = data.getHTML();
+  const editorState = editor._latestEditorState;
 
   if (
     editor.props.handlePastedText &&
-    isEventHandled(editor.props.handlePastedText(text, html))
+    isEventHandled(editor.props.handlePastedText(text, html, editorState))
   ) {
     return;
   }
@@ -169,7 +170,6 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   }
 
   if (textBlocks.length) {
-    var editorState = editor._latestEditorState;
     var character = CharacterMetadata.create({
       style: editorState.getCurrentInlineStyle(),
       entity: getEntityKeyForSelection(

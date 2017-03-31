@@ -111,7 +111,10 @@ export type DraftEditorProps = {
 
   // Map a key command string provided by your key binding function to a
   // specified behavior.
-  handleKeyCommand?: (command: DraftEditorCommand | string) => DraftHandleValue,
+  handleKeyCommand?: (
+    command: DraftEditorCommand | string,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be
   // useful in cases where the user has entered characters that you would like
