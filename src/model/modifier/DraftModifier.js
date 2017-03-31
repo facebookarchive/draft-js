@@ -140,12 +140,17 @@ var DraftModifier = {
     removalDirection: DraftRemovalDirection,
   ): ContentState {
     let startKey, endKey, startBlock, endBlock;
-    startKey = removalDirection === 'forward'
-      ? rangeToRemove.getAnchorKey()
-      : rangeToRemove.getFocusKey();
-    endKey = removalDirection === 'forward'
-      ? rangeToRemove.getFocusKey()
-      : rangeToRemove.getAnchorKey();
+    if (rangeToRemove.getIsBackward()) {
+      rangeToRemove = rangeToRemove.merge({
+        anchorKey: rangeToRemove.getFocusKey(),
+        anchorOffset: rangeToRemove.getFocusOffset(),
+        focusKey: rangeToRemove.getAnchorKey(),
+        focusOffset: rangeToRemove.getAnchorOffset(),
+        isBackward: false,
+      });
+    }
+    startKey = rangeToRemove.getAnchorKey();
+    endKey = rangeToRemove.getFocusKey();
     startBlock = contentState.getBlockForKey(startKey);
     endBlock = contentState.getBlockForKey(endKey);
     const startOffset = rangeToRemove.getStartOffset();
