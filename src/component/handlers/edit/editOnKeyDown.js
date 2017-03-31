@@ -94,7 +94,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
       // no special handling is performed, fall through to command handling.
       if (
         editor.props.handleReturn &&
-        isEventHandled(editor.props.handleReturn(e))
+        isEventHandled(editor.props.handleReturn(e, editorState))
       ) {
         return;
       }
