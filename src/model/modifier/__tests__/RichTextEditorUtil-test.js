@@ -23,7 +23,11 @@ describe('RichTextEditorUtil', () => {
   const {editorState, selectionState} = getSampleStateForTesting();
 
   function insertAtomicBlock(targetEditorState) {
-    const entityKey = 'foo';
+    const entityKey = targetEditorState.getCurrentContent().createEntity(
+      'TEST',
+      'IMMUTABLE',
+      null,
+    ).getLastCreatedEntityKey();
     const character = ' ';
     const movedSelection = EditorState.moveSelectionToEnd(targetEditorState);
     return AtomicBlockUtils.insertAtomicBlock(
