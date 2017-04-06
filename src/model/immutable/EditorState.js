@@ -440,7 +440,7 @@ class EditorState {
       inlineStyleOverride: null,
       lastChangeType: 'undo',
       nativelyRenderedContent: null,
-      selection: currentContent.getSelectionBefore(),
+      selection: currentContent.getSelectionBefore().set('hasFocus', true),
     });
   }
 
