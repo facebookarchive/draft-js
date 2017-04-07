@@ -166,7 +166,11 @@ describe('EditorState', () => {
         editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
 
-        editor = RichTextEditorUtil.onTab({ preventDefault: () => {} }, editor, 1);
+        editor = RichTextEditorUtil.onTab(
+          { preventDefault: () => {} },
+          editor,
+          1,
+        );
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
       });
 

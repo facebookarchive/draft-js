@@ -390,7 +390,11 @@ class EditorState {
     let inlineStyleOverride = editorState.getInlineStyleOverride();
 
     // Don't discard inline style overrides for the following change types:
-    var overrideChangeTypes = ['adjust-depth', 'change-block-type', 'split-block'];
+    var overrideChangeTypes = [
+      'adjust-depth',
+      'change-block-type',
+      'split-block',
+    ];
 
     if (overrideChangeTypes.indexOf(changeType) === -1) {
       inlineStyleOverride = null;
@@ -535,7 +539,10 @@ function regenerateTreeForNewBlocks(
   newEntityMap: EntityMap,
   decorator?: ?DraftDecoratorType,
 ): OrderedMap<string, List<any>> {
-  const contentState = editorState.getCurrentContent().set('entityMap', newEntityMap);
+  const contentState = editorState.getCurrentContent().set(
+    'entityMap',
+    newEntityMap,
+  );
   var prevBlockMap = contentState.getBlockMap();
   var prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(

@@ -484,7 +484,10 @@ function genFragment(
       entityId = undefined;
     }
 
-    const { chunk: generatedChunk, entityMap: maybeUpdatedEntityMap } = genFragment(
+    const {
+      chunk: generatedChunk,
+      entityMap: maybeUpdatedEntityMap,
+    } = genFragment(
       newEntityMap,
       child,
       inlineStyle,
@@ -614,7 +617,12 @@ function convertFromHTMLtoContentBlocks(
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
   // TODO: replace DraftEntity with an OrderedMap here
-  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, DraftEntity);
+  var chunkData = getChunkForHTML(
+    html,
+    DOMBuilder,
+    blockRenderMap,
+    DraftEntity,
+  );
 
   if (chunkData == null) {
     return null;

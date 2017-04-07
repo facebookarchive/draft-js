@@ -13,14 +13,19 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
+import type {BidiDirection} from 'UnicodeBidiDirection';
+import type ContentBlock from 'ContentBlock';
+import type ContentState from 'ContentState';
+import type {DraftDecoratorType} from 'DraftDecoratorType';
+import type {List} from 'immutable';
+import type SelectionState from 'SelectionState';
+
 const DraftEditorLeaf = require('DraftEditorLeaf.react');
 const DraftOffsetKey = require('DraftOffsetKey');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
-const SelectionState = require('SelectionState');
+
 const Style = require('Style');
 const UnicodeBidi = require('UnicodeBidi');
 const UnicodeBidiDirection = require('UnicodeBidiDirection');
@@ -29,11 +34,8 @@ const cx = require('cx');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
+const invariant = require('invariant');
 const nullthrows = require('nullthrows');
-
-import type {BidiDirection} from 'UnicodeBidiDirection';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type {List} from 'immutable';
 
 const SCROLL_BUFFER = 10;
 
@@ -110,6 +112,11 @@ class DraftEditorBlock extends React.Component {
         );
       }
     } else {
+      invariant(blockNode, 'Missing blockNode');
+      invariant(
+        blockNode instanceof HTMLElement,
+        'blockNode is not an HTMLElement',
+      );
       var blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
       var scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
