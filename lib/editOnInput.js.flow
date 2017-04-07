@@ -12,15 +12,15 @@
 
 'use strict';
 
-var DraftModifier = require('DraftModifier');
-var DraftOffsetKey = require('DraftOffsetKey');
-var EditorState = require('EditorState');
-var UserAgent = require('UserAgent');
+var DraftModifier = require('./DraftModifier');
+var DraftOffsetKey = require('./DraftOffsetKey');
+var EditorState = require('./EditorState');
+var UserAgent = require('fbjs/lib/UserAgent');
 
-var findAncestorOffsetKey = require('findAncestorOffsetKey');
-var nullthrows = require('nullthrows');
+var findAncestorOffsetKey = require('./findAncestorOffsetKey');
+var nullthrows = require('fbjs/lib/nullthrows');
 
-import type DraftEditor from 'DraftEditor.react';
+import type DraftEditor from './DraftEditor.react';
 
 var isGecko = UserAgent.isEngine('Gecko');
 var isAndroid = UserAgent.isPlatform('Android');
@@ -47,7 +47,7 @@ function editOnInput(editor: DraftEditor): void {
 
   var domSelection = global.getSelection();
 
-  var {anchorNode, isCollapsed} = domSelection;
+  var { anchorNode, isCollapsed } = domSelection;
   if (anchorNode.nodeType !== Node.TEXT_NODE && anchorNode.nodeType !== Node.ELEMENT_NODE) {
     return;
   }
@@ -55,11 +55,9 @@ function editOnInput(editor: DraftEditor): void {
   var domText = anchorNode.textContent;
   var editorState = editor._latestEditorState;
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
-  var {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
+  var { blockKey, decoratorKey, leafKey } = DraftOffsetKey.decode(offsetKey);
 
-  var {start, end} = editorState
-    .getBlockTree(blockKey)
-    .getIn([decoratorKey, 'leaves', leafKey]);
+  var { start, end } = editorState.getBlockTree(blockKey).getIn([decoratorKey, 'leaves', leafKey]);
 
   var content = editorState.getCurrentContent();
   var block = content.getBlockForKey(blockKey);
@@ -84,7 +82,7 @@ function editOnInput(editor: DraftEditor): void {
   var targetRange = selection.merge({
     anchorOffset: start,
     focusOffset: end,
-    isBackward: false,
+    isBackward: false
   });
 
   const entityKey = block.getEntityAt(start);
@@ -98,13 +96,7 @@ function editOnInput(editor: DraftEditor): void {
   // native browser undo.
   const changeType = preserveEntity ? 'spellcheck-change' : 'apply-entity';
 
-  const newContent = DraftModifier.replaceText(
-    content,
-    targetRange,
-    domText,
-    block.getInlineStyleAt(start),
-    preserveEntity ? block.getEntityAt(start) : null,
-  );
+  const newContent = DraftModifier.replaceText(content, targetRange, domText, block.getInlineStyleAt(start), preserveEntity ? block.getEntityAt(start) : null);
 
   var anchorOffset, focusOffset, startOffset, endOffset;
 
@@ -136,16 +128,10 @@ function editOnInput(editor: DraftEditor): void {
   // after the change, so we are not merging the selection.
   var contentWithAdjustedDOMSelection = newContent.merge({
     selectionBefore: content.getSelectionAfter(),
-    selectionAfter: selection.merge({anchorOffset, focusOffset}),
+    selectionAfter: selection.merge({ anchorOffset, focusOffset })
   });
 
-  editor.update(
-    EditorState.push(
-      editorState,
-      contentWithAdjustedDOMSelection,
-      changeType
-    )
-  );
+  editor.update(EditorState.push(editorState, contentWithAdjustedDOMSelection, changeType));
 }
 
 module.exports = editOnInput;
