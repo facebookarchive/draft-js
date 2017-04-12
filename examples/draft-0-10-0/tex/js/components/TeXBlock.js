@@ -32,7 +32,7 @@ class KatexOutput extends React.Component {
       katex.render(
         this.props.content,
         this.refs.container,
-        {displayMode: true}
+        {displayMode: true},
       );
     }, 0);
   }

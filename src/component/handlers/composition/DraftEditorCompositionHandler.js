@@ -148,7 +148,7 @@ var DraftEditorCompositionHandler = {
     const currentStyle = editorState.getCurrentInlineStyle();
     const entityKey = getEntityKeyForSelection(
       editorState.getCurrentContent(),
-      editorState.getSelection()
+      editorState.getSelection(),
     );
 
     const mustReset = (
@@ -188,14 +188,14 @@ var DraftEditorCompositionHandler = {
         selection,
         composedChars,
         currentStyle,
-        entityKey
+        entityKey,
       );
       editor.update(
         EditorState.push(
           editorState,
           contentState,
-          'insert-characters'
-        )
+          'insert-characters',
+        ),
       );
       return;
     }
@@ -205,7 +205,7 @@ var DraftEditorCompositionHandler = {
         EditorState.set(editorState, {
           nativelyRenderedContent: null,
           forceSelection: true,
-        })
+        }),
       );
     }
   },

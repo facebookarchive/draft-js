@@ -36,10 +36,10 @@ function keyCommandDeleteWord(editorState: EditorState): EditorState {
       // If there are no words in front of the cursor, remove the newline.
       return moveSelectionForward(
         strategyState,
-        toRemove.length || 1
+        toRemove.length || 1,
       );
     },
-    'forward'
+    'forward',
   );
 
   if (afterRemoval === editorState.getCurrentContent()) {

@@ -32,7 +32,7 @@ function setDraftEditorSelection(
   node: Node,
   blockKey: string,
   nodeStart: number,
-  nodeEnd: number
+  nodeEnd: number,
 ): void {
   // It's possible that the editor has been removed from the DOM but
   // our selection code doesn't know it yet. Forcing selection in
@@ -123,7 +123,7 @@ function setDraftEditorSelection(
 function addFocusToSelection(
   selection: Object,
   node: Node,
-  offset: number
+  offset: number,
 ): void {
   if (selection.extend && containsNode(getActiveElement(), node)) {
     // If `extend` is called while another element has focus, an error is
@@ -147,7 +147,7 @@ function addFocusToSelection(
 function addPointToSelection(
   selection: Object,
   node: Node,
-  offset: number
+  offset: number,
 ): void {
   var range = document.createRange();
   range.setStart(node, offset);

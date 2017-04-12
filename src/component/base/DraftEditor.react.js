@@ -57,7 +57,7 @@ const handlerMap = {
 };
 
 type State = {
-  containerKey: number,
+  contentsKey: number,
 };
 
 /**
@@ -132,7 +132,7 @@ class DraftEditor extends React.Component {
     this._clipboard = null;
     this._handler = null;
     this._dragCount = 0;
-    this._editorKey = generateRandomKey();
+    this._editorKey = props.editorKey || generateRandomKey();
     this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
     this._latestEditorState = props.editorState;
 
@@ -171,7 +171,7 @@ class DraftEditor extends React.Component {
     this.onDragLeave = this._onDragLeave.bind(this);
 
     // See `_restoreEditorDOM()`.
-    this.state = {containerKey: 0};
+    this.state = {contentsKey: 0};
   }
 
   /**
@@ -230,7 +230,6 @@ class DraftEditor extends React.Component {
         {this._renderPlaceholder()}
         <div
           className={cx('DraftEditor/editorContainer')}
-          key={'editor' + this.state.containerKey}
           ref="editorContainer">
           <div
             aria-activedescendant={
@@ -244,6 +243,9 @@ class DraftEditor extends React.Component {
             aria-haspopup={readOnly ? null : this.props.ariaHasPopup}
             aria-label={this.props.ariaLabel}
             aria-owns={readOnly ? null : this.props.ariaOwneeID}
+            autoCapitalize={this.props.autoCapitalize}
+            autoComplete={this.props.autoComplete}
+            autoCorrect={this.props.autoCorrect}
             className={cx('public/DraftEditor/content')}
             contentEditable={!readOnly}
             data-testid={this.props.webDriverTestID}
@@ -283,6 +285,8 @@ class DraftEditor extends React.Component {
               customStyleFn={this.props.customStyleFn}
               editorKey={this._editorKey}
               editorState={this.props.editorState}
+              key={'contents' + this.state.contentsKey}
+              textDirectionality={this.props.textDirectionality}
             />
           </div>
         </div>
@@ -355,8 +359,8 @@ class DraftEditor extends React.Component {
       this.update(
         EditorState.forceSelection(
           editorState,
-          editorState.getSelection()
-        )
+          editorState.getSelection(),
+        ),
       );
     }
   }
@@ -383,13 +387,14 @@ class DraftEditor extends React.Component {
   /**
    * Used via `this.restoreEditorDOM()`.
    *
-   * Force a complete re-render of the editor based on the current EditorState.
-   * This is useful when we know we are going to lose control of the DOM
-   * state (cut command, IME) and we want to make sure that reconciliation
-   * occurs on a version of the DOM that is synchronized with our EditorState.
+   * Force a complete re-render of the DraftEditorContents based on the current
+   * EditorState. This is useful when we know we are going to lose control of
+   * the DOM state (cut command, IME) and we want to make sure that
+   * reconciliation occurs on a version of the DOM that is synchronized with
+   * our EditorState.
    */
   _restoreEditorDOM(scrollPosition?: DraftScrollPosition): void {
-    this.setState({containerKey: this.state.containerKey + 1}, () => {
+    this.setState({contentsKey: this.state.contentsKey + 1}, () => {
       this._focus(scrollPosition);
     });
   }

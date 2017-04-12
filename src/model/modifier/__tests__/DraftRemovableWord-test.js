@@ -82,7 +82,7 @@ describe('DraftRemovableWord', function() {
     expect(forward('|' + english)).toBe('|' + match);
     expect(forward('^' + english)).toBe('^' + match);
     expect(forward('\u060d\uFD3e\uFD3F' + english)).toBe(
-      '\u060d\uFD3e\uFD3F' + match
+      '\u060d\uFD3e\uFD3F' + match,
     );
     expect(forward('.. .. ..' + english)).toBe('.. .. ..' + match);
   });
@@ -121,7 +121,7 @@ describe('DraftRemovableWord', function() {
     expect(backward(english + '|')).toBe(match + '|');
     expect(backward(english + '^')).toBe(match + '^');
     expect(backward(english + '\u060d\uFD3e\uFD3F')).toBe(
-      match + '\u060d\uFD3e\uFD3F'
+      match + '\u060d\uFD3e\uFD3F',
     );
     expect(backward(english + '.. .. ..')).toBe(match + '.. .. ..');
   });

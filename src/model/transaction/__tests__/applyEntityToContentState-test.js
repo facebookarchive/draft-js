@@ -44,13 +44,13 @@ describe('applyEntityToContentState', () => {
       var withNewEntity = applyEntityToContentState(
         contentState,
         targetSelection,
-        entityKey
+        entityKey,
       );
       var first = withNewEntity.getBlockMap().first();
 
       checkForCharacterList(first);
       expect(getEntities(first)).toEqual(
-        Immutable.Repeat(entityKey, first.getLength()).toArray()
+        Immutable.Repeat(entityKey, first.getLength()).toArray(),
       );
     }
 
@@ -79,18 +79,18 @@ describe('applyEntityToContentState', () => {
       var withNewEntity = applyEntityToContentState(
         contentState,
         targetSelection,
-        entityKey
+        entityKey,
       );
       var first = withNewEntity.getBlockMap().first();
       var last = withNewEntity.getBlockAfter(first.getKey());
 
       checkForCharacterList(first);
       expect(getEntities(first)).toEqual(
-        Immutable.Repeat(entityKey, first.getLength()).toArray()
+        Immutable.Repeat(entityKey, first.getLength()).toArray(),
       );
       checkForCharacterList(last);
       expect(getEntities(last)).toEqual(
-        Immutable.Repeat(entityKey, last.getLength()).toArray()
+        Immutable.Repeat(entityKey, last.getLength()).toArray(),
       );
     }
 

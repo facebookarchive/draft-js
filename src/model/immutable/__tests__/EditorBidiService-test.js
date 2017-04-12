@@ -54,14 +54,14 @@ describe('EditorBidiService', () => {
     var state = getContentState([ltr]);
     var directions = EditorBidiService.getDirectionMap(state);
     expect(
-      directions.keySeq().toArray()
+      directions.keySeq().toArray(),
     ).toEqual(
-      ['a']
+      ['a'],
     );
     expect(
-      directions.valueSeq().toArray()
+      directions.valueSeq().toArray(),
     ).toEqual(
-      [LTR]
+      [LTR],
     );
   });
 
@@ -72,7 +72,7 @@ describe('EditorBidiService', () => {
     var nextState = getContentState([ltr]);
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
     );
 
     expect(state).not.toBe(nextState);
@@ -92,7 +92,7 @@ describe('EditorBidiService', () => {
     var nextState = getContentState([newLTR]);
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
     );
 
     expect(state).not.toBe(nextState);
@@ -112,7 +112,7 @@ describe('EditorBidiService', () => {
     var nextState = getContentState([newLTR]);
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
     );
 
     expect(state).not.toBe(nextState);
@@ -131,21 +131,21 @@ describe('EditorBidiService', () => {
     var nextState = getContentState([newLTR]);
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
     );
 
     expect(state).not.toBe(nextState);
     expect(directions).not.toBe(nextDirections);
 
     expect(
-      nextDirections.keySeq().toArray()
+      nextDirections.keySeq().toArray(),
     ).toEqual(
-      ['asdf']
+      ['asdf'],
     );
     expect(
-      nextDirections.valueSeq().toArray()
+      nextDirections.valueSeq().toArray(),
     ).toEqual(
-      [LTR]
+      [LTR],
     );
   });
 
@@ -154,23 +154,23 @@ describe('EditorBidiService', () => {
     var directions = EditorBidiService.getDirectionMap(state);
 
     expect(
-      directions.valueSeq().toArray()
+      directions.valueSeq().toArray(),
     ).toEqual(
-      [LTR, LTR]
+      [LTR, LTR],
     );
 
     var nextState = getContentState([ltr, rtl]);
     var nextDirections = EditorBidiService.getDirectionMap(
       nextState,
-      directions
+      directions,
     );
 
     expect(state).not.toBe(nextState);
     expect(directions).not.toBe(nextDirections);
     expect(
-      nextDirections.valueSeq().toArray()
+      nextDirections.valueSeq().toArray(),
     ).toEqual(
-      [LTR, RTL]
+      [LTR, RTL],
     );
   });
 });

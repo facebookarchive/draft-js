@@ -27,7 +27,7 @@ import type URI from 'URI';
 
 const RichTextEditorUtil = {
   currentBlockContainsLink: function(
-    editorState: EditorState
+    editorState: EditorState,
   ): boolean {
     var selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
@@ -85,18 +85,18 @@ const RichTextEditorUtil = {
       editorState.getSelection(),
       '\n',
       editorState.getCurrentInlineStyle(),
-      null
+      null,
     );
 
     var newEditorState = EditorState.push(
       editorState,
       contentState,
-      'insert-characters'
+      'insert-characters',
     );
 
     return EditorState.forceSelection(
       newEditorState,
-      contentState.getSelectionAfter()
+      contentState.getSelectionAfter(),
     );
   },
 
@@ -129,14 +129,14 @@ const RichTextEditorUtil = {
 
     // If that doesn't succeed, try to remove the current block style.
     var withoutBlockStyle = RichTextEditorUtil.tryToRemoveBlockStyle(
-      editorState
+      editorState,
     );
 
     if (withoutBlockStyle) {
       return EditorState.push(
         editorState,
         withoutBlockStyle,
-        'change-block-type'
+        'change-block-type',
       );
     }
 
@@ -173,14 +173,14 @@ const RichTextEditorUtil = {
     const withoutAtomicBlock = DraftModifier.removeRange(
       content,
       atomicBlockTarget,
-      'forward'
+      'forward',
     );
 
     if (withoutAtomicBlock !== content) {
       return EditorState.push(
         editorState,
         withoutAtomicBlock,
-        'remove-range'
+        'remove-range',
       );
     }
 
@@ -190,7 +190,7 @@ const RichTextEditorUtil = {
   onTab: function(
     event: SyntheticKeyboardEvent,
     editorState: EditorState,
-    maxDepth: number
+    maxDepth: number,
   ): EditorState {
     var selection = editorState.getSelection();
     var key = selection.getAnchorKey();
@@ -233,19 +233,19 @@ const RichTextEditorUtil = {
       content,
       selection,
       event.shiftKey ? -1 : 1,
-      maxDepth
+      maxDepth,
     );
 
     return EditorState.push(
       editorState,
       withAdjustment,
-      'adjust-depth'
+      'adjust-depth',
     );
   },
 
   toggleBlockType: function(
     editorState: EditorState,
-    blockType: DraftBlockType
+    blockType: DraftBlockType,
   ): EditorState {
     var selection = editorState.getSelection();
     var startKey = selection.getStartKey();
@@ -286,7 +286,7 @@ const RichTextEditorUtil = {
     return EditorState.push(
       editorState,
       DraftModifier.setBlockType(content, target, typeToSet),
-      'change-block-type'
+      'change-block-type',
     );
   },
 
@@ -310,7 +310,7 @@ const RichTextEditorUtil = {
    */
   toggleInlineStyle: function(
     editorState: EditorState,
-    inlineStyle: string
+    inlineStyle: string,
   ): EditorState {
     var selection = editorState.getSelection();
     var currentStyle = editorState.getCurrentInlineStyle();
@@ -351,25 +351,25 @@ const RichTextEditorUtil = {
     return EditorState.push(
       editorState,
       newContent,
-      'change-inline-style'
+      'change-inline-style',
     );
   },
 
   toggleLink: function(
     editorState: EditorState,
     targetSelection: SelectionState,
-    entityKey: ?string
+    entityKey: ?string,
   ): EditorState {
     var withoutLink = DraftModifier.applyEntity(
       editorState.getCurrentContent(),
       targetSelection,
-      entityKey
+      entityKey,
     );
 
     return EditorState.push(
       editorState,
       withoutLink,
-      'apply-entity'
+      'apply-entity',
     );
   },
 

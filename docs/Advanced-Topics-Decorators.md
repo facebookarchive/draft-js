@@ -18,7 +18,7 @@ offers a live example of decorators in action.
 ## CompositeDecorator
 
 The decorator concept is based on scanning the contents of a given
-[ContentBlock](/draft-js/docs/api-reference-content-block.html)
+[ContentBlock](/docs/api-reference-content-block.html)
 for ranges of text that match a defined strategy, then rendering them
 with a specified React component.
 

@@ -52,7 +52,7 @@ var SecondaryClipboard = {
     var afterRemoval = DraftModifier.removeRange(
       content,
       targetRange,
-      'forward'
+      'forward',
     );
 
     if (afterRemoval === content) {
@@ -70,7 +70,7 @@ var SecondaryClipboard = {
     var newContent = DraftModifier.replaceWithFragment(
       editorState.getCurrentContent(),
       editorState.getSelection(),
-      clipboard
+      clipboard,
     );
 
     return EditorState.push(editorState, newContent, 'insert-fragment');

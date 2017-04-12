@@ -35,7 +35,7 @@ describe('ContentBlock', () => {
         CharacterMetadata.EMPTY,
         CharacterMetadata.EMPTY,
         CharacterMetadata.create({style: BOLD}),
-        CharacterMetadata.create({entity: ENTITY_KEY})
+        CharacterMetadata.create({entity: ENTITY_KEY}),
       ),
     });
   }
@@ -46,7 +46,7 @@ describe('ContentBlock', () => {
       expect(block.getType()).toBe('unstyled');
       expect(block.getText()).toBe('');
       expect(
-        Immutable.is(block.getCharacterList(), Immutable.List())
+        Immutable.is(block.getCharacterList(), Immutable.List()),
       ).toBe(true);
     });
 

@@ -24,7 +24,7 @@ function getUpdatedSelectionState(
   anchorKey: string,
   anchorOffset: number,
   focusKey: string,
-  focusOffset: number
+  focusOffset: number,
 ): SelectionState {
   var selection: SelectionState = nullthrows(editorState.getSelection());
   if (__DEV__) {
@@ -33,7 +33,7 @@ function getUpdatedSelectionState(
       console.warn(
         'Invalid selection state.',
         arguments,
-        editorState.toJS()
+        editorState.toJS(),
       );
       /*eslint-enable no-console */
       return selection;

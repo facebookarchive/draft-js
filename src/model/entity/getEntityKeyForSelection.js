@@ -24,7 +24,7 @@ import type {EntityMap} from 'EntityMap';
  */
 function getEntityKeyForSelection(
   contentState: ContentState,
-  targetSelection: SelectionState
+  targetSelection: SelectionState,
 ): ?string {
   var entityKey;
 
@@ -55,7 +55,7 @@ function getEntityKeyForSelection(
  */
 function filterKey(
   entityMap: EntityMap,
-  entityKey: ?string
+  entityKey: ?string,
 ): ?string {
   if (entityKey) {
     var entity = entityMap.__get(entityKey);

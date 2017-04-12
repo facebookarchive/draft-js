@@ -8,7 +8,7 @@
     "react",
     "richtext"
   ],
-  "homepage": "https://facebook.github.io/draft-js",
+  "homepage": "http://draftjs.org/",
   "bugs": "https://github.com/facebook/draft-js/issues",
   "files": [
     "dist/",

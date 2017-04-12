@@ -21,5 +21,5 @@ import ReactDOM from 'react-dom';
 
 ReactDOM.render(
   <TeXEditorExample />,
-  document.getElementById('target')
+  document.getElementById('target'),
 );

@@ -34,12 +34,12 @@ const {
 const DraftPasteProcessor = {
   processHTML(
     html: string,
-    blockRenderMap?: DraftBlockRenderMap
+    blockRenderMap?: DraftBlockRenderMap,
   ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
     return convertFromHTMLtoContentBlocks(
       html,
       getSafeBodyFromHTML,
-      blockRenderMap
+      blockRenderMap,
     );
   },
 
@@ -56,7 +56,7 @@ const DraftPasteProcessor = {
           text: textLine,
           characterList: List(Repeat(character, textLine.length)),
         });
-      }
+      },
     );
   },
 };

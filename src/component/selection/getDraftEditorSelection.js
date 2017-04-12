@@ -24,7 +24,7 @@ import type EditorState from 'EditorState';
  */
 function getDraftEditorSelection(
   editorState: EditorState,
-  root: HTMLElement
+  root: HTMLElement,
 ): DOMDerivedSelection {
   var selection = global.getSelection();
 
@@ -42,7 +42,7 @@ function getDraftEditorSelection(
     selection.anchorNode,
     selection.anchorOffset,
     selection.focusNode,
-    selection.focusOffset
+    selection.focusOffset,
   );
 }
 

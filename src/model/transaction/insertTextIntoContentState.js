@@ -28,11 +28,11 @@ function insertTextIntoContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   text: string,
-  characterMetadata: CharacterMetadata
+  characterMetadata: CharacterMetadata,
 ): ContentState {
   invariant(
     selectionState.isCollapsed(),
-    '`insertText` should only be called with a collapsed range.'
+    '`insertText` should only be called with a collapsed range.',
   );
 
   var len = text.length;
@@ -55,7 +55,7 @@ function insertTextIntoContentState(
     characterList: insertIntoList(
       block.getCharacterList(),
       Repeat(characterMetadata, len).toList(),
-      offset
+      offset,
     ),
   });
 

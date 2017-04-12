@@ -7,4 +7,4 @@ next: api-reference-data-conversion
 permalink: docs/api-reference-composite-decorator.html
 ---
 
-See the [advanced topic article on Decorators](/draft-js/docs/advanced-topics-decorators.html#compositedecorator).
+See the [advanced topic article on Decorators](/docs/advanced-topics-decorators.html#compositedecorator).
