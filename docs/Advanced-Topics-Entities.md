@@ -67,11 +67,11 @@ const contentState = editorState.getCurrentContent();
 const contentStateWithEntity = contentState.createEntity(
   'LINK',
   'MUTABLE',
-  {href: 'http://www.zombo.com'}
+  {url: 'http://www.zombo.com'}
 );
 const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 const contentStateWithLink = Modifier.applyEntity(
-  contentState,
+  contentStateWithEntity,
   selectionState,
   entityKey
 );
