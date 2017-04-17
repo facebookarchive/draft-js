@@ -25,8 +25,7 @@ issue
 .)</p><p>Using <a href="/docs/advanced-topics-decorators.html" target="">decorators</a> or
 <a href="/docs/advanced-topics-block-components.html" target="">custom block components</a>, you can
 add rich rendering to your editor based on entity metadata.</p><h2><a class="anchor" name="creating-and-retrieving-entities"></a>Creating and Retrieving Entities <a class="hash-link" href="#creating-and-retrieving-entities">#</a></h2><p>Entities should be created using <code>contentState.createEntity</code>, which accepts the
-three properties above as arguments. This method returns a string key, which can
-then be used to refer to the entity.</p><p>This key is the value that should be used when applying entities to your
+three properties above as arguments. This method returns a new <code>ContentState</code> record updated to include the newly created entity, then you can call <code>contentState.getLastCreatedEntityKey</code> to get the key of the newly created entity record.</p><p>This key is the value that should be used when applying entities to your
 content. For instance, the <code>Modifier</code> module contains an <code>applyEntity</code> method:</p><pre class="prism language-javascript">const contentState <span class="token operator">=</span> editorState<span class="token punctuation">.</span><span class="token function">getCurrentContent<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 const contentStateWithEntity <span class="token operator">=</span> contentState<span class="token punctuation">.</span><span class="token function">createEntity<span class="token punctuation">(</span></span>
   <span class="token string">&#x27;LINK&#x27;</span><span class="token punctuation">,</span>
