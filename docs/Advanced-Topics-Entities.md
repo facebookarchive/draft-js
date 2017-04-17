@@ -56,8 +56,7 @@ add rich rendering to your editor based on entity metadata.
 ## Creating and Retrieving Entities
 
 Entities should be created using `contentState.createEntity`, which accepts the
-three properties above as arguments. This method returns a string key, which can
-then be used to refer to the entity.
+three properties above as arguments. This method returns a new `ContentState` record updated to include the newly created entity, then you can call `contentState.getLastCreatedEntityKey` to get the key of the newly created entity record.
 
 This key is the value that should be used when applying entities to your
 content. For instance, the `Modifier` module contains an `applyEntity` method:
