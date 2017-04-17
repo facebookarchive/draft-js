@@ -86,7 +86,7 @@ const blockWithLinkAtBeginning = contentState.getBlockForKey('...');
 const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
 const contentState = editorState.getCurrentContent();
 const linkInstance = contentState.getEntity(linkKey);
-const {href} = linkInstance.getData();
+const {url} = linkInstance.getData();
 ```
 ## "Mutability"
 
