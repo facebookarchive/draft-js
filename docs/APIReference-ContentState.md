@@ -340,7 +340,7 @@ createEntity(
   data?: Object
 ): ContentState
 ```
-Returns new `ContentState` record updated to include the newly created
+Returns `ContentState` record updated to include the newly created
 DraftEntity record in it's `EntityMap`. Call `getLastCreatedEntityKey` to get
 the key of the newly created `DraftEntity` record.
 
