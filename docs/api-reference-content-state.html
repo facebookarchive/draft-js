@@ -168,7 +168,7 @@ objects to track the entity for annotated characters.</p><h3><a class="anchor" n
   type<span class="token punctuation">:</span> DraftEntityType<span class="token punctuation">,</span>
   mutability<span class="token punctuation">:</span> DraftEntityMutability<span class="token punctuation">,</span>
   data<span class="token operator">?</span><span class="token punctuation">:</span> Object
-<span class="token punctuation">)</span><span class="token punctuation">:</span> ContentState</pre><p>Returns new <code>ContentState</code> record updated to include the newly created
+<span class="token punctuation">)</span><span class="token punctuation">:</span> ContentState</pre><p>Returns <code>ContentState</code> record updated to include the newly created
 DraftEntity record in it&#x27;s <code>EntityMap</code>. Call <code>getLastCreatedEntityKey</code> to get
 the key of the newly created <code>DraftEntity</code> record.</p><h3><a class="anchor" name="getentity"></a>getEntity <a class="hash-link" href="#getentity">#</a></h3><pre class="prism language-javascript"><span class="token function">getEntity<span class="token punctuation">(</span></span>key<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> DraftEntityInstance</pre><p>Returns the DraftEntityInstance for the specified key. Throws if no instance exists for that key.</p><h3><a class="anchor" name="mergeentitydata"></a>mergeEntityData <a class="hash-link" href="#mergeentitydata">#</a></h3><pre class="prism language-javascript"><span class="token function">mergeEntityData<span class="token punctuation">(</span></span>
   key<span class="token punctuation">:</span> string<span class="token punctuation">,</span>
