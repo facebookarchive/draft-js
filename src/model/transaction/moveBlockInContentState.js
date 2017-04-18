@@ -40,9 +40,15 @@ function moveBlockInContentState(
   const blockAfter = contentState.getBlockAfter(targetKey);
 
   const blockMap = contentState.getBlockMap();
-  const blockMapWithoutBlockToBeMoved = blockMap.delete(blockToBeMoved.getKey());
-  const blocksBefore = blockMapWithoutBlockToBeMoved.toSeq().takeUntil(v => v === targetBlock);
-  const blocksAfter = blockMapWithoutBlockToBeMoved.toSeq().skipUntil(v => v === targetBlock).skip(1);
+  const blockMapWithoutBlockToBeMoved = blockMap.delete(
+    blockToBeMoved.getKey(),
+  );
+  const blocksBefore = blockMapWithoutBlockToBeMoved.toSeq().takeUntil(
+    v => v === targetBlock,
+  );
+  const blocksAfter = blockMapWithoutBlockToBeMoved.toSeq().skipUntil(
+    v => v === targetBlock,
+  ).skip(1);
 
   let newBlocks;
 
@@ -53,7 +59,10 @@ function moveBlockInContentState(
     );
 
     newBlocks = blocksBefore.concat(
-      [[blockToBeMoved.getKey(), blockToBeMoved], [targetBlock.getKey(), targetBlock]],
+      [
+        [blockToBeMoved.getKey(), blockToBeMoved],
+        [targetBlock.getKey(), targetBlock],
+      ],
       blocksAfter,
     ).toOrderedMap();
   } else if (insertionMode === 'after') {
@@ -63,7 +72,10 @@ function moveBlockInContentState(
     );
 
     newBlocks = blocksBefore.concat(
-      [[targetBlock.getKey(), targetBlock], [blockToBeMoved.getKey(), blockToBeMoved]],
+      [
+        [targetBlock.getKey(), targetBlock],
+        [blockToBeMoved.getKey(), blockToBeMoved],
+      ],
       blocksAfter,
     ).toOrderedMap();
   }

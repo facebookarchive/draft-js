@@ -101,7 +101,8 @@ function getDraftEditorSelectionWithNodes(
     // cursor from a non-zero offset on one block, through empty blocks,
     // to a matching non-zero offset on other text blocks.
     if (anchorNode === focusNode && anchorOffset === focusOffset) {
-      needsRecovery = !!anchorNode.firstChild && anchorNode.firstChild.nodeName !== 'BR';
+      needsRecovery =
+        !!anchorNode.firstChild && anchorNode.firstChild.nodeName !== 'BR';
     }
   }
 

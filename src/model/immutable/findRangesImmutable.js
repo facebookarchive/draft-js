@@ -33,10 +33,8 @@ function findRangesImmutable<T>(
 
   var cursor: number = 0;
 
-  haystack.reduce((value, nextValue, nextIndex) => {
-    /* $FlowFixMe(>=0.28.0): `value` could be undefined! */
+  haystack.reduce((value: T, nextValue, nextIndex) => {
     if (!areEqualFn(value, nextValue)) {
-      /* $FlowFixMe(>=0.28.0): `value` could be undefined! */
       if (filterFn(value)) {
         foundFn(cursor, nextIndex);
       }

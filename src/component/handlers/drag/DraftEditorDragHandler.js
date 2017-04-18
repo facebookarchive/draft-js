@@ -100,7 +100,7 @@ var DraftEditorDragHandler = {
         fileText && editor.update(
           insertTextAtSelection(
             editorState,
-            nullthrows(dropSelection), // flow wtf
+            dropSelection,
             fileText,
           ),
         );

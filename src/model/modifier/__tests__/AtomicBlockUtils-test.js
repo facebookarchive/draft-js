@@ -215,9 +215,12 @@ describe('AtomicBlockUtils', () => {
       expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
 
       // Atomic block must be inbetween the splitted block
-      const atomicResultSecondBlock = atomicResultContent.getBlockMap().skip(1).first();
-      const atomicResultThirdBlock = atomicResultContent.getBlockMap().skip(2).first();
-      const atomicResultFourthBlock = atomicResultContent.getBlockMap().skip(3).first();
+      const atomicResultSecondBlock =
+        atomicResultContent.getBlockMap().skip(1).first();
+      const atomicResultThirdBlock =
+        atomicResultContent.getBlockMap().skip(2).first();
+      const atomicResultFourthBlock =
+        atomicResultContent.getBlockMap().skip(3).first();
 
       expect(atomicResultSecondBlock.getText()).toBe('Al');
       assertAtomicBlock(atomicResultThirdBlock);
@@ -312,7 +315,8 @@ describe('AtomicBlockUtils', () => {
 
       assertAtomicBlock(atomicBlock);
 
-      // Move atomic block above itself by moving it after preceeding block by replacement
+      // Move atomic block above itself by moving it after preceeding block by
+      // replacement
       expect(
         function() {
           moveAtomicBlock(
@@ -371,7 +375,8 @@ describe('AtomicBlockUtils', () => {
         },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
-      // Move atomic block below itself by moving it before following block by replacement
+      // Move atomic block below itself by moving it before following block by
+      // replacement
       expect(
         function() {
           moveAtomicBlock(
@@ -597,7 +602,8 @@ describe('AtomicBlockUtils', () => {
       expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
 
       // Atomic block must be on the second last position now
-      const atomicResultSecondLastBlock = atomicResultContent.getBlockMap().reverse().skip(1).first();
+      const atomicResultSecondLastBlock =
+        atomicResultContent.getBlockMap().reverse().skip(1).first();
       const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
 
       assertAtomicBlock(atomicResultSecondLastBlock);
@@ -634,7 +640,8 @@ describe('AtomicBlockUtils', () => {
       expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
 
       // Atomic block must be on the last position now
-      const atomicResultSecondLastBlock = atomicResultContent.getBlockMap().reverse().skip(1).first();
+      const atomicResultSecondLastBlock =
+        atomicResultContent.getBlockMap().reverse().skip(1).first();
       const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
 
       expect(atomicResultSecondLastBlock.getText()).toBe('Charl');
@@ -671,9 +678,12 @@ describe('AtomicBlockUtils', () => {
       expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
 
       // Atomic block must be inbetween the splitted block
-      const atomicResultSecondBlock = atomicResultContent.getBlockMap().skip(1).first();
-      const atomicResultThirdBlock = atomicResultContent.getBlockMap().skip(2).first();
-      const atomicResultFourthBlock = atomicResultContent.getBlockMap().skip(3).first();
+      const atomicResultSecondBlock =
+        atomicResultContent.getBlockMap().skip(1).first();
+      const atomicResultThirdBlock =
+        atomicResultContent.getBlockMap().skip(2).first();
+      const atomicResultFourthBlock =
+        atomicResultContent.getBlockMap().skip(3).first();
 
       expect(atomicResultSecondBlock.getText()).toBe('A');
       assertAtomicBlock(atomicResultThirdBlock);
@@ -776,7 +786,8 @@ describe('AtomicBlockUtils', () => {
 
       assertAtomicBlock(atomicBlock);
 
-      // Move atomic block above itself by moving it after preceeding block by replacement
+      // Move atomic block above itself by moving it after preceeding block by
+      // replacement
       expect(
         function() {
           moveAtomicBlock(
@@ -792,7 +803,8 @@ describe('AtomicBlockUtils', () => {
         },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
-      // Move atomic block below itself by moving it before following block by replacement
+      // Move atomic block below itself by moving it before following block by
+      // replacement
       expect(
         function() {
           moveAtomicBlock(

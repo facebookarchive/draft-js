@@ -58,7 +58,7 @@ export type DraftEditorProps = {
 
   // For a given `ContentBlock` object, return an object that specifies
   // a custom block component and/or props. If no object is returned,
-  // the default `TextEditorBlock` is used.
+  // the default `DraftEditorBlock` is used.
   blockRendererFn?: (block: ContentBlock) => ?Object,
 
   // Function that returns a cx map corresponding to block-level styles.

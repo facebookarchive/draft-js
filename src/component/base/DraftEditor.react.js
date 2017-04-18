@@ -14,6 +14,11 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type {DraftEditorDefaultProps, DraftEditorProps} from 'DraftEditorProps';
+import type {DraftEditorModes} from 'DraftEditorModes';
+import type {DraftScrollPosition} from 'DraftScrollPosition';
+
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
@@ -21,6 +26,7 @@ const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
+
 const EditorState = require('EditorState');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
@@ -32,13 +38,10 @@ const cx = require('cx');
 const emptyFunction = require('emptyFunction');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
-const nullthrows = require('nullthrows');
-const getScrollPosition = require('getScrollPosition');
 
-import type {BlockMap} from 'BlockMap';
-import type {DraftEditorModes} from 'DraftEditorModes';
-import type {DraftEditorProps, DraftEditorDefaultProps} from 'DraftEditorProps';
-import type {DraftScrollPosition} from 'DraftScrollPosition';
+const getScrollPosition = require('getScrollPosition');
+const invariant = require('invariant');
+const nullthrows = require('nullthrows');
 
 const isIE = UserAgent.isBrowser('IE');
 
@@ -344,6 +347,11 @@ class DraftEditor extends React.Component {
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
 
+    invariant(editorNode, 'Missing editorNode');
+    invariant(
+      editorNode instanceof HTMLElement,
+      'editorNode is not an HTMLElement',
+    );
     editorNode.focus();
     if (scrollParent === window) {
       window.scrollTo(x, y);
@@ -366,7 +374,13 @@ class DraftEditor extends React.Component {
   }
 
   _blur(): void {
-    ReactDOM.findDOMNode(this.refs.editor).blur();
+    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
+    invariant(editorNode, 'Missing editorNode');
+    invariant(
+      editorNode instanceof HTMLElement,
+      'editorNode is not an HTMLElement',
+    );
+    editorNode.blur();
   }
 
   /**
