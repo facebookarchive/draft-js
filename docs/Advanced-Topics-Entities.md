@@ -70,7 +70,7 @@ const contentStateWithEntity = contentState.createEntity(
 );
 const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 const contentStateWithLink = Modifier.applyEntity(
-  contentState,
+  contentStateWithEntity,
   selectionState,
   entityKey
 );
