@@ -66,11 +66,11 @@ const contentState = editorState.getCurrentContent();
 const contentStateWithEntity = contentState.createEntity(
   'LINK',
   'MUTABLE',
-  {href: 'http://www.zombo.com'}
+  {url: 'http://www.zombo.com'}
 );
 const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 const contentStateWithLink = Modifier.applyEntity(
-  contentState,
+  contentStateWithEntity,
   selectionState,
   entityKey
 );
@@ -85,7 +85,7 @@ const blockWithLinkAtBeginning = contentState.getBlockForKey('...');
 const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
 const contentState = editorState.getCurrentContent();
 const linkInstance = contentState.getEntity(linkKey);
-const {href} = linkInstance.getData();
+const {url} = linkInstance.getData();
 ```
 ## "Mutability"
 
