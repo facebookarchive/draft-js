@@ -30,11 +30,11 @@ content. For instance, the <code>Modifier</code> module contains an <code>applyE
 const contentStateWithEntity <span class="token operator">=</span> contentState<span class="token punctuation">.</span><span class="token function">createEntity<span class="token punctuation">(</span></span>
   <span class="token string">&#x27;LINK&#x27;</span><span class="token punctuation">,</span>
   <span class="token string">&#x27;MUTABLE&#x27;</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span>href<span class="token punctuation">:</span> <span class="token string">&#x27;http://www.zombo.com&#x27;</span><span class="token punctuation">}</span>
+  <span class="token punctuation">{</span>url<span class="token punctuation">:</span> <span class="token string">&#x27;http://www.zombo.com&#x27;</span><span class="token punctuation">}</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 const entityKey <span class="token operator">=</span> contentStateWithEntity<span class="token punctuation">.</span><span class="token function">getLastCreatedEntityKey<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 const contentStateWithLink <span class="token operator">=</span> Modifier<span class="token punctuation">.</span><span class="token function">applyEntity<span class="token punctuation">(</span></span>
-  contentState<span class="token punctuation">,</span>
+  contentStateWithEntity<span class="token punctuation">,</span>
   selectionState<span class="token punctuation">,</span>
   entityKey
 <span class="token punctuation">)</span><span class="token punctuation">;</span></pre><p>For a given range of text, then, you can extract its associated entity key by using
@@ -43,7 +43,7 @@ offset value.</p><pre class="prism language-javascript">const blockWithLinkAtBeg
 const linkKey <span class="token operator">=</span> blockWithLinkAtBeginning<span class="token punctuation">.</span><span class="token function">getEntityAt<span class="token punctuation">(</span></span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 const contentState <span class="token operator">=</span> editorState<span class="token punctuation">.</span><span class="token function">getCurrentContent<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 const linkInstance <span class="token operator">=</span> contentState<span class="token punctuation">.</span><span class="token function">getEntity<span class="token punctuation">(</span></span>linkKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
-const <span class="token punctuation">{</span>href<span class="token punctuation">}</span> <span class="token operator">=</span> linkInstance<span class="token punctuation">.</span><span class="token function">getData<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre><h2><a class="anchor" name="mutability"></a>&quot;Mutability&quot; <a class="hash-link" href="#mutability">#</a></h2><p>Entities may have one of three &quot;mutability&quot; values. The difference between them
+const <span class="token punctuation">{</span>url<span class="token punctuation">}</span> <span class="token operator">=</span> linkInstance<span class="token punctuation">.</span><span class="token function">getData<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span></pre><h2><a class="anchor" name="mutability"></a>&quot;Mutability&quot; <a class="hash-link" href="#mutability">#</a></h2><p>Entities may have one of three &quot;mutability&quot; values. The difference between them
 is the way they behave when the user makes edits to them.</p><p>Note that <code>DraftEntityInstance</code> objects are always immutable Records, and this
 property is meant only to indicate how the annotated text may be &quot;mutated&quot; within
 the editor. <em>(Future changes may rename this property to ward off potential
