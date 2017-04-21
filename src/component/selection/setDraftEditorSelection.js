@@ -13,10 +13,44 @@
 
 'use strict';
 
-var containsNode = require('containsNode');
-var getActiveElement = require('getActiveElement');
+const DraftJsDebugLogging = require('DraftJsDebugLogging');
+const containsNode = require('containsNode');
+const getActiveElement = require('getActiveElement');
+const invariant = require('invariant');
 
 import type SelectionState from 'SelectionState';
+
+function getAnonymizedDOM(node: Node): string {
+  if (!node) {
+    return '[empty]';
+  }
+
+  var anonymized = anonymizeText(node);
+  if (anonymized.nodeType === Node.TEXT_NODE) {
+    return anonymized.textContent;
+  }
+
+  invariant(
+    anonymized instanceof Element,
+    'Node must be an Element if it is not a text node.',
+  );
+  return anonymized.innerHTML;
+}
+
+function anonymizeText(node: Node): Node {
+  if (node.nodeType === Node.TEXT_NODE) {
+    var length = node.textContent.length;
+    return document.createTextNode('[text ' + length + ']');
+  }
+
+  var clone = node.cloneNode();
+  var childNodes = node.childNodes;
+  for (var ii = 0; ii < childNodes.length; ii++) {
+    clone.appendChild(anonymizeText(childNodes[ii]));
+  }
+
+  return clone;
+}
 
 /**
  * In modern non-IE browsers, we can support both forward and backward
@@ -75,7 +109,12 @@ function setDraftEditorSelection(
   // and be done.
   if (hasAnchor && hasFocus) {
     selection.removeAllRanges();
-    addPointToSelection(selection, node, anchorOffset - nodeStart);
+    addPointToSelection(
+      selection,
+      node,
+      anchorOffset - nodeStart,
+      selectionState,
+    );
     addFocusToSelection(selection, node, focusOffset - nodeStart);
     return;
   }
@@ -84,7 +123,12 @@ function setDraftEditorSelection(
     // If the anchor is within this node, set the range start.
     if (hasAnchor) {
       selection.removeAllRanges();
-      addPointToSelection(selection, node, anchorOffset - nodeStart);
+      addPointToSelection(
+        selection,
+        node,
+        anchorOffset - nodeStart,
+        selectionState,
+      );
     }
 
     // If the focus is within this node, we can assume that we have
@@ -99,7 +143,12 @@ function setDraftEditorSelection(
     // we'll use this information to extend the selection.
     if (hasFocus) {
       selection.removeAllRanges();
-      addPointToSelection(selection, node, focusOffset - nodeStart);
+      addPointToSelection(
+        selection,
+        node,
+        focusOffset - nodeStart,
+        selectionState,
+      );
     }
 
     // If this node has the anchor, we may assume that the correct
@@ -111,7 +160,12 @@ function setDraftEditorSelection(
       var storedFocusOffset = selection.focusOffset;
 
       selection.removeAllRanges();
-      addPointToSelection(selection, node, anchorOffset - nodeStart);
+      addPointToSelection(
+        selection,
+        node,
+        anchorOffset - nodeStart,
+        selectionState,
+      );
       addFocusToSelection(selection, storedFocusNode, storedFocusOffset);
     }
   }
@@ -148,8 +202,39 @@ function addPointToSelection(
   selection: Object,
   node: Node,
   offset: number,
+  selectionState: SelectionState,
 ): void {
   var range = document.createRange();
+  const nodeLength = node.nodeValue === null
+    ? node.childNodes.length
+    : node.nodeValue.length;
+  // logging to catch bug that is being reported in t16250795
+  if (offset > nodeLength) {
+    // in this case we know that the call to 'range.setStart' is about to throw
+
+    // grabbing the anonymized DOM content of the Draft editor
+    let currentNode = node;
+    while (currentNode) {
+      if (
+        currentNode instanceof Element
+        && currentNode.hasAttribute('contenteditable')
+      ) {
+        // found the Draft editor container
+        break;
+      } else {
+        currentNode = currentNode.parentNode;
+      }
+    }
+    const anonymizedDom = currentNode
+      ? getAnonymizedDOM(currentNode)
+      : 'Could not find contentEditable parent of node';
+
+    DraftJsDebugLogging.logSelectionStateFailure({
+      anonymizedDom,
+      extraParams: JSON.stringify({offset: offset}),
+      selectionState: JSON.stringify(selectionState.toJS()),
+    });
+  }
   range.setStart(node, offset);
   selection.addRange(range);
 }
