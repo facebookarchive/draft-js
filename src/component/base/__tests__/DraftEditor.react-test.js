@@ -14,10 +14,11 @@
 
 jest
   .unmock('DraftEditor.react')
+  .unmock('react-test-renderer/shallow')
   .unmock('generateRandomKey');
 
 var React = require('React');
-var ReactTestUtils = require('ReactTestUtils');
+var ReactShallowRenderer = require('react-test-renderer/shallow');
 
 var DraftEditor = require('DraftEditor.react');
 
@@ -25,7 +26,7 @@ describe('DraftEditor.react', () => {
   var shallow;
 
   beforeEach(function() {
-    shallow = ReactTestUtils.createRenderer();
+    shallow = new ReactShallowRenderer();
   });
 
   describe('Basic rendering', () => {
