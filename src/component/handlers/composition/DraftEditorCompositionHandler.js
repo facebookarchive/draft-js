@@ -56,7 +56,7 @@ var DraftEditorCompositionHandler = {
    * entire resolved composition result in the `data` member of the 
    * `compositionend` events that they fire.
    */
-  onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent) {
+  onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent): void {
     beforeInputData = (beforeInputData || '') + e.data;
   },
 
