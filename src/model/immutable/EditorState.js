@@ -506,6 +506,21 @@ function updateSelection(
   selection: SelectionState,
   forceSelection: boolean,
 ): EditorState {
+  // Only unset the nativelyRenderedContent and inlineStyleOverride if the
+  // position is different
+  var editorSelection = editorState.getSelection();
+  if (
+    editorSelection.getAnchorKey() === selection.getAnchorKey() &&
+    editorSelection.getAnchorOffset() === selection.getAnchorOffset() &&
+    editorSelection.getFocusKey() === selection.getFocusKey() &&
+    editorSelection.getFocusOffset() === selection.getFocusOffset() &&
+    editorSelection.getIsBackward() === selection.getIsBackward()
+  ) {
+    return EditorState.set(editorState, {
+      selection,
+      forceSelection,
+    });
+  }
   return EditorState.set(editorState, {
     selection,
     forceSelection,
