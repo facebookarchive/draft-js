@@ -9,6 +9,7 @@
  */
 
 var React = require('React');
+var createReactClass = require('create-react-class');
 var unindent = require('unindent');
 
 // Private helper vars
@@ -340,7 +341,7 @@ _.languages.insertBefore('markup', 'tag', {
   },
 });
 
-var Prism = React.createClass({
+var Prism = createReactClass({
   statics: {
     _: _,
   },

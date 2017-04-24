@@ -73,9 +73,10 @@ function execute() {
         ' * @generated\n' +
         ' */\n' +
         'var React = require("React");\n' +
+        'var createReactClass = require("create-react-class");\n' +
         'var Layout = require("' + layout + '");\n' +
         'var content = ' + backtickify(both.content) + '\n' +
-        'var Post = React.createClass({\n' +
+        'var Post = createReactClass({\n' +
         '  statics: {\n' +
         '    content: content\n' +
         '  },\n' +

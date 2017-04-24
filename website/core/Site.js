@@ -11,9 +11,10 @@
  */
 
 var React = require('React');
+var createReactClass = require('create-react-class');
 var HeaderLinks = require('HeaderLinks');
 
-var Site = React.createClass({
+var Site = createReactClass({
   render: function() {
     const titlePrefix = this.props.pageTitle ? this.props.pageTitle.concat(' | ') : '';
     const title = `${titlePrefix}Draft.js | Rich Text Editor Framework for React`;

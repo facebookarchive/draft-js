@@ -6,10 +6,11 @@
  */
 
 var React = require('React');
+var createReactClass = require('create-react-class');
 var Site = require('Site');
 var Marked = require('Marked');
 
-var support = React.createClass({
+var support = createReactClass({
   render: function() {
     var metadata = this.props.metadata;
     var content = this.props.children;

@@ -12,9 +12,11 @@
 
 var React = require('React');
 
+var createReactClass = require('create-react-class');
+
 var assign = require('object-assign');
 
-var center = React.createClass({
+var center = createReactClass({
   render: function() {
     var {style, ...props} = this.props;
     style = assign({}, style, {textAlign: 'center'});

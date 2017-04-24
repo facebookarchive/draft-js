@@ -13,6 +13,7 @@
  */
 
 var React = require('React');
+var createReactClass = require('create-react-class');
 var Site = require('Site');
 var Prism = require('Prism');
 var Marked = require('Marked');
@@ -217,7 +218,7 @@ ReactDOM.render(
 );
 `;
 
-var index = React.createClass({
+var index = createReactClass({
   render: function() {
     return (
       <Site>

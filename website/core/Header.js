@@ -11,8 +11,9 @@
  */
 
 var React = require('React');
+var createReactClass = require('create-react-class');
 
-var Header = React.createClass({
+var Header = createReactClass({
   slug: function(string) {
     var accents = '\u00e0\u00e1\u00e4\u00e2\u00e8'
       + '\u00e9\u00eb\u00ea\u00ec\u00ed\u00ef'

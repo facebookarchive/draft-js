@@ -9,6 +9,7 @@
  */
 
 var React = require('React');
+var createReactClass = require('create-react-class');
 var Prism = require('Prism');
 var Header = require('Header');
 
@@ -1060,7 +1061,7 @@ marked.inlineLexer = InlineLexer.output;
 
 marked.parse = marked;
 
-var Marked = React.createClass({
+var Marked = createReactClass({
   render: function() {
     return <div>{marked(this.props.children, this.props)}</div>;
   },

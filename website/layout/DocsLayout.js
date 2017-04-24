@@ -11,10 +11,11 @@
  */
 
 var React = require('React');
+var createReactClass = require('create-react-class');
 var Site = require('Site');
 var Marked = require('Marked');
 var DocsSidebar = require('DocsSidebar');
-var DocsLayout = React.createClass({
+var DocsLayout = createReactClass({
   render: function() {
     var metadata = this.props.metadata;
     var content = this.props.children;
