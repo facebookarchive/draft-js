@@ -52,6 +52,29 @@ function anonymizeText(node: Node): Node {
   return clone;
 }
 
+function getAnonymizedEditorDOM(node: Node): string {
+  // grabbing the DOM content of the Draft editor
+  let currentNode = node;
+  while (currentNode) {
+    if (
+      currentNode instanceof Element
+      && currentNode.hasAttribute('contenteditable')
+    ) {
+      // found the Draft editor container
+      return getAnonymizedDOM(currentNode);
+    } else {
+      currentNode = currentNode.parentNode;
+    }
+  }
+  return 'Could not find contentEditable parent of node';
+}
+
+function getNodeLength(node: Node): number {
+  return node.nodeValue === null
+    ? node.childNodes.length
+    : node.nodeValue.length;
+}
+
 /**
  * In modern non-IE browsers, we can support both forward and backward
  * selections.
@@ -115,7 +138,12 @@ function setDraftEditorSelection(
       anchorOffset - nodeStart,
       selectionState,
     );
-    addFocusToSelection(selection, node, focusOffset - nodeStart);
+    addFocusToSelection(
+      selection,
+      node,
+      focusOffset - nodeStart,
+      selectionState,
+    );
     return;
   }
 
@@ -135,7 +163,12 @@ function setDraftEditorSelection(
     // already set the appropriate start range on the selection, and
     // can simply extend the selection.
     if (hasFocus) {
-      addFocusToSelection(selection, node, focusOffset - nodeStart);
+      addFocusToSelection(
+        selection,
+        node,
+        focusOffset - nodeStart,
+        selectionState,
+      );
     }
   } else {
     // If this node has the focus, set the selection range to be a
@@ -166,7 +199,12 @@ function setDraftEditorSelection(
         anchorOffset - nodeStart,
         selectionState,
       );
-      addFocusToSelection(selection, storedFocusNode, storedFocusOffset);
+      addFocusToSelection(
+        selection,
+        storedFocusNode,
+        storedFocusOffset,
+        selectionState,
+      );
     }
   }
 }
@@ -178,6 +216,7 @@ function addFocusToSelection(
   selection: Object,
   node: Node,
   offset: number,
+  selectionState: SelectionState,
 ): void {
   if (selection.extend && containsNode(getActiveElement(), node)) {
     // If `extend` is called while another element has focus, an error is
@@ -185,6 +224,16 @@ function addFocusToSelection(
     // other than the node we are selecting. This should only occur in Firefox,
     // since it is the only browser to support multiple selections.
     // See https://bugzilla.mozilla.org/show_bug.cgi?id=921444.
+
+    // logging to catch bug that is being reported in t16250795
+    if (offset > getNodeLength(node)) {
+      // the call to 'selection.extend' is about to throw
+      DraftJsDebugLogging.logSelectionStateFailure({
+        anonymizedDom: getAnonymizedEditorDOM(node),
+        extraParams: JSON.stringify({offset: offset}),
+        selectionState: JSON.stringify(selectionState.toJS()),
+      });
+    }
     selection.extend(node, offset);
   } else {
     // IE doesn't support extend. This will mean no backward selection.
@@ -205,32 +254,11 @@ function addPointToSelection(
   selectionState: SelectionState,
 ): void {
   var range = document.createRange();
-  const nodeLength = node.nodeValue === null
-    ? node.childNodes.length
-    : node.nodeValue.length;
   // logging to catch bug that is being reported in t16250795
-  if (offset > nodeLength) {
+  if (offset > getNodeLength(node)) {
     // in this case we know that the call to 'range.setStart' is about to throw
-
-    // grabbing the anonymized DOM content of the Draft editor
-    let currentNode = node;
-    while (currentNode) {
-      if (
-        currentNode instanceof Element
-        && currentNode.hasAttribute('contenteditable')
-      ) {
-        // found the Draft editor container
-        break;
-      } else {
-        currentNode = currentNode.parentNode;
-      }
-    }
-    const anonymizedDom = currentNode
-      ? getAnonymizedDOM(currentNode)
-      : 'Could not find contentEditable parent of node';
-
     DraftJsDebugLogging.logSelectionStateFailure({
-      anonymizedDom,
+      anonymizedDom: getAnonymizedEditorDOM(node),
       extraParams: JSON.stringify({offset: offset}),
       selectionState: JSON.stringify(selectionState.toJS()),
     });
