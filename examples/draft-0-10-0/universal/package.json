@@ -17,7 +17,7 @@
     "browserify": "^13.1.1"
   },
   "scripts": {
-    "build": "mkdir -p static; browserify client.js -t babelify -o static/bundle.js",
+    "build": "browserify client.js -t babelify -o static/bundle.js",
     "start": "babel-node index.js",
     "demo": "npm run build && npm run start"
   }
