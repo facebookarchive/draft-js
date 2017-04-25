@@ -17,7 +17,7 @@ Changes to `src` are live in production on facebook.com at the time of release.
 
 * This version supports both the old and new Entity API; we
   are deprecating the Entity module in favor of
-  using contentState.
+  using contentState. See [the migration guide.](https://draftjs.org/docs/v0-10-api-migration.html#content)
 
 ### Fixed
 
