@@ -247,7 +247,7 @@ onFocus?: (e: SyntheticFocusEvent) => void
 
 ### onBlur
 ```
-onBlur?: (e: SyntheticMouseEvent) => void
+onBlur?: (e: SyntheticFocusEvent) => void
 ```
 
 ## Methods
