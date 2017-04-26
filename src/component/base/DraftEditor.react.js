@@ -354,7 +354,6 @@ class DraftEditor extends React.Component {
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
 
-    invariant(editorNode, 'Missing editorNode');
     invariant(
       editorNode instanceof HTMLElement,
       'editorNode is not an HTMLElement',
@@ -382,7 +381,6 @@ class DraftEditor extends React.Component {
 
   _blur(): void {
     const editorNode = ReactDOM.findDOMNode(this.refs.editor);
-    invariant(editorNode, 'Missing editorNode');
     invariant(
       editorNode instanceof HTMLElement,
       'editorNode is not an HTMLElement',

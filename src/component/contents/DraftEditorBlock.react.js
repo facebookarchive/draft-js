@@ -112,7 +112,6 @@ class DraftEditorBlock extends React.Component {
         );
       }
     } else {
-      invariant(blockNode, 'Missing blockNode');
       invariant(
         blockNode instanceof HTMLElement,
         'blockNode is not an HTMLElement',
