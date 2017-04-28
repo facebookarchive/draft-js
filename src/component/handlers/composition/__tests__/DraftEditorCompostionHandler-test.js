@@ -11,9 +11,10 @@
 
 'use strict';
 
-jest.disableAutomock()
+jest.disableAutomock();
 
-// DraftEditorComposition uses timers to detect duplicate `compositionend` events.
+// DraftEditorComposition uses timers to detect duplicate `compositionend` 
+// events.
 jest.useFakeTimers();
 
 var EditorState = require('EditorState');
@@ -66,7 +67,8 @@ describe('DraftEditorCompositionHandler', () => {
     expect(editorTextContent()).toBe(TEST_STRING); 
   });
 
-  it('Can handle compositionend with IME processed keycode keydown events (e.g. Android Chrome + GBoard)', () => {
+  it('Can handle compositionend with IME processed keycode keydown events ' +
+     '(e.g. Android Chrome + GBoard)', () => {
     // See http://lists.w3.org/Archives/Public/www-dom/2010JulSep/att-0182/keyCode-spec.html
     const TEST_STRING = 'Testing';
 
@@ -80,7 +82,8 @@ describe('DraftEditorCompositionHandler', () => {
     expect(editorTextContent()).toBe(TEST_STRING); 
   });
 
-  it('Can handle compositionend + beforeInput (e.g. Desktop Japanese IME)', () => {
+  it('Can handle compositionend + beforeInput ' +
+     '(e.g. Desktop Japanese IME)', () => {
     const TEST_STRING = '私';
 
     compositionHandler.onCompositionEnd(editor, {data: TEST_STRING});
@@ -91,7 +94,8 @@ describe('DraftEditorCompositionHandler', () => {
     expect(editorTextContent()).toBe(TEST_STRING); 
   });
 
-  it('Can handle multiple onBeforeInput events (e.g. Android firefox + GBoard)', () => {
+  it('Can handle multiple onBeforeInput events ' +
+     '(e.g. Android firefox + GBoard)', () => {
     const TEST_HALF_1 = 'test';
     const TEST_HALF_2 = 'ing';
     const TEST_STRING = TEST_HALF_1 + TEST_HALF_2;
@@ -106,13 +110,14 @@ describe('DraftEditorCompositionHandler', () => {
     expect(editorTextContent()).toBe(TEST_STRING); 
   });
 
-  it('Can handle onKeyDown after compositionEnd (e.g. Android Firefox + GBoard, autocorrect one char)', () => {
+  it('Can handle onKeyDown after compositionEnd ' +
+     '(e.g. Android Firefox + GBoard, autocorrect one char)', () => {
     const TEST_STRING = 'testin';
     const TEST_KEYCODE = 71; // keycode for 'G' 
 
     compositionHandler.onCompositionEnd(editor, {data: TEST_STRING});
     compositionHandler.onBeforeInput(editor, {data: TEST_STRING});
-    compositionHandler.onKeyDown(editor, {which: TEST_KEYCODE})
+    compositionHandler.onKeyDown(editor, {which: TEST_KEYCODE});
 
     jest.runAllTimers();
 
@@ -148,7 +153,8 @@ describe('DraftEditorCompositionHandler', () => {
     expect(editorTextContent()).toBe(TEST_STRING); 
   });
 
-  it('Properly handles duplicate compositionend event (e.g. Arabic Google Input Tools on Win 8.1)', () => {
+  it('Properly handles duplicate compositionend event ' +
+     '(e.g. Arabic Google Input Tools on Win 8.1)', () => {
     const TEST_STRING = '私';
 
     compositionHandler.onCompositionEnd(editor, {data: TEST_STRING});
@@ -175,7 +181,8 @@ describe('DraftEditorCompositionHandler', () => {
     expect(editor.update).not.toBeCalled();
   });
 
-  it('Can handle a delayed compositionstart after compositionend (e.g. CJK IMEs on Safari)', () => {
+  it('Can handle a delayed compositionstart after compositionend ' +
+     '(e.g. CJK IMEs on Safari)', () => {
     const TEST_STRING = '私';
 
     compositionHandler.onCompositionEnd(editor, {data: TEST_STRING});
