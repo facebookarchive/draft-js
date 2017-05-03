@@ -4,6 +4,35 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.10.1 [Unreleased]
+
+<details>
+  <summary>Changes we plan to include in the upcoming release.</summary>
+
+### Added
+
+* Support UMD in dist output format (#1090)
+* Expose textDirectionality prop
+* Expose props disabling auto-correct, auto-complete, auto-capitalize
+* Add `editorKey` prop for SSR
+* Pass `block` to `customStyleFn` callback
+* Added `moveAtomicBlock` to `AtomicBlockUtils`
+
+### Fixed
+
+* Fix some cases of "Failed to execute 'setStart' on 'Range" bug (#1162)
+* Fix Chrome text deletion bug (#1155)
+* Pass fresh editorState to edit handlers (#1112 and #1113)
+* Fix for text insertion bugs in Android 5.1
+* Correctly delete immutable and segmented entity content when at the edge of a
+  selection
+  * Fix bug where all text except first letter was dropped in IE11
+  * Fix bug where starting new line incorrectly toggled inline style
+  * Fix 'getRangeClientRects' to work around [webkit selection bounding rect
+    bug](https://www.youtube.com/watch?v=TpNzVH5jlcU)
+</details>
+
+
 ## 0.10.0 (Dec. 16, 2016)
 
 ### Added
