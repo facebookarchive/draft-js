@@ -234,8 +234,8 @@ function addFocusToSelection(
         selectionState: JSON.stringify(selectionState.toJS()),
       });
     }
-
-    if (selection.rangeCount > 0) {
+    // Check for active selection before extending
+    if (selection.rangeCount !== 0) {
       selection.extend(node, offset);
     }
   } else {
