@@ -386,6 +386,12 @@ describe('DraftPasteProcessor', function() {
     expect(output[0].getText()).toBe('hello');
   });
 
+  it('must not strip whitespace inside span', function() {
+    var html = '<span>hello</span><span> </span><span>world</span>';
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    expect(output[0].getText()).toBe('hello world');
+  });
+
   it('must strip whitespace after block dividers', function() {
     var html = '<p>hello</p> <p> what</p>';
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);

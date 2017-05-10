@@ -351,7 +351,17 @@ function genFragment(
     var text = node.textContent;
     if (text.trim() === '' && inBlock !== 'pre') {
       // whitespace after body or html comment
-      if (!inBlock && (!node.previousSibling || node.previousSibling.nodeName === '#comment')) {
+      if (
+        !inBlock &&
+        (
+          (
+            node.parentNode &&
+            node.parentNode.nodeName.toLowerCase() === 'body' &&
+            !node.previousSibling
+          ) ||
+          node.previousSibling && node.previousSibling.nodeName === '#comment'
+        )
+      ) {
         return { chunk: getEmptyChunk(), entityMap: entityMap };
       }
       return {chunk: getWhitespaceChunk(inEntity), entityMap};
