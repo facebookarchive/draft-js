@@ -243,7 +243,7 @@ function addFocusToSelection(
     // after the range is detached.
     
     //Check if range is not empty to prevent getting IndexSizeError in IE11
-    if(selection && selection.rangeCount() > 0) {
+    if(selection && selection.rangeCount > 0) {
       var range = selection.getRangeAt(0);
       range.setEnd(node, offset);
       selection.addRange(range.cloneRange());
