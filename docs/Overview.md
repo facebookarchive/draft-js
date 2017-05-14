@@ -75,4 +75,10 @@ Because Draft.js supports unicode, you must have the following meta tag in the `
 <meta charset="utf-8" />
 ```
 
+`Draft.css` should be included when rendering the editor. Learn more about [why](/docs/advanced-topics-issues-and-pitfalls.html#missing-draft-css).
+
+```js
+import from 'draft-js/dist/Draft.css';
+```
+
 Next, let's go into the basics of the API and learn what else you can do with Draft.js.
