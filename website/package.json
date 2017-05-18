@@ -16,7 +16,7 @@
     "object-assign": "^2.0.0",
     "optimist": "0.6.0",
     "react": "^15.5.0-rc",
-    "react-dom": "^0.14.7",
+    "react-dom": "^15.5.4",
     "react-page-middleware": "git://github.com/facebookarchive/react-page-middleware.git",
     "request": "*",
     "serve-favicon": "2.2.0",
