@@ -35,7 +35,9 @@ import type {DraftEditorCommand} from 'DraftEditorCommand';
 const isEventHandled = require('isEventHandled');
 
 var {isOptionKeyCommand} = KeyBindingUtil;
+var continuousBackspaceCount = 0;
 var isChrome = UserAgent.isBrowser('Chrome');
+var isIOS = UserAgent.isPlatform('iOS');
 
 /**
  * Map a `DraftEditorCommand` command value to a corresponding function.
@@ -150,6 +152,19 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
   // At this point, we know that we're handling a command of some kind, so
   // we don't want to insert a character following the keydown.
   e.preventDefault();
+
+  if(isIOS && command === 'backspace') {
+    // On iOS 'backspace' acts as 'backspace-word'
+    // starting the 23rd continous event
+    if(continuousBackspaceCount++ >= 22) {
+      command = 'backspace-word';
+    }
+    setTimeout((previousCount) => {
+      if(continuousBackspaceCount === previousCount) {
+        continuousBackspaceCount = 0;
+      }
+    }, 400, continuousBackspaceCount);
+  }
 
   // Allow components higher up the tree to handle the command first.
   if (
