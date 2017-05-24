@@ -164,6 +164,7 @@ const BlockStyleControls = (props) => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          key={type.label}
         />
       )}
     </div>
@@ -188,6 +189,7 @@ const InlineStyleControls = (props) => {
           label={type.label}
           onToggle={props.onToggle}
           style={type.style}
+          key={type.label}
         />
       )}
     </div>
