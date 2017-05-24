@@ -258,6 +258,7 @@ class DraftEditor extends React.Component {
               'public/DraftEditor/content': true,
             })}
             contentEditable={!readOnly}
+            suppressContentEditableWarning={true}
             data-testid={this.props.webDriverTestID}
             onBeforeInput={this._onBeforeInput}
             onBlur={this._onBlur}
