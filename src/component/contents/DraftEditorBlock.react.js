@@ -117,7 +117,7 @@ class DraftEditorBlock extends React.Component {
         'blockNode is not an HTMLElement',
       );
       var blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
-      var scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
+      var scrollBottom = scrollParent.offsetTop + scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
       if (scrollDelta > 0) {
         Scroll.setTop(
