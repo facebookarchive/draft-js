@@ -163,13 +163,6 @@ class DraftEditorLeaf extends React.Component {
       styleObj = Object.assign(styleObj, newStyles);
     }
 
-    if (!this.props.block.text && this.props.block.emptyBlockMeta.style) {
-      Object.assign(
-        styleObj, 
-        this.props.customStyleMap[this.props.block.emptyBlockMeta.style.toJS()],
-      );
-    }
-
     return (
       <span
         data-offset-key={offsetKey}

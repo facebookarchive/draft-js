@@ -359,7 +359,6 @@ describe('removeRangeFromContentState', () => {
       });
 
       it('must remove from the end of A to the end of B', () => {
-        console.log(JSON.stringify(contentState, null, 4))
         var originalBlockA = contentState.getBlockMap().first();
         var originalBlockB = contentState.getBlockMap().skip(1).first();
 

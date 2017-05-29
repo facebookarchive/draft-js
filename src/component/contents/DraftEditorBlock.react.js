@@ -142,6 +142,10 @@ class DraftEditorBlock extends React.Component {
         var offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
         var start = leaf.get('start');
         var end = leaf.get('end');
+        var styleSet = block.getInlineStyleAt(start);
+        if (!text && block.emptyBlockMeta.style) {
+          styleSet = block.emptyBlockMeta.style;
+        }
         return (
           <DraftEditorLeaf
             key={offsetKey}
@@ -151,7 +155,7 @@ class DraftEditorBlock extends React.Component {
             selection={hasSelection ? this.props.selection : undefined}
             forceSelection={this.props.forceSelection}
             text={text.slice(start, end)}
-            styleSet={block.getInlineStyleAt(start)}
+            styleSet={styleSet}
             customStyleMap={this.props.customStyleMap}
             customStyleFn={this.props.customStyleFn}
             isLast={ii === lastLeafSet && jj === lastLeaf}

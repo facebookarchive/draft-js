@@ -43,7 +43,7 @@ function splitBlockInContentState(
   var blockAboveText = text.slice(0, offset);
   var blockAboveEmptyBlockMeta = blockToSplit.emptyBlockMeta;
   if (text && !blockAboveText) {
-    blockAboveEmptyBlockMeta = chars.first()
+    blockAboveEmptyBlockMeta = chars.first();
   }
   var blockAbove = blockToSplit.merge({
     text: text.slice(0, offset),
@@ -53,7 +53,7 @@ function splitBlockInContentState(
 
   var keyBelow = generateRandomKey();
   var blockBelowText = text.slice(offset);
-  var blockBelowEmptyBlockMeta = blockAbove.blockBelowEmptyBlockMeta;
+  var blockBelowEmptyBlockMeta = blockAbove.emptyBlockMeta;
   if (!blockBelowText && text) {
     blockBelowEmptyBlockMeta = chars.last();
   }
