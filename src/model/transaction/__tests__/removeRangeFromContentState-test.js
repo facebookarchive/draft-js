@@ -359,6 +359,7 @@ describe('removeRangeFromContentState', () => {
       });
 
       it('must remove from the end of A to the end of B', () => {
+        console.log(JSON.stringify(contentState, null, 4))
         var originalBlockA = contentState.getBlockMap().first();
         var originalBlockB = contentState.getBlockMap().skip(1).first();
 
@@ -373,7 +374,7 @@ describe('removeRangeFromContentState', () => {
         var alteredBlock = afterBlockMap.first();
 
         // no-op for the first block, since no new content is appended.
-        expect(alteredBlock).toBe(originalBlockA);
+        expect(alteredBlock).toEqual(originalBlockA);
         expect(alteredBlock).not.toBe(originalBlockB);
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
 
