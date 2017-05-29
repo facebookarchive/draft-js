@@ -36,6 +36,7 @@ var defaultRecord: {
   characterList: List<CharacterMetadata>,
   depth: number,
   data: Map<any, any>,
+  emptyBlockMeta: Map<any, any>
 } = {
   key: '',
   type: 'unstyled',
@@ -43,6 +44,7 @@ var defaultRecord: {
   characterList: List(),
   depth: 0,
   data: Map(),
+  emptyBlockMeta: Map(),
 };
 
 var ContentBlockRecord = Record(defaultRecord);
