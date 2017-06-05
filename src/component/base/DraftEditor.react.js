@@ -229,7 +229,7 @@ class DraftEditor extends React.Component {
     };
 
     return (
-      <div className={rootClass}>
+      <div className={rootClass} style={this.props.style}>
         {this._renderPlaceholder()}
         <div
           className={cx('DraftEditor/editorContainer')}
