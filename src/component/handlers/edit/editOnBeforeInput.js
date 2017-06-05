@@ -136,7 +136,12 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     ),
   );
 
-  if (!mayAllowNative) {
+  var allowNativeInsertion = this.props.allowNativeInsertion;
+
+  if (
+    (allowNativeInsertion && !allowNativeInsertion(chars)) ||
+    !mayAllowNative
+  ) {
     e.preventDefault();
     editor.update(newEditorState);
     return;
