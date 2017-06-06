@@ -25,6 +25,9 @@ function editOnSelect(editor: DraftEditor): void {
       editor._latestEditorState !== editor.props.editorState) {
     return;
   }
+  if (editor._pendingStateFromBeforeInput !== undefined) {
+    return;
+  }
 
   var editorState = editor.props.editorState;
   const editorNode = ReactDOM.findDOMNode(editor.refs.editorContainer);
