@@ -152,5 +152,30 @@ describe('RichTextEditorUtil', () => {
 
       expect(blockMapAfterDelete.size).toBe(4);
     });
+
+    it('deletes an empty block', () => {
+      // Make first block empty
+      const contentState = editorState.getCurrentContent();
+      const originalFirstBlock = contentState.getFirstBlock();
+      const targetSelection = selectionState.merge({
+        anchorOffset: 0,
+        focusOffset: originalFirstBlock.getText().length,
+      });
+      const withEmptyBlock = DraftModifier.removeRange(
+        contentState, 
+        targetSelection, 
+        'back'
+      );
+      const editorWithEmptyBlock = EditorState.push(
+        editorState, 
+        withEmptyBlock, 
+        'remove-range'
+      );
+
+      const afterDelete = onDelete(editorWithEmptyBlock);
+
+      const firstBlock = afterDelete.getCurrentContent().getBlockMap().first();
+      expect(firstBlock.getType()).toBe('unordered-list-item');
+    });
   });
 });
