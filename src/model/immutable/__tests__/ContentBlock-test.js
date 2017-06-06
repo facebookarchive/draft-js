@@ -58,6 +58,16 @@ describe('ContentBlock', () => {
       expect(block.getLength()).toBe(5);
       expect(block.getCharacterList().count()).toBe(5);
     });
+
+    it('must retrieve properties when text includes surrogate pairs', () => {
+      var block = getSampleBlock();
+      var unicodeBlock = block.set('text', 'Alph\uD83D\uDCF7');
+      expect(unicodeBlock.getKey()).toBe('a');
+      expect(unicodeBlock.getText()).toBe('Alph\uD83D\uDCF7');
+      expect(unicodeBlock.getType()).toBe('unstyled');
+      expect(unicodeBlock.getLength()).toBe(5);
+      expect(unicodeBlock.getCharacterList().count()).toBe(5);
+    });
   });
 
   describe('style retrieval', () => {
