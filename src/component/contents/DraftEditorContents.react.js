@@ -137,6 +137,7 @@ class DraftEditorContents extends React.Component {
         customStyleFn,
         decorator,
         direction,
+        editorKey: this.props.editorKey,
         forceSelection,
         key,
         offsetKey,
