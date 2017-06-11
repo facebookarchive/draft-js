@@ -157,7 +157,7 @@ function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap,
 ): Array<string> {
   const unstyledElement = blockRenderMap.get('unstyled').element;
-  let tags = new Set([]);
+  let tags = Set([]);
 
   blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
     if (draftBlock.aliasedElements) {
