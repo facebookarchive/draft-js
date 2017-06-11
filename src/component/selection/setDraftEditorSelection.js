@@ -234,7 +234,20 @@ function addFocusToSelection(
         selectionState: JSON.stringify(selectionState.toJS()),
       });
     }
-    selection.extend(node, offset);
+
+    // logging to catch bug that is being reported in t18110632
+    try {
+      selection.extend(node, offset);
+    } catch (e) {
+      DraftJsDebugLogging.logSelectionStateFailure({
+        anonymizedDom: getAnonymizedEditorDOM(node),
+        extraParams: JSON.stringify({offset: offset}),
+        selectionState: JSON.stringify(selectionState.toJS()),
+      });
+      // allow the error to be thrown -
+      // better than continuing in a broken state
+      throw e;
+    }
   } else {
     // IE doesn't support extend. This will mean no backward selection.
     // Extract the existing selection range and add focus to it.
