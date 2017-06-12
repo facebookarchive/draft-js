@@ -4,10 +4,7 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
-## 0.10.1 [Unreleased]
-
-<details>
-  <summary>Changes we plan to include in the upcoming release.</summary>
+## 0.10.1
 
 ### Added
 
@@ -30,8 +27,6 @@ Changes to `src` are live in production on facebook.com at the time of release.
   * Fix bug where starting new line incorrectly toggled inline style
   * Fix 'getRangeClientRects' to work around [webkit selection bounding rect
     bug](https://www.youtube.com/watch?v=TpNzVH5jlcU)
-</details>
-
 
 ## 0.10.0 (Dec. 16, 2016)
 
