@@ -32,12 +32,13 @@ built, but it does not include polyfills for APIs now included in many modern
 browsers (for instance: <code>String.prototype.startsWith</code>). We expect your browser
 supports these APIs natively or with the assistance of a polyfill. One such
 polyfill is <a href="https://github.com/es-shims/es6-shim" target="_blank">es6-shim</a>, which we use in
-many examples but you are free to use <a href="https://babeljs.io/docs/usage/polyfill/" target="_blank">babel-
-polyfill</a> if that&#x27;s more your scene.</p><p>When using either polyfill/shim, you should include it as early as possibly in
+many examples but you are free to use
+<a href="https://babeljs.io/docs/usage/polyfill/" target="_blank">babel-polyfill</a> if that&#x27;s more
+your scene.</p><p>When using either polyfill/shim, you should include it as early as possibly in
 your application&#x27;s entrypoint (at the very minimum, before you import Draft).
-For instance, using [create-react-app](<a href="https://github.com/facebookincubator">https://github.com/facebookincubator</a>
-/create-react-app) and targeting ie11, <code>src/index.js</code> is probably a good spot to
-import your polyfill:</p><p><strong>src/index.js</strong></p><pre class="prism language-javascript">import <span class="token string">&#x27;babel-polyfill&#x27;</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">
+For instance, using
+<a href="https://github.com/facebookincubator/create-react-app" target="_blank">create-react-app</a> and
+targeting ie11, <code>src/index.js</code> is probably a good spot to import your polyfill:</p><p><strong>src/index.js</strong></p><pre class="prism language-javascript">import <span class="token string">&#x27;babel-polyfill&#x27;</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">
 // or
 </span>import <span class="token string">&#x27;es6-shim&#x27;</span><span class="token punctuation">;</span>
 
