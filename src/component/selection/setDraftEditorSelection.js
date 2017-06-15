@@ -235,9 +235,7 @@ function addFocusToSelection(
       });
     }
     // Check for active selection before extending
-    if (selection.rangeCount !== 0) {
-      selection.extend(node, offset);
-    }
+    selection.extend(node, offset);
   } else {
     // IE doesn't support extend. This will mean no backward selection.
     // Extract the existing selection range and add focus to it.
@@ -268,6 +266,9 @@ function addPointToSelection(
   }
   range.setStart(node, offset);
   selection.addRange(range);
+  if (selection.rangeCount === 0) {
+    selection.addRange(range);
+  }
 }
 
 module.exports = setDraftEditorSelection;
