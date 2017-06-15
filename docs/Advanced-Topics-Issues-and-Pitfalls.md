@@ -83,14 +83,15 @@ built, but it does not include polyfills for APIs now included in many modern
 browsers (for instance: `String.prototype.startsWith`). We expect your browser
 supports these APIs natively or with the assistance of a polyfill. One such
 polyfill is [es6-shim](https://github.com/es-shims/es6-shim), which we use in
-many examples but you are free to use [babel-
-polyfill](https://babeljs.io/docs/usage/polyfill/) if that's more your scene.
+many examples but you are free to use
+[babel-polyfill](https://babeljs.io/docs/usage/polyfill/) if that's more
+your scene.
 
 When using either polyfill/shim, you should include it as early as possibly in
 your application's entrypoint (at the very minimum, before you import Draft).
-For instance, using [create-react-app](https://github.com/facebookincubator
-/create-react-app) and targeting ie11, `src/index.js` is probably a good spot to
-import your polyfill:
+For instance, using
+[create-react-app](https://github.com/facebookincubator/create-react-app) and
+targeting ie11, `src/index.js` is probably a good spot to import your polyfill:
 
 **src/index.js**
 
