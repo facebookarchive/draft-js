@@ -14,6 +14,8 @@
 
 var UserAgent = require('UserAgent');
 
+const invariant = require('invariant');
+
 var isOldIE = UserAgent.isBrowser('IE <= 9');
 
 // Provides a dom node that will not execute scripts
@@ -30,6 +32,7 @@ function getSafeBodyFromHTML(html: string): ?Element {
     document.implementation.createHTMLDocument
   ) {
     doc = document.implementation.createHTMLDocument('foo');
+    invariant(doc.documentElement, 'Missing doc.documentElement');
     doc.documentElement.innerHTML = html;
     root = doc.getElementsByTagName('body')[0];
   }

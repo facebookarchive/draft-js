@@ -25,7 +25,7 @@ import type SelectionState from 'SelectionState';
 
 function removeEntitiesAtEdges(
   contentState: ContentState,
-  selectionState: SelectionState
+  selectionState: SelectionState,
 ): ContentState {
   var blockMap = contentState.getBlockMap();
   var entityMap = contentState.getEntityMap();
@@ -67,7 +67,7 @@ function removeEntitiesAtEdges(
 function getRemovalRange(
   characters: List<CharacterMetadata>,
   key: ?string,
-  offset: number
+  offset: number,
 ): Object {
   var removalRange;
   findRangesImmutable(
@@ -78,11 +78,11 @@ function getRemovalRange(
       if (start <= offset && end >= offset) {
         removalRange = {start, end};
       }
-    }
+    },
   );
   invariant(
     typeof removalRange === 'object',
-    'Removal range must exist within character list.'
+    'Removal range must exist within character list.',
   );
   return removalRange;
 }
@@ -90,7 +90,7 @@ function getRemovalRange(
 function removeForBlock(
   entityMap: EntityMap,
   block: ContentBlock,
-  offset: number
+  offset: number,
 ): ContentBlock {
   var chars = block.getCharacterList();
   var charBefore = offset > 0 ? chars.get(offset - 1) : undefined;

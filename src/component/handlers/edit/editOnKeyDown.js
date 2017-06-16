@@ -42,7 +42,7 @@ var isChrome = UserAgent.isBrowser('Chrome');
  */
 function onKeyCommand(
   command: DraftEditorCommand | string,
-  editorState: EditorState
+  editorState: EditorState,
 ): EditorState {
   switch (command) {
     case 'redo':
@@ -94,7 +94,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
       // no special handling is performed, fall through to command handling.
       if (
         editor.props.handleReturn &&
-        isEventHandled(editor.props.handleReturn(e))
+        isEventHandled(editor.props.handleReturn(e, editorState))
       ) {
         return;
       }
@@ -120,14 +120,14 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
         const contentState = DraftModifier.replaceText(
           editorState.getCurrentContent(),
           editorState.getSelection(),
-          '\u00a0'
+          '\u00a0',
         );
         editor.update(
           EditorState.push(
             editorState,
             contentState,
-            'insert-characters'
-          )
+            'insert-characters',
+          ),
         );
         return;
       }
@@ -154,7 +154,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
   // Allow components higher up the tree to handle the command first.
   if (
     editor.props.handleKeyCommand &&
-    isEventHandled(editor.props.handleKeyCommand(command))
+    isEventHandled(editor.props.handleKeyCommand(command, editorState))
   ) {
     return;
   }

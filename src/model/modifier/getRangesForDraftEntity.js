@@ -28,19 +28,19 @@ import type {DraftRange} from 'DraftRange';
  */
 function getRangesForDraftEntity(
   block: ContentBlock,
-  key: string
+  key: string,
 ): Array<DraftRange> {
   var ranges = [];
   block.findEntityRanges(
     c => c.getEntity() === key,
     (start, end) => {
       ranges.push({start, end});
-    }
+    },
   );
 
   invariant(
     !!ranges.length,
-    'Entity key not found in this range.'
+    'Entity key not found in this range.',
   );
 
   return ranges;

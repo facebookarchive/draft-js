@@ -28,7 +28,7 @@ var TEXT_SIZE_UPPER_BOUND = 5000;
  */
 function getTextContentFromFiles(
   files: Array<File>,
-  callback: (contents: string) => void
+  callback: (contents: string) => void,
 ): void {
   var readCount = 0;
   var results = [];
@@ -48,7 +48,7 @@ function getTextContentFromFiles(
  */
 function readFile(
   file: File,
-  callback: (contents: string) => void
+  callback: (contents: string) => void,
 ): void {
   if (!global.FileReader || (file.type && !(file.type in TEXT_TYPES))) {
     callback('');

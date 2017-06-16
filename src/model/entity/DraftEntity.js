@@ -226,7 +226,7 @@ var DraftEntity:DraftEntityMapObject = {
     data?: Object,
   ): string {
     return DraftEntity.__add(
-      new DraftEntityInstance({type, mutability, data: data || {}})
+      new DraftEntityInstance({type, mutability, data: data || {}}),
     );
   },
 
@@ -256,7 +256,7 @@ var DraftEntity:DraftEntityMapObject = {
    */
   __mergeData: function(
     key: string,
-    toMerge: {[key: string]: any}
+    toMerge: {[key: string]: any},
   ): DraftEntityInstance {
     var instance = DraftEntity.__get(key);
     var newData = {...instance.getData(), ...toMerge};
@@ -270,7 +270,7 @@ var DraftEntity:DraftEntityMapObject = {
    */
   __replaceData: function(
     key: string,
-    newData: {[key: string]: any}
+    newData: {[key: string]: any},
   ): DraftEntityInstance {
     const instance = DraftEntity.__get(key);
     const newInstance = instance.set('data', newData);

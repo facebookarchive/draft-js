@@ -11,8 +11,7 @@
 
 'use strict';
 
-jest.unmock('DraftEditorTextNode.react')
-  .mock('UserAgent');
+jest.disableAutomock().mock('UserAgent');
 
 var BLOCK_DELIMITER_CHAR = '\n';
 var TEST_A = 'Hello';
@@ -53,7 +52,7 @@ describe('DraftEditorTextNode', function() {
   it('must initialize correctly with an empty string, non-IE', function() {
     initializeAsNonIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{''}</DraftEditorTextNode>
+      <DraftEditorTextNode>{''}</DraftEditorTextNode>,
     );
     expect(ReactDOM.findDOMNode(stub).tagName).toBe('BR');
   });
@@ -61,7 +60,7 @@ describe('DraftEditorTextNode', function() {
   it('must initialize correctly with an empty string, IE', function() {
     initializeAsIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{''}</DraftEditorTextNode>
+      <DraftEditorTextNode>{''}</DraftEditorTextNode>,
     );
     expectPopulatedSpan(stub, BLOCK_DELIMITER_CHAR);
   });
@@ -69,7 +68,7 @@ describe('DraftEditorTextNode', function() {
   it('must initialize correctly with a string, non-IE', function() {
     initializeAsNonIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
     );
     expectPopulatedSpan(stub, TEST_A);
   });
@@ -77,7 +76,7 @@ describe('DraftEditorTextNode', function() {
   it('must initialize correctly with a string, IE', function() {
     initializeAsIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
     );
     expectPopulatedSpan(stub, TEST_A);
   });
@@ -85,7 +84,7 @@ describe('DraftEditorTextNode', function() {
   it('must update from empty to non-empty, non-IE', function() {
     initializeAsNonIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{''}</DraftEditorTextNode>
+      <DraftEditorTextNode>{''}</DraftEditorTextNode>,
     );
 
     renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
@@ -95,7 +94,7 @@ describe('DraftEditorTextNode', function() {
   it('must update from empty to non-empty, IE', function() {
     initializeAsIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{''}</DraftEditorTextNode>
+      <DraftEditorTextNode>{''}</DraftEditorTextNode>,
     );
 
     renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
@@ -105,11 +104,11 @@ describe('DraftEditorTextNode', function() {
   it('must update from non-empty to non-empty, non-IE', function() {
     initializeAsNonIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
     );
 
     renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A + TEST_B}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A + TEST_B}</DraftEditorTextNode>,
     );
 
     expectPopulatedSpan(stub, TEST_A + TEST_B);
@@ -121,11 +120,11 @@ describe('DraftEditorTextNode', function() {
   it('must update from non-empty to non-empty, non-IE', function() {
     initializeAsIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
     );
 
     renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A + TEST_B}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A + TEST_B}</DraftEditorTextNode>,
     );
     expectPopulatedSpan(stub, TEST_A + TEST_B);
 
@@ -136,7 +135,7 @@ describe('DraftEditorTextNode', function() {
   it('must skip updates if text already matches DOM, non-IE', function() {
     initializeAsNonIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
     );
 
     spyOn(stub, 'render').and.callThrough();
@@ -154,7 +153,7 @@ describe('DraftEditorTextNode', function() {
   it('must skip updates if text already matches DOM, IE', function() {
     initializeAsIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
     );
 
     spyOn(stub, 'render').and.callThrough();
@@ -172,7 +171,7 @@ describe('DraftEditorTextNode', function() {
   it('must update from non-empty to empty, non-IE', function() {
     initializeAsNonIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
     );
 
     renderIntoContainer(<DraftEditorTextNode>{''}</DraftEditorTextNode>);
@@ -183,7 +182,7 @@ describe('DraftEditorTextNode', function() {
   it('must update from non-empty to empty, IE', function() {
     initializeAsIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
     );
 
     renderIntoContainer(<DraftEditorTextNode>{''}</DraftEditorTextNode>);
@@ -194,14 +193,14 @@ describe('DraftEditorTextNode', function() {
   it('must render properly into a parent DOM node', function() {
     initializeAsNonIE();
     renderIntoContainer(
-      <div><DraftEditorTextNode>{TEST_A}</DraftEditorTextNode></div>
+      <div><DraftEditorTextNode>{TEST_A}</DraftEditorTextNode></div>,
     );
   });
 
   it('must force unchanged text back into the DOM', function() {
     initializeAsNonIE();
     var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
     );
 
     ReactDOM.findDOMNode(stub).textContent = TEST_B;

@@ -42,6 +42,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
 
   // Track the current scroll position so that it can be forced back in place
   // after the editor regains control of the DOM.
+  // $FlowFixMe e.target should be an instanceof Node
   const scrollParent = Style.getScrollParent(e.target);
   const {x, y} = getScrollPosition(scrollParent);
 
@@ -63,7 +64,7 @@ function removeFragment(editorState: EditorState): EditorState {
   const newContent = DraftModifier.removeRange(
     editorState.getCurrentContent(),
     editorState.getSelection(),
-    'forward'
+    'forward',
   );
   return EditorState.push(editorState, newContent, 'remove-range');
 }

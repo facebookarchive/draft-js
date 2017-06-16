@@ -20,6 +20,7 @@ var UserAgent = require('UserAgent');
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
+var setImmediate = require('setImmediate');
 
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -53,14 +54,14 @@ function replaceText(
   editorState: EditorState,
   text: string,
   inlineStyle: DraftInlineStyle,
-  entityKey: ?string
+  entityKey: ?string,
 ): EditorState {
   var contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),
     editorState.getSelection(),
     text,
     inlineStyle,
-    entityKey
+    entityKey,
   );
   return EditorState.push(editorState, contentState, 'insert-characters');
 }
@@ -75,6 +76,13 @@ function replaceText(
  * occurs on the relevant text nodes.
  */
 function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
+  if (editor._pendingStateFromBeforeInput !== undefined) {
+    editor.update(editor._pendingStateFromBeforeInput);
+    editor._pendingStateFromBeforeInput = undefined;
+  }
+
+  const editorState = editor._latestEditorState;
+
   var chars = e.data;
 
   // In some cases (ex: IE ideographic space insertion) no character data
@@ -90,7 +98,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   // start of the block.
   if (
     editor.props.handleBeforeInput &&
-    isEventHandled(editor.props.handleBeforeInput(chars))
+    isEventHandled(editor.props.handleBeforeInput(chars, editorState))
   ) {
     e.preventDefault();
     return;
@@ -99,7 +107,6 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   // If selection is collapsed, conditionally allow native behavior. This
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
-  var editorState = editor._latestEditorState;
   var selection = editorState.getSelection();
 
   if (!selection.isCollapsed()) {
@@ -111,9 +118,9 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
         editorState.getCurrentInlineStyle(),
         getEntityKeyForSelection(
           editorState.getCurrentContent(),
-          editorState.getSelection()
-        )
-      )
+          editorState.getSelection(),
+        ),
+      ),
     );
     return;
   }
@@ -125,8 +132,8 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     editorState.getCurrentInlineStyle(),
     getEntityKeyForSelection(
       editorState.getCurrentContent(),
-      editorState.getSelection()
-    )
+      editorState.getSelection(),
+    ),
   );
 
   if (!mayAllowNative) {
@@ -143,7 +150,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   // in which case we would prevent the native character insertion.
   var originalFingerprint = BlockTree.getFingerprint(anchorTree);
   var newFingerprint = BlockTree.getFingerprint(
-    newEditorState.getBlockTree(anchorKey)
+    newEditorState.getBlockTree(anchorKey),
   );
 
   if (
@@ -157,12 +164,19 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     e.preventDefault();
     editor.update(newEditorState);
   } else {
+    newEditorState = EditorState.set(newEditorState, {
+      nativelyRenderedContent: newEditorState.getCurrentContent(),
+    });
     // The native event is allowed to occur. To allow user onChange handlers to
     // change the inserted text, we wait until the text is actually inserted
     // before we actually update our state. That way when we rerender, the text
     // we see in the DOM will already have been inserted properly.
-    editor._pendingStateFromBeforeInput = EditorState.set(newEditorState, {
-      nativelyRenderedContent: newEditorState.getCurrentContent(),
+    editor._pendingStateFromBeforeInput = newEditorState;
+    setImmediate(() => {
+      if (editor._pendingStateFromBeforeInput !== undefined) {
+        editor.update(editor._pendingStateFromBeforeInput);
+        editor._pendingStateFromBeforeInput = undefined;
+      }
     });
   }
 }

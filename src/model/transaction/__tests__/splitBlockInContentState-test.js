@@ -69,14 +69,14 @@ describe('splitBlockInContentState', () => {
     expect(postSplitBlock.getType()).toBe(initialBlock.getType());
     expect(postSplitBlock.getText()).toBe(initialBlock.getText());
     expect(
-      getInlineStyles(initialBlock)
+      getInlineStyles(initialBlock),
     ).toEqual(
-      getInlineStyles(postSplitBlock)
+      getInlineStyles(postSplitBlock),
     );
     expect(
-      getEntities(postSplitBlock)
+      getEntities(postSplitBlock),
     ).toEqual(
-      getEntities(initialBlock)
+      getEntities(initialBlock),
     );
 
     checkForCharacterList(preSplitBlock);
@@ -100,13 +100,13 @@ describe('splitBlockInContentState', () => {
 
     expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
     expect(preSplitBlock.getText()).toBe(
-      initialBlock.getText().slice(0, SPLIT_OFFSET)
+      initialBlock.getText().slice(0, SPLIT_OFFSET),
     );
     expect(getInlineStyles(preSplitBlock)).toEqual(
-      getInlineStyles(initialBlock).slice(0, SPLIT_OFFSET)
+      getInlineStyles(initialBlock).slice(0, SPLIT_OFFSET),
     );
     expect(getEntities(preSplitBlock)).toEqual(
-      getEntities(initialBlock).slice(0, SPLIT_OFFSET)
+      getEntities(initialBlock).slice(0, SPLIT_OFFSET),
     );
 
     expect(preSplitBlock.getKey()).not.toBe(postSplitBlock.getKey());
@@ -115,13 +115,13 @@ describe('splitBlockInContentState', () => {
     expect(postSplitBlock.getKey()).not.toBe(initialBlock.getKey());
     expect(postSplitBlock.getType()).toBe(initialBlock.getType());
     expect(postSplitBlock.getText()).toBe(
-      initialBlock.getText().slice(SPLIT_OFFSET)
+      initialBlock.getText().slice(SPLIT_OFFSET),
     );
     expect(getInlineStyles(postSplitBlock)).toEqual(
-      getInlineStyles(initialBlock).slice(SPLIT_OFFSET)
+      getInlineStyles(initialBlock).slice(SPLIT_OFFSET),
     );
     expect(getEntities(postSplitBlock)).toEqual(
-      getEntities(initialBlock).slice(SPLIT_OFFSET)
+      getEntities(initialBlock).slice(SPLIT_OFFSET),
     );
 
     checkForCharacterList(preSplitBlock);
@@ -149,14 +149,14 @@ describe('splitBlockInContentState', () => {
     expect(preSplitBlock.getType()).toBe(postSplitBlock.getType());
     expect(preSplitBlock.getText()).toBe(initialBlock.getText());
     expect(
-      getInlineStyles(preSplitBlock)
+      getInlineStyles(preSplitBlock),
     ).toEqual(
-      getInlineStyles(initialBlock)
+      getInlineStyles(initialBlock),
     );
     expect(
-      getEntities(preSplitBlock)
+      getEntities(preSplitBlock),
     ).toEqual(
-      getEntities(initialBlock)
+      getEntities(initialBlock),
     );
 
     expect(postSplitBlock.getKey()).not.toBe(initialBlock.getKey());

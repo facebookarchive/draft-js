@@ -45,7 +45,7 @@ var DraftEntitySegments = {
     selectionEnd: number,
     text: string,
     entityStart: number,
-    direction: DraftRemovalDirection
+    direction: DraftRemovalDirection,
   ): DraftRange {
     var segments = text.split(' ');
     segments = segments.map((/*string*/ segment, /*number*/ ii) => {
