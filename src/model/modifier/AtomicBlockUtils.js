@@ -53,6 +53,12 @@ const AtomicBlockUtils = {
     const fragmentArray = [
       new ContentBlock({
         key: generateRandomKey(),
+        type: 'unstyled',
+        text: '',
+        characterList: List(),
+      }),
+      new ContentBlock({
+        key: generateRandomKey(),
         type: 'atomic',
         text: character,
         characterList: List(Repeat(charData, character.length)),

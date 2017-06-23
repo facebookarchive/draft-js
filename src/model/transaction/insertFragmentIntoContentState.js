@@ -61,11 +61,13 @@ function insertFragmentIntoContentState(
       var headCharacters = chars.slice(0, targetOffset);
       var modifiedHead;
       if (firstFragmentPartIsAtomic) {
-        modifiedHead = block.merge({
-          text: headText,
-          characterList: headCharacters,
-        });
-
+        if (headText) {
+          modifiedHead = block.merge({
+            text: headText,
+            characterList: headCharacters,
+          });
+          newBlockArr.push(modifiedHead);
+        }
       } else {
         var appendToHead = fragment.first();
 
@@ -75,8 +77,8 @@ function insertFragmentIntoContentState(
           type: headText ? block.getType() : appendToHead.getType(),
           data: appendToHead.getData(),
         });
+        newBlockArr.push(modifiedHead);
       }
-      newBlockArr.push(modifiedHead);
 
       // Insert fragment blocks after the head and before the tail.
       fragment.slice(
