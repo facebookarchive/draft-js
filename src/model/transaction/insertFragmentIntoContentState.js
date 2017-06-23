@@ -16,7 +16,6 @@
 var BlockMapBuilder = require('BlockMapBuilder');
 
 var generateRandomKey = require('generateRandomKey');
-var insertIntoList = require('insertIntoList');
 var invariant = require('invariant');
 
 import type {BlockMap} from 'BlockMap';
@@ -36,49 +35,8 @@ function insertFragmentIntoContentState(
   var targetKey = selectionState.getStartKey();
   var targetOffset = selectionState.getStartOffset();
 
-  var blockMap = contentState.getBlockMap();
-
   var fragmentSize = fragment.size;
   var finalKey;
-  var finalOffset;
-
-  if (fragmentSize === 1) {
-    var targetBlock = blockMap.get(targetKey);
-    var pastedBlock = fragment.first();
-    var text = targetBlock.getText();
-    var chars = targetBlock.getCharacterList();
-
-    var newBlock = targetBlock.merge({
-      text: (
-        text.slice(0, targetOffset) +
-        pastedBlock.getText() +
-        text.slice(targetOffset)
-      ),
-      characterList: insertIntoList(
-        chars,
-        pastedBlock.getCharacterList(),
-        targetOffset,
-      ),
-      data: pastedBlock.getData(),
-    });
-
-    blockMap = blockMap.set(targetKey, newBlock);
-
-    finalKey = targetKey;
-    finalOffset = targetOffset + pastedBlock.getText().length;
-
-    return contentState.merge({
-      blockMap: blockMap.set(targetKey, newBlock),
-      selectionBefore: selectionState,
-      selectionAfter: selectionState.merge({
-        anchorKey: finalKey,
-        anchorOffset: finalOffset,
-        focusKey: finalKey,
-        focusOffset: finalOffset,
-        isBackward: false,
-      }),
-    });
-  }
 
   var newBlockArr = [];
   var newSelectionKey;
@@ -92,7 +50,7 @@ function insertFragmentIntoContentState(
       }
 
       var firstFragmentPartIsAtomic = fragment.first().getType() === 'atomic';
-      var lastFragmentPartIsAtomic = fragment.first().getType() === 'atomic';
+      var lastFragmentPartIsAtomic = fragment.last().getType() === 'atomic';
 
       var text = block.getText();
       var chars = block.getCharacterList();
