@@ -48,6 +48,7 @@ function insertFragmentIntoContentState(
     var pastedBlock = fragment.first();
     var text = targetBlock.getText();
     var chars = targetBlock.getCharacterList();
+
     var newBlock = targetBlock.merge({
       text: (
         text.slice(0, targetOffset) +
@@ -61,9 +62,12 @@ function insertFragmentIntoContentState(
       ),
       data: pastedBlock.getData(),
     });
+
     blockMap = blockMap.set(targetKey, newBlock);
+
     finalKey = targetKey;
     finalOffset = targetOffset + pastedBlock.getText().length;
+
     return contentState.merge({
       blockMap: blockMap.set(targetKey, newBlock),
       selectionBefore: selectionState,
