@@ -177,6 +177,7 @@ describe('insertFragmentIntoContentState', () => {
 
     var newBlock = modified.getBlockMap().first();
 
+    expect(modified.getBlockMap().size).toBe(3);
     expect(newBlock.getText().slice(length, length + 2)).toBe('xx');
     expect(newBlock.getData()).toBe(data);
   });
