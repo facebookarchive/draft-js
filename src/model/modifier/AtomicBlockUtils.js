@@ -13,6 +13,8 @@
 
 'use strict';
 
+const invariant = require('invariant');
+
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
@@ -112,6 +114,15 @@ const AtomicBlockUtils = {
         insertionMode,
       );
     } else {
+
+      invariant(
+        !(
+          targetRange.isCollapsed() &&
+          atomicBlock.getKey() === targetRange.getStartKey()
+        ),
+        'Block cannot be moved next to itself.',
+      );
+
       const afterRemoval = DraftModifier.removeRange(
         contentState,
         targetRange,
