@@ -335,6 +335,10 @@ class DraftEditor extends React.Component {
     this._blockSelectEvents = false;
   }
 
+  getNode(): ?Element {
+    return ReactDOM.findDOMNode(this.refs.editor)
+  }
+
   /**
    * Used via `this.focus()`.
    *

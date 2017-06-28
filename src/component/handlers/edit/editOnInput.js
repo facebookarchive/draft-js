@@ -45,7 +45,7 @@ function editOnInput(editor: DraftEditor): void {
     editor._pendingStateFromBeforeInput = undefined;
   }
 
-  var domSelection = global.getSelection();
+  var domSelection = editor.getNode().ownerDocument.defaultView.getSelection();
 
   var {anchorNode, isCollapsed} = domSelection;
   const isNotTextNode =

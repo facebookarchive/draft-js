@@ -29,7 +29,7 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent): void {
   // to force it when blurring occurs within the window (as opposed to
   // clicking to another tab or window).
   if (isWebKit && getActiveElement() === document.body) {
-    global.getSelection().removeAllRanges();
+    editor.getNode().ownerDocument.defaultView.getSelection().removeAllRanges();
   }
 
   var editorState = editor._latestEditorState;
