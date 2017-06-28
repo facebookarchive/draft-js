@@ -335,6 +335,10 @@ class DraftEditor extends React.Component {
     this._blockSelectEvents = false;
   }
 
+  getNode(): ?Element {
+    return ReactDOM.findDOMNode(this.refs.editor)
+  }
+
   /**
    * Used via `this.focus()`.
    *
@@ -355,7 +359,8 @@ class DraftEditor extends React.Component {
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
 
     invariant(
-      editorNode instanceof HTMLElement,
+      editorNode &&
+        editorNode instanceof editorNode.ownerDocument.defaultView.HTMLElement,
       'editorNode is not an HTMLElement',
     );
     editorNode.focus();
@@ -382,7 +387,8 @@ class DraftEditor extends React.Component {
   _blur(): void {
     const editorNode = ReactDOM.findDOMNode(this.refs.editor);
     invariant(
-      editorNode instanceof HTMLElement,
+      editorNode &&
+        editorNode instanceof editorNode.ownerDocument.defaultView.HTMLElement,
       'editorNode is not an HTMLElement',
     );
     editorNode.blur();

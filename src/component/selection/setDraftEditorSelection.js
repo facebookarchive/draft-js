@@ -31,7 +31,7 @@ function getAnonymizedDOM(node: Node): string {
   }
 
   invariant(
-    anonymized instanceof Element,
+    anonymized instanceof anonymized.ownerDocument.defaultView.Element,
     'Node must be an Element if it is not a text node.',
   );
   return anonymized.innerHTML;
@@ -57,7 +57,7 @@ function getAnonymizedEditorDOM(node: Node): string {
   let currentNode = node;
   while (currentNode) {
     if (
-      currentNode instanceof Element
+      currentNode instanceof currentNode.ownerDocument.defaultView.Element
       && currentNode.hasAttribute('contenteditable')
     ) {
       // found the Draft editor container
@@ -94,11 +94,11 @@ function setDraftEditorSelection(
   // It's possible that the editor has been removed from the DOM but
   // our selection code doesn't know it yet. Forcing selection in
   // this case may lead to errors, so just bail now.
-  if (!containsNode(document.documentElement, node)) {
+  if (!containsNode(node.ownerDocument.documentElement, node)) {
     return;
   }
 
-  var selection = global.getSelection();
+  var selection = node.ownerDocument.defaultView.getSelection();
   var anchorKey = selectionState.getAnchorKey();
   var anchorOffset = selectionState.getAnchorOffset();
   var focusKey = selectionState.getFocusKey();
