@@ -233,7 +233,10 @@ function processInlineTag(
   var styleToCheck = inlineTags[tag];
   if (styleToCheck) {
     currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
-  } else if (node instanceof HTMLElement) {
+  } else if (
+    node &&
+    node instanceof node.ownerDocument.defaultView.HTMLElement
+  ) {
     const htmlElement = node;
     currentStyle = currentStyle.withMutations(style => {
       const fontWeight = htmlElement.style.fontWeight;
@@ -318,7 +321,7 @@ function containsSemanticBlockMarkup(
 
 function hasValidLinkText(link: Node): boolean {
   invariant(
-    link instanceof HTMLAnchorElement,
+    link instanceof link.ownerDocument.defaultView.HTMLAnchorElement,
     'Link must be an HTMLAnchorElement.',
   );
   var protocol = link.protocol;
@@ -391,7 +394,7 @@ function genFragment(
   // IMG tags
   if (
     nodeName === 'img' &&
-    node instanceof HTMLImageElement &&
+    node instanceof node.ownerDocument.defaultView.HTMLImageElement &&
     node.attributes.getNamedItem('src') &&
     node.attributes.getNamedItem('src').value
   ) {
@@ -459,7 +462,7 @@ function genFragment(
 
   while (child) {
     if (
-      child instanceof HTMLAnchorElement &&
+      child instanceof child.ownerDocument.defaultView.HTMLAnchorElement &&
       child.href &&
       hasValidLinkText(child)
     ) {

@@ -355,7 +355,8 @@ class DraftEditor extends React.Component {
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
 
     invariant(
-      editorNode instanceof HTMLElement,
+      editorNode &&
+        editorNode instanceof editorNode.ownerDocument.defaultView.HTMLElement,
       'editorNode is not an HTMLElement',
     );
     editorNode.focus();
@@ -382,7 +383,8 @@ class DraftEditor extends React.Component {
   _blur(): void {
     const editorNode = ReactDOM.findDOMNode(this.refs.editor);
     invariant(
-      editorNode instanceof HTMLElement,
+      editorNode &&
+        editorNode instanceof editorNode.ownerDocument.defaultView.HTMLElement,
       'editorNode is not an HTMLElement',
     );
     editorNode.blur();
