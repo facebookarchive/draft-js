@@ -41,10 +41,18 @@ const RESOLVE_DELAY = 20;
  */
 let resolved = false;
 let stillComposing = false;
+let compositionUpdates = false;
 let textInputData = '';
 
 var DraftEditorCompositionHandler = {
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent): void {
+    if (compositionUpdates) {
+      // We only want to use the `beforeinput` event if the `compositionupdate`
+      // one isn't supported. We know that if it is, it fires before
+      // `beforeinput`.
+      return;
+    }
+
     textInputData = (textInputData || '') + e.data;
   },
 
@@ -54,6 +62,15 @@ var DraftEditorCompositionHandler = {
    */
   onCompositionStart: function(editor: DraftEditor): void {
     stillComposing = true;
+  },
+
+  /**
+   * A `compositionupdate` event has fired. Update the current composition
+   * session.
+   */
+  onCompositionUpdate: function(editor: DraftEditor, e: SyntheticInputEvent): void {
+    compositionUpdates = true;
+    textInputData = e.data;
   },
 
   /**
