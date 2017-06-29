@@ -144,16 +144,6 @@ or if you just want to display content for a static use case.
 
 Default is `false`.
 
-#### stripPastedStyles
-```
-stripPastedStyles?: boolean
-```
-Set whether to remove all information except plaintext from pasted content.
-
-This should be used if your editor does not support rich styles.
-
-Default is `false`.
-
 #### spellCheck
 ```
 spellCheck?: boolean
@@ -166,6 +156,15 @@ needed to observe spellcheck events are not fired in IE.
 
 Default is `false`.
 
+#### stripPastedStyles
+```
+stripPastedStyles?: boolean
+```
+Set whether to remove all information except plaintext from pasted content.
+
+This should be used if your editor does not support rich styles.
+
+Default is `false`.
 
 ### DOM and Accessibility (Optional)
 
