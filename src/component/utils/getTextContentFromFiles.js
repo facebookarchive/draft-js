@@ -69,8 +69,8 @@ function readFile(
   }
 
   var reader = new FileReader();
-  reader.onload = function() {
-    callback(reader.result);
+  reader.onload = function(event) {
+    callback(event.target.result);
   };
   reader.onerror = function() {
     callback('');
