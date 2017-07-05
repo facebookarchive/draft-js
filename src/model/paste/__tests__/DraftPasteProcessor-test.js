@@ -141,7 +141,9 @@ describe('DraftPasteProcessor', function() {
 
   it('must suppress blocks nested inside other blocks', function() {
     var html = '<h2><p>Some text here</p> more text here </h2>';
-    var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP);
     assertBlockTypes(output, [
       'header-two',
     ]);
@@ -149,7 +151,9 @@ describe('DraftPasteProcessor', function() {
 
   it('must not suppress blocks nested inside unstyled blocks', function() {
     var html = '<div><h2>Some text here</h2> more text here </div>';
-    var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP);
     assertBlockTypes(output, [
       'header-two',
       'unstyled',
@@ -234,15 +238,18 @@ describe('DraftPasteProcessor', function() {
     ]);
   });
 
-  it('must treat divs that do not contain Ps as Ps when we have Ps elsewhere', function() {
-    var html = '<p>hi</p><div>hello</div><div>hola</div>';
-    var {contentBlocks: output} = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
-    assertBlockTypes(output, [
-      'paragraph',
-      'unstyled',
-      'unstyled',
-    ]);
-  });
+  it('must treat divs that do not contain Ps as Ps when we have Ps elsewhere',
+    function() {
+      var html = '<p>hi</p><div>hello</div><div>hola</div>';
+      var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+        html,
+        CUSTOM_BLOCK_MAP);
+      assertBlockTypes(output, [
+        'paragraph',
+        'unstyled',
+        'unstyled',
+      ]);
+    });
 
   it('must replace br tags with soft newlines', function() {
     var html = 'hi<br>hello';
