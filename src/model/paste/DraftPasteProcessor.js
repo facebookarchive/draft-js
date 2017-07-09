@@ -13,6 +13,9 @@
 
 'use strict';
 
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {EntityMap} from 'EntityMap';
+
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const Immutable = require('immutable');
@@ -22,9 +25,6 @@ const convertFromHTMLtoContentBlocks
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
-
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {EntityMap} from 'EntityMap';
 
 const {
   List,

@@ -12,14 +12,14 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Keys = require('Keys');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-
-import type DraftEditor from 'DraftEditor.react';
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon

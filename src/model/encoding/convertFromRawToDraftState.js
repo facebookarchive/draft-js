@@ -12,17 +12,17 @@
 
 'use strict';
 
+import type {RawDraftContentState} from 'RawDraftContentState';
+
 var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
 var DraftEntity = require('DraftEntity');
+var Immutable = require('immutable');
 
 var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');
 var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 var generateRandomKey = require('generateRandomKey');
-var Immutable = require('immutable');
-
-import type {RawDraftContentState} from 'RawDraftContentState';
 
 var {Map} = Immutable;
 

@@ -13,12 +13,12 @@
 
 'use strict';
 
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
+
 var Immutable = require('immutable');
 
 var applyEntityToContentBlock = require('applyEntityToContentBlock');
-
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
 
 function applyEntityToContentState(
   contentState: ContentState,

@@ -11,13 +11,13 @@
  * @flow
  */
 
+import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
+
 var DraftEntityInstance = require('DraftEntityInstance');
 var Immutable = require('immutable');
 
 var invariant = require('invariant');
-
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
 
 var {Map} = Immutable;
 

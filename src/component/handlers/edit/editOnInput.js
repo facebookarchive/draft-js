@@ -12,6 +12,8 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 const DraftFeatureFlags = require('DraftFeatureFlags');
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
@@ -20,8 +22,6 @@ var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
 var nullthrows = require('nullthrows');
-
-import type DraftEditor from 'DraftEditor.react';
 
 var isGecko = UserAgent.isEngine('Gecko');
 

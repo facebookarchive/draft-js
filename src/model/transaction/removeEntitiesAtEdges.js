@@ -12,16 +12,16 @@
 
 'use strict';
 
+import type ContentBlock from 'ContentBlock';
+import type ContentState from 'ContentState';
+import type {EntityMap} from 'EntityMap';
+import type SelectionState from 'SelectionState';
+import type {List} from 'immutable';
+
 var CharacterMetadata = require('CharacterMetadata');
 
 var findRangesImmutable = require('findRangesImmutable');
 var invariant = require('invariant');
-
-import type ContentBlock from 'ContentBlock';
-import type {EntityMap} from 'EntityMap';
-import type ContentState from 'ContentState';
-import type {List} from 'immutable';
-import type SelectionState from 'SelectionState';
 
 function removeEntitiesAtEdges(
   contentState: ContentState,

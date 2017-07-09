@@ -13,11 +13,11 @@
 
 'use strict';
 
-const invariant = require('invariant');
-
 import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
 import type {DraftInsertionType} from 'DraftInsertionType';
+
+const invariant = require('invariant');
 
 function moveBlockInContentState(
   contentState: ContentState,
