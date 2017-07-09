@@ -14,8 +14,8 @@
 'use strict';
 
 import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
 import type {EntityMap} from 'EntityMap';
+import type SelectionState from 'SelectionState';
 
 /**
  * Return the entity key that should be used when inserting text for the

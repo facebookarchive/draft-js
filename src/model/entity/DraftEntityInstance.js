@@ -12,10 +12,10 @@
 
 'use strict';
 
-var Immutable = require('immutable');
-
-import type {DraftEntityType} from 'DraftEntityType';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
+
+var Immutable = require('immutable');
 
 var {Record} = Immutable;
 

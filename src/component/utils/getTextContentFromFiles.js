@@ -70,6 +70,8 @@ function readFile(
 
   var reader = new FileReader();
   reader.onload = function() {
+    /* $FlowFixMe(>=0.49.0 site=www,mobile) FileReader.prototype.result can
+     * sometimes be an ArrayBuffer */
     callback(reader.result);
   };
   reader.onerror = function() {

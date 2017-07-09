@@ -12,14 +12,14 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Style = require('Style');
 
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
-
-import type DraftEditor from 'DraftEditor.react';
 
 /**
  * On `cut` events, native behavior is allowed to occur so that the system

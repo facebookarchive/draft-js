@@ -13,13 +13,13 @@
 
 'use strict';
 
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
+
 var Immutable = require('immutable');
 
 var generateRandomKey = require('generateRandomKey');
 var invariant = require('invariant');
-
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
 
 const {Map} = Immutable;
 

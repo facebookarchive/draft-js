@@ -13,12 +13,12 @@
 
 'use strict';
 
+import type {DraftTextAlignment} from 'DraftTextAlignment';
+import type EditorState from 'EditorState';
+
 const React = require('React');
 
 const cx = require('cx');
-
-import type {DraftTextAlignment} from 'DraftTextAlignment';
-import type EditorState from 'EditorState';
 
 type Props = {
   accessibilityID: string,
