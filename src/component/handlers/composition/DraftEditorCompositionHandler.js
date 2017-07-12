@@ -68,7 +68,10 @@ var DraftEditorCompositionHandler = {
    * A `compositionupdate` event has fired. Update the current composition
    * session.
    */
-  onCompositionUpdate: function(editor: DraftEditor, e: SyntheticInputEvent): void {
+  onCompositionUpdate: function(
+    editor: DraftEditor,
+    e: SyntheticInputEvent,
+  ): void {
     compositionUpdates = true;
     textInputData = e.data;
   },
