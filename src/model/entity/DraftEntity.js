@@ -11,13 +11,13 @@
  * @flow
  */
 
+import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
+
 var DraftEntityInstance = require('DraftEntityInstance');
 var Immutable = require('immutable');
 
 var invariant = require('invariant');
-
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
 
 var {Map} = Immutable;
 
@@ -245,7 +245,7 @@ var DraftEntity:DraftEntityMapObject = {
    */
   __get: function(key: string): DraftEntityInstance {
     var instance = instances.get(key);
-    invariant(!!instance, 'Unknown DraftEntity key.');
+    invariant(!!instance, 'Unknown DraftEntity key: %s.', key);
     return instance;
   },
 

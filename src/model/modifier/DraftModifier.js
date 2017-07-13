@@ -13,6 +13,14 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type ContentState from 'ContentState';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftRemovalDirection} from 'DraftRemovalDirection';
+import type SelectionState from 'SelectionState';
+import type {Map} from 'immutable';
+
 var CharacterMetadata = require('CharacterMetadata');
 var ContentStateInlineStyle = require('ContentStateInlineStyle');
 const DraftFeatureFlags = require('DraftFeatureFlags');
@@ -28,14 +36,6 @@ var modifyBlockForContentState = require('modifyBlockForContentState');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 var removeRangeFromContentState = require('removeRangeFromContentState');
 var splitBlockInContentState = require('splitBlockInContentState');
-
-import type {BlockMap} from 'BlockMap';
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
-import type {Map} from 'immutable';
-import type SelectionState from 'SelectionState';
 
 const {OrderedSet} = Immutable;
 

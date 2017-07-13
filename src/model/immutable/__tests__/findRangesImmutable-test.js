@@ -14,6 +14,7 @@
 jest.disableAutomock();
 
 var Immutable = require('immutable');
+
 var findRangesImmutable = require('findRangesImmutable');
 
 describe('findRangesImmutable', () => {

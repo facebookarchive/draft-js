@@ -15,8 +15,8 @@
 'use strict';
 
 import type {BlockMap} from 'BlockMap';
-import type {DraftEditorDefaultProps, DraftEditorProps} from 'DraftEditorProps';
 import type {DraftEditorModes} from 'DraftEditorModes';
+import type {DraftEditorDefaultProps, DraftEditorProps} from 'DraftEditorProps';
 import type {DraftScrollPosition} from 'DraftScrollPosition';
 
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
@@ -26,7 +26,6 @@ const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
-
 const EditorState = require('EditorState');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
@@ -38,7 +37,6 @@ const cx = require('cx');
 const emptyFunction = require('emptyFunction');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
-
 const getScrollPosition = require('getScrollPosition');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
