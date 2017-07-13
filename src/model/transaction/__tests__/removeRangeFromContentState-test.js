@@ -17,6 +17,8 @@ var Immutable = require('immutable');
 var getSampleStateForTesting = require('getSampleStateForTesting');
 var removeRangeFromContentState = require('removeRangeFromContentState');
 var ContentBlock = require('ContentBlock');
+var CharacterMetadata = require('CharacterMetadata');
+var BlockMapBuilder = require('BlockMapBuilder');
 
 describe('removeRangeFromContentState', () => {
   var {
@@ -423,6 +425,105 @@ describe('removeRangeFromContentState', () => {
       );
 
       checkForCharacterList(alteredBlock);
+    });
+  });
+
+  describe('Removal from `atomic` block to `atomic` block', () => {
+
+    it(
+      `must remove all blocks touching
+      selection on adjacent 'atomic's`,
+      () => {
+        var originalBlockMap = contentState.getBlockMap();
+        var originalBlockA = originalBlockMap.first();
+        var originalBlockB = originalBlockMap.skip(1).first();
+        var startAtomic = new ContentBlock({
+          text: ' ',
+          key: 'startAtomic',
+          type: 'atomic',
+          characterList: Immutable.List(
+            CharacterMetadata.EMPTY,
+          ),
+        });
+        var endAtomic = new ContentBlock({
+          text: ' ',
+          key: 'endAtomic',
+          type: 'atomic',
+          characterList: Immutable.List(
+            CharacterMetadata.EMPTY,
+          ),
+        });
+        var mapWithAtomics = BlockMapBuilder.createFromArray([
+          originalBlockA,
+          startAtomic,
+          endAtomic,
+          originalBlockB,
+        ]);
+        var stateWithAtomics = contentState.set(
+          'blockMap',
+          mapWithAtomics,
+        );
+
+        var selection = selectionState.merge({
+          anchorKey: 'startAtomic',
+          focusKey: 'endAtomic',
+        });
+        var afterRemoval = removeRangeFromContentState(
+          stateWithAtomics,
+          selection,
+        );
+        var afterBlockMap = afterRemoval.getBlockMap();
+        expect(afterBlockMap.size).toBe(2);
+        var secondAfterBlock = afterBlockMap.skip(1).first();
+        expect(secondAfterBlock).toEqual(originalBlockB);
+      },
+    );
+
+    it('must remove all blocks touching selection', () => {
+      var originalBlockMap = contentState.getBlockMap();
+      var originalBlockA = originalBlockMap.first();
+      var originalBlockB = originalBlockMap.skip(1).first();
+      var originalBlockC = originalBlockMap.skip(2).first();
+      var startAtomic = new ContentBlock({
+        text: ' ',
+        key: 'startAtomic',
+        type: 'atomic',
+        characterList: Immutable.List(
+          CharacterMetadata.EMPTY,
+        ),
+      });
+      var endAtomic = new ContentBlock({
+        text: ' ',
+        key: 'endAtomic',
+        type: 'atomic',
+        characterList: Immutable.List(
+          CharacterMetadata.EMPTY,
+        ),
+      });
+      var mapWithAtomics = BlockMapBuilder.createFromArray([
+        originalBlockA,
+        startAtomic,
+        originalBlockB,
+        endAtomic,
+        originalBlockC,
+      ]);
+      var stateWithAtomics = contentState.set(
+        'blockMap',
+        mapWithAtomics,
+      );
+
+      var selection = selectionState.merge({
+        anchorKey: 'startAtomic',
+        focusKey: 'endAtomic',
+      });
+      var afterRemoval = removeRangeFromContentState(
+        stateWithAtomics,
+        selection,
+      );
+      var afterBlockMap = afterRemoval.getBlockMap();
+      expect(afterBlockMap.size).toBe(2);
+      var secondAfterBlock = afterBlockMap.skip(1).first();
+      expect(secondAfterBlock).toEqual(originalBlockC);
     });
   });
 });

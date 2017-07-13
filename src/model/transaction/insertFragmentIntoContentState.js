@@ -39,10 +39,11 @@ function insertFragmentIntoContentState(
   var blockMap = contentState.getBlockMap();
 
   var fragmentSize = fragment.size;
+  var firstFragmentPartIsAtomic = fragment.first().getType() === 'atomic';
   var finalKey;
   var finalOffset;
 
-  if (fragmentSize === 1) {
+  if (fragmentSize === 1 && !firstFragmentPartIsAtomic) {
     var targetBlock = blockMap.get(targetKey);
     var pastedBlock = fragment.first();
     var text = targetBlock.getText();
@@ -81,6 +82,8 @@ function insertFragmentIntoContentState(
   }
 
   var newBlockArr = [];
+  var newSelectionKey;
+  var newSelectionOffset;
 
   contentState.getBlockMap().forEach(
     (block, blockKey) => {
@@ -89,6 +92,8 @@ function insertFragmentIntoContentState(
         return;
       }
 
+      var lastFragmentPartIsAtomic = fragment.last().getType() === 'atomic';
+
       var text = block.getText();
       var chars = block.getCharacterList();
 
@@ -96,19 +101,32 @@ function insertFragmentIntoContentState(
       var blockSize = text.length;
       var headText = text.slice(0, targetOffset);
       var headCharacters = chars.slice(0, targetOffset);
-      var appendToHead = fragment.first();
+      var modifiedHead;
+      if (firstFragmentPartIsAtomic) {
+        if (headText) {
+          modifiedHead = block.merge({
+            text: headText,
+            characterList: headCharacters,
+          });
+          newBlockArr.push(modifiedHead);
+        }
+      } else {
+        var appendToHead = fragment.first();
 
-      var modifiedHead = block.merge({
-        text: headText + appendToHead.getText(),
-        characterList: headCharacters.concat(appendToHead.getCharacterList()),
-        type: headText ? block.getType() : appendToHead.getType(),
-        data: appendToHead.getData(),
-      });
-
-      newBlockArr.push(modifiedHead);
+        modifiedHead = block.merge({
+          text: headText + appendToHead.getText(),
+          characterList: headCharacters.concat(appendToHead.getCharacterList()),
+          type: headText ? block.getType() : appendToHead.getType(),
+          data: appendToHead.getData(),
+        });
+        newBlockArr.push(modifiedHead);
+      }
 
       // Insert fragment blocks after the head and before the tail.
-      fragment.slice(1, fragmentSize - 1).forEach(
+      fragment.slice(
+        firstFragmentPartIsAtomic ? 0 : 1,
+        lastFragmentPartIsAtomic ? fragmentSize : fragmentSize - 1,
+      ).forEach(
         fragmentBlock => {
           newBlockArr.push(fragmentBlock.set('key', generateRandomKey()));
         },
@@ -120,29 +138,45 @@ function insertFragmentIntoContentState(
       var prependToTail = fragment.last();
       finalKey = generateRandomKey();
 
-      var modifiedTail = prependToTail.merge({
-        key: finalKey,
-        text: prependToTail.getText() + tailText,
-        characterList: prependToTail
-          .getCharacterList()
-          .concat(tailCharacters),
-        data: prependToTail.getData(),
-      });
-
-      newBlockArr.push(modifiedTail);
+      if (lastFragmentPartIsAtomic) {
+        if (tailText) {
+          var targetTail = block.merge({
+            key: finalKey,
+            text: tailText,
+            characterList: tailCharacters,
+          });
+          newBlockArr.push(targetTail);
+          newSelectionKey = finalKey;
+          newSelectionOffset = 0;
+        } else {
+          var lastFragmentPart = newBlockArr[newBlockArr.length - 1];
+          newSelectionKey = lastFragmentPart.getKey();
+          newSelectionOffset = lastFragmentPart.getLength();
+        }
+      } else {
+        var modifiedTail = prependToTail.merge({
+          key: finalKey,
+          text: prependToTail.getText() + tailText,
+          characterList: prependToTail
+            .getCharacterList()
+            .concat(tailCharacters),
+          data: prependToTail.getData(),
+        });
+        newBlockArr.push(modifiedTail);
+        newSelectionKey = finalKey;
+        newSelectionOffset = fragment.last().getLength();
+      }
     },
   );
-
-  finalOffset = fragment.last().getLength();
 
   return contentState.merge({
     blockMap: BlockMapBuilder.createFromArray(newBlockArr),
     selectionBefore: selectionState,
     selectionAfter: selectionState.merge({
-      anchorKey: finalKey,
-      anchorOffset: finalOffset,
-      focusKey: finalKey,
-      focusOffset: finalOffset,
+      anchorKey: newSelectionKey,
+      anchorOffset: newSelectionOffset,
+      focusKey: newSelectionKey,
+      focusOffset: newSelectionOffset,
       isBackward: false,
     }),
   });

@@ -13,6 +13,8 @@
 
 'use strict';
 
+const invariant = require('invariant');
+
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
@@ -46,19 +48,17 @@ const AtomicBlockUtils = {
       'backward',
     );
 
-    const targetSelection = afterRemoval.getSelectionAfter();
-    const afterSplit = DraftModifier.splitBlock(afterRemoval, targetSelection);
-    const insertionTarget = afterSplit.getSelectionAfter();
-
-    const asAtomicBlock = DraftModifier.setBlockType(
-      afterSplit,
-      insertionTarget,
-      'atomic',
-    );
+    const insertionTarget = afterRemoval.getSelectionAfter();
 
     const charData = CharacterMetadata.create({entity: entityKey});
 
     const fragmentArray = [
+      new ContentBlock({
+        key: generateRandomKey(),
+        type: 'unstyled',
+        text: '',
+        characterList: List(),
+      }),
       new ContentBlock({
         key: generateRandomKey(),
         type: 'atomic',
@@ -76,7 +76,7 @@ const AtomicBlockUtils = {
     const fragment = BlockMapBuilder.createFromArray(fragmentArray);
 
     const withAtomicBlock = DraftModifier.replaceWithFragment(
-      asAtomicBlock,
+      afterRemoval,
       insertionTarget,
       fragment,
     );
@@ -114,6 +114,15 @@ const AtomicBlockUtils = {
         insertionMode,
       );
     } else {
+
+      invariant(
+        !(
+          targetRange.isCollapsed() &&
+          atomicBlock.getKey() === targetRange.getStartKey()
+        ),
+        'Block cannot be moved next to itself.',
+      );
+
       const afterRemoval = DraftModifier.removeRange(
         contentState,
         targetRange,

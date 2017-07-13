@@ -23,9 +23,6 @@ function removeRangeFromContentState(
   contentState: ContentState,
   selectionState: SelectionState,
 ): ContentState {
-  if (selectionState.isCollapsed()) {
-    return contentState;
-  }
 
   var blockMap = contentState.getBlockMap();
   var startKey = selectionState.getStartKey();
@@ -34,6 +31,12 @@ function removeRangeFromContentState(
   var endOffset = selectionState.getEndOffset();
 
   var startBlock = blockMap.get(startKey);
+  var startIsAtomic = startBlock.getType() === 'atomic';
+  // Any kind of selection on `atomic`, including collapsed one,
+  // is treated as full selection of `atomic`
+  if (selectionState.isCollapsed() && !startIsAtomic) {
+    return contentState;
+  }
   var endBlock = blockMap.get(endKey);
   var characterList;
 
@@ -50,13 +53,16 @@ function removeRangeFromContentState(
       .concat(endBlock.getCharacterList().slice(endOffset));
   }
 
-  var modifiedStart = startBlock.merge({
-    text: (
-      startBlock.getText().slice(0, startOffset) +
-      endBlock.getText().slice(endOffset)
-    ),
-    characterList,
-  });
+  var modifiedStart = startIsAtomic ?
+    null :
+    startBlock.merge({
+      text: (
+        startBlock.getText().slice(0, startOffset) +
+        endBlock.getText().slice(endOffset)
+      ),
+      characterList,
+    })
+  ;
 
   var newBlocks = blockMap
     .toSeq()
@@ -67,14 +73,21 @@ function removeRangeFromContentState(
 
   blockMap = blockMap.merge(newBlocks).filter(block => !!block);
 
+  var keyBeforeSelection = contentState.getKeyBefore(startKey);
+  var keyAfterSelection = contentState.getKeyAfter(endKey);
+  var newSelectionKey = startIsAtomic ?
+    keyAfterSelection || keyBeforeSelection :
+    startKey;
+  var newSelectionOffset = startIsAtomic ? 0 : startOffset;
+
   return contentState.merge({
     blockMap,
     selectionBefore: selectionState,
     selectionAfter: selectionState.merge({
-      anchorKey: startKey,
-      anchorOffset: startOffset,
-      focusKey: startKey,
-      focusOffset: startOffset,
+      anchorKey: newSelectionKey,
+      anchorOffset: newSelectionOffset,
+      focusKey: newSelectionKey,
+      focusOffset: newSelectionOffset,
       isBackward: false,
     }),
   });
