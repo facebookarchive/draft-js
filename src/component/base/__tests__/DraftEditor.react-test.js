@@ -17,10 +17,10 @@ jest
   .unmock('react-test-renderer/shallow')
   .unmock('generateRandomKey');
 
-var React = require('React');
-var ReactShallowRenderer = require('react-test-renderer/shallow');
-
 var DraftEditor = require('DraftEditor.react');
+var React = require('React');
+
+var ReactShallowRenderer = require('react-test-renderer/shallow');
 
 describe('DraftEditor.react', () => {
   var shallow;

@@ -12,19 +12,19 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+
 var BlockTree = require('BlockTree');
 var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
+const isEventHandled = require('isEventHandled');
 var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
 var setImmediate = require('setImmediate');
-
-import type DraftEditor from 'DraftEditor.react';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-const isEventHandled = require('isEventHandled');
 
 // When nothing is focused, Firefox regards two characters, `'` and `/`, as
 // commands that should open and focus the "quickfind" search bar. This should

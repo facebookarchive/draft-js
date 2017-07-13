@@ -15,6 +15,7 @@ jest.disableAutomock();
 
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
+
 var applyEntityToContentState = require('applyEntityToContentState');
 var getSampleStateForTesting = require('getSampleStateForTesting');
 

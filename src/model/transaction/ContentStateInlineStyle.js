@@ -13,11 +13,11 @@
 
 'use strict';
 
-var CharacterMetadata = require('CharacterMetadata');
-var {Map} = require('immutable');
-
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
+
+var CharacterMetadata = require('CharacterMetadata');
+var {Map} = require('immutable');
 
 var ContentStateInlineStyle = {
   add: function(
