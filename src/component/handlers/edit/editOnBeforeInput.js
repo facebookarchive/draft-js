@@ -26,6 +26,11 @@ var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
 var setImmediate = require('setImmediate');
 
+if (window.setImmediate) {
+  // IE11 workaround. 'setImmediate' package doesn't work with IE10/11
+  setImmediate = window.setImmediate.bind(window);
+}
+
 // When nothing is focused, Firefox regards two characters, `'` and `/`, as
 // commands that should open and focus the "quickfind" search bar. This should
 // *never* happen while a contenteditable is focused, but as of v28, it
