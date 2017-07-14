@@ -168,7 +168,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     // whether this insertion requires any addition or removal of text nodes,
     // in which case we would prevent the native character insertion.
     var originalFingerprint = BlockTree.getFingerprint(
-      editorState.getBlockTree(anchorKey)
+      editorState.getBlockTree(anchorKey),
     );
     var newFingerprint = BlockTree.getFingerprint(
       newEditorState.getBlockTree(anchorKey),
