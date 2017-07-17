@@ -37,8 +37,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.state = {editorState: EditorState.createEmpty()};
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => console.log(this.state.editorState.toJS());
+          this.setDomEditorRef = ref => this.domEditor = ref;
         }
-        
+                
         componentDidMount(){
           this.domEditor.focus()
         }
@@ -51,7 +52,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   editorState={this.state.editorState}
                   onChange={this.onChange}
                   placeholder="Enter some text..."
-                  ref={(d)=>{this.domEditor = d}}
+                  ref={this.setDomEditorRef}
                 />
               </div>
               <input
