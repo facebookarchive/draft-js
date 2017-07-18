@@ -13,14 +13,14 @@
 
 'use strict';
 
+import type {DOMDerivedSelection} from 'DOMDerivedSelection';
+import type EditorState from 'EditorState';
+
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
 var getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 var getUpdatedSelectionState = require('getUpdatedSelectionState');
 var invariant = require('invariant');
 var nullthrows = require('nullthrows');
-
-import type {DOMDerivedSelection} from 'DOMDerivedSelection';
-import type EditorState from 'EditorState';
 
 type SelectionPoint = {
   key: string,

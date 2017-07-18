@@ -6,7 +6,7 @@
 .public/DraftEditorPlaceholder/root {
   color: var(fig-secondary-text);
   position: absolute;
-  z-index: 0;
+  z-index: 1;
 }
 
 .public/DraftEditorPlaceholder/hasFocus {

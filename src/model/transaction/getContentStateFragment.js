@@ -13,12 +13,12 @@
 
 'use strict';
 
-var generateRandomKey = require('generateRandomKey');
-var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
-
 import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
+
+var generateRandomKey = require('generateRandomKey');
+var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
 function getContentStateFragment(
   contentState: ContentState,

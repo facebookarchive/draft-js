@@ -14,6 +14,7 @@
 jest.disableAutomock();
 
 var Immutable = require('immutable');
+
 var insertIntoList = require('insertIntoList');
 
 describe('insertIntoList', () => {

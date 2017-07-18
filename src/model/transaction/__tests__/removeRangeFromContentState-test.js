@@ -13,10 +13,11 @@
 
 jest.disableAutomock();
 
+var ContentBlock = require('ContentBlock');
 var Immutable = require('immutable');
+
 var getSampleStateForTesting = require('getSampleStateForTesting');
 var removeRangeFromContentState = require('removeRangeFromContentState');
-var ContentBlock = require('ContentBlock');
 
 describe('removeRangeFromContentState', () => {
   var {

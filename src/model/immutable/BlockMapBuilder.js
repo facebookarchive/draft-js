@@ -12,10 +12,10 @@
 
 'use strict';
 
-var Immutable = require('immutable');
-
 import type {BlockMap} from 'BlockMap';
 import type ContentBlock from 'ContentBlock';
+
+var Immutable = require('immutable');
 
 var {OrderedMap} = Immutable;
 
