@@ -35,7 +35,7 @@ var PLAIN_BLOCK = {
 var boldChar = CharacterMetadata.create({style: BOLD});
 var styledChars = Repeat(EMPTY, 4).concat(
   Repeat(boldChar, 4),
-  Repeat(EMPTY, 2)
+  Repeat(EMPTY, 2),
 );
 
 var STYLED_BLOCK = {
@@ -66,7 +66,7 @@ describe('BlockTree', () => {
   describe('generate tree with zero decorations', () => {
     function getDecorator(length) {
       Decorator.prototype.getDecorations.mockImplementation(
-        () => Repeat(null, length).toList()
+        () => Repeat(null, length).toList(),
       );
       return new Decorator();
     }
@@ -133,9 +133,9 @@ describe('BlockTree', () => {
         () => {
           return Repeat(null, RANGE_LENGTH).concat(
             Repeat(DECORATOR_KEY, RANGE_LENGTH),
-            Repeat(null, (length - (2 * RANGE_LENGTH)))
+            Repeat(null, (length - (2 * RANGE_LENGTH))),
           ).toList();
-        }
+        },
       );
       return new Decorator();
     }
@@ -220,9 +220,9 @@ describe('BlockTree', () => {
         () => {
           return Repeat(DECORATOR_KEY_A, RANGE_LENGTH).concat(
             Repeat(null, RANGE_LENGTH),
-            Repeat(DECORATOR_KEY_B, (length - (2 * RANGE_LENGTH)))
+            Repeat(DECORATOR_KEY_B, (length - (2 * RANGE_LENGTH))),
           ).toList();
-        }
+        },
       );
       return new Decorator();
     }

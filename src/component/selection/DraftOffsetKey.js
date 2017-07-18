@@ -20,7 +20,7 @@ var DraftOffsetKey = {
   encode: function(
     blockKey: string,
     decoratorKey: number,
-    leafKey: number
+    leafKey: number,
   ): string {
     return blockKey + KEY_DELIMITER + decoratorKey + KEY_DELIMITER + leafKey;
   },

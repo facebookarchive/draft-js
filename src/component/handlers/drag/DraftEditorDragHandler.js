@@ -13,6 +13,9 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+import type SelectionState from 'SelectionState';
+
 const DataTransfer = require('DataTransfer');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
@@ -20,18 +23,15 @@ const EditorState = require('EditorState');
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const getTextContentFromFiles = require('getTextContentFromFiles');
 const getUpdatedSelectionState = require('getUpdatedSelectionState');
-const nullthrows = require('nullthrows');
-
-import type DraftEditor from 'DraftEditor.react';
-import type SelectionState from 'SelectionState';
 const isEventHandled = require('isEventHandled');
+const nullthrows = require('nullthrows');
 
 /**
  * Get a SelectionState for the supplied mouse event.
  */
 function getSelectionForEvent(
   event: Object,
-  editorState: EditorState
+  editorState: EditorState,
 ): ?SelectionState {
   let node: ?Node = null;
   let offset: ?number = null;
@@ -56,7 +56,7 @@ function getSelectionForEvent(
     offsetKey,
     offset,
     offsetKey,
-    offset
+    offset,
   );
 }
 
@@ -77,7 +77,7 @@ var DraftEditorDragHandler = {
     const editorState: EditorState = editor._latestEditorState;
     const dropSelection: ?SelectionState = getSelectionForEvent(
       e.nativeEvent,
-      editorState
+      editorState,
     );
 
     e.preventDefault();
@@ -100,9 +100,9 @@ var DraftEditorDragHandler = {
         fileText && editor.update(
           insertTextAtSelection(
             editorState,
-            nullthrows(dropSelection), // flow wtf
-            fileText
-          )
+            dropSelection,
+            fileText,
+          ),
         );
       });
       return;
@@ -122,7 +122,7 @@ var DraftEditorDragHandler = {
     }
 
     editor.update(
-      insertTextAtSelection(editorState, dropSelection, data.getText())
+      insertTextAtSelection(editorState, dropSelection, data.getText()),
     );
   },
 
@@ -130,17 +130,17 @@ var DraftEditorDragHandler = {
 
 function moveText(
   editorState: EditorState,
-  targetSelection: SelectionState
+  targetSelection: SelectionState,
 ): EditorState {
   const newContentState = DraftModifier.moveText(
     editorState.getCurrentContent(),
     editorState.getSelection(),
-    targetSelection
+    targetSelection,
   );
   return EditorState.push(
     editorState,
     newContentState,
-    'insert-fragment'
+    'insert-fragment',
   );
 }
 
@@ -150,18 +150,18 @@ function moveText(
 function insertTextAtSelection(
   editorState: EditorState,
   selection: SelectionState,
-  text: string
+  text: string,
 ): EditorState {
   const newContentState = DraftModifier.insertText(
     editorState.getCurrentContent(),
     selection,
     text,
-    editorState.getCurrentInlineStyle()
+    editorState.getCurrentInlineStyle(),
   );
   return EditorState.push(
     editorState,
     newContentState,
-    'insert-fragment'
+    'insert-fragment',
   );
 }
 

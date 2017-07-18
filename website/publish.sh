@@ -14,7 +14,7 @@ rm -Rf *
 cd ../draft-js/website
 rm -Rf build/
 node server/generate.js
-cp -R build/draft-js/* ../../draft-js-gh-pages/
+cp -R build/* ../../draft-js-gh-pages/
 rm -Rf build/
 cd ../../draft-js-gh-pages
 git status

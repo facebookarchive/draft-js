@@ -54,22 +54,24 @@ describe('encodeInlineStyleRanges', () => {
 
   it('must encode for an unstyled document', () => {
     expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(2), Repeat(NONE, 2)))
+      encodeInlineStyleRanges(createBlock(' '.repeat(2), Repeat(NONE, 2))),
     ).toEqual([]);
     expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(20), Repeat(NONE, 20)))
+      encodeInlineStyleRanges(createBlock(' '.repeat(20), Repeat(NONE, 20))),
     ).toEqual([]);
     expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(200), Repeat(NONE, 200)))
+      encodeInlineStyleRanges(createBlock(' '.repeat(200), Repeat(NONE, 200))),
     ).toEqual([]);
     expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(2000), Repeat(NONE, 2000)))
+      encodeInlineStyleRanges(
+        createBlock(' '.repeat(2000), Repeat(NONE, 2000)),
+      ),
     ).toEqual([]);
   });
 
   it('must encode for a flat styled document', () => {
     expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(20), Repeat(BOLD, 20)))
+      encodeInlineStyleRanges(createBlock(' '.repeat(20), Repeat(BOLD, 20))),
     ).toEqual([
       {offset: 0, length: 20, style: 'BOLD'},
     ]);
@@ -77,9 +79,9 @@ describe('encodeInlineStyleRanges', () => {
       encodeInlineStyleRanges(
         createBlock(
           ' '.repeat(20),
-          Repeat(BOLD_ITALIC, 20)
-        )
-      )
+          Repeat(BOLD_ITALIC, 20),
+        ),
+      ),
     ).toEqual([
       {offset: 0, length: 20, style: 'BOLD'},
       {offset: 0, length: 20, style: 'ITALIC'},
@@ -87,7 +89,7 @@ describe('encodeInlineStyleRanges', () => {
 
     var all = BOLD_ITALIC_UNDERLINE;
     expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(20), Repeat(all, 20)))
+      encodeInlineStyleRanges(createBlock(' '.repeat(20), Repeat(all, 20))),
     ).toEqual([
       {offset: 0, length: 20, style: 'BOLD'},
       {offset: 0, length: 20, style: 'ITALIC'},
@@ -98,7 +100,7 @@ describe('encodeInlineStyleRanges', () => {
   it('must encode custom styles', () => {
     const custom = List([FOO, FOO, FOO_BAR, FOO_BAR, BOLD, BOLD]);
     expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(6), custom))
+      encodeInlineStyleRanges(createBlock(' '.repeat(6), custom)),
     ).toEqual([
       {offset: 0, length: 4, style: 'foo'},
       {offset: 2, length: 2, style: 'bar'},
@@ -108,14 +110,14 @@ describe('encodeInlineStyleRanges', () => {
 
   it('must encode for a complex styled document', () => {
     var complex = List([
-      BOLD, BOLD, BOLD, BOLD, NONE,         // "four "
+      BOLD, BOLD, BOLD, BOLD, NONE,     // "four "
       BOLD_ITALIC, BOLD_ITALIC,         // "sc"
       ITALIC_UNDERLINE, BOLD_UNDERLINE, // "or"
       BOLD_ITALIC_UNDERLINE,            // "e"
     ]);
 
     expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(10), complex))
+      encodeInlineStyleRanges(createBlock(' '.repeat(10), complex)),
     ).toEqual([
       {offset: 0, length: 4, style: 'BOLD'},
       {offset: 5, length: 2, style: 'BOLD'},
@@ -129,14 +131,14 @@ describe('encodeInlineStyleRanges', () => {
   it('must encode for strings with surrogate pairs', () => {
     var str = 'Take a \uD83D\uDCF7 #selfie';
     var styles = List([
-      NONE, NONE, NONE, NONE, // `Take`
+      NONE, NONE, NONE, NONE,                            // `Take`
       BOLD, BOLD, BOLD_ITALIC, BOLD_ITALIC, BOLD_ITALIC, // ` a [camera]`
-      ITALIC, ITALIC, ITALIC, ITALIC, ITALIC, ITALIC,  // ` #self`
-      NONE, NONE, // `ie`
+      ITALIC, ITALIC, ITALIC, ITALIC, ITALIC, ITALIC,    // ` #self`
+      NONE, NONE,                                        // `ie`
     ]);
 
     expect(
-      encodeInlineStyleRanges(createBlock(str, styles))
+      encodeInlineStyleRanges(createBlock(str, styles)),
     ).toEqual([
       {offset: 4, length: 4, style: 'BOLD'},
       {offset: 6, length: 8, style: 'ITALIC'},

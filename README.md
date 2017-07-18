@@ -1,4 +1,4 @@
-# [Draft.js](https://facebook.github.io/draft-js/) [![Build Status](https://img.shields.io/travis/facebook/draft-js/master.svg?style=flat)](https://travis-ci.org/facebook/draft-js) [![npm version](https://img.shields.io/npm/v/draft-js.svg?style=flat)](https://www.npmjs.com/package/draft-js)
+# [Draft.js](http://draftjs.org/) [![Build Status](https://img.shields.io/travis/facebook/draft-js/master.svg?style=flat)](https://travis-ci.org/facebook/draft-js) [![npm version](https://img.shields.io/npm/v/draft-js.svg?style=flat)](https://www.npmjs.com/package/draft-js)
 
 Draft.js is a JavaScript rich text editor framework, built for React and
 backed by an immutable model.
@@ -15,11 +15,15 @@ with [immutable-js](https://facebook.github.io/immutable-js/), offering
 an API with functional state updates and aggressively leveraging data persistence
 for scalable memory usage.
 
-[Learn how to use Draft.js in your own project.](https://facebook.github.io/draft-js/docs/overview.html)
+[Learn how to use Draft.js in your own project.](http://draftjs.org/docs/overview.html)
 
 ## API Notice
 
-Before getting started, please be aware that we are changing the API of Entity storage in Draft. Currently, the master branch supports both the old and new API. We hope to release this soon, as `v0.10.0`. Following that up will be `v0.11.0` which will remove the old API. This update will also include documentation on how to upgrade. If you are interested in helping out, or tracking the progress, please follow  [issue 839](https://github.com/facebook/draft-js/issues/839).
+Before getting started, please be aware that we recently changed the API of
+Entity storage in Draft. The latest version, `v0.10.0`, supports both the old
+and new API.  Following that up will be `v0.11.0` which will remove the old API.
+If you are interested in helping out, or tracking the progress, please follow
+[issue 839](https://github.com/facebook/draft-js/issues/839).
 
 ## Getting Started
 
@@ -27,6 +31,10 @@ Currently Draft.js is distributed via npm. It depends on React and React DOM whi
 
 ```
 npm install --save draft-js react react-dom
+
+or
+
+yarn add draft-js react react-dom
 ```
 
 ### Using Draft.js
@@ -44,7 +52,7 @@ class MyEditor extends React.Component {
   }
   render() {
     return (
-        <Editor editorState={this.state.editorState} onChange={this.onChange} />
+      <Editor editorState={this.state.editorState} onChange={this.onChange} />
     );
   }
 }
@@ -64,7 +72,7 @@ Further examples of how Draft.js can be used are provided below.
 
 ### Examples
 
-Visit https://facebook.github.io/draft-js/ to try out a simple rich editor example.
+Visit http://draftjs.org/ to try out a simple rich editor example.
 
 The repository includes a variety of different editor examples to demonstrate
 some of the features offered by the framework.

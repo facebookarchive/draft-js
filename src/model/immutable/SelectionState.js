@@ -76,7 +76,7 @@ class SelectionState extends SelectionStateRecord {
   hasEdgeWithin(
     blockKey: string,
     start: number,
-    end: number
+    end: number,
   ): boolean {
     var anchorKey = this.getAnchorKey();
     var focusKey = this.getFocusKey();
@@ -130,7 +130,7 @@ class SelectionState extends SelectionStateRecord {
   }
 
   static createEmpty(
-    key: string
+    key: string,
   ): SelectionState {
     return new SelectionState({
       anchorKey: key,

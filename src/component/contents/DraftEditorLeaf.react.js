@@ -13,15 +13,16 @@
 
 'use strict';
 
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type SelectionState from 'SelectionState';
+
 var ContentBlock = require('ContentBlock');
-var DraftEditorTextNode = require('DraftEditorTextNode.react');
+const DraftEditorTextNode = require('DraftEditorTextNode.react');
 var React = require('React');
 var ReactDOM = require('ReactDOM');
-var SelectionState = require('SelectionState');
 
+const invariant = require('invariant');
 var setDraftEditorSelection = require('setDraftEditorSelection');
-
-import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 type Props = {
   // The block that contains this leaf.
@@ -41,7 +42,8 @@ type Props = {
 
   offsetKey: string,
 
-  // The current `SelectionState`, used to
+  // The current `SelectionState`, used to represent a selection range in the
+  // editor
   selection: SelectionState,
 
   // The offset of this string within its block.
@@ -70,7 +72,7 @@ class DraftEditorLeaf extends React.Component {
    * easily than we could in the non-React world.
    *
    * Note that this depends on our maintaining tight control over the
-   * DOM structure of the TextEditor component. If leaves had multiple
+   * DOM structure of the DraftEditor component. If leaves had multiple
    * text nodes, this would be harder.
    */
   _setSelection(): void {
@@ -92,7 +94,9 @@ class DraftEditorLeaf extends React.Component {
     // is not a text node, it is a <br /> spacer. In this case, use the
     // <span> itself as the selection target.
     const node = ReactDOM.findDOMNode(this);
+    invariant(node, 'Missing node');
     const child = node.firstChild;
+    invariant(child, 'Missing child');
     let targetNode;
 
     if (child.nodeType === Node.TEXT_NODE) {
@@ -101,14 +105,17 @@ class DraftEditorLeaf extends React.Component {
       targetNode = node;
     } else {
       targetNode = child.firstChild;
+      invariant(targetNode, 'Missing targetNode');
     }
 
     setDraftEditorSelection(selection, targetNode, blockKey, start, end);
   }
 
   shouldComponentUpdate(nextProps: Props): boolean {
+    const leafNode = ReactDOM.findDOMNode(this.refs.leaf);
+    invariant(leafNode, 'Missing leafNode');
     return (
-      ReactDOM.findDOMNode(this.refs.leaf).textContent !== nextProps.text ||
+      leafNode.textContent !== nextProps.text ||
       nextProps.styleSet !== this.props.styleSet ||
       nextProps.forceSelection
     );

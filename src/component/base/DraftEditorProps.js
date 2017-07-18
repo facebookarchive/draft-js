@@ -16,11 +16,12 @@ import type ContentBlock from 'ContentBlock';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDragType} from 'DraftDragType';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type {DraftTextAlignment} from 'DraftTextAlignment';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftHandleValue} from 'DraftHandleValue';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
+import type {BidiDirection} from 'UnicodeBidiDirection';
 
 export type DraftEditorProps = {
   /**
@@ -36,23 +37,36 @@ export type DraftEditorProps = {
   editorState: EditorState,
   onChange: (editorState: EditorState) => void,
 
+  // specify editorKey when rendering serverside. If you do not set this prop
+  // react will complain that there is a server/client mismatch because Draft
+  // will generate a random editorKey when rendering in each context. The key
+  // is used to figure out if content is being pasted within a draft block to
+  // better apply formatting and styles.  If two editors share the same key &
+  // `stripPastedStyles` is false, draft will assume both editors share their
+  // styling and formatting when re-applying styles.
+  editorKey?: string,
+
   placeholder?: string,
 
   // Specify whether text alignment should be forced in a direction
   // regardless of input characters.
   textAlignment?: DraftTextAlignment,
 
+  // Specify whether text directionality should be forced in a direction
+  // regardless of input characters.
+  textDirectionality?: BidiDirection,
+
   // For a given `ContentBlock` object, return an object that specifies
   // a custom block component and/or props. If no object is returned,
-  // the default `TextEditorBlock` is used.
+  // the default `DraftEditorBlock` is used.
   blockRendererFn?: (block: ContentBlock) => ?Object,
 
   // Function that returns a cx map corresponding to block-level styles.
-  blockStyleFn?: (type: number) => string,
+  blockStyleFn?: (block: ContentBlock) => string,
 
   // A function that accepts a synthetic key event and returns
-  // the matching DraftEditorCommand constant, or null if no command should
-  // be invoked.
+  // the matching DraftEditorCommand constant, or a custom string,
+  // or null if no command should be invoked.
   keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
 
   // Set whether the `DraftEditor` component should be editable. Useful for
@@ -71,6 +85,11 @@ export type DraftEditorProps = {
 
   tabIndex?: number,
 
+  // exposed especially to help improve mobile web behaviors
+  autoCapitalize?: string,
+  autoComplete?: string,
+  autoCorrect?: string,
+
   ariaActiveDescendantID?: string,
   ariaAutoComplete?: string,
   ariaDescribedBy?: string,
@@ -88,20 +107,33 @@ export type DraftEditorProps = {
 
   // Useful for managing special behavior for pressing the `Return` key. E.g.
   // removing the style from an empty list item.
-  handleReturn?: (e: SyntheticKeyboardEvent) => DraftHandleValue,
+  handleReturn?: (
+    e: SyntheticKeyboardEvent,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
   // Map a key command string provided by your key binding function to a
   // specified behavior.
-  handleKeyCommand?: (command: DraftEditorCommand | string) => DraftHandleValue,
+  handleKeyCommand?: (
+    command: DraftEditorCommand | string,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be
   // useful in cases where the user has entered characters that you would like
   // to trigger some special behavior. E.g. immediately converting `:)` to an
   // emoji Unicode character, or replacing ASCII quote characters with smart
   // quotes.
-  handleBeforeInput?: (chars: string) => DraftHandleValue,
+  handleBeforeInput?: (
+    chars: string,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
-  handlePastedText?: (text: string, html?: string) => DraftHandleValue,
+  handlePastedText?: (
+    text: string,
+    html?: string,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
   handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
 
@@ -140,13 +172,13 @@ export type DraftEditorProps = {
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
-  blockRenderMap: DraftBlockRenderMap
+  blockRenderMap: DraftBlockRenderMap,
 };
 
 export type DraftEditorDefaultProps = {
   blockRenderMap: DraftBlockRenderMap,
   blockRendererFn: (block: ContentBlock) => ?Object,
-  blockStyleFn: (type: number) => string,
+  blockStyleFn: (block: ContentBlock) => string,
   keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
   readOnly: boolean,
   spellCheck: boolean,

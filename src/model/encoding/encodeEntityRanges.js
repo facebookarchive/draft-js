@@ -13,11 +13,11 @@
 
 'use strict';
 
-var DraftStringKey = require('DraftStringKey');
-var UnicodeUtils = require('UnicodeUtils');
-
 import type ContentBlock from 'ContentBlock';
 import type {EntityRange} from 'EntityRange';
+
+var DraftStringKey = require('DraftStringKey');
+var UnicodeUtils = require('UnicodeUtils');
 
 var {strlen} = UnicodeUtils;
 
@@ -26,7 +26,7 @@ var {strlen} = UnicodeUtils;
  */
 function encodeEntityRanges(
   block: ContentBlock,
-  storageMap: Object
+  storageMap: Object,
 ): Array<EntityRange> {
   var encoded = [];
   block.findEntityRanges(
@@ -40,7 +40,7 @@ function encodeEntityRanges(
         // Encode the key as a number for range storage.
         key: Number(storageMap[DraftStringKey.stringify(key)]),
       });
-    }
+    },
   );
   return encoded;
 }

@@ -15,7 +15,7 @@ component itself, `Editor`. Props are defined within
 
 ### Basics
 
-See [API Basics](/draft-js/docs/quickstart-api-basics.html) for an introduction.
+See [API Basics](/docs/quickstart-api-basics.html) for an introduction.
 
 #### editorState
 ```
@@ -39,7 +39,7 @@ placeholder?: string
 Optional placeholder string to display when the editor is empty.
 
 Note: You can use CSS to style or hide your placeholder as needed. For instance,
-in the [rich editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-9-1/rich),
+in the [rich editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/rich),
 the placeholder is hidden when the user changes block styling in an empty editor.
 This is because the placeholder may not line up with the cursor when the style
 is changed.
@@ -57,12 +57,24 @@ to fit it within your UI design.
 If this value is not set, text alignment will be based on the characters within
 the editor, on a per-block basis.
 
+#### textDirectionality
+```
+textDirectionality?: DraftTextDirectionality
+```
+Optionally set the overriding text directionality for this editor. The values
+include 'RTL' for right-to-left text, like Hebrew or Arabic, and 'LTR' for
+left-to-right text, like English or Spanish. This directionality will apply to
+the entire contents, regardless of default text direction for input text.
+
+If this value is not set, text directionality will be based on the characters
+within the editor, on a per-block basis.
+
 #### blockRendererFn
 ```
 blockRendererFn?: (block: ContentBlock) => ?Object
 ```
 Optionally set a function to define custom block rendering. See
-[Advanced Topics: Block Components](/draft-js/docs/advanced-topics-block-components.html)
+[Advanced Topics: Block Components](/docs/advanced-topics-block-components.html)
 for details on usage.
 
 #### blockStyleFn
@@ -71,7 +83,7 @@ blockStyleFn?: (block: ContentBlock) => string
 ```
 Optionally set a function to define class names to apply to the given block
 when it is rendered. See
-[Advanced Topics: Block Styling](/draft-js/docs/advanced-topics-block-styling.html)
+[Advanced Topics: Block Styling](/docs/advanced-topics-block-styling.html)
 for details on usage.
 
 #### customStyleMap
@@ -80,7 +92,7 @@ customStyleMap?: Object
 ```
 Optionally define a map of inline styles to apply to spans of text with the specified
 style. See
-[Advanced Topics: Inline Styles](/draft-js/docs/advanced-topics-inline-styles.html)
+[Advanced Topics: Inline Styles](/docs/advanced-topics-inline-styles.html)
 for details on usage.
 
 #### customStyleFn
@@ -89,7 +101,7 @@ customStyleFn?: (style: DraftInlineStyle, block: ContentBlock) => ?Object
 ```
 Optionally define a function to transform inline styles to CSS objects that are applied
 to spans of text. See
-[Advanced Topics: Inline Styles](/draft-js/docs/advanced-topics-inline-styles.html)
+[Advanced Topics: Inline Styles](/docs/advanced-topics-inline-styles.html)
 for details on usage.
 
 ### Behavior (Optional)
@@ -102,7 +114,7 @@ Set whether the editor should be rendered as static DOM, with all editability
 disabled.
 
 This is useful when supporting interaction within
-[custom block components](/draft-js/docs/advanced-topics-block-components.html)
+[custom block components](/docs/advanced-topics-block-components.html)
 or if you just want to display content for a static use case.
 
 Default is `false`.
@@ -137,6 +149,23 @@ Default is `false`.
 These props allow you to set accessibility properties on your editor. See
 [DraftEditorProps](https://github.com/facebook/draft-js/blob/master/src/component/base/DraftEditorProps.js) for the exhaustive list of supported attributes.
 
+#### editorKey
+```
+editorKey?: string
+```
+
+You probably won't set `editorKey` on an `<Editor />` manually unless you're
+rendering a Draft component serverside. If you _are_, you must set this prop
+to avoid server/client mismatches.
+
+If the key is not set, it is generated automatically when the component
+renders and assigned as a prop of the Editor's `<DraftEditorContents />`
+component.
+
+If you _do_ set this prop, the key should be unique _per-editor_, as it is
+used to determine if styles should be preserved when pasting text within an
+editor.
+
 ### Cancelable Handlers (Optional)
 
 These prop functions are provided to allow custom event handling for a small
@@ -156,7 +185,7 @@ rendered list of results to trigger applying the mention entity to your content.
 handleKeyCommand?: (command: string) => DraftHandleValue
 ```
 Handle the named editor command. See
-[Advanced Topics: Key Bindings](/draft-js/docs/advanced-topics-key-bindings.html)
+[Advanced Topics: Key Bindings](/docs/advanced-topics-key-bindings.html)
 for details on usage.
 
 #### handleBeforeInput
@@ -176,7 +205,7 @@ and to convert typed emoticons into images.
 ```
 handlePastedText?: (text: string, html?: string) => DraftHandleValue
 ```
-Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior. 
+Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior.
 
 #### handlePastedFiles
 ```
@@ -220,7 +249,17 @@ onUpArrow?: (e: SyntheticKeyboardEvent) => void
 ```
 onDownArrow?: (e: SyntheticKeyboardEvent) => void
 ```
+### Mouse events
 
+### onFocus
+```
+onFocus?: (e: SyntheticFocusEvent) => void
+```
+
+### onBlur
+```
+onBlur?: (e: SyntheticFocusEvent) => void
+```
 
 ## Methods
 

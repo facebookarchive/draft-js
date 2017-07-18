@@ -20,7 +20,7 @@ var moveSelectionBackward = require('moveSelectionBackward');
 var removeTextWithStrategy = require('removeTextWithStrategy');
 
 function keyCommandBackspaceToStartOfLine(
-  editorState: EditorState
+  editorState: EditorState,
 ): EditorState {
   var afterRemoval = removeTextWithStrategy(
     editorState,
@@ -40,10 +40,10 @@ function keyCommandBackspaceToStartOfLine(
         range.endContainer,
         range.endOffset,
         range.startContainer,
-        range.startOffset
+        range.startOffset,
       ).selectionState;
     },
-    'backward'
+    'backward',
   );
 
   if (afterRemoval === editorState.getCurrentContent()) {
@@ -53,7 +53,7 @@ function keyCommandBackspaceToStartOfLine(
   return EditorState.push(
     editorState,
     afterRemoval,
-    'remove-range'
+    'remove-range',
   );
 }
 

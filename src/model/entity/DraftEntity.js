@@ -11,13 +11,13 @@
  * @flow
  */
 
+import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
+
 var DraftEntityInstance = require('DraftEntityInstance');
 var Immutable = require('immutable');
 
 var invariant = require('invariant');
-
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
 
 var {Map} = Immutable;
 
@@ -226,7 +226,7 @@ var DraftEntity:DraftEntityMapObject = {
     data?: Object,
   ): string {
     return DraftEntity.__add(
-      new DraftEntityInstance({type, mutability, data: data || {}})
+      new DraftEntityInstance({type, mutability, data: data || {}}),
     );
   },
 
@@ -245,7 +245,7 @@ var DraftEntity:DraftEntityMapObject = {
    */
   __get: function(key: string): DraftEntityInstance {
     var instance = instances.get(key);
-    invariant(!!instance, 'Unknown DraftEntity key.');
+    invariant(!!instance, 'Unknown DraftEntity key: %s.', key);
     return instance;
   },
 
@@ -256,7 +256,7 @@ var DraftEntity:DraftEntityMapObject = {
    */
   __mergeData: function(
     key: string,
-    toMerge: {[key: string]: any}
+    toMerge: {[key: string]: any},
   ): DraftEntityInstance {
     var instance = DraftEntity.__get(key);
     var newData = {...instance.getData(), ...toMerge};
@@ -270,7 +270,7 @@ var DraftEntity:DraftEntityMapObject = {
    */
   __replaceData: function(
     key: string,
-    newData: {[key: string]: any}
+    newData: {[key: string]: any},
   ): DraftEntityInstance {
     const instance = DraftEntity.__get(key);
     const newInstance = instance.set('data', newData);
