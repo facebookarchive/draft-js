@@ -12,6 +12,8 @@
 
 'use strict';
 
+const invariant = require('invariant');
+
 var TEXT_CLIPPING_REGEX = /\.textClipping$/;
 
 var TEXT_TYPES = {
@@ -70,7 +72,12 @@ function readFile(
 
   var reader = new FileReader();
   reader.onload = function() {
-    callback(reader.result);
+    const result = reader.result;
+    invariant(
+      typeof result === 'string',
+      'We should be calling "FileReader.readAsText" which returns a string',
+    );
+    callback(result);
   };
   reader.onerror = function() {
     callback('');

@@ -12,15 +12,15 @@
 
 'use strict';
 
+import type CharacterMetadata from 'CharacterMetadata';
+import type ContentBlock from 'ContentBlock';
+import type ContentState from 'ContentState';
+import type {DraftDecoratorType} from 'DraftDecoratorType';
+
 var Immutable = require('immutable');
 
 var emptyFunction = require('emptyFunction');
 var findRangesImmutable = require('findRangesImmutable');
-
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentState from 'ContentState';
-import type ContentBlock from 'ContentBlock';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
 
 var {
   List,

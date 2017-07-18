@@ -10,7 +10,7 @@
  * @typechecks
  */
 
-jest.unmock('CompositeDraftDecorator');
+jest.disableAutomock().mock('ContentState');
 
 var CompositeDraftDecorator = require('CompositeDraftDecorator');
 const ContentState = require('ContentState');

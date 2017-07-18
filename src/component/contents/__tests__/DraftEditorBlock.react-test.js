@@ -18,10 +18,10 @@ jest.disableAutomock()
   .mock('getScrollPosition')
   .mock('getViewportDimensions');
 
-var ContentState = require('ContentState');
 var BlockTree = require('BlockTree');
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
+var ContentState = require('ContentState');
 var Immutable = require('immutable');
 var React = require('React');
 var ReactDOM = require('ReactDOM');

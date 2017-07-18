@@ -12,6 +12,8 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 const DraftFeatureFlags = require('DraftFeatureFlags');
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
@@ -20,8 +22,6 @@ var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
 var nullthrows = require('nullthrows');
-
-import type DraftEditor from 'DraftEditor.react';
 
 var isGecko = UserAgent.isEngine('Gecko');
 
@@ -108,6 +108,10 @@ function editOnInput(editor: DraftEditor): void {
 
   // No change -- the DOM is up to date. Nothing to do here.
   if (domText === modelText) {
+    // This can be buggy for some Android keyboards because they don't fire
+    // standard onkeydown/pressed events and only fired editOnInput
+    // so domText is already changed by the browser and ends up being equal
+    // to modelText unexpectedly
     return;
   }
 

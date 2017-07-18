@@ -13,17 +13,17 @@
 
 'use strict';
 
+import type ContentState from 'ContentState';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type URI from 'URI';
+
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
 
 const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
 const nullthrows = require('nullthrows');
-
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type URI from 'URI';
 
 const RichTextEditorUtil = {
   currentBlockContainsLink: function(

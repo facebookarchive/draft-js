@@ -15,9 +15,10 @@ jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
 var Immutable = require('immutable');
-var insertTextIntoContentState = require('insertTextIntoContentState');
-var getSampleStateForTesting = require('getSampleStateForTesting');
 var {BOLD} = require('SampleDraftInlineStyle');
+
+var getSampleStateForTesting = require('getSampleStateForTesting');
+var insertTextIntoContentState = require('insertTextIntoContentState');
 
 describe('insertTextIntoContentState', () => {
   var sample = getSampleStateForTesting();
