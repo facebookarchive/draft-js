@@ -12,12 +12,12 @@
 
 'use strict';
 
+import type EditorState from 'EditorState';
+import type SelectionState from 'SelectionState';
+
 var DraftOffsetKey = require('DraftOffsetKey');
 
 var nullthrows = require('nullthrows');
-
-import type EditorState from 'EditorState';
-import type SelectionState from 'SelectionState';
 
 function getUpdatedSelectionState(
   editorState: EditorState,

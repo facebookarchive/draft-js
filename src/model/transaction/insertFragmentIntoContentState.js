@@ -13,15 +13,15 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
+
 var BlockMapBuilder = require('BlockMapBuilder');
 
 var generateRandomKey = require('generateRandomKey');
 var insertIntoList = require('insertIntoList');
 var invariant = require('invariant');
-
-import type {BlockMap} from 'BlockMap';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
 
 function insertFragmentIntoContentState(
   contentState: ContentState,

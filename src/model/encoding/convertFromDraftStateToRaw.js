@@ -12,13 +12,13 @@
 
 'use strict';
 
+import type ContentState from 'ContentState';
+import type {RawDraftContentState} from 'RawDraftContentState';
+
 var DraftStringKey = require('DraftStringKey');
 
 var encodeEntityRanges = require('encodeEntityRanges');
 var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
-
-import type ContentState from 'ContentState';
-import type {RawDraftContentState} from 'RawDraftContentState';
 
 function convertFromDraftStateToRaw(
   contentState: ContentState,

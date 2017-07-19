@@ -13,6 +13,11 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type DraftEntityInstance from 'DraftEntityInstance';
+import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
+
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
@@ -22,11 +27,6 @@ const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
-
-import type {BlockMap} from 'BlockMap';
-import type DraftEntityInstance from 'DraftEntityInstance';
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
 
 const {List, Record, Repeat} = Immutable;
 
