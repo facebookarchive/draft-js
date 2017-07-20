@@ -13,11 +13,11 @@
 
 'use strict';
 
+import type {DraftEditorCommand} from 'DraftEditorCommand';
+
 var KeyBindingUtil = require('KeyBindingUtil');
 var Keys = require('Keys');
 var UserAgent = require('UserAgent');
-
-import type {DraftEditorCommand} from 'DraftEditorCommand';
 
 var isOSX = UserAgent.isPlatform('Mac OS X');
 var isWindows = UserAgent.isPlatform('Windows');

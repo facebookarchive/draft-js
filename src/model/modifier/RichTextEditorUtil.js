@@ -13,17 +13,17 @@
 
 'use strict';
 
+import type ContentState from 'ContentState';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type URI from 'URI';
+
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
 
 const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
 const nullthrows = require('nullthrows');
-
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type URI from 'URI';
 
 const RichTextEditorUtil = {
   currentBlockContainsLink: function(
@@ -121,9 +121,15 @@ const RichTextEditorUtil = {
 
     if (blockBefore && blockBefore.getType() === 'atomic') {
       const blockMap = content.getBlockMap().delete(blockBefore.getKey());
-      var withoutAtomicBlock = content.merge({blockMap, selectionAfter: selection});
+      var withoutAtomicBlock = content.merge(
+        {blockMap, selectionAfter: selection},
+      );
       if (withoutAtomicBlock !== content) {
-        return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');
+        return EditorState.push(
+          editorState,
+          withoutAtomicBlock,
+          'remove-range',
+        );
       }
     }
 

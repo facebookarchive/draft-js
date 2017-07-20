@@ -12,12 +12,13 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 var EditorState = require('EditorState');
 var ReactDOM = require('ReactDOM');
 
 var getDraftEditorSelection = require('getDraftEditorSelection');
-
-import type DraftEditor from 'DraftEditor.react';
+const invariant = require('invariant');
 
 function editOnSelect(editor: DraftEditor): void {
   if (editor._blockSelectEvents ||
@@ -26,9 +27,15 @@ function editOnSelect(editor: DraftEditor): void {
   }
 
   var editorState = editor.props.editorState;
+  const editorNode = ReactDOM.findDOMNode(editor.refs.editorContainer);
+  invariant(editorNode, 'Missing editorNode');
+  invariant(
+    editorNode.firstChild instanceof HTMLElement,
+    'editorNode.firstChild is not an HTMLElement',
+  );
   var documentSelection = getDraftEditorSelection(
     editorState,
-    ReactDOM.findDOMNode(editor.refs.editorContainer).firstChild,
+    editorNode.firstChild,
   );
   var updatedSelectionState = documentSelection.selectionState;
 

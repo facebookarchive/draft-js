@@ -13,10 +13,10 @@
 
 'use strict';
 
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+
 var CharacterMetadata = require('CharacterMetadata');
 var Immutable = require('immutable');
-
-import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 var {List} = Immutable;
 

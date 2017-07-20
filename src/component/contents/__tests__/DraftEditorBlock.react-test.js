@@ -18,10 +18,10 @@ jest.disableAutomock()
   .mock('getScrollPosition')
   .mock('getViewportDimensions');
 
-var ContentState = require('ContentState');
 var BlockTree = require('BlockTree');
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
+var ContentState = require('ContentState');
 var Immutable = require('immutable');
 var React = require('React');
 var ReactDOM = require('ReactDOM');
@@ -39,11 +39,11 @@ var {BOLD, NONE, ITALIC} = SampleDraftInlineStyle;
 
 var mockGetDecorations = jest.fn();
 
-var DecoratorSpan = React.createClass({
+class DecoratorSpan extends React.Component {
   render() {
     return <span>{this.props.children}</span>;
-  },
-});
+  }
+}
 
 var DraftEditorBlock = require('DraftEditorBlock.react');
 
@@ -61,13 +61,14 @@ class Decorator {
 }
 
 var mockLeafRender = jest.fn(() => <span />);
+class MockEditorLeaf extends React.Component {
+  render() {
+    return mockLeafRender();
+  }
+}
 jest.setMock(
   'DraftEditorLeaf.react',
-  React.createClass({
-    render: function() {
-      return mockLeafRender();
-    },
-  }),
+  MockEditorLeaf,
 );
 
 var DraftEditorLeaf = require('DraftEditorLeaf.react');

@@ -13,11 +13,11 @@
 
 'use strict';
 
-var Immutable = require('immutable');
-
 import type ContentBlock from 'ContentBlock';
-import type {DraftDecorator} from 'DraftDecorator';
 import type ContentState from 'ContentState';
+import type {DraftDecorator} from 'DraftDecorator';
+
+var Immutable = require('immutable');
 
 var {List} = Immutable;
 
@@ -52,7 +52,10 @@ class CompositeDraftDecorator {
     this._decorators = decorators.slice();
   }
 
-  getDecorations(block: ContentBlock, contentState: ContentState): List<?string> {
+  getDecorations(
+    block: ContentBlock,
+    contentState: ContentState,
+  ): List<?string> {
     var decorations = Array(block.getText().length).fill(null);
 
     this._decorators.forEach(

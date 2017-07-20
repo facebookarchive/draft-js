@@ -19,14 +19,13 @@ var ContentState = require('ContentState');
 var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 var Immutable = require('immutable');
-var SelectionState = require('SelectionState');
 var RichTextEditorUtil = require('RichTextEditorUtil');
-
 var {
   NONE,
   BOLD,
   ITALIC,
 } = require('SampleDraftInlineStyle');
+var SelectionState = require('SelectionState');
 
 var {EMPTY} = CharacterMetadata;
 
@@ -166,7 +165,11 @@ describe('EditorState', () => {
         editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
 
-        editor = RichTextEditorUtil.onTab({ preventDefault: () => {} }, editor, 1);
+        editor = RichTextEditorUtil.onTab(
+          { preventDefault: () => {} },
+          editor,
+          1,
+        );
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
       });
 

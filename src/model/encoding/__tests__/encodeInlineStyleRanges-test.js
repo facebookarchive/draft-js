@@ -63,7 +63,9 @@ describe('encodeInlineStyleRanges', () => {
       encodeInlineStyleRanges(createBlock(' '.repeat(200), Repeat(NONE, 200))),
     ).toEqual([]);
     expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(2000), Repeat(NONE, 2000))),
+      encodeInlineStyleRanges(
+        createBlock(' '.repeat(2000), Repeat(NONE, 2000)),
+      ),
     ).toEqual([]);
   });
 
@@ -108,7 +110,7 @@ describe('encodeInlineStyleRanges', () => {
 
   it('must encode for a complex styled document', () => {
     var complex = List([
-      BOLD, BOLD, BOLD, BOLD, NONE,         // "four "
+      BOLD, BOLD, BOLD, BOLD, NONE,     // "four "
       BOLD_ITALIC, BOLD_ITALIC,         // "sc"
       ITALIC_UNDERLINE, BOLD_UNDERLINE, // "or"
       BOLD_ITALIC_UNDERLINE,            // "e"
@@ -129,10 +131,10 @@ describe('encodeInlineStyleRanges', () => {
   it('must encode for strings with surrogate pairs', () => {
     var str = 'Take a \uD83D\uDCF7 #selfie';
     var styles = List([
-      NONE, NONE, NONE, NONE, // `Take`
+      NONE, NONE, NONE, NONE,                            // `Take`
       BOLD, BOLD, BOLD_ITALIC, BOLD_ITALIC, BOLD_ITALIC, // ` a [camera]`
-      ITALIC, ITALIC, ITALIC, ITALIC, ITALIC, ITALIC,  // ` #self`
-      NONE, NONE, // `ie`
+      ITALIC, ITALIC, ITALIC, ITALIC, ITALIC, ITALIC,    // ` #self`
+      NONE, NONE,                                        // `ie`
     ]);
 
     expect(

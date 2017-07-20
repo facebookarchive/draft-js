@@ -12,6 +12,8 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 const DraftFeatureFlags = require('DraftFeatureFlags');
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
@@ -20,8 +22,6 @@ var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
 var nullthrows = require('nullthrows');
-
-import type DraftEditor from 'DraftEditor.react';
 
 var isGecko = UserAgent.isEngine('Gecko');
 
@@ -64,6 +64,27 @@ function editOnInput(editor: DraftEditor): void {
     }
   }
 
+  if (
+    anchorNode.nodeType === Node.TEXT_NODE &&
+    (anchorNode.previousSibling !== null || anchorNode.nextSibling !== null)
+  ) {
+    // When typing at the beginning of a visual line, Chrome splits the text
+    // nodes into two. Why? No one knows. This commit is suspicious:
+    // https://chromium.googlesource.com/chromium/src/+/a3b600981286b135632371477f902214c55a1724
+    // To work around, we'll merge the sibling text nodes back into this one.
+    const span = anchorNode.parentNode;
+    anchorNode.nodeValue = span.textContent;
+    for (
+      let child = span.firstChild;
+      child !== null;
+      child = child.nextSibling
+    ) {
+      if (child !== anchorNode) {
+        span.removeChild(child);
+      }
+    }
+  }
+
   var domText = anchorNode.textContent;
   var editorState = editor._latestEditorState;
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
@@ -87,6 +108,10 @@ function editOnInput(editor: DraftEditor): void {
 
   // No change -- the DOM is up to date. Nothing to do here.
   if (domText === modelText) {
+    // This can be buggy for some Android keyboards because they don't fire
+    // standard onkeydown/pressed events and only fired editOnInput
+    // so domText is already changed by the browser and ends up being equal
+    // to modelText unexpectedly
     return;
   }
 

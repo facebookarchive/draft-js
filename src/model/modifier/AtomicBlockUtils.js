@@ -13,18 +13,18 @@
 
 'use strict';
 
+import type {DraftInsertionType} from 'DraftInsertionType';
+
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
 const Immutable = require('immutable');
+const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
 const moveBlockInContentState = require('moveBlockInContentState');
-
-import type {DraftInsertionType} from 'DraftInsertionType';
 
 const {
   List,
@@ -132,7 +132,9 @@ const AtomicBlockUtils = {
           targetBlock,
           'before',
         );
-      } else if (selectionAfterRemoval.getEndOffset() === targetBlock.getLength()) {
+      } else if (
+        selectionAfterRemoval.getEndOffset() === targetBlock.getLength()
+      ) {
         withMovedAtomicBlock = moveBlockInContentState(
           afterRemoval,
           atomicBlock,
@@ -161,7 +163,10 @@ const AtomicBlockUtils = {
 
     const newContent = withMovedAtomicBlock.merge({
       selectionBefore: selectionState,
-      selectionAfter: withMovedAtomicBlock.getSelectionAfter().set('hasFocus', true),
+      selectionAfter: withMovedAtomicBlock.getSelectionAfter().set(
+        'hasFocus',
+        true,
+      ),
     });
 
     return EditorState.push(editorState, newContent, 'move-block');

@@ -12,12 +12,12 @@
 
 'use strict';
 
-var DraftModifier = require('DraftModifier');
-
 import type ContentState from 'ContentState';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
+
+var DraftModifier = require('DraftModifier');
 
 /**
  * For a collapsed selection state, remove text based on the specified strategy.

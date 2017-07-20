@@ -12,9 +12,10 @@
 
 'use strict';
 
-var EditorState = require('EditorState');
-
 import type DraftEditor from 'DraftEditor.react';
+
+var DraftFeatureFlags = require('DraftFeatureFlags');
+var EditorState = require('EditorState');
 
 function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent): void {
   var editorState = editor._latestEditorState;
@@ -32,7 +33,12 @@ function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent): void {
   // moves the cursor back to the beginning of the editor, so we force the
   // selection here instead of simply accepting it in order to preserve the
   // old cursor position. See https://crbug.com/540004.
-  editor.update(EditorState.forceSelection(editorState, selection));
+  // But it looks like this is fixed in Chrome 60.0.3081.0.
+  if (DraftFeatureFlags.draft_accept_selection_after_refocus) {
+    editor.update(EditorState.acceptSelection(editorState, selection));
+  } else {
+    editor.update(EditorState.forceSelection(editorState, selection));
+  }
 }
 
 module.exports = editOnFocus;

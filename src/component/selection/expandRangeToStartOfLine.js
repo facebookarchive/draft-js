@@ -29,13 +29,9 @@ function getLineHeightPx(element: Element): number {
   div.style.lineHeight = computed.lineHeight;
   div.style.position = 'absolute';
   div.textContent = 'M';
-  
-  var documentBody = document.body;
-  
-  invariant(
-    documentBody,
-    'Unexpected empty document.body.',
-  );
+
+  let documentBody = document.body;
+  invariant(documentBody, 'Missing document.body');
 
   // forced layout here
   documentBody.appendChild(div);
