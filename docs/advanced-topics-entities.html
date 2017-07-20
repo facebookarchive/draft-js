@@ -21,8 +21,7 @@ for that link.</li></ul><p>All entities are stored in the ContentState record. T
 by key within <code>ContentState</code> and React components used to decorate annotated
 ranges. (We are currently deprecating a previous API for accessing Entities; see
 issue
-<a href="https://github.com/facebook/draft-js/issues/839" target="_blank">#839</a>
-.)</p><p>Using <a href="/docs/advanced-topics-decorators.html" target="">decorators</a> or
+<a href="https://github.com/facebook/draft-js/issues/839" target="_blank">#839</a>.)</p><p>Using <a href="/docs/advanced-topics-decorators.html" target="">decorators</a> or
 <a href="/docs/advanced-topics-block-components.html" target="">custom block components</a>, you can
 add rich rendering to your editor based on entity metadata.</p><h2><a class="anchor" name="creating-and-retrieving-entities"></a>Creating and Retrieving Entities <a class="hash-link" href="#creating-and-retrieving-entities">#</a></h2><p>Entities should be created using <code>contentState.createEntity</code>, which accepts the
 three properties above as arguments. This method returns a <code>ContentState</code> record updated to include the newly created entity, then you can call <code>contentState.getLastCreatedEntityKey</code> to get the key of the newly created entity record.</p><p>This key is the value that should be used when applying entities to your
