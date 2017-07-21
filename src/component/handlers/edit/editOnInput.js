@@ -90,19 +90,19 @@ function editOnInput(editor: DraftEditor): void {
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
   var {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
 
-  var {start, end} = editorState
-    .getBlockTree(blockKey)
-    .getIn([decoratorKey, 'leaves', leafKey]);
+  var blockTree = editorState.getBlockTree(blockKey);
+  var {start, end} = blockTree.getIn([decoratorKey, 'leaves', leafKey]);
+  var isLastLeaf = leafKey === blockTree.size - 1;
 
   var content = editorState.getCurrentContent();
   var block = content.getBlockForKey(blockKey);
   var modelText = block.getText().slice(start, end);
 
   // Special-case soft newlines here. If the DOM text ends in a soft newline,
-  // we will have manually inserted an extra soft newline in DraftEditorLeaf.
-  // We want to remove this extra newline for the purpose of our comparison
-  // of DOM and model text.
-  if (domText.endsWith(DOUBLE_NEWLINE)) {
+  // and this is the last leaf, we will have manually inserted an extra soft
+  // newline in DraftEditorLeaf. We want to remove this extra newline for the
+  // purpose of our comparison of DOM and model text.
+  if (isLastLeaf && domText.endsWith(DOUBLE_NEWLINE)) {
     domText = domText.slice(0, -1);
   }
 
