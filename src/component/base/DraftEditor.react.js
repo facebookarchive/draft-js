@@ -245,6 +245,7 @@ class DraftEditor extends React.Component {
             aria-expanded={readOnly ? null : this.props.ariaExpanded}
             aria-haspopup={readOnly ? null : this.props.ariaHasPopup}
             aria-label={this.props.ariaLabel}
+            aria-multiline={this.props.ariaMultiline}
             aria-owns={readOnly ? null : this.props.ariaOwneeID}
             autoCapitalize={this.props.autoCapitalize}
             autoComplete={this.props.autoComplete}

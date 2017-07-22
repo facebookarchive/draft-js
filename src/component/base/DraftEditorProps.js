@@ -96,6 +96,7 @@ export type DraftEditorProps = {
   ariaExpanded?: boolean,
   ariaHasPopup?: boolean,
   ariaLabel?: string,
+  ariaMultiline?: boolean,
   ariaOwneeID?: string,
 
   webDriverTestID?: string,
