@@ -46,8 +46,7 @@ All entities are stored in the ContentState record. The entites  are referenced
 by key within `ContentState` and React components used to decorate annotated
 ranges. (We are currently deprecating a previous API for accessing Entities; see
 issue
-[#839](https://github.com/facebook/draft-js/issues/839)
-.)
+[#839](https://github.com/facebook/draft-js/issues/839).)
 
 Using [decorators](/docs/advanced-topics-decorators.html) or
 [custom block components](/docs/advanced-topics-block-components.html), you can

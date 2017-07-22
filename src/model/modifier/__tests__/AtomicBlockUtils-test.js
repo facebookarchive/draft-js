@@ -14,8 +14,8 @@
 jest.disableAutomock();
 
 const {insertAtomicBlock, moveAtomicBlock} = require('AtomicBlockUtils');
-const EditorState = require('EditorState');
 const Entity = require('DraftEntity');
+const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');

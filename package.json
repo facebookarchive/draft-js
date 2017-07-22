@@ -30,7 +30,7 @@
     "test-ci": "NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
-    "fbjs": "^0.8.7",
+    "fbjs": "^0.8.12",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.0"
   },
@@ -50,7 +50,7 @@
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-flowtype": "^2.17.1",
     "eslint-plugin-react": "^5.2.2",
-    "fbjs-scripts": "^0.7.0",
+    "fbjs-scripts": "^0.8.0",
     "flow-bin": "^0.42.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.2",

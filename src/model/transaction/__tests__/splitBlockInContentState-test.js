@@ -14,6 +14,7 @@
 jest.disableAutomock();
 
 var Immutable = require('immutable');
+
 var getSampleStateForTesting = require('getSampleStateForTesting');
 var splitBlockInContentState = require('splitBlockInContentState');
 

@@ -12,14 +12,14 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type SelectionState from 'SelectionState';
+
 var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 
 var getContentStateFragment = require('getContentStateFragment');
 var nullthrows = require('nullthrows');
-
-import type {BlockMap} from 'BlockMap';
-import type SelectionState from 'SelectionState';
 
 var clipboard: ?BlockMap = null;
 
