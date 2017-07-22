@@ -380,9 +380,9 @@ const RichTextEditorUtil = {
   },
 
   /**
-   * When a collapsed cursor is at the start of an empty styled block, allow
-   * certain key commands (newline, backspace) to simply change the
-   * style of the block instead of the default behavior.
+   * When a collapsed cursor is at the start of an empty styled block, 
+   * changes block to 'unstyled'. Returns null if block or selection does not
+   * meet that criteria.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
     var selection = editorState.getSelection();
