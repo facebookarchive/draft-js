@@ -12,12 +12,12 @@
 
 'use strict';
 
-var Immutable = require('immutable');
-
 import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
-import type {List} from 'immutable';
 import type SelectionState from 'SelectionState';
+import type {List} from 'immutable';
+
+var Immutable = require('immutable');
 
 function removeRangeFromContentState(
   contentState: ContentState,

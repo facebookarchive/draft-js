@@ -13,11 +13,18 @@
 
 'use strict';
 
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {EntityMap} from 'EntityMap';
+
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
 const Immutable = require('immutable');
+const {Set} = require('immutable');
 const URI = require('URI');
 
 const generateRandomKey = require('generateRandomKey');
@@ -25,14 +32,6 @@ const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 const sanitizeDraftText = require('sanitizeDraftText');
-
-const {Set} = require('immutable');
-
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {EntityMap} from 'EntityMap';
 
 var {
   List,
@@ -157,7 +156,7 @@ function getBlockMapSupportedTags(
   blockRenderMap: DraftBlockRenderMap,
 ): Array<string> {
   const unstyledElement = blockRenderMap.get('unstyled').element;
-  let tags = new Set([]);
+  let tags = Set([]);
 
   blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
     if (draftBlock.aliasedElements) {

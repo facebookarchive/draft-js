@@ -75,6 +75,12 @@ interaction.
 As of IE11, Internet Explorer demonstrates notable issues with certain international
 input methods, most significantly Korean input.
 
+### Mobile Support
+
+At this time Draft does not fully support mobile browsers. There are some known
+issues with certain Android keyboards and with international input methods. Full
+mobile support is a goal that the framework is moving towards for the future.
+
 ### Polyfills
 
 Some of Draft's code and that of its dependencies make use of ES2015 language
@@ -83,14 +89,15 @@ built, but it does not include polyfills for APIs now included in many modern
 browsers (for instance: `String.prototype.startsWith`). We expect your browser
 supports these APIs natively or with the assistance of a polyfill. One such
 polyfill is [es6-shim](https://github.com/es-shims/es6-shim), which we use in
-many examples but you are free to use [babel-
-polyfill](https://babeljs.io/docs/usage/polyfill/) if that's more your scene.
+many examples but you are free to use
+[babel-polyfill](https://babeljs.io/docs/usage/polyfill/) if that's more
+your scene.
 
 When using either polyfill/shim, you should include it as early as possibly in
 your application's entrypoint (at the very minimum, before you import Draft).
-For instance, using [create-react-app](https://github.com/facebookincubator
-/create-react-app) and targeting ie11, `src/index.js` is probably a good spot to
-import your polyfill:
+For instance, using
+[create-react-app](https://github.com/facebookincubator/create-react-app) and
+targeting ie11, `src/index.js` is probably a good spot to import your polyfill:
 
 **src/index.js**
 
@@ -109,3 +116,11 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+### Mobile Not Yet Supported
+
+Draft.js is moving towards full mobile support, but does not officially support
+mobile browsers at this point. There are some known issues affecting Android and
+iOS - see issues tagged
+['android'](https://github.com/facebook/draft-js/labels/android) or
+['ios'](https://github.com/facebook/draft-js/labels/ios) for the current status.

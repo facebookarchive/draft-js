@@ -12,9 +12,6 @@
 
 'use strict';
 
-var DraftFeatureFlags = {
-  draft_killswitch_allow_nontextnodes: false,
-  draft_segmented_entities_behavior: false,
-};
+var DraftFeatureFlags = require('DraftFeatureFlags-core');
 
 module.exports = DraftFeatureFlags;

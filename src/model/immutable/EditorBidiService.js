@@ -13,12 +13,12 @@
 
 'use strict';
 
+import type ContentState from 'ContentState';
+
 var Immutable = require('immutable');
 var UnicodeBidiService = require('UnicodeBidiService');
 
 var nullthrows = require('nullthrows');
-
-import type ContentState from 'ContentState';
 
 var {OrderedMap} = Immutable;
 
