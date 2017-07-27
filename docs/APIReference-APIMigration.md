@@ -151,5 +151,5 @@ function findLinkEntities(contentBlock, callback, contentState) {
 
 ## More Information
 
-For more information see the [updated examples](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0).
+For more information see the [updated examples](https://github.com/facebook/draft-js/tree/master/examples).
 
