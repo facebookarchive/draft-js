@@ -20,7 +20,7 @@ var EditorState = require('EditorState');
  * moving the cursor. Other browsers are able to move the cursor natively.
  */
 function keyCommandMoveSelectionToStartOfBlock(
-  editorState: EditorState
+  editorState: EditorState,
 ): EditorState {
   var selection = editorState.getSelection();
   var startKey = selection.getStartKey();

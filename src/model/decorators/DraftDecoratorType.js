@@ -26,7 +26,10 @@ export type DraftDecoratorType = {
   /**
    * Given a `ContentBlock`, return an immutable List of decorator keys.
    */
-  getDecorations(contentState: ContentState, block: ContentBlock): List<?string>,
+   getDecorations(
+     contentState: ContentState,
+     block: ContentBlock
+   ): List<?string>,
 
   /**
    * Given a decorator key, return the component to use when rendering

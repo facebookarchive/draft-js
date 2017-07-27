@@ -20,7 +20,7 @@ function adjustBlockDepthForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   adjustment: number,
-  maxDepth: number
+  maxDepth: number,
 ): ContentState {
   var startKey = selectionState.getStartKey();
   var endKey = selectionState.getEndKey();

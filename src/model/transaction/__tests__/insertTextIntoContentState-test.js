@@ -15,9 +15,10 @@ jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
 var Immutable = require('immutable');
-var insertTextIntoContentState = require('insertTextIntoContentState');
-var getSampleStateForTesting = require('getSampleStateForTesting');
 var {BOLD} = require('SampleDraftInlineStyle');
+
+var getSampleStateForTesting = require('getSampleStateForTesting');
+var insertTextIntoContentState = require('insertTextIntoContentState');
 
 describe('insertTextIntoContentState', () => {
   var sample = getSampleStateForTesting();
@@ -46,7 +47,7 @@ describe('insertTextIntoContentState', () => {
       content,
       selection,
       'xx',
-      character
+      character,
     );
 
     var newBlock = modified.getBlockMap().first();
@@ -56,10 +57,10 @@ describe('insertTextIntoContentState', () => {
     expect(
       Immutable.is(
         Immutable.List.of(
-          character, character, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY
+          character, character, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
         ),
-        newBlock.getCharacterList()
-      )
+        newBlock.getCharacterList(),
+      ),
     ).toBe(true);
   });
 
@@ -82,8 +83,8 @@ describe('insertTextIntoContentState', () => {
         newBlock.getCharacterList(),
         Immutable.List([
           EMPTY, EMPTY, character, character, EMPTY, EMPTY, EMPTY,
-        ])
-      )
+        ]),
+      ),
     ).toBe(true);
   });
 
@@ -106,8 +107,8 @@ describe('insertTextIntoContentState', () => {
         newBlock.getCharacterList(),
         Immutable.List([
           EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, character, character,
-        ])
-      )
+        ]),
+      ),
     ).toBe(true);
   });
 });

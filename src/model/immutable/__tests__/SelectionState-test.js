@@ -101,7 +101,7 @@ describe('SelectionState', () => {
     it('is true if selection range is entirely within test range', () => {
       expect(
         getSample({...COLLAPSED, anchorOffset: 5, focusOffset: 5})
-          .hasEdgeWithin('a', 0, 10)
+          .hasEdgeWithin('a', 0, 10),
       ).toBe(true);
       expect(getSample(WITHIN_BLOCK).hasEdgeWithin('a', 0, 40)).toBe(true);
     });

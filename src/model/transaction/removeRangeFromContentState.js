@@ -12,16 +12,16 @@
 
 'use strict';
 
-var Immutable = require('immutable');
-
 import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
-import type {List} from 'immutable';
 import type SelectionState from 'SelectionState';
+import type {List} from 'immutable';
+
+var Immutable = require('immutable');
 
 function removeRangeFromContentState(
   contentState: ContentState,
-  selectionState: SelectionState
+  selectionState: SelectionState,
 ): ContentState {
   if (selectionState.isCollapsed()) {
     return contentState;
@@ -41,7 +41,7 @@ function removeRangeFromContentState(
     characterList = removeFromList(
       startBlock.getCharacterList(),
       startOffset,
-      endOffset
+      endOffset,
     );
   } else {
     characterList = startBlock
@@ -87,7 +87,7 @@ function removeRangeFromContentState(
 function removeFromList(
   targetList: List<CharacterMetadata>,
   startOffset: number,
-  endOffset: number
+  endOffset: number,
 ): List<CharacterMetadata> {
   if (startOffset === 0) {
     while (startOffset < endOffset) {

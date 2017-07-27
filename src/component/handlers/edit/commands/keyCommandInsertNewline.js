@@ -18,7 +18,7 @@ var EditorState = require('EditorState');
 function keyCommandInsertNewline(editorState: EditorState): EditorState {
   var contentState = DraftModifier.splitBlock(
     editorState.getCurrentContent(),
-    editorState.getSelection()
+    editorState.getSelection(),
   );
   return EditorState.push(editorState, contentState, 'split-block');
 }

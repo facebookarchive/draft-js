@@ -13,21 +13,21 @@
 
 'use strict';
 
-var CharacterMetadata = require('CharacterMetadata');
-
 import type ContentBlock from 'ContentBlock';
+
+var CharacterMetadata = require('CharacterMetadata');
 
 function applyEntityToContentBlock(
   contentBlock: ContentBlock,
   start: number,
   end: number,
-  entityKey: ?string
+  entityKey: ?string,
 ): ContentBlock {
   var characterList = contentBlock.getCharacterList();
   while (start < end) {
     characterList = characterList.set(
       start,
-      CharacterMetadata.applyEntity(characterList.get(start), entityKey)
+      CharacterMetadata.applyEntity(characterList.get(start), entityKey),
     );
     start++;
   }

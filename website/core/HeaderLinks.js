@@ -14,7 +14,7 @@ var React = require('React');
 
 var HeaderLinks = React.createClass({
   links: [
-    {section: 'docs', href: '/draft-js/docs/overview.html#content', text: 'docs'},
+    {section: 'docs', href: '/docs/overview.html#content', text: 'docs'},
     {section: 'github', href: 'http://github.com/facebook/draft-js', text: 'github'},
   ],
 

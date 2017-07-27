@@ -12,6 +12,10 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type DraftEditor from 'DraftEditor.react';
+import type {EntityMap} from 'EntityMap';
+
 var BlockMapBuilder = require('BlockMapBuilder');
 var CharacterMetadata = require('CharacterMetadata');
 var DataTransfer = require('DataTransfer');
@@ -23,10 +27,6 @@ var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
 const isEventHandled = require('isEventHandled');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
-
-import type DraftEditor from 'DraftEditor.react';
-import type {BlockMap} from 'BlockMap';
-import type {EntityMap} from 'EntityMap';
 
 /**
  * Paste content.
@@ -61,7 +61,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
           style: editorState.getCurrentInlineStyle(),
           entity: getEntityKeyForSelection(
             editorState.getCurrentContent(),
-            editorState.getSelection()
+            editorState.getSelection(),
           ),
         });
 
@@ -71,15 +71,15 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
         var withInsertedText = DraftModifier.replaceWithFragment(
           editorState.getCurrentContent(),
           editorState.getSelection(),
-          fragment
+          fragment,
         );
 
         editor.update(
           EditorState.push(
             editorState,
             withInsertedText,
-            'insert-fragment'
-          )
+            'insert-fragment',
+          ),
         );
       });
 
@@ -90,10 +90,11 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   let textBlocks: Array<string> = [];
   const text = data.getText();
   const html = data.getHTML();
+  const editorState = editor._latestEditorState;
 
   if (
     editor.props.handlePastedText &&
-    isEventHandled(editor.props.handlePastedText(text, html))
+    isEventHandled(editor.props.handlePastedText(text, html, editorState))
   ) {
     return;
   }
@@ -169,18 +170,17 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
   }
 
   if (textBlocks.length) {
-    var editorState = editor._latestEditorState;
     var character = CharacterMetadata.create({
       style: editorState.getCurrentInlineStyle(),
       entity: getEntityKeyForSelection(
         editorState.getCurrentContent(),
-        editorState.getSelection()
+        editorState.getSelection(),
       ),
     });
 
     var textFragment = DraftPasteProcessor.processText(
       textBlocks,
-      character
+      character,
     );
 
     var textMap = BlockMapBuilder.createFromArray(textFragment);
@@ -196,7 +196,7 @@ function insertFragment(
   var newContent = DraftModifier.replaceWithFragment(
     editorState.getCurrentContent(),
     editorState.getSelection(),
-    fragment
+    fragment,
   );
 
   const mergedEntityMap = newContent.getEntityMap().merge(entityMap);
@@ -210,7 +210,7 @@ function insertFragment(
 
 function areTextBlocksAndClipboardEqual(
   textBlocks: Array<string>,
-  blockMap: BlockMap
+  blockMap: BlockMap,
 ): boolean {
   return (
     textBlocks.length === blockMap.size &&

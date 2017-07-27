@@ -12,15 +12,15 @@
 
 'use strict';
 
+import type CharacterMetadata from 'CharacterMetadata';
+import type ContentBlock from 'ContentBlock';
+import type ContentState from 'ContentState';
+import type {DraftDecoratorType} from 'DraftDecoratorType';
+
 var Immutable = require('immutable');
 
 var emptyFunction = require('emptyFunction');
 var findRangesImmutable = require('findRangesImmutable');
-
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentState from 'ContentState';
-import type ContentBlock from 'ContentBlock';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
 
 var {
   List,
@@ -63,7 +63,7 @@ var BlockTree = {
   generate: function(
     contentState: ContentState,
     block: ContentBlock,
-    decorator: ?DraftDecoratorType
+    decorator: ?DraftDecoratorType,
   ): List<DecoratorRange> {
     var textLength = block.getLength();
     if (!textLength) {
@@ -73,9 +73,9 @@ var BlockTree = {
           end: 0,
           decoratorKey: null,
           leaves: List.of(
-            new LeafRange({start: 0, end: 0})
+            new LeafRange({start: 0, end: 0}),
           ),
-        })
+        }),
       );
     }
 
@@ -98,11 +98,11 @@ var BlockTree = {
             decoratorKey: decorations.get(start),
             leaves: generateLeaves(
               chars.slice(start, end).toList(),
-              start
+              start,
             ),
-          })
+          }),
         );
-      }
+      },
     );
 
     return List(leafSets);
@@ -121,7 +121,7 @@ var BlockTree = {
           decoratorKey + '.' + (leafSet.get('end') - leafSet.get('start')) :
           '';
         return '' + fingerprintString + '.' + leafSet.get('leaves').size;
-      }
+      },
     ).join(FINGERPRINT_DELIMITER);
   },
 };
@@ -131,7 +131,7 @@ var BlockTree = {
  */
 function generateLeaves(
   characters: List<CharacterMetadata>,
-  offset: number
+  offset: number,
 ): List<LeafRange> {
   var leaves = [];
   var inlineStyles = characters.map(c => c.getStyle()).toList();
@@ -144,9 +144,9 @@ function generateLeaves(
         new LeafRange({
           start: start + offset,
           end: end + offset,
-        })
+        }),
       );
-    }
+    },
   );
   return List(leaves);
 }

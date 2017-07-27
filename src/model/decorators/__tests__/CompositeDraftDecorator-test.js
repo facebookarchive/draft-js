@@ -10,7 +10,7 @@
  * @typechecks
  */
 
-jest.unmock('CompositeDraftDecorator');
+jest.disableAutomock().mock('ContentState');
 
 var CompositeDraftDecorator = require('CompositeDraftDecorator');
 const ContentState = require('ContentState');
@@ -32,7 +32,7 @@ describe('CompositeDraftDecorator', () => {
         regex,
         function(/*string*/ match, /*number*/ offset) {
           callback(offset, offset + match.length);
-        }
+        },
       );
     };
   }
