@@ -13,15 +13,15 @@
 
 'use strict';
 
+import type ContentBlock from 'ContentBlock';
+import type {DraftRemovalDirection} from 'DraftRemovalDirection';
+import type {EntityMap} from 'EntityMap';
+import type SelectionState from 'SelectionState';
+
 var DraftEntitySegments = require('DraftEntitySegments');
 
 var getRangesForDraftEntity = require('getRangesForDraftEntity');
 var invariant = require('invariant');
-
-import type ContentBlock from 'ContentBlock';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
-import type SelectionState from 'SelectionState';
-import type {EntityMap} from 'EntityMap';
 
 /**
  * Given a SelectionState and a removal direction, determine the entire range

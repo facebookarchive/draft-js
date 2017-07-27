@@ -13,18 +13,18 @@
 
 'use strict';
 
+import type {DraftInsertionType} from 'DraftInsertionType';
+
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
 const Immutable = require('immutable');
+const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
 const moveBlockInContentState = require('moveBlockInContentState');
-
-import type {DraftInsertionType} from 'DraftInsertionType';
 
 const {
   List,

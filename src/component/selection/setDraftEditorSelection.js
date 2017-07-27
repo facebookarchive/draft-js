@@ -13,12 +13,13 @@
 
 'use strict';
 
+import type SelectionState from 'SelectionState';
+
 const DraftJsDebugLogging = require('DraftJsDebugLogging');
+
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
 const invariant = require('invariant');
-
-import type SelectionState from 'SelectionState';
 
 function getAnonymizedDOM(node: Node): string {
   if (!node) {

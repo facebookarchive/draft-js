@@ -13,13 +13,13 @@
 
 'use strict';
 
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+
 var {
   Map,
   OrderedSet,
   Record,
 } = require('immutable');
-
-import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 // Immutable.map is typed such that the value for every key in the map
 // must be the same type
