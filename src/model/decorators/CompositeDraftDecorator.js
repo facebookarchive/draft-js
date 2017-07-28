@@ -54,7 +54,7 @@ class CompositeDraftDecorator {
 
   getDecorations(
     contentState: ContentState,
-    block: ContentBlock
+    block: ContentBlock,
   ): List<?string> {
     var decorations = Array(block.getText().length).fill(null);
 

@@ -204,7 +204,7 @@ function insertFragment(
   return EditorState.push(
     editorState,
     newContent.set('entityMap', mergedEntityMap),
-    'insert-fragment'
+    'insert-fragment',
   );
 }
 

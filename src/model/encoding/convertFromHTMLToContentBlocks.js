@@ -414,7 +414,7 @@ function genFragment(
         type: 'IMAGE',
         mutability: 'MUTABLE',
         data: entityConfig || {},
-      })
+      }),
     );
     inEntity = newEntityMap.keySeq().last();
   }
