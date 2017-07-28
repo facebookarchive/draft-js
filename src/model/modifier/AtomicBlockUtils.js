@@ -13,18 +13,18 @@
 
 'use strict';
 
+import type {DraftInsertionType} from 'DraftInsertionType';
+
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
 const Immutable = require('immutable');
+const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
 const moveBlockInContentState = require('moveBlockInContentState');
-
-import type {DraftInsertionType} from 'DraftInsertionType';
 
 const {
   List,
@@ -35,7 +35,7 @@ const AtomicBlockUtils = {
   insertAtomicBlock: function(
     editorState: EditorState,
     entityKey: string,
-    character: string
+    character: string,
   ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
@@ -43,7 +43,7 @@ const AtomicBlockUtils = {
     const afterRemoval = DraftModifier.removeRange(
       contentState,
       selectionState,
-      'backward'
+      'backward',
     );
 
     const targetSelection = afterRemoval.getSelectionAfter();
@@ -53,7 +53,7 @@ const AtomicBlockUtils = {
     const asAtomicBlock = DraftModifier.setBlockType(
       afterSplit,
       insertionTarget,
-      'atomic'
+      'atomic',
     );
 
     const charData = CharacterMetadata.create({entity: entityKey});
@@ -78,7 +78,7 @@ const AtomicBlockUtils = {
     const withAtomicBlock = DraftModifier.replaceWithFragment(
       asAtomicBlock,
       insertionTarget,
-      fragment
+      fragment,
     );
 
     const newContent = withAtomicBlock.merge({
@@ -93,7 +93,7 @@ const AtomicBlockUtils = {
     editorState: EditorState,
     atomicBlock: ContentBlock,
     targetRange: SelectionState,
-    insertionMode?: DraftInsertionType
+    insertionMode?: DraftInsertionType,
   ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
@@ -104,25 +104,25 @@ const AtomicBlockUtils = {
       const targetBlock = contentState.getBlockForKey(
         insertionMode === 'before' ?
           targetRange.getStartKey() :
-          targetRange.getEndKey()
+          targetRange.getEndKey(),
       );
 
       withMovedAtomicBlock = moveBlockInContentState(
         contentState,
         atomicBlock,
         targetBlock,
-        insertionMode
+        insertionMode,
       );
     } else {
       const afterRemoval = DraftModifier.removeRange(
         contentState,
         targetRange,
-        'backward'
+        'backward',
       );
 
       const selectionAfterRemoval = afterRemoval.getSelectionAfter();
       const targetBlock = afterRemoval.getBlockForKey(
-        selectionAfterRemoval.getFocusKey()
+        selectionAfterRemoval.getFocusKey(),
       );
 
       if (selectionAfterRemoval.getStartOffset() === 0) {
@@ -130,38 +130,43 @@ const AtomicBlockUtils = {
           afterRemoval,
           atomicBlock,
           targetBlock,
-          'before'
+          'before',
         );
-      } else if (selectionAfterRemoval.getEndOffset() === targetBlock.getLength()) {
+      } else if (
+        selectionAfterRemoval.getEndOffset() === targetBlock.getLength()
+      ) {
         withMovedAtomicBlock = moveBlockInContentState(
           afterRemoval,
           atomicBlock,
           targetBlock,
-          'after'
+          'after',
         );
       } else {
         const afterSplit = DraftModifier.splitBlock(
           afterRemoval,
-          selectionAfterRemoval
+          selectionAfterRemoval,
         );
 
         const selectionAfterSplit = afterSplit.getSelectionAfter();
         const targetBlock = afterSplit.getBlockForKey(
-          selectionAfterSplit.getFocusKey()
+          selectionAfterSplit.getFocusKey(),
         );
 
         withMovedAtomicBlock = moveBlockInContentState(
           afterSplit,
           atomicBlock,
           targetBlock,
-          'before'
+          'before',
         );
       }
     }
 
     const newContent = withMovedAtomicBlock.merge({
       selectionBefore: selectionState,
-      selectionAfter: withMovedAtomicBlock.getSelectionAfter().set('hasFocus', true),
+      selectionAfter: withMovedAtomicBlock.getSelectionAfter().set(
+        'hasFocus',
+        true,
+      ),
     });
 
     return EditorState.push(editorState, newContent, 'move-block');

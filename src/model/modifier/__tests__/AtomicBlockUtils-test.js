@@ -42,7 +42,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -65,22 +65,22 @@ describe('AtomicBlockUtils', () => {
       });
       const targetEditor = EditorState.forceSelection(
         editorState,
-        targetSelection
+        targetSelection,
       );
 
       const resultEditor = insertAtomicBlock(
         targetEditor,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
       expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
       expect(
-        firstBlock.getText()
+        firstBlock.getText(),
       ).toBe(
-        originalFirstBlock.getText().slice(0, 2)
+        originalFirstBlock.getText().slice(0, 2),
       );
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
@@ -98,13 +98,13 @@ describe('AtomicBlockUtils', () => {
       });
       const targetEditor = EditorState.forceSelection(
         editorState,
-        targetSelection
+        targetSelection,
       );
 
       const resultEditor = insertAtomicBlock(
         targetEditor,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -125,7 +125,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -141,7 +141,7 @@ describe('AtomicBlockUtils', () => {
         new SelectionState({
           anchorKey: firstBlock.getKey(),
           focusKey: firstBlock.getKey(),
-        })
+        }),
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
@@ -157,7 +157,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -175,7 +175,7 @@ describe('AtomicBlockUtils', () => {
           anchorOffset: lastBlock.getLength(),
           focusKey: lastBlock.getKey(),
           focusOffset: lastBlock.getLength(),
-        })
+        }),
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
@@ -191,7 +191,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -209,16 +209,19 @@ describe('AtomicBlockUtils', () => {
           anchorOffset: 2,
           focusKey: thirdBlock.getKey(),
           focusOffset: 2,
-        })
+        }),
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
       expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
 
       // Atomic block must be inbetween the splitted block
-      const atomicResultSecondBlock = atomicResultContent.getBlockMap().skip(1).first();
-      const atomicResultThirdBlock = atomicResultContent.getBlockMap().skip(2).first();
-      const atomicResultFourthBlock = atomicResultContent.getBlockMap().skip(3).first();
+      const atomicResultSecondBlock =
+        atomicResultContent.getBlockMap().skip(1).first();
+      const atomicResultThirdBlock =
+        atomicResultContent.getBlockMap().skip(2).first();
+      const atomicResultFourthBlock =
+        atomicResultContent.getBlockMap().skip(3).first();
 
       expect(atomicResultSecondBlock.getText()).toBe('Al');
       assertAtomicBlock(atomicResultThirdBlock);
@@ -230,7 +233,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -246,7 +249,7 @@ describe('AtomicBlockUtils', () => {
         new SelectionState({
           anchorKey: firstBlock.getKey(),
         }),
-        'before'
+        'before',
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
@@ -262,7 +265,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -278,7 +281,7 @@ describe('AtomicBlockUtils', () => {
         new SelectionState({
           focusKey: lastBlock.getKey(),
         }),
-        'after'
+        'after',
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
@@ -296,14 +299,14 @@ describe('AtomicBlockUtils', () => {
       });
       const targetEditor = EditorState.forceSelection(
         editorState,
-        targetSelection
+        targetSelection,
       );
 
       // Insert atomic block at the second position
       const resultEditor = insertAtomicBlock(
         targetEditor,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -313,7 +316,8 @@ describe('AtomicBlockUtils', () => {
 
       assertAtomicBlock(atomicBlock);
 
-      // Move atomic block above itself by moving it after preceeding block by replacement
+      // Move atomic block above itself by moving it after preceeding block by
+      // replacement
       expect(
         function() {
           moveAtomicBlock(
@@ -324,9 +328,9 @@ describe('AtomicBlockUtils', () => {
               anchorOffset: beforeAtomicBlock.getLength(),
               focusKey: beforeAtomicBlock.getKey(),
               focusOffset: beforeAtomicBlock.getLength(),
-            })
+            }),
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
       // Move atomic block above itself by moving it after preceeding block
@@ -339,9 +343,9 @@ describe('AtomicBlockUtils', () => {
               anchorKey: beforeAtomicBlock.getKey(),
               focusKey: beforeAtomicBlock.getKey(),
             }),
-            'after'
+            'after',
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
       // Move atomic block above itself by replacement
@@ -353,9 +357,9 @@ describe('AtomicBlockUtils', () => {
             new SelectionState({
               anchorKey: atomicBlock.getKey(),
               focusKey: atomicBlock.getKey(),
-            })
+            }),
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
       // Move atomic block above itself
@@ -367,12 +371,13 @@ describe('AtomicBlockUtils', () => {
             new SelectionState({
               anchorKey: atomicBlock.getKey(),
             }),
-            'before'
+            'before',
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
-      // Move atomic block below itself by moving it before following block by replacement
+      // Move atomic block below itself by moving it before following block by
+      // replacement
       expect(
         function() {
           moveAtomicBlock(
@@ -381,9 +386,9 @@ describe('AtomicBlockUtils', () => {
             new SelectionState({
               anchorKey: afterAtomicBlock.getKey(),
               focusKey: afterAtomicBlock.getKey(),
-            })
+            }),
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
       // Move atomic block below itself by moving it before following block
@@ -396,9 +401,9 @@ describe('AtomicBlockUtils', () => {
               anchorKey: afterAtomicBlock.getKey(),
               focusKey: afterAtomicBlock.getKey(),
             }),
-            'before'
+            'before',
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
       // Move atomic block below itself by replacement
@@ -412,9 +417,9 @@ describe('AtomicBlockUtils', () => {
               anchorOffset: atomicBlock.getLength(),
               focusKey: atomicBlock.getKey(),
               focusOffset: atomicBlock.getLength(),
-            })
+            }),
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
       // Move atomic block below itself
@@ -426,9 +431,9 @@ describe('AtomicBlockUtils', () => {
             new SelectionState({
               focusKey: atomicBlock.getKey(),
             }),
-            'after'
+            'after',
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
     });
   });
@@ -441,13 +446,13 @@ describe('AtomicBlockUtils', () => {
       });
       const targetEditor = EditorState.forceSelection(
         editorState,
-        targetSelection
+        targetSelection,
       );
 
       const resultEditor = insertAtomicBlock(
         targetEditor,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -470,22 +475,22 @@ describe('AtomicBlockUtils', () => {
       });
       const targetEditor = EditorState.forceSelection(
         editorState,
-        targetSelection
+        targetSelection,
       );
 
       const resultEditor = insertAtomicBlock(
         targetEditor,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
       expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
       expect(
-        firstBlock.getText()
+        firstBlock.getText(),
       ).toBe(
-        originalFirstBlock.getText().slice(0, 1)
+        originalFirstBlock.getText().slice(0, 1),
       );
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
@@ -504,22 +509,22 @@ describe('AtomicBlockUtils', () => {
       });
       const targetEditor = EditorState.forceSelection(
         editorState,
-        targetSelection
+        targetSelection,
       );
 
       const resultEditor = insertAtomicBlock(
         targetEditor,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
       expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
       expect(
-        firstBlock.getText()
+        firstBlock.getText(),
       ).toBe(
-        originalFirstBlock.getText().slice(0, origLength - 2)
+        originalFirstBlock.getText().slice(0, origLength - 2),
       );
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
@@ -540,22 +545,22 @@ describe('AtomicBlockUtils', () => {
       });
       const targetEditor = EditorState.forceSelection(
         editorState,
-        targetSelection
+        targetSelection,
       );
 
       const resultEditor = insertAtomicBlock(
         targetEditor,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
       const firstBlock = resultContent.getBlockMap().first();
       expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
       expect(
-        firstBlock.getText()
+        firstBlock.getText(),
       ).toBe(
-        originalFirstBlock.getText().slice(0, 2)
+        originalFirstBlock.getText().slice(0, 2),
       );
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
@@ -573,7 +578,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -591,14 +596,15 @@ describe('AtomicBlockUtils', () => {
           anchorOffset: 0,
           focusKey: lastBlock.getKey(),
           focusOffset: 2,
-        })
+        }),
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
       expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
 
       // Atomic block must be on the second last position now
-      const atomicResultSecondLastBlock = atomicResultContent.getBlockMap().reverse().skip(1).first();
+      const atomicResultSecondLastBlock =
+        atomicResultContent.getBlockMap().reverse().skip(1).first();
       const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
 
       assertAtomicBlock(atomicResultSecondLastBlock);
@@ -610,7 +616,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -628,14 +634,15 @@ describe('AtomicBlockUtils', () => {
           anchorOffset: lastBlock.getLength() - 2,
           focusKey: lastBlock.getKey(),
           focusOffset: lastBlock.getLength(),
-        })
+        }),
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
       expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
 
       // Atomic block must be on the last position now
-      const atomicResultSecondLastBlock = atomicResultContent.getBlockMap().reverse().skip(1).first();
+      const atomicResultSecondLastBlock =
+        atomicResultContent.getBlockMap().reverse().skip(1).first();
       const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
 
       expect(atomicResultSecondLastBlock.getText()).toBe('Charl');
@@ -647,7 +654,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -665,16 +672,19 @@ describe('AtomicBlockUtils', () => {
           anchorOffset: 1,
           focusKey: thirdBlock.getKey(),
           focusOffset: 2,
-        })
+        }),
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
       expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
 
       // Atomic block must be inbetween the splitted block
-      const atomicResultSecondBlock = atomicResultContent.getBlockMap().skip(1).first();
-      const atomicResultThirdBlock = atomicResultContent.getBlockMap().skip(2).first();
-      const atomicResultFourthBlock = atomicResultContent.getBlockMap().skip(3).first();
+      const atomicResultSecondBlock =
+        atomicResultContent.getBlockMap().skip(1).first();
+      const atomicResultThirdBlock =
+        atomicResultContent.getBlockMap().skip(2).first();
+      const atomicResultFourthBlock =
+        atomicResultContent.getBlockMap().skip(3).first();
 
       expect(atomicResultSecondBlock.getText()).toBe('A');
       assertAtomicBlock(atomicResultThirdBlock);
@@ -686,7 +696,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -706,7 +716,7 @@ describe('AtomicBlockUtils', () => {
           focusKey: lastBlock.getKey(),
           focusOffset: 2,
         }),
-        'before'
+        'before',
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
@@ -722,7 +732,7 @@ describe('AtomicBlockUtils', () => {
       const resultEditor = insertAtomicBlock(
         editorState,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -742,7 +752,7 @@ describe('AtomicBlockUtils', () => {
           focusKey: lastBlock.getKey(),
           focusOffset: 2,
         }),
-        'after'
+        'after',
       );
       const atomicResultContent = atomicResultEditor.getCurrentContent();
 
@@ -760,14 +770,14 @@ describe('AtomicBlockUtils', () => {
       });
       const targetEditor = EditorState.forceSelection(
         editorState,
-        targetSelection
+        targetSelection,
       );
 
       // Insert atomic block at the second position
       const resultEditor = insertAtomicBlock(
         targetEditor,
         entityKey,
-        character
+        character,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -777,7 +787,8 @@ describe('AtomicBlockUtils', () => {
 
       assertAtomicBlock(atomicBlock);
 
-      // Move atomic block above itself by moving it after preceeding block by replacement
+      // Move atomic block above itself by moving it after preceeding block by
+      // replacement
       expect(
         function() {
           moveAtomicBlock(
@@ -788,12 +799,13 @@ describe('AtomicBlockUtils', () => {
               anchorOffset: beforeAtomicBlock.getLength() - 2,
               focusKey: beforeAtomicBlock.getKey(),
               focusOffset: beforeAtomicBlock.getLength(),
-            })
+            }),
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
 
-      // Move atomic block below itself by moving it before following block by replacement
+      // Move atomic block below itself by moving it before following block by
+      // replacement
       expect(
         function() {
           moveAtomicBlock(
@@ -804,9 +816,9 @@ describe('AtomicBlockUtils', () => {
               anchorOffset: 0,
               focusKey: afterAtomicBlock.getKey(),
               focusOffset: 2,
-            })
+            }),
           );
-        }
+        },
       ).toThrow(new Error('Block cannot be moved next to itself.'));
     });
   });

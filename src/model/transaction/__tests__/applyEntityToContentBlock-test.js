@@ -15,12 +15,12 @@ jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
-var applyEntityToContentBlock = require('applyEntityToContentBlock');
-
 var {
   List,
   Repeat,
 } = require('immutable');
+
+var applyEntityToContentBlock = require('applyEntityToContentBlock');
 
 describe('applyEntityToContentBlock', () => {
   var block = new ContentBlock({

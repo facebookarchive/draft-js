@@ -13,6 +13,8 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
@@ -26,7 +28,6 @@ const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
 const updateEntityDataInContentState = require('updateEntityDataInContentState');
 
-import type {BlockMap} from 'BlockMap';
 import type {EntityMap} from 'EntityMap';
 import type DraftEntityInstance from 'DraftEntityInstance';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
@@ -197,7 +198,7 @@ class ContentState extends ContentStateRecord {
           type: 'unstyled',
           characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
         });
-      }
+      },
     );
     return ContentState.createFromBlockArray(blocks);
   }

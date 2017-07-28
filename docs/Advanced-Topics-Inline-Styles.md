@@ -20,7 +20,7 @@ examples demonstrate complex inline style behavior in action.
 
 Within the Draft model, inline styles are represented at the character level,
 using an immutable `OrderedSet` to define the list of styles to be applied to
-each character. These styles are identified by string. (See [CharacterMetadata](/draft-js/docs/api-reference-character-metadata.html)
+each character. These styles are identified by string. (See [CharacterMetadata](/docs/api-reference-character-metadata.html)
 for details.)
 
 For example, consider the text "Hello **world**". The first six characters of
@@ -46,7 +46,7 @@ In essence, our styles are:
 
 Now let's say that we wish to make the middle range of characters italic as well:
 "He_llo **wo**_**rld**". This operation can be performed via the
-[Modifier](/draft-js/docs/api-reference-modifier.html) API.
+[Modifier](/docs/api-reference-modifier.html) API.
 
 The end result will accommodate the overlap by including `'ITALIC'` in the
 relevant `OrderedSet` objects as well.

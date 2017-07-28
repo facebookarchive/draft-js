@@ -18,9 +18,8 @@ var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
 var EditorState = require('EditorState');
 var Immutable = require('immutable');
-var SelectionState = require('SelectionState');
-
 var {BOLD} = require('SampleDraftInlineStyle');
+var SelectionState = require('SelectionState');
 var {EMPTY} = CharacterMetadata;
 
 var getDraftEditorSelection = require('getDraftEditorSelection');
@@ -66,18 +65,18 @@ describe('getDraftEditorSelection', function() {
     var boldChar = CharacterMetadata.create({style: BOLD});
     var aChars = Immutable.List(
       Immutable.Repeat(EMPTY, text[0].length).concat(
-        Immutable.Repeat(boldChar, text[1].length)
-      )
+        Immutable.Repeat(boldChar, text[1].length),
+      ),
     );
     var bChars = Immutable.List(
       Immutable.Repeat(EMPTY, text[2].length).concat(
-        Immutable.Repeat(boldChar, text[3].length)
-      )
+        Immutable.Repeat(boldChar, text[3].length),
+      ),
     );
     var cChars = Immutable.List(
       Immutable.Repeat(EMPTY, text[4].length).concat(
-        Immutable.Repeat(boldChar, text[5].length)
-      )
+        Immutable.Repeat(boldChar, text[5].length),
+      ),
     );
 
     var contentBlocks = [
@@ -108,7 +107,7 @@ describe('getDraftEditorSelection', function() {
       .map(
         function(text) {
           return document.createTextNode(text);
-        }
+        },
       );
     leafChildren = textNodes
       .map(
@@ -116,7 +115,7 @@ describe('getDraftEditorSelection', function() {
           var span = document.createElement('span');
           span.appendChild(textNode);
           return span;
-        }
+        },
       );
     leafs = ['a-0-0', 'a-0-1', 'b-0-0', 'b-0-1', 'c-0-0', 'c-0-1']
       .map(
@@ -125,7 +124,7 @@ describe('getDraftEditorSelection', function() {
           span.setAttribute('data-offset-key', '' + blockKey);
           span.appendChild(leafChildren[ii]);
           return span;
-        }
+        },
       );
     decorators = ['a-0-0', 'b-0-0', 'c-0-0']
       .map(
@@ -136,7 +135,7 @@ describe('getDraftEditorSelection', function() {
           span.appendChild(leafs[(ii * 2)]);
           span.appendChild(leafs[(ii * 2) + 1]);
           return span;
-        }
+        },
       );
     blocks = ['a-0-0', 'b-0-0', 'c-0-0']
       .map(
@@ -145,12 +144,12 @@ describe('getDraftEditorSelection', function() {
           blockElement.setAttribute('data-offset-key', '' + blockKey);
           blockElement.appendChild(decorators[ii]);
           return blockElement;
-        }
+        },
       );
     blocks.forEach(
       function(blockElem) {
         contents.appendChild(blockElem);
-      }
+      },
     );
   });
 

@@ -13,6 +13,9 @@
 
 'use strict';
 
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {EntityMap} from 'EntityMap';
+
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const Immutable = require('immutable');
@@ -23,9 +26,6 @@ const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {EntityMap} from 'EntityMap';
-
 const {
   List,
   Repeat,
@@ -34,12 +34,12 @@ const {
 const DraftPasteProcessor = {
   processHTML(
     html: string,
-    blockRenderMap?: DraftBlockRenderMap
+    blockRenderMap?: DraftBlockRenderMap,
   ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
     return convertFromHTMLtoContentBlocks(
       html,
       getSafeBodyFromHTML,
-      blockRenderMap
+      blockRenderMap,
     );
   },
 
@@ -56,7 +56,7 @@ const DraftPasteProcessor = {
           text: textLine,
           characterList: List(Repeat(character, textLine.length)),
         });
-      }
+      },
     );
   },
 };
