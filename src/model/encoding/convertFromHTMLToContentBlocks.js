@@ -22,11 +22,12 @@ import type {EntityMap} from 'EntityMap';
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEntity = require('DraftEntity');
+const DraftEntityInstance = require('DraftEntityInstance');
 const Immutable = require('immutable');
 const {Set} = require('immutable');
 const URI = require('URI');
 
+const addEntityToEntityMap = require('addEntityToEntityMap');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
@@ -36,6 +37,7 @@ const sanitizeDraftText = require('sanitizeDraftText');
 var {
   List,
   OrderedSet,
+  OrderedMap,
 } = Immutable;
 
 var NBSP = '&nbsp;';
@@ -406,12 +408,15 @@ function genFragment(
     const imageURI = new URI(entityConfig.src).toString();
     node.textContent = imageURI; // Output src if no decorator
 
-    // TODO: update this when we remove DraftEntity entirely
-    inEntity = DraftEntity.__create(
-      'IMAGE',
-      'MUTABLE',
-      entityConfig || {},
+    newEntityMap = addEntityToEntityMap(
+      newEntityMap,
+      new DraftEntityInstance({
+        type: 'IMAGE',
+        mutability: 'MUTABLE',
+        data: entityConfig || {},
+      }),
     );
+    inEntity = newEntityMap.keySeq().last();
   }
 
   var chunk = getEmptyChunk();
@@ -473,12 +478,16 @@ function genFragment(
       });
 
       entityConfig.url = new URI(anchor.href).toString();
-      // TODO: update this when we remove DraftEntity completely
-      entityId = DraftEntity.__create(
-        'LINK',
-        'MUTABLE',
-        entityConfig || {},
+
+      newEntityMap = addEntityToEntityMap(
+        newEntityMap,
+        new DraftEntityInstance({
+          type: 'LINK',
+          mutability: 'MUTABLE',
+          data: entityConfig || {},
+        }),
       );
+      entityId = newEntityMap.keySeq().last();
     } else {
       entityId = undefined;
     }
@@ -620,7 +629,7 @@ function convertFromHTMLtoContentBlocks(
     html,
     DOMBuilder,
     blockRenderMap,
-    DraftEntity,
+    OrderedMap(),
   );
 
   if (chunkData == null) {

@@ -1,7 +1,7 @@
 {
   "name": "draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.10.1",
+  "version": "0.11.0-alpha",
   "keywords": [
     "draftjs",
     "editor",
@@ -73,8 +73,8 @@
     "webpack-stream": "^3.0.0"
   },
   "devEngines": {
-    "node": "4.x || 6.x",
-    "npm": "2.x || 3.x"
+    "node": "4.x || 6.x || 8.x",
+    "npm": "2.x || 3.x || 5.x"
   },
   "jest": {
     "automock": true,

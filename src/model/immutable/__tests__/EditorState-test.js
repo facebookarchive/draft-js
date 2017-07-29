@@ -255,7 +255,7 @@ describe('EditorState', () => {
 
     beforeEach(() => {
       Decorator.prototype.getDecorations.mockClear();
-      Decorator.prototype.getDecorations.mockImplementation((v, c) => {
+      Decorator.prototype.getDecorations.mockImplementation((c, v) => {
         return v === boldBlock ? boldA : List(Repeat(undefined, v.getLength()));
       });
     });
@@ -265,11 +265,11 @@ describe('EditorState', () => {
       var editorState = getDecoratedEditorState(decorator);
       expect(decorator.getDecorations.mock.calls.length).toBe(2);
 
-      Decorator.prototype.getDecorations.mockImplementation((v, c) => {
+      Decorator.prototype.getDecorations.mockImplementation((c, v) => {
         return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
       });
       var newDecorator = new NextDecorator();
-      NextDecorator.prototype.getDecorations.mockImplementation((v, c) => {
+      NextDecorator.prototype.getDecorations.mockImplementation((c, v) => {
         return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
       });
 
@@ -306,8 +306,8 @@ describe('EditorState', () => {
       var decorator = new Decorator();
       getDecoratedEditorState(decorator);
       decorator.getDecorations.mock.calls.forEach((call) => {
-        expect(call[0] instanceof ContentBlock).toBe(true);
-        expect(call[1] instanceof ContentState).toBe(true);
+        expect(call[0] instanceof ContentState).toBe(true);
+        expect(call[1] instanceof ContentBlock).toBe(true);
       });
     });
 

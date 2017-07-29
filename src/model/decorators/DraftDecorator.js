@@ -16,9 +16,9 @@ import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
 
 export type DraftDecoratorStrategy = (
+  contentState: ContentState,
   block: ContentBlock,
   callback: (start: number, end: number) => void,
-  contentState: ContentState,
 ) => void;
 
 /**

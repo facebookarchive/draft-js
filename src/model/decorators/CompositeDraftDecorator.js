@@ -53,8 +53,8 @@ class CompositeDraftDecorator {
   }
 
   getDecorations(
-    block: ContentBlock,
     contentState: ContentState,
+    block: ContentBlock,
   ): List<?string> {
     var decorations = Array(block.getText().length).fill(null);
 
@@ -71,7 +71,7 @@ class CompositeDraftDecorator {
             counter++;
           }
         };
-        strategy(block, callback, contentState);
+        strategy(contentState, block, callback);
       },
     );
 

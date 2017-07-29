@@ -124,7 +124,7 @@ function getEntityRemovalRange(
 ): SelectionState {
   var start = selectionState.getStartOffset();
   var end = selectionState.getEndOffset();
-  var entity = entityMap.__get(entityKey);
+  var entity = entityMap.get(entityKey);
   var mutability = entity.getMutability();
   const sideToConsider = isEntityAtStart ? start : end;
 

@@ -4,6 +4,10 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.11.0-alpha (February 2017)
+
+* Moved entities into content state
+
 ## 0.10.1
 
 ### Added
