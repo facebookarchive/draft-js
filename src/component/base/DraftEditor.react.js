@@ -228,6 +228,16 @@ class DraftEditor extends React.Component {
       wordWrap: 'break-word',
     };
 
+    // The aria-expanded and aria-haspopup properties should only be rendered
+    // for a combobox.
+    const ariaRole = this.props.role || 'textbox';
+    const ariaExpanded = ariaRole === 'combobox'
+      ? !!this.props.ariaExpanded
+      : null;
+    const ariaHasPopup = ariaRole === 'combobox'
+      ? !!this.props.ariaHasPopup
+      : null;
+
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
@@ -242,8 +252,8 @@ class DraftEditor extends React.Component {
             aria-describedby={
               this._showPlaceholder() ? this._placeholderAccessibilityID : null
             }
-            aria-expanded={readOnly ? null : this.props.ariaExpanded}
-            aria-haspopup={readOnly ? null : this.props.ariaHasPopup}
+            aria-expanded={readOnly ? null : ariaExpanded}
+            aria-haspopup={readOnly ? null : ariaHasPopup}
             aria-label={this.props.ariaLabel}
             aria-multiline={this.props.ariaMultiline}
             aria-owns={readOnly ? null : this.props.ariaOwneeID}
@@ -281,7 +291,7 @@ class DraftEditor extends React.Component {
             onPaste={this._onPaste}
             onSelect={this._onSelect}
             ref="editor"
-            role={readOnly ? null : (this.props.role || 'textbox')}
+            role={readOnly ? null : ariaRole}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
             suppressContentEditableWarning
