@@ -249,6 +249,7 @@ class DraftEditor extends React.Component {
               readOnly ? null : this.props.ariaActiveDescendantID
             }
             aria-autocomplete={readOnly ? null : this.props.ariaAutoComplete}
+            aria-controls={readOnly ? null : this.props.ariaControls}
             aria-describedby={
               this._showPlaceholder() ? this._placeholderAccessibilityID : null
             }
@@ -256,7 +257,6 @@ class DraftEditor extends React.Component {
             aria-haspopup={readOnly ? null : ariaHasPopup}
             aria-label={this.props.ariaLabel}
             aria-multiline={this.props.ariaMultiline}
-            aria-owns={readOnly ? null : this.props.ariaOwneeID}
             autoCapitalize={this.props.autoCapitalize}
             autoComplete={this.props.autoComplete}
             autoCorrect={this.props.autoCorrect}

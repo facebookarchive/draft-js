@@ -92,12 +92,12 @@ export type DraftEditorProps = {
 
   ariaActiveDescendantID?: string,
   ariaAutoComplete?: string,
+  ariaControls?: string,
   ariaDescribedBy?: string,
   ariaExpanded?: boolean,
   ariaHasPopup?: boolean,
   ariaLabel?: string,
   ariaMultiline?: boolean,
-  ariaOwneeID?: string,
 
   webDriverTestID?: string,
 
