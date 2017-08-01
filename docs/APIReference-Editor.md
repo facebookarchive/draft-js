@@ -205,7 +205,7 @@ and to convert typed emoticons into images.
 ```
 handlePastedText?: (text: string, html?: string) => DraftHandleValue
 ```
-Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior.
+Handle text and html(for rich text) that has been pasted directly into the editor. Returning `'handled'` will prevent the default paste behavior.
 
 #### handlePastedFiles
 ```
