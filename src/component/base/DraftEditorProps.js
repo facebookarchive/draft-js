@@ -95,7 +95,6 @@ export type DraftEditorProps = {
   ariaControls?: string,
   ariaDescribedBy?: string,
   ariaExpanded?: boolean,
-  ariaHasPopup?: boolean,
   ariaLabel?: string,
   ariaMultiline?: boolean,
 

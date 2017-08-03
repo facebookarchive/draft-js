@@ -234,9 +234,6 @@ class DraftEditor extends React.Component {
     const ariaExpanded = ariaRole === 'combobox'
       ? !!this.props.ariaExpanded
       : null;
-    const ariaHasPopup = ariaRole === 'combobox'
-      ? !!this.props.ariaHasPopup
-      : null;
 
     return (
       <div className={rootClass}>
@@ -254,7 +251,6 @@ class DraftEditor extends React.Component {
               this._showPlaceholder() ? this._placeholderAccessibilityID : null
             }
             aria-expanded={readOnly ? null : ariaExpanded}
-            aria-haspopup={readOnly ? null : ariaHasPopup}
             aria-label={this.props.ariaLabel}
             aria-multiline={this.props.ariaMultiline}
             autoCapitalize={this.props.autoCapitalize}
