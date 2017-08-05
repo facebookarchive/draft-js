@@ -42,6 +42,11 @@ const RESOLVE_DELAY = 20;
 let resolved = false;
 let stillComposing = false;
 let textInputData = '';
+/**
+ * New versions of mobile Chrome don't fire `textinput` (converted to `beforeinput`) event,
+ * so we'll save data from `compositionend` event.
+ */
+let compositionTextData = '';
 
 var DraftEditorCompositionHandler = {
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent): void {
@@ -70,9 +75,10 @@ var DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(editor: DraftEditor): void {
+  onCompositionEnd: function(editor: DraftEditor, e: SyntheticInputEvent): void {
     resolved = false;
     stillComposing = false;
+    compositionTextData = e.data;
     setTimeout(() => {
       if (!resolved) {
         DraftEditorCompositionHandler.resolveComposition(editor);
@@ -133,8 +139,11 @@ var DraftEditorCompositionHandler = {
     }
 
     resolved = true;
-    const composedChars = textInputData;
+    // If we're on a new mobile Chrome, `textInputData` may be empty here,
+    // so `compositionTextData` from `compositionend` will be used.
+    const composedChars = textInputData || compositionTextData;
     textInputData = '';
+    compositionTextData = '';
 
     const editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
