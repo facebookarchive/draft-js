@@ -14,6 +14,7 @@
 
 var DraftFeatureFlags = {
   draft_accept_selection_after_refocus: false,
+  draft_cautious_range_removal_on_blur: false,
   draft_killswitch_allow_nontextnodes: false,
   draft_segmented_entities_behavior: false,
 };
