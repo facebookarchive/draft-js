@@ -18,6 +18,8 @@ jest.disableAutomock();
 jest.useFakeTimers();
 
 var EditorState = require('EditorState');
+const DraftFeatureFlags = require('DraftFeatureFlags');
+const originalEnableCompositionFixesValue = DraftFeatureFlags.draft_enable_composition_fixes;
 
 describe('DraftEditorCompositionHandler', () => {
   // The DraftEditorCompositionHandler contains some global state
@@ -46,6 +48,16 @@ describe('DraftEditorCompositionHandler', () => {
 
       update: jest.fn(state => editor._latestEditorState = state),
     };
+  });
+
+  // newly added tests require feature flagged behaviors
+  beforeEach(() => {
+    DraftFeatureFlags
+      .draft_enable_composition_fixes = true;
+  });
+  afterEach(() => {
+    DraftFeatureFlags
+      .draft_enable_composition_fixes = originalEnableCompositionFixesValue;
   });
 
   const editorTextContent = () => {
