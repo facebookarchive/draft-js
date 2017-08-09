@@ -16,21 +16,20 @@ import type DraftEditor from 'DraftEditor.react';
 
 const DraftFeatureFlags = require('DraftFeatureFlags');
 const EditorState = require('EditorState');
-const UserAgent = require('UserAgent');
 
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
 
-const isWebKit = UserAgent.isEngine('WebKit');
-
 function editOnBlur(editor: DraftEditor, e: SyntheticEvent): void {
-  // Webkit has a bug in which blurring a contenteditable by clicking on
-  // other active elements will trigger the `blur` event but will not remove
-  // the DOM selection from the contenteditable. We therefore force the
-  // issue to be certain, checking whether the active element is `body`
-  // to force it when blurring occurs within the window (as opposed to
-  // clicking to another tab or window).
-  if (isWebKit && getActiveElement() === document.body) {
+  // In a contentEditable element, when you select a range and then click
+  // another active element, this does trigger a `blur` event but will not
+  // remove the DOM selection from the contenteditable.
+  // This is consistent across all browsers, but we prefer that the editor
+  // behave like a textarea, where a `blur` event clears the DOM selection.
+  // We therefore force the issue to be certain, checking whether the active
+  // element is `body` to force it when blurring occurs within the window (as
+  // opposed to clicking to another tab or window).
+  if (getActiveElement() === document.body) {
     const selection = global.getSelection();
     const editorNode = editor.refs.editor;
     if (
