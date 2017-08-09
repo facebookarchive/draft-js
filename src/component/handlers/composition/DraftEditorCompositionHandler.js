@@ -44,8 +44,8 @@ const RESOLVE_DELAY = 20;
  */
 let resolved = false;
 let stillComposing = false;
-let compositionUpdates = false;
 let beforeInputData = null;
+let compositionUpdateData = null;
 let compositionEndData = null;
 
 var DraftEditorCompositionHandler = {
@@ -62,13 +62,6 @@ var DraftEditorCompositionHandler = {
    * `compositionend` events that they fire.
    */
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
-    if (compositionUpdates) {
-      // We only want to use the `beforeinput` event if the `compositionupdate`
-      // one isn't supported. We know that if it is, it fires before
-      // `beforeinput`.
-      return;
-    }
-
     beforeInputData = (beforeInputData || '') + e.data;
   },
 
@@ -88,8 +81,7 @@ var DraftEditorCompositionHandler = {
     editor: DraftEditor,
     e: SyntheticInputEvent,
   ): void {
-    compositionUpdates = true;
-    textInputData = e.data;
+    compositionUpdateData = e.data;
   },
 
   /**
@@ -152,6 +144,33 @@ var DraftEditorCompositionHandler = {
   },
 
   /**
+   * Normalizes platform inconsistencies with input event data.
+   * 
+   * When beforeInputData is present, it is only preferred if its length
+   * is greater than that of the last compositionUpdate event data. This is
+   * meant to resolve IME incosistencies where compositionUpdate may contain 
+   * only the last character or the entire composition depending on language
+   * (e.g. Korean vs. Japanese).
+   * 
+   * When beforeInputData is not present, compositionUpdate data is preferred.
+   * This resolves issues with some platforms where beforeInput is never fired
+   * (e.g. Android with certain keyboard and browser combinations).
+   * 
+   * Lastly, if neither beforeInput nor compositionUpdate events are fired, use
+   * the data in the compositionEnd event
+   */
+  normalizeCompositionInput: function(): ?string {
+    const beforeInputDataLength = beforeInputData ? beforeInputData.length : 0;
+    const compositionUpdateDataLength = compositionUpdateData
+      ? compositionUpdateData.length
+      : 0;
+    const updateData = beforeInputDataLength > compositionUpdateDataLength
+      ? beforeInputData
+      : compositionUpdateData;
+    return updateData || compositionEndData;
+  },
+
+  /**
    * Attempt to insert composed characters into the document.
    *
    * If we are still in a composition session, do nothing. Otherwise, insert
@@ -173,11 +192,10 @@ var DraftEditorCompositionHandler = {
 
     resolved = true;
 
-    // If we've built up a string from `beforeinput` events (e.g. Android 
-    // Firefox), use that as the definitive version of the composed characters
-    // Otherwise, use the data from the first `compositionend` event
-    const composedChars = beforeInputData || compositionEndData;
+    const composedChars = this.normalizeCompositionInput();
+
     beforeInputData = null;
+    compositionUpdateData = null;
     compositionEndData = null;
 
     const editorState = EditorState.set(editor._latestEditorState, {

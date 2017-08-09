@@ -216,4 +216,64 @@ describe('DraftEditorCompositionHandler', () => {
 
     expect(editorTextContent()).toBe(TEST_STRING);
   });
+
+  it('Can handle Korean composition', () => {
+    const TEST_STRING = '하';
+
+    compositionHandler.onCompositionUpdate(editor, {data: 'ㅎ'});
+    compositionHandler.onCompositionUpdate(editor, {data: '하'});
+    compositionHandler.onCompositionUpdate(editor, {data: '한'});
+    compositionHandler.onCompositionUpdate(editor, {data: '하'});
+    compositionHandler.onBeforeInput(editor, {data: '하'});
+    compositionHandler.onCompositionEnd(editor, {data: '하'});
+
+    jest.runAllTimers();
+
+    expect(editorTextContent()).toBe(TEST_STRING);
+  });
+
+  it('Can handle Japanese composition', () => {
+    const TEST_STRING = '日本語';
+    
+    compositionHandler.onCompositionUpdate(editor, {data: 'ｎ'});
+    compositionHandler.onCompositionUpdate(editor, {data: 'に'});
+    compositionHandler.onCompositionUpdate(editor, {data: 'にｈ'});
+    compositionHandler.onCompositionUpdate(editor, {data: 'にほ'});
+    compositionHandler.onCompositionUpdate(editor, {data: 'にほｎ'});
+    compositionHandler.onCompositionUpdate(editor, {data: 'にほんｇ'});
+    compositionHandler.onCompositionUpdate(editor, {data: 'にほんご'});
+    compositionHandler.onCompositionUpdate(editor, {data: '日本語'});
+    compositionHandler.onBeforeInput(editor, {data: '日本語'});
+    compositionHandler.onCompositionEnd(editor, {data: '日本語'});
+
+    jest.runAllTimers();
+
+    expect(editorTextContent()).toBe(TEST_STRING);
+  });
+
+  it('Can handle Chinese (simplified) composition', () => {
+    const TEST_STRING = '推土机';
+
+    compositionHandler.onCompositionUpdate(editor, {data: 't'});
+    compositionHandler.onCompositionUpdate(editor, {data: 't\'t'});
+    compositionHandler.onCompositionUpdate(editor, {data: 't\'t\'j'});
+    compositionHandler.onCompositionUpdate(editor, {data: '推土机'});
+    compositionHandler.onBeforeInput(editor, {data: '推土机'});
+    compositionHandler.onCompositionEnd(editor, {data: '推土机'});
+
+    jest.runAllTimers();
+
+    expect(editorTextContent()).toBe(TEST_STRING);
+  });
+
+  it('Can handle input case where beforeInput is never fired,' +
+     'but composition update is', () => {
+    const TEST_STRING = 'foo bar';
+    compositionHandler.onCompositionUpdate(editor, {data: TEST_STRING});
+    compositionHandler.onCompositionEnd(editor, {data: TEST_STRING});
+
+    jest.runAllTimers();
+
+    expect(editorTextContent()).toBe(TEST_STRING);
+  });
 });
