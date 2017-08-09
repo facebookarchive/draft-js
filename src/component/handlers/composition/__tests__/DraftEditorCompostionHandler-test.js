@@ -19,7 +19,8 @@ jest.useFakeTimers();
 
 var EditorState = require('EditorState');
 const DraftFeatureFlags = require('DraftFeatureFlags');
-const originalEnableCompositionFixesValue = DraftFeatureFlags.draft_enable_composition_fixes;
+const originalEnableCompositionFixesValue = DraftFeatureFlags
+  .draft_enable_composition_fixes;
 
 describe('DraftEditorCompositionHandler', () => {
   // The DraftEditorCompositionHandler contains some global state
