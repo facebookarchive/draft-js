@@ -27,7 +27,7 @@ describe('DraftEditorTextNode', function() {
   var container;
 
   beforeEach(function() {
-    jest.resetModuleRegistry();
+    jest.resetModules();
     container = document.createElement('div');
   });
 
