@@ -20,8 +20,9 @@ import generateRandomKey from 'generateRandomKey';
 function addEntityToEntityMap(
   entityMap: EntityMap,
   instance: DraftEntityInstance,
+  key: string | undefined,
 ): EntityMap {
-  return entityMap.set(generateRandomKey(), instance);
+  return entityMap.set(key || generateRandomKey(), instance);
 }
 
 module.exports = addEntityToEntityMap;
