@@ -14,7 +14,6 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const DraftFeatureFlags = require('DraftFeatureFlags');
 const EditorState = require('EditorState');
 
 const containsNode = require('containsNode');
@@ -33,7 +32,6 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent): void {
     const selection = global.getSelection();
     const editorNode = editor.refs.editor;
     if (
-      !DraftFeatureFlags.draft_cautious_range_removal_on_blur ||
       selection.rangeCount === 1 &&
       containsNode(editorNode, selection.anchorNode) &&
       containsNode(editorNode, selection.focusNode)
