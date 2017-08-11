@@ -20,7 +20,7 @@ import generateRandomKey from 'generateRandomKey';
 function addEntityToEntityMap(
   entityMap: EntityMap,
   instance: DraftEntityInstance,
-  key: string | undefined,
+  key: string | void,
 ): EntityMap {
   return entityMap.set(key || generateRandomKey(), instance);
 }
