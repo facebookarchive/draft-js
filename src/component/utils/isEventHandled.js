@@ -20,7 +20,7 @@ import type {DraftHandleValue} from 'DraftHandleValue';
  * from a handler indicates that it was handled.
  */
 function isEventHandled(value: DraftHandleValue): boolean {
-  return value === 'handled' || value === true;
+  return value === 'handled';
 }
 
 module.exports = isEventHandled;
