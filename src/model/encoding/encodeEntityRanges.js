@@ -29,7 +29,12 @@ function encodeEntityRanges(block: ContentBlock): Array<EntityRange> {
     character => !!character.getEntity(),
     (/*number*/ start, /*number*/ end) => {
       var text = block.getText();
+
       var key = block.getEntityAt(start);
+      if (key == null) {
+        return;
+      }
+
       encoded.push({
         offset: strlen(text.slice(0, start)),
         length: strlen(text.slice(start, end)),
