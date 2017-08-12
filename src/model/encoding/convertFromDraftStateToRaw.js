@@ -56,8 +56,10 @@ function convertFromDraftStateToRaw(
   var entityKeys = Object.keys(entityStorageMap);
   var flippedStorageMap = {};
   entityKeys.forEach(key => {
-    var entity = contentState.getEntity(DraftStringKey.unstringify(key));
-    flippedStorageMap[key] = {
+    var storageKey = DraftStringKey.unstringify(key);
+
+    var entity = contentState.getEntity(storageKey);
+    flippedStorageMap[storageKey] = {
       type: entity.getType(),
       mutability: entity.getMutability(),
       data: entity.getData(),
