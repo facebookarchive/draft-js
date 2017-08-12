@@ -24,10 +24,7 @@ var {strlen} = UnicodeUtils;
 /**
  * Convert to UTF-8 character counts for storage.
  */
-function encodeEntityRanges(
-  block: ContentBlock,
-  storageMap: Object,
-): Array<EntityRange> {
+function encodeEntityRanges(block: ContentBlock): Array<EntityRange> {
   var encoded = [];
   block.findEntityRanges(
     character => !!character.getEntity(),
@@ -38,7 +35,7 @@ function encodeEntityRanges(
         offset: strlen(text.slice(0, start)),
         length: strlen(text.slice(start, end)),
         // Encode the key as a number for range storage.
-        key: storageMap[DraftStringKey.stringify(key)],
+        key: DraftStringKey.stringify(key),
       });
     },
   );
