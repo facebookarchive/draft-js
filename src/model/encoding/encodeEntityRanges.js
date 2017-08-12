@@ -34,8 +34,7 @@ function encodeEntityRanges(block: ContentBlock): Array<EntityRange> {
       encoded.push({
         offset: strlen(text.slice(0, start)),
         length: strlen(text.slice(start, end)),
-        // Encode the key as a number for range storage.
-        key: DraftStringKey.stringify(key),
+        key,
       });
     },
   );
