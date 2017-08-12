@@ -16,7 +16,6 @@
 import type ContentBlock from 'ContentBlock';
 import type {EntityRange} from 'EntityRange';
 
-var DraftStringKey = require('DraftStringKey');
 var UnicodeUtils = require('UnicodeUtils');
 
 var {strlen} = UnicodeUtils;
