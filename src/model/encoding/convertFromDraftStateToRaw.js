@@ -23,7 +23,6 @@ var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 function convertFromDraftStateToRaw(
   contentState: ContentState,
 ): RawDraftContentState {
-  var entityStorageKey = 0;
   var entityStorageMap = {};
   var rawBlocks = [];
 
@@ -36,7 +35,7 @@ function convertFromDraftStateToRaw(
           block.getEntityAt(start),
         );
         if (!entityStorageMap.hasOwnProperty(stringifiedEntityKey)) {
-          entityStorageMap[stringifiedEntityKey] = '' + (entityStorageKey++);
+          entityStorageMap[stringifiedEntityKey] = true;
         }
       },
     );
@@ -56,9 +55,9 @@ function convertFromDraftStateToRaw(
   // DraftEntity keys.
   var entityKeys = Object.keys(entityStorageMap);
   var flippedStorageMap = {};
-  entityKeys.forEach((key, jj) => {
+  entityKeys.forEach(key => {
     var entity = contentState.getEntity(DraftStringKey.unstringify(key));
-    flippedStorageMap[jj] = {
+    flippedStorageMap[key] = {
       type: entity.getType(),
       mutability: entity.getMutability(),
       data: entity.getData(),
