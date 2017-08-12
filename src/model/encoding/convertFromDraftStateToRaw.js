@@ -23,7 +23,6 @@ var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 function convertFromDraftStateToRaw(
   contentState: ContentState,
 ): RawDraftContentState {
-  var entityStorageKey = 0;
   var entityStorageMap = {};
   var rawBlocks = [];
 
@@ -36,7 +35,7 @@ function convertFromDraftStateToRaw(
           block.getEntityAt(start),
         );
         if (!entityStorageMap.hasOwnProperty(stringifiedEntityKey)) {
-          entityStorageMap[stringifiedEntityKey] = '' + (entityStorageKey++);
+          entityStorageMap[stringifiedEntityKey] = true;
         }
       },
     );
@@ -47,7 +46,7 @@ function convertFromDraftStateToRaw(
       type: block.getType(),
       depth: block.getDepth(),
       inlineStyleRanges: encodeInlineStyleRanges(block),
-      entityRanges: encodeEntityRanges(block, entityStorageMap),
+      entityRanges: encodeEntityRanges(block),
       data: block.getData().toObject(),
     });
   });
@@ -56,9 +55,11 @@ function convertFromDraftStateToRaw(
   // DraftEntity keys.
   var entityKeys = Object.keys(entityStorageMap);
   var flippedStorageMap = {};
-  entityKeys.forEach((key, jj) => {
-    var entity = contentState.getEntity(DraftStringKey.unstringify(key));
-    flippedStorageMap[jj] = {
+  entityKeys.forEach(key => {
+    var storageKey = DraftStringKey.unstringify(key);
+
+    var entity = contentState.getEntity(storageKey);
+    flippedStorageMap[storageKey] = {
       type: entity.getType(),
       mutability: entity.getMutability(),
       data: entity.getData(),

@@ -15,14 +15,14 @@
 
 import type DraftEntityInstance from 'DraftEntityInstance';
 import type {EntityMap} from 'EntityMap';
-
-let key = 0;
+import generateRandomKey from 'generateRandomKey';
 
 function addEntityToEntityMap(
   entityMap: EntityMap,
   instance: DraftEntityInstance,
+  key: string | void,
 ): EntityMap {
-  return entityMap.set(`${++key}`, instance);
+  return entityMap.set(key || generateRandomKey(), instance);
 }
 
 module.exports = addEntityToEntityMap;
