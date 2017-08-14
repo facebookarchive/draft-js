@@ -17,7 +17,7 @@ var DraftEntity = require('DraftEntity');
 
 describe('DraftEntity', () => {
   beforeEach(() => {
-    jest.resetModuleRegistry();
+    jest.resetModules();
   });
 
   function createLink() {
