@@ -32,6 +32,14 @@ isOptionKeyCommand: function(
 ): boolean
 ```
 
+### isCommandKeyCommand
+
+```
+isCommandKeyCommand: function(
+  e: SyntheticKeyboardEvent
+): boolean
+```
+
 ### hasCommandModifier
 
 ```
