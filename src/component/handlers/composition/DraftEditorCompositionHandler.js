@@ -41,11 +41,23 @@ const RESOLVE_DELAY = 20;
  */
 let resolved = false;
 let stillComposing = false;
-let textInputData = '';
+let beforeInputData = null;
+let compositionEndData = null;
 
 var DraftEditorCompositionHandler = {
+  /**
+   * Some IMEs (Firefox Mobile, notably) fire multiple `beforeinput` events
+   * which include the text so far typed, in addition to (broken) 
+   * `compositionend` events. In these cases, we construct beforeInputData from 
+   * the `beforeinput` and cnsider that to be the definitive version of what
+   * was actually typed.
+   *
+   * Proper, compliant browsers will not do this and will instead include the
+   * entire resolved composition result in the `data` member of the 
+   * `compositionend` events that they fire.
+   */
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent): void {
-    textInputData = (textInputData || '') + e.data;
+    beforeInputData = (beforeInputData || '') + e.data;
   },
 
   /**
@@ -70,9 +82,12 @@ var DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(editor: DraftEditor): void {
+  onCompositionEnd: function(editor: DraftEditor, 
+                             e: SyntheticCompositionEvent): void {
     resolved = false;
     stillComposing = false;
+    // Use e.data from the first compositionend event seen
+    compositionEndData = compositionEndData || e.data;
     setTimeout(() => {
       if (!resolved) {
         DraftEditorCompositionHandler.resolveComposition(editor);
@@ -133,8 +148,13 @@ var DraftEditorCompositionHandler = {
     }
 
     resolved = true;
-    const composedChars = textInputData;
-    textInputData = '';
+
+    // If we've built up a string from `beforeinput` events (e.g. Android 
+    // Firefox), use that as the definitive version of the composed characters
+    // Otherwise, use the data from the first `compositionend` event
+    const composedChars = beforeInputData || compositionEndData;
+    beforeInputData = null;
+    compositionEndData = null;
 
     const editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
