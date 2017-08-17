@@ -59,7 +59,7 @@ type Props = {
  * A `DraftEditorBlock` is able to render a given `ContentBlock` to its
  * appropriate decorator and inline style components.
  */
-class DraftEditorBlock extends React.Component {
+class DraftEditorBlock extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     return (
       this.props.block !== nextProps.block ||
@@ -203,7 +203,7 @@ class DraftEditorBlock extends React.Component {
     }).toArray();
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     const {direction, offsetKey} = this.props;
     const className = cx({
       'public/DraftStyleDefault/block': true,
