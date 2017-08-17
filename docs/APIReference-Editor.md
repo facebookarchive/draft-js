@@ -84,7 +84,7 @@ blockRendererMap?: DraftBlockRenderMap
 Provide a map of block rendering configurations. Each block type maps to
 element tag and an optional react element wrapper. This configuration
 is used for both rendering and paste processing. See
-[](https://draftjs.org/docs/advanced-topics-custom-block-render-map.html)
+[Advanced Topics: Custom Block Rendering](https://draftjs.org/docs/advanced-topics-custom-block-render-map.html)
 for details on usage.
 
 #### blockStyleFn
