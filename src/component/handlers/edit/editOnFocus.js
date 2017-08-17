@@ -17,7 +17,7 @@ import type DraftEditor from 'DraftEditor.react';
 var DraftFeatureFlags = require('DraftFeatureFlags');
 var EditorState = require('EditorState');
 
-function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent): void {
+function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent<>): void {
   var editorState = editor._latestEditorState;
   var currentSelection = editorState.getSelection();
   if (currentSelection.getHasFocus()) {
