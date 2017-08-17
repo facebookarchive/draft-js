@@ -79,7 +79,7 @@ for details on usage.
 
 #### blockRendererMap
 ```
-blockRendererFn?: DraftBlockRenderMap
+blockRendererMap?: DraftBlockRenderMap
 ```
 Provide a map of block rendering configurations. Each block type maps to
 element tag and an optional react element wrapper. This configuration
