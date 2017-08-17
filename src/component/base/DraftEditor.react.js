@@ -66,10 +66,7 @@ type State = {
  * div, and provides a wide variety of useful function props for managing the
  * state of the editor. See `DraftEditorProps` for details.
  */
-class DraftEditor extends React.Component {
-  props: DraftEditorProps;
-  state: State;
-
+class DraftEditor extends React.Component<DraftEditorProps, State> {
   static defaultProps: DraftEditorDefaultProps = {
     blockRenderMap: DefaultDraftBlockRenderMap,
     blockRendererFn: emptyFunction.thatReturnsNull,
@@ -213,7 +210,7 @@ class DraftEditor extends React.Component {
     return null;
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     const {readOnly, textAlignment} = this.props;
     const rootClass = cx({
       'DraftEditor/root': true,
