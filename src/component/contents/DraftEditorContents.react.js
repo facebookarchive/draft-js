@@ -93,9 +93,21 @@ class DraftEditorContents extends React.Component<Props> {
 
   render(): React.Node {
     const {
+      /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an error
+       * when upgrading Flow's support for React. Common errors found when
+       * upgrading Flow's React support are documented at
+       * https://fburl.com/eq7bs81w */
       blockRenderMap,
       blockRendererFn,
+      /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an error
+       * when upgrading Flow's support for React. Common errors found when
+       * upgrading Flow's React support are documented at
+       * https://fburl.com/eq7bs81w */
       customStyleMap,
+      /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an error
+       * when upgrading Flow's support for React. Common errors found when
+       * upgrading Flow's React support are documented at
+       * https://fburl.com/eq7bs81w */
       customStyleFn,
       editorState,
     } = this.props;
@@ -173,6 +185,10 @@ class DraftEditorContents extends React.Component<Props> {
       let childProps = {
         className,
         'data-block': true,
+        /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
+         * error when upgrading Flow's support for React. Common errors found
+         * when upgrading Flow's React support are documented at
+         * https://fburl.com/eq7bs81w */
         'data-editor': this.props.editorKey,
         'data-offset-key': offsetKey,
         key,
@@ -188,6 +204,10 @@ class DraftEditorContents extends React.Component<Props> {
       const child = React.createElement(
         Element,
         childProps,
+        /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
+         * error when upgrading Flow's support for React. Common errors found
+         * when upgrading Flow's React support are documented at
+         * https://fburl.com/eq7bs81w */
         <Component {...componentProps} />,
       );
 

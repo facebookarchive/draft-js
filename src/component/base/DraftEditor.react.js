@@ -199,6 +199,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _renderPlaceholder(): ?React.Element<any> {
     if (this._showPlaceholder()) {
       return (
+        /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
+         * error when upgrading Flow's support for React. Common errors found
+         * when upgrading Flow's React support are documented at
+         * https://fburl.com/eq7bs81w */
         <DraftEditorPlaceholder
           text={nullthrows(this.props.placeholder)}
           editorState={this.props.editorState}
@@ -289,6 +293,13 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             style={contentStyle}
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
+            {
+              }
+            {}
+            {/* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
+              * error when upgrading Flow's support for React. Common errors
+              * found when upgrading Flow's React support are documented at
+              * https://fburl.com/eq7bs81w */}
             <DraftEditorContents
               blockRenderMap={this.props.blockRenderMap}
               blockRendererFn={this.props.blockRendererFn}
