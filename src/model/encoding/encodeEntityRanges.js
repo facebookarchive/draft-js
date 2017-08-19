@@ -7,42 +7,68 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule encodeEntityRanges
- * @typechecks
  * @flow
  */
 
 'use strict';
 
 import type ContentBlock from 'ContentBlock';
+import type {DraftEntitySet} from 'DraftEntitySet';
 import type {EntityRange} from 'EntityRange';
+import type {List} from 'immutable';
 
 var UnicodeUtils = require('UnicodeUtils');
 
-var {strlen} = UnicodeUtils;
+var findRangesImmutable = require('findRangesImmutable');
+
+var areEqual = (a, b) => a === b;
+var isTruthy = a => !!a;
+var EMPTY_ARRAY = [];
 
 /**
- * Convert to UTF-8 character counts for storage.
+ * Helper function for getting encoded styles for each inline style. Convert
+ * to UTF-8 character counts for storage.
  */
-function encodeEntityRanges(block: ContentBlock): Array<EntityRange> {
-  var encoded = [];
-  block.findEntityRanges(
-    character => !!character.getEntity(),
-    (/*number*/ start, /*number*/ end) => {
+function getEncodedInlinesForType(
+  block: ContentBlock,
+  entities: List<DraftEntitySet>,
+  entityKey: string,
+): Array<EntityRange> {
+  var ranges = [];
+
+  // Obtain an array with ranges for only the specified style.
+  var filteredInlines = entities.map(style => style.has(entityKey)).toList();
+
+  findRangesImmutable(
+    filteredInlines,
+    areEqual,
+    // We only want to keep ranges with nonzero style values.
+    isTruthy,
+    (start, end) => {
       var text = block.getText();
-
-      var key = block.getEntityAt(start);
-      if (key == null) {
-        return;
-      }
-
-      encoded.push({
-        offset: strlen(text.slice(0, start)),
-        length: strlen(text.slice(start, end)),
-        key,
+      ranges.push({
+        offset: UnicodeUtils.strlen(text.slice(0, start)),
+        length: UnicodeUtils.strlen(text.slice(start, end)),
+        key: entityKey,
       });
     },
   );
-  return encoded;
+
+  return ranges;
+}
+
+/*
+ * Retrieve the encoded arrays of inline styles, with each individual style
+ * treated separately.
+ */
+function encodeEntityRanges(block: ContentBlock): Array<EntityRange> {
+  var entities = block.getCharacterList().map(c => c.getEntity()).toList();
+  var ranges = entities
+    .flatten()
+    .toSet()
+    .map(style => getEncodedInlinesForType(block, entities, style));
+
+  return Array.prototype.concat.apply(EMPTY_ARRAY, ranges.toJS());
 }
 
 module.exports = encodeEntityRanges;

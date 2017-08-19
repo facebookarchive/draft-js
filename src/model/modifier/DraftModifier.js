@@ -17,6 +17,7 @@ import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftEntitySet} from 'DraftEntitySet';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type SelectionState from 'SelectionState';
 import type {Map} from 'immutable';
@@ -55,7 +56,7 @@ var DraftModifier = {
     rangeToReplace: SelectionState,
     text: string,
     inlineStyle?: DraftInlineStyle,
-    entityKey?: ?string,
+    entities?: DraftEntitySet,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, rangeToReplace);
     var withoutText = removeRangeFromContentState(
@@ -65,7 +66,7 @@ var DraftModifier = {
 
     var character = CharacterMetadata.create({
       style: inlineStyle || OrderedSet(),
-      entity: entityKey || OrderedSet(),
+      entity: entities || OrderedSet(),
     });
 
     return insertTextIntoContentState(
@@ -81,7 +82,7 @@ var DraftModifier = {
     targetRange: SelectionState,
     text: string,
     inlineStyle?: DraftInlineStyle,
-    entityKey?: ?string,
+    entityKey?: DraftEntitySet,
   ): ContentState {
     invariant(
       targetRange.isCollapsed(),

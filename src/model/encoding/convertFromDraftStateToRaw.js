@@ -15,8 +15,6 @@
 import type ContentState from 'ContentState';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
-var DraftStringKey = require('DraftStringKey');
-
 var encodeEntityRanges = require('encodeEntityRanges');
 var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 
@@ -28,15 +26,13 @@ function convertFromDraftStateToRaw(
 
   contentState.getBlockMap().forEach((block, blockKey) => {
     block.findEntityRanges(
-      character => character.getEntity() !== null,
+      character => character.getEntity().size > 0,
       start => {
-        // Stringify to maintain order of otherwise numeric keys.
-        var stringifiedEntityKey = DraftStringKey.stringify(
-          block.getEntityAt(start),
-        );
-        if (!entityStorageMap.hasOwnProperty(stringifiedEntityKey)) {
-          entityStorageMap[stringifiedEntityKey] = true;
-        }
+        block.getEntityAt(start).forEach(k => {
+          if (!entityStorageMap.hasOwnProperty(k)) {
+            entityStorageMap[k] = true;
+          }
+        });
       },
     );
 
@@ -56,10 +52,8 @@ function convertFromDraftStateToRaw(
   var entityKeys = Object.keys(entityStorageMap);
   var flippedStorageMap = {};
   entityKeys.forEach(key => {
-    var storageKey = DraftStringKey.unstringify(key);
-
-    var entity = contentState.getEntity(storageKey);
-    flippedStorageMap[storageKey] = {
+    var entity = contentState.getEntity(key);
+    flippedStorageMap[key] = {
       type: entity.getType(),
       mutability: entity.getMutability(),
       data: entity.getData(),

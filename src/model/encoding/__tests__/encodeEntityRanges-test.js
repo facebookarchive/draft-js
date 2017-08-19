@@ -21,6 +21,10 @@ var encodeEntityRanges = require('encodeEntityRanges');
 
 var {OrderedSet, Repeat} = Immutable;
 
+var NONE = OrderedSet();
+var SIX = OrderedSet.of('6');
+var EIGHT = OrderedSet.of('8');
+
 describe('encodeEntityRanges', () => {
   function createBlock(text, entities) {
     const style = OrderedSet();
@@ -36,7 +40,7 @@ describe('encodeEntityRanges', () => {
   }
 
   it('must return an empty array if no entities present', () => {
-    var block = createBlock(' '.repeat(20), Repeat(null, 20).toArray());
+    var block = createBlock(' '.repeat(20), Repeat(NONE, 20).toArray());
     var encoded = encodeEntityRanges(block);
     expect(encoded).toEqual([]);
 
@@ -45,7 +49,7 @@ describe('encodeEntityRanges', () => {
   });
 
   it('must return ranges with the storage-mapped key', () => {
-    var entities = [null, null, '6', '6', null];
+    var entities = [NONE, NONE, SIX, SIX, NONE];
     var block = createBlock(' '.repeat(entities.length), entities);
     var encoded = encodeEntityRanges(block);
     expect(encoded).toEqual([
@@ -58,7 +62,7 @@ describe('encodeEntityRanges', () => {
   });
 
   it('must return ranges with multiple entities present', () => {
-    var entities = [null, null, '6', '6', null, '8', '8', null];
+    var entities = [NONE, NONE, SIX, SIX, NONE, EIGHT, EIGHT, NONE];
     var block = createBlock(' '.repeat(entities.length), entities);
     var encoded = encodeEntityRanges(block);
     expect(encoded).toEqual([
@@ -76,7 +80,7 @@ describe('encodeEntityRanges', () => {
   });
 
   it('must return ranges with an entity present more than once', () => {
-    var entities = [null, null, '6', '6', null, '6', '6', null];
+    var entities = [NONE, NONE, SIX, SIX, NONE, SIX, SIX, NONE];
     var block = createBlock(' '.repeat(entities.length), entities);
     var encoded = encodeEntityRanges(block);
     expect(encoded).toEqual([
@@ -96,23 +100,23 @@ describe('encodeEntityRanges', () => {
   it('must handle ranges that include surrogate pairs', () => {
     var str = 'Take a \uD83D\uDCF7 #selfie';
     var entities = [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null, // `Take a`
-      '6',
-      '6',
-      '6',
-      '6',
-      '6',
-      '6', // ` [camera] #s`
-      null,
-      null,
-      '8',
-      '8',
-      null, // `elfie`
+      NONE,
+      NONE,
+      NONE,
+      NONE,
+      NONE,
+      NONE, // `Take a`
+      SIX,
+      SIX,
+      SIX,
+      SIX,
+      SIX,
+      SIX, // ` [camera] #s`
+      NONE,
+      NONE,
+      EIGHT,
+      EIGHT,
+      NONE, // `elfie`
     ];
 
     var block = createBlock(str, entities);

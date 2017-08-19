@@ -14,6 +14,7 @@
 'use strict';
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftEntitySet} from 'DraftEntitySet';
 
 var CharacterMetadata = require('CharacterMetadata');
 var Immutable = require('immutable');
@@ -22,7 +23,7 @@ var {List} = Immutable;
 
 function createCharacterList(
   inlineStyles: Array<DraftInlineStyle>,
-  entities: Array<?string>,
+  entities: Array<DraftEntitySet>,
 ): List<CharacterMetadata> {
   var characterArray = inlineStyles.map((style, ii) => {
     var entity = entities[ii];

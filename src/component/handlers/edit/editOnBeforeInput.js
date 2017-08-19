@@ -14,6 +14,7 @@
 
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftEntitySet} from 'DraftEntitySet';
 
 var BlockTree = require('BlockTree');
 var DraftModifier = require('DraftModifier');
@@ -33,16 +34,14 @@ var setImmediate = require('setImmediate');
 // This breaks the input. Special case these characters to ensure that when
 // they are typed, we prevent default on the event to make sure not to
 // trigger quickfind.
-var FF_QUICKFIND_CHAR = '\'';
-var FF_QUICKFIND_LINK_CHAR = '\/';
+var FF_QUICKFIND_CHAR = "'";
+var FF_QUICKFIND_LINK_CHAR = '/';
 var isFirefox = UserAgent.isBrowser('Firefox');
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
-    isFirefox && (
-      character == FF_QUICKFIND_CHAR ||
-      character == FF_QUICKFIND_LINK_CHAR
-    )
+    isFirefox &&
+    (character == FF_QUICKFIND_CHAR || character == FF_QUICKFIND_LINK_CHAR)
   );
 }
 
@@ -54,7 +53,7 @@ function replaceText(
   editorState: EditorState,
   text: string,
   inlineStyle: DraftInlineStyle,
-  entityKey: ?string,
+  entityKey: DraftEntitySet,
 ): EditorState {
   var contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),

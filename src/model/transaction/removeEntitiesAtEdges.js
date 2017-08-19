@@ -113,7 +113,6 @@ function removeForBlock(
             );
             start++;
           }
-          console.log(chars);
           block = block.set('characterList', chars);
         }
       }

@@ -36,7 +36,7 @@ const RichTextEditorUtil = {
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
         var entity = v.getEntity();
-        return !!entity && entityMap.get(entity).getType() === 'LINK';
+        return entity.some(k => entityMap.get(k).getType === 'LINK');
       });
   },
 
