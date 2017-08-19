@@ -16,6 +16,8 @@
 import type ContentState from 'ContentState';
 import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
+import type {DraftEntitySet} from 'DraftEntitySet';
+import {NONE} from 'DraftEntitySet';
 
 /**
  * Return the entity key that should be used when inserting text for the
@@ -25,7 +27,7 @@ import type SelectionState from 'SelectionState';
 function getEntityKeyForSelection(
   contentState: ContentState,
   targetSelection: SelectionState,
-): ?string {
+): DraftEntitySet {
   var entityKey;
 
   if (targetSelection.isCollapsed()) {
@@ -42,26 +44,31 @@ function getEntityKeyForSelection(
   var startOffset = targetSelection.getStartOffset();
   var startBlock = contentState.getBlockForKey(startKey);
 
-  entityKey = startOffset === startBlock.getLength() ?
-    null :
-    startBlock.getEntityAt(startOffset);
+  entityKey =
+    startOffset === startBlock.getLength()
+      ? null
+      : startBlock.getEntityAt(startOffset);
 
   return filterKey(contentState.getEntityMap(), entityKey);
 }
 
 /**
- * Determine whether an entity key corresponds to a `MUTABLE` entity. If so,
- * return it. If not, return null.
+ * Determine whether any entity keys correspond to a `MUTABLE` entity. If so,
+ * return them. If not, return an empty set.
  */
 function filterKey(
   entityMap: EntityMap,
-  entityKey: ?string,
-): ?string {
-  if (entityKey) {
-    var entity = entityMap.get(entityKey);
-    return entity.getMutability() === 'MUTABLE' ? entityKey : null;
+  entityKeys: DraftEntitySet,
+): DraftEntitySet {
+  if (entityKeys && entityKeys.size > 0) {
+    return entityKeys
+      .map(key => {
+        var entity = entityMap.get(key);
+        return entity.getMutability() === 'MUTABLE' ? key : null;
+      })
+      .filter(x => x);
   }
-  return null;
+  return NONE;
 }
 
 module.exports = getEntityKeyForSelection;

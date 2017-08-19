@@ -13,19 +13,15 @@
 
 jest.disableAutomock();
 
+var Immutable = require('immutable');
 var CharacterMetadata = require('CharacterMetadata');
-var {
-  BOLD,
-  BOLD_ITALIC,
-  NONE,
-  UNDERLINE,
-} = require('SampleDraftInlineStyle');
+var {BOLD, BOLD_ITALIC, NONE, UNDERLINE} = require('SampleDraftInlineStyle');
 
 describe('CharacterMetadata', () => {
   it('must have appropriate default values', () => {
     var character = CharacterMetadata.create();
     expect(character.getStyle().size).toBe(0);
-    expect(character.getEntity()).toBe(null);
+    expect(character.getEntity().size).toBe(0);
   });
 
   describe('Style handling', () => {
@@ -62,21 +58,24 @@ describe('CharacterMetadata', () => {
 
   describe('Entity handling', () => {
     var withoutEntity = CharacterMetadata.create();
-    var withEntity = CharacterMetadata.create({entity: 'a'});
+    var withEntity = CharacterMetadata.create({
+      entity: Immutable.OrderedSet.of('a'),
+    });
 
     it('must apply entity correctly', () => {
       var newKey = 'x';
-      var modifiedA = CharacterMetadata.applyEntity(withoutEntity, newKey);
-      var modifiedB = CharacterMetadata.applyEntity(withEntity, newKey);
-      expect(modifiedA.getEntity()).toBe(newKey);
-      expect(modifiedB.getEntity()).toBe(newKey);
+      var modifiedA = CharacterMetadata.addEntity(withoutEntity, newKey);
+      var modifiedB = CharacterMetadata.addEntity(withEntity, newKey);
+      expect(modifiedA.hasEntity(newKey)).toBe(true);
+      expect(modifiedB.hasEntity(newKey)).toBe(true);
+      expect(modifiedB.hasEntity('a')).toBe(true);
     });
 
     it('must remove entity correctly', () => {
-      var modifiedA = CharacterMetadata.applyEntity(withoutEntity, null);
-      var modifiedB = CharacterMetadata.applyEntity(withEntity, null);
-      expect(modifiedA.getEntity()).toBe(null);
-      expect(modifiedB.getEntity()).toBe(null);
+      var modifiedA = CharacterMetadata.removeEntity(withoutEntity, null);
+      var modifiedB = CharacterMetadata.removeEntity(withEntity, 'a');
+      expect(modifiedA.getEntity().size).toBe(0);
+      expect(modifiedB.getEntity().size).toBe(0);
     });
   });
 
@@ -84,50 +83,48 @@ describe('CharacterMetadata', () => {
     var empty = CharacterMetadata.create();
     var withStyle = CharacterMetadata.create({style: BOLD});
     var withTwoStyles = CharacterMetadata.create({style: BOLD_ITALIC});
-    var withEntity = CharacterMetadata.create({entity: '1234'});
+    var withEntity = CharacterMetadata.create({
+      entity: Immutable.OrderedSet.of('1234'),
+    });
     var withStyleAndEntity = CharacterMetadata.create({
-      entity: '1234',
+      entity: Immutable.OrderedSet.of('1234'),
       style: BOLD,
     });
 
     it('must reuse the same objects', () => {
       expect(CharacterMetadata.create()).toBe(empty);
       expect(CharacterMetadata.create({style: BOLD})).toBe(withStyle);
-      expect(
-        CharacterMetadata.create({style: BOLD_ITALIC}),
-      ).toBe(
+      expect(CharacterMetadata.create({style: BOLD_ITALIC})).toBe(
         withTwoStyles,
       );
-      expect(CharacterMetadata.create({entity: '1234'})).toBe(withEntity);
       expect(
-        CharacterMetadata.create({entity: '1234', style: BOLD}),
-      ).toBe(
-        withStyleAndEntity,
-      );
+        CharacterMetadata.create({entity: Immutable.OrderedSet.of('1234')}),
+      ).toBe(withEntity);
+      expect(
+        CharacterMetadata.create({
+          entity: Immutable.OrderedSet.of('1234'),
+          style: BOLD,
+        }),
+      ).toBe(withStyleAndEntity);
     });
 
     it('must reuse objects by defaulting config properties', () => {
-      expect(
-        CharacterMetadata.create({style: BOLD, entity: null}),
-      ).toBe(
+      expect(CharacterMetadata.create({style: BOLD, entity: NONE})).toBe(
         withStyle,
       );
       expect(
-        CharacterMetadata.create({style: NONE, entity: '1234'}),
-      ).toBe(
-        withEntity,
-      );
+        CharacterMetadata.create({
+          style: NONE,
+          entity: Immutable.OrderedSet.of('1234'),
+        }),
+      ).toBe(withEntity);
 
       var underlined = CharacterMetadata.create({
         style: UNDERLINE,
-        entity: null,
+        entity: NONE,
       });
 
-      expect(
-        CharacterMetadata.create({style: UNDERLINE}),
-      ).toBe(
-        underlined,
-      );
+      expect(CharacterMetadata.create({style: UNDERLINE})).toBe(underlined);
     });
   });
 });

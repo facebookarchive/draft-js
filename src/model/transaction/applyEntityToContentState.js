@@ -23,7 +23,8 @@ var applyEntityToContentBlock = require('applyEntityToContentBlock');
 function applyEntityToContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-  entityKey: ?string,
+  entityKey: string,
+  add: boolean,
 ): ContentState {
   const blockMap = contentState.getBlockMap();
   const startKey = selectionState.getStartKey();
@@ -44,6 +45,7 @@ function applyEntityToContentState(
         sliceStart,
         sliceEnd,
         entityKey,
+        add,
       );
     });
 

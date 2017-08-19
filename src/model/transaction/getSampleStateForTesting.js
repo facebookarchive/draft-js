@@ -22,17 +22,15 @@ var Immutable = require('immutable');
 var SampleDraftInlineStyle = require('SampleDraftInlineStyle');
 var SelectionState = require('SelectionState');
 
-var {BOLD, ITALIC} = SampleDraftInlineStyle;
-var ENTITY_KEY = '123';
+var {BOLD, ITALIC, NONE} = SampleDraftInlineStyle;
+var ENTITY_KEY = Immutable.OrderedSet.of('123');
 
 var BLOCKS = [
   new ContentBlock({
     key: 'a',
     type: 'unstyled',
     text: 'Alpha',
-    characterList: Immutable.List(
-      Immutable.Repeat(CharacterMetadata.EMPTY, 5),
-    ),
+    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 5)),
   }),
   new ContentBlock({
     key: 'b',
@@ -51,7 +49,7 @@ var BLOCKS = [
     text: 'Charlie',
     characterList: Immutable.List(
       Immutable.Repeat(
-        CharacterMetadata.create({style: ITALIC, entity: null}),
+        CharacterMetadata.create({style: ITALIC, entity: NONE}),
         7,
       ),
     ),

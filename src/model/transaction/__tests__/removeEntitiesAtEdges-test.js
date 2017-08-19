@@ -11,8 +11,7 @@
 
 'use strict';
 
-jest
-  .disableAutomock();
+jest.disableAutomock();
 
 var Immutable = require('immutable');
 
@@ -21,15 +20,9 @@ var getSampleStateForTesting = require('getSampleStateForTesting');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
 describe('removeEntitiesAtEdges', () => {
-  var {
-    List,
-    Repeat,
-  } = Immutable;
+  var {List, Repeat, OrderedSet} = Immutable;
 
-  var {
-    contentState,
-    selectionState,
-  } = getSampleStateForTesting();
+  var {contentState, selectionState} = getSampleStateForTesting();
 
   var selectionOnEntity = selectionState.merge({
     anchorKey: 'b',
@@ -46,11 +39,9 @@ describe('removeEntitiesAtEdges', () => {
     expect(before.getBlockMap()).toBe(after.getBlockMap());
   }
 
-  function expectNullEntities(block) {
-    expect(
-      getEntities(block),
-    ).toEqual(
-      List(Repeat(null, block.getLength())).toJS(),
+  function expectEmptyEntities(block) {
+    expect(getEntities(block)).toEqual(
+      List(Repeat(OrderedSet(), block.getLength())).toJS(),
     );
   }
 
@@ -77,14 +68,14 @@ describe('removeEntitiesAtEdges', () => {
         setEntityMutability('IMMUTABLE');
         var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
         expect(result.getBlockMap()).not.toBe(contentState.getBlockMap());
-        expectNullEntities(result.getBlockForKey('b'));
+        expectEmptyEntities(result.getBlockForKey('b'));
       });
 
       it('must remove segmented entities', () => {
         setEntityMutability('SEGMENTED');
         var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
         expect(result.getBlockMap()).not.toBe(contentState.getBlockMap());
-        expectNullEntities(result.getBlockForKey('b'));
+        expectEmptyEntities(result.getBlockForKey('b'));
       });
     });
 
@@ -102,7 +93,7 @@ describe('removeEntitiesAtEdges', () => {
 
       it('must remove if cursor is within entity', () => {
         var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
-        expectNullEntities(result.getBlockForKey('b'));
+        expectEmptyEntities(result.getBlockForKey('b'));
       });
 
       it('must not remove if cursor is at end of entity', () => {
@@ -123,7 +114,7 @@ describe('removeEntitiesAtEdges', () => {
         setEntityMutability('IMMUTABLE');
         var selection = selectionOnEntity.set('anchorOffset', 1);
         var result = removeEntitiesAtEdges(contentState, selection);
-        expectNullEntities(result.getBlockForKey('b'));
+        expectEmptyEntities(result.getBlockForKey('b'));
       });
 
       it('must remove for non-collapsed cursor on multiple entities', () => {
@@ -136,7 +127,7 @@ describe('removeEntitiesAtEdges', () => {
           focusOffset: 4,
         });
         var result = removeEntitiesAtEdges(newContent, selection);
-        expectNullEntities(result.getBlockForKey('b'));
+        expectEmptyEntities(result.getBlockForKey('b'));
       });
 
       it('must ignore an entity that is entirely within the selection', () => {
@@ -169,8 +160,8 @@ describe('removeEntitiesAtEdges', () => {
         focusOffset: 3,
       });
       var result = removeEntitiesAtEdges(contentState, selection);
-      expectNullEntities(result.getBlockForKey('b'));
-      expectNullEntities(result.getBlockForKey('c'));
+      expectEmptyEntities(result.getBlockForKey('b'));
+      expectEmptyEntities(result.getBlockForKey('c'));
     });
 
     it('must remove entity at end of selection', () => {
@@ -181,8 +172,8 @@ describe('removeEntitiesAtEdges', () => {
         focusOffset: 3,
       });
       var result = removeEntitiesAtEdges(contentState, selection);
-      expectNullEntities(result.getBlockForKey('a'));
-      expectNullEntities(result.getBlockForKey('b'));
+      expectEmptyEntities(result.getBlockForKey('a'));
+      expectEmptyEntities(result.getBlockForKey('b'));
     });
 
     it('must remove entities at both ends of selection', () => {
@@ -198,8 +189,8 @@ describe('removeEntitiesAtEdges', () => {
         focusOffset: 3,
       });
       var result = removeEntitiesAtEdges(newContent, selection);
-      expectNullEntities(result.getBlockForKey('b'));
-      expectNullEntities(result.getBlockForKey('c'));
+      expectEmptyEntities(result.getBlockForKey('b'));
+      expectEmptyEntities(result.getBlockForKey('c'));
     });
   });
 });

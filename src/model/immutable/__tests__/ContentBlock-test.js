@@ -16,10 +16,7 @@ jest.disableAutomock();
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
 var Immutable = require('immutable');
-var {
-  NONE,
-  BOLD,
-} = require('SampleDraftInlineStyle');
+var {NONE, BOLD} = require('SampleDraftInlineStyle');
 
 describe('ContentBlock', () => {
   var ENTITY_KEY = 'x';
@@ -44,9 +41,9 @@ describe('ContentBlock', () => {
       var block = new ContentBlock();
       expect(block.getType()).toBe('unstyled');
       expect(block.getText()).toBe('');
-      expect(
-        Immutable.is(block.getCharacterList(), Immutable.List()),
-      ).toBe(true);
+      expect(Immutable.is(block.getCharacterList(), Immutable.List())).toBe(
+        true,
+      );
     });
 
     it('must retrieve properties', () => {
@@ -87,9 +84,9 @@ describe('ContentBlock', () => {
     it('must properly retrieve entity at offset', () => {
       var block = getSampleBlock();
       expect(block.getEntityAt(0)).toBe(ENTITY_KEY);
-      expect(block.getEntityAt(1)).toBe(null);
-      expect(block.getEntityAt(2)).toBe(null);
-      expect(block.getEntityAt(3)).toBe(null);
+      expect(block.getEntityAt(1)).toBe(NONE);
+      expect(block.getEntityAt(2)).toBe(NONE);
+      expect(block.getEntityAt(3)).toBe(NONE);
       expect(block.getEntityAt(4)).toBe(ENTITY_KEY);
     });
 

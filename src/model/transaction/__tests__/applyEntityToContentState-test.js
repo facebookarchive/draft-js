@@ -18,18 +18,21 @@ var SelectionState = require('SelectionState');
 
 var applyEntityToContentState = require('applyEntityToContentState');
 var getSampleStateForTesting = require('getSampleStateForTesting');
+var matchers = require('jest-immutable-matchers');
 
 describe('applyEntityToContentState', () => {
-  var {
-    contentState,
-  } = getSampleStateForTesting();
+  beforeEach(function() {
+    jest.addMatchers(matchers);
+  });
+
+  var {contentState} = getSampleStateForTesting();
 
   function checkForCharacterList(block) {
     expect(Immutable.List.isList(block.getCharacterList())).toBe(true);
   }
 
   function getEntities(block) {
-    return block.getCharacterList().map(c => c.getEntity()).toJS();
+    return block.getCharacterList().map(c => c.getEntity());
   }
 
   describe('Apply entity within single block', () => {
@@ -41,26 +44,32 @@ describe('applyEntityToContentState', () => {
       focusOffset: target.getLength(),
     });
 
-    function applyAndCheck(entityKey) {
+    function applyAndCheck(entityKey, add) {
       var withNewEntity = applyEntityToContentState(
         contentState,
         targetSelection,
         entityKey,
+        add,
       );
       var first = withNewEntity.getBlockMap().first();
 
+      var expectedKeys = Immutable.OrderedSet();
+      if (add) {
+        expectedKeys = expectedKeys.add(entityKey);
+      }
+
       checkForCharacterList(first);
-      expect(getEntities(first)).toEqual(
-        Immutable.Repeat(entityKey, first.getLength()).toArray(),
+      expect(getEntities(first)).toEqualImmutable(
+        Immutable.Repeat(expectedKeys, first.getLength()).toList(),
       );
     }
 
     it('must apply entity key', () => {
-      applyAndCheck('x');
+      applyAndCheck('x', true);
     });
 
     it('must apply null entity', () => {
-      applyAndCheck(null);
+      applyAndCheck('x', false);
     });
   });
 
@@ -76,31 +85,42 @@ describe('applyEntityToContentState', () => {
       focusOffset: last.getLength(),
     });
 
-    function applyAndCheck(entityKey) {
+    function applyAndCheck(entityKey, add) {
       var withNewEntity = applyEntityToContentState(
         contentState,
         targetSelection,
         entityKey,
+        add,
       );
       var first = withNewEntity.getBlockMap().first();
       var last = withNewEntity.getBlockAfter(first.getKey());
 
+      var expectedKeys = Immutable.OrderedSet();
+      if (add) {
+        expectedKeys = expectedKeys.add(entityKey);
+      }
+
       checkForCharacterList(first);
-      expect(getEntities(first)).toEqual(
-        Immutable.Repeat(entityKey, first.getLength()).toArray(),
+      expect(getEntities(first)).toEqualImmutable(
+        Immutable.Repeat(expectedKeys, first.getLength()).toList(),
       );
+
+      expectedKeys = Immutable.OrderedSet.of('123');
+      if (add) {
+        expectedKeys = expectedKeys.add(entityKey);
+      }
       checkForCharacterList(last);
-      expect(getEntities(last)).toEqual(
-        Immutable.Repeat(entityKey, last.getLength()).toArray(),
+      expect(getEntities(last)).toEqualImmutable(
+        Immutable.Repeat(expectedKeys, last.getLength()).toList(),
       );
     }
 
     it('must apply entity key', () => {
-      applyAndCheck('x');
+      applyAndCheck('x', true);
     });
 
-    it('must apply null entity', () => {
-      applyAndCheck(null);
+    it('must remove x entity', () => {
+      applyAndCheck('x', false);
     });
   });
 });

@@ -21,13 +21,16 @@ function applyEntityToContentBlock(
   contentBlock: ContentBlock,
   start: number,
   end: number,
-  entityKey: ?string,
+  entityKey: string,
+  add: boolean,
 ): ContentBlock {
   var characterList = contentBlock.getCharacterList();
   while (start < end) {
     characterList = characterList.set(
       start,
-      CharacterMetadata.applyEntity(characterList.get(start), entityKey),
+      add
+        ? CharacterMetadata.addEntity(characterList.get(start), entityKey)
+        : CharacterMetadata.removeEntity(characterList.get(start), entityKey),
     );
     start++;
   }

@@ -32,16 +32,13 @@ function getRangesForDraftEntity(
 ): Array<DraftRange> {
   var ranges = [];
   block.findEntityRanges(
-    c => c.getEntity() === key,
+    c => c.getEntity().has(key),
     (start, end) => {
       ranges.push({start, end});
     },
   );
 
-  invariant(
-    !!ranges.length,
-    'Entity key not found in this range.',
-  );
+  invariant(!!ranges.length, 'Entity key not found in this range.');
 
   return ranges;
 }

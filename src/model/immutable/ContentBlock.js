@@ -15,17 +15,13 @@
 import type CharacterMetadata from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftEntitySet} from 'DraftEntitySet';
 
 var Immutable = require('immutable');
 
 var findRangesImmutable = require('findRangesImmutable');
 
-var {
-  List,
-  Map,
-  OrderedSet,
-  Record,
-} = Immutable;
+var {List, Map, OrderedSet, Record} = Immutable;
 
 const EMPTY_SET = OrderedSet();
 
@@ -81,9 +77,9 @@ class ContentBlock extends ContentBlockRecord {
     return character ? character.getStyle() : EMPTY_SET;
   }
 
-  getEntityAt(offset: number): ?string {
+  getEntityAt(offset: number): DraftEntitySet {
     var character = this.getCharacterList().get(offset);
-    return character ? character.getEntity() : null;
+    return character ? character.getEntity() : EMPTY_SET;
   }
 
   /**

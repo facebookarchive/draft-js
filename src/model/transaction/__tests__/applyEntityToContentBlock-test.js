@@ -15,10 +15,7 @@ jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
-var {
-  List,
-  Repeat,
-} = require('immutable');
+var {List, Repeat} = require('immutable');
 
 var applyEntityToContentBlock = require('applyEntityToContentBlock');
 
@@ -34,22 +31,22 @@ describe('applyEntityToContentBlock', () => {
   }
 
   it('must apply from the start', () => {
-    var modified = applyEntityToContentBlock(block, 0, 2, 'x');
-    expect(getEntities(modified)).toEqual(['x', 'x', null, null, null]);
+    var modified = applyEntityToContentBlock(block, 0, 2, 'x', true);
+    expect(getEntities(modified)).toEqual([['x'], ['x'], [], [], []]);
   });
 
   it('must apply within', () => {
-    var modified = applyEntityToContentBlock(block, 1, 4, 'x');
-    expect(getEntities(modified)).toEqual([null, 'x', 'x', 'x', null]);
+    var modified = applyEntityToContentBlock(block, 1, 4, 'x', true);
+    expect(getEntities(modified)).toEqual([[], ['x'], ['x'], ['x'], []]);
   });
 
   it('must apply at the end', () => {
-    var modified = applyEntityToContentBlock(block, 3, 5, 'x');
-    expect(getEntities(modified)).toEqual([null, null, null, 'x', 'x']);
+    var modified = applyEntityToContentBlock(block, 3, 5, 'x', true);
+    expect(getEntities(modified)).toEqual([[], [], [], ['x'], ['x']]);
   });
 
   it('must apply to the entire text', () => {
-    var modified = applyEntityToContentBlock(block, 0, 5, 'x');
-    expect(getEntities(modified)).toEqual(['x', 'x', 'x', 'x', 'x']);
+    var modified = applyEntityToContentBlock(block, 0, 5, 'x', true);
+    expect(getEntities(modified)).toEqual([['x'], ['x'], ['x'], ['x'], ['x']]);
   });
 });
