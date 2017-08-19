@@ -69,6 +69,56 @@ describe('decodeEntityRanges', () => {
     expect(decoded).toEqual([NONE, NONE, SIX, SIX, NONE, SIX, SIX, NONE]);
   });
 
+  it('must return overlapping ranges with multiple entities present', () => {
+    var decoded = decodeEntityRanges(' '.repeat(8), [
+      {
+        offset: 2,
+        length: 3,
+        key: '6',
+      },
+      {
+        offset: 4,
+        length: 3,
+        key: '8',
+      },
+    ]);
+    expect(decoded).toEqual([
+      NONE,
+      NONE,
+      SIX,
+      SIX,
+      SIX.union(EIGHT),
+      EIGHT,
+      EIGHT,
+      NONE,
+    ]);
+  });
+
+  it('must return interior ranges with multiple entities present', () => {
+    var decoded = decodeEntityRanges(' '.repeat(8), [
+      {
+        offset: 2,
+        length: 5,
+        key: '6',
+      },
+      {
+        offset: 4,
+        length: 1,
+        key: '8',
+      },
+    ]);
+    expect(decoded).toEqual([
+      NONE,
+      NONE,
+      SIX,
+      SIX,
+      SIX.union(EIGHT),
+      SIX,
+      SIX,
+      NONE,
+    ]);
+  });
+
   it('must handle ranges that include surrogate pairs', () => {
     var decoded = decodeEntityRanges('Take a \uD83D\uDCF7 #selfie', [
       {

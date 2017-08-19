@@ -79,6 +79,42 @@ describe('encodeEntityRanges', () => {
     ]);
   });
 
+  it('must return overlapping ranges with multiple entities present', () => {
+    var entities = [NONE, NONE, SIX, SIX, SIX.union(EIGHT), EIGHT, EIGHT, NONE];
+    var block = createBlock(' '.repeat(entities.length), entities);
+    var encoded = encodeEntityRanges(block);
+    expect(encoded).toEqual([
+      {
+        offset: 2,
+        length: 3,
+        key: '6',
+      },
+      {
+        offset: 4,
+        length: 3,
+        key: '8',
+      },
+    ]);
+  });
+
+  it('must return interior ranges with multiple entities present', () => {
+    var entities = [NONE, NONE, SIX, SIX, SIX.union(EIGHT), SIX, SIX, NONE];
+    var block = createBlock(' '.repeat(entities.length), entities);
+    var encoded = encodeEntityRanges(block);
+    expect(encoded).toEqual([
+      {
+        offset: 2,
+        length: 5,
+        key: '6',
+      },
+      {
+        offset: 4,
+        length: 1,
+        key: '8',
+      },
+    ]);
+  });
+
   it('must return ranges with an entity present more than once', () => {
     var entities = [NONE, NONE, SIX, SIX, NONE, SIX, SIX, NONE];
     var block = createBlock(' '.repeat(entities.length), entities);
