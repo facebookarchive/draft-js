@@ -17,6 +17,7 @@ import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftEntitySet} from 'DraftEntitySet';
 import type {EntityMap} from 'EntityMap';
 
 const CharacterMetadata = require('CharacterMetadata');
@@ -34,11 +35,7 @@ const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-var {
-  List,
-  OrderedSet,
-  OrderedMap,
-} = Immutable;
+var {List, OrderedSet, OrderedMap} = Immutable;
 
 var NBSP = '&nbsp;';
 var SPACE = ' ';
@@ -71,21 +68,9 @@ var inlineTags = {
   u: 'UNDERLINE',
 };
 
-var anchorAttr = [
-  'className',
-  'href',
-  'rel',
-  'target',
-  'title',
-];
+var anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
 
-const imgAttr = [
-  'alt',
-  'className',
-  'height',
-  'src',
-  'width',
-];
+const imgAttr = ['alt', 'className', 'height', 'src', 'width'];
 
 var lastBlock;
 
@@ -97,7 +82,7 @@ type Block = {
 type Chunk = {
   text: string,
   inlines: Array<DraftInlineStyle>,
-  entities: Array<string>,
+  entities: Array<DraftEntitySet>,
   blocks: Array<Block>,
 };
 
@@ -110,15 +95,11 @@ function getEmptyChunk(): Chunk {
   };
 }
 
-function getWhitespaceChunk(inEntity: ?string): Chunk {
-  var entities = new Array(1);
-  if (inEntity) {
-    entities[0] = inEntity;
-  }
+function getWhitespaceChunk(inEntity: DraftEntitySet): Chunk {
   return {
     text: SPACE,
     inlines: [OrderedSet()],
-    entities,
+    entities: inEntity,
     blocks: [],
   };
 }
@@ -127,7 +108,7 @@ function getSoftNewlineChunk(): Chunk {
   return {
     text: '\n',
     inlines: [OrderedSet()],
-    entities: new Array(1),
+    entities: [OrderedSet()],
     blocks: [],
   };
 }
@@ -136,18 +117,17 @@ function getBlockDividerChunk(block: DraftBlockType, depth: number): Chunk {
   return {
     text: '\r',
     inlines: [OrderedSet()],
-    entities: new Array(1),
-    blocks: [{
-      type: block,
-      depth: Math.max(0, Math.min(MAX_DEPTH, depth)),
-    }],
+    entities: [OrderedSet()],
+    blocks: [
+      {
+        type: block,
+        depth: Math.max(0, Math.min(MAX_DEPTH, depth)),
+      },
+    ],
   };
 }
 
-function getListBlockType(
-  tag: string,
-  lastList: ?string,
-): ?DraftBlockType {
+function getListBlockType(tag: string, lastList: ?string): ?DraftBlockType {
   if (tag === 'li') {
     return lastList === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
   }
@@ -162,7 +142,7 @@ function getBlockMapSupportedTags(
 
   blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
     if (draftBlock.aliasedElements) {
-      draftBlock.aliasedElements.forEach((tag) => {
+      draftBlock.aliasedElements.forEach(tag => {
         tags = tags.add(tag);
       });
     }
@@ -170,10 +150,7 @@ function getBlockMapSupportedTags(
     tags = tags.add(draftBlock.element);
   });
 
-  return tags
-    .filter((tag) => tag && tag !== unstyledElement)
-    .toArray()
-    .sort();
+  return tags.filter(tag => tag && tag !== unstyledElement).toArray().sort();
 }
 
 // custom element conversions
@@ -197,14 +174,13 @@ function getBlockTypeForTag(
   blockRenderMap: DraftBlockRenderMap,
 ): DraftBlockType {
   const matchedTypes = blockRenderMap
-    .filter((draftBlock: DraftBlockRenderConfig) => (
-      draftBlock.element === tag ||
-      draftBlock.wrapper === tag ||
-      (
-        draftBlock.aliasedElements &&
-        draftBlock.aliasedElements.some(alias => alias === tag)
-      )
-    ))
+    .filter(
+      (draftBlock: DraftBlockRenderConfig) =>
+        draftBlock.element === tag ||
+        draftBlock.wrapper === tag ||
+        (draftBlock.aliasedElements &&
+          draftBlock.aliasedElements.some(alias => alias === tag)),
+    )
     .keySeq()
     .toSet()
     .toArray()
@@ -220,8 +196,7 @@ function getBlockTypeForTag(
       return matchedTypes[0];
     default:
       return (
-        getMultiMatchedType(tag, lastList, [getListBlockType]) ||
-        'unstyled'
+        getMultiMatchedType(tag, lastList, [getListBlockType]) || 'unstyled'
       );
   }
 }
@@ -236,34 +211,36 @@ function processInlineTag(
     currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
   } else if (node instanceof HTMLElement) {
     const htmlElement = node;
-    currentStyle = currentStyle.withMutations(style => {
-      const fontWeight = htmlElement.style.fontWeight;
-      const fontStyle = htmlElement.style.fontStyle;
-      const textDecoration = htmlElement.style.textDecoration;
+    currentStyle = currentStyle
+      .withMutations(style => {
+        const fontWeight = htmlElement.style.fontWeight;
+        const fontStyle = htmlElement.style.fontStyle;
+        const textDecoration = htmlElement.style.textDecoration;
 
-      if (boldValues.indexOf(fontWeight) >= 0) {
-        style.add('BOLD');
-      } else if (notBoldValues.indexOf(fontWeight) >= 0) {
-        style.remove('BOLD');
-      }
+        if (boldValues.indexOf(fontWeight) >= 0) {
+          style.add('BOLD');
+        } else if (notBoldValues.indexOf(fontWeight) >= 0) {
+          style.remove('BOLD');
+        }
 
-      if (fontStyle === 'italic') {
-        style.add('ITALIC');
-      } else if (fontStyle === 'normal') {
-        style.remove('ITALIC');
-      }
+        if (fontStyle === 'italic') {
+          style.add('ITALIC');
+        } else if (fontStyle === 'normal') {
+          style.remove('ITALIC');
+        }
 
-      if (textDecoration === 'underline') {
-        style.add('UNDERLINE');
-      }
-      if (textDecoration === 'line-through') {
-        style.add('STRIKETHROUGH');
-      }
-      if (textDecoration === 'none') {
-        style.remove('UNDERLINE');
-        style.remove('STRIKETHROUGH');
-      }
-    }).toOrderedSet();
+        if (textDecoration === 'underline') {
+          style.add('UNDERLINE');
+        }
+        if (textDecoration === 'line-through') {
+          style.add('STRIKETHROUGH');
+        }
+        if (textDecoration === 'none') {
+          style.remove('UNDERLINE');
+          style.remove('STRIKETHROUGH');
+        }
+      })
+      .toOrderedSet();
   }
   return currentStyle;
 }
@@ -274,10 +251,7 @@ function joinChunks(A: Chunk, B: Chunk): Chunk {
   var lastInA = A.text.slice(-1);
   var firstInB = B.text.slice(0, 1);
 
-  if (
-    lastInA === '\r' &&
-    firstInB === '\r'
-  ) {
+  if (lastInA === '\r' && firstInB === '\r') {
     A.text = A.text.slice(0, -1);
     A.inlines.pop();
     A.entities.pop();
@@ -285,9 +259,7 @@ function joinChunks(A: Chunk, B: Chunk): Chunk {
   }
 
   // Kill whitespace after blocks
-  if (
-    lastInA === '\r'
-  ) {
+  if (lastInA === '\r') {
     if (B.text === SPACE || B.text === '\n') {
       return A;
     } else if (firstInB === SPACE || firstInB === '\n') {
@@ -324,9 +296,7 @@ function hasValidLinkText(link: Node): boolean {
   );
   var protocol = link.protocol;
   return (
-    protocol === 'http:' ||
-    protocol === 'https:' ||
-    protocol === 'mailto:'
+    protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:'
   );
 }
 
@@ -339,7 +309,7 @@ function genFragment(
   blockTags: Array<string>,
   depth: number,
   blockRenderMap: DraftBlockRenderMap,
-  inEntity?: string,
+  inEntity?: DraftEntitySet,
 ): {chunk: Chunk, entityMap: EntityMap} {
   var nodeName = node.nodeName.toLowerCase();
   var newBlock = false;
@@ -351,7 +321,7 @@ function genFragment(
   if (nodeName === '#text') {
     var text = node.textContent;
     if (text.trim() === '' && inBlock !== 'pre') {
-      return {chunk: getWhitespaceChunk(inEntity), entityMap};
+      return {chunk: getWhitespaceChunk(inEntity || OrderedSet()), entityMap};
     }
     if (inBlock !== 'pre') {
       // Can't use empty string because MSWord
@@ -365,7 +335,7 @@ function genFragment(
       chunk: {
         text,
         inlines: Array(text.length).fill(inlineStyle),
-        entities: Array(text.length).fill(inEntity),
+        entities: Array(text.length).fill(inEntity || OrderedSet()),
         blocks: [],
       },
       entityMap,
@@ -379,10 +349,8 @@ function genFragment(
   if (nodeName === 'br') {
     if (
       lastLastBlock === 'br' &&
-      (
-        !inBlock ||
-        getBlockTypeForTag(inBlock, lastList, blockRenderMap) === 'unstyled'
-      )
+      (!inBlock ||
+        getBlockTypeForTag(inBlock, lastList, blockRenderMap) === 'unstyled')
     ) {
       return {chunk: getBlockDividerChunk('unstyled', depth), entityMap};
     }
@@ -399,7 +367,7 @@ function genFragment(
     const image: HTMLImageElement = node;
     const entityConfig = {};
 
-    imgAttr.forEach((attr) => {
+    imgAttr.forEach(attr => {
       const imageAttribute = image.getAttribute(attr);
       if (imageAttribute) {
         entityConfig[attr] = imageAttribute;
@@ -416,7 +384,7 @@ function genFragment(
         data: entityConfig || {},
       }),
     );
-    inEntity = newEntityMap.keySeq().last();
+    inEntity = OrderedSet.of(newEntityMap.keySeq().last());
   }
 
   var chunk = getEmptyChunk();
@@ -448,9 +416,8 @@ function genFragment(
     );
     inBlock = nodeName;
     newBlock = true;
-    nextBlockType = lastList === 'ul' ?
-      'unordered-list-item' :
-      'ordered-list-item';
+    nextBlockType =
+      lastList === 'ul' ? 'unordered-list-item' : 'ordered-list-item';
   }
 
   // Recurse through children
@@ -470,7 +437,7 @@ function genFragment(
       const anchor: HTMLAnchorElement = child;
       const entityConfig = {};
 
-      anchorAttr.forEach((attr) => {
+      anchorAttr.forEach(attr => {
         const anchorAttribute = anchor.getAttribute(attr);
         if (anchorAttribute) {
           entityConfig[attr] = anchorAttribute;
@@ -504,7 +471,7 @@ function genFragment(
       blockTags,
       depth,
       blockRenderMap,
-      entityId || inEntity,
+      entityId ? OrderedSet.of(entityId) : inEntity,
     );
 
     newChunk = generatedChunk;
@@ -514,11 +481,7 @@ function genFragment(
     var sibling: ?Node = child.nextSibling;
 
     // Put in a newline to break up blocks inside blocks
-    if (
-      sibling &&
-      blockTags.indexOf(nodeName) >= 0 &&
-      inBlock
-    ) {
+    if (sibling && blockTags.indexOf(nodeName) >= 0 && inBlock) {
       chunk = joinChunks(chunk, getSoftNewlineChunk());
     }
     if (sibling) {
@@ -528,10 +491,7 @@ function genFragment(
   }
 
   if (newBlock) {
-    chunk = joinChunks(
-      chunk,
-      getBlockDividerChunk(nextBlockType, depth),
-    );
+    chunk = joinChunks(chunk, getBlockDividerChunk(nextBlockType, depth));
   }
 
   return {chunk, entityMap: newEntityMap};
@@ -561,16 +521,13 @@ function getChunkForHTML(
   // Sometimes we aren't dealing with content that contains nice semantic
   // tags. In this case, use divs to separate everything out into paragraphs
   // and hope for the best.
-  var workingBlocks = containsSemanticBlockMarkup(html, supportedBlockTags) ?
-    supportedBlockTags :
-    ['div'];
+  var workingBlocks = containsSemanticBlockMarkup(html, supportedBlockTags)
+    ? supportedBlockTags
+    : ['div'];
 
   // Start with -1 block depth to offset the fact that we are passing in a fake
   // UL block to start with.
-  var {
-    chunk,
-    entityMap: newEntityMap,
-  } = genFragment(
+  var {chunk, entityMap: newEntityMap} = genFragment(
     entityMap,
     safeBody,
     OrderedSet(),
@@ -580,7 +537,6 @@ function getChunkForHTML(
     -1,
     blockRenderMap,
   );
-
 
   // join with previous block to prevent weirdness on paste
   if (chunk.text.indexOf('\r') === 0) {
@@ -624,7 +580,6 @@ function convertFromHTMLtoContentBlocks(
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
-  // TODO: replace DraftEntity with an OrderedMap here
   var chunkData = getChunkForHTML(
     html,
     DOMBuilder,
@@ -636,40 +591,35 @@ function convertFromHTMLtoContentBlocks(
     return null;
   }
 
-  const {
-    chunk,
-    entityMap: newEntityMap,
-  } = chunkData;
+  const {chunk, entityMap: newEntityMap} = chunkData;
 
   var start = 0;
   return {
-    contentBlocks: chunk.text.split('\r').map(
-      (textBlock, ii) => {
-        // Make absolutely certain that our text is acceptable.
-        textBlock = sanitizeDraftText(textBlock);
-        var end = start + textBlock.length;
-        var inlines = nullthrows(chunk).inlines.slice(start, end);
-        var entities = nullthrows(chunk).entities.slice(start, end);
-        var characterList = List(
-          inlines.map((style, ii) => {
-            var data = {style, entity: (null: ?string)};
-            if (entities[ii]) {
-              data.entity = entities[ii];
-            }
-            return CharacterMetadata.create(data);
-          }),
-        );
-        start = end + 1;
+    contentBlocks: chunk.text.split('\r').map((textBlock, ii) => {
+      // Make absolutely certain that our text is acceptable.
+      textBlock = sanitizeDraftText(textBlock);
+      var end = start + textBlock.length;
+      var inlines = nullthrows(chunk).inlines.slice(start, end);
+      var entities = nullthrows(chunk).entities.slice(start, end);
+      var characterList = List(
+        inlines.map((style, ii) => {
+          var data = {style, entity: OrderedSet()};
+          if (entities[ii]) {
+            data.entity = entities[ii];
+          }
+          return CharacterMetadata.create(data);
+        }),
+      );
+      start = end + 1;
 
-        return new ContentBlock({
-          key: generateRandomKey(),
-          type: nullthrows(chunk).blocks[ii].type,
-          depth: nullthrows(chunk).blocks[ii].depth,
-          text: textBlock,
-          characterList,
-        });
-      },
-    ),
+      return new ContentBlock({
+        key: generateRandomKey(),
+        type: nullthrows(chunk).blocks[ii].type,
+        depth: nullthrows(chunk).blocks[ii].depth,
+        text: textBlock,
+        characterList,
+      });
+    }),
     entityMap: newEntityMap,
   };
 }
