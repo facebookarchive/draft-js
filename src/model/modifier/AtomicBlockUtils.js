@@ -32,10 +32,11 @@ const {
 } = Immutable;
 
 const AtomicBlockUtils = {
-  insertAtomicBlock: function(
+  insertAtomicBlock: function (
     editorState: EditorState,
-    entityKey: string,
+    entityKey: string | null,
     character: string,
+    data: Object
   ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
@@ -56,14 +57,15 @@ const AtomicBlockUtils = {
       'atomic',
     );
 
-    const charData = CharacterMetadata.create({entity: entityKey});
+    const charData = CharacterMetadata.create({ entity: entityKey });
 
     const fragmentArray = [
       new ContentBlock({
         key: generateRandomKey(),
         type: 'atomic',
         text: character,
-        characterList: List(Repeat(charData, character.length)),
+        characterList: entity ? List(Repeat(charData, character.length)) : List(),
+        data: Map(data)
       }),
       new ContentBlock({
         key: generateRandomKey(),
@@ -89,7 +91,7 @@ const AtomicBlockUtils = {
     return EditorState.push(editorState, newContent, 'insert-fragment');
   },
 
-  moveAtomicBlock: function(
+  moveAtomicBlock: function (
     editorState: EditorState,
     atomicBlock: ContentBlock,
     targetRange: SelectionState,
