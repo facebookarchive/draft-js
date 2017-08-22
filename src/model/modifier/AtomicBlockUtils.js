@@ -13,7 +13,7 @@
 
 'use strict';
 
-import type {DraftInsertionType} from 'DraftInsertionType';
+import type {DraftInsertionType } from 'DraftInsertionType';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -32,11 +32,11 @@ const {
 } = Immutable;
 
 const AtomicBlockUtils = {
-  insertAtomicBlock: function (
+  insertAtomicBlock: function(
     editorState: EditorState,
     entityKey: string | null,
     character: string,
-    data: Object
+    data: Object,
   ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
@@ -64,8 +64,10 @@ const AtomicBlockUtils = {
         key: generateRandomKey(),
         type: 'atomic',
         text: character,
-        characterList: entity ? List(Repeat(charData, character.length)) : List(),
-        data: Map(data)
+        characterList: entityKey
+          ? List(Repeat(charData, character.length))
+          : List(),
+        data: Map(data),
       }),
       new ContentBlock({
         key: generateRandomKey(),
@@ -91,7 +93,7 @@ const AtomicBlockUtils = {
     return EditorState.push(editorState, newContent, 'insert-fragment');
   },
 
-  moveAtomicBlock: function (
+  moveAtomicBlock: function(
     editorState: EditorState,
     atomicBlock: ContentBlock,
     targetRange: SelectionState,
