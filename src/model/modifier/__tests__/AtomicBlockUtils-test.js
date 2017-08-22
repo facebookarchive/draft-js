@@ -29,7 +29,7 @@ describe('AtomicBlockUtils', () => {
   const originalFirstBlock = contentState.getBlockMap().first();
   const entityKey = Entity.create('TOKEN', 'MUTABLE');
   const character = ' ';
-  const data = { id, 12345 };
+  const data = { id: 12345 };
 
   function assertAtomicBlock(block) {
     expect(block.getType()).toBe('atomic');
