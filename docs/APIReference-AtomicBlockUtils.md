@@ -20,8 +20,9 @@ parameters and return `EditorState` objects.
 ```
 insertAtomicBlock: function(
   editorState: EditorState,
-  entityKey: string,
-  character: string
+  entityKey: string | null,
+  character: string,
+  data?: object
 ): EditorState
 ```
 
