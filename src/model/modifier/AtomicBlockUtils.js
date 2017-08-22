@@ -28,6 +28,7 @@ const moveBlockInContentState = require('moveBlockInContentState');
 
 const {
   List,
+  Map,
   Repeat,
 } = Immutable;
 
