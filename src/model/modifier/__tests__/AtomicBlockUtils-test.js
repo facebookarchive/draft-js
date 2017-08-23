@@ -51,10 +51,10 @@ describe('AtomicBlockUtils', () => {
       const firstBlock = resultContent.getBlockMap().first();
       expect(firstBlock.getType()).toBe('unstyled');
       expect(firstBlock.getText()).toBe('');
-      expect(firstBlock.getData().get('id')).toBe(12345);
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
       assertAtomicBlock(secondBlock);
+      expect(secondBlock.getData().get('id')).toBe(data.id);
 
       const thirdBlock = resultContent.getBlockMap().skip(2).first();
       expect(thirdBlock.getText()).toBe(originalFirstBlock.getText());
