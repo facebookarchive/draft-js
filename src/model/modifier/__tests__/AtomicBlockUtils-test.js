@@ -43,7 +43,7 @@ describe('AtomicBlockUtils', () => {
         editorState,
         entityKey,
         character,
-        data
+        data,
       );
       const resultContent = resultEditor.getCurrentContent();
 
