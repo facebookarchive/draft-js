@@ -60,7 +60,7 @@ describe('BlockTree', () => {
   class Decorator {}
   Decorator.prototype.getDecorations = jest.fn();
   beforeEach(() => {
-    jest.resetModuleRegistry();
+    jest.resetModules();
   });
 
   describe('generate tree with zero decorations', () => {

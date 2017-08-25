@@ -31,7 +31,7 @@ var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 /**
  * Paste content.
  */
-function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
+function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   e.preventDefault();
   var data = new DataTransfer(e.clipboardData);
 
