@@ -46,7 +46,7 @@
     "envify": "^3.4.0",
     "es6-shim": "^0.34.4",
     "eslint": "^3.0.1",
-    "eslint-config-fbjs": "^1.1.0",
+    "eslint-config-fbjs": "^2.0.0",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-flowtype": "^2.17.1",
     "eslint-plugin-react": "^7.3.0",
