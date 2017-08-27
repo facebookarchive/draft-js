@@ -13,7 +13,7 @@
    String.raw`\s*(?:=\s*require\(|from)[a-zA-Z_+./"'\s\d\-]+\)?[^;\n]*[;\n]`;
 
 module.exports = {
-  extends: 'fbjs/strict',
+  extends: 'fbjs',
   rules: {
     'comma-dangle': [2, {
       arrays: 'always-multiline',
