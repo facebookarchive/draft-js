@@ -60,7 +60,7 @@ type Props = {
  * nodes with DOM state that already matches the expectations of our immutable
  * editor state.
  */
-class DraftEditorTextNode extends React.Component {
+class DraftEditorTextNode extends React.Component<Props> {
   _forceFlag: boolean;
 
   constructor(props: Props) {
@@ -84,7 +84,7 @@ class DraftEditorTextNode extends React.Component {
     this._forceFlag = !this._forceFlag;
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     if (this.props.children === '') {
       return this._forceFlag ? NEWLINE_A : NEWLINE_B;
     }
