@@ -75,7 +75,7 @@
     "webpack-stream": "^3.0.0"
   },
   "devEngines": {
-    "node": "4.x || 6.x",
+    "node": "6.x",
     "npm": "2.x || 3.x"
   },
   "jest": {
