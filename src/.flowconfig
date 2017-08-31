@@ -1,6 +1,7 @@
 [ignore]
 .*/__tests__.*
 .*/react/node_modules/.*
+.*/react-dom/node_modules/.*
 .*/fbjs/node_modules/.*
 .*/node_modules/invariant/.*
 
@@ -17,6 +18,7 @@
 module.system=haste
 module.system.haste.paths.blacklist=.*/__tests__/.*
 module.system.haste.paths.blacklist=.*/react/node_modules/.*
+module.system.haste.paths.blacklist=.*/react-dom/node_modules/.*
 module.system.haste.paths.blacklist=.*/fbjs/node_modules/.*
 module.system.haste.paths.blacklist=.*/node_modules/invariant/.*
 esproposal.class_static_fields=enable
