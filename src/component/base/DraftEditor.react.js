@@ -225,6 +225,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     const contentStyle = {
       outline: 'none',
+      // fixes Safari bug that disables focus when parent div is draggable. See #1326 
+      userSelect: 'text',
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
     };
