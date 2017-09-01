@@ -26,14 +26,25 @@ function getEntityKeyForSelection(
   contentState: ContentState,
   targetSelection: SelectionState,
 ): ?string {
-  var entityKey;
-
   if (targetSelection.isCollapsed()) {
     var key = targetSelection.getAnchorKey();
     var offset = targetSelection.getAnchorOffset();
     if (offset > 0) {
-      entityKey = contentState.getBlockForKey(key).getEntityAt(offset - 1);
-      return filterKey(contentState.getEntityMap(), entityKey);
+      var currentBlock = contentState.getBlockForKey(key);
+      var currentEntityKey = currentBlock.getEntityAt(offset);
+      var entityKeyBefore = currentBlock.getEntityAt(offset - 1);
+
+      if (entityKeyBefore) {
+        var entityBefore = contentState.getEntity(entityKeyBefore);
+
+        if (entityBefore.getType() === 'LINK') {
+          if (entityKeyBefore === currentEntityKey) {
+            return filterKey(contentState.getEntityMap(), entityKeyBefore);
+          }
+          return null;
+        }
+      }
+      return filterKey(contentState.getEntityMap(), entityKeyBefore);
     }
     return null;
   }
@@ -42,7 +53,7 @@ function getEntityKeyForSelection(
   var startOffset = targetSelection.getStartOffset();
   var startBlock = contentState.getBlockForKey(startKey);
 
-  entityKey = startOffset === startBlock.getLength() ?
+  var entityKey = startOffset === startBlock.getLength() ?
     null :
     startBlock.getEntityAt(startOffset);
 

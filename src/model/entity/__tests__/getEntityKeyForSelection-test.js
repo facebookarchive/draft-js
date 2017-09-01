@@ -24,11 +24,13 @@ selectionState = selectionState.merge({
   focusKey: 'b',
 });
 
-function setEntityMutability(mutability) {
+function setEntity(type, mutability) {
   contentState.getEntityMap().__get = () => ({
     getMutability: () => mutability,
+    getType: () => type,
   });
 }
+
 describe('getEntityKeyForSelection', () => {
   describe('collapsed selection', () => {
     var collapsed = selectionState.merge({
@@ -43,19 +45,19 @@ describe('getEntityKeyForSelection', () => {
     });
 
     it('must return key if mutable', () => {
-      setEntityMutability('MUTABLE');
+      setEntity('', 'MUTABLE');
       var key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe('123');
     });
 
     it('must not return key if immutable', () => {
-      setEntityMutability('IMMUTABLE');
+      setEntity('', 'IMMUTABLE');
       var key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe(null);
     });
 
     it('must not return key if segmented', () => {
-      setEntityMutability('SEGMENTED');
+      setEntity('', 'SEGMENTED');
       var key = getEntityKeyForSelection(contentState, collapsed);
       expect(key).toBe(null);
     });
@@ -77,19 +79,19 @@ describe('getEntityKeyForSelection', () => {
     });
 
     it('must return key if mutable', () => {
-      setEntityMutability('MUTABLE');
+      setEntity('', 'MUTABLE');
       var key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe('123');
     });
 
     it('must not return key if immutable', () => {
-      setEntityMutability('IMMUTABLE');
+      setEntity('', 'IMMUTABLE');
       var key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe(null);
     });
 
     it('must not return key if segmented', () => {
-      setEntityMutability('SEGMENTED');
+      setEntity('', 'SEGMENTED');
       var key = getEntityKeyForSelection(contentState, nonCollapsed);
       expect(key).toBe(null);
     });
