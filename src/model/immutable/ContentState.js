@@ -198,14 +198,13 @@ class ContentState extends ContentStateRecord {
   static createFromText(
     text: string,
     delimiter: string | RegExp = /\r\n?|\n/g,
-    testKey?: ?string,
   ): ContentState {
     const strings = text.split(delimiter);
     const blocks = strings.map(
       block => {
         block = sanitizeDraftText(block);
         return new ContentBlock({
-          key: testKey ? testKey : generateRandomKey(),
+          key: generateRandomKey(),
           text: block,
           type: 'unstyled',
           characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),

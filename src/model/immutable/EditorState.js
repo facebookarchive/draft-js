@@ -70,10 +70,9 @@ class EditorState {
 
   static createEmpty(
     decorator?: ?DraftDecoratorType,
-    testKey?: ?string,
   ): EditorState {
     return EditorState.createWithContent(
-      ContentState.createFromText('', /\r\n?|\n/g, testKey),
+      ContentState.createFromText(''),
       decorator,
     );
   }
