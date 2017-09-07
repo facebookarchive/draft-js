@@ -22,6 +22,7 @@ var DataTransfer = require('DataTransfer');
 var DraftModifier = require('DraftModifier');
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var EditorState = require('EditorState');
+var RichTextEditorUtil = require('RichTextEditorUtil');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
@@ -64,8 +65,15 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
             editorState.getSelection(),
           ),
         });
+        var currentBlockType = RichTextEditorUtil.getCurrentBlockType(
+          editorState,
+        );
 
-        var text = DraftPasteProcessor.processText(blocks, character);
+        var text = DraftPasteProcessor.processText(
+          blocks,
+          character,
+          currentBlockType,
+        );
         var fragment = BlockMapBuilder.createFromArray(text);
 
         var withInsertedText = DraftModifier.replaceWithFragment(
@@ -178,9 +186,12 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
       ),
     });
 
+    var currentBlockType = RichTextEditorUtil.getCurrentBlockType(editorState);
+
     var textFragment = DraftPasteProcessor.processText(
       textBlocks,
       character,
+      currentBlockType,
     );
 
     var textMap = BlockMapBuilder.createFromArray(textFragment);
