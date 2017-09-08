@@ -21,8 +21,8 @@ class <span class="token class-name">MyEditor</span> extends <span class="token 
     <span class="token keyword">this</span><span class="token punctuation">.</span>onChange <span class="token operator">=</span> <span class="token punctuation">(</span>editorState<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState<span class="token punctuation">(</span></span><span class="token punctuation">{</span>editorState<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">this</span><span class="token punctuation">.</span>handleKeyCommand <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>handleKeyCommand<span class="token punctuation">.</span><span class="token function">bind<span class="token punctuation">(</span></span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
-  <span class="token function">handleKeyCommand<span class="token punctuation">(</span></span>command<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    const newState <span class="token operator">=</span> RichUtils<span class="token punctuation">.</span><span class="token function">handleKeyCommand<span class="token punctuation">(</span></span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>editorState<span class="token punctuation">,</span> command<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">handleKeyCommand<span class="token punctuation">(</span></span>command<span class="token punctuation">,</span> editorState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    const newState <span class="token operator">=</span> RichUtils<span class="token punctuation">.</span><span class="token function">handleKeyCommand<span class="token punctuation">(</span></span>editorState<span class="token punctuation">,</span> command<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>newState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
       <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">onChange<span class="token punctuation">(</span></span>newState<span class="token punctuation">)</span><span class="token punctuation">;</span>
       <span class="token keyword">return</span> <span class="token string">&#x27;handled&#x27;</span><span class="token punctuation">;</span>
@@ -39,7 +39,10 @@ class <span class="token class-name">MyEditor</span> extends <span class="token 
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></pre><blockquote><p>handleKeyCommand</p><p>The <code>command</code> argument supplied to <code>handleKeyCommand</code> is a string value, the
-name of the command to be executed. This is mapped from a DOM key event. See
+name of the command to be executed. This is mapped from a DOM key event. The
+<code>editorState</code> argument represents the latest editor state as it might be
+changed internally by draft when handling the key. Use this instance of the
+editor state inside <code>handleKeyCommand</code>. See
 <a href="/docs/advanced-topics-key-bindings.html" target="">Advanced Topics - Key Binding</a> for more
 on this, as well as details on why the function returns <code>handled</code> or <code>not-handled</code>.</p></blockquote><h2><a class="anchor" name="styling-controls-in-ui"></a>Styling Controls in UI <a class="hash-link" href="#styling-controls-in-ui">#</a></h2><p>Within your React component, you can add buttons or other controls to allow
 the user to modify styles within the editor. In the example above, we are using
