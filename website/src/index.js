@@ -37,8 +37,7 @@ class RichEditorExample extends React.Component {
     this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
   }
 
-  _handleKeyCommand(command) {
-    const {editorState} = this.state;
+  _handleKeyCommand(command, editorState) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
