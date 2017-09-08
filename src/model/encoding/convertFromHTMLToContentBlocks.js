@@ -403,8 +403,9 @@ function genFragment(
         entityConfig[attr] = imageAttribute;
       }
     });
-    const imageURI = new URI(entityConfig.src).toString();
-    node.textContent = imageURI; // Output src if no decorator
+    // Forcing this node to have children because otherwise no entity will be
+    // created for this node.
+    node.textContent = ' ';
 
     // TODO: update this when we remove DraftEntity entirely
     inEntity = DraftEntity.__create(
