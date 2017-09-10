@@ -356,11 +356,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * Force focus back onto the editor node.
    *
-   * Forcing focus causes the browser to scroll to the top of the editor, which
-   * may be undesirable when the editor is taller than the viewport. To solve
-   * this, either use a specified scroll position (in cases like `cut` behavior
-   * where it should be restored to a known position) or store the current
-   * scroll state and put it back in place after focus has been forced.
+   * We attempt to preserve scroll position when focusing. You can also pass
+   * a specified scroll position (for cases like `cut` behavior where it should
+   * be restored to a known position).
    */
   _focus(scrollPosition?: DraftScrollPosition): void {
     const {editorState} = this.props;
@@ -375,6 +373,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       'editorNode is not an HTMLElement',
     );
     editorNode.focus();
+
+    // Restore scroll position
     if (scrollParent === window) {
       window.scrollTo(x, y);
     } else {
