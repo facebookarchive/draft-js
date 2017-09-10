@@ -67,3 +67,6 @@ script:
     fi
 
   fi
+
+notifications:
+  webhooks: https://code.facebook.com/travis/webhook/
