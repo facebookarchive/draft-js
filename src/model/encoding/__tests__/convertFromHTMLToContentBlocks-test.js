@@ -50,18 +50,18 @@ describe('convertFromHTMLToContentBlocks', () => {
   ].forEach(tag => testConvertingAdjacentHtmlElementsToContentBlocks(tag));
 
   describe('img tag', function() {
-    test('img with http protocol should have empty content', function() {
+    test('img with http protocol should have camera emoji content', function() {
       const blocks = convertFromHTMLToContentBlocks(
         '<img src="http://www.facebook.com">',
       );
-      expect(blocks.contentBlocks[0].text).toBe(' ');
+      expect(blocks.contentBlocks[0].text).toBe('\ud83d\udcf7');
     });
 
     test('img with data protocol should be correctly parsed', function() {
       const blocks = convertFromHTMLToContentBlocks(
         `<img src="${IMAGE_DATA_URL}">`,
       );
-      expect(blocks.contentBlocks[0].text).toBe(' ');
+      expect(blocks.contentBlocks[0].text).toBe('\ud83d\udcf7');
     });
   });
 });
