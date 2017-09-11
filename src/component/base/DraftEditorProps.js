@@ -67,7 +67,7 @@ export type DraftEditorProps = {
   // A function that accepts a synthetic key event and returns
   // the matching DraftEditorCommand constant, or a custom string,
   // or null if no command should be invoked.
-  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
+  keyBindingFn: (e: SyntheticKeyboardEvent<>) => ?string,
 
   // Set whether the `DraftEditor` component should be editable. Useful for
   // temporarily disabling edit behavior or allowing `DraftEditor` rendering
@@ -108,7 +108,7 @@ export type DraftEditorProps = {
   // Useful for managing special behavior for pressing the `Return` key. E.g.
   // removing the style from an empty list item.
   handleReturn?: (
-    e: SyntheticKeyboardEvent,
+    e: SyntheticKeyboardEvent<>,
     editorState: EditorState,
   ) => DraftHandleValue,
 
@@ -153,13 +153,13 @@ export type DraftEditorProps = {
   /**
    * Non-cancelable event triggers.
    */
-  onEscape?: (e: SyntheticKeyboardEvent) => void,
-  onTab?: (e: SyntheticKeyboardEvent) => void,
-  onUpArrow?: (e: SyntheticKeyboardEvent) => void,
-  onDownArrow?: (e: SyntheticKeyboardEvent) => void,
+  onEscape?: (e: SyntheticKeyboardEvent<>) => void,
+  onTab?: (e: SyntheticKeyboardEvent<>) => void,
+  onUpArrow?: (e: SyntheticKeyboardEvent<>) => void,
+  onDownArrow?: (e: SyntheticKeyboardEvent<>) => void,
 
-  onBlur?: (e: SyntheticEvent) => void,
-  onFocus?: (e: SyntheticEvent) => void,
+  onBlur?: (e: SyntheticEvent<>) => void,
+  onFocus?: (e: SyntheticEvent<>) => void,
 
   // Provide a map of inline style names corresponding to CSS style objects
   // that will be rendered for matching ranges.
@@ -179,7 +179,7 @@ export type DraftEditorDefaultProps = {
   blockRenderMap: DraftBlockRenderMap,
   blockRendererFn: (block: ContentBlock) => ?Object,
   blockStyleFn: (block: ContentBlock) => string,
-  keyBindingFn: (e: SyntheticKeyboardEvent) => ?string,
+  keyBindingFn: (e: SyntheticKeyboardEvent<>) => ?string,
   readOnly: boolean,
   spellCheck: boolean,
   stripPastedStyles: boolean,

@@ -75,7 +75,10 @@ function replaceText(
  * preserve spellcheck highlighting, which disappears or flashes if re-render
  * occurs on the relevant text nodes.
  */
-function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
+function editOnBeforeInput(
+  editor: DraftEditor,
+  e: SyntheticInputEvent<>,
+): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
