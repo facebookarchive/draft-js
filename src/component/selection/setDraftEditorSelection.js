@@ -254,6 +254,7 @@ function addFocusToSelection(
     }
 
     // logging to catch bug that is being reported in t18110632
+    const nodeWasFocus = node === selection.focusNode;
     try {
       selection.extend(node, offset);
     } catch (e) {
@@ -274,6 +275,8 @@ function addFocusToSelection(
         extraParams: JSON.stringify(
           {
             activeElementName: activeElement ? activeElement.nodeName : null,
+            nodeIsFocus: node === selection.focusNode,
+            nodeWasFocus: nodeWasFocus,
             selectionRangeCount: selection.rangeCount,
             selectionAnchorNodeName: selection.anchorNode
               ? selection.anchorNode.nodeName
@@ -283,7 +286,7 @@ function addFocusToSelection(
               ? selection.focusNode.nodeName
               : null,
             selectionFocusOffset: selection.focusOffset,
-            message: e ? e.message : null,
+            message: e ? '' + e : null,
             offset: offset,
           },
           null,
