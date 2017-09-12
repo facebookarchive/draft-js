@@ -245,10 +245,21 @@ onTab?: (e: SyntheticKeyboardEvent) => void
 onUpArrow?: (e: SyntheticKeyboardEvent) => void
 ```
 
+#### onRightArrow
+```
+onRightArrow?: (e: SyntheticKeyboardEvent) => void
+```
+
 #### onDownArrow
 ```
 onDownArrow?: (e: SyntheticKeyboardEvent) => void
 ```
+
+#### onLeftArrow
+```
+onLeftArrow?: (e: SyntheticKeyboardEvent) => void
+```
+
 ### Mouse events
 
 ### onFocus
