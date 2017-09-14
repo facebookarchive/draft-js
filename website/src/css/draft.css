@@ -730,6 +730,10 @@ figure {
   width: 650px;
 }
 
+.inner-content img {
+  width: 650px;
+}
+
 .nosidebar .inner-content {
   float: none;
   margin: 0 auto;
