@@ -7,14 +7,13 @@ Changes to `src` are live in production on facebook.com at the time of release.
 ## 0.10.2
 
 ### Added
-* Change aria-owns to aria-controls in draft.js ([@jessebeach](https://github.com/jessebeach) in [7f0cab28](https://github.com/facebook/draft-js/commit/7f0cab28386ec4bde8ec6289377bff9e53cd019b))
-  * Adds support for `ariaControls` prop
+* Added support for `aria-controls` in draft.js ([@jessebeach](https://github.com/jessebeach) in [7f0cab28](https://github.com/facebook/draft-js/commit/7f0cab28386ec4bde8ec6289377bff9e53cd019b))
 
 ### Changed
-* Change aria-owns to aria-controls in draft.js ([@jessebeach](https://github.com/jessebeach) in [7f0cab28](https://github.com/facebook/draft-js/commit/7f0cab28386ec4bde8ec6289377bff9e53cd019b))
-  * Deprecates support of `ariaControls` and `ariaOwneeID` props
-* Deprecate use of `ariaHasPopup` prop in draft.js ([@jessebeach](https://github.com/jessebeach) in [744e9b4e](https://github.com/facebook/draft-js/commit/744e9b4eb4810797a93c66591fea6f9cac533b4b))
-* Pasting an `img` no longer inserts the `src` by default ([@aadsm](https://github.com/aadsm) in (https://github.com/facebook/draft-js/commit/0b22d713d556ccc4820850099ad6231493b3f7aa))
+* Change `aria-owns` to `aria-controls` in draft.js. ([@jessebeach](https://github.com/jessebeach) in [7f0cab28](https://github.com/facebook/draft-js/commit/7f0cab28386ec4bde8ec6289377bff9e53cd019b))
+  * Deprecates support of `ariaControls` and `ariaOwneeID` props.
+* Deprecate use of `ariaHasPopup` prop in draft.js. `ariaExpanded` should be used instead if an input is showing a dropdown with options.([@jessebeach](https://github.com/jessebeach) in [744e9b4e](https://github.com/facebook/draft-js/commit/744e9b4eb4810797a93c66591fea6f9cac533b4b))
+* Pasting an `img` no longer inserts the `src` by default; now inserts image emoji if no decorator is used. ([@aadsm](https://github.com/aadsm) in (https://github.com/facebook/draft-js/commit/0b22d713d556ccc4820850099ad6231493b3f7aa) and ([@flarnie](https://github.com/flarnie) in [1378](https://github.com/facebook/draft-js/pull/1378))
 
 ### Fixed
 
