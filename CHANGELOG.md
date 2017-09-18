@@ -13,7 +13,7 @@ Changes to `src` are live in production on facebook.com at the time of release.
 * Change `aria-owns` to `aria-controls` in draft.js. ([@jessebeach](https://github.com/jessebeach) in [7f0cab28](https://github.com/facebook/draft-js/commit/7f0cab28386ec4bde8ec6289377bff9e53cd019b))
   * Deprecates support of `ariaOwns` and `ariaOwneeID` props.
 * Deprecate use of `ariaHasPopup` prop in draft.js. `ariaExpanded` should be used instead if an input is showing a dropdown with options.([@jessebeach](https://github.com/jessebeach) in [744e9b4e](https://github.com/facebook/draft-js/commit/744e9b4eb4810797a93c66591fea6f9cac533b4b))
-* Pasting an `img` no longer inserts the `src` by default; now inserts image emoji if no decorator is used. ([@aadsm](https://github.com/aadsm) in [0b22d713](https://github.com/facebook/draft-js/commit/0b22d713d556ccc4820850099ad6231493b3f7aa) and ([@flarnie](https://github.com/flarnie) in [1378](https://github.com/facebook/draft-js/pull/1378))
+* Pasting an `img` no longer inserts the `src` by default; now inserts image emoji if no decorator is used. ([@aadsm](https://github.com/aadsm) in [0b22d713](https://github.com/facebook/draft-js/commit/0b22d713d556ccc4820850099ad6231493b3f7aa) and [@flarnie](https://github.com/flarnie) in [1378](https://github.com/facebook/draft-js/pull/1378))
 
 ### Fixed
 
@@ -30,8 +30,8 @@ Changes to `src` are live in production on facebook.com at the time of release.
 * Fix "Refs must have owner" error when multiple copies of React are used ([@mks11](https://github.com/mks11) in [#925](https://github.com/facebook/draft-js/pull/925))
 * Fix issue where AT could treat 'return' as submit in Draft ([@jessebeach](https://github.com/jessebeach) in [#1295](https://github.com/facebook/draft-js/pull/1295))
 * Don't allow `aria-expanded` to be true unless the aria role is combobox ([@jessebeach](https://github.com/jessebeach) in [3494d45d](https://github.com/facebook/draft-js/commit/3494d45d32b64d6e82e4b3e8fcade6a2b5c6bd46))
-* Fix pesky "This Selection object doesn't have any Ranges" bug ([@sophiebits](https://github.com/sophiebits) in [96688e10](https://github.com/facebook/draft-js/commit/96688e10b22a778c76e03009da4b9f3d05eba5f7) and [96688e10b22a778c76e03009da4b9f3d05eba5f7](https://github.com/facebook/draft-js/commit/96688e10b22a778c76e03009da4b9f3d05eba5f7))
-* Fix bug where pasting `img` with large data URL source could crash editor ([@aadsm](https://github.com/aadsm) in (https://github.com/facebook/draft-js/commit/0b22d713d556ccc4820850099ad6231493b3f7aa))
+* Fix pesky "This Selection object doesn't have any Ranges" bug ([@sophiebits](https://github.com/sophiebits) in [96688e10](https://github.com/facebook/draft-js/commit/96688e10b22a778c76e03009da4b9f3d05eba5f7) and [036e3a84](https://github.com/facebook/draft-js/commit/036e3a848e3593c97f4c3011e1ddc045e128a7af))
+* Fix bug where pasting `img` with large data URL source could crash editor ([@aadsm](https://github.com/aadsm) in [0b22d713](https://github.com/facebook/draft-js/commit/0b22d713d556ccc4820850099ad6231493b3f7aa))
 
 ## 0.10.1
 
