@@ -17,7 +17,14 @@ Changes to `src` are live in production on facebook.com at the time of release.
 
 ### Fixed
 
-* Fix issue where Flow was not running with some 'import' statements (@flarnie & [@yuku-t](https://github.com/yuku-t) in [#1263](https://github.com/facebook/draft-js/pull/1262))
+* Fix issue where selection state was not cleared on blur and refocus of the
+  editor. ([@sophiebits](https://github.com/sophiebits) in
+  [19b9b1c5](https://github.com/facebook/draft-js/commit/19b9b1c5007bcb3a4111ea31f8d9a8cda629a1ff))
+* Fix issue where pasting code into code block defaulted to plain text, and
+  styles were dropped from pasted blocks in general.
+  ([@bumbu](https://github.com/bumbu) in
+  [e8d10112](https://github.com/facebook/draft-js/commit/e8d101121fb9dd9203a46d899124a7be4b0b2936))
+* Fix issue where Flow was not running with some 'import' statements ([@flarnie](https://github.com/flarnie) & [@yuku-t](https://github.com/yuku-t) in [#1263](https://github.com/facebook/draft-js/pull/1262))
 * Fix bug where Draft threw when two keys were pressed at same time in React 16 async mode ([@sophiebits](https://github.com/sophiebits) in [1c6a49b8](https://github.com/facebook/draft-js/commit/1c6a49b8801183fe0c29458626c0b5dbe1238e59))
 * Fix recent Chrome bug where tab causes error ([@sophiebits](https://github.com/sophiebits) in [5863399a](https://github.com/facebook/draft-js/commit/5863399a3a1bcbbe9b090249504a70496a7af7cc))
 * Fix "Refs must have owner" error when multiple copies of React are used ([@mks11](https://github.com/mks11) in [#925](https://github.com/facebook/draft-js/pull/925))
