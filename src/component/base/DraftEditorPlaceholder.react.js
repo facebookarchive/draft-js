@@ -33,7 +33,7 @@ type Props = {
  *
  * Override placeholder style via CSS.
  */
-class DraftEditorPlaceholder extends React.Component {
+class DraftEditorPlaceholder extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     return (
       this.props.text !== nextProps.text ||
@@ -44,7 +44,7 @@ class DraftEditorPlaceholder extends React.Component {
     );
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     const hasFocus = this.props.editorState.getSelection().getHasFocus();
 
     const className = cx({

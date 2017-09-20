@@ -30,7 +30,7 @@ const getScrollPosition = require('getScrollPosition');
  * In addition, we can keep a copy of the removed fragment, including all
  * styles and entities, for use as an internal paste.
  */
-function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
+function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   const editorState = editor._latestEditorState;
   const selection = editorState.getSelection();
 

@@ -83,7 +83,7 @@ function onKeyCommand(
  * See `getDefaultKeyBinding` for defaults. Alternatively, the top-level
  * component may provide a custom mapping via the `keyBindingFn` prop.
  */
-function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
+function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
   var keyCode = e.which;
   var editorState = editor._latestEditorState;
 

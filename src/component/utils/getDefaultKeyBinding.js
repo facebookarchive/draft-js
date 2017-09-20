@@ -32,7 +32,7 @@ var {
   isCtrlKeyCommand,
 } = KeyBindingUtil;
 
-function shouldRemoveWord(e: SyntheticKeyboardEvent): boolean {
+function shouldRemoveWord(e: SyntheticKeyboardEvent<>): boolean {
   return (isOSX && e.altKey) || isCtrlKeyCommand(e);
 }
 
@@ -40,7 +40,7 @@ function shouldRemoveWord(e: SyntheticKeyboardEvent): boolean {
  * Get the appropriate undo/redo command for a Z key command.
  */
 function getZCommand(
-  e: SyntheticKeyboardEvent,
+  e: SyntheticKeyboardEvent<>,
 ): ?DraftEditorCommand {
   if (!hasCommandModifier(e)) {
     return null;
@@ -49,7 +49,7 @@ function getZCommand(
 }
 
 function getDeleteCommand(
-  e: SyntheticKeyboardEvent,
+  e: SyntheticKeyboardEvent<>,
 ): ?DraftEditorCommand {
   // Allow default "cut" behavior for Windows on Shift + Delete.
   if (isWindows && e.shiftKey) {
@@ -59,7 +59,7 @@ function getDeleteCommand(
 }
 
 function getBackspaceCommand(
-  e: SyntheticKeyboardEvent,
+  e: SyntheticKeyboardEvent<>,
 ): ?DraftEditorCommand {
   if (hasCommandModifier(e) && isOSX) {
     return 'backspace-to-start-of-line';
@@ -71,7 +71,7 @@ function getBackspaceCommand(
  * Retrieve a bound key command for the given event.
  */
 function getDefaultKeyBinding(
-  e: SyntheticKeyboardEvent,
+  e: SyntheticKeyboardEvent<>,
 ): ?DraftEditorCommand {
   switch (e.keyCode) {
     case 66: // B
