@@ -16,7 +16,7 @@ jest.disableAutomock();
 
 const Draft = require('Draft');
 const {Editor, EditorState, RichUtils} = Draft;
-const {mount, render} = require('enzyme');
+const {mount} = require('enzyme');
 const React = require('react');
 
 describe('DraftEditor.react', () => {
@@ -33,7 +33,7 @@ describe('DraftEditor.react', () => {
         constructor(props) {
           super(props);
           this.state = {
-            editorState: EditorState.createEmpty()
+            editorState: EditorState.createEmpty(),
           };
           this.toggleCustomBlock = this.toggleCustomBlock.bind(this);
         }
