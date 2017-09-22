@@ -30,6 +30,7 @@
     "test-ci": "NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
+    "enzyme": "^2.9.1",
     "fbjs": "^0.8.12",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.0"
