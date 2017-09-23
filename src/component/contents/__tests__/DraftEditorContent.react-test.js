@@ -14,8 +14,10 @@
 
 jest.disableAutomock();
 
-const Draft = require('Draft');
-const {Editor, EditorState, RichUtils} = Draft;
+const Editor = require('DraftEditor.react');
+const EditorState = require('EditorState');
+const RichUtils = require('RichTextEditorUtil');
+
 const {mount} = require('enzyme');
 const React = require('react');
 

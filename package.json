@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "enzyme": "^2.9.1",
-    "fbjs": "^0.8.12",
+    "fbjs": "^0.8.15",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.0"
   },
