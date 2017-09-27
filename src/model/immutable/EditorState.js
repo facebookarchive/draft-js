@@ -139,22 +139,18 @@ class EditorState {
       }
 
       var existingContent = editorState.getCurrentContent();
-
-      // merging first to make sure that editorState.getCurrentContent ends up with the new contentState
-      // when its passed to the decorator.
-      state.merge(put);
-
       if (newContent !== existingContent) {
         state.set(
           'treeMap',
           regenerateTreeForNewBlocks(
             editorState,
-            newContent.getBlockMap(),
-            newContent.getEntityMap(),
+            newContent,
             decorator,
           ),
         );
       }
+
+      state.merge(put);
     });
 
     return new EditorState(map);
@@ -538,21 +534,19 @@ function generateNewTreeMap(
  */
 function regenerateTreeForNewBlocks(
   editorState: EditorState,
-  newBlockMap: BlockMap,
-  newEntityMap: EntityMap,
+  newContentState: ContentState,
   decorator?: ?DraftDecoratorType,
 ): OrderedMap<string, List<any>> {
-  const contentState = editorState.getCurrentContent().set(
-    'entityMap',
-    newEntityMap,
-  );
-  var prevBlockMap = contentState.getBlockMap();
+  const prevContentState = editorState.getCurrentContent();
+  const newBlockMap = newContentState.getBlockMap();
+  const newEntityMap = newContentState.getEntityMap();
+  var prevBlockMap = prevContentState.getBlockMap();
   var prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(contentState, block, decorator)),
+      .map(block => BlockTree.generate(newContentState, block, decorator)),
   );
 }
 
