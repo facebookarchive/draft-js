@@ -139,6 +139,11 @@ class EditorState {
       }
 
       var existingContent = editorState.getCurrentContent();
+
+      // merging first to make sure that editorState.getCurrentContent ends up with the new contentState
+      // when its passed to the decorator.
+      state.merge(put);
+
       if (newContent !== existingContent) {
         state.set(
           'treeMap',
@@ -150,8 +155,6 @@ class EditorState {
           ),
         );
       }
-
-      state.merge(put);
     });
 
     return new EditorState(map);
