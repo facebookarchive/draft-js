@@ -4,6 +4,20 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.10.3 (September 28th, 2017)
+
+### Added
+* Allow React 16.\* as peer dependency. ([@nikgraf](https://github.com/nikgraf)
+  in [#1385](https://github.com/facebook/draft-js/pull/1385))
+
+### Fixed
+* Fixed bug where using a custom block type without overriding the default block
+  map threw an error. ([@southerncross](https://github.com/southerncross) in
+  [#1302](https://github.com/facebook/draft-js/pull/1302))
+* Update dependency on `fbjs` to get fix for bug where `focus()` caused
+  unexpected scroll ([@flarnie](https://github.com/flarnie) in
+  [#1401](https://github.com/facebook/draft-js/pull/1401))
+
 ## 0.10.2
 
 ### Added
