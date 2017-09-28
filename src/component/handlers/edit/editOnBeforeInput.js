@@ -75,7 +75,10 @@ function replaceText(
  * preserve spellcheck highlighting, which disappears or flashes if re-render
  * occurs on the relevant text nodes.
  */
-function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
+function editOnBeforeInput(
+  editor: DraftEditor,
+  e: SyntheticInputEvent<>,
+): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
@@ -168,7 +171,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     // whether this insertion requires any addition or removal of text nodes,
     // in which case we would prevent the native character insertion.
     var originalFingerprint = BlockTree.getFingerprint(
-      editorState.getBlockTree(anchorKey)
+      editorState.getBlockTree(anchorKey),
     );
     var newFingerprint = BlockTree.getFingerprint(
       newEditorState.getBlockTree(anchorKey),

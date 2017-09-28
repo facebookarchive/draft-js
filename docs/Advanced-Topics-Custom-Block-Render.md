@@ -34,7 +34,7 @@ by matching the Draft block render map with the matched tag.
 
 \*\* - Block type will be based on the parent `<ul/>` or `<ol/>`
 
-\*\*\* -  Any block that is not recognized by the block redering mapping will be treated as unstyled
+\*\*\* -  Any block that is not recognized by the block rendering mapping will be treated as unstyled
 
 ## Configuring block render map
 
@@ -146,7 +146,7 @@ const blockRenderMap = Immutable.Map({
     // element is used during paste or html conversion to auto match your component;
     // it is also retained as part of this.props.children and not stripped out
     element: 'section',
-    wrapper: <MyCustomBlock {...this.props} />
+    wrapper: MyCustomBlock,
   }
 });
 
