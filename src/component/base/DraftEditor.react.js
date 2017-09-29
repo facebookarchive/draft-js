@@ -225,6 +225,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     const contentStyle = {
       outline: 'none',
+      // fix parent-draggable Safari bug. #1326
+      userSelect: 'text',
+      WebkitUserSelect: 'text',
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
     };
