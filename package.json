@@ -30,7 +30,6 @@
     "test-ci": "NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
-    "enzyme": "^2.9.1",
     "fbjs": "^0.8.15",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.0"
@@ -45,6 +44,7 @@
     "babel-preset-fbjs": "^2.1.0",
     "del": "^2.2.0",
     "envify": "^3.4.0",
+    "enzyme": "^2.9.1",
     "es6-shim": "^0.34.4",
     "eslint": "^4.2.0",
     "eslint-config-fbjs": "^2.0.0",
