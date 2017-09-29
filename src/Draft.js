@@ -38,6 +38,18 @@ const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getVisibleSelectionRect = require('getVisibleSelectionRect');
 
+const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
+const applyEntityToContentBlock = require('applyEntityToContentBlock');
+const applyEntityToContentState = require('applyEntityToContentState');
+const getContentStateFragment = require('getContentStateFragment');
+const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
+const insertIntoList = require('insertIntoList');
+const insertTextIntoContentState = require('insertTextIntoContentState');
+const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
+const removeRangeFromContentState = require('removeRangeFromContentState');
+const setBlockTypeForContentState = require('setBlockTypeForContentState');
+const splitBlockInContentState = require('splitBlockInContentState');
+
 const DraftPublic = {
   Editor: DraftEditor,
   EditorBlock: DraftEditorBlock,
@@ -57,6 +69,19 @@ const DraftPublic = {
   KeyBindingUtil,
   Modifier: DraftModifier,
   RichUtils: RichTextEditorUtil,
+  Transactions: {
+    adjustBlockDepthForContentState,
+    applyEntityToContentBlock,
+    applyEntityToContentState,
+    getContentStateFragment,
+    insertFragmentIntoContentState,
+    insertIntoList,
+    insertTextIntoContentState,
+    removeEntitiesAtEdges,
+    removeRangeFromContentState,
+    setBlockTypeForContentState,
+    splitBlockInContentState
+  },
 
   DefaultDraftBlockRenderMap,
   DefaultDraftInlineStyle,
