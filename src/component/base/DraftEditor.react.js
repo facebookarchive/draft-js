@@ -401,18 +401,12 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   }
 
   _blur(): void {
-<<<<<<< HEAD
-    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
+    const editorNode = ReactDOM.findDOMNode(this.editor);
     invariant(
       editorNode instanceof HTMLElement,
       'editorNode is not an HTMLElement',
     );
     editorNode.blur();
-||||||| parent of 59c9776... Remove string refs
-    ReactDOM.findDOMNode(this.refs.editor).blur();
-=======
-    ReactDOM.findDOMNode(this.editor).blur();
->>>>>>> 59c9776... Remove string refs
   }
 
   /**
