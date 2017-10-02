@@ -27,12 +27,14 @@ class SimpleEditor extends React.Component {
     const Editor = Draft.Editor;
     const editorState = this.state.editorState;
     return (
-      <Editor
-        placeholder="heyyyyy"
-        editorKey="foobaz"
-        editorState={editorState}
-        onChange={this.onChange}
-      />
+      <div style={{border: '1px solid black', padding: 10}}>
+        <Editor
+          placeholder="Write something!"
+          editorKey="foobaz"
+          editorState={editorState}
+          onChange={this.onChange}
+        />
+      </div>
     );
   }
 }
