@@ -112,8 +112,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _onPaste: Function;
   _onSelect: Function;
 
-  editor: HTMLElement;
-  editorContainer: HTMLElement;
+  editor: ?HTMLElement;
+  editorContainer: ?HTMLElement;
   focus: () => void;
   blur: () => void;
   setMode: (mode: DraftEditorModes) => void;
