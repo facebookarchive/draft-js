@@ -109,8 +109,14 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     case Keys.UP:
       editor.props.onUpArrow && editor.props.onUpArrow(e);
       return;
+    case Keys.RIGHT:
+      editor.props.onRightArrow && editor.props.onRightArrow(e);
+      return;
     case Keys.DOWN:
       editor.props.onDownArrow && editor.props.onDownArrow(e);
+      return;
+    case Keys.LEFT:
+      editor.props.onLeftArrow && editor.props.onLeftArrow(e);
       return;
     case Keys.SPACE:
       // Handling for OSX where option + space scrolls.
