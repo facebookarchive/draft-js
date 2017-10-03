@@ -155,7 +155,7 @@ function editOnBeforeInput(
     const nativeSelection = global.getSelection();
     // Selection is necessarily collapsed at this point due to earlier check.
     if (
-      nativeSelection.anchorNode !== null &&
+      nativeSelection.anchorNode &&
       nativeSelection.anchorNode.nodeType === Node.TEXT_NODE
     ) {
       // See isTabHTMLSpanElement in chromium EditingUtilities.cpp.
