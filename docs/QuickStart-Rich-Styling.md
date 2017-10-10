@@ -3,7 +3,7 @@ id: quickstart-rich-styling
 title: Rich Styling
 layout: docs
 category: Quick Start
-next: advanced-topics-entities
+next: quickstart-api-serialization
 permalink: docs/quickstart-rich-styling.html
 ---
 
