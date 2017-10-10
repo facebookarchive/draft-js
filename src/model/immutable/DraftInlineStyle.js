@@ -14,7 +14,7 @@
 
 /** TODO: change type to OrderedSet once we get an update of Immutable.js that
  * includes this fix;
- * https://github.com/facebook/immutable-js/issues/979
+ * https://github.com/facebook/immutable-js/pull/1112
  */
 import type {Set} from 'immutable';
 
