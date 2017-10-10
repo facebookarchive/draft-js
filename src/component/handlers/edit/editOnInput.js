@@ -94,7 +94,10 @@ function editOnInput(editor: DraftEditor): void {
   const foundStartAndEnd = editorState
     .getBlockTree(blockKey)
     .getIn([decoratorKey, 'leaves', leafKey]);
-  invariant(foundStartAndEnd !== undefined, 'Error: could not find start and end keys in editOnInput.');
+  invariant(
+    foundStartAndEnd !== undefined,
+    'Error: could not find start and end keys in editOnInput.',
+  );
   var {start, end} = foundStartAndEnd;
 
   var content = editorState.getCurrentContent();

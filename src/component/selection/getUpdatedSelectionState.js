@@ -62,7 +62,10 @@ function getUpdatedSelectionState(
       focusPath.leafKey,
     ]);
 
-  invariant(anchorLeaf !== undefined && focusLeaf !== undefined, 'Error: missing anchorLeaf or focusLeaf.');
+  invariant(
+    anchorLeaf !== undefined && focusLeaf !== undefined,
+    'Error: missing anchorLeaf or focusLeaf.',
+  );
   var anchorLeafStart: number = anchorLeaf.get('start');
   var focusLeafStart: number = focusLeaf.get('start');
 
