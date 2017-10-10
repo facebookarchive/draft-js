@@ -21,6 +21,7 @@ var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
+var invariant = require('invariant');
 var nullthrows = require('nullthrows');
 
 var isGecko = UserAgent.isEngine('Gecko');
@@ -90,9 +91,11 @@ function editOnInput(editor: DraftEditor): void {
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
   var {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
 
-  var {start, end} = editorState
+  const foundStartAndEnd = editorState
     .getBlockTree(blockKey)
     .getIn([decoratorKey, 'leaves', leafKey]);
+  invariant(foundStartAndEnd !== undefined, 'Error: could not find start and end keys in editOnInput.');
+  var {start, end} = foundStartAndEnd;
 
   var content = editorState.getCurrentContent();
   var block = content.getBlockForKey(blockKey);

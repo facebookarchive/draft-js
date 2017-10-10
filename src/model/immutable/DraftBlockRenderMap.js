@@ -16,4 +16,9 @@ import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {Map} from 'immutable';
 
+// TODO: how to use a string enum for the key in map, like so
+// Map<DraftBlockType, DraftBlockRenderConfig>
+// without throwing an error because string literal is incompatible with string
+// type (https://github.com/facebook/flow/issues/2436) and string enums are not
+// compatible with 'string' type.
 export type DraftBlockRenderMap = Map<DraftBlockType, DraftBlockRenderConfig>;

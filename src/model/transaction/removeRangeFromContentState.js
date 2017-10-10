@@ -62,7 +62,7 @@ function removeRangeFromContentState(
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
-    .concat(Immutable.Map([[endKey, null]]))
+    .filter((v, k) => k !== endKey)
     .map((_, k) => { return k === startKey ? modifiedStart : null; });
 
   blockMap = blockMap.merge(newBlocks).filter(block => !!block);

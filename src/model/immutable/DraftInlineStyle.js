@@ -12,6 +12,10 @@
 
 'use strict';
 
-import type Immutable from 'immutable';
+/** TODO: change type to OrderedSet once we get an update of Immutable.js that
+ * includes this fix;
+ * https://github.com/facebook/immutable-js/issues/979
+ */
+import type {Set} from 'immutable';
 
-export type DraftInlineStyle = Immutable.OrderedSet<string>;
+export type DraftInlineStyle = Set<string>;
