@@ -13,6 +13,19 @@
 
 'use strict';
 
+/**
+ * Temporary utility for generating the warnings
+ */
+function logWarning(oldValue, newValue) {
+  console.warn(
+    'WARNING: Using'
+    + oldValue
+    + ' will be deprecated soon!\nPlease use "'
+    + newValue
+    + '" instead.',
+  );
+}
+
 import type {DraftHandleValue} from 'DraftHandleValue';
 
 /**
@@ -20,6 +33,13 @@ import type {DraftHandleValue} from 'DraftHandleValue';
  * from a handler indicates that it was handled.
  */
 function isEventHandled(value: DraftHandleValue): boolean {
+  if (typeof true === 'boolean') {
+    logWarning(
+      'a Boolean,
+      "'handled' and 'not-handled' instead",
+    );
+  }
+
   return value === 'handled' || value === true;
 }
 
