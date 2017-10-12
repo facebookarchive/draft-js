@@ -62,7 +62,11 @@ function removeRangeFromContentState(
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
-    .filter((v, k) => k !== endKey)
+    /* $FlowFixMe -
+     * we need to figure out how to fix this, and why it only started throwing a
+     * flow error after updating Immutable.js.
+     */
+    .concat(Immutable.Map([[endKey, null]]))
     .map((_, k) => { return k === startKey ? modifiedStart : null; });
 
   blockMap = blockMap.merge(newBlocks).filter(block => !!block);
