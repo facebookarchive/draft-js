@@ -652,17 +652,13 @@ function lookUpwardForInlineStyle(
   content: ContentState,
   fromKey: string,
 ): DraftInlineStyle {
-  var previousBlock = content.getBlockBefore(fromKey);
-  var previousLength;
+  var lastNonEmpty = content.getBlockMap()
+    .reverse()
+    .skipUntil((block, k) => k === fromKey && block.getLength())
+    .first();
 
-  while (previousBlock) {
-    previousLength = previousBlock.getLength();
-    if (previousLength) {
-      return previousBlock.getInlineStyleAt(previousLength - 1);
-    }
-    previousBlock = content.getBlockBefore(previousBlock.getKey());
-  }
-
+  if (lastNonEmpty)
+    return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
   return OrderedSet();
 }
 
