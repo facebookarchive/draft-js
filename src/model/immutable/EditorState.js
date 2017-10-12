@@ -654,7 +654,9 @@ function lookUpwardForInlineStyle(
 ): DraftInlineStyle {
   var lastNonEmpty = content.getBlockMap()
     .reverse()
-    .skipUntil((block, k) => k === fromKey && block.getLength())
+    .skipUntil((_, k) => k === fromKey)
+    .skip(1)
+    .skipUntil((block, _) => block.getLength())
     .first();
 
   if (lastNonEmpty)
