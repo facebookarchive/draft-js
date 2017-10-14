@@ -13,23 +13,23 @@
 
 'use strict';
 
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
+
 var Immutable = require('immutable');
 
 var generateRandomKey = require('generateRandomKey');
 var invariant = require('invariant');
 
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
-
 const {Map} = Immutable;
 
 function splitBlockInContentState(
   contentState: ContentState,
-  selectionState: SelectionState
+  selectionState: SelectionState,
 ): ContentState {
   invariant(
     selectionState.isCollapsed(),
-    'Selection range must be collapsed.'
+    'Selection range must be collapsed.',
   );
 
   var key = selectionState.getAnchorKey();
@@ -57,7 +57,7 @@ function splitBlockInContentState(
   var blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
   var newBlocks = blocksBefore.concat(
     [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
-    blocksAfter
+    blocksAfter,
   ).toOrderedMap();
 
   return contentState.merge({

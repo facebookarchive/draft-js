@@ -12,7 +12,7 @@ The block rendering is used to define supported block types and their respective
 renderers, as well as converting pasted content to known Draft block types.
 
 When pasting content or when using the
-[convertFromHTML](https://facebook.github.io/draft-js/docs/api-reference-data-conversion.html#convertfromhtml)
+[convertFromHTML](/docs/api-reference-data-conversion.html#convertfromhtml)
 Draft will then convert the pasted content to the respective block rendering type
 by matching the Draft block render map with the matched tag.
 
@@ -26,7 +26,6 @@ by matching the Draft block render map with the matched tag.
 |     `<h4/>`     |               header-four               |
 |     `<h5/>`     |               header-five               |
 |     `<h6/>`     |               header-six                |
-|     `<h6/>`     |               header-six                |
 | `<blockquote/>` |               blockquote                |
 |    `<pre/>`     |               code-block                |
 |   `<figure/>`   |                 atomic                  |
@@ -35,7 +34,7 @@ by matching the Draft block render map with the matched tag.
 
 \*\* - Block type will be based on the parent `<ul/>` or `<ol/>`
 
-\*\*\* -  Any block that is not recognized by the block redering mapping will be treated as unstyled
+\*\*\* -  Any block that is not recognized by the block rendering mapping will be treated as unstyled
 
 ## Configuring block render map
 
@@ -51,7 +50,7 @@ the editor blockRender props.
 // updates the unstyled element to also become a h2.
 const blockRenderMap = Immutable.Map({
   'header-two': {
-   element: 'h2'
+    element: 'h2'
   },
   'unstyled': {
     element: 'h2'
@@ -98,13 +97,26 @@ class RichEditor extends React.Component {
 }
 ```
 
+When Draft parses pasted HTML, it maps from HTML elements back into
+Draft block types. If you want to specify other HTML elements that map to a
+particular block type, you can add an array `aliasedElements` to the block config.
+
+*example of unstyled block type alias usage:*
+
+```
+'unstyled': {
+  element: 'div',
+  aliasedElements: ['p'],
+}
+```
+
 ## Custom block wrappers
 
 By default the html element is used to wrap block types however a react component
 can also be provided to the _blockRenderMap_ to wrap the EditorBlock.
 
 During pasting or when using the
-[convertFromHTML](https://facebook.github.io/draft-js/docs/api-reference-data-conversion.html#convertfromhtml)
+[convertFromHTML](/docs/api-reference-data-conversion.html#convertfromhtml)
 the html will be scanned for matching tag elements. A wrapper will be used when there is a definition for
 it on the _blockRenderMap_ to wrap that particular block type. For example:
 
@@ -134,7 +146,7 @@ const blockRenderMap = Immutable.Map({
     // element is used during paste or html conversion to auto match your component;
     // it is also retained as part of this.props.children and not stripped out
     element: 'section',
-    wrapper: <MyCustomBlock {...this.props} />
+    wrapper: MyCustomBlock,
   }
 });
 

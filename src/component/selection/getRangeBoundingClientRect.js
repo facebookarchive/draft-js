@@ -39,10 +39,18 @@ function getRangeBoundingClientRect(range: Range): FakeClientRect {
   var left = 0;
 
   if (rects.length) {
-    ({top, right, bottom, left} = rects[0]);
+    // If the first rectangle has 0 width, we use the second, this is needed
+    // because Chrome renders a 0 width rectangle when the selection contains
+    // a line break.
+    if (rects.length > 1 && rects[0].width === 0) {
+      ({top, right, bottom, left} = rects[1]);
+    } else {
+      ({top, right, bottom, left} = rects[0]);
+    }
+
     for (var ii = 1; ii < rects.length; ii++) {
       var rect = rects[ii];
-      if (rect.height !== 0 || rect.width !== 0) {
+      if (rect.height !== 0 && rect.width !== 0) {
         top = Math.min(top, rect.top);
         right = Math.max(right, rect.right);
         bottom = Math.max(bottom, rect.bottom);

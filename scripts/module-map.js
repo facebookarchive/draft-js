@@ -14,8 +14,8 @@ module.exports = Object.assign(
     ReactDOM: 'react-dom',
     'object-assign': 'object-assign',
 
-    ReactTestUtils: 'react/lib/ReactTestUtils',
-    reactComponentExpect: 'react/lib/reactComponentExpect',
+    ReactTestUtils: 'react-dom/lib/ReactTestUtils',
+    reactComponentExpect: 'react-dom/lib/reactComponentExpect',
   },
   require('fbjs/module-map'),
   require('fbjs-scripts/third-party-module-map')

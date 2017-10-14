@@ -13,6 +13,11 @@
 
 'use strict';
 
+import type ContentState from 'ContentState';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type URI from 'URI';
+
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
@@ -20,14 +25,9 @@ const SelectionState = require('SelectionState');
 const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
 const nullthrows = require('nullthrows');
 
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type URI from 'URI';
-
 const RichTextEditorUtil = {
   currentBlockContainsLink: function(
-    editorState: EditorState
+    editorState: EditorState,
   ): boolean {
     var selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
@@ -38,7 +38,7 @@ const RichTextEditorUtil = {
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
         var entity = v.getEntity();
-        return !!entity && entityMap.get(entity).getType() === 'LINK';
+        return !!entity && entityMap.__get(entity).getType() === 'LINK';
       });
   },
 
@@ -55,7 +55,7 @@ const RichTextEditorUtil = {
 
   handleKeyCommand: function(
     editorState: EditorState,
-    command: DraftEditorCommand
+    command: DraftEditorCommand | string,
   ): ?EditorState {
     switch (command) {
       case 'bold':
@@ -74,7 +74,7 @@ const RichTextEditorUtil = {
       case 'delete-word':
       case 'delete-to-end-of-block':
         return RichTextEditorUtil.onDelete(editorState);
-      default:
+      default: // they may have custom editor commands; ignore those
         return null;
     }
   },
@@ -85,18 +85,18 @@ const RichTextEditorUtil = {
       editorState.getSelection(),
       '\n',
       editorState.getCurrentInlineStyle(),
-      null
+      null,
     );
 
     var newEditorState = EditorState.push(
       editorState,
       contentState,
-      'insert-characters'
+      'insert-characters',
     );
 
     return EditorState.forceSelection(
       newEditorState,
-      contentState.getSelectionAfter()
+      contentState.getSelectionAfter(),
     );
   },
 
@@ -121,22 +121,28 @@ const RichTextEditorUtil = {
 
     if (blockBefore && blockBefore.getType() === 'atomic') {
       const blockMap = content.getBlockMap().delete(blockBefore.getKey());
-      var withoutAtomicBlock = content.merge({blockMap, selectionAfter: selection});
+      var withoutAtomicBlock = content.merge(
+        {blockMap, selectionAfter: selection},
+      );
       if (withoutAtomicBlock !== content) {
-        return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');
+        return EditorState.push(
+          editorState,
+          withoutAtomicBlock,
+          'remove-range',
+        );
       }
     }
 
     // If that doesn't succeed, try to remove the current block style.
     var withoutBlockStyle = RichTextEditorUtil.tryToRemoveBlockStyle(
-      editorState
+      editorState,
     );
 
     if (withoutBlockStyle) {
       return EditorState.push(
         editorState,
         withoutBlockStyle,
-        'change-block-type'
+        'change-block-type',
       );
     }
 
@@ -173,14 +179,14 @@ const RichTextEditorUtil = {
     const withoutAtomicBlock = DraftModifier.removeRange(
       content,
       atomicBlockTarget,
-      'forward'
+      'forward',
     );
 
     if (withoutAtomicBlock !== content) {
       return EditorState.push(
         editorState,
         withoutAtomicBlock,
-        'remove-range'
+        'remove-range',
       );
     }
 
@@ -188,9 +194,9 @@ const RichTextEditorUtil = {
   },
 
   onTab: function(
-    event: SyntheticKeyboardEvent,
+    event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
-    maxDepth: number
+    maxDepth: number,
   ): EditorState {
     var selection = editorState.getSelection();
     var key = selection.getAnchorKey();
@@ -233,19 +239,19 @@ const RichTextEditorUtil = {
       content,
       selection,
       event.shiftKey ? -1 : 1,
-      maxDepth
+      maxDepth,
     );
 
     return EditorState.push(
       editorState,
       withAdjustment,
-      'adjust-depth'
+      'adjust-depth',
     );
   },
 
   toggleBlockType: function(
     editorState: EditorState,
-    blockType: DraftBlockType
+    blockType: DraftBlockType,
   ): EditorState {
     var selection = editorState.getSelection();
     var startKey = selection.getStartKey();
@@ -286,7 +292,7 @@ const RichTextEditorUtil = {
     return EditorState.push(
       editorState,
       DraftModifier.setBlockType(content, target, typeToSet),
-      'change-block-type'
+      'change-block-type',
     );
   },
 
@@ -310,7 +316,7 @@ const RichTextEditorUtil = {
    */
   toggleInlineStyle: function(
     editorState: EditorState,
-    inlineStyle: string
+    inlineStyle: string,
   ): EditorState {
     var selection = editorState.getSelection();
     var currentStyle = editorState.getCurrentInlineStyle();
@@ -351,32 +357,32 @@ const RichTextEditorUtil = {
     return EditorState.push(
       editorState,
       newContent,
-      'change-inline-style'
+      'change-inline-style',
     );
   },
 
   toggleLink: function(
     editorState: EditorState,
     targetSelection: SelectionState,
-    entityKey: ?string
+    entityKey: ?string,
   ): EditorState {
     var withoutLink = DraftModifier.applyEntity(
       editorState.getCurrentContent(),
       targetSelection,
-      entityKey
+      entityKey,
     );
 
     return EditorState.push(
       editorState,
       withoutLink,
-      'apply-entity'
+      'apply-entity',
     );
   },
 
   /**
-   * When a collapsed cursor is at the start of the first block or an empty
-   * styled block, allow certain key commands (newline, backspace) to simply
-   * change the style of the block instead of the default behavior.
+   * When a collapsed cursor is at the start of the first styled block, or 
+   * an empty styled block, changes block to 'unstyled'. Returns null if 
+   * block or selection does not meet that criteria.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
     var selection = editorState.getSelection();

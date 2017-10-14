@@ -13,18 +13,18 @@
 
 'use strict';
 
-const addEntityToEntityMap = require('addEntityToEntityMap');
-
 import type ContentState from 'ContentState';
 import type DraftEntityInstance from 'DraftEntityInstance';
 
+const addEntityToEntityMap = require('addEntityToEntityMap');
+
 function addEntityToContentState(
   contentState: ContentState,
-  instance: DraftEntityInstance
+  instance: DraftEntityInstance,
 ): ContentState {
   return contentState.set(
     'entityMap',
-    addEntityToEntityMap(contentState.getEntityMap(), instance)
+    addEntityToEntityMap(contentState.getEntityMap(), instance),
   );
 }
 

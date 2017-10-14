@@ -13,29 +13,29 @@
 
 'use strict';
 
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {EntityMap} from 'EntityMap';
+
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEntityInstance = require('DraftEntityInstance');
+const DraftEntity = require('DraftEntity');
 const Immutable = require('immutable');
+const {Set} = require('immutable');
 const URI = require('URI');
 
-const addEntityToEntityMap = require('addEntityToEntityMap');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {EntityMap} from 'EntityMap';
-
 var {
   List,
   OrderedSet,
-  OrderedMap,
 } = Immutable;
 
 var NBSP = '&nbsp;';
@@ -144,7 +144,7 @@ function getBlockDividerChunk(block: DraftBlockType, depth: number): Chunk {
 
 function getListBlockType(
   tag: string,
-  lastList: ?string
+  lastList: ?string,
 ): ?DraftBlockType {
   if (tag === 'li') {
     return lastList === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
@@ -153,13 +153,22 @@ function getListBlockType(
 }
 
 function getBlockMapSupportedTags(
-  blockRenderMap: DraftBlockRenderMap
+  blockRenderMap: DraftBlockRenderMap,
 ): Array<string> {
   const unstyledElement = blockRenderMap.get('unstyled').element;
-  return blockRenderMap
-    .map((config) => config.element)
-    .valueSeq()
-    .toSet()
+  let tags = Set([]);
+
+  blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
+    if (draftBlock.aliasedElements) {
+      draftBlock.aliasedElements.forEach((tag) => {
+        tags = tags.add(tag);
+      });
+    }
+
+    tags = tags.add(draftBlock.element);
+  });
+
+  return tags
     .filter((tag) => tag && tag !== unstyledElement)
     .toArray()
     .sort();
@@ -169,7 +178,7 @@ function getBlockMapSupportedTags(
 function getMultiMatchedType(
   tag: string,
   lastList: ?string,
-  multiMatchExtractor: Array<Function>
+  multiMatchExtractor: Array<Function>,
 ): ?DraftBlockType {
   for (let ii = 0; ii < multiMatchExtractor.length; ii++) {
     const matchType = multiMatchExtractor[ii](tag, lastList);
@@ -183,10 +192,17 @@ function getMultiMatchedType(
 function getBlockTypeForTag(
   tag: string,
   lastList: ?string,
-  blockRenderMap: DraftBlockRenderMap
+  blockRenderMap: DraftBlockRenderMap,
 ): DraftBlockType {
   const matchedTypes = blockRenderMap
-    .filter((config) => config.element === tag || config.wrapper === tag)
+    .filter((draftBlock: DraftBlockRenderConfig) => (
+      draftBlock.element === tag ||
+      draftBlock.wrapper === tag ||
+      (
+        draftBlock.aliasedElements &&
+        draftBlock.aliasedElements.some(alias => alias === tag)
+      )
+    ))
     .keySeq()
     .toSet()
     .toArray()
@@ -211,7 +227,7 @@ function getBlockTypeForTag(
 function processInlineTag(
   tag: string,
   node: Node,
-  currentStyle: DraftInlineStyle
+  currentStyle: DraftInlineStyle,
 ): DraftInlineStyle {
   var styleToCheck = inlineTags[tag];
   if (styleToCheck) {
@@ -294,7 +310,7 @@ function joinChunks(A: Chunk, B: Chunk): Chunk {
  */
 function containsSemanticBlockMarkup(
   html: string,
-  blockTags: Array<string>
+  blockTags: Array<string>,
 ): boolean {
   return blockTags.some(tag => html.indexOf('<' + tag) !== -1);
 }
@@ -302,7 +318,7 @@ function containsSemanticBlockMarkup(
 function hasValidLinkText(link: Node): boolean {
   invariant(
     link instanceof HTMLAnchorElement,
-    'Link must be an HTMLAnchorElement.'
+    'Link must be an HTMLAnchorElement.',
   );
   var protocol = link.protocol;
   return (
@@ -321,7 +337,7 @@ function genFragment(
   blockTags: Array<string>,
   depth: number,
   blockRenderMap: DraftBlockRenderMap,
-  inEntity?: string
+  inEntity?: string,
 ): {chunk: Chunk, entityMap: EntityMap} {
   var nodeName = node.nodeName.toLowerCase();
   var newBlock = false;
@@ -387,18 +403,19 @@ function genFragment(
         entityConfig[attr] = imageAttribute;
       }
     });
-    const imageURI = new URI(entityConfig.src).toString();
-    node.textContent = imageURI; // Output src if no decorator
+    // Forcing this node to have children because otherwise no entity will be
+    // created for this node.
+    // The child text node cannot just have a space or return as content -
+    // we strip those out.
+    // See https://github.com/facebook/draft-js/issues/231 for some context.
+    node.textContent = '\ud83d\udcf7';
 
-    newEntityMap = addEntityToEntityMap(
-      newEntityMap,
-      new DraftEntityInstance({
-        type: 'IMAGE',
-        mutability: 'MUTABLE',
-        data: entityConfig || {},
-      })
+    // TODO: update this when we remove DraftEntity entirely
+    inEntity = DraftEntity.__create(
+      'IMAGE',
+      'MUTABLE',
+      entityConfig || {},
     );
-    inEntity = newEntityMap.keySeq().last();
   }
 
   var chunk = getEmptyChunk();
@@ -419,14 +436,14 @@ function genFragment(
   if (!inBlock && blockTags.indexOf(nodeName) !== -1) {
     chunk = getBlockDividerChunk(
       getBlockTypeForTag(nodeName, lastList, blockRenderMap),
-      depth
+      depth,
     );
     inBlock = nodeName;
     newBlock = true;
   } else if (lastList && inBlock === 'li' && nodeName === 'li') {
     chunk = getBlockDividerChunk(
       getBlockTypeForTag(nodeName, lastList, blockRenderMap),
-      depth
+      depth,
     );
     inBlock = nodeName;
     newBlock = true;
@@ -460,20 +477,20 @@ function genFragment(
       });
 
       entityConfig.url = new URI(anchor.href).toString();
-      newEntityMap = addEntityToEntityMap(
-        newEntityMap,
-        new DraftEntityInstance({
-          type: 'LINK',
-          mutability: 'MUTABLE',
-          data: entityConfig || {},
-        })
+      // TODO: update this when we remove DraftEntity completely
+      entityId = DraftEntity.__create(
+        'LINK',
+        'MUTABLE',
+        entityConfig || {},
       );
-      entityId = newEntityMap.keySeq().last();
     } else {
       entityId = undefined;
     }
 
-    const { chunk: generatedChunk, entityMap: maybeUpdatedEntityMap } = genFragment(
+    const {
+      chunk: generatedChunk,
+      entityMap: maybeUpdatedEntityMap,
+    } = genFragment(
       newEntityMap,
       child,
       inlineStyle,
@@ -482,7 +499,7 @@ function genFragment(
       blockTags,
       depth,
       blockRenderMap,
-      entityId || inEntity
+      entityId || inEntity,
     );
 
     newChunk = generatedChunk;
@@ -508,7 +525,7 @@ function genFragment(
   if (newBlock) {
     chunk = joinChunks(
       chunk,
-      getBlockDividerChunk(nextBlockType, depth)
+      getBlockDividerChunk(nextBlockType, depth),
     );
   }
 
@@ -519,7 +536,7 @@ function getChunkForHTML(
   html: string,
   DOMBuilder: Function,
   blockRenderMap: DraftBlockRenderMap,
-  entityMap: EntityMap
+  entityMap: EntityMap,
 ): ?{chunk: Chunk, entityMap: EntityMap} {
   html = html
     .trim()
@@ -556,7 +573,7 @@ function getChunkForHTML(
     null,
     workingBlocks,
     -1,
-    blockRenderMap
+    blockRenderMap,
   );
 
 
@@ -602,7 +619,13 @@ function convertFromHTMLtoContentBlocks(
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
-  var chunkData = getChunkForHTML(html, DOMBuilder, blockRenderMap, OrderedMap());
+  // TODO: replace DraftEntity with an OrderedMap here
+  var chunkData = getChunkForHTML(
+    html,
+    DOMBuilder,
+    blockRenderMap,
+    DraftEntity,
+  );
 
   if (chunkData == null) {
     return null;
@@ -629,7 +652,7 @@ function convertFromHTMLtoContentBlocks(
               data.entity = entities[ii];
             }
             return CharacterMetadata.create(data);
-          })
+          }),
         );
         start = end + 1;
 
@@ -640,7 +663,7 @@ function convertFromHTMLtoContentBlocks(
           text: textBlock,
           characterList,
         });
-      }
+      },
     ),
     entityMap: newEntityMap,
   };

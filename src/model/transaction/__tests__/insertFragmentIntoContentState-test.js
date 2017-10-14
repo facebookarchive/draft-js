@@ -72,7 +72,7 @@ describe('insertFragmentIntoContentState', () => {
       insertFragmentIntoContentState(
         content,
         selection,
-        fragment
+        fragment,
       );
     }).toThrow();
   });
@@ -82,7 +82,7 @@ describe('insertFragmentIntoContentState', () => {
     var modified = insertFragmentIntoContentState(
       content,
       selection,
-      fragment
+      fragment,
     );
 
     var newBlock = modified.getBlockMap().first();
@@ -103,7 +103,7 @@ describe('insertFragmentIntoContentState', () => {
     var modified = insertFragmentIntoContentState(
       content,
       target,
-      fragment
+      fragment,
     );
 
     var newBlock = modified.getBlockMap().first();
@@ -124,7 +124,7 @@ describe('insertFragmentIntoContentState', () => {
     var modified = insertFragmentIntoContentState(
       content,
       target,
-      fragment
+      fragment,
     );
 
     var newBlock = modified.getBlockMap().first();
@@ -138,7 +138,7 @@ describe('insertFragmentIntoContentState', () => {
     var modified = insertFragmentIntoContentState(
       content,
       selection,
-      fragment
+      fragment,
     );
 
     var newBlock = modified.getBlockMap().first();
