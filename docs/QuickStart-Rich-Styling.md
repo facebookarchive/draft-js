@@ -10,7 +10,7 @@ permalink: docs/quickstart-rich-styling.html
 Now that we have established the basics of the top-level API, we can go a step
 further and examine how basic rich styling can be added to a `Draft` editor.
 
-A [rich text example](https://github.com/facebook/draft-js/tree/master/examples/rich)
+A [rich text example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/rich)
 is also available to follow along.
 
 ## EditorState: Yours to Command
@@ -23,10 +23,10 @@ However, since your top-level React component is responsible for maintaining the
 state, you also have the freedom to apply changes to that `EditorState` object
 in any way you see fit.
 
-For inline and block style behavior, for example, the [`RichUtils`](/draft-js/docs/api-reference-rich-utils.html) module
+For inline and block style behavior, for example, the [`RichUtils`](/docs/api-reference-rich-utils.html) module
 provides a number of useful functions to help manipulate state.
 
-Similarly, the [Modifier](/draft-js/docs/api-reference-modifier.html) module also provides a
+Similarly, the [Modifier](/docs/api-reference-modifier.html) module also provides a
 number of common operations that allow you to apply edits, including changes
 to text, styles, and more. This module is a suite of edit functions that
 compose simpler, smaller edit functions to return the desired `EditorState`
@@ -53,8 +53,8 @@ class MyEditor extends React.Component {
     this.onChange = (editorState) => this.setState({editorState});
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
   }
-  handleKeyCommand(command) {
-    const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
+  handleKeyCommand(command, editorState) {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
       return 'handled';
@@ -76,8 +76,11 @@ class MyEditor extends React.Component {
 > handleKeyCommand
 >
 > The `command` argument supplied to `handleKeyCommand` is a string value, the
-> name of the command to be executed. This is mapped from a DOM key event. See
-> [Advanced Topics - Key Binding](/draft-js/docs/advanced-topics-key-bindings.html) for more
+> name of the command to be executed. This is mapped from a DOM key event. The
+> `editorState` argument represents the latest editor state as it might be
+> changed internally by draft when handling the key. Use this instance of the
+> editor state inside `handleKeyCommand`. See
+> [Advanced Topics - Key Binding](/docs/advanced-topics-key-bindings.html) for more
 > on this, as well as details on why the function returns `handled` or `not-handled`.
 
 ## Styling Controls in UI

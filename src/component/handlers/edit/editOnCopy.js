@@ -12,6 +12,8 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 var getFragmentFromSelection = require('getFragmentFromSelection');
 
 /**
@@ -19,8 +21,8 @@ var getFragmentFromSelection = require('getFragmentFromSelection');
  * it in our internal clipboard. Subsequent paste events will use this
  * fragment if no external clipboard data is supplied.
  */
-function editOnCopy(e: SyntheticClipboardEvent): void {
-  var editorState = this.props.editorState;
+function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
+  var editorState = editor._latestEditorState;
   var selection = editorState.getSelection();
 
   // No selection, so there's nothing to copy.
@@ -29,7 +31,7 @@ function editOnCopy(e: SyntheticClipboardEvent): void {
     return;
   }
 
-  this.setClipboard(getFragmentFromSelection(this.props.editorState));
+  editor.setClipboard(getFragmentFromSelection(editor._latestEditorState));
 }
 
 module.exports = editOnCopy;

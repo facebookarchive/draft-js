@@ -12,33 +12,43 @@
 
 'use strict';
 
-var EditorState = require('EditorState');
-var UserAgent = require('UserAgent');
+import type DraftEditor from 'DraftEditor.react';
 
-var getActiveElement = require('getActiveElement');
+const EditorState = require('EditorState');
 
-var isWebKit = UserAgent.isEngine('WebKit');
+const containsNode = require('containsNode');
+const getActiveElement = require('getActiveElement');
 
-function editOnBlur(e: SyntheticEvent): void {
-  // Webkit has a bug in which blurring a contenteditable by clicking on
-  // other active elements will trigger the `blur` event but will not remove
-  // the DOM selection from the contenteditable. We therefore force the
-  // issue to be certain, checking whether the active element is `body`
-  // to force it when blurring occurs within the window (as opposed to
-  // clicking to another tab or window).
-  if (isWebKit && getActiveElement() === document.body) {
-    global.getSelection().removeAllRanges();
+function editOnBlur(editor: DraftEditor, e: SyntheticEvent<>): void {
+  // In a contentEditable element, when you select a range and then click
+  // another active element, this does trigger a `blur` event but will not
+  // remove the DOM selection from the contenteditable.
+  // This is consistent across all browsers, but we prefer that the editor
+  // behave like a textarea, where a `blur` event clears the DOM selection.
+  // We therefore force the issue to be certain, checking whether the active
+  // element is `body` to force it when blurring occurs within the window (as
+  // opposed to clicking to another tab or window).
+  if (getActiveElement() === document.body) {
+    const selection = global.getSelection();
+    const editorNode = editor.refs.editor;
+    if (
+      selection.rangeCount === 1 &&
+      containsNode(editorNode, selection.anchorNode) &&
+      containsNode(editorNode, selection.focusNode)
+    ) {
+      selection.removeAllRanges();
+    }
   }
 
-  var editorState = this.props.editorState;
+  var editorState = editor._latestEditorState;
   var currentSelection = editorState.getSelection();
   if (!currentSelection.getHasFocus()) {
     return;
   }
 
   var selection = currentSelection.set('hasFocus', false);
-  this.props.onBlur && this.props.onBlur(e);
-  this.update(EditorState.acceptSelection(editorState, selection));
+  editor.props.onBlur && editor.props.onBlur(e);
+  editor.update(EditorState.acceptSelection(editorState, selection));
 }
 
 module.exports = editOnBlur;

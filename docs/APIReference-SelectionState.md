@@ -47,9 +47,13 @@ For instance, when extracting a slice of text from a block based on a
 `SelectionState`, it is irrelevant whether the selection is backward:
 
 ```
+var selectionState = editorState.getSelection();
+var anchorKey = selectionState.getAnchorKey();
+var currentContent = editorState.getCurrentContent();
+var currentContentBlock = currentContent.getBlockForKey(anchorKey);
 var start = selectionState.getStartOffset();
 var end = selectionState.getEndOffset();
-var selectedText = myContentBlock.getText().slice(start, end);
+var selectedText = currentContentBlock.getText().slice(start, end);
 ```
 
 Note that `SelectionState` itself tracks only _anchor_ and _focus_ values.

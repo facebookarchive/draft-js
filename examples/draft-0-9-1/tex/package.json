@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "babel-node ./server.js",
+    "postinstall": "npm install ../../.."
+  },
+  "dependencies": {
+    "babel": "5.8.23",
+    "babel-core": "^6.8.0",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "express": "^4.13.1",
+    "immutable": "^3.7.4",
+    "katex": "^0.5.1",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0",
+    "webpack": "^1.10.5",
+    "webpack-dev-server": "^1.10.1"
+  }
+}

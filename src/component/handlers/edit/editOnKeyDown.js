@@ -12,6 +12,9 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+import type {DraftEditorCommand} from 'DraftEditorCommand';
+
 var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 var KeyBindingUtil = require('KeyBindingUtil');
@@ -19,19 +22,17 @@ var Keys = require('Keys');
 var SecondaryClipboard = require('SecondaryClipboard');
 var UserAgent = require('UserAgent');
 
+const isEventHandled = require('isEventHandled');
 var keyCommandBackspaceToStartOfLine = require('keyCommandBackspaceToStartOfLine');
 var keyCommandBackspaceWord = require('keyCommandBackspaceWord');
 var keyCommandDeleteWord = require('keyCommandDeleteWord');
 var keyCommandInsertNewline = require('keyCommandInsertNewline');
-var keyCommandPlainBackspace = require('keyCommandPlainBackspace');
-var keyCommandPlainDelete = require('keyCommandPlainDelete');
 var keyCommandMoveSelectionToEndOfBlock = require('keyCommandMoveSelectionToEndOfBlock');
 var keyCommandMoveSelectionToStartOfBlock = require('keyCommandMoveSelectionToStartOfBlock');
+var keyCommandPlainBackspace = require('keyCommandPlainBackspace');
+var keyCommandPlainDelete = require('keyCommandPlainDelete');
 var keyCommandTransposeCharacters = require('keyCommandTransposeCharacters');
 var keyCommandUndo = require('keyCommandUndo');
-
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-const isEventHandled = require('isEventHandled');
 
 var {isOptionKeyCommand} = KeyBindingUtil;
 var isChrome = UserAgent.isBrowser('Chrome');
@@ -40,8 +41,8 @@ var isChrome = UserAgent.isBrowser('Chrome');
  * Map a `DraftEditorCommand` command value to a corresponding function.
  */
 function onKeyCommand(
-  command: DraftEditorCommand,
-  editorState: EditorState
+  command: DraftEditorCommand | string,
+  editorState: EditorState,
 ): EditorState {
   switch (command) {
     case 'redo':
@@ -82,9 +83,9 @@ function onKeyCommand(
  * See `getDefaultKeyBinding` for defaults. Alternatively, the top-level
  * component may provide a custom mapping via the `keyBindingFn` prop.
  */
-function editOnKeyDown(e: SyntheticKeyboardEvent): void {
+function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
   var keyCode = e.which;
-  var editorState = this.props.editorState;
+  var editorState = editor._latestEditorState;
 
   switch (keyCode) {
     case Keys.RETURN:
@@ -92,24 +93,30 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
       // The top-level component may manually handle newline insertion. If
       // no special handling is performed, fall through to command handling.
       if (
-        this.props.handleReturn &&
-        isEventHandled(this.props.handleReturn(e))
+        editor.props.handleReturn &&
+        isEventHandled(editor.props.handleReturn(e, editorState))
       ) {
         return;
       }
       break;
     case Keys.ESC:
       e.preventDefault();
-      this.props.onEscape && this.props.onEscape(e);
+      editor.props.onEscape && editor.props.onEscape(e);
       return;
     case Keys.TAB:
-      this.props.onTab && this.props.onTab(e);
+      editor.props.onTab && editor.props.onTab(e);
       return;
     case Keys.UP:
-      this.props.onUpArrow && this.props.onUpArrow(e);
+      editor.props.onUpArrow && editor.props.onUpArrow(e);
+      return;
+    case Keys.RIGHT:
+      editor.props.onRightArrow && editor.props.onRightArrow(e);
       return;
     case Keys.DOWN:
-      this.props.onDownArrow && this.props.onDownArrow(e);
+      editor.props.onDownArrow && editor.props.onDownArrow(e);
+      return;
+    case Keys.LEFT:
+      editor.props.onLeftArrow && editor.props.onLeftArrow(e);
       return;
     case Keys.SPACE:
       // Handling for OSX where option + space scrolls.
@@ -119,20 +126,20 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
         const contentState = DraftModifier.replaceText(
           editorState.getCurrentContent(),
           editorState.getSelection(),
-          '\u00a0'
+          '\u00a0',
         );
-        this.update(
+        editor.update(
           EditorState.push(
             editorState,
             contentState,
-            'insert-characters'
-          )
+            'insert-characters',
+          ),
         );
         return;
       }
   }
 
-  var command = this.props.keyBindingFn(e);
+  var command = editor.props.keyBindingFn(e);
 
   // If no command is specified, allow keydown event to continue.
   if (!command) {
@@ -142,7 +149,7 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
   if (command === 'undo') {
     // Since undo requires some special updating behavior to keep the editor
     // in sync, handle it separately.
-    keyCommandUndo(e, editorState, this.update);
+    keyCommandUndo(e, editorState, editor.update);
     return;
   }
 
@@ -152,15 +159,15 @@ function editOnKeyDown(e: SyntheticKeyboardEvent): void {
 
   // Allow components higher up the tree to handle the command first.
   if (
-    this.props.handleKeyCommand &&
-    isEventHandled(this.props.handleKeyCommand(command))
+    editor.props.handleKeyCommand &&
+    isEventHandled(editor.props.handleKeyCommand(command, editorState))
   ) {
     return;
   }
 
   var newState = onKeyCommand(command, editorState);
   if (newState !== editorState) {
-    this.update(newState);
+    editor.update(newState);
   }
 }
 

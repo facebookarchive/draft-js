@@ -12,40 +12,35 @@
 
 'use strict';
 
+import type {RawDraftContentState} from 'RawDraftContentState';
+
 var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
-var DraftEntityInstance = require('DraftEntityInstance');
+var DraftEntity = require('DraftEntity');
+var Immutable = require('immutable');
 
-const addEntityToEntityMap = require('addEntityToEntityMap');
 var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');
 var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 var generateRandomKey = require('generateRandomKey');
-var Immutable = require('immutable');
-var {OrderedMap} = Immutable;
-
-import type {RawDraftContentState} from 'RawDraftContentState';
 
 var {Map} = Immutable;
 
 function convertFromRawToDraftState(
-  rawState: RawDraftContentState
+  rawState: RawDraftContentState,
 ): ContentState {
   var {blocks, entityMap} = rawState;
 
   var fromStorageToLocal = {};
 
-  const newEntityMap = Object.keys(entityMap).reduce(
-    (updatedEntityMap, storageKey) => {
+  // TODO: Update this once we completely remove DraftEntity
+  Object.keys(entityMap).forEach(
+    storageKey => {
       var encodedEntity = entityMap[storageKey];
       var {type, mutability, data} = encodedEntity;
-      const instance = new DraftEntityInstance({type, mutability, data: data || {}});
-      const tempEntityMap = addEntityToEntityMap(updatedEntityMap, instance);
-      const newKey = tempEntityMap.keySeq().last();
+      var newKey = DraftEntity.__create(type, mutability, data || {});
       fromStorageToLocal[storageKey] = newKey;
-      return tempEntityMap;
     },
-    OrderedMap()
   );
 
   var contentBlocks = blocks.map(
@@ -60,6 +55,7 @@ function convertFromRawToDraftState(
         data,
       } = block;
       key = key || generateRandomKey();
+      type = type || 'unstyled';
       depth = depth || 0;
       inlineStyleRanges = inlineStyleRanges || [];
       entityRanges = entityRanges || [];
@@ -78,10 +74,10 @@ function convertFromRawToDraftState(
       var characterList = createCharacterList(inlineStyles, entities);
 
       return new ContentBlock({key, type, text, depth, characterList, data});
-    }
+    },
   );
 
-  return ContentState.createFromBlockArray(contentBlocks, newEntityMap);
+  return ContentState.createFromBlockArray(contentBlocks);
 }
 
 module.exports = convertFromRawToDraftState;

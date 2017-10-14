@@ -12,14 +12,14 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type SelectionState from 'SelectionState';
+
 var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 
 var getContentStateFragment = require('getContentStateFragment');
 var nullthrows = require('nullthrows');
-
-import type {BlockMap} from 'BlockMap';
-import type SelectionState from 'SelectionState';
 
 var clipboard: ?BlockMap = null;
 
@@ -52,7 +52,7 @@ var SecondaryClipboard = {
     var afterRemoval = DraftModifier.removeRange(
       content,
       targetRange,
-      'forward'
+      'forward',
     );
 
     if (afterRemoval === content) {
@@ -70,7 +70,7 @@ var SecondaryClipboard = {
     var newContent = DraftModifier.replaceWithFragment(
       editorState.getCurrentContent(),
       editorState.getSelection(),
-      clipboard
+      clipboard,
     );
 
     return EditorState.push(editorState, newContent, 'insert-fragment');

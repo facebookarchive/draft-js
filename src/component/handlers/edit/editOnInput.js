@@ -12,6 +12,9 @@
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
+const DraftFeatureFlags = require('DraftFeatureFlags');
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
 var EditorState = require('EditorState');
@@ -36,16 +39,54 @@ var DOUBLE_NEWLINE = '\n\n';
  * when an `input` change leads to a DOM/model mismatch, the change should be
  * due to a spellcheck change, and we can incorporate it into our model.
  */
-function editOnInput(): void {
+function editOnInput(editor: DraftEditor): void {
+  if (editor._pendingStateFromBeforeInput !== undefined) {
+    editor.update(editor._pendingStateFromBeforeInput);
+    editor._pendingStateFromBeforeInput = undefined;
+  }
+
   var domSelection = global.getSelection();
 
   var {anchorNode, isCollapsed} = domSelection;
-  if (anchorNode.nodeType !== Node.TEXT_NODE) {
-    return;
+  const isNotTextNode =
+    anchorNode.nodeType !== Node.TEXT_NODE;
+  const isNotTextOrElementNode = anchorNode.nodeType !== Node.TEXT_NODE
+    && anchorNode.nodeType !== Node.ELEMENT_NODE;
+
+  if (DraftFeatureFlags.draft_killswitch_allow_nontextnodes) {
+    if (isNotTextNode) {
+      return;
+    }
+  } else {
+    if (isNotTextOrElementNode) {
+      // TODO: (t16149272) figure out context for this change
+      return;
+    }
+  }
+
+  if (
+    anchorNode.nodeType === Node.TEXT_NODE &&
+    (anchorNode.previousSibling !== null || anchorNode.nextSibling !== null)
+  ) {
+    // When typing at the beginning of a visual line, Chrome splits the text
+    // nodes into two. Why? No one knows. This commit is suspicious:
+    // https://chromium.googlesource.com/chromium/src/+/a3b600981286b135632371477f902214c55a1724
+    // To work around, we'll merge the sibling text nodes back into this one.
+    const span = anchorNode.parentNode;
+    anchorNode.nodeValue = span.textContent;
+    for (
+      let child = span.firstChild;
+      child !== null;
+      child = child.nextSibling
+    ) {
+      if (child !== anchorNode) {
+        span.removeChild(child);
+      }
+    }
   }
 
   var domText = anchorNode.textContent;
-  var {editorState} = this.props;
+  var editorState = editor._latestEditorState;
   var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
   var {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
 
@@ -67,6 +108,10 @@ function editOnInput(): void {
 
   // No change -- the DOM is up to date. Nothing to do here.
   if (domText === modelText) {
+    // This can be buggy for some Android keyboards because they don't fire
+    // standard onkeydown/pressed events and only fired editOnInput
+    // so domText is already changed by the browser and ends up being equal
+    // to modelText unexpectedly
     return;
   }
 
@@ -131,12 +176,12 @@ function editOnInput(): void {
     selectionAfter: selection.merge({anchorOffset, focusOffset}),
   });
 
-  this.update(
+  editor.update(
     EditorState.push(
       editorState,
       contentWithAdjustedDOMSelection,
-      changeType
-    )
+      changeType,
+    ),
   );
 }
 
