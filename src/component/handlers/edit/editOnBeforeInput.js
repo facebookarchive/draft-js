@@ -113,21 +113,26 @@ function editOnBeforeInput(
   var selection = editorState.getSelection();
   var selectionStart = selection.getStartOffset();
   var selectionEnd = selection.getEndOffset();
+  var anchorKey = selection.getAnchorKey();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
 
     // If the character that the user is trying to replace with
-    // is the same as the current selection text the just update the `SelectionState`.
-    // Else, update the ContentState with the new text
-    if (chars === editorState.getCurrentContent().getPlainText().slice(selectionStart, selectionEnd)) {
+    // is the same as the current selection text the just update the
+    // `SelectionState`.  Else, update the ContentState with the new text
+    var currentlySelectedChars = editorState
+      .getCurrentContent()
+      .getPlainText()
+      .slice(selectionStart, selectionEnd);
+    if (chars === currentlySelectedChars) {
       this.update(
         EditorState.forceSelection(
           editorState,
           selection.merge({
             focusOffset: selectionEnd,
-          })
-        )
+          }),
+        ),
       );
     } else {
       editor.update(
@@ -137,9 +142,9 @@ function editOnBeforeInput(
           editorState.getCurrentInlineStyle(),
           getEntityKeyForSelection(
             editorState.getCurrentContent(),
-            editorState.getSelection()
-          )
-        )
+            editorState.getSelection(),
+          ),
+        ),
       );
     }
     return;
