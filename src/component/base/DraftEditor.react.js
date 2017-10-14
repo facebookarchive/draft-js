@@ -26,6 +26,7 @@ const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
+const DraftFeatureFlags = require('DraftFeatureFlags');
 const EditorState = require('EditorState');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
@@ -267,6 +268,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
               // here which makes its autotranslation skip over this subtree.
               'notranslate': !readOnly,
               'public/DraftEditor/content': true,
+              'public/DraftEditor/highlightInvalidText':
+                DraftFeatureFlags.draft_highlight_invalid_text,
             })}
             contentEditable={!readOnly}
             data-testid={this.props.webDriverTestID}
