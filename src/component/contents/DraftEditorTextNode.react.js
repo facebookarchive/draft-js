@@ -17,6 +17,7 @@ const React = require('React');
 const ReactDOM = require('ReactDOM');
 const UserAgent = require('UserAgent');
 
+const cx = require('cx');
 const invariant = require('invariant');
 
 // In IE, spans with <br> tags render as two newlines. By rendering a span
@@ -89,7 +90,10 @@ class DraftEditorTextNode extends React.Component<Props> {
       return this._forceFlag ? NEWLINE_A : NEWLINE_B;
     }
     return (
-      <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
+      <span
+        key={this._forceFlag ? 'A' : 'B'}
+        className={cx('public/DraftEditor/textNode')}
+        data-text="true">
         {this.props.children}
       </span>
     );
