@@ -101,7 +101,7 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlocksAsArray(): Array<ContentBlock> {
-    return this.getBlockMap().toArray();
+    return this.getBlockMap().valueSeq().toArray();
   }
 
   getFirstBlock(): ContentBlock {
