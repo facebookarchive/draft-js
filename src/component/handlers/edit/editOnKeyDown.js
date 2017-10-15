@@ -83,7 +83,7 @@ function onKeyCommand(
  * See `getDefaultKeyBinding` for defaults. Alternatively, the top-level
  * component may provide a custom mapping via the `keyBindingFn` prop.
  */
-function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
+function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
   var keyCode = e.which;
   var editorState = editor._latestEditorState;
 
@@ -109,8 +109,14 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
     case Keys.UP:
       editor.props.onUpArrow && editor.props.onUpArrow(e);
       return;
+    case Keys.RIGHT:
+      editor.props.onRightArrow && editor.props.onRightArrow(e);
+      return;
     case Keys.DOWN:
       editor.props.onDownArrow && editor.props.onDownArrow(e);
+      return;
+    case Keys.LEFT:
+      editor.props.onLeftArrow && editor.props.onLeftArrow(e);
       return;
     case Keys.SPACE:
       // Handling for OSX where option + space scrolls.

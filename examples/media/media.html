@@ -64,8 +64,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.onURLInputKeyDown = this._onURLInputKeyDown.bind(this);
         }
 
-        _handleKeyCommand(command) {
-          const {editorState} = this.state;
+        _handleKeyCommand(command, editorState) {
           const newState = RichUtils.handleKeyCommand(editorState, command);
           if (newState) {
             this.onChange(newState);
@@ -267,6 +266,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
         media: {
           width: '100%',
+          // Fix an issue with Firefox rendering video controls
+          // with 'pre-wrap' white-space
+          whiteSpace: 'initial'
         },
       };
 

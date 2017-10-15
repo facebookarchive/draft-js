@@ -191,7 +191,7 @@ const RichTextEditorUtil = {
   },
 
   onTab: function(
-    event: SyntheticKeyboardEvent,
+    event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
     maxDepth: number,
   ): EditorState {

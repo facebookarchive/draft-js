@@ -17,6 +17,7 @@ const React = require('React');
 const ReactDOM = require('ReactDOM');
 const UserAgent = require('UserAgent');
 
+const cx = require('cx');
 const invariant = require('invariant');
 
 // In IE, spans with <br> tags render as two newlines. By rendering a span
@@ -60,7 +61,7 @@ type Props = {
  * nodes with DOM state that already matches the expectations of our immutable
  * editor state.
  */
-class DraftEditorTextNode extends React.Component {
+class DraftEditorTextNode extends React.Component<Props> {
   _forceFlag: boolean;
 
   constructor(props: Props) {
@@ -84,12 +85,15 @@ class DraftEditorTextNode extends React.Component {
     this._forceFlag = !this._forceFlag;
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     if (this.props.children === '') {
       return this._forceFlag ? NEWLINE_A : NEWLINE_B;
     }
     return (
-      <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
+      <span
+        key={this._forceFlag ? 'A' : 'B'}
+        className={cx('public/DraftEditor/textNode')}
+        data-text="true">
         {this.props.children}
       </span>
     );

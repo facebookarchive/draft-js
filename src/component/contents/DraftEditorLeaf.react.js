@@ -21,6 +21,7 @@ const DraftEditorTextNode = require('DraftEditorTextNode.react');
 var React = require('React');
 var ReactDOM = require('ReactDOM');
 
+const cx = require('cx');
 const invariant = require('invariant');
 var setDraftEditorSelection = require('setDraftEditorSelection');
 
@@ -65,7 +66,7 @@ type Props = {
  * DOM Selection API. In this way, top-level components can declaratively
  * maintain the selection state.
  */
-class DraftEditorLeaf extends React.Component {
+class DraftEditorLeaf extends React.Component<Props> {
   /**
    * By making individual leaf instances aware of their context within
    * the text of the editor, we can set our selection range more
@@ -129,7 +130,7 @@ class DraftEditorLeaf extends React.Component {
     this._setSelection();
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     const {block} = this.props;
     let {text} = this.props;
 
@@ -166,6 +167,7 @@ class DraftEditorLeaf extends React.Component {
     return (
       <span
         data-offset-key={offsetKey}
+        className={cx('public/DraftEditor/leaf')}
         ref="leaf"
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>

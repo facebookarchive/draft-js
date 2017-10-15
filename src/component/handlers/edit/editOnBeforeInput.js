@@ -74,7 +74,10 @@ function replaceText(
  * preserve spellcheck highlighting, which disappears or flashes if re-render
  * occurs on the relevant text nodes.
  */
-function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
+function editOnBeforeInput(
+  editor: DraftEditor,
+  e: SyntheticInputEvent<>,
+): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
@@ -151,7 +154,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     const nativeSelection = global.getSelection();
     // Selection is necessarily collapsed at this point due to earlier check.
     if (
-      nativeSelection.anchorNode !== null &&
+      nativeSelection.anchorNode &&
       nativeSelection.anchorNode.nodeType === Node.TEXT_NODE
     ) {
       // See isTabHTMLSpanElement in chromium EditingUtilities.cpp.
