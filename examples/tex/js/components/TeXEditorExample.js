@@ -60,8 +60,7 @@ export default class TeXEditorExample extends React.Component {
     this._focus = () => this.refs.editor.focus();
     this._onChange = (editorState) => this.setState({editorState});
 
-    this._handleKeyCommand = command => {
-      var {editorState} = this.state;
+    this._handleKeyCommand = (command, editorState) => {
       var newState = RichUtils.handleKeyCommand(editorState, command);
       if (newState) {
         this._onChange(newState);

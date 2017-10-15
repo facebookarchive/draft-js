@@ -62,8 +62,6 @@ function insertFragmentIntoContentState(
       data: pastedBlock.getData(),
     });
 
-    blockMap = blockMap.set(targetKey, newBlock);
-
     finalKey = targetKey;
     finalOffset = targetOffset + pastedBlock.getText().length;
 

@@ -18,7 +18,6 @@ var ContentBlock = require('ContentBlock');
 var ContentState = require('ContentState');
 var DraftEntityInstance = require('DraftEntityInstance');
 
-
 const addEntityToEntityMap = require('addEntityToEntityMap');
 var createCharacterList = require('createCharacterList');
 var decodeEntityRanges = require('decodeEntityRanges');

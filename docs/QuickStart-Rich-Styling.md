@@ -53,8 +53,8 @@ class MyEditor extends React.Component {
     this.onChange = (editorState) => this.setState({editorState});
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
   }
-  handleKeyCommand(command) {
-    const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
+  handleKeyCommand(command, editorState) {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
       return 'handled';
@@ -76,7 +76,10 @@ class MyEditor extends React.Component {
 > handleKeyCommand
 >
 > The `command` argument supplied to `handleKeyCommand` is a string value, the
-> name of the command to be executed. This is mapped from a DOM key event. See
+> name of the command to be executed. This is mapped from a DOM key event. The
+> `editorState` argument represents the latest editor state as it might be
+> changed internally by draft when handling the key. Use this instance of the
+> editor state inside `handleKeyCommand`. See
 > [Advanced Topics - Key Binding](/docs/advanced-topics-key-bindings.html) for more
 > on this, as well as details on why the function returns `handled` or `not-handled`.
 
