@@ -21,7 +21,6 @@ const DraftEditorTextNode = require('DraftEditorTextNode.react');
 var React = require('React');
 var ReactDOM = require('ReactDOM');
 
-const cx = require('cx');
 const invariant = require('invariant');
 var setDraftEditorSelection = require('setDraftEditorSelection');
 
@@ -167,7 +166,6 @@ class DraftEditorLeaf extends React.Component<Props> {
     return (
       <span
         data-offset-key={offsetKey}
-        className={cx('public/DraftEditor/leaf')}
         ref="leaf"
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
