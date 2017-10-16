@@ -29,6 +29,7 @@ describe('AtomicBlockUtils', () => {
   const originalFirstBlock = contentState.getBlockMap().first();
   const entityKey = Entity.create('TOKEN', 'MUTABLE');
   const character = ' ';
+  const data = { id: 12345 };
 
   function assertAtomicBlock(block) {
     expect(block.getType()).toBe('atomic');
@@ -42,6 +43,7 @@ describe('AtomicBlockUtils', () => {
         editorState,
         entityKey,
         character,
+        data,
       );
       const resultContent = resultEditor.getCurrentContent();
 
@@ -52,6 +54,7 @@ describe('AtomicBlockUtils', () => {
 
       const secondBlock = resultContent.getBlockMap().skip(1).first();
       assertAtomicBlock(secondBlock);
+      expect(secondBlock.getData().get('id')).toBe(data.id);
 
       const thirdBlock = resultContent.getBlockMap().skip(2).first();
       expect(thirdBlock.getText()).toBe(originalFirstBlock.getText());
