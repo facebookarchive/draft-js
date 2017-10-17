@@ -31,7 +31,8 @@
   },
   "dependencies": {
     "fbjs": "^0.8.15",
-    "immutable": "~3.7.4",
+    "immutable": "^3.8.1",
+
     "object-assign": "^4.1.0"
   },
   "peerDependencies": {

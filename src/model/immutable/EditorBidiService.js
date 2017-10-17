@@ -45,6 +45,9 @@ var EditorBidiService = {
       return prevBidiMap;
     }
 
+    /* $FlowFixMe(>=0.53.0 site=www,mobile) -
+     * should be fixed by * https://github.com/facebook/immutable-js/pull/1112
+     */
     return bidiMap;
   },
 };
