@@ -72,7 +72,7 @@ function encodeInlineStyleRanges(
     .toSet()
     .map(style => getEncodedInlinesForType(block, styleList, style));
 
-  return Array.prototype.concat.apply(EMPTY_ARRAY, ranges.toJS());
+  return Array.prototype.concat.apply(EMPTY_ARRAY, ranges.toArray());
 }
 
 module.exports = encodeInlineStyleRanges;

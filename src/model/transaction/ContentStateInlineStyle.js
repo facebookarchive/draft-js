@@ -50,6 +50,7 @@ function modifyInlineStyle(
   var endOffset = selectionState.getEndOffset();
 
   var newBlocks = blockMap
+    .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
     .concat(Map([[endKey, blockMap.get(endKey)]]))
