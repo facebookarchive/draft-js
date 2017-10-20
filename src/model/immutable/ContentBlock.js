@@ -12,13 +12,13 @@
 
 'use strict';
 
-var Immutable = require('immutable');
-
-var findRangesImmutable = require('findRangesImmutable');
-
 import type CharacterMetadata from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+
+var Immutable = require('immutable');
+
+var findRangesImmutable = require('findRangesImmutable');
 
 var {
   List,

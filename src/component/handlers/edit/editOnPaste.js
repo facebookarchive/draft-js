@@ -12,26 +12,27 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type DraftEditor from 'DraftEditor.react';
+import type {EntityMap} from 'EntityMap';
+
 var BlockMapBuilder = require('BlockMapBuilder');
 var CharacterMetadata = require('CharacterMetadata');
 var DataTransfer = require('DataTransfer');
 var DraftModifier = require('DraftModifier');
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var EditorState = require('EditorState');
+var RichTextEditorUtil = require('RichTextEditorUtil');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
 const isEventHandled = require('isEventHandled');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
-import type DraftEditor from 'DraftEditor.react';
-import type {BlockMap} from 'BlockMap';
-import type {EntityMap} from 'EntityMap';
-
 /**
  * Paste content.
  */
-function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
+function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   e.preventDefault();
   var data = new DataTransfer(e.clipboardData);
 
@@ -64,8 +65,15 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
             editorState.getSelection(),
           ),
         });
+        var currentBlockType = RichTextEditorUtil.getCurrentBlockType(
+          editorState,
+        );
 
-        var text = DraftPasteProcessor.processText(blocks, character);
+        var text = DraftPasteProcessor.processText(
+          blocks,
+          character,
+          currentBlockType,
+        );
         var fragment = BlockMapBuilder.createFromArray(text);
 
         var withInsertedText = DraftModifier.replaceWithFragment(
@@ -178,9 +186,12 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
       ),
     });
 
+    var currentBlockType = RichTextEditorUtil.getCurrentBlockType(editorState);
+
     var textFragment = DraftPasteProcessor.processText(
       textBlocks,
       character,
+      currentBlockType,
     );
 
     var textMap = BlockMapBuilder.createFromArray(textFragment);

@@ -4,6 +4,49 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.10.3 (September 28th, 2017)
+
+### Added
+* Allow React 16.\* as peer dependency. ([@nikgraf](https://github.com/nikgraf)
+  in [#1385](https://github.com/facebook/draft-js/pull/1385))
+
+### Fixed
+* Fixed bug where using a custom block type without overriding the default block
+  map threw an error. ([@southerncross](https://github.com/southerncross) in
+  [#1302](https://github.com/facebook/draft-js/pull/1302))
+* Update dependency on `fbjs` to get fix for bug where `focus()` caused
+  unexpected scroll ([@flarnie](https://github.com/flarnie) in
+  [#1401](https://github.com/facebook/draft-js/pull/1401))
+
+## 0.10.2
+
+### Added
+* Added support for `aria-controls` in draft.js ([@jessebeach](https://github.com/jessebeach) in [7f0cab28](https://github.com/facebook/draft-js/commit/7f0cab28386ec4bde8ec6289377bff9e53cd019b))
+
+### Changed
+* Change `aria-owns` to `aria-controls` in draft.js. ([@jessebeach](https://github.com/jessebeach) in [7f0cab28](https://github.com/facebook/draft-js/commit/7f0cab28386ec4bde8ec6289377bff9e53cd019b))
+  * Deprecates support of `ariaOwns` and `ariaOwneeID` props.
+* Deprecate use of `ariaHasPopup` prop in draft.js. `ariaExpanded` should be used instead if an input is showing a dropdown with options.([@jessebeach](https://github.com/jessebeach) in [744e9b4e](https://github.com/facebook/draft-js/commit/744e9b4eb4810797a93c66591fea6f9cac533b4b))
+* Pasting an `img` no longer inserts the `src` by default; now inserts image emoji if no decorator is used. ([@aadsm](https://github.com/aadsm) in [0b22d713](https://github.com/facebook/draft-js/commit/0b22d713d556ccc4820850099ad6231493b3f7aa) and [@flarnie](https://github.com/flarnie) in [1378](https://github.com/facebook/draft-js/pull/1378))
+
+### Fixed
+
+* Fix issue where selection state was not cleared on blur and refocus of the
+  editor. ([@sophiebits](https://github.com/sophiebits) in
+  [19b9b1c5](https://github.com/facebook/draft-js/commit/19b9b1c5007bcb3a4111ea31f8d9a8cda629a1ff))
+* Fix issue where pasting code into code block defaulted to plain text, and
+  styles were dropped from pasted blocks in general.
+  ([@bumbu](https://github.com/bumbu) in
+  [e8d10112](https://github.com/facebook/draft-js/commit/e8d101121fb9dd9203a46d899124a7be4b0b2936))
+* Fix issue where Flow was not running with some 'import' statements ([@flarnie](https://github.com/flarnie) & [@yuku-t](https://github.com/yuku-t) in [#1263](https://github.com/facebook/draft-js/pull/1262))
+* Fix bug where Draft threw when two keys were pressed at same time in React 16 async mode ([@sophiebits](https://github.com/sophiebits) in [1c6a49b8](https://github.com/facebook/draft-js/commit/1c6a49b8801183fe0c29458626c0b5dbe1238e59))
+* Fix recent Chrome bug where tab causes error ([@sophiebits](https://github.com/sophiebits) in [5863399a](https://github.com/facebook/draft-js/commit/5863399a3a1bcbbe9b090249504a70496a7af7cc))
+* Fix "Refs must have owner" error when multiple copies of React are used ([@mks11](https://github.com/mks11) in [#925](https://github.com/facebook/draft-js/pull/925))
+* Fix issue where AT could treat 'return' as submit in Draft ([@jessebeach](https://github.com/jessebeach) in [#1295](https://github.com/facebook/draft-js/pull/1295))
+* Don't allow `aria-expanded` to be true unless the aria role is combobox ([@jessebeach](https://github.com/jessebeach) in [3494d45d](https://github.com/facebook/draft-js/commit/3494d45d32b64d6e82e4b3e8fcade6a2b5c6bd46))
+* Fix pesky "This Selection object doesn't have any Ranges" bug ([@sophiebits](https://github.com/sophiebits) in [96688e10](https://github.com/facebook/draft-js/commit/96688e10b22a778c76e03009da4b9f3d05eba5f7) and [036e3a84](https://github.com/facebook/draft-js/commit/036e3a848e3593c97f4c3011e1ddc045e128a7af))
+* Fix bug where pasting `img` with large data URL source could crash editor ([@aadsm](https://github.com/aadsm) in [0b22d713](https://github.com/facebook/draft-js/commit/0b22d713d556ccc4820850099ad6231493b3f7aa))
+
 ## 0.10.1
 
 ### Added

@@ -1,6 +1,7 @@
 [ignore]
 .*/__tests__.*
 .*/react/node_modules/.*
+.*/react-dom/node_modules/.*
 .*/fbjs/node_modules/.*
 .*/node_modules/invariant/.*
 
@@ -15,11 +16,15 @@
 
 [options]
 module.system=haste
+module.system.haste.paths.blacklist=.*/__tests__/.*
+module.system.haste.paths.blacklist=.*/react/node_modules/.*
+module.system.haste.paths.blacklist=.*/react-dom/node_modules/.*
+module.system.haste.paths.blacklist=.*/fbjs/node_modules/.*
+module.system.haste.paths.blacklist=.*/node_modules/invariant/.*
 esproposal.class_static_fields=enable
 suppress_type=$FlowIssue
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\).*\n
 module.name_mapper='ReactDOM' -> 'react-dom'
-module.name_mapper='setImmediate' -> 'fbjs/lib/setImmediate'
 
 [version]
-^0.42.0
+^0.53.1

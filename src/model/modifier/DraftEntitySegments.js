@@ -13,8 +13,8 @@
 
 'use strict';
 
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type {DraftRange} from 'DraftRange';
+import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 
 /**
  * Identify the range to delete from a segmented entity.

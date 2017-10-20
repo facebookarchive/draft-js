@@ -12,14 +12,14 @@
 
 'use strict';
 
-var UnicodeUtils = require('UnicodeUtils');
-
-var findRangesImmutable = require('findRangesImmutable');
-
 import type ContentBlock from 'ContentBlock';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {InlineStyleRange} from 'InlineStyleRange';
 import type {List} from 'immutable';
+
+var UnicodeUtils = require('UnicodeUtils');
+
+var findRangesImmutable = require('findRangesImmutable');
 
 var areEqual = (a, b) => a === b;
 var isTruthy = a => !!a;

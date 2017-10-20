@@ -13,17 +13,17 @@
 
 'use strict';
 
+import type ContentState from 'ContentState';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type URI from 'URI';
+
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
 
 const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
 const nullthrows = require('nullthrows');
-
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type URI from 'URI';
 
 const RichTextEditorUtil = {
   currentBlockContainsLink: function(
@@ -194,7 +194,7 @@ const RichTextEditorUtil = {
   },
 
   onTab: function(
-    event: SyntheticKeyboardEvent,
+    event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
     maxDepth: number,
   ): EditorState {
@@ -380,9 +380,9 @@ const RichTextEditorUtil = {
   },
 
   /**
-   * When a collapsed cursor is at the start of an empty styled block, allow
-   * certain key commands (newline, backspace) to simply change the
-   * style of the block instead of the default behavior.
+   * When a collapsed cursor is at the start of the first styled block, or 
+   * an empty styled block, changes block to 'unstyled'. Returns null if 
+   * block or selection does not meet that criteria.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
     var selection = editorState.getSelection();
@@ -391,7 +391,9 @@ const RichTextEditorUtil = {
       var key = selection.getAnchorKey();
       var content = editorState.getCurrentContent();
       var block = content.getBlockForKey(key);
-      if (block.getLength() > 0) {
+
+      var firstBlock = content.getFirstBlock();
+      if (block.getLength() > 0 && block !== firstBlock) {
         return null;
       }
 

@@ -11,7 +11,8 @@
 
 'use strict';
 
-jest.disableAutomock().mock('UserAgent');
+jest.disableAutomock().mock('UserAgent')
+  .mock('UserAgent');
 
 var BLOCK_DELIMITER_CHAR = '\n';
 var TEST_A = 'Hello';
@@ -26,7 +27,7 @@ describe('DraftEditorTextNode', function() {
   var container;
 
   beforeEach(function() {
-    jest.resetModuleRegistry();
+    jest.resetModules();
     container = document.createElement('div');
   });
 

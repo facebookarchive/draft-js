@@ -12,18 +12,18 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type {DraftDecoratorType} from 'DraftDecoratorType';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {EditorChangeType} from 'EditorChangeType';
+import type {EntityMap} from 'EntityMap';
+import type {List, OrderedMap} from 'immutable';
+
 var BlockTree = require('BlockTree');
 var ContentState = require('ContentState');
 var EditorBidiService = require('EditorBidiService');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
-
-import type {BlockMap} from 'BlockMap';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {EntityMap} from 'EntityMap';
-import type {List, OrderedMap} from 'immutable';
-import type {EditorChangeType} from 'EditorChangeType';
 
 var {
   OrderedSet,
@@ -652,17 +652,15 @@ function lookUpwardForInlineStyle(
   content: ContentState,
   fromKey: string,
 ): DraftInlineStyle {
-  var previousBlock = content.getBlockBefore(fromKey);
-  var previousLength;
+  var lastNonEmpty = content.getBlockMap()
+    .reverse()
+    .skipUntil((_, k) => k === fromKey)
+    .skip(1)
+    .skipUntil((block, _) => block.getLength())
+    .first();
 
-  while (previousBlock) {
-    previousLength = previousBlock.getLength();
-    if (previousLength) {
-      return previousBlock.getInlineStyleAt(previousLength - 1);
-    }
-    previousBlock = content.getBlockBefore(previousBlock.getKey());
-  }
-
+  if (lastNonEmpty)
+    return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
   return OrderedSet();
 }
 

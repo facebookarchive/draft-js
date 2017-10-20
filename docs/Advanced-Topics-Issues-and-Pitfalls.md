@@ -75,6 +75,12 @@ interaction.
 As of IE11, Internet Explorer demonstrates notable issues with certain international
 input methods, most significantly Korean input.
 
+### Mobile Support
+
+At this time Draft does not fully support mobile browsers. There are some known
+issues with certain Android keyboards and with international input methods. Full
+mobile support is a goal that the framework is moving towards for the future.
+
 ### Polyfills
 
 Some of Draft's code and that of its dependencies make use of ES2015 language
@@ -110,3 +116,11 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+### Mobile Not Yet Supported
+
+Draft.js is moving towards full mobile support, but does not officially support
+mobile browsers at this point. There are some known issues affecting Android and
+iOS - see issues tagged
+['android'](https://github.com/facebook/draft-js/labels/android) or
+['ios'](https://github.com/facebook/draft-js/labels/ios) for the current status.
