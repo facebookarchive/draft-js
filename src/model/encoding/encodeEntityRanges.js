@@ -30,7 +30,7 @@ function encodeEntityRanges(
 ): Array<EntityRange> {
   var encoded = [];
   block.findEntityRanges(
-    character => !!character.getEntity(),
+    character => !!(character && character.getEntity()),
     (/*number*/ start, /*number*/ end) => {
       var text = block.getText();
       var key = block.getEntityAt(start);

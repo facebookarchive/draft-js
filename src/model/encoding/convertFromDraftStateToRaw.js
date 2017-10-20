@@ -29,7 +29,7 @@ function convertFromDraftStateToRaw(
 
   contentState.getBlockMap().forEach((block, blockKey) => {
     block.findEntityRanges(
-      character => character.getEntity() !== null,
+      character => !!(character && character.getEntity() !== null),
       start => {
         // Stringify to maintain order of otherwise numeric keys.
         var stringifiedEntityKey = DraftStringKey.stringify(

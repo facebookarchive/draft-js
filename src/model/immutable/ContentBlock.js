@@ -90,7 +90,7 @@ class ContentBlock extends ContentBlockRecord {
    * Execute a callback for every contiguous range of styles within the block.
    */
   findStyleRanges(
-    filterFn: (value: CharacterMetadata) => boolean,
+    filterFn: (value: ?CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
   ): void {
     findRangesImmutable(
@@ -105,7 +105,7 @@ class ContentBlock extends ContentBlockRecord {
    * Execute a callback for every contiguous range of entities within the block.
    */
   findEntityRanges(
-    filterFn: (value: CharacterMetadata) => boolean,
+    filterFn: (value: ?CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
   ): void {
     findRangesImmutable(

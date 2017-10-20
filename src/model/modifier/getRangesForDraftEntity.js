@@ -32,7 +32,7 @@ function getRangesForDraftEntity(
 ): Array<DraftRange> {
   var ranges = [];
   block.findEntityRanges(
-    c => c.getEntity() === key,
+    c => !!(c && c.getEntity() === key),
     (start, end) => {
       ranges.push({start, end});
     },

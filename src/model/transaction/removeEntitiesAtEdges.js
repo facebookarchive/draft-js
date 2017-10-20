@@ -73,7 +73,7 @@ function getRemovalRange(
   findRangesImmutable(
     characters,
     (a, b) => a.getEntity() === b.getEntity(),
-    element => element.getEntity() === key,
+    element => !!(element && element.getEntity() === key),
     (start, end) => {
       if (start <= offset && end >= offset) {
         removalRange = {start, end};

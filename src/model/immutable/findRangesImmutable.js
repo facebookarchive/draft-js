@@ -24,7 +24,7 @@ import type {List} from 'immutable';
 function findRangesImmutable<T>(
   haystack: List<T>,
   areEqualFn: (a: T, b: T) => boolean,
-  filterFn: (value: T) => boolean,
+  filterFn: (value: ?T) => boolean,
   foundFn: (start: number, end: number) => void,
 ): void {
   if (!haystack.size) {
