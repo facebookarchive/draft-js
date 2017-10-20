@@ -86,31 +86,27 @@ class CharacterMetadata extends CharacterMetadataRecord {
    */
   static create(config?: CharacterMetadataConfig): CharacterMetadata {
     if (!config) {
-      return EMPTY;
+      return CharacterMetadata.EMPTY;
     }
 
-    const defaultConfig: CharacterMetadataConfig =
-      {style: EMPTY_SET, entity: (null: ?string)};
-
     // Fill in unspecified properties, if necessary.
-    var configMap = Map(defaultConfig).merge(config);
+    var configMap = Map({ ...defaultRecord, ...config });
 
     var existing: ?CharacterMetadata = pool.get(configMap);
     if (existing) {
       return existing;
     }
 
-    var newCharacter = new CharacterMetadata(configMap);
+    var newCharacter = new CharacterMetadata(config);
     pool = pool.set(configMap, newCharacter);
     return newCharacter;
   }
+
+  static EMPTY = new CharacterMetadata();
 }
 
-var EMPTY = new CharacterMetadata();
 var pool: Map<Map<any, any>, CharacterMetadata> = Map(
-  [[Map(defaultRecord), EMPTY]],
+  [[Map(defaultRecord), CharacterMetadata.EMPTY]],
 );
-
-CharacterMetadata.EMPTY = EMPTY;
 
 module.exports = CharacterMetadata;
