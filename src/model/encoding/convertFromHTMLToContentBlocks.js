@@ -403,8 +403,12 @@ function genFragment(
         entityConfig[attr] = imageAttribute;
       }
     });
-    const imageURI = new URI(entityConfig.src).toString();
-    node.textContent = imageURI; // Output src if no decorator
+    // Forcing this node to have children because otherwise no entity will be
+    // created for this node.
+    // The child text node cannot just have a space or return as content -
+    // we strip those out.
+    // See https://github.com/facebook/draft-js/issues/231 for some context.
+    node.textContent = '\ud83d\udcf7';
 
     // TODO: update this when we remove DraftEntity entirely
     inEntity = DraftEntity.__create(

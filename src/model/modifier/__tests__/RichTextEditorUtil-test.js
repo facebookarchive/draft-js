@@ -63,7 +63,7 @@ describe('RichTextEditorUtil', () => {
 
       // Remove the current text from the blockquote.
       const resetBlockquote = DraftModifier.removeRange(
-        editorState.getCurrentContent(),
+        contentState,
         new SelectionState({
           anchorKey: lastBlockKey,
           anchorOffset: 0,
@@ -84,6 +84,27 @@ describe('RichTextEditorUtil', () => {
 
       expect(lastBlockNow.getType()).toBe('unstyled');
       expect(lastBlockNow.getText()).toBe('');
+    });
+
+    it('resets the current block type at the start of the first block', () => {
+      const contentState = editorState.getCurrentContent();
+
+      const setListItem = DraftModifier.setBlockType(
+        contentState,
+        selectionState,
+        'unordered-list-item',
+      );
+
+      const withListItem = EditorState.push(
+        editorState,
+        setListItem,
+        'change-block-type',
+      );
+
+      const afterBackspace = onBackspace(withListItem);
+      const firstBlockNow = afterBackspace.getCurrentContent().getFirstBlock();
+
+      expect(firstBlockNow.getType()).toBe('unstyled');
     });
 
     it('removes a preceding atomic block', () => {

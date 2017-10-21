@@ -16,7 +16,7 @@ you can run this by first building draft-js and then installing this demo's depe
 ```bash
 # in draft-js folder
 yarn
-pushd examples/universal
+pushd examples/draft-0-9-1/universal
 yarn
 ```
 
@@ -25,5 +25,3 @@ then, run
 `npm run demo`
 
 which will open a server listening on [http://localhost:3003](http://localhost:3003)
-
-visiting the main route will return a simple unstyled draft editor but the client, on re-rendering the `<SimpleEditor />` will complain that there is a mismatch between the server rendered content and the client-rendered content.

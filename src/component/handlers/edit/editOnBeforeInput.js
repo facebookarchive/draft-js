@@ -75,7 +75,10 @@ function replaceText(
  * preserve spellcheck highlighting, which disappears or flashes if re-render
  * occurs on the relevant text nodes.
  */
-function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
+function editOnBeforeInput(
+  editor: DraftEditor,
+  e: SyntheticInputEvent<>,
+): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
@@ -108,21 +111,42 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
   var selection = editorState.getSelection();
+  var selectionStart = selection.getStartOffset();
+  var selectionEnd = selection.getEndOffset();
   var anchorKey = selection.getAnchorKey();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
-    editor.update(
-      replaceText(
-        editorState,
-        chars,
-        editorState.getCurrentInlineStyle(),
-        getEntityKeyForSelection(
-          editorState.getCurrentContent(),
-          editorState.getSelection(),
+
+    // If the character that the user is trying to replace with
+    // is the same as the current selection text the just update the
+    // `SelectionState`.  Else, update the ContentState with the new text
+    var currentlySelectedChars = editorState
+      .getCurrentContent()
+      .getPlainText()
+      .slice(selectionStart, selectionEnd);
+    if (chars === currentlySelectedChars) {
+      this.update(
+        EditorState.forceSelection(
+          editorState,
+          selection.merge({
+            focusOffset: selectionEnd,
+          }),
         ),
-      ),
-    );
+      );
+    } else {
+      editor.update(
+        replaceText(
+          editorState,
+          chars,
+          editorState.getCurrentInlineStyle(),
+          getEntityKeyForSelection(
+            editorState.getCurrentContent(),
+            editorState.getSelection(),
+          ),
+        ),
+      );
+    }
     return;
   }
 
@@ -152,7 +176,7 @@ function editOnBeforeInput(editor: DraftEditor, e: SyntheticInputEvent): void {
     const nativeSelection = global.getSelection();
     // Selection is necessarily collapsed at this point due to earlier check.
     if (
-      nativeSelection.anchorNode !== null &&
+      nativeSelection.anchorNode &&
       nativeSelection.anchorNode.nodeType === Node.TEXT_NODE
     ) {
       // See isTabHTMLSpanElement in chromium EditingUtilities.cpp.
