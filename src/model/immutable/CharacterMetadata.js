@@ -21,25 +21,26 @@ var {
   Record,
 } = require('immutable');
 
-// Immutable.map is typed such that the value for every key in the map
-// must be the same type
-type CharacterMetadataConfigValueType = DraftInlineStyle | ?string;
-
 type CharacterMetadataConfig = {
-  style?: CharacterMetadataConfigValueType,
-  entity?: CharacterMetadataConfigValueType,
+  style?: DraftInlineStyle,
+  entity?: ?string,
+};
+
+type RecordProps = {
+  style: DraftInlineStyle,
+  entity: ?string,
 };
 
 const EMPTY_SET = OrderedSet();
 
-var defaultRecord: CharacterMetadataConfig = {
+var defaultRecord: RecordProps = {
   style: EMPTY_SET,
   entity: null,
 };
 
 var CharacterMetadataRecord = Record(defaultRecord);
 
-class CharacterMetadata extends CharacterMetadataRecord {
+class CharacterMetadata extends CharacterMetadataRecord<RecordProps> {
   getStyle(): DraftInlineStyle {
     return this.get('style');
   }

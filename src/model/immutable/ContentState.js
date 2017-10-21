@@ -30,12 +30,14 @@ const sanitizeDraftText = require('sanitizeDraftText');
 
 const {List, Record, Repeat} = Immutable;
 
-const defaultRecord: {
+type RecordProps = {
   entityMap: ?any,
   blockMap: ?BlockMap,
   selectionBefore: ?SelectionState,
   selectionAfter: ?SelectionState,
-} = {
+};
+
+const defaultRecord: RecordProps = {
   entityMap: null,
   blockMap: null,
   selectionBefore: null,
@@ -44,7 +46,7 @@ const defaultRecord: {
 
 const ContentStateRecord = Record(defaultRecord);
 
-class ContentState extends ContentStateRecord {
+class ContentState extends ContentStateRecord<RecordProps> {
 
   getEntityMap(): any {
     // TODO: update this when we fully remove DraftEntity

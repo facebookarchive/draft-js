@@ -29,14 +29,16 @@ var {
 
 const EMPTY_SET = OrderedSet();
 
-var defaultRecord: {
+type RecordProps = {
   key: string,
   type: DraftBlockType,
   text: string,
   characterList: List<CharacterMetadata>,
   depth: number,
   data: Map<any, any>,
-} = {
+};
+
+var defaultRecord: RecordProps = {
   key: '',
   type: 'unstyled',
   text: '',
@@ -47,7 +49,8 @@ var defaultRecord: {
 
 var ContentBlockRecord = Record(defaultRecord);
 
-class ContentBlock extends ContentBlockRecord {
+class ContentBlock extends ContentBlockRecord<RecordProps> {
+
   getKey(): string {
     return this.get('key');
   }

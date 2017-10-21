@@ -19,11 +19,19 @@ var Immutable = require('immutable');
 
 var {Record} = Immutable;
 
-var DraftEntityInstanceRecord = Record({
+type RecordProps = {
+  type: DraftEntityType,
+  mutability: DraftEntityMutability,
+  data: Object,
+};
+
+var defaultRecord: RecordProps = {
   type: 'TOKEN',
   mutability: 'IMMUTABLE',
-  data: Object,
-});
+  data: {},
+};
+
+var DraftEntityInstanceRecord = Record(defaultRecord);
 
 /**
  * An instance of a document entity, consisting of a `type` and relevant
@@ -36,7 +44,7 @@ var DraftEntityInstanceRecord = Record({
  * the rendered anchor. For a mention, the ID could be used to retrieve
  * a hovercard.
  */
-class DraftEntityInstance extends DraftEntityInstanceRecord {
+class DraftEntityInstance extends DraftEntityInstanceRecord<RecordProps> {
   getType(): DraftEntityType {
     return this.get('type');
   }

@@ -17,7 +17,7 @@ import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {EditorChangeType} from 'EditorChangeType';
 import type {EntityMap} from 'EntityMap';
-import type {List, OrderedMap} from 'immutable';
+import type {List, OrderedMap, RecordFactory} from 'immutable';
 
 var BlockTree = require('BlockTree');
 var ContentState = require('ContentState');
@@ -63,7 +63,9 @@ var defaultRecord: EditorStateRecordType = {
   undoStack: Stack(),
 };
 
-var EditorStateRecord = Record(defaultRecord);
+var EditorStateRecord: RecordFactory<EditorStateRecordType> = Record(
+  defaultRecord,
+);
 
 class EditorState {
   _immutable: EditorStateRecord;
