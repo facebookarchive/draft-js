@@ -99,7 +99,7 @@ describe('removeRangeFromContentState', () => {
       );
     });
 
-    it('nust remove to the end of the block', () => {
+    it('must remove to the end of the block', () => {
       // Remove from 3 to end.
       var originalBlock = contentState.getBlockMap().first();
       var selection = selectionState.merge({
