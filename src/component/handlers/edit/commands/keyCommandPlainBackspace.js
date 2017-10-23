@@ -31,7 +31,8 @@ function keyCommandPlainBackspace(editorState: EditorState): EditorState {
       var content = strategyState.getCurrentContent();
       var key = selection.getAnchorKey();
       var offset = selection.getAnchorOffset();
-      var charBehind = content.getBlockForKey(key).getText()[offset - 1];
+      var block = content.getBlockForKey(key);
+      var charBehind = block && block.getText()[offset - 1];
       return moveSelectionBackward(
         strategyState,
         charBehind ? UnicodeUtils.getUTF16Length(charBehind, 0) : 1,

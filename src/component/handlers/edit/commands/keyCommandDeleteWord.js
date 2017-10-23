@@ -16,6 +16,7 @@ var DraftRemovableWord = require('DraftRemovableWord');
 var EditorState = require('EditorState');
 
 var moveSelectionForward = require('moveSelectionForward');
+var nullthrows = require('nullthrows');
 var removeTextWithStrategy = require('removeTextWithStrategy');
 
 /**
@@ -30,7 +31,8 @@ function keyCommandDeleteWord(editorState: EditorState): EditorState {
       var offset = selection.getStartOffset();
       var key = selection.getStartKey();
       var content = strategyState.getCurrentContent();
-      var text = content.getBlockForKey(key).getText().slice(offset);
+      var text = nullthrows(content.getBlockForKey(key))
+        .getText().slice(offset);
       var toRemove = DraftRemovableWord.getForward(text);
 
       // If there are no words in front of the cursor, remove the newline.

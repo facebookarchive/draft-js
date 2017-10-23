@@ -32,6 +32,7 @@ var getContentStateFragment = require('getContentStateFragment');
 var insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 var insertTextIntoContentState = require('insertTextIntoContentState');
 var invariant = require('invariant');
+var nullthrows = require('nullthrows');
 var modifyBlockForContentState = require('modifyBlockForContentState');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 var removeRangeFromContentState = require('removeRangeFromContentState');
@@ -151,8 +152,8 @@ var DraftModifier = {
     }
     startKey = rangeToRemove.getAnchorKey();
     endKey = rangeToRemove.getFocusKey();
-    startBlock = contentState.getBlockForKey(startKey);
-    endBlock = contentState.getBlockForKey(endKey);
+    startBlock = nullthrows(contentState.getBlockForKey(startKey));
+    endBlock = nullthrows(contentState.getBlockForKey(endKey));
     const startOffset = rangeToRemove.getStartOffset();
     const endOffset = rangeToRemove.getEndOffset();
 

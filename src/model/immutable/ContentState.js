@@ -73,9 +73,8 @@ class ContentState extends ContentStateRecord<RecordProps> {
     return selection;
   }
 
-  getBlockForKey(key: string): ContentBlock {
-    var block: ContentBlock = this.getBlockMap().get(key);
-    return block;
+  getBlockForKey(key: string): ?ContentBlock {
+    return this.getBlockMap().get(key);
   }
 
   getKeyBefore(key: string): ?string {

@@ -239,7 +239,7 @@ the selection range will be placed in the `selectionAfter` position.
 ### getBlockForKey
 
 ```
-getBlockForKey(key: string): ContentBlock
+getBlockForKey(key: string): ?ContentBlock
 ```
 Returns the `ContentBlock` corresponding to the given block key.
 

@@ -101,7 +101,7 @@ function editOnInput(editor: DraftEditor): void {
   var {start, end} = foundStartAndEnd;
 
   var content = editorState.getCurrentContent();
-  var block = content.getBlockForKey(blockKey);
+  var block = nullthrows(content.getBlockForKey(blockKey));
   var modelText = block.getText().slice(start, end);
 
   // Special-case soft newlines here. If the DOM text ends in a soft newline,

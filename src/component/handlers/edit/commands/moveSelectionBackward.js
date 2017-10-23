@@ -15,6 +15,8 @@
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
+const nullthrows = require('nullthrows');
+
 /**
  * Given a collapsed selection, move the focus `maxDistance` backward within
  * the selected block. If the selection will go beyond the start of the block,
@@ -41,7 +43,7 @@ function moveSelectionBackward(
       focusKey = key;
     } else {
       focusKey = keyBefore;
-      var blockBefore = content.getBlockForKey(keyBefore);
+      var blockBefore = nullthrows(content.getBlockForKey(keyBefore));
       focusOffset = blockBefore.getText().length;
     }
   } else {

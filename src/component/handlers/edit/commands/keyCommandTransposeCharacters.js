@@ -16,6 +16,7 @@ var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 
 var getContentStateFragment = require('getContentStateFragment');
+var nullthrows = require('nullthrows');
 
 /**
  * Transpose the characters on either side of a collapsed cursor, or
@@ -35,7 +36,7 @@ function keyCommandTransposeCharacters(editorState: EditorState): EditorState {
 
   var blockKey = selection.getAnchorKey();
   var content = editorState.getCurrentContent();
-  var block = content.getBlockForKey(blockKey);
+  var block = nullthrows(content.getBlockForKey(blockKey));
   var length = block.getLength();
 
   // Nothing to transpose if there aren't two characters.

@@ -15,6 +15,8 @@
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
+const nullthrows = require('nullthrows');
+
 /**
  * Given a collapsed selection, move the focus `maxDistance` forward within
  * the selected block. If the selection will go beyond the end of the block,
@@ -35,7 +37,7 @@ function moveSelectionForward(
   var focusKey = key;
   var focusOffset;
 
-  var block = content.getBlockForKey(key);
+  var block = nullthrows(content.getBlockForKey(key));
 
   if (maxDistance > (block.getText().length - offset)) {
     focusKey = content.getKeyAfter(key);
@@ -44,7 +46,9 @@ function moveSelectionForward(
     focusOffset = offset + maxDistance;
   }
 
-  return selection.merge({focusKey, focusOffset});
+  return focusKey != null ?
+    selection.merge({focusKey, focusOffset}) :
+    selection;
 }
 
 module.exports = moveSelectionForward;

@@ -31,7 +31,8 @@ function keyCommandPlainDelete(editorState: EditorState): EditorState {
       var content = strategyState.getCurrentContent();
       var key = selection.getAnchorKey();
       var offset = selection.getAnchorOffset();
-      var charAhead = content.getBlockForKey(key).getText()[offset];
+      var block = content.getBlockForKey(key);
+      var charAhead = block && block.getText()[offset];
       return moveSelectionForward(
         strategyState,
         charAhead ? UnicodeUtils.getUTF16Length(charAhead, 0) : 1,

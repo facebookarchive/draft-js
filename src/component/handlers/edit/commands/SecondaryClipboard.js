@@ -35,7 +35,7 @@ var SecondaryClipboard = {
 
     if (selection.isCollapsed()) {
       var anchorKey = selection.getAnchorKey();
-      var blockEnd = content.getBlockForKey(anchorKey).getLength();
+      var blockEnd = nullthrows(content.getBlockForKey(anchorKey)).getLength();
 
       if (blockEnd === selection.getAnchorOffset()) {
         return editorState;
