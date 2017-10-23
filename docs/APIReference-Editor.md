@@ -254,6 +254,13 @@ onRightArrow?: (e: SyntheticKeyboardEvent) => void
 ```
 onDownArrow?: (e: SyntheticKeyboardEvent) => void
 ```
+#### keyBindingFn
+
+```
+keyBindingFn?: (e: SyntheticKeyboardEvent) => void
+```
+
+This prop lets you handle key events directly and provides an opportunity to return custom editor commands. You can find a more detailed explanation of this [here](/docs/advanced-topics-key-bindings.html).
 
 #### onLeftArrow
 ```
