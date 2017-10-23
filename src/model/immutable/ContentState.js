@@ -26,6 +26,8 @@ const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
+const invariant = require('invariant');
+const nullthrows = require('nullthrows');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 const {List, Record, Repeat} = Immutable;
@@ -54,15 +56,21 @@ class ContentState extends ContentStateRecord<RecordProps> {
   }
 
   getBlockMap(): BlockMap {
-    return this.get('blockMap');
+    const blockMap = this.get('blockMap');
+    invariant(blockMap, 'ContentState missing blockMap');
+    return blockMap;
   }
 
   getSelectionBefore(): SelectionState {
-    return this.get('selectionBefore');
+    const selection = this.get('selectionBefore');
+    invariant(selection, 'ContentState missing selectionBefore');
+    return selection;
   }
 
   getSelectionAfter(): SelectionState {
-    return this.get('selectionAfter');
+    const selection = this.get('selectionAfter');
+    invariant(selection, 'ContentState missing selectionAfter');
+    return selection;
   }
 
   getBlockForKey(key: string): ContentBlock {
@@ -107,11 +115,15 @@ class ContentState extends ContentStateRecord<RecordProps> {
   }
 
   getFirstBlock(): ContentBlock {
-    return this.getBlockMap().first();
+    const block = this.getBlockMap().first();
+    invariant(block, 'ContentState blockMap is empty');
+    return block;
   }
 
   getLastBlock(): ContentBlock {
-    return this.getBlockMap().last();
+    const block = this.getBlockMap().last();
+    invariant(block, 'ContentState blockMap is empty');
+    return block;
   }
 
   getPlainText(delimiter?: string): string {
@@ -128,10 +140,9 @@ class ContentState extends ContentStateRecord<RecordProps> {
   }
 
   hasText(): boolean {
-    var blockMap = this.getBlockMap();
     return (
-      blockMap.size > 1 ||
-      blockMap.first().getLength() > 0
+      this.getBlockMap().size > 1 ||
+      this.getFirstBlock().getLength() > 0
     );
   }
 
@@ -188,7 +199,7 @@ class ContentState extends ContentStateRecord<RecordProps> {
     var blockMap = BlockMapBuilder.createFromArray(theBlocks);
     var selectionState = blockMap.isEmpty()
       ? new SelectionState()
-      : SelectionState.createEmpty(blockMap.first().getKey());
+      : SelectionState.createEmpty(nullthrows(blockMap.first()).getKey());
     return new ContentState({
       blockMap,
       entityMap: entityMap || DraftEntity,
