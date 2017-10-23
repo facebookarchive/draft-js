@@ -105,11 +105,18 @@ function getUpdatedSelectionState(
     isBackward = startKey === focusBlockKey;
   }
 
+  var nextAnchorOffset = anchorBlockOffset != null ?
+    {anchorOffset: anchorBlockOffset} :
+    {};
+  var nextFocusOffset = focusBlockOffset != null ?
+    {focusOffset: focusBlockOffset} :
+    {};
+
   return selection.merge({
     anchorKey: anchorBlockKey,
-    anchorOffset: anchorBlockOffset,
+    ...nextAnchorOffset,
     focusKey: focusBlockKey,
-    focusOffset: focusBlockOffset,
+    ...nextFocusOffset,
     isBackward,
   });
 }
