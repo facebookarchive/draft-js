@@ -20,6 +20,7 @@ var Immutable = require('immutable');
 
 var generateRandomKey = require('generateRandomKey');
 var invariant = require('invariant');
+var nullthrows = require('nullthrows');
 
 const {Map} = Immutable;
 
@@ -35,7 +36,7 @@ function splitBlockInContentState(
   var key = selectionState.getAnchorKey();
   var offset = selectionState.getAnchorOffset();
   var blockMap = contentState.getBlockMap();
-  var blockToSplit = blockMap.get(key);
+  var blockToSplit = nullthrows(blockMap.get(key));
 
   var text = blockToSplit.getText();
   var chars = blockToSplit.getCharacterList();

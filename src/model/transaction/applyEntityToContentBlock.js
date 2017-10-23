@@ -17,6 +17,8 @@ import type ContentBlock from 'ContentBlock';
 
 var CharacterMetadata = require('CharacterMetadata');
 
+var nullthrows = require('nullthrows');
+
 function applyEntityToContentBlock(
   contentBlock: ContentBlock,
   start: number,
@@ -27,7 +29,10 @@ function applyEntityToContentBlock(
   while (start < end) {
     characterList = characterList.set(
       start,
-      CharacterMetadata.applyEntity(characterList.get(start), entityKey),
+      CharacterMetadata.applyEntity(
+        nullthrows(characterList.get(start)),
+        entityKey,
+      ),
     );
     start++;
   }

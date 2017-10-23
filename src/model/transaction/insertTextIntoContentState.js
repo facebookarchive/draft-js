@@ -13,16 +13,17 @@
 
 'use strict';
 
+import type CharacterMetadata from 'CharacterMetadata';
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
+
 var Immutable = require('immutable');
 
 var insertIntoList = require('insertIntoList');
 var invariant = require('invariant');
+var nullthrows = require('nullthrows');
 
 var {Repeat} = Immutable;
-
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
 
 function insertTextIntoContentState(
   contentState: ContentState,
@@ -43,7 +44,7 @@ function insertTextIntoContentState(
   var blockMap = contentState.getBlockMap();
   var key = selectionState.getStartKey();
   var offset = selectionState.getStartOffset();
-  var block = blockMap.get(key);
+  var block = nullthrows(blockMap.get(key));
   var blockText = block.getText();
 
   var newBlock = block.merge({

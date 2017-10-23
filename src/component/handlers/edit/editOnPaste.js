@@ -27,6 +27,7 @@ var RichTextEditorUtil = require('RichTextEditorUtil');
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
 const isEventHandled = require('isEventHandled');
+const nullthrows = require('nullthrows');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
 /**
@@ -131,7 +132,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
         (
           textBlocks.length === 1 &&
           internalClipboard.size === 1 &&
-          internalClipboard.first().getText() === text
+          nullthrows(internalClipboard.first()).getText() === text
         )
       ) {
         editor.update(

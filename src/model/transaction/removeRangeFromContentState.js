@@ -19,6 +19,8 @@ import type {List} from 'immutable';
 
 var Immutable = require('immutable');
 
+var nullthrows = require('nullthrows');
+
 function removeRangeFromContentState(
   contentState: ContentState,
   selectionState: SelectionState,
@@ -33,8 +35,8 @@ function removeRangeFromContentState(
   var endKey = selectionState.getEndKey();
   var endOffset = selectionState.getEndOffset();
 
-  var startBlock = blockMap.get(startKey);
-  var endBlock = blockMap.get(endKey);
+  var startBlock = nullthrows(blockMap.get(startKey));
+  var endBlock = nullthrows(blockMap.get(endKey));
   var characterList;
 
   if (startBlock === endBlock) {

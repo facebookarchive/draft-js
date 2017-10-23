@@ -16,6 +16,8 @@
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
+const nullthrows = require('nullthrows');
+
 function adjustBlockDepthForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
@@ -29,7 +31,7 @@ function adjustBlockDepthForContentState(
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
-    .concat([[endKey, blockMap.get(endKey)]])
+    .concat([[endKey, nullthrows(blockMap.get(endKey))]])
     .map(block => {
       var depth = block.getDepth() + adjustment;
       depth = Math.max(0, Math.min(depth, maxDepth));

@@ -22,6 +22,7 @@ var BlockMapBuilder = require('BlockMapBuilder');
 var generateRandomKey = require('generateRandomKey');
 var insertIntoList = require('insertIntoList');
 var invariant = require('invariant');
+var nullthrows = require('nullthrows');
 
 function insertFragmentIntoContentState(
   contentState: ContentState,
@@ -43,8 +44,8 @@ function insertFragmentIntoContentState(
   var finalOffset;
 
   if (fragmentSize === 1) {
-    var targetBlock = blockMap.get(targetKey);
-    var pastedBlock = fragment.first();
+    var targetBlock = nullthrows(blockMap.get(targetKey));
+    var pastedBlock = nullthrows(fragment.first());
     var text = targetBlock.getText();
     var chars = targetBlock.getCharacterList();
 
@@ -94,7 +95,7 @@ function insertFragmentIntoContentState(
       var blockSize = text.length;
       var headText = text.slice(0, targetOffset);
       var headCharacters = chars.slice(0, targetOffset);
-      var appendToHead = fragment.first();
+      var appendToHead = nullthrows(fragment.first());
 
       var modifiedHead = block.merge({
         text: headText + appendToHead.getText(),
@@ -115,7 +116,7 @@ function insertFragmentIntoContentState(
       // Modify tail portion of block.
       var tailText = text.slice(targetOffset, blockSize);
       var tailCharacters = chars.slice(targetOffset, blockSize);
-      var prependToTail = fragment.last();
+      var prependToTail = nullthrows(fragment.last());
       finalKey = generateRandomKey();
 
       var modifiedTail = prependToTail.merge({
@@ -131,7 +132,7 @@ function insertFragmentIntoContentState(
     },
   );
 
-  finalOffset = fragment.last().getLength();
+  finalOffset = nullthrows(fragment.last()).getLength();
 
   return contentState.merge({
     blockMap: BlockMapBuilder.createFromArray(newBlockArr),

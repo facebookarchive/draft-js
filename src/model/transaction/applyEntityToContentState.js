@@ -19,6 +19,7 @@ import type SelectionState from 'SelectionState';
 var Immutable = require('immutable');
 
 var applyEntityToContentBlock = require('applyEntityToContentBlock');
+var nullthrows = require('nullthrows');
 
 function applyEntityToContentState(
   contentState: ContentState,
@@ -35,7 +36,7 @@ function applyEntityToContentState(
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
     .toOrderedMap()
-    .merge(Immutable.OrderedMap([[endKey, blockMap.get(endKey)]]))
+    .merge(Immutable.OrderedMap([[endKey, nullthrows(blockMap.get(endKey))]]))
     .map((block, blockKey) => {
       const sliceStart = blockKey === startKey ? startOffset : 0;
       const sliceEnd = blockKey === endKey ? endOffset : block.getLength();
