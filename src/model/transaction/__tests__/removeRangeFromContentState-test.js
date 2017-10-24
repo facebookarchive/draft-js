@@ -374,7 +374,7 @@ describe('removeRangeFromContentState', () => {
         var alteredBlock = afterBlockMap.first();
 
         // no-op for the first block, since no new content is appended.
-        expect(alteredBlock).toBe(originalBlockA);
+        expect(alteredBlock).toEqual(originalBlockA);
         expect(alteredBlock).not.toBe(originalBlockB);
         expect(alteredBlock.getType()).toBe(originalBlockA.getType());
 

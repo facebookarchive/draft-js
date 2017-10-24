@@ -50,12 +50,21 @@ function removeRangeFromContentState(
       .concat(endBlock.getCharacterList().slice(endOffset));
   }
 
+  var emptyBlockMeta = {};
+  if (!characterList.size) {
+    if (startBlock.getCharacterList().get(0)) {
+      emptyBlockMeta = startBlock.getCharacterList().get(0);
+    } else {
+      emptyBlockMeta = startBlock.emptyBlockMeta;
+    }
+  }
   var modifiedStart = startBlock.merge({
     text: (
       startBlock.getText().slice(0, startOffset) +
       endBlock.getText().slice(endOffset)
     ),
     characterList,
+    emptyBlockMeta,
   });
 
   var newBlocks = blockMap

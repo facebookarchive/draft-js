@@ -141,6 +141,10 @@ class DraftEditorBlock extends React.Component<Props> {
         var offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
         var start = leaf.get('start');
         var end = leaf.get('end');
+        var styleSet = block.getInlineStyleAt(start);
+        if (!text && block.emptyBlockMeta.style) {
+          styleSet = block.emptyBlockMeta.style;
+        }
         return (
           /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
            * error when upgrading Flow's support for React. Common errors found
@@ -154,7 +158,7 @@ class DraftEditorBlock extends React.Component<Props> {
             selection={hasSelection ? this.props.selection : undefined}
             forceSelection={this.props.forceSelection}
             text={text.slice(start, end)}
-            styleSet={block.getInlineStyleAt(start)}
+            styleSet={styleSet}
             customStyleMap={this.props.customStyleMap}
             customStyleFn={this.props.customStyleFn}
             isLast={ii === lastLeafSet && jj === lastLeaf}

@@ -40,17 +40,29 @@ function splitBlockInContentState(
   var text = blockToSplit.getText();
   var chars = blockToSplit.getCharacterList();
 
+  var blockAboveText = text.slice(0, offset);
+  var blockAboveEmptyBlockMeta = blockToSplit.emptyBlockMeta;
+  if (text && !blockAboveText) {
+    blockAboveEmptyBlockMeta = chars.first();
+  }
   var blockAbove = blockToSplit.merge({
     text: text.slice(0, offset),
     characterList: chars.slice(0, offset),
+    emptyBlockMeta: blockAboveEmptyBlockMeta,
   });
 
   var keyBelow = generateRandomKey();
+  var blockBelowText = text.slice(offset);
+  var blockBelowEmptyBlockMeta = blockAbove.emptyBlockMeta;
+  if (!blockBelowText && text) {
+    blockBelowEmptyBlockMeta = chars.last();
+  }
   var blockBelow = blockAbove.merge({
     key: keyBelow,
-    text: text.slice(offset),
+    text: blockBelowText,
     characterList: chars.slice(offset),
     data: Map(),
+    emptyBlockMeta: blockBelowEmptyBlockMeta,
   });
 
   var blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);

@@ -621,6 +621,9 @@ function getInlineStyleForCollapsedSelection(
     return startBlock.getInlineStyleAt(0);
   }
 
+  if (startBlock.emptyBlockMeta.style) {
+    return startBlock.emptyBlockMeta.style;
+  }
   // Otherwise, look upward in the document to find the closest character.
   return lookUpwardForInlineStyle(content, startKey);
 }
