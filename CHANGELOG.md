@@ -11,13 +11,13 @@ Changes to `src` are live in production on facebook.com at the time of release.
   events when right or left arrow is pressed.
   ([@eessex](https://github.com/eessex)
   in [#1384](https://github.com/facebook/draft-js/pull/1384))
-* Expose path to Draft.css for usage by CSS pre-processors.
-  ([@darobin ](https://github.com/darobin )
+* Expose Draft.css as default CSS export in package.json for use by CSS
+  preprocessors. ([@darobin](https://github.com/darobin )
   in [#566](https://github.com/facebook/draft-js/pull/566))
 
 ### Changed
-* Change 'lookUpwardForInlineStyle' from O(n^2) to O(n). :)
-  ([@Lemmih](https://github.com/Lemmih)
+* Change 'lookUpwardForInlineStyle' from O(n^2) to O(n), improving performance.
+  :) ([@Lemmih](https://github.com/Lemmih)
   in [#1429](https://github.com/facebook/draft-js/pull/1429))
 
 ### Fixed
