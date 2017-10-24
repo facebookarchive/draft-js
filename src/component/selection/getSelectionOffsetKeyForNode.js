@@ -18,14 +18,14 @@
  * found on the DOM tree of given node.
  */
 function getSelectionOffsetKeyForNode(node: Node): ?string {
-  var win = node.ownerDocument.defaultView;
-  if (win && node instanceof win.Element) {
-    var offsetKey = node.getAttribute('data-offset-key');
+  if (node.nodeType === 1) {
+    var element: Element = (node: any);
+    var offsetKey = element.getAttribute('data-offset-key');
     if (offsetKey) {
       return offsetKey;
     }
-    for (var ii = 0; ii < node.childNodes.length; ii++) {
-      var childOffsetKey = getSelectionOffsetKeyForNode(node.childNodes[ii]);
+    for (var ii = 0; ii < element.childNodes.length; ii++) {
+      var childOffsetKey = getSelectionOffsetKeyForNode(element.childNodes[ii]);
       if (childOffsetKey) {
         return childOffsetKey;
       }

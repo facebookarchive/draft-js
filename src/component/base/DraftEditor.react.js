@@ -374,15 +374,15 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
-    const {defaultView} = editorNode.ownerDocument;
 
     invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
+      editorNode.nodeType === 1,
+      'editorNode is not an Element',
     );
     editorNode.focus();
 
     // Restore scroll position
+    const {defaultView} = editorNode.ownerDocument;
     if (scrollParent === defaultView) {
       defaultView.scrollTo(x, y);
     } else {
@@ -406,8 +406,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _blur(): void {
     const editorNode = ReactDOM.findDOMNode(this.refs.editor);
     invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
+      editorNode.nodeType === 1,
+      'editorNode is not an Element',
     );
     editorNode.blur();
   }

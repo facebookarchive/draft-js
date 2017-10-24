@@ -36,10 +36,11 @@ function getAnonymizedDOM(
   }
 
   invariant(
-    anonymized instanceof Element,
+    anonymized.nodeType === Node.ELEMENT_NODE,
     'Node must be an Element if it is not a text node.',
   );
-  return anonymized.outerHTML;
+  var element: Element = (anonymized: any);
+  return element.outerHTML;
 }
 
 function anonymizeTextWithin(
@@ -77,15 +78,14 @@ function getAnonymizedEditorDOM(
   // grabbing the DOM content of the Draft editor
   let currentNode = node;
   while (currentNode) {
-    if (
-      currentNode instanceof Element &&
-      currentNode.hasAttribute('contenteditable')
-    ) {
-      // found the Draft editor container
-      return getAnonymizedDOM(currentNode, getNodeLabels);
-    } else {
-      currentNode = currentNode.parentNode;
+    if (currentNode.nodeType === 1) {
+      const currentElement: Element = (currentNode: any);
+      if (currentElement.hasAttribute('contenteditable')) {
+        // found the Draft editor container
+        return getAnonymizedDOM(currentNode, getNodeLabels);
+      }
     }
+    currentNode = currentNode.parentNode;
   }
   return 'Could not find contentEditable parent of node';
 }
