@@ -138,18 +138,26 @@ describe('DraftPasteProcessor', function() {
     ]);
   });
 
-  /**
-   * todo: azelenskiy
-   * Changes to the mocked DOM appear to have broken this.
-   *
-   * it('must suppress blocks nested inside other blocks', function() {
-   *   var html = '<p><h2>Some text here</h2> more text here </p>';
-   *   var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
-   *   assertBlockTypes(output, [
-   *   'unstyled',
-   *   ]);
-   * });
-   */
+  it('must suppress blocks nested inside other blocks', function() {
+    var html = '<h2><p>Some text here</p> more text here </h2>';
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP);
+    assertBlockTypes(output, [
+      'header-two',
+    ]);
+  });
+
+  it('must not suppress blocks nested inside unstyled blocks', function() {
+    var html = '<div><h2>Some text here</h2> more text here </div>';
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP);
+    assertBlockTypes(output, [
+      'header-two',
+      'unstyled',
+    ]);
+  });
 
   it('must detect two touching blocks', function() {
     var html = '<h1>hi</h1>    <h2>hi</h2>';
@@ -217,7 +225,7 @@ describe('DraftPasteProcessor', function() {
     ]);
   });
 
-  it('must NOT treat divs as Ps when we pave Ps', function() {
+  it('must NOT treat divs as Ps when they contain Ps', function() {
     var html = '<div><p>hi</p><p>hello</p></div>';
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
@@ -228,6 +236,19 @@ describe('DraftPasteProcessor', function() {
       'paragraph',
     ]);
   });
+
+  it('must treat divs that do not contain Ps as Ps when we have Ps elsewhere',
+    function() {
+      var html = '<p>hi</p><div>hello</div><div>hola</div>';
+      var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+        html,
+        CUSTOM_BLOCK_MAP);
+      assertBlockTypes(output, [
+        'paragraph',
+        'unstyled',
+        'unstyled',
+      ]);
+    });
 
   it('must replace br tags with soft newlines', function() {
     var html = 'hi<br>hello';
