@@ -4,6 +4,43 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.10.4 (October 24th, 2017)
+
+### Added
+* Expose `onRightArrow` and `onLeftArrow` props to allow handling keyboard
+  events when right or left arrow is pressed.
+  ([@eessex](https://github.com/eessex)
+  in [#1384](https://github.com/facebook/draft-js/pull/1384))
+* Expose Draft.css as default CSS export in package.json for use by CSS
+  preprocessors. ([@darobin](https://github.com/darobin )
+  in [#566](https://github.com/facebook/draft-js/pull/566))
+
+### Changed
+* Change 'lookUpwardForInlineStyle' from O(n^2) to O(n), improving performance.
+  :) ([@Lemmih](https://github.com/Lemmih)
+  in [#1429](https://github.com/facebook/draft-js/pull/1429))
+
+### Fixed
+* Fix bug where editors inside draggable parent were broken for Safari.
+  ([@mattkrick](https://github.com/mattkrick) in
+  [#1326](https://github.com/facebook/draft-js/pull/1326))
+* Stop pulling in Enzyme as production dependency. D'oh.
+  ([@flarnie](https://github.com/flarnie) in
+  [#1415](https://github.com/facebook/draft-js/pull/1415))
+* Fix `TypeError: Cannot read property 'nodeType' of undefined` error where
+  `anchorNode` was `undefined`.
+  ([@tleunen](https://github.com/tleunen) in
+  [#1407](https://github.com/facebook/draft-js/pull/1407))
+* Fix error thrown when callback tries to `focus` on editor after it has been
+  unmounted.  ([@mattkrick](https://github.com/mattkrick) in
+  [#1409](https://github.com/facebook/draft-js/pull/1409))
+* Fix bug where selecting a single character then typing it doesn't replace it.
+  ([@karanjthakkar](https://github.com/karanjthakkar) in
+  [#719](https://github.com/facebook/draft-js/pull/719))
+* Clear the block type when backspacing at the start of the first block with
+  rich text utils.  ([@jvaill](https://github.com/jvaill) in
+  [#748](https://github.com/facebook/draft-js/pull/748))
+
 ## 0.10.3 (September 28th, 2017)
 
 ### Added
