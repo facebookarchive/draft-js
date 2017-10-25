@@ -13,18 +13,14 @@
    String.raw`\s*(?:=\s*require\(|from)[a-zA-Z_+./"'\s\d\-]+\)?[^;\n]*[;\n]`;
 
 module.exports = {
-  extends: 'fbjs',
+  extends: [
+    'fbjs',
+    'prettier',
+  ],
   rules: {
-    'comma-dangle': [2, {
-      arrays: 'always-multiline',
-      objects: 'always-multiline',
-      imports: 'always-multiline',
-      exports: 'always-multiline',
-      functions: 'always-multiline',
-    }],
-    'max-len': [2, 80, 2, {
-      'ignorePattern': maxLenIgnorePattern,
-      'ignoreUrls': true,
-    }],
+    'prettier/prettier': ['error', 'fb'],
   },
+  plugins: [
+    'prettier'
+  ]
 };
