@@ -47,7 +47,7 @@ function getCharacterRemovalRange(
     return selectionState;
   }
   var newSelectionState = selectionState;
-  if (startEntityKey && (startEntityKey === endEntityKey)) {
+  if (startEntityKey && startEntityKey === endEntityKey) {
     newSelectionState = getEntityRemovalRange(
       entityMap,
       startBlock,
@@ -136,7 +136,7 @@ function getEntityRemovalRange(
 
   // Find the entity range that overlaps with our removal range.
   var entityRanges = getRangesForDraftEntity(block, entityKey).filter(
-    (range) => sideToConsider <= range.end && sideToConsider >= range.start,
+    range => sideToConsider <= range.end && sideToConsider >= range.start,
   );
 
   invariant(

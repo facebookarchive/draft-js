@@ -83,11 +83,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
         );
 
         editor.update(
-          EditorState.push(
-            editorState,
-            withInsertedText,
-            'insert-fragment',
-          ),
+          EditorState.push(editorState, withInsertedText, 'insert-fragment'),
         );
       });
 
@@ -128,11 +124,9 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
         // The copy may have been made within a single block, in which case the
         // editor key won't be part of the paste. In this case, just check
         // whether the pasted text matches the internal clipboard.
-        (
-          textBlocks.length === 1 &&
+        (textBlocks.length === 1 &&
           internalClipboard.size === 1 &&
-          internalClipboard.first().getText() === text
-        )
+          internalClipboard.first().getText() === text)
       ) {
         editor.update(
           insertFragment(editor._latestEditorState, internalClipboard),
@@ -161,7 +155,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
         editor.props.blockRenderMap,
       );
       if (htmlFragment) {
-        const { contentBlocks, entityMap } = htmlFragment;
+        const {contentBlocks, entityMap} = htmlFragment;
         if (contentBlocks) {
           var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
           editor.update(

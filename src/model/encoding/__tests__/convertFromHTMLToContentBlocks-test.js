@@ -15,12 +15,11 @@ jest.disableAutomock();
 
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 
-const IMAGE_DATA_URL = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///' +
+const IMAGE_DATA_URL =
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///' +
   'yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
-function testConvertingAdjacentHtmlElementsToContentBlocks(
-  tag: string,
-) {
+function testConvertingAdjacentHtmlElementsToContentBlocks(tag: string) {
   it(`must not merge tags when converting adjacent <${tag} />`, () => {
     const html_string = `
       <${tag}>a</${tag}>

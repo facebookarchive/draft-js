@@ -28,7 +28,11 @@ describe('DraftEditor.react', () => {
 
       function CustomText(props) {
         // contrived example
-        return <p><b>{props.children}</b></p>;
+        return (
+          <p>
+            <b>{props.children}</b>
+          </p>
+        );
       }
 
       class Container extends React.Component {
@@ -40,14 +44,17 @@ describe('DraftEditor.react', () => {
           this.toggleCustomBlock = this.toggleCustomBlock.bind(this);
         }
         toggleCustomBlock() {
-          this.setState({
-            editorState: RichUtils.toggleBlockType(
-              this.state.editorState,
-              CUSTOM_BLOCK_TYPE,
-            ),
-          }, () => {
-            setTimeout(() => this.focus(), 0);
-          });
+          this.setState(
+            {
+              editorState: RichUtils.toggleBlockType(
+                this.state.editorState,
+                CUSTOM_BLOCK_TYPE,
+              ),
+            },
+            () => {
+              setTimeout(() => this.focus(), 0);
+            },
+          );
         }
         blockRenderFn(block) {
           if (block.getType() === CUSTOM_BLOCK_TYPE) {
@@ -73,9 +80,9 @@ describe('DraftEditor.react', () => {
             </div>
           );
         }
-        _handleChange = (editorState) => {
+        _handleChange = editorState => {
           this.setState({editorState});
-        }
+        };
       }
 
       const mountedEditorContainer = mount(<Container />);

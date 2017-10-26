@@ -48,10 +48,7 @@ function getTextContentFromFiles(
 /**
  * todo isaac: Do work to turn html/rtf into a content fragment.
  */
-function readFile(
-  file: File,
-  callback: (contents: string) => void,
-): void {
+function readFile(file: File, callback: (contents: string) => void): void {
   if (!global.FileReader || (file.type && !(file.type in TEXT_TYPES))) {
     callback('');
     return;

@@ -48,10 +48,10 @@ function editOnInput(editor: DraftEditor): void {
   var domSelection = global.getSelection();
 
   var {anchorNode, isCollapsed} = domSelection;
-  const isNotTextNode =
-    anchorNode.nodeType !== Node.TEXT_NODE;
-  const isNotTextOrElementNode = anchorNode.nodeType !== Node.TEXT_NODE
-    && anchorNode.nodeType !== Node.ELEMENT_NODE;
+  const isNotTextNode = anchorNode.nodeType !== Node.TEXT_NODE;
+  const isNotTextOrElementNode =
+    anchorNode.nodeType !== Node.TEXT_NODE &&
+    anchorNode.nodeType !== Node.ELEMENT_NODE;
 
   if (DraftFeatureFlags.draft_killswitch_allow_nontextnodes) {
     if (isNotTextNode) {
@@ -177,11 +177,7 @@ function editOnInput(editor: DraftEditor): void {
   });
 
   editor.update(
-    EditorState.push(
-      editorState,
-      contentWithAdjustedDOMSelection,
-      changeType,
-    ),
+    EditorState.push(editorState, contentWithAdjustedDOMSelection, changeType),
   );
 }
 

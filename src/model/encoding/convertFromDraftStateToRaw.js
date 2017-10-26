@@ -36,7 +36,7 @@ function convertFromDraftStateToRaw(
           block.getEntityAt(start),
         );
         if (!entityStorageMap.hasOwnProperty(stringifiedEntityKey)) {
-          entityStorageMap[stringifiedEntityKey] = '' + (entityStorageKey++);
+          entityStorageMap[stringifiedEntityKey] = '' + entityStorageKey++;
         }
       },
     );

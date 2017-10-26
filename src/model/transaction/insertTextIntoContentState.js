@@ -47,11 +47,10 @@ function insertTextIntoContentState(
   var blockText = block.getText();
 
   var newBlock = block.merge({
-    text: (
+    text:
       blockText.slice(0, offset) +
       text +
-      blockText.slice(offset, block.getLength())
-    ),
+      blockText.slice(offset, block.getLength()),
     characterList: insertIntoList(
       block.getCharacterList(),
       Repeat(characterMetadata, len).toList(),

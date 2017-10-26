@@ -20,12 +20,7 @@ var Immutable = require('immutable');
 
 var findRangesImmutable = require('findRangesImmutable');
 
-var {
-  List,
-  Map,
-  OrderedSet,
-  Record,
-} = Immutable;
+var {List, Map, OrderedSet, Record} = Immutable;
 
 const EMPTY_SET = OrderedSet();
 

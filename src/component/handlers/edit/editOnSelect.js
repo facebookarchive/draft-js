@@ -21,8 +21,10 @@ var getDraftEditorSelection = require('getDraftEditorSelection');
 const invariant = require('invariant');
 
 function editOnSelect(editor: DraftEditor): void {
-  if (editor._blockSelectEvents ||
-      editor._latestEditorState !== editor.props.editorState) {
+  if (
+    editor._blockSelectEvents ||
+    editor._latestEditorState !== editor.props.editorState
+  ) {
     return;
   }
 

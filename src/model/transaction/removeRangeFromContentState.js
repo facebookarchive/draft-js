@@ -51,10 +51,9 @@ function removeRangeFromContentState(
   }
 
   var modifiedStart = startBlock.merge({
-    text: (
+    text:
       startBlock.getText().slice(0, startOffset) +
-      endBlock.getText().slice(endOffset)
-    ),
+      endBlock.getText().slice(endOffset),
     characterList,
   });
 
@@ -63,7 +62,9 @@ function removeRangeFromContentState(
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
     .concat(Immutable.Map([[endKey, null]]))
-    .map((_, k) => { return k === startKey ? modifiedStart : null; });
+    .map((_, k) => {
+      return k === startKey ? modifiedStart : null;
+    });
 
   blockMap = blockMap.merge(newBlocks).filter(block => !!block);
 
