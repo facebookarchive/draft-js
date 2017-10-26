@@ -27,7 +27,7 @@ function editOnSelect(editor: DraftEditor): void {
   }
 
   var editorState = editor.props.editorState;
-  const editorNode = ReactDOM.findDOMNode(editor.refs.editorContainer);
+  const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
   invariant(editorNode, 'Missing editorNode');
   invariant(
     editorNode.firstChild instanceof HTMLElement,

@@ -49,7 +49,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             editorState: EditorState.createEmpty(compositeDecorator),
           };
 
-          this.focus = () => this.refs.editor.focus();
+          this.focus = () => this.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => console.log(this.state.editorState.toJS());
         }
@@ -62,7 +62,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   editorState={this.state.editorState}
                   onChange={this.onChange}
                   placeholder="Write a tweet..."
-                  ref="editor"
+                  ref={(ref) => this.editor = ref}
                   spellCheck={true}
                 />
               </div>
