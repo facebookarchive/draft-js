@@ -20,19 +20,12 @@ var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 var Immutable = require('immutable');
 var RichTextEditorUtil = require('RichTextEditorUtil');
-var {
-  NONE,
-  BOLD,
-  ITALIC,
-} = require('SampleDraftInlineStyle');
+var {NONE, BOLD, ITALIC} = require('SampleDraftInlineStyle');
 var SelectionState = require('SelectionState');
 
 var {EMPTY} = CharacterMetadata;
 
-var {
-  List,
-  Repeat,
-} = Immutable;
+var {List, Repeat} = Immutable;
 
 var plainBlock = new ContentBlock({
   key: 'a',
@@ -95,7 +88,6 @@ function getDecoratedEditorState(decorator) {
 }
 
 describe('EditorState', () => {
-
   describe('getCurrentInlineStyle', () => {
     var mainEditor = getUndecoratedEditorState();
 
@@ -166,7 +158,7 @@ describe('EditorState', () => {
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
 
         editor = RichTextEditorUtil.onTab(
-          { preventDefault: () => {} },
+          {preventDefault: () => {}},
           editor,
           1,
         );
@@ -289,15 +281,11 @@ describe('EditorState', () => {
       expect(withNewDecorator.getDecorator()).toBe(newDecorator);
 
       // Preserve block trees that had the same decorator list.
-      expect(
-        editorState.getBlockTree(boldBlock.getKey()),
-      ).toBe(
+      expect(editorState.getBlockTree(boldBlock.getKey())).toBe(
         withNewDecorator.getBlockTree(boldBlock.getKey()),
       );
 
-      expect(
-        editorState.getBlockTree(italicBlock.getKey()),
-      ).not.toBe(
+      expect(editorState.getBlockTree(italicBlock.getKey())).not.toBe(
         withNewDecorator.getBlockTree(italicBlock.getKey()),
       );
     });
@@ -305,7 +293,7 @@ describe('EditorState', () => {
     it('must call decorator with correct argument types and order', () => {
       var decorator = new Decorator();
       getDecoratedEditorState(decorator);
-      decorator.getDecorations.mock.calls.forEach((call) => {
+      decorator.getDecorations.mock.calls.forEach(call => {
         expect(call[0] instanceof ContentBlock).toBe(true);
         expect(call[1] instanceof ContentState).toBe(true);
       });

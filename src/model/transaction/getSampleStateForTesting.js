@@ -8,6 +8,7 @@
  *
  * @providesModule getSampleStateForTesting
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -30,9 +31,7 @@ var BLOCKS = [
     key: 'a',
     type: 'unstyled',
     text: 'Alpha',
-    characterList: Immutable.List(
-      Immutable.Repeat(CharacterMetadata.EMPTY, 5),
-    ),
+    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 5)),
   }),
   new ContentBlock({
     key: 'b',

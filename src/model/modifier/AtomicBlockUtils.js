@@ -8,6 +8,7 @@
  *
  * @providesModule AtomicBlockUtils
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -26,10 +27,7 @@ const SelectionState = require('SelectionState');
 const generateRandomKey = require('generateRandomKey');
 const moveBlockInContentState = require('moveBlockInContentState');
 
-const {
-  List,
-  Repeat,
-} = Immutable;
+const {List, Repeat} = Immutable;
 
 const AtomicBlockUtils = {
   insertAtomicBlock: function(
@@ -102,9 +100,9 @@ const AtomicBlockUtils = {
 
     if (insertionMode === 'before' || insertionMode === 'after') {
       const targetBlock = contentState.getBlockForKey(
-        insertionMode === 'before' ?
-          targetRange.getStartKey() :
-          targetRange.getEndKey(),
+        insertionMode === 'before'
+          ? targetRange.getStartKey()
+          : targetRange.getEndKey(),
       );
 
       withMovedAtomicBlock = moveBlockInContentState(
@@ -163,10 +161,9 @@ const AtomicBlockUtils = {
 
     const newContent = withMovedAtomicBlock.merge({
       selectionBefore: selectionState,
-      selectionAfter: withMovedAtomicBlock.getSelectionAfter().set(
-        'hasFocus',
-        true,
-      ),
+      selectionAfter: withMovedAtomicBlock
+        .getSelectionAfter()
+        .set('hasFocus', true),
     });
 
     return EditorState.push(editorState, newContent, 'move-block');

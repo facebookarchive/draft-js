@@ -8,6 +8,7 @@
  *
  * @providesModule DraftStringKey
  * @typechecks
+ * @format
  * @flow
  */
 

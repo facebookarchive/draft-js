@@ -57,7 +57,13 @@ describe('insertTextIntoContentState', () => {
     expect(
       Immutable.is(
         Immutable.List.of(
-          character, character, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
+          character,
+          character,
+          EMPTY,
+          EMPTY,
+          EMPTY,
+          EMPTY,
+          EMPTY,
         ),
         newBlock.getCharacterList(),
       ),
@@ -82,7 +88,13 @@ describe('insertTextIntoContentState', () => {
       Immutable.is(
         newBlock.getCharacterList(),
         Immutable.List([
-          EMPTY, EMPTY, character, character, EMPTY, EMPTY, EMPTY,
+          EMPTY,
+          EMPTY,
+          character,
+          character,
+          EMPTY,
+          EMPTY,
+          EMPTY,
         ]),
       ),
     ).toBe(true);
@@ -106,7 +118,13 @@ describe('insertTextIntoContentState', () => {
       Immutable.is(
         newBlock.getCharacterList(),
         Immutable.List([
-          EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, character, character,
+          EMPTY,
+          EMPTY,
+          EMPTY,
+          EMPTY,
+          EMPTY,
+          character,
+          character,
         ]),
       ),
     ).toBe(true);

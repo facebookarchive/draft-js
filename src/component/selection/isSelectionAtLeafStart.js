@@ -8,6 +8,7 @@
  *
  * @providesModule isSelectionAtLeafStart
  * @typechecks
+ * @format
  * @flow
  */
 

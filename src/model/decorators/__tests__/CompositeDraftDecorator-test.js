@@ -28,12 +28,9 @@ describe('CompositeDraftDecorator', () => {
   function searchWith(regex) {
     return function(block, callback, contentState) {
       var text = block.getText();
-      text.replace(
-        regex,
-        function(/*string*/ match, /*number*/ offset) {
-          callback(offset, offset + match.length);
-        },
-      );
+      text.replace(regex, function(/*string*/ match, /*number*/ offset) {
+        callback(offset, offset + match.length);
+      });
     };
   }
 

@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnSelect
+ * @format
  * @flow
  */
 
@@ -21,8 +22,10 @@ var getDraftEditorSelection = require('getDraftEditorSelection');
 const invariant = require('invariant');
 
 function editOnSelect(editor: DraftEditor): void {
-  if (editor._blockSelectEvents ||
-      editor._latestEditorState !== editor.props.editorState) {
+  if (
+    editor._blockSelectEvents ||
+    editor._latestEditorState !== editor.props.editorState
+  ) {
     return;
   }
 

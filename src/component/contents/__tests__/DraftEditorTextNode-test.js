@@ -11,7 +11,9 @@
 
 'use strict';
 
-jest.disableAutomock().mock('UserAgent')
+jest
+  .disableAutomock()
+  .mock('UserAgent')
   .mock('UserAgent');
 
 var BLOCK_DELIMITER_CHAR = '\n';
@@ -194,7 +196,9 @@ describe('DraftEditorTextNode', function() {
   it('must render properly into a parent DOM node', function() {
     initializeAsNonIE();
     renderIntoContainer(
-      <div><DraftEditorTextNode>{TEST_A}</DraftEditorTextNode></div>,
+      <div>
+        <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+      </div>,
     );
   });
 

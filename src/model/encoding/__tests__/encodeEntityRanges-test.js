@@ -47,7 +47,7 @@ describe('encodeEntityRanges', () => {
   it('must return ranges with the storage-mapped key', () => {
     var entities = [null, null, '6', '6', null];
     var block = createBlock(' '.repeat(entities.length), entities);
-    var encoded = encodeEntityRanges(block, {'_6': '0'});
+    var encoded = encodeEntityRanges(block, {_6: '0'});
     expect(encoded).toEqual([
       {
         offset: 2,
@@ -60,7 +60,7 @@ describe('encodeEntityRanges', () => {
   it('must return ranges with multiple entities present', () => {
     var entities = [null, null, '6', '6', null, '8', '8', null];
     var block = createBlock(' '.repeat(entities.length), entities);
-    var encoded = encodeEntityRanges(block, {'_6': '0', '_8': '1'});
+    var encoded = encodeEntityRanges(block, {_6: '0', _8: '1'});
     expect(encoded).toEqual([
       {
         offset: 2,
@@ -78,7 +78,7 @@ describe('encodeEntityRanges', () => {
   it('must return ranges with an entity present more than once', () => {
     var entities = [null, null, '6', '6', null, '6', '6', null];
     var block = createBlock(' '.repeat(entities.length), entities);
-    var encoded = encodeEntityRanges(block, {'_6': '0', '_8': '1'});
+    var encoded = encodeEntityRanges(block, {_6: '0', _8: '1'});
     expect(encoded).toEqual([
       {
         offset: 2,
@@ -96,13 +96,27 @@ describe('encodeEntityRanges', () => {
   it('must handle ranges that include surrogate pairs', () => {
     var str = 'Take a \uD83D\uDCF7 #selfie';
     var entities = [
-      null, null, null, null, null, null, // `Take a`
-      '6', '6', '6', '6', '6', '6',       // ` [camera] #s`
-      null, null, '8', '8', null,         // `elfie`
+      null,
+      null,
+      null,
+      null,
+      null,
+      null, // `Take a`
+      '6',
+      '6',
+      '6',
+      '6',
+      '6',
+      '6', // ` [camera] #s`
+      null,
+      null,
+      '8',
+      '8',
+      null, // `elfie`
     ];
 
     var block = createBlock(str, entities);
-    var encoded = encodeEntityRanges(block, {'_6': '0', '_8': '1'});
+    var encoded = encodeEntityRanges(block, {_6: '0', _8: '1'});
     expect(encoded).toEqual([
       {
         offset: 6,

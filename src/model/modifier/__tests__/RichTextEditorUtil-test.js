@@ -23,11 +23,10 @@ describe('RichTextEditorUtil', () => {
   const {editorState, selectionState} = getSampleStateForTesting();
 
   function insertAtomicBlock(targetEditorState) {
-    const entityKey = targetEditorState.getCurrentContent().createEntity(
-      'TEST',
-      'IMMUTABLE',
-      null,
-    ).getLastCreatedEntityKey();
+    const entityKey = targetEditorState
+      .getCurrentContent()
+      .createEntity('TEST', 'IMMUTABLE', null)
+      .getLastCreatedEntityKey();
     const character = ' ';
     const movedSelection = EditorState.moveSelectionToEnd(targetEditorState);
     return AtomicBlockUtils.insertAtomicBlock(
@@ -44,16 +43,12 @@ describe('RichTextEditorUtil', () => {
       const nonZero = selectionState.merge({anchorOffset: 2, focusOffset: 2});
       expect(
         onBackspace(EditorState.forceSelection(editorState, nonZero)),
-      ).toBe(
-        null,
-      );
+      ).toBe(null);
 
       const nonCollapsed = nonZero.merge({anchorOffset: 0});
       expect(
         onBackspace(EditorState.forceSelection(editorState, nonCollapsed)),
-      ).toBe(
-        null,
-      );
+      ).toBe(null);
     });
 
     it('resets the current block type if empty', () => {
@@ -113,11 +108,7 @@ describe('RichTextEditorUtil', () => {
       const contentState = afterBackspace.getCurrentContent();
       const blockMap = contentState.getBlockMap();
       expect(blockMap.size).toBe(4);
-      expect(
-        blockMap.some((block) => block.getType() === 'atomic'),
-      ).toBe(
-        false,
-      );
+      expect(blockMap.some(block => block.getType() === 'atomic')).toBe(false);
     });
   });
 
@@ -126,18 +117,14 @@ describe('RichTextEditorUtil', () => {
 
     it('does not handle non-block-end or non-collapsed selections', () => {
       const nonZero = selectionState.merge({anchorOffset: 2, focusOffset: 2});
-      expect(
-        onDelete(EditorState.forceSelection(editorState, nonZero)),
-      ).toBe(
+      expect(onDelete(EditorState.forceSelection(editorState, nonZero))).toBe(
         null,
       );
 
       const nonCollapsed = nonZero.merge({anchorOffset: 0});
       expect(
         onDelete(EditorState.forceSelection(editorState, nonCollapsed)),
-      ).toBe(
-        null,
-      );
+      ).toBe(null);
     });
 
     it('removes a following atomic block', () => {
@@ -145,7 +132,7 @@ describe('RichTextEditorUtil', () => {
       const content = withAtomicBlock.getCurrentContent();
       const atomicKey = content
         .getBlockMap()
-        .find((block) => block.getType() === 'atomic')
+        .find(block => block.getType() === 'atomic')
         .getKey();
 
       const blockBefore = content.getBlockBefore(atomicKey);
@@ -166,10 +153,8 @@ describe('RichTextEditorUtil', () => {
       const blockMapAfterDelete = afterDelete.getCurrentContent().getBlockMap();
 
       expect(
-        blockMapAfterDelete.some((block) => block.getType() === 'atomic'),
-      ).toBe(
-        false,
-      );
+        blockMapAfterDelete.some(block => block.getType() === 'atomic'),
+      ).toBe(false);
 
       expect(blockMapAfterDelete.size).toBe(4);
     });
