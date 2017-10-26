@@ -8,6 +8,7 @@
  *
  * @providesModule getSampleStateForTesting
  * @typechecks
+ * @format
  * @flow
  */
 

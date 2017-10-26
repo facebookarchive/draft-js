@@ -8,6 +8,7 @@
  *
  * @providesModule KeyBindingUtil
  * @typechecks
+ * @format
  * @flow
  */
 

@@ -8,6 +8,7 @@
  *
  * @providesModule expandRangeToStartOfLine
  * @typechecks
+ * @format
  * @flow
  */
 

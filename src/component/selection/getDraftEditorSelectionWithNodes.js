@@ -8,6 +8,7 @@
  *
  * @providesModule getDraftEditorSelectionWithNodes
  * @typechecks
+ * @format
  * @flow
  */
 

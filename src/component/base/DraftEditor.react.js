@@ -8,6 +8,7 @@
  *
  * @providesModule DraftEditor.react
  * @typechecks
+ * @format
  * @flow
  * @preventMunge
  */

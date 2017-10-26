@@ -8,6 +8,7 @@
  *
  * @providesModule isSoftNewlineEvent
  * @typechecks
+ * @format
  * @flow
  */
 

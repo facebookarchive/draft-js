@@ -8,6 +8,7 @@
  *
  * @providesModule insertFragmentIntoContentState
  * @typechecks
+ * @format
  * @flow
  */
 

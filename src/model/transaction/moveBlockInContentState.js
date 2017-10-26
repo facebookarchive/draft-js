@@ -8,6 +8,7 @@
  *
  * @providesModule moveBlockInContentState
  * @typechecks
+ * @format
  * @flow
  */
 

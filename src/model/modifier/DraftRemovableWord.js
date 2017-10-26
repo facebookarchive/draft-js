@@ -8,6 +8,7 @@
  *
  * @providesModule DraftRemovableWord
  * @typechecks
+ * @format
  * @flow
  */
 

@@ -8,6 +8,7 @@
  *
  * @providesModule DraftEditorBlock.react
  * @typechecks
+ * @format
  * @flow
  */
 

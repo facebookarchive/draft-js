@@ -8,6 +8,7 @@
  *
  * @providesModule getVisibleSelectionRect
  * @typechecks
+ * @format
  * @flow
  */
 

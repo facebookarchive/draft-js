@@ -8,6 +8,7 @@
  *
  * @providesModule ContentStateInlineStyle
  * @typechecks
+ * @format
  * @flow
  */
 

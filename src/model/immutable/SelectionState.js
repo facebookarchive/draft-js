@@ -8,6 +8,7 @@
  *
  * @providesModule SelectionState
  * @typechecks
+ * @format
  * @flow
  */
 

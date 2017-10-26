@@ -8,6 +8,7 @@
  *
  * @providesModule CharacterMetadata
  * @typechecks
+ * @format
  * @flow
  */
 

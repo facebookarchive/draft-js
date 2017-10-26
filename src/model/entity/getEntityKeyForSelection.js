@@ -8,6 +8,7 @@
  *
  * @providesModule getEntityKeyForSelection
  * @typechecks
+ * @format
  * @flow
  */
 

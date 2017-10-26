@@ -8,6 +8,7 @@
  *
  * @providesModule DraftEditorLeaf.react
  * @typechecks
+ * @format
  * @flow
  */
 

@@ -8,6 +8,7 @@
  *
  * @providesModule DraftEntitySegments
  * @typechecks
+ * @format
  * @flow
  */
 

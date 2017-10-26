@@ -8,6 +8,7 @@
  *
  * @providesModule DraftEditorTextNode.react
  * @typechecks
+ * @format
  * @flow
  */
 

@@ -8,6 +8,7 @@
  *
  * @providesModule getCharacterRemovalRange
  * @typechecks
+ * @format
  * @flow
  */
 

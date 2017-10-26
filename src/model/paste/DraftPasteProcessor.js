@@ -8,6 +8,7 @@
  *
  * @providesModule DraftPasteProcessor
  * @typechecks
+ * @format
  * @flow
  */
 

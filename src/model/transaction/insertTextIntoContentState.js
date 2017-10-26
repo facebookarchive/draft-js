@@ -8,6 +8,7 @@
  *
  * @providesModule insertTextIntoContentState
  * @typechecks
+ * @format
  * @flow
  */
 

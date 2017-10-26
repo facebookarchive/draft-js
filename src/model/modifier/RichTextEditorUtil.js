@@ -8,6 +8,7 @@
  *
  * @providesModule RichTextEditorUtil
  * @typechecks
+ * @format
  * @flow
  */
 

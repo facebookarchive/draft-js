@@ -8,6 +8,7 @@
  *
  * @providesModule getRangeBoundingClientRect
  * @typechecks
+ * @format
  * @flow
  */
 

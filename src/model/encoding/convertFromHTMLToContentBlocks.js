@@ -8,6 +8,7 @@
  *
  * @providesModule convertFromHTMLToContentBlocks
  * @typechecks
+ * @format
  * @flow
  */
 

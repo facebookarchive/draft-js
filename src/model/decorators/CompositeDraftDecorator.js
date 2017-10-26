@@ -8,6 +8,7 @@
  *
  * @providesModule CompositeDraftDecorator
  * @typechecks
+ * @format
  * @flow
  */
 

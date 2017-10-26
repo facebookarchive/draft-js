@@ -8,6 +8,7 @@
  *
  * @providesModule getRangesForDraftEntity
  * @typechecks
+ * @format
  * @flow
  */
 

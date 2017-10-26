@@ -8,6 +8,7 @@
  *
  * @providesModule adjustBlockDepthForContentState
  * @typechecks
+ * @format
  * @flow
  */
 

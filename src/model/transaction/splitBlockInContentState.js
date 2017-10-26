@@ -8,6 +8,7 @@
  *
  * @providesModule splitBlockInContentState
  * @typechecks
+ * @format
  * @flow
  */
 

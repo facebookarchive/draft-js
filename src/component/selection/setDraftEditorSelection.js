@@ -9,6 +9,7 @@
  * @providesModule setDraftEditorSelection
  * @typechecks
  * @format
+ * @format
  * @flow
  */
 

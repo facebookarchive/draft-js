@@ -8,6 +8,7 @@
  *
  * @providesModule DraftModifier
  * @typechecks
+ * @format
  * @flow
  */
 
