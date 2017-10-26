@@ -7,20 +7,26 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
- const variableNamePattern = String.raw`\s*[a-zA-Z_$][a-zA-Z_$\d]*\s*`;
- const maxLenIgnorePattern = String.raw`^(?:var|let|const|import type)\s+` +
-   '{?' + variableNamePattern + '(?:,' + variableNamePattern + ')*}?' +
-   String.raw`\s*(?:=\s*require\(|from)[a-zA-Z_+./"'\s\d\-]+\)?[^;\n]*[;\n]`;
-
 module.exports = {
   extends: [
     'fbjs',
     'prettier',
+    'prettier/flowtype',
+    'prettier/react',
+    'prettier/standard',
   ],
   rules: {
     'prettier/prettier': ['error', 'fb'],
   },
-  plugins: [
-    'prettier'
-  ]
+  plugins: ['prettier'],
+  overrides: [
+    {
+      files: ['examples/draft-0-10-0/**', 'examples/draft-0-9-1/**'],
+      rules: {
+        'prettier/prettier': 0,
+        'jsx-a11y/no-static-element-interactions': 0,
+        'no-console': 0,
+      },
+    },
+  ],
 };
