@@ -7,7 +7,6 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails isaac, oncall+ui_infra
- * @typechecks
  */
 
 jest.disableAutomock().mock('ContentState');
