@@ -112,6 +112,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _onPaste: Function;
   _onSelect: Function;
 
+  editor: ?HTMLElement;
+  editorContainer: ?HTMLElement;
   focus: () => void;
   blur: () => void;
   setMode: (mode: DraftEditorModes) => void;
@@ -244,7 +246,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         {this._renderPlaceholder()}
         <div
           className={cx('DraftEditor/editorContainer')}
-          ref="editorContainer">
+          ref={(ref) => this.editorContainer = ref}>
           <div
             aria-activedescendant={
               readOnly ? null : this.props.ariaActiveDescendantID
@@ -290,7 +292,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onMouseUp={this._onMouseUp}
             onPaste={this._onPaste}
             onSelect={this._onSelect}
-            ref="editor"
+            ref={(ref) => this.editor = ref}
             role={readOnly ? null : ariaRole}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
@@ -366,7 +368,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _focus(scrollPosition?: DraftScrollPosition): void {
     const {editorState} = this.props;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
-    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
+    const editorNode = ReactDOM.findDOMNode(this.editor);
 
     if (!editorNode) {
       // once in a while people call 'focus' in a setTimeout, and the node has
@@ -405,7 +407,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   }
 
   _blur(): void {
-    const editorNode = ReactDOM.findDOMNode(this.refs.editor);
+    const editorNode = ReactDOM.findDOMNode(this.editor);
     invariant(
       editorNode instanceof HTMLElement,
       'editorNode is not an HTMLElement',

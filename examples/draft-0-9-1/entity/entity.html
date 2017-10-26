@@ -118,7 +118,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             editorState: EditorState.createWithContent(blocks, decorator),
           };
 
-          this.focus = () => this.refs.editor.focus();
+          this.focus = () => this.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => {
             const content = this.state.editorState.getCurrentContent();
@@ -134,7 +134,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   editorState={this.state.editorState}
                   onChange={this.onChange}
                   placeholder="Enter some text..."
-                  ref="editor"
+                  ref={(ref) => this.editor = ref}
                 />
               </div>
               <input
