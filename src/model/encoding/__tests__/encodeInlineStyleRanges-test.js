@@ -100,16 +100,11 @@ describe('encodeInlineStyleRanges', () => {
   });
 
   it('must encode for a complex styled document', () => {
+    // prettier-ignore
     var complex = List([
-      BOLD,
-      BOLD,
-      BOLD,
-      BOLD,
-      NONE, // "four "
-      BOLD_ITALIC,
-      BOLD_ITALIC, // "sc"
-      ITALIC_UNDERLINE,
-      BOLD_UNDERLINE, // "or"
+      BOLD, BOLD, BOLD, BOLD, NONE, // "four "
+      BOLD_ITALIC, BOLD_ITALIC, // "sc"
+      ITALIC_UNDERLINE, BOLD_UNDERLINE, // "or"
       BOLD_ITALIC_UNDERLINE, // "e"
     ]);
 
@@ -127,24 +122,12 @@ describe('encodeInlineStyleRanges', () => {
 
   it('must encode for strings with surrogate pairs', () => {
     var str = 'Take a \uD83D\uDCF7 #selfie';
+    // prettier-ignore
     var styles = List([
-      NONE,
-      NONE,
-      NONE,
-      NONE, // `Take`
-      BOLD,
-      BOLD,
-      BOLD_ITALIC,
-      BOLD_ITALIC,
-      BOLD_ITALIC, // ` a [camera]`
-      ITALIC,
-      ITALIC,
-      ITALIC,
-      ITALIC,
-      ITALIC,
-      ITALIC, // ` #self`
-      NONE,
-      NONE, // `ie`
+      NONE, NONE, NONE, NONE, // `Take`
+      BOLD, BOLD, BOLD_ITALIC, BOLD_ITALIC, BOLD_ITALIC, // ` a [camera]`
+      ITALIC, ITALIC, ITALIC, ITALIC, ITALIC, ITALIC, // ` #self`
+      NONE, NONE, // `ie`
     ]);
 
     expect(encodeInlineStyleRanges(createBlock(str, styles))).toEqual([
