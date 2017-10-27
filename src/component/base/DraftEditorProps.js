@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorProps
+ * @format
  * @flow
  */
 
@@ -140,14 +141,14 @@ export type DraftEditorProps = {
   // Handle dropped files
   handleDroppedFiles?: (
     selection: SelectionState,
-    files: Array<Blob>
+    files: Array<Blob>,
   ) => DraftHandleValue,
 
   // Handle other drops to prevent default text movement/insertion behaviour
   handleDrop?: (
     selection: SelectionState,
     dataTransfer: Object,
-    isInternal: DraftDragType
+    isInternal: DraftDragType,
   ) => DraftHandleValue,
 
   /**

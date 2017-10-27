@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -39,14 +40,9 @@ describe('decodeInlineStyleRanges', function() {
   it('must decode for a flat styled block', function() {
     var block = {
       text: 'Hello',
-      inlineStyleRanges: [
-        {style: 'BOLD', offset: 0, length: 5},
-      ],
+      inlineStyleRanges: [{style: 'BOLD', offset: 0, length: 5}],
     };
-    var decoded = decodeInlineStyleRanges(
-      block.text,
-      block.inlineStyleRanges,
-    );
+    var decoded = decodeInlineStyleRanges(block.text, block.inlineStyleRanges);
     areEqual(decoded, Array(block.text.length).fill(BOLD));
   });
 
@@ -60,10 +56,7 @@ describe('decodeInlineStyleRanges', function() {
         {style: 'BOLD', offset: 4, length: 1},
       ],
     };
-    var decoded = decodeInlineStyleRanges(
-      block.text,
-      block.inlineStyleRanges,
-    );
+    var decoded = decodeInlineStyleRanges(block.text, block.inlineStyleRanges);
     areEqual(decoded, [
       BOLD_UNDERLINE,
       BOLD_ITALIC_UNDERLINE,
@@ -82,17 +75,26 @@ describe('decodeInlineStyleRanges', function() {
       ],
     };
 
-    var decoded = decodeInlineStyleRanges(
-      block.text,
-      block.inlineStyleRanges,
-    );
+    var decoded = decodeInlineStyleRanges(block.text, block.inlineStyleRanges);
 
     areEqual(decoded, [
-      NONE, NONE, NONE, NONE,
-      BOLD, BOLD, BOLD_ITALIC, BOLD_ITALIC, BOLD_ITALIC,
-      ITALIC, ITALIC, ITALIC, ITALIC, ITALIC, ITALIC,
-      NONE, NONE,
+      NONE,
+      NONE,
+      NONE,
+      NONE,
+      BOLD,
+      BOLD,
+      BOLD_ITALIC,
+      BOLD_ITALIC,
+      BOLD_ITALIC,
+      ITALIC,
+      ITALIC,
+      ITALIC,
+      ITALIC,
+      ITALIC,
+      ITALIC,
+      NONE,
+      NONE,
     ]);
   });
-
 });

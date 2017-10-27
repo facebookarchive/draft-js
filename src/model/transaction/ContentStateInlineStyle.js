@@ -7,6 +7,8 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule ContentStateInlineStyle
+ * @typechecks
+ * @format
  * @flow
  */
 
@@ -70,9 +72,9 @@ function modifyInlineStyle(
         current = chars.get(sliceStart);
         chars = chars.set(
           sliceStart,
-          addOrRemove ?
-            CharacterMetadata.applyStyle(current, inlineStyle) :
-            CharacterMetadata.removeStyle(current, inlineStyle),
+          addOrRemove
+            ? CharacterMetadata.applyStyle(current, inlineStyle)
+            : CharacterMetadata.removeStyle(current, inlineStyle),
         );
         sliceStart++;
       }

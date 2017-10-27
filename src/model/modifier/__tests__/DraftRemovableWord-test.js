@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -46,7 +47,7 @@ describe('DraftRemovableWord', function() {
   });
 
   it('must identify words with apostrophes looking forward', function() {
-    expect(forward('you\'re correct.')).toBe('you\'re');
+    expect(forward("you're correct.")).toBe("you're");
   });
 
   it('must identify words with curly quotes looking forward', function() {
@@ -106,7 +107,7 @@ describe('DraftRemovableWord', function() {
   });
 
   it('must identify words with apostrophes looking backward', function() {
-    expect(backward('you don\'t')).toBe('don\'t');
+    expect(backward("you don't")).toBe("don't");
   });
 
   it('must identify words ended by spaces looking backward', function() {

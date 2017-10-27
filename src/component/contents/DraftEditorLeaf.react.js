@@ -7,6 +7,8 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorLeaf.react
+ * @typechecks
+ * @format
  * @flow
  */
 
@@ -148,13 +150,11 @@ class DraftEditorLeaf extends React.Component<Props> {
       const mergedStyles = {};
       const style = customStyleMap[styleName];
 
-      if (
-        style !== undefined &&
-        map.textDecoration !== style.textDecoration
-      ) {
+      if (style !== undefined && map.textDecoration !== style.textDecoration) {
         // .trim() is necessary for IE9/10/11 and Edge
-        mergedStyles.textDecoration =
-          [map.textDecoration, style.textDecoration].join(' ').trim();
+        mergedStyles.textDecoration = [map.textDecoration, style.textDecoration]
+          .join(' ')
+          .trim();
       }
 
       return Object.assign(map, style, mergedStyles);
@@ -168,7 +168,7 @@ class DraftEditorLeaf extends React.Component<Props> {
     return (
       <span
         data-offset-key={offsetKey}
-        ref={(ref) => this.leaf = ref}
+        ref={ref => (this.leaf = ref)}
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>

@@ -7,6 +7,8 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftPasteProcessor
+ * @typechecks
+ * @format
  * @flow
  */
 
@@ -20,16 +22,12 @@ const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const Immutable = require('immutable');
 
-const convertFromHTMLtoContentBlocks
-  = require('convertFromHTMLToContentBlocks');
+const convertFromHTMLtoContentBlocks = require('convertFromHTMLToContentBlocks');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-const {
-  List,
-  Repeat,
-} = Immutable;
+const {List, Repeat} = Immutable;
 
 const DraftPasteProcessor = {
   processHTML(
@@ -48,17 +46,15 @@ const DraftPasteProcessor = {
     character: CharacterMetadata,
     type: DraftBlockType,
   ): Array<ContentBlock> {
-    return textBlocks.map(
-      textLine => {
-        textLine = sanitizeDraftText(textLine);
-        return new ContentBlock({
-          key: generateRandomKey(),
-          type,
-          text: textLine,
-          characterList: List(Repeat(character, textLine.length)),
-        });
-      },
-    );
+    return textBlocks.map(textLine => {
+      textLine = sanitizeDraftText(textLine);
+      return new ContentBlock({
+        key: generateRandomKey(),
+        type,
+        text: textLine,
+        characterList: List(Repeat(character, textLine.length)),
+      });
+    });
   },
 };
 

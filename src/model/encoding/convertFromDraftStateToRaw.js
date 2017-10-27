@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule convertFromDraftStateToRaw
+ * @format
  * @flow
  */
 
@@ -36,7 +37,7 @@ function convertFromDraftStateToRaw(
           block.getEntityAt(start),
         );
         if (!entityStorageMap.hasOwnProperty(stringifiedEntityKey)) {
-          entityStorageMap[stringifiedEntityKey] = '' + (entityStorageKey++);
+          entityStorageMap[stringifiedEntityKey] = '' + entityStorageKey++;
         }
       },
     );

@@ -8,6 +8,7 @@
  *
  * @providesModule moveBlockInContentState
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -30,10 +31,7 @@ function moveBlockInContentState(
     'Block cannot be moved next to itself.',
   );
 
-  invariant(
-    insertionMode !== 'replace',
-    'Replacing blocks is not supported.',
-  );
+  invariant(insertionMode !== 'replace', 'Replacing blocks is not supported.');
 
   const targetKey = targetBlock.getKey();
   const blockBefore = contentState.getBlockBefore(targetKey);
@@ -43,41 +41,46 @@ function moveBlockInContentState(
   const blockMapWithoutBlockToBeMoved = blockMap.delete(
     blockToBeMoved.getKey(),
   );
-  const blocksBefore = blockMapWithoutBlockToBeMoved.toSeq().takeUntil(
-    v => v === targetBlock,
-  );
-  const blocksAfter = blockMapWithoutBlockToBeMoved.toSeq().skipUntil(
-    v => v === targetBlock,
-  ).skip(1);
+  const blocksBefore = blockMapWithoutBlockToBeMoved
+    .toSeq()
+    .takeUntil(v => v === targetBlock);
+  const blocksAfter = blockMapWithoutBlockToBeMoved
+    .toSeq()
+    .skipUntil(v => v === targetBlock)
+    .skip(1);
 
   let newBlocks;
 
   if (insertionMode === 'before') {
     invariant(
-      (!blockBefore) || blockBefore.getKey() !== blockToBeMoved.getKey(),
+      !blockBefore || blockBefore.getKey() !== blockToBeMoved.getKey(),
       'Block cannot be moved next to itself.',
     );
 
-    newBlocks = blocksBefore.concat(
-      [
-        [blockToBeMoved.getKey(), blockToBeMoved],
-        [targetBlock.getKey(), targetBlock],
-      ],
-      blocksAfter,
-    ).toOrderedMap();
+    newBlocks = blocksBefore
+      .concat(
+        [
+          [blockToBeMoved.getKey(), blockToBeMoved],
+          [targetBlock.getKey(), targetBlock],
+        ],
+        blocksAfter,
+      )
+      .toOrderedMap();
   } else if (insertionMode === 'after') {
     invariant(
-      (!blockAfter) || blockAfter.getKey() !== blockToBeMoved.getKey(),
+      !blockAfter || blockAfter.getKey() !== blockToBeMoved.getKey(),
       'Block cannot be moved next to itself.',
     );
 
-    newBlocks = blocksBefore.concat(
-      [
-        [targetBlock.getKey(), targetBlock],
-        [blockToBeMoved.getKey(), blockToBeMoved],
-      ],
-      blocksAfter,
-    ).toOrderedMap();
+    newBlocks = blocksBefore
+      .concat(
+        [
+          [targetBlock.getKey(), targetBlock],
+          [blockToBeMoved.getKey(), blockToBeMoved],
+        ],
+        blocksAfter,
+      )
+      .toOrderedMap();
   }
 
   return contentState.merge({

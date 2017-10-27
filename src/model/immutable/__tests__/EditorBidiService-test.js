@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -19,15 +20,9 @@ var EditorBidiService = require('EditorBidiService');
 var Immutable = require('immutable');
 var UnicodeBidiDirection = require('UnicodeBidiDirection');
 
-var {
-  OrderedMap,
-  Seq,
-} = Immutable;
+var {OrderedMap, Seq} = Immutable;
 
-var {
-  LTR,
-  RTL,
-} = UnicodeBidiDirection;
+var {LTR, RTL} = UnicodeBidiDirection;
 
 var ltr = new ContentBlock({
   key: 'a',
@@ -53,16 +48,8 @@ describe('EditorBidiService', () => {
   it('must create a new map', () => {
     var state = getContentState([ltr]);
     var directions = EditorBidiService.getDirectionMap(state);
-    expect(
-      directions.keySeq().toArray(),
-    ).toEqual(
-      ['a'],
-    );
-    expect(
-      directions.valueSeq().toArray(),
-    ).toEqual(
-      [LTR],
-    );
+    expect(directions.keySeq().toArray()).toEqual(['a']);
+    expect(directions.valueSeq().toArray()).toEqual([LTR]);
   });
 
   it('must return the same map if no changes', () => {
@@ -137,27 +124,15 @@ describe('EditorBidiService', () => {
     expect(state).not.toBe(nextState);
     expect(directions).not.toBe(nextDirections);
 
-    expect(
-      nextDirections.keySeq().toArray(),
-    ).toEqual(
-      ['asdf'],
-    );
-    expect(
-      nextDirections.valueSeq().toArray(),
-    ).toEqual(
-      [LTR],
-    );
+    expect(nextDirections.keySeq().toArray()).toEqual(['asdf']);
+    expect(nextDirections.valueSeq().toArray()).toEqual([LTR]);
   });
 
   it('must return a new map if direction changes', () => {
     var state = getContentState([ltr, empty]);
     var directions = EditorBidiService.getDirectionMap(state);
 
-    expect(
-      directions.valueSeq().toArray(),
-    ).toEqual(
-      [LTR, LTR],
-    );
+    expect(directions.valueSeq().toArray()).toEqual([LTR, LTR]);
 
     var nextState = getContentState([ltr, rtl]);
     var nextDirections = EditorBidiService.getDirectionMap(
@@ -167,10 +142,6 @@ describe('EditorBidiService', () => {
 
     expect(state).not.toBe(nextState);
     expect(directions).not.toBe(nextDirections);
-    expect(
-      nextDirections.valueSeq().toArray(),
-    ).toEqual(
-      [LTR, RTL],
-    );
+    expect(nextDirections.valueSeq().toArray()).toEqual([LTR, RTL]);
   });
 });
