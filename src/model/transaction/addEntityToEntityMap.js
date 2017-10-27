@@ -8,6 +8,7 @@
  *
  * @providesModule addEntityToEntityMap
  * @typechecks
+ * @format
  * @flow
  */
 

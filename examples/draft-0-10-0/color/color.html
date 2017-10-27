@@ -42,7 +42,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           super(props);
           this.state = {editorState: EditorState.createEmpty()};
 
-          this.focus = () => this.refs.editor.focus();
+          this.focus = () => this.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
           this.toggleColor = (toggledColor) => this._toggleColor(toggledColor);
         }
@@ -97,7 +97,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   editorState={editorState}
                   onChange={this.onChange}
                   placeholder="Write something colorful..."
-                  ref="editor"
+                  ref={(ref) => this.editor = ref}
                 />
               </div>
             </div>

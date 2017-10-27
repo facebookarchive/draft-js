@@ -8,16 +8,17 @@
  *
  * @providesModule modifyBlockForContentState
  * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-const Immutable = require('immutable');
-
 import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
+
+const Immutable = require('immutable');
 
 const {Map} = Immutable;
 

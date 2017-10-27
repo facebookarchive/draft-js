@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <script src="../../../node_modules/react/dist/react.js"></script>
     <script src="../../../node_modules/react-dom/dist/react-dom.js"></script>
     <script src="../../../node_modules/immutable/dist/immutable.js"></script>
+    <script src="../../../node_modules/es6-shim/es6-shim.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
     <script src="../../../dist/Draft.js"></script>
     <script type="text/babel">
@@ -63,8 +64,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.onURLInputKeyDown = this._onURLInputKeyDown.bind(this);
         }
 
-        _handleKeyCommand(command) {
-          const {editorState} = this.state;
+        _handleKeyCommand(command, editorState) {
           const newState = RichUtils.handleKeyCommand(editorState, command);
           if (newState) {
             this.onChange(newState);
@@ -266,6 +266,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         },
         media: {
           width: '100%',
+          // Fix an issue with Firefox rendering video controls
+          // with 'pre-wrap' white-space
+          whiteSpace: 'initial'
         },
       };
 

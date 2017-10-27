@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -15,20 +16,22 @@ jest.disableAutomock();
 
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
+
 var applyEntityToContentState = require('applyEntityToContentState');
 var getSampleStateForTesting = require('getSampleStateForTesting');
 
 describe('applyEntityToContentState', () => {
-  var {
-    contentState,
-  } = getSampleStateForTesting();
+  var {contentState} = getSampleStateForTesting();
 
   function checkForCharacterList(block) {
     expect(Immutable.List.isList(block.getCharacterList())).toBe(true);
   }
 
   function getEntities(block) {
-    return block.getCharacterList().map(c => c.getEntity()).toJS();
+    return block
+      .getCharacterList()
+      .map(c => c.getEntity())
+      .toJS();
   }
 
   describe('Apply entity within single block', () => {
@@ -44,13 +47,13 @@ describe('applyEntityToContentState', () => {
       var withNewEntity = applyEntityToContentState(
         contentState,
         targetSelection,
-        entityKey
+        entityKey,
       );
       var first = withNewEntity.getBlockMap().first();
 
       checkForCharacterList(first);
       expect(getEntities(first)).toEqual(
-        Immutable.Repeat(entityKey, first.getLength()).toArray()
+        Immutable.Repeat(entityKey, first.getLength()).toArray(),
       );
     }
 
@@ -79,18 +82,18 @@ describe('applyEntityToContentState', () => {
       var withNewEntity = applyEntityToContentState(
         contentState,
         targetSelection,
-        entityKey
+        entityKey,
       );
       var first = withNewEntity.getBlockMap().first();
       var last = withNewEntity.getBlockAfter(first.getKey());
 
       checkForCharacterList(first);
       expect(getEntities(first)).toEqual(
-        Immutable.Repeat(entityKey, first.getLength()).toArray()
+        Immutable.Repeat(entityKey, first.getLength()).toArray(),
       );
       checkForCharacterList(last);
       expect(getEntities(last)).toEqual(
-        Immutable.Repeat(entityKey, last.getLength()).toArray()
+        Immutable.Repeat(entityKey, last.getLength()).toArray(),
       );
     }
 

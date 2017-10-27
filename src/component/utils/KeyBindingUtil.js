@@ -8,6 +8,7 @@
  *
  * @providesModule KeyBindingUtil
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -23,18 +24,18 @@ var KeyBindingUtil = {
    * the altKey modifier. If they are combined, the result is an `altGraph`
    * key modifier, which should not be handled by this set of key bindings.
    */
-  isCtrlKeyCommand: function(e: SyntheticKeyboardEvent): boolean {
+  isCtrlKeyCommand: function(e: SyntheticKeyboardEvent<>): boolean {
     return !!e.ctrlKey && !e.altKey;
   },
 
-  isOptionKeyCommand: function(e: SyntheticKeyboardEvent): boolean {
+  isOptionKeyCommand: function(e: SyntheticKeyboardEvent<>): boolean {
     return isOSX && e.altKey;
   },
 
-  hasCommandModifier: function(e: SyntheticKeyboardEvent): boolean {
-    return isOSX ?
-      (!!e.metaKey && !e.altKey) :
-      KeyBindingUtil.isCtrlKeyCommand(e);
+  hasCommandModifier: function(e: SyntheticKeyboardEvent<>): boolean {
+    return isOSX
+      ? !!e.metaKey && !e.altKey
+      : KeyBindingUtil.isCtrlKeyCommand(e);
   },
 };
 

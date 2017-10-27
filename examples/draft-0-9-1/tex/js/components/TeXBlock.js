@@ -32,8 +32,8 @@ class KatexOutput extends React.Component {
     this._timer = setTimeout(() => {
       katex.render(
         this.props.content,
-        this.refs.container,
-        {displayMode: true}
+        this.container,
+        {displayMode: true},
       );
     }, 0);
   }
@@ -54,7 +54,12 @@ class KatexOutput extends React.Component {
   }
 
   render() {
-    return <div ref="container" onClick={this.props.onClick} />;
+    return (
+      <div
+        ref={(ref) => this.container = ref}
+        onClick={this.props.onClick}
+      />
+    );
   }
 }
 
@@ -147,7 +152,7 @@ export default class TeXBlock extends React.Component {
           <textarea
             className="TeXEditor-texValue"
             onChange={this._onValueChange}
-            ref="textarea"
+            ref={(ref) => this.textarea = ref}
             value={this.state.texValue}
           />
           <div className="TeXEditor-buttons">

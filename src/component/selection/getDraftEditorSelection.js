@@ -8,15 +8,16 @@
  *
  * @providesModule getDraftEditorSelection
  * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-var getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
-
 import type {DOMDerivedSelection} from 'DOMDerivedSelection';
 import type EditorState from 'EditorState';
+
+var getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
 
 /**
  * Convert the current selection range to an anchor/focus pair of offset keys
@@ -24,7 +25,7 @@ import type EditorState from 'EditorState';
  */
 function getDraftEditorSelection(
   editorState: EditorState,
-  root: HTMLElement
+  root: HTMLElement,
 ): DOMDerivedSelection {
   var selection = global.getSelection();
 
@@ -42,7 +43,7 @@ function getDraftEditorSelection(
     selection.anchorNode,
     selection.anchorOffset,
     selection.focusNode,
-    selection.focusOffset
+    selection.focusOffset,
   );
 }
 

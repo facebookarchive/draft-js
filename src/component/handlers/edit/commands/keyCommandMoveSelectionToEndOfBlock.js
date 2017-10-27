@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule keyCommandMoveSelectionToEndOfBlock
+ * @format
  * @flow
  */
 
@@ -18,7 +19,7 @@ var EditorState = require('EditorState');
  * See comment for `moveSelectionToStartOfBlock`.
  */
 function keyCommandMoveSelectionToEndOfBlock(
-  editorState: EditorState
+  editorState: EditorState,
 ): EditorState {
   var selection = editorState.getSelection();
   var endKey = selection.getEndKey();

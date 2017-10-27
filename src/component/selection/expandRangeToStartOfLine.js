@@ -8,6 +8,7 @@
  *
  * @providesModule expandRangeToStartOfLine
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -29,13 +30,9 @@ function getLineHeightPx(element: Element): number {
   div.style.lineHeight = computed.lineHeight;
   div.style.position = 'absolute';
   div.textContent = 'M';
-  
-  var documentBody = document.body;
-  
-  invariant(
-    documentBody,
-    'Unexpected empty document.body.'
-  );
+
+  let documentBody = document.body;
+  invariant(documentBody, 'Missing document.body');
 
   // forced layout here
   documentBody.appendChild(div);
@@ -59,7 +56,7 @@ function getLineHeightPx(element: Element): number {
  */
 function areRectsOnOneLine(
   rects: Array<ClientRect>,
-  lineHeight: number
+  lineHeight: number,
 ): boolean {
   var minTop = Infinity;
   var minBottom = Infinity;
@@ -86,7 +83,8 @@ function areRectsOnOneLine(
 
   return (
     maxTop <= minBottom &&
-    maxTop - minTop < lineHeight && maxBottom - minBottom < lineHeight
+    maxTop - minTop < lineHeight &&
+    maxBottom - minBottom < lineHeight
   );
 }
 
@@ -114,7 +112,7 @@ function getNodeLength(node: Node): number {
 function expandRangeToStartOfLine(range: Range): Range {
   invariant(
     range.collapsed,
-    'expandRangeToStartOfLine: Provided range is not collapsed.'
+    'expandRangeToStartOfLine: Provided range is not collapsed.',
   );
   range = range.cloneRange();
 
@@ -144,11 +142,13 @@ function expandRangeToStartOfLine(range: Range): Range {
     bestOffset = range.startOffset;
     invariant(
       bestContainer.parentNode,
-      'Found unexpected detached subtree when traversing.'
+      'Found unexpected detached subtree when traversing.',
     );
     range.setStartBefore(bestContainer);
-    if (bestContainer.nodeType === 1 &&
-        getComputedStyle((bestContainer: any)).display !== 'inline') {
+    if (
+      bestContainer.nodeType === 1 &&
+      getComputedStyle((bestContainer: any)).display !== 'inline'
+    ) {
       // The start of the line is never in a different block-level container.
       break;
     }
@@ -170,8 +170,11 @@ function expandRangeToStartOfLine(range: Range): Range {
     var nodeValue = currentContainer.nodeValue;
 
     for (var ii = maxIndexToConsider; ii >= 0; ii--) {
-      if (nodeValue != null && ii > 0 &&
-          UnicodeUtils.isSurrogatePair(nodeValue, ii - 1)) {
+      if (
+        nodeValue != null &&
+        ii > 0 &&
+        UnicodeUtils.isSurrogatePair(nodeValue, ii - 1)
+      ) {
         // We're in the middle of a surrogate pair -- skip over so we never
         // return a range with an endpoint in the middle of a code point.
         continue;

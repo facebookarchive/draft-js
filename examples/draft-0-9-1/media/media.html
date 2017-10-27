@@ -23,6 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <script src="../../../node_modules/react/dist/react.js"></script>
     <script src="../../../node_modules/react-dom/dist/react-dom.js"></script>
     <script src="../../../node_modules/immutable/dist/immutable.js"></script>
+    <script src="../../../node_modules/es6-shim/es6-shim.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
     <script src="../../../dist/Draft.js"></script>
     <script type="text/babel">
@@ -48,7 +49,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             urlType: '',
           };
 
-          this.focus = () => this.refs.editor.focus();
+          this.focus = () => this.editor.focus();
           this.logState = () => {
             const content = this.state.editorState.getCurrentContent();
             console.log(convertToRaw(content));
@@ -105,7 +106,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             urlValue: '',
             urlType: type,
           }, () => {
-            setTimeout(() => this.refs.url.focus(), 0);
+            setTimeout(() => this.url.focus(), 0);
           });
         }
 
@@ -172,7 +173,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   handleKeyCommand={this.handleKeyCommand}
                   onChange={this.onChange}
                   placeholder="Enter some text..."
-                  ref="editor"
+                  ref={(ref) => this.editor = ref}
                 />
               </div>
               <input

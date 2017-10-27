@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule insertIntoList
+ * @format
  * @flow
  */
 
@@ -20,7 +21,7 @@ import type {List} from 'immutable';
 function insertIntoList<T>(
   targetList: List<T>,
   toInsert: List<T>,
-  offset: number
+  offset: number,
 ): List<T> {
   if (offset === targetList.count()) {
     toInsert.forEach(c => {

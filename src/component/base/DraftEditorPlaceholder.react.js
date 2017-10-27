@@ -8,17 +8,18 @@
  *
  * @providesModule DraftEditorPlaceholder.react
  * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type {DraftTextAlignment} from 'DraftTextAlignment';
+import type EditorState from 'EditorState';
+
 const React = require('React');
 
 const cx = require('cx');
-
-import type {DraftTextAlignment} from 'DraftTextAlignment';
-import type EditorState from 'EditorState';
 
 type Props = {
   accessibilityID: string,
@@ -33,18 +34,16 @@ type Props = {
  *
  * Override placeholder style via CSS.
  */
-class DraftEditorPlaceholder extends React.Component {
+class DraftEditorPlaceholder extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     return (
       this.props.text !== nextProps.text ||
-      (
-        this.props.editorState.getSelection().getHasFocus() !==
+      this.props.editorState.getSelection().getHasFocus() !==
         nextProps.editorState.getSelection().getHasFocus()
-      )
     );
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     const hasFocus = this.props.editorState.getSelection().getHasFocus();
 
     const className = cx({

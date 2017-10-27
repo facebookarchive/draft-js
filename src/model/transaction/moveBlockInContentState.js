@@ -8,64 +8,79 @@
  *
  * @providesModule moveBlockInContentState
  * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-const invariant = require('invariant');
-
 import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
 import type {DraftInsertionType} from 'DraftInsertionType';
+
+const invariant = require('invariant');
 
 function moveBlockInContentState(
   contentState: ContentState,
   blockToBeMoved: ContentBlock,
   targetBlock: ContentBlock,
-  insertionMode: DraftInsertionType
+  insertionMode: DraftInsertionType,
 ): ContentState {
   invariant(
     blockToBeMoved.getKey() !== targetBlock.getKey(),
-    'Block cannot be moved next to itself.'
+    'Block cannot be moved next to itself.',
   );
 
-  invariant(
-    insertionMode !== 'replace',
-    'Replacing blocks is not supported.'
-  );
+  invariant(insertionMode !== 'replace', 'Replacing blocks is not supported.');
 
   const targetKey = targetBlock.getKey();
   const blockBefore = contentState.getBlockBefore(targetKey);
   const blockAfter = contentState.getBlockAfter(targetKey);
 
   const blockMap = contentState.getBlockMap();
-  const blockMapWithoutBlockToBeMoved = blockMap.delete(blockToBeMoved.getKey());
-  const blocksBefore = blockMapWithoutBlockToBeMoved.toSeq().takeUntil(v => v === targetBlock);
-  const blocksAfter = blockMapWithoutBlockToBeMoved.toSeq().skipUntil(v => v === targetBlock).skip(1);
+  const blockMapWithoutBlockToBeMoved = blockMap.delete(
+    blockToBeMoved.getKey(),
+  );
+  const blocksBefore = blockMapWithoutBlockToBeMoved
+    .toSeq()
+    .takeUntil(v => v === targetBlock);
+  const blocksAfter = blockMapWithoutBlockToBeMoved
+    .toSeq()
+    .skipUntil(v => v === targetBlock)
+    .skip(1);
 
   let newBlocks;
 
   if (insertionMode === 'before') {
     invariant(
-      (!blockBefore) || blockBefore.getKey() !== blockToBeMoved.getKey(),
-      'Block cannot be moved next to itself.'
+      !blockBefore || blockBefore.getKey() !== blockToBeMoved.getKey(),
+      'Block cannot be moved next to itself.',
     );
 
-    newBlocks = blocksBefore.concat(
-      [[blockToBeMoved.getKey(), blockToBeMoved], [targetBlock.getKey(), targetBlock]],
-      blocksAfter
-    ).toOrderedMap();
+    newBlocks = blocksBefore
+      .concat(
+        [
+          [blockToBeMoved.getKey(), blockToBeMoved],
+          [targetBlock.getKey(), targetBlock],
+        ],
+        blocksAfter,
+      )
+      .toOrderedMap();
   } else if (insertionMode === 'after') {
     invariant(
-      (!blockAfter) || blockAfter.getKey() !== blockToBeMoved.getKey(),
-      'Block cannot be moved next to itself.'
+      !blockAfter || blockAfter.getKey() !== blockToBeMoved.getKey(),
+      'Block cannot be moved next to itself.',
     );
 
-    newBlocks = blocksBefore.concat(
-      [[targetBlock.getKey(), targetBlock], [blockToBeMoved.getKey(), blockToBeMoved]],
-      blocksAfter
-    ).toOrderedMap();
+    newBlocks = blocksBefore
+      .concat(
+        [
+          [targetBlock.getKey(), targetBlock],
+          [blockToBeMoved.getKey(), blockToBeMoved],
+        ],
+        blocksAfter,
+      )
+      .toOrderedMap();
   }
 
   return contentState.merge({

@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule keyCommandTransposeCharacters
+ * @format
  * @flow
  */
 
@@ -61,7 +62,7 @@ function keyCommandTransposeCharacters(editorState: EditorState): EditorState {
   var afterRemoval = DraftModifier.removeRange(
     content,
     removalRange,
-    'backward'
+    'backward',
   );
 
   // After the removal, the insertion target is one character back.
@@ -75,13 +76,13 @@ function keyCommandTransposeCharacters(editorState: EditorState): EditorState {
   var afterInsert = DraftModifier.replaceWithFragment(
     afterRemoval,
     targetRange,
-    movedFragment
+    movedFragment,
   );
 
   var newEditorState = EditorState.push(
     editorState,
     afterInsert,
-    'insert-fragment'
+    'insert-fragment',
   );
 
   return EditorState.acceptSelection(newEditorState, finalSelection);

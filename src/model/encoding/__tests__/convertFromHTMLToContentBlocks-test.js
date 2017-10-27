@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -15,9 +16,11 @@ jest.disableAutomock();
 
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 
-function testConvertingAdjacentHtmlElementsToContentBlocks(
-  tag: string,
-) {
+const IMAGE_DATA_URL =
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///' +
+  'yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
+function testConvertingAdjacentHtmlElementsToContentBlocks(tag: string) {
   it(`must not merge tags when converting adjacent <${tag} />`, () => {
     const html_string = `
       <${tag}>a</${tag}>
@@ -45,4 +48,20 @@ describe('convertFromHTMLToContentBlocks', () => {
     'p',
     'pre',
   ].forEach(tag => testConvertingAdjacentHtmlElementsToContentBlocks(tag));
+
+  describe('img tag', function() {
+    test('img with http protocol should have camera emoji content', function() {
+      const blocks = convertFromHTMLToContentBlocks(
+        '<img src="http://www.facebook.com">',
+      );
+      expect(blocks.contentBlocks[0].text).toBe('\ud83d\udcf7');
+    });
+
+    test('img with data protocol should be correctly parsed', function() {
+      const blocks = convertFromHTMLToContentBlocks(
+        `<img src="${IMAGE_DATA_URL}">`,
+      );
+      expect(blocks.contentBlocks[0].text).toBe('\ud83d\udcf7');
+    });
+  });
 });

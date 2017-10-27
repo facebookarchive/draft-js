@@ -21,7 +21,7 @@ First setup your environment by having two folders, one `draft` and one `draft-g
 
 ```
 cd ../../
-git clone git@github.com:facebook/draft.git draft-gh-pages
+git clone git@github.com:facebook/draft-js.git draft-gh-pages
 cd draft-gh-pages
 git checkout origin/gh-pages
 git checkout -b gh-pages

@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftOffsetKey
+ * @format
  * @flow
  */
 
@@ -20,7 +21,7 @@ var DraftOffsetKey = {
   encode: function(
     blockKey: string,
     decoratorKey: number,
-    leafKey: number
+    leafKey: number,
   ): string {
     return blockKey + KEY_DELIMITER + decoratorKey + KEY_DELIMITER + leafKey;
   },

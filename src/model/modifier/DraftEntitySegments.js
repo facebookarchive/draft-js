@@ -8,13 +8,14 @@
  *
  * @providesModule DraftEntitySegments
  * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type {DraftRange} from 'DraftRange';
+import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 
 /**
  * Identify the range to delete from a segmented entity.
@@ -45,7 +46,7 @@ var DraftEntitySegments = {
     selectionEnd: number,
     text: string,
     entityStart: number,
-    direction: DraftRemovalDirection
+    direction: DraftRemovalDirection,
   ): DraftRange {
     var segments = text.split(' ');
     segments = segments.map((/*string*/ segment, /*number*/ ii) => {

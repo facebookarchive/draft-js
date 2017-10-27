@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule keyCommandInsertNewline
+ * @format
  * @flow
  */
 
@@ -18,7 +19,7 @@ var EditorState = require('EditorState');
 function keyCommandInsertNewline(editorState: EditorState): EditorState {
   var contentState = DraftModifier.splitBlock(
     editorState.getCurrentContent(),
-    editorState.getSelection()
+    editorState.getSelection(),
   );
   return EditorState.push(editorState, contentState, 'split-block');
 }

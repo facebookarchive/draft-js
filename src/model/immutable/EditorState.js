@@ -7,10 +7,18 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule EditorState
+ * @format
  * @flow
  */
 
 'use strict';
+
+import type {BlockMap} from 'BlockMap';
+import type {DraftDecoratorType} from 'DraftDecoratorType';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {EditorChangeType} from 'EditorChangeType';
+import type {EntityMap} from 'EntityMap';
+import type {List, OrderedMap} from 'immutable';
 
 var BlockTree = require('BlockTree');
 var ContentState = require('ContentState');
@@ -18,18 +26,7 @@ var EditorBidiService = require('EditorBidiService');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
 
-import type {BlockMap} from 'BlockMap';
-import type {DraftDecoratorType} from 'DraftDecoratorType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {EntityMap} from 'EntityMap';
-import type {List, OrderedMap} from 'immutable';
-import type {EditorChangeType} from 'EditorChangeType';
-
-var {
-  OrderedSet,
-  Record,
-  Stack,
-} = Immutable;
+var {OrderedSet, Record, Stack} = Immutable;
 
 type EditorStateRecordType = {
   allowUndo: boolean,
@@ -68,20 +65,21 @@ var EditorStateRecord = Record(defaultRecord);
 class EditorState {
   _immutable: EditorStateRecord;
 
-  static createEmpty(
-    decorator?: ?DraftDecoratorType
-  ): EditorState {
+  static createEmpty(decorator?: ?DraftDecoratorType): EditorState {
     return EditorState.createWithContent(
       ContentState.createFromText(''),
-      decorator
+      decorator,
     );
   }
 
   static createWithContent(
     contentState: ContentState,
-    decorator?: ?DraftDecoratorType
+    decorator?: ?DraftDecoratorType,
   ): EditorState {
-    var firstKey = contentState.getBlockMap().first().getKey();
+    var firstKey = contentState
+      .getBlockMap()
+      .first()
+      .getKey();
     return EditorState.create({
       currentContent: contentState,
       undoStack: Stack(),
@@ -98,9 +96,7 @@ class EditorState {
       treeMap: generateNewTreeMap(currentContent, decorator),
       directionMap: EditorBidiService.getDirectionMap(currentContent),
     };
-    return new EditorState(
-      new EditorStateRecord(recordConfig)
-    );
+    return new EditorState(new EditorStateRecord(recordConfig));
   }
 
   static set(editorState: EditorState, put: Object): EditorState {
@@ -124,7 +120,7 @@ class EditorState {
             newContent.getBlockMap(),
             treeMap,
             decorator,
-            existingDecorator
+            existingDecorator,
           );
         } else {
           newTreeMap = generateNewTreeMap(newContent, decorator);
@@ -146,8 +142,8 @@ class EditorState {
             editorState,
             newContent.getBlockMap(),
             newContent.getEntityMap(),
-            decorator
-          )
+            decorator,
+          ),
         );
       }
 
@@ -215,7 +211,7 @@ class EditorState {
 
   static setInlineStyleOverride(
     editorState: EditorState,
-    inlineStyleOverride: DraftInlineStyle
+    inlineStyleOverride: DraftInlineStyle,
   ): EditorState {
     return EditorState.set(editorState, {inlineStyleOverride});
   }
@@ -246,7 +242,10 @@ class EditorState {
   }
 
   isSelectionAtStartOfContent(): boolean {
-    var firstKey = this.getCurrentContent().getBlockMap().first().getKey();
+    var firstKey = this.getCurrentContent()
+      .getBlockMap()
+      .first()
+      .getKey();
     return this.getSelection().hasEdgeWithin(firstKey, 0, 0);
   }
 
@@ -272,7 +271,7 @@ class EditorState {
    */
   static acceptSelection(
     editorState: EditorState,
-    selection: SelectionState
+    selection: SelectionState,
   ): EditorState {
     return updateSelection(editorState, selection, false);
   }
@@ -291,7 +290,7 @@ class EditorState {
    */
   static forceSelection(
     editorState: EditorState,
-    selection: SelectionState
+    selection: SelectionState,
   ): EditorState {
     if (!selection.getHasFocus()) {
       selection = selection.set('hasFocus', true);
@@ -316,7 +315,7 @@ class EditorState {
         focusKey: lastKey,
         focusOffset: length,
         isBackward: false,
-      })
+      }),
     );
   }
 
@@ -329,7 +328,7 @@ class EditorState {
     var afterSelectionMove = EditorState.moveSelectionToEnd(editorState);
     return EditorState.forceSelection(
       afterSelectionMove,
-      afterSelectionMove.getSelection()
+      afterSelectionMove.getSelection(),
     );
   }
 
@@ -341,7 +340,7 @@ class EditorState {
   static push(
     editorState: EditorState,
     contentState: ContentState,
-    changeType: EditorChangeType
+    changeType: EditorChangeType,
   ): EditorState {
     if (editorState.getCurrentContent() === contentState) {
       return editorState;
@@ -350,7 +349,7 @@ class EditorState {
     var forceSelection = changeType !== 'insert-characters';
     var directionMap = EditorBidiService.getDirectionMap(
       contentState,
-      editorState.getDirectionMap()
+      editorState.getDirectionMap(),
     );
 
     if (!editorState.getAllowUndo()) {
@@ -383,14 +382,18 @@ class EditorState {
       // Preserve the previous selection.
       newContent = newContent.set(
         'selectionBefore',
-        currentContent.getSelectionBefore()
+        currentContent.getSelectionBefore(),
       );
     }
 
     let inlineStyleOverride = editorState.getInlineStyleOverride();
 
     // Don't discard inline style overrides for the following change types:
-    var overrideChangeTypes = ['adjust-depth', 'change-block-type', 'split-block'];
+    var overrideChangeTypes = [
+      'adjust-depth',
+      'change-block-type',
+      'split-block',
+    ];
 
     if (overrideChangeTypes.indexOf(changeType) === -1) {
       inlineStyleOverride = null;
@@ -428,7 +431,7 @@ class EditorState {
     var currentContent = editorState.getCurrentContent();
     var directionMap = EditorBidiService.getDirectionMap(
       newCurrentContent,
-      editorState.getDirectionMap()
+      editorState.getDirectionMap(),
     );
 
     return EditorState.set(editorState, {
@@ -462,7 +465,7 @@ class EditorState {
     var currentContent = editorState.getCurrentContent();
     var directionMap = EditorBidiService.getDirectionMap(
       newCurrentContent,
-      editorState.getDirectionMap()
+      editorState.getDirectionMap(),
     );
 
     return EditorState.set(editorState, {
@@ -500,7 +503,7 @@ class EditorState {
 function updateSelection(
   editorState: EditorState,
   selection: SelectionState,
-  forceSelection: boolean
+  forceSelection: boolean,
 ): EditorState {
   return EditorState.set(editorState, {
     selection,
@@ -516,7 +519,7 @@ function updateSelection(
  */
 function generateNewTreeMap(
   contentState: ContentState,
-  decorator?: ?DraftDecoratorType
+  decorator?: ?DraftDecoratorType,
 ): OrderedMap<string, List<any>> {
   return contentState
     .getBlockMap()
@@ -533,9 +536,11 @@ function regenerateTreeForNewBlocks(
   editorState: EditorState,
   newBlockMap: BlockMap,
   newEntityMap: EntityMap,
-  decorator?: ?DraftDecoratorType
+  decorator?: ?DraftDecoratorType,
 ): OrderedMap<string, List<any>> {
-  const contentState = editorState.getCurrentContent().set('entityMap', newEntityMap);
+  const contentState = editorState
+    .getCurrentContent()
+    .set('entityMap', newEntityMap);
   var prevBlockMap = contentState.getBlockMap();
   var prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(
@@ -559,7 +564,7 @@ function regenerateTreeForNewDecorator(
   blockMap: BlockMap,
   previousTreeMap: OrderedMap<string, List<any>>,
   decorator: DraftDecoratorType,
-  existingDecorator: DraftDecoratorType
+  existingDecorator: DraftDecoratorType,
 ): OrderedMap<string, List<any>> {
   return previousTreeMap.merge(
     blockMap
@@ -581,22 +586,20 @@ function regenerateTreeForNewDecorator(
  */
 function mustBecomeBoundary(
   editorState: EditorState,
-  changeType: EditorChangeType
+  changeType: EditorChangeType,
 ): boolean {
   var lastChangeType = editorState.getLastChangeType();
   return (
     changeType !== lastChangeType ||
-    (
-      changeType !== 'insert-characters' &&
+    (changeType !== 'insert-characters' &&
       changeType !== 'backspace-character' &&
-      changeType !== 'delete-character'
-    )
+      changeType !== 'delete-character')
   );
 }
 
 function getInlineStyleForCollapsedSelection(
   content: ContentState,
-  selection: SelectionState
+  selection: SelectionState,
 ): DraftInlineStyle {
   var startKey = selection.getStartKey();
   var startOffset = selection.getStartOffset();
@@ -620,7 +623,7 @@ function getInlineStyleForCollapsedSelection(
 
 function getInlineStyleForNonCollapsedSelection(
   content: ContentState,
-  selection: SelectionState
+  selection: SelectionState,
 ): DraftInlineStyle {
   var startKey = selection.getStartKey();
   var startOffset = selection.getStartOffset();
@@ -643,19 +646,18 @@ function getInlineStyleForNonCollapsedSelection(
 
 function lookUpwardForInlineStyle(
   content: ContentState,
-  fromKey: string
+  fromKey: string,
 ): DraftInlineStyle {
-  var previousBlock = content.getBlockBefore(fromKey);
-  var previousLength;
+  var lastNonEmpty = content
+    .getBlockMap()
+    .reverse()
+    .skipUntil((_, k) => k === fromKey)
+    .skip(1)
+    .skipUntil((block, _) => block.getLength())
+    .first();
 
-  while (previousBlock) {
-    previousLength = previousBlock.getLength();
-    if (previousLength) {
-      return previousBlock.getInlineStyleAt(previousLength - 1);
-    }
-    previousBlock = content.getBlockBefore(previousBlock.getKey());
-  }
-
+  if (lastNonEmpty)
+    return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
   return OrderedSet();
 }
 

@@ -40,7 +40,7 @@ export function insertTeXBlock(editorState) {
   const entityKey = Entity.create(
     'TOKEN',
     'IMMUTABLE',
-    {content: examples[nextFormula]}
+    {content: examples[nextFormula]},
   );
 
   return AtomicBlockUtils.insertAtomicBlock(editorState, entityKey, ' ');

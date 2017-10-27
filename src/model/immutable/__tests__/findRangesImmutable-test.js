@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -14,6 +15,7 @@
 jest.disableAutomock();
 
 var Immutable = require('immutable');
+
 var findRangesImmutable = require('findRangesImmutable');
 
 describe('findRangesImmutable', () => {
@@ -21,12 +23,7 @@ describe('findRangesImmutable', () => {
 
   it('must be a no-op for an empty list', () => {
     var cb = jest.fn();
-    findRangesImmutable(
-      Immutable.List(),
-      returnTrue,
-      returnTrue,
-      cb
-    );
+    findRangesImmutable(Immutable.List(), returnTrue, returnTrue, cb);
     expect(cb.mock.calls.length).toBe(0);
   });
 
@@ -48,7 +45,7 @@ describe('findRangesImmutable', () => {
         list,
         areEqual, // never equal
         returnTrue,
-        cb
+        cb,
       );
       var calls = cb.mock.calls;
       expect(calls.length).toBe(5);
@@ -65,7 +62,7 @@ describe('findRangesImmutable', () => {
         list,
         returnTrue,
         () => false, // never an accepted filter result
-        cb
+        cb,
       );
       var calls = cb.mock.calls;
       expect(calls.length).toBe(0);
@@ -77,12 +74,7 @@ describe('findRangesImmutable', () => {
 
     it('must identify each range', () => {
       var cb = jest.fn();
-      findRangesImmutable(
-        list,
-        (a, b) => a === b,
-        returnTrue,
-        cb
-      );
+      findRangesImmutable(list, (a, b) => a === b, returnTrue, cb);
       var calls = cb.mock.calls;
       expect(calls.length).toBe(4);
       expect(calls[0]).toEqual([0, 2]);
