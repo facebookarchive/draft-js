@@ -12,10 +12,7 @@
 
 'use strict';
 
-jest
-  .disableAutomock()
-  .mock('UserAgent')
-  .mock('UserAgent');
+jest.disableAutomock().mock('UserAgent');
 
 var BLOCK_DELIMITER_CHAR = '\n';
 var TEST_A = 'Hello';
