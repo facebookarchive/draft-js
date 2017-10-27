@@ -60,10 +60,10 @@ export type DraftEditorProps = {
   // For a given `ContentBlock` object, return an object that specifies
   // a custom block component and/or props. If no object is returned,
   // the default `DraftEditorBlock` is used.
-  blockRendererFn?: (block: ContentBlock) => ?Object,
+  blockRendererFn: (block: ContentBlock) => ?Object,
 
   // Function that returns a cx map corresponding to block-level styles.
-  blockStyleFn?: (block: ContentBlock) => string,
+  blockStyleFn: (block: ContentBlock) => string,
 
   // A function that accepts a synthetic key event and returns
   // the matching DraftEditorCommand constant, or a custom string,
@@ -166,11 +166,11 @@ export type DraftEditorProps = {
 
   // Provide a map of inline style names corresponding to CSS style objects
   // that will be rendered for matching ranges.
-  customStyleMap?: Object,
+  customStyleMap: Object,
 
   // Provide a function that will construct CSS style objects given inline
   // style names.
-  customStyleFn?: (style: DraftInlineStyle, block: ContentBlock) => ?Object,
+  customStyleFn: (style: DraftInlineStyle, block: ContentBlock) => ?Object,
 
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration

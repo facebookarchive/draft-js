@@ -13,7 +13,6 @@
 
 'use strict';
 
-import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
 
 const React = require('React');
@@ -24,7 +23,6 @@ type Props = {
   accessibilityID: string,
   editorState: EditorState,
   text: string,
-  textAlignment: DraftTextAlignment,
 };
 
 /**
