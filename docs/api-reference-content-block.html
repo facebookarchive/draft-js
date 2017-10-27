@@ -2,7 +2,7 @@
 <a href="http://facebook.github.io/immutable-js/docs/#/Record/Record" target="_blank">Record</a> that
 represents the full state of a single block of editor content, including:</p><ul><li>Plain text contents of the block</li><li>Type, e.g. paragraph, header, list item</li><li>Entity, inline style, and depth information</li></ul><p>A <code>ContentState</code> object contains an <code>OrderedMap</code> of these <code>ContentBlock</code> objects,
 which together comprise the full contents of the editor.</p><p><code>ContentBlock</code> objects are largely analogous to block-level HTML elements like
-paragraphs and list items.</p><p>New <code>ContentBlock</code> objects may be created directly using the constructor.
+paragraphs and list items. The available types are:</p><ul><li>unstyled</li><li>paragraph</li><li>header-one</li><li>header-two</li><li>header-three</li><li>header-four</li><li>header-five</li><li>header-six</li><li>unordered-list-item</li><li>ordered-list-item</li><li>blockquote</li><li>code-block</li><li>atomic</li></ul><p>New <code>ContentBlock</code> objects may be created directly using the constructor.
 Expected Record values are detailed below.</p><h3><a class="anchor" name="representing-styles-and-entities"></a>Representing styles and entities <a class="hash-link" href="#representing-styles-and-entities">#</a></h3><p>The <code>characterList</code> field is an immutable <code>List</code> containing a <code>CharacterMetadata</code>
 object for every character in the block. This is how we encode styles and
 entities for a given block.</p><p>By making heavy use of immutability and data persistence for these lists and
