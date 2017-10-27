@@ -20,12 +20,12 @@ const EditorState = require('EditorState');
 const RichUtils = require('RichTextEditorUtil');
 
 const Enzyme = require('enzyme');
+const {mount} = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
-const { mount } = require('enzyme');
 
 const React = require('react');
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({adapter: new Adapter()});
 
 describe('DraftEditor.react', () => {
   describe('with a custom block type and the default blockRenderMap', () => {
