@@ -8,6 +8,7 @@
  *
  * @providesModule addEntityToContentState
  * @typechecks
+ * @format
  * @flow
  */
 

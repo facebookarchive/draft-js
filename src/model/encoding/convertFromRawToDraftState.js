@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule convertFromRawToDraftState
+ * @format
  * @flow
  */
 
@@ -34,48 +35,36 @@ function convertFromRawToDraftState(
   var fromStorageToLocal = {};
 
   // TODO: Update this once we completely remove DraftEntity
-  Object.keys(entityMap).forEach(
-    storageKey => {
-      var encodedEntity = entityMap[storageKey];
-      var {type, mutability, data} = encodedEntity;
-      var newKey = DraftEntity.__create(type, mutability, data || {});
-      fromStorageToLocal[storageKey] = newKey;
-    },
-  );
+  Object.keys(entityMap).forEach(storageKey => {
+    var encodedEntity = entityMap[storageKey];
+    var {type, mutability, data} = encodedEntity;
+    var newKey = DraftEntity.__create(type, mutability, data || {});
+    fromStorageToLocal[storageKey] = newKey;
+  });
 
-  var contentBlocks = blocks.map(
-    block => {
-      var {
-        key,
-        type,
-        text,
-        depth,
-        inlineStyleRanges,
-        entityRanges,
-        data,
-      } = block;
-      key = key || generateRandomKey();
-      type = type || 'unstyled';
-      depth = depth || 0;
-      inlineStyleRanges = inlineStyleRanges || [];
-      entityRanges = entityRanges || [];
-      data = Map(data);
+  var contentBlocks = blocks.map(block => {
+    var {key, type, text, depth, inlineStyleRanges, entityRanges, data} = block;
+    key = key || generateRandomKey();
+    type = type || 'unstyled';
+    depth = depth || 0;
+    inlineStyleRanges = inlineStyleRanges || [];
+    entityRanges = entityRanges || [];
+    data = Map(data);
 
-      var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
+    var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
 
-      // Translate entity range keys to the DraftEntity map.
-      var filteredEntityRanges = entityRanges
-        .filter(range => fromStorageToLocal.hasOwnProperty(range.key))
-        .map(range => {
-          return {...range, key: fromStorageToLocal[range.key]};
-        });
+    // Translate entity range keys to the DraftEntity map.
+    var filteredEntityRanges = entityRanges
+      .filter(range => fromStorageToLocal.hasOwnProperty(range.key))
+      .map(range => {
+        return {...range, key: fromStorageToLocal[range.key]};
+      });
 
-      var entities = decodeEntityRanges(text, filteredEntityRanges);
-      var characterList = createCharacterList(inlineStyles, entities);
+    var entities = decodeEntityRanges(text, filteredEntityRanges);
+    var characterList = createCharacterList(inlineStyles, entities);
 
-      return new ContentBlock({key, type, text, depth, characterList, data});
-    },
-  );
+    return new ContentBlock({key, type, text, depth, characterList, data});
+  });
 
   return ContentState.createFromBlockArray(contentBlocks);
 }

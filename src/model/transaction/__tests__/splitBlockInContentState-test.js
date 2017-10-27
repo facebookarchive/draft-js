@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -21,21 +22,24 @@ var splitBlockInContentState = require('splitBlockInContentState');
 const {List} = Immutable;
 
 describe('splitBlockInContentState', () => {
-  var {
-    contentState,
-    selectionState,
-  } = getSampleStateForTesting();
+  var {contentState, selectionState} = getSampleStateForTesting();
 
   function checkForCharacterList(block) {
     expect(List.isList(block.getCharacterList())).toBe(true);
   }
 
   function getInlineStyles(block) {
-    return block.getCharacterList().map(c => c.getStyle()).toJS();
+    return block
+      .getCharacterList()
+      .map(c => c.getStyle())
+      .toJS();
   }
 
   function getEntities(block) {
-    return block.getCharacterList().map(c => c.getEntity()).toJS();
+    return block
+      .getCharacterList()
+      .map(c => c.getEntity())
+      .toJS();
   }
 
   it('must be restricted to collapsed selections', () => {
@@ -69,16 +73,10 @@ describe('splitBlockInContentState', () => {
     expect(postSplitBlock.getKey()).not.toBe(initialBlock.getKey());
     expect(postSplitBlock.getType()).toBe(initialBlock.getType());
     expect(postSplitBlock.getText()).toBe(initialBlock.getText());
-    expect(
-      getInlineStyles(initialBlock),
-    ).toEqual(
+    expect(getInlineStyles(initialBlock)).toEqual(
       getInlineStyles(postSplitBlock),
     );
-    expect(
-      getEntities(postSplitBlock),
-    ).toEqual(
-      getEntities(initialBlock),
-    );
+    expect(getEntities(postSplitBlock)).toEqual(getEntities(initialBlock));
 
     checkForCharacterList(preSplitBlock);
     checkForCharacterList(postSplitBlock);
@@ -149,16 +147,10 @@ describe('splitBlockInContentState', () => {
     expect(preSplitBlock.getKey()).not.toBe(postSplitBlock.getKey());
     expect(preSplitBlock.getType()).toBe(postSplitBlock.getType());
     expect(preSplitBlock.getText()).toBe(initialBlock.getText());
-    expect(
-      getInlineStyles(preSplitBlock),
-    ).toEqual(
+    expect(getInlineStyles(preSplitBlock)).toEqual(
       getInlineStyles(initialBlock),
     );
-    expect(
-      getEntities(preSplitBlock),
-    ).toEqual(
-      getEntities(initialBlock),
-    );
+    expect(getEntities(preSplitBlock)).toEqual(getEntities(initialBlock));
 
     expect(postSplitBlock.getKey()).not.toBe(initialBlock.getKey());
     expect(postSplitBlock.getType()).toBe(initialBlock.getType());

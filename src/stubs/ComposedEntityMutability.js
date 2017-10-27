@@ -7,15 +7,16 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule ComposedEntityMutability
+ * @format
  * @flow
  */
 
 'use strict';
 
 var ComposedEntityMutability = {
-  'MUTABLE': true,
-  'IMMUTABLE': true,
-  'SEGMENTED': true,
+  MUTABLE: true,
+  IMMUTABLE: true,
+  SEGMENTED: true,
 };
 
 module.exports = ComposedEntityMutability;

@@ -8,6 +8,7 @@
  *
  * @providesModule DraftEditorContents.react
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -70,10 +71,8 @@ class DraftEditorContents extends React.Component<Props> {
     // rendered state, there's nothing new to be done.
     if (
       prevEditorState === nextEditorState ||
-      (
-        nextNativeContent !== null &&
-        nextEditorState.getCurrentContent() === nextNativeContent
-      ) ||
+      (nextNativeContent !== null &&
+        nextEditorState.getCurrentContent() === nextNativeContent) ||
       (wasComposing && nowComposing)
     ) {
       return false;
@@ -156,16 +155,12 @@ class DraftEditorContents extends React.Component<Props> {
         tree: editorState.getBlockTree(key),
       };
 
-      const configForType = (
-        blockRenderMap.get(blockType) ||
-        blockRenderMap.get('unstyled')
-      );
+      const configForType =
+        blockRenderMap.get(blockType) || blockRenderMap.get('unstyled');
       const wrapperTemplate = configForType.wrapper;
 
-      const Element = (
-        configForType.element ||
-        blockRenderMap.get('unstyled').element
-      );
+      const Element =
+        configForType.element || blockRenderMap.get('unstyled').element;
 
       const depth = block.getDepth();
       let className = this.props.blockStyleFn(block);
@@ -173,11 +168,10 @@ class DraftEditorContents extends React.Component<Props> {
       // List items are special snowflakes, since we handle nesting and
       // counters manually.
       if (Element === 'li') {
-        const shouldResetCount = (
+        const shouldResetCount =
           lastWrapperTemplate !== wrapperTemplate ||
           currentDepth === null ||
-          depth > currentDepth
-        );
+          depth > currentDepth;
         className = joinClasses(
           className,
           getListItemClasses(blockType, depth, shouldResetCount, direction),
@@ -276,8 +270,7 @@ function getListItemClasses(
   return cx({
     'public/DraftStyleDefault/unorderedListItem':
       type === 'unordered-list-item',
-    'public/DraftStyleDefault/orderedListItem':
-      type === 'ordered-list-item',
+    'public/DraftStyleDefault/orderedListItem': type === 'ordered-list-item',
     'public/DraftStyleDefault/reset': shouldResetCount,
     'public/DraftStyleDefault/depth0': depth === 0,
     'public/DraftStyleDefault/depth1': depth === 1,

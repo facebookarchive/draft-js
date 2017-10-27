@@ -8,6 +8,7 @@
  *
  * @providesModule DraftEditor.react
  * @typechecks
+ * @format
  * @flow
  * @preventMunge
  */
@@ -50,11 +51,11 @@ const allowSpellCheck = !isIE;
 // Define a set of handler objects to correspond to each possible `mode`
 // of editor behavior.
 const handlerMap = {
-  'edit': DraftEditorEditHandler,
-  'composite': DraftEditorCompositionHandler,
-  'drag': DraftEditorDragHandler,
-  'cut': null,
-  'render': null,
+  edit: DraftEditorEditHandler,
+  composite: DraftEditorCompositionHandler,
+  drag: DraftEditorDragHandler,
+  cut: null,
+  render: null,
 };
 
 type State = {
@@ -182,7 +183,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * editor mode, if any has been specified.
    */
   _buildHandler(eventName: string): Function {
-    return (e) => {
+    return e => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
         method && method(this, e);
@@ -237,16 +238,15 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     // The aria-expanded and aria-haspopup properties should only be rendered
     // for a combobox.
     const ariaRole = this.props.role || 'textbox';
-    const ariaExpanded = ariaRole === 'combobox'
-      ? !!this.props.ariaExpanded
-      : null;
+    const ariaExpanded =
+      ariaRole === 'combobox' ? !!this.props.ariaExpanded : null;
 
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
         <div
           className={cx('DraftEditor/editorContainer')}
-          ref={(ref) => this.editorContainer = ref}>
+          ref={ref => (this.editorContainer = ref)}>
           <div
             aria-activedescendant={
               readOnly ? null : this.props.ariaActiveDescendantID
@@ -267,7 +267,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
               // that Draft doesn't expect (ex: adding <font> tags inside
               // DraftEditorLeaf spans) and causes problems. We add notranslate
               // here which makes its autotranslation skip over this subtree.
-              'notranslate': !readOnly,
+              notranslate: !readOnly,
               'public/DraftEditor/content': true,
             })}
             contentEditable={!readOnly}
@@ -292,14 +292,13 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onMouseUp={this._onMouseUp}
             onPaste={this._onPaste}
             onSelect={this._onSelect}
-            ref={(ref) => this.editor = ref}
+            ref={ref => (this.editor = ref)}
             role={readOnly ? null : ariaRole}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
-            {
-              }
+            {}
             {}
             {/* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
               * error when upgrading Flow's support for React. Common errors
@@ -309,9 +308,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
               blockRenderMap={this.props.blockRenderMap}
               blockRendererFn={this.props.blockRendererFn}
               blockStyleFn={this.props.blockStyleFn}
-              customStyleMap={
-                {...DefaultDraftInlineStyle, ...this.props.customStyleMap}
-              }
+              customStyleMap={{
+                ...DefaultDraftInlineStyle,
+                ...this.props.customStyleMap,
+              }}
               customStyleFn={this.props.customStyleFn}
               editorKey={this._editorKey}
               editorState={this.props.editorState}
@@ -398,10 +398,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     // Put the cursor back where it was before the blur.
     if (!alreadyHasFocus) {
       this.update(
-        EditorState.forceSelection(
-          editorState,
-          editorState.getSelection(),
-        ),
+        EditorState.forceSelection(editorState, editorState.getSelection()),
       );
     }
   }

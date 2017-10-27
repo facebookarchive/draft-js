@@ -8,6 +8,7 @@
  *
  * @providesModule getContentStateFragment
  * @typechecks
+ * @format
  * @flow
  */
 

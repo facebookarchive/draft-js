@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -100,8 +101,11 @@ describe('SelectionState', () => {
 
     it('is true if selection range is entirely within test range', () => {
       expect(
-        getSample({...COLLAPSED, anchorOffset: 5, focusOffset: 5})
-          .hasEdgeWithin('a', 0, 10),
+        getSample({
+          ...COLLAPSED,
+          anchorOffset: 5,
+          focusOffset: 5,
+        }).hasEdgeWithin('a', 0, 10),
       ).toBe(true);
       expect(getSample(WITHIN_BLOCK).hasEdgeWithin('a', 0, 40)).toBe(true);
     });
@@ -169,5 +173,4 @@ describe('SelectionState', () => {
       expect(multiBlock.getEndOffset()).toBe(10);
     });
   });
-
 });

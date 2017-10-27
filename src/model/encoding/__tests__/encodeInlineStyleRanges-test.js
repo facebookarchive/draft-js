@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -30,11 +31,7 @@ var {
   NONE,
 } = SampleDraftInlineStyle;
 
-const {
-  List,
-  OrderedSet,
-  Repeat,
-} = Immutable;
+const {List, OrderedSet, Repeat} = Immutable;
 
 const FOO = OrderedSet.of('foo');
 const FOO_BAR = OrderedSet.of('foo', 'bar');
@@ -72,15 +69,10 @@ describe('encodeInlineStyleRanges', () => {
   it('must encode for a flat styled document', () => {
     expect(
       encodeInlineStyleRanges(createBlock(' '.repeat(20), Repeat(BOLD, 20))),
-    ).toEqual([
-      {offset: 0, length: 20, style: 'BOLD'},
-    ]);
+    ).toEqual([{offset: 0, length: 20, style: 'BOLD'}]);
     expect(
       encodeInlineStyleRanges(
-        createBlock(
-          ' '.repeat(20),
-          Repeat(BOLD_ITALIC, 20),
-        ),
+        createBlock(' '.repeat(20), Repeat(BOLD_ITALIC, 20)),
       ),
     ).toEqual([
       {offset: 0, length: 20, style: 'BOLD'},
@@ -109,6 +101,7 @@ describe('encodeInlineStyleRanges', () => {
   });
 
   it('must encode for a complex styled document', () => {
+    // prettier-ignore
     var complex = List([
       BOLD, BOLD, BOLD, BOLD, NONE,     // "four "
       BOLD_ITALIC, BOLD_ITALIC,         // "sc"
@@ -130,6 +123,7 @@ describe('encodeInlineStyleRanges', () => {
 
   it('must encode for strings with surrogate pairs', () => {
     var str = 'Take a \uD83D\uDCF7 #selfie';
+    // prettier-ignore
     var styles = List([
       NONE, NONE, NONE, NONE,                            // `Take`
       BOLD, BOLD, BOLD_ITALIC, BOLD_ITALIC, BOLD_ITALIC, // ` a [camera]`
@@ -137,9 +131,7 @@ describe('encodeInlineStyleRanges', () => {
       NONE, NONE,                                        // `ie`
     ]);
 
-    expect(
-      encodeInlineStyleRanges(createBlock(str, styles)),
-    ).toEqual([
+    expect(encodeInlineStyleRanges(createBlock(str, styles))).toEqual([
       {offset: 4, length: 4, style: 'BOLD'},
       {offset: 6, length: 8, style: 'ITALIC'},
     ]);

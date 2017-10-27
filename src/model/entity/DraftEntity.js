@@ -8,6 +8,7 @@
  *
  * @providesModule DraftEntity
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -29,11 +30,11 @@ var instanceKey = 0;
  */
 function logWarning(oldMethodCall, newMethodCall) {
   console.warn(
-    'WARNING: '
-    + oldMethodCall
-    + ' will be deprecated soon!\nPlease use "'
-    + newMethodCall
-    + '" instead.',
+    'WARNING: ' +
+      oldMethodCall +
+      ' will be deprecated soon!\nPlease use "' +
+      newMethodCall +
+      '" instead.',
   );
 }
 
@@ -74,12 +75,12 @@ export type DraftEntityMapObject = {
 
   __mergeData: (
     key: string,
-    toMerge: {[key: string]: any}
+    toMerge: {[key: string]: any},
   ) => DraftEntityInstance,
 
   __replaceData: (
     key: string,
-    newData: {[key: string]: any}
+    newData: {[key: string]: any},
   ) => DraftEntityInstance,
 };
 
@@ -96,7 +97,7 @@ export type DraftEntityMapObject = {
  * generated via DraftEntity.create() and used to obtain entity metadata
  * via DraftEntity.get().
  */
-var DraftEntity:DraftEntityMapObject = {
+var DraftEntity: DraftEntityMapObject = {
   /**
    * WARNING: This method will be deprecated soon!
    * Please use 'contentState.getLastCreatedEntityKey' instead.
@@ -128,10 +129,7 @@ var DraftEntity:DraftEntityMapObject = {
     mutability: DraftEntityMutability,
     data?: Object,
   ): string {
-    logWarning(
-      'DraftEntity.create',
-      'contentState.createEntity',
-    );
+    logWarning('DraftEntity.create', 'contentState.createEntity');
     return DraftEntity.__create(type, mutability, data);
   },
 
@@ -143,10 +141,7 @@ var DraftEntity:DraftEntityMapObject = {
    * useful when restoring instances from the server.
    */
   add: function(instance: DraftEntityInstance): string {
-    logWarning(
-      'DraftEntity.add',
-      'contentState.addEntity',
-    );
+    logWarning('DraftEntity.add', 'contentState.addEntity');
     return DraftEntity.__add(instance);
   },
 
@@ -157,10 +152,7 @@ var DraftEntity:DraftEntityMapObject = {
    * Retrieve the entity corresponding to the supplied key string.
    */
   get: function(key: string): DraftEntityInstance {
-    logWarning(
-      'DraftEntity.get',
-      'contentState.getEntity',
-    );
+    logWarning('DraftEntity.get', 'contentState.getEntity');
     return DraftEntity.__get(key);
   },
 
@@ -176,10 +168,7 @@ var DraftEntity:DraftEntityMapObject = {
     key: string,
     toMerge: {[key: string]: any},
   ): DraftEntityInstance {
-    logWarning(
-      'DraftEntity.mergeData',
-      'contentState.mergeEntityData',
-    );
+    logWarning('DraftEntity.mergeData', 'contentState.mergeEntityData');
     return DraftEntity.__mergeData(key, toMerge);
   },
 
@@ -193,10 +182,7 @@ var DraftEntity:DraftEntityMapObject = {
     key: string,
     newData: {[key: string]: any},
   ): DraftEntityInstance {
-    logWarning(
-      'DraftEntity.replaceData',
-      'contentState.replaceEntityData',
-    );
+    logWarning('DraftEntity.replaceData', 'contentState.replaceEntityData');
     return DraftEntity.__replaceData(key, newData);
   },
 
@@ -235,7 +221,7 @@ var DraftEntity:DraftEntityMapObject = {
    * useful when restoring instances from the server.
    */
   __add: function(instance: DraftEntityInstance): string {
-    var key = '' + (++instanceKey);
+    var key = '' + ++instanceKey;
     instances = instances.set(key, instance);
     return key;
   },
