@@ -7,10 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getTextContentFromFiles
+ * @format
  * @flow
  */
 
 'use strict';
+
+const invariant = require('invariant');
 
 var TEXT_CLIPPING_REGEX = /\.textClipping$/;
 
@@ -28,7 +31,7 @@ var TEXT_SIZE_UPPER_BOUND = 5000;
  */
 function getTextContentFromFiles(
   files: Array<File>,
-  callback: (contents: string) => void
+  callback: (contents: string) => void,
 ): void {
   var readCount = 0;
   var results = [];
@@ -46,10 +49,7 @@ function getTextContentFromFiles(
 /**
  * todo isaac: Do work to turn html/rtf into a content fragment.
  */
-function readFile(
-  file: File,
-  callback: (contents: string) => void
-): void {
+function readFile(file: File, callback: (contents: string) => void): void {
   if (!global.FileReader || (file.type && !(file.type in TEXT_TYPES))) {
     callback('');
     return;
@@ -70,7 +70,12 @@ function readFile(
 
   var reader = new FileReader();
   reader.onload = function() {
-    callback(reader.result);
+    const result = reader.result;
+    invariant(
+      typeof result === 'string',
+      'We should be calling "FileReader.readAsText" which returns a string',
+    );
+    callback(result);
   };
   reader.onerror = function() {
     callback('');

@@ -8,14 +8,15 @@
  *
  * @providesModule getEntityKeyForSelection
  * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
 import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
 import type {EntityMap} from 'EntityMap';
+import type SelectionState from 'SelectionState';
 
 /**
  * Return the entity key that should be used when inserting text for the
@@ -24,7 +25,7 @@ import type {EntityMap} from 'EntityMap';
  */
 function getEntityKeyForSelection(
   contentState: ContentState,
-  targetSelection: SelectionState
+  targetSelection: SelectionState,
 ): ?string {
   var entityKey;
 
@@ -42,9 +43,10 @@ function getEntityKeyForSelection(
   var startOffset = targetSelection.getStartOffset();
   var startBlock = contentState.getBlockForKey(startKey);
 
-  entityKey = startOffset === startBlock.getLength() ?
-    null :
-    startBlock.getEntityAt(startOffset);
+  entityKey =
+    startOffset === startBlock.getLength()
+      ? null
+      : startBlock.getEntityAt(startOffset);
 
   return filterKey(contentState.getEntityMap(), entityKey);
 }
@@ -53,10 +55,7 @@ function getEntityKeyForSelection(
  * Determine whether an entity key corresponds to a `MUTABLE` entity. If so,
  * return it. If not, return null.
  */
-function filterKey(
-  entityMap: EntityMap,
-  entityKey: ?string
-): ?string {
+function filterKey(entityMap: EntityMap, entityKey: ?string): ?string {
   if (entityKey) {
     var entity = entityMap.__get(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;

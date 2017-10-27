@@ -8,28 +8,26 @@
  *
  * @providesModule DraftPasteProcessor
  * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {EntityMap} from 'EntityMap';
+
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const Immutable = require('immutable');
 
-const convertFromHTMLtoContentBlocks
-  = require('convertFromHTMLToContentBlocks');
+const convertFromHTMLtoContentBlocks = require('convertFromHTMLToContentBlocks');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {EntityMap} from 'EntityMap';
-
-const {
-  List,
-  Repeat,
-} = Immutable;
+const {List, Repeat} = Immutable;
 
 const DraftPasteProcessor = {
   processHTML(
@@ -37,7 +35,7 @@ const DraftPasteProcessor = {
     blockRenderMap?: DraftBlockRenderMap,
     allowedStyles: List<string>,
     allowImages: boolean,
-    allowLinks: boolean
+    allowLinks: boolean,
   ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
     return convertFromHTMLtoContentBlocks(
       html,
@@ -45,25 +43,24 @@ const DraftPasteProcessor = {
       blockRenderMap,
       allowedStyles,
       allowImages,
-      allowLinks
+      allowLinks,
     );
   },
 
   processText(
     textBlocks: Array<string>,
     character: CharacterMetadata,
+    type: DraftBlockType,
   ): Array<ContentBlock> {
-    return textBlocks.map(
-      textLine => {
-        textLine = sanitizeDraftText(textLine);
-        return new ContentBlock({
-          key: generateRandomKey(),
-          type: 'unstyled',
-          text: textLine,
-          characterList: List(Repeat(character, textLine.length)),
-        });
-      }
-    );
+    return textBlocks.map(textLine => {
+      textLine = sanitizeDraftText(textLine);
+      return new ContentBlock({
+        key: generateRandomKey(),
+        type,
+        text: textLine,
+        characterList: List(Repeat(character, textLine.length)),
+      });
+    });
   },
 };
 

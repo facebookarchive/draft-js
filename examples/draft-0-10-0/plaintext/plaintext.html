@@ -35,12 +35,15 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         constructor(props) {
           super(props);
           this.state = {editorState: EditorState.createEmpty()};
-
-          this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => console.log(this.state.editorState.toJS());
+          this.setDomEditorRef = ref => this.domEditor = ref;
         }
-
+                
+        componentDidMount(){
+          this.domEditor.focus()
+        }
+        
         render() {
           return (
             <div style={styles.root}>
@@ -49,7 +52,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   editorState={this.state.editorState}
                   onChange={this.onChange}
                   placeholder="Enter some text..."
-                  ref="editor"
+                  ref={this.setDomEditorRef}
                 />
               </div>
               <input

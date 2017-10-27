@@ -7,10 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorCompositionHandler
+ * @format
  * @flow
  */
 
 'use strict';
+
+import type DraftEditor from 'DraftEditor.react';
 
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
@@ -18,8 +21,6 @@ const Keys = require('Keys');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-
-import type DraftEditor from 'DraftEditor.react';
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon
@@ -44,7 +45,7 @@ let stillComposing = false;
 let textInputData = '';
 
 var DraftEditorCompositionHandler = {
-  onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent): void {
+  onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     textInputData = (textInputData || '') + e.data;
   },
 
@@ -85,7 +86,7 @@ var DraftEditorCompositionHandler = {
    * the arrow keys are used to commit, prevent default so that the cursor
    * doesn't move, otherwise it will jump back noticeably on re-render.
    */
-  onKeyDown: function(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
+  onKeyDown: function(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     if (!stillComposing) {
       // If a keydown event is received after compositionend but before the
       // 20ms timer expires (ex: type option-E then backspace, or type A then
@@ -106,7 +107,7 @@ var DraftEditorCompositionHandler = {
    * characters that we do not want. `preventDefault` allows the composition
    * to be committed while preventing the extra characters.
    */
-  onKeyPress: function(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
+  onKeyPress: function(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     if (e.which === Keys.RETURN) {
       e.preventDefault();
     }
@@ -143,15 +144,14 @@ var DraftEditorCompositionHandler = {
     const currentStyle = editorState.getCurrentInlineStyle();
     const entityKey = getEntityKeyForSelection(
       editorState.getCurrentContent(),
-      editorState.getSelection()
+      editorState.getSelection(),
     );
 
-    const mustReset = (
+    const mustReset =
       !composedChars ||
       isSelectionAtLeafStart(editorState) ||
       currentStyle.size > 0 ||
-      entityKey !== null
-    );
+      entityKey !== null;
 
     if (mustReset) {
       editor.restoreEditorDOM();
@@ -167,14 +167,10 @@ var DraftEditorCompositionHandler = {
         editorState.getSelection(),
         composedChars,
         currentStyle,
-        entityKey
+        entityKey,
       );
       editor.update(
-        EditorState.push(
-          editorState,
-          contentState,
-          'insert-characters'
-        )
+        EditorState.push(editorState, contentState, 'insert-characters'),
       );
       return;
     }
@@ -184,7 +180,7 @@ var DraftEditorCompositionHandler = {
         EditorState.set(editorState, {
           nativelyRenderedContent: null,
           forceSelection: true,
-        })
+        }),
       );
     }
   },

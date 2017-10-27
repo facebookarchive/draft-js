@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule findRangesImmutable
+ * @format
  * @flow
  */
 
@@ -25,7 +26,7 @@ function findRangesImmutable<T>(
   haystack: List<T>,
   areEqualFn: (a: T, b: T) => boolean,
   filterFn: (value: T) => boolean,
-  foundFn: (start: number, end: number) => void
+  foundFn: (start: number, end: number) => void,
 ): void {
   if (!haystack.size) {
     return;
@@ -33,10 +34,8 @@ function findRangesImmutable<T>(
 
   var cursor: number = 0;
 
-  haystack.reduce((value, nextValue, nextIndex) => {
-    /* $FlowFixMe(>=0.28.0): `value` could be undefined! */
+  haystack.reduce((value: T, nextValue, nextIndex) => {
     if (!areEqualFn(value, nextValue)) {
-      /* $FlowFixMe(>=0.28.0): `value` could be undefined! */
       if (filterFn(value)) {
         foundFn(cursor, nextIndex);
       }

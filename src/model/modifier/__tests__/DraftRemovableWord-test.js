@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -29,7 +30,7 @@ describe('DraftRemovableWord', function() {
   var withNumbers = 'f14 tomcat';
 
   beforeEach(function() {
-    jest.resetModuleRegistry();
+    jest.resetModules();
     forward = DraftRemovableWord.getForward;
     backward = DraftRemovableWord.getBackward;
   });
@@ -46,7 +47,7 @@ describe('DraftRemovableWord', function() {
   });
 
   it('must identify words with apostrophes looking forward', function() {
-    expect(forward('you\'re correct.')).toBe('you\'re');
+    expect(forward("you're correct.")).toBe("you're");
   });
 
   it('must identify words with curly quotes looking forward', function() {
@@ -82,7 +83,7 @@ describe('DraftRemovableWord', function() {
     expect(forward('|' + english)).toBe('|' + match);
     expect(forward('^' + english)).toBe('^' + match);
     expect(forward('\u060d\uFD3e\uFD3F' + english)).toBe(
-      '\u060d\uFD3e\uFD3F' + match
+      '\u060d\uFD3e\uFD3F' + match,
     );
     expect(forward('.. .. ..' + english)).toBe('.. .. ..' + match);
   });
@@ -106,7 +107,7 @@ describe('DraftRemovableWord', function() {
   });
 
   it('must identify words with apostrophes looking backward', function() {
-    expect(backward('you don\'t')).toBe('don\'t');
+    expect(backward("you don't")).toBe("don't");
   });
 
   it('must identify words ended by spaces looking backward', function() {
@@ -121,7 +122,7 @@ describe('DraftRemovableWord', function() {
     expect(backward(english + '|')).toBe(match + '|');
     expect(backward(english + '^')).toBe(match + '^');
     expect(backward(english + '\u060d\uFD3e\uFD3F')).toBe(
-      match + '\u060d\uFD3e\uFD3F'
+      match + '\u060d\uFD3e\uFD3F',
     );
     expect(backward(english + '.. .. ..')).toBe(match + '.. .. ..');
   });

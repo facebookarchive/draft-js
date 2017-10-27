@@ -57,6 +57,18 @@ to fit it within your UI design.
 If this value is not set, text alignment will be based on the characters within
 the editor, on a per-block basis.
 
+#### textDirectionality
+```
+textDirectionality?: DraftTextDirectionality
+```
+Optionally set the overriding text directionality for this editor. The values
+include 'RTL' for right-to-left text, like Hebrew or Arabic, and 'LTR' for
+left-to-right text, like English or Spanish. This directionality will apply to
+the entire contents, regardless of default text direction for input text.
+
+If this value is not set, text directionality will be based on the characters
+within the editor, on a per-block basis.
+
 #### blockRendererFn
 ```
 blockRendererFn?: (block: ContentBlock) => ?Object
@@ -93,6 +105,31 @@ to spans of text. See
 for details on usage.
 
 ### Behavior (Optional)
+
+### autoCapitalize?: string
+
+```
+autoCapitalize?: string
+```
+
+Set if auto capitalization is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocapitalize).
+
+### autoComplete?: string
+
+```
+autoComplete?: string
+```
+
+Set if auto complete is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocomplete).
+
+### autoCorrect?: string
+
+```
+autoCorrect?: string
+```
+
+Set if auto correct is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocorrect).
+
 
 #### readOnly
 ```
@@ -139,6 +176,23 @@ for details on usage.
 These props allow you to set accessibility properties on your editor. See
 [DraftEditorProps](https://github.com/facebook/draft-js/blob/master/src/component/base/DraftEditorProps.js) for the exhaustive list of supported attributes.
 
+#### editorKey
+```
+editorKey?: string
+```
+
+You probably won't set `editorKey` on an `<Editor />` manually unless you're
+rendering a Draft component serverside. If you _are_, you must set this prop
+to avoid server/client mismatches.
+
+If the key is not set, it is generated automatically when the component
+renders and assigned as a prop of the Editor's `<DraftEditorContents />`
+component.
+
+If you _do_ set this prop, the key should be unique _per-editor_, as it is
+used to determine if styles should be preserved when pasting text within an
+editor.
+
 ### Cancelable Handlers (Optional)
 
 These prop functions are provided to allow custom event handling for a small
@@ -148,14 +202,14 @@ the event is handled and the Draft core should do nothing more with it. By retur
 
 #### handleReturn
 ```
-handleReturn?: (e: SyntheticKeyboardEvent) => DraftHandleValue
+handleReturn?: (e: SyntheticKeyboardEvent, editorState: EditorState) => DraftHandleValue
 ```
 Handle a `RETURN` keydown event. Example usage: Choosing a mention tag from a
 rendered list of results to trigger applying the mention entity to your content.
 
 #### handleKeyCommand
 ```
-handleKeyCommand?: (command: string) => DraftHandleValue
+handleKeyCommand?: (command: string, editorState: EditorState) => DraftHandleValue
 ```
 Handle the named editor command. See
 [Advanced Topics: Key Bindings](/docs/advanced-topics-key-bindings.html)
@@ -163,7 +217,7 @@ for details on usage.
 
 #### handleBeforeInput
 ```
-handleBeforeInput?: (chars: string) => DraftHandleValue
+handleBeforeInput?: (chars: string, editorState: EditorState) => DraftHandleValue
 ```
 Handle the characters to be inserted from a `beforeInput` event. Returning `'handled'`
 causes the default behavior of the `beforeInput` event to be prevented (i.e. it is
@@ -176,7 +230,7 @@ and to convert typed emoticons into images.
 
 #### handlePastedText
 ```
-handlePastedText?: (text: string, html?: string) => DraftHandleValue
+handlePastedText?: (text: string, html?: string, editorState: EditorState) => DraftHandleValue
 ```
 Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior.
 
@@ -218,11 +272,39 @@ onTab?: (e: SyntheticKeyboardEvent) => void
 onUpArrow?: (e: SyntheticKeyboardEvent) => void
 ```
 
+#### onRightArrow
+```
+onRightArrow?: (e: SyntheticKeyboardEvent) => void
+```
+
 #### onDownArrow
 ```
 onDownArrow?: (e: SyntheticKeyboardEvent) => void
 ```
+#### keyBindingFn
 
+```
+keyBindingFn?: (e: SyntheticKeyboardEvent) => void
+```
+
+This prop lets you handle key events directly and provides an opportunity to return custom editor commands. You can find a more detailed explanation of this [here](/docs/advanced-topics-key-bindings.html).
+
+#### onLeftArrow
+```
+onLeftArrow?: (e: SyntheticKeyboardEvent) => void
+```
+
+### Mouse events
+
+### onFocus
+```
+onFocus?: (e: SyntheticFocusEvent) => void
+```
+
+### onBlur
+```
+onBlur?: (e: SyntheticFocusEvent) => void
+```
 
 ## Methods
 

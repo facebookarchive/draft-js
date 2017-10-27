@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -16,11 +17,7 @@ jest.disableAutomock();
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
 var Immutable = require('immutable');
-
-var {
-  NONE,
-  BOLD,
-} = require('SampleDraftInlineStyle');
+var {NONE, BOLD} = require('SampleDraftInlineStyle');
 
 describe('ContentBlock', () => {
   var ENTITY_KEY = 'x';
@@ -35,7 +32,7 @@ describe('ContentBlock', () => {
         CharacterMetadata.EMPTY,
         CharacterMetadata.EMPTY,
         CharacterMetadata.create({style: BOLD}),
-        CharacterMetadata.create({entity: ENTITY_KEY})
+        CharacterMetadata.create({entity: ENTITY_KEY}),
       ),
     });
   }
@@ -45,9 +42,9 @@ describe('ContentBlock', () => {
       var block = new ContentBlock();
       expect(block.getType()).toBe('unstyled');
       expect(block.getText()).toBe('');
-      expect(
-        Immutable.is(block.getCharacterList(), Immutable.List())
-      ).toBe(true);
+      expect(Immutable.is(block.getCharacterList(), Immutable.List())).toBe(
+        true,
+      );
     });
 
     it('must retrieve properties', () => {

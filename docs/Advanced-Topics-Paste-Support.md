@@ -3,7 +3,7 @@ id: advanced-topics-paste-support
 title: Paste Support
 layout: docs
 category: Advanced Topics
-next: advanced-topics-issues-and-pitfalls
+next: advanced-topics-editorstate-race-conditions
 permalink: docs/advanced-topics-paste-support.html
 ---
 

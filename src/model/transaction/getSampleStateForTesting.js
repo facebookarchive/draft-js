@@ -8,6 +8,7 @@
  *
  * @providesModule getSampleStateForTesting
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -30,9 +31,7 @@ var BLOCKS = [
     key: 'a',
     type: 'unstyled',
     text: 'Alpha',
-    characterList: Immutable.List(
-      Immutable.Repeat(CharacterMetadata.EMPTY, 5)
-    ),
+    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 5)),
   }),
   new ContentBlock({
     key: 'b',
@@ -41,8 +40,8 @@ var BLOCKS = [
     characterList: Immutable.List(
       Immutable.Repeat(
         CharacterMetadata.create({style: BOLD, entity: ENTITY_KEY}),
-        5
-      )
+        5,
+      ),
     ),
   }),
   new ContentBlock({
@@ -52,8 +51,8 @@ var BLOCKS = [
     characterList: Immutable.List(
       Immutable.Repeat(
         CharacterMetadata.create({style: ITALIC, entity: null}),
-        7
-      )
+        7,
+      ),
     ),
   }),
 ];

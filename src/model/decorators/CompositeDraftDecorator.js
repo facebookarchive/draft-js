@@ -8,16 +8,17 @@
  *
  * @providesModule CompositeDraftDecorator
  * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-var Immutable = require('immutable');
-
 import type ContentBlock from 'ContentBlock';
-import type {DraftDecorator} from 'DraftDecorator';
 import type ContentState from 'ContentState';
+import type {DraftDecorator} from 'DraftDecorator';
+
+var Immutable = require('immutable');
 
 var {List} = Immutable;
 
@@ -52,25 +53,26 @@ class CompositeDraftDecorator {
     this._decorators = decorators.slice();
   }
 
-  getDecorations(block: ContentBlock, contentState: ContentState): List<?string> {
+  getDecorations(
+    block: ContentBlock,
+    contentState: ContentState,
+  ): List<?string> {
     var decorations = Array(block.getText().length).fill(null);
 
-    this._decorators.forEach(
-      (/*object*/ decorator, /*number*/ ii) => {
-        var counter = 0;
-        var strategy = decorator.strategy;
-        var callback  = (/*number*/ start, /*number*/ end) => {
-          // Find out if any of our matching range is already occupied
-          // by another decorator. If so, discard the match. Otherwise, store
-          // the component key for rendering.
-          if (canOccupySlice(decorations, start, end)) {
-            occupySlice(decorations, start, end, ii + DELIMITER + counter);
-            counter++;
-          }
-        };
-        strategy(block, callback, contentState);
-      }
-    );
+    this._decorators.forEach((/*object*/ decorator, /*number*/ ii) => {
+      var counter = 0;
+      var strategy = decorator.strategy;
+      var callback = (/*number*/ start, /*number*/ end) => {
+        // Find out if any of our matching range is already occupied
+        // by another decorator. If so, discard the match. Otherwise, store
+        // the component key for rendering.
+        if (canOccupySlice(decorations, start, end)) {
+          occupySlice(decorations, start, end, ii + DELIMITER + counter);
+          counter++;
+        }
+      };
+      strategy(block, callback, contentState);
+    });
 
     return List(decorations);
   }
@@ -93,7 +95,7 @@ class CompositeDraftDecorator {
 function canOccupySlice(
   decorations: Array<?string>,
   start: number,
-  end: number
+  end: number,
 ): boolean {
   for (var ii = start; ii < end; ii++) {
     if (decorations[ii] != null) {
@@ -111,7 +113,7 @@ function occupySlice(
   targetArr: Array<?string>,
   start: number,
   end: number,
-  componentKey: string
+  componentKey: string,
 ): void {
   for (var ii = start; ii < end; ii++) {
     targetArr[ii] = componentKey;

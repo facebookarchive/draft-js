@@ -8,21 +8,22 @@
  *
  * @providesModule getContentStateFragment
  * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-var generateRandomKey = require('generateRandomKey');
-var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
-
 import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
+var generateRandomKey = require('generateRandomKey');
+var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
+
 function getContentStateFragment(
   contentState: ContentState,
-  selectionState: SelectionState
+  selectionState: SelectionState,
 ): BlockMap {
   var startKey = selectionState.getStartKey();
   var startOffset = selectionState.getStartOffset();
@@ -34,7 +35,7 @@ function getContentStateFragment(
   // preserve entities that are entirely within the selection range.
   var contentWithoutEdgeEntities = removeEntitiesAtEdges(
     contentState,
-    selectionState
+    selectionState,
   );
 
   var blockMap = contentWithoutEdgeEntities.getBlockMap();

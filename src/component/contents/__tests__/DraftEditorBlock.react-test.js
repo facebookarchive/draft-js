@@ -7,21 +7,23 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  * @typechecks
  */
 
 'use strict';
 
-jest.disableAutomock()
+jest
+  .disableAutomock()
   .mock('Style')
   .mock('getElementPosition')
   .mock('getScrollPosition')
   .mock('getViewportDimensions');
 
-var ContentState = require('ContentState');
 var BlockTree = require('BlockTree');
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
+var ContentState = require('ContentState');
 var Immutable = require('immutable');
 var React = require('React');
 var ReactDOM = require('ReactDOM');
@@ -39,11 +41,11 @@ var {BOLD, NONE, ITALIC} = SampleDraftInlineStyle;
 
 var mockGetDecorations = jest.fn();
 
-var DecoratorSpan = React.createClass({
+class DecoratorSpan extends React.Component {
   render() {
     return <span>{this.props.children}</span>;
-  },
-});
+  }
+}
 
 var DraftEditorBlock = require('DraftEditorBlock.react');
 
@@ -61,14 +63,12 @@ class Decorator {
 }
 
 var mockLeafRender = jest.fn(() => <span />);
-jest.setMock(
-  'DraftEditorLeaf.react',
-  React.createClass({
-    render: function() {
-      return mockLeafRender();
-    },
-  })
-);
+class MockEditorLeaf extends React.Component {
+  render() {
+    return mockLeafRender();
+  }
+}
+jest.setMock('DraftEditorLeaf.react', MockEditorLeaf);
 
 var DraftEditorLeaf = require('DraftEditorLeaf.react');
 
@@ -81,9 +81,7 @@ function getHelloBlock() {
     key: 'a',
     type: 'unstyled',
     text: 'hello',
-    characterList: Immutable.List(
-      Immutable.Repeat(CharacterMetadata.EMPTY, 5)
-    ),
+    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 5)),
   });
 }
 
@@ -114,7 +112,7 @@ function getProps(block, decorator) {
 function arePropsEqual(renderedChild, leafPropSet) {
   Object.keys(leafPropSet).forEach(key => {
     expect(
-      Immutable.is(leafPropSet[key], renderedChild.instance().props[key])
+      Immutable.is(leafPropSet[key], renderedChild.instance().props[key]),
     ).toBeTruthy();
   });
 }
@@ -149,7 +147,7 @@ describe('DraftEditorBlock.react', () => {
     it('must render a leaf node', () => {
       var props = getProps(getHelloBlock());
       var block = ReactTestUtils.renderIntoDocument(
-        <DraftEditorBlock {...props} />
+        <DraftEditorBlock {...props} />,
       );
 
       var rendered = reactComponentExpect(block)
@@ -180,7 +178,7 @@ describe('DraftEditorBlock.react', () => {
 
       var props = getProps(helloBlock);
       var block = ReactTestUtils.renderIntoDocument(
-        <DraftEditorBlock {...props} />
+        <DraftEditorBlock {...props} />,
       );
 
       var rendered = reactComponentExpect(block)
@@ -212,10 +210,7 @@ describe('DraftEditorBlock.react', () => {
       var props = getProps(helloBlock);
 
       var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(1);
 
@@ -225,10 +220,7 @@ describe('DraftEditorBlock.react', () => {
       expect(updatedHelloBlock).not.toBe(helloBlock);
       expect(props.block).not.toBe(nextProps.block);
 
-      ReactDOM.render(
-        <DraftEditorBlock {...nextProps} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(2);
     });
@@ -238,15 +230,12 @@ describe('DraftEditorBlock.react', () => {
       var props = getProps(helloBlock);
 
       var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(1);
 
       mockGetDecorations.mockReturnValue(
-        Immutable.List.of('x', 'x', null, null, null)
+        Immutable.List.of('x', 'x', null, null, null),
       );
       var decorator = new Decorator();
 
@@ -259,10 +248,7 @@ describe('DraftEditorBlock.react', () => {
 
       expect(props.tree).not.toBe(nextProps.tree);
 
-      ReactDOM.render(
-        <DraftEditorBlock {...nextProps} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(3);
     });
@@ -272,20 +258,14 @@ describe('DraftEditorBlock.react', () => {
       var props = getProps(helloBlock);
 
       var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(1);
 
       var nextProps = {...props, direction: UnicodeBidiDirection.RTL};
       expect(props.direction).not.toBe(nextProps.direction);
 
-      ReactDOM.render(
-        <DraftEditorBlock {...nextProps} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(2);
     });
@@ -295,10 +275,7 @@ describe('DraftEditorBlock.react', () => {
       var props = getProps(helloBlock);
 
       var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(1);
 
@@ -308,10 +285,7 @@ describe('DraftEditorBlock.react', () => {
         forceSelection: true,
       };
 
-      ReactDOM.render(
-        <DraftEditorBlock {...nextProps} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(2);
     });
@@ -321,18 +295,12 @@ describe('DraftEditorBlock.react', () => {
       var props = getProps(helloBlock);
 
       var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(1);
 
       // Render again with the exact same props as before.
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       // No new leaf renders.
       expect(mockLeafRender.mock.calls.length).toBe(1);
@@ -343,10 +311,7 @@ describe('DraftEditorBlock.react', () => {
       var props = getProps(helloBlock);
 
       var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(1);
 
@@ -360,10 +325,7 @@ describe('DraftEditorBlock.react', () => {
 
       // Render again with selection now moved elsewhere and the contents
       // unchanged.
-      ReactDOM.render(
-        <DraftEditorBlock {...newProps} />,
-        container
-      );
+      ReactDOM.render(<DraftEditorBlock {...newProps} />, container);
 
       // No new leaf renders.
       expect(mockLeafRender.mock.calls.length).toBe(1);
@@ -375,16 +337,13 @@ describe('DraftEditorBlock.react', () => {
       var helloBlock = getHelloBlock();
 
       mockGetDecorations.mockReturnValue(
-        Immutable.List.of('x', 'x', null, null, null)
+        Immutable.List.of('x', 'x', null, null, null),
       );
       var decorator = new Decorator();
       var props = getProps(helloBlock, decorator);
 
       var container = document.createElement('div');
-      var block = ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      var block = ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(2);
 
@@ -396,8 +355,8 @@ describe('DraftEditorBlock.react', () => {
         .expectRenderedChildAt(0)
         .scalarPropsEqual({offsetKey: 'a-0-0'})
         .toBeComponentOfType(DecoratorSpan)
-          .expectRenderedChild()
-          .toBeComponentOfType('span');
+        .expectRenderedChild()
+        .toBeComponentOfType('span');
 
       rendered
         .expectRenderedChildAt(1)
@@ -409,17 +368,14 @@ describe('DraftEditorBlock.react', () => {
       var helloBlock = getHelloBlock();
 
       mockGetDecorations.mockReturnValue(
-        Immutable.List.of('x', 'x', 'y', 'y', 'y')
+        Immutable.List.of('x', 'x', 'y', 'y', 'y'),
       );
 
       var decorator = new Decorator();
       var props = getProps(helloBlock, decorator);
 
       var container = document.createElement('div');
-      var block = ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      var block = ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(2);
 
@@ -443,18 +399,18 @@ describe('DraftEditorBlock.react', () => {
     it('must split apart styled spans', () => {
       var helloBlock = getHelloBlock();
       var characters = helloBlock.getCharacterList();
-      var newChars = characters.slice(0, 2).map(ch => {
-        return CharacterMetadata.applyStyle(ch, 'BOLD');
-      }).concat(characters.slice(2));
+      var newChars = characters
+        .slice(0, 2)
+        .map(ch => {
+          return CharacterMetadata.applyStyle(ch, 'BOLD');
+        })
+        .concat(characters.slice(2));
 
       helloBlock = helloBlock.set('characterList', Immutable.List(newChars));
       var props = getProps(helloBlock);
 
       var container = document.createElement('div');
-      var block = ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      var block = ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(2);
 
@@ -482,16 +438,13 @@ describe('DraftEditorBlock.react', () => {
       helloBlock = helloBlock.set('characterList', Immutable.List(newChars));
 
       mockGetDecorations.mockReturnValue(
-        Immutable.List.of('x', 'x', null, null, null)
+        Immutable.List.of('x', 'x', null, null, null),
       );
       var decorator = new Decorator();
       var props = getProps(helloBlock, decorator);
 
       var container = document.createElement('div');
-      var block = ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container
-      );
+      var block = ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
       expect(mockLeafRender.mock.calls.length).toBe(3);
 
@@ -503,7 +456,7 @@ describe('DraftEditorBlock.react', () => {
         .expectRenderedChildAt(0)
         .scalarPropsEqual({offsetKey: 'a-0-0'})
         .toBeComponentOfType(DecoratorSpan)
-          .expectRenderedChild();
+        .expectRenderedChild();
 
       let child = decoratedSpan.expectRenderedChildAt(0);
       child.toBeComponentOfType(DraftEditorLeaf);
@@ -532,10 +485,7 @@ describe('DraftEditorBlock.react', () => {
         });
 
         var container = document.createElement('div');
-        ReactDOM.render(
-          <DraftEditorBlock {...props} />,
-          container
-        );
+        ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
         var scrollCalls = window.scrollTo.mock.calls;
         expect(scrollCalls.length).toBe(1);
@@ -547,10 +497,7 @@ describe('DraftEditorBlock.react', () => {
 
       it('must not scroll the window if unnecessary', () => {
         var container = document.createElement('div');
-        ReactDOM.render(
-          <DraftEditorBlock {...props} />,
-          container
-        );
+        ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
         var scrollCalls = window.scrollTo.mock.calls;
         expect(scrollCalls.length).toBe(0);

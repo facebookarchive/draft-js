@@ -7,10 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnCut
+ * @format
  * @flow
  */
 
 'use strict';
+
+import type DraftEditor from 'DraftEditor.react';
 
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
@@ -18,8 +21,6 @@ const Style = require('Style');
 
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
-
-import type DraftEditor from 'DraftEditor.react';
 
 /**
  * On `cut` events, native behavior is allowed to occur so that the system
@@ -30,7 +31,7 @@ import type DraftEditor from 'DraftEditor.react';
  * In addition, we can keep a copy of the removed fragment, including all
  * styles and entities, for use as an internal paste.
  */
-function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
+function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   const editorState = editor._latestEditorState;
   const selection = editorState.getSelection();
 
@@ -42,6 +43,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent): void {
 
   // Track the current scroll position so that it can be forced back in place
   // after the editor regains control of the DOM.
+  // $FlowFixMe e.target should be an instanceof Node
   const scrollParent = Style.getScrollParent(e.target);
   const {x, y} = getScrollPosition(scrollParent);
 
@@ -63,7 +65,7 @@ function removeFragment(editorState: EditorState): EditorState {
   const newContent = DraftModifier.removeRange(
     editorState.getCurrentContent(),
     editorState.getSelection(),
-    'forward'
+    'forward',
   );
   return EditorState.push(editorState, newContent, 'remove-range');
 }

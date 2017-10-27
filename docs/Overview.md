@@ -17,11 +17,23 @@ Draft.js was introduced at [React.js Conf](http://conf.reactjs.com/) in February
 
 ### Installation
 
-Currently Draft.js is distributed via npm. It depends on React and React DOM which must also be installed.
+Draft.js is distributed via npm. It depends on React and React DOM which must also be installed.
 
 ```sh
 npm install --save draft-js react react-dom
+# or alternately
+yarn add draft-js react react-dom
 ```
+
+Draft.js uses some modern ecmascript features which are not available to IE11 and not part of create-react-app's default babel config. If you're running into problems out-of-the-box try installing a shim or polyfill alongside Draft.
+
+```sh
+npm install --save draft-js react react-dom babel-polyfill
+# or
+yarn add draft-js react react-dom es6-shim
+```
+
+Learn more about [using a shim with Draft](/docs/advanced-topics-issues-and-pitfalls.html#polyfills).
 
 ### API Changes Notice
 
@@ -62,5 +74,7 @@ Because Draft.js supports unicode, you must have the following meta tag in the `
 ```html
 <meta charset="utf-8" />
 ```
+
+`Draft.css` should be included when rendering the editor. Learn more about [why](/docs/advanced-topics-issues-and-pitfalls.html#missing-draft-css).
 
 Next, let's go into the basics of the API and learn what else you can do with Draft.js.

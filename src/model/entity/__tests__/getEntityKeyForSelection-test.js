@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+ui_infra
+ * @format
  */
 
 jest.disableAutomock();
@@ -14,10 +15,7 @@ jest.disableAutomock();
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getSampleStateForTesting = require('getSampleStateForTesting');
 
-var {
-  contentState,
-  selectionState,
-} = getSampleStateForTesting();
+var {contentState, selectionState} = getSampleStateForTesting();
 
 selectionState = selectionState.merge({
   anchorKey: 'b',
@@ -35,7 +33,6 @@ describe('getEntityKeyForSelection', () => {
       anchorOffset: 2,
       focusOffset: 2,
     });
-
 
     it('must return null at start of block', () => {
       var key = getEntityKeyForSelection(contentState, selectionState);
