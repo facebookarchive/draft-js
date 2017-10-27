@@ -32,7 +32,7 @@ class KatexOutput extends React.Component {
       katex.render(
         this.props.content,
         this.refs.container,
-        {displayMode: true}
+        {displayMode: true},
       );
     }, 0);
   }
@@ -92,7 +92,10 @@ export default class TeXBlock extends React.Component {
 
     this._save = () => {
       var entityKey = this.props.block.getEntityAt(0);
-      var newContentState = this.props.contentState.mergeEntityData(entityKey, {content: this.state.texValue});
+      var newContentState = this.props.contentState.mergeEntityData(
+        entityKey,
+        {content: this.state.texValue},
+      );
       this.setState({
         invalidTeX: false,
         editMode: false,
@@ -107,7 +110,10 @@ export default class TeXBlock extends React.Component {
       this.props.blockProps.onStartEdit(this.props.block.getKey());
     };
     this._finishEdit = (newContentState) => {
-      this.props.blockProps.onFinishEdit(this.props.block.getKey(), newContentState);
+      this.props.blockProps.onFinishEdit(
+        this.props.block.getKey(),
+        newContentState,
+      );
     };
   }
 

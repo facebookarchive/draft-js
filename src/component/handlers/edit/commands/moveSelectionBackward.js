@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule moveSelectionBackward
+ * @format
  * @flow
  */
 
@@ -25,7 +26,7 @@ import type SelectionState from 'SelectionState';
  */
 function moveSelectionBackward(
   editorState: EditorState,
-  maxDistance: number
+  maxDistance: number,
 ): SelectionState {
   var selection = editorState.getSelection();
   var content = editorState.getCurrentContent();

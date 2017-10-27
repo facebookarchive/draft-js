@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+ui_infra
+ * @format
  */
 
 jest.disableAutomock();
@@ -23,7 +24,10 @@ describe('RichTextEditorUtil', () => {
   const {editorState, selectionState} = getSampleStateForTesting();
 
   function insertAtomicBlock(targetEditorState) {
-    const entityKey = 'foo';
+    const entityKey = targetEditorState
+      .getCurrentContent()
+      .createEntity('TEST', 'IMMUTABLE', null)
+      .getLastCreatedEntityKey();
     const character = ' ';
     const movedSelection = EditorState.moveSelectionToEnd(targetEditorState);
     return AtomicBlockUtils.insertAtomicBlock(
@@ -39,17 +43,13 @@ describe('RichTextEditorUtil', () => {
     it('does not handle non-zero-offset or non-collapsed selections', () => {
       const nonZero = selectionState.merge({anchorOffset: 2, focusOffset: 2});
       expect(
-        onBackspace(EditorState.forceSelection(editorState, nonZero))
-      ).toBe(
-        null
-      );
+        onBackspace(EditorState.forceSelection(editorState, nonZero)),
+      ).toBe(null);
 
       const nonCollapsed = nonZero.merge({anchorOffset: 0});
       expect(
-        onBackspace(EditorState.forceSelection(editorState, nonCollapsed))
-      ).toBe(
-        null
-      );
+        onBackspace(EditorState.forceSelection(editorState, nonCollapsed)),
+      ).toBe(null);
     });
 
     it('resets the current block type if empty', () => {
@@ -59,7 +59,7 @@ describe('RichTextEditorUtil', () => {
 
       // Remove the current text from the blockquote.
       const resetBlockquote = DraftModifier.removeRange(
-        editorState.getCurrentContent(),
+        contentState,
         new SelectionState({
           anchorKey: lastBlockKey,
           anchorOffset: 0,
@@ -82,17 +82,34 @@ describe('RichTextEditorUtil', () => {
       expect(lastBlockNow.getText()).toBe('');
     });
 
+    it('resets the current block type at the start of the first block', () => {
+      const contentState = editorState.getCurrentContent();
+
+      const setListItem = DraftModifier.setBlockType(
+        contentState,
+        selectionState,
+        'unordered-list-item',
+      );
+
+      const withListItem = EditorState.push(
+        editorState,
+        setListItem,
+        'change-block-type',
+      );
+
+      const afterBackspace = onBackspace(withListItem);
+      const firstBlockNow = afterBackspace.getCurrentContent().getFirstBlock();
+
+      expect(firstBlockNow.getType()).toBe('unstyled');
+    });
+
     it('removes a preceding atomic block', () => {
       const withAtomicBlock = insertAtomicBlock(editorState);
       const afterBackspace = onBackspace(withAtomicBlock);
       const contentState = afterBackspace.getCurrentContent();
       const blockMap = contentState.getBlockMap();
       expect(blockMap.size).toBe(4);
-      expect(
-        blockMap.some((block) => block.getType() === 'atomic')
-      ).toBe(
-        false
-      );
+      expect(blockMap.some(block => block.getType() === 'atomic')).toBe(false);
     });
   });
 
@@ -101,18 +118,14 @@ describe('RichTextEditorUtil', () => {
 
     it('does not handle non-block-end or non-collapsed selections', () => {
       const nonZero = selectionState.merge({anchorOffset: 2, focusOffset: 2});
-      expect(
-        onDelete(EditorState.forceSelection(editorState, nonZero))
-      ).toBe(
-        null
+      expect(onDelete(EditorState.forceSelection(editorState, nonZero))).toBe(
+        null,
       );
 
       const nonCollapsed = nonZero.merge({anchorOffset: 0});
       expect(
-        onDelete(EditorState.forceSelection(editorState, nonCollapsed))
-      ).toBe(
-        null
-      );
+        onDelete(EditorState.forceSelection(editorState, nonCollapsed)),
+      ).toBe(null);
     });
 
     it('removes a following atomic block', () => {
@@ -120,7 +133,7 @@ describe('RichTextEditorUtil', () => {
       const content = withAtomicBlock.getCurrentContent();
       const atomicKey = content
         .getBlockMap()
-        .find((block) => block.getType() === 'atomic')
+        .find(block => block.getType() === 'atomic')
         .getKey();
 
       const blockBefore = content.getBlockBefore(atomicKey);
@@ -134,17 +147,15 @@ describe('RichTextEditorUtil', () => {
           anchorOffset: lengthBefore,
           focusKey: keyBefore,
           focusOffset: lengthBefore,
-        })
+        }),
       );
 
       const afterDelete = onDelete(withSelectionAboveAtomic);
       const blockMapAfterDelete = afterDelete.getCurrentContent().getBlockMap();
 
       expect(
-        blockMapAfterDelete.some((block) => block.getType() === 'atomic')
-      ).toBe(
-        false
-      );
+        blockMapAfterDelete.some(block => block.getType() === 'atomic'),
+      ).toBe(false);
 
       expect(blockMapAfterDelete.size).toBe(4);
     });

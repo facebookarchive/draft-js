@@ -52,7 +52,7 @@ class MyEditor extends React.Component {
   }
   render() {
     return (
-        <Editor editorState={this.state.editorState} onChange={this.onChange} />
+      <Editor editorState={this.state.editorState} onChange={this.onChange} />
     );
   }
 }

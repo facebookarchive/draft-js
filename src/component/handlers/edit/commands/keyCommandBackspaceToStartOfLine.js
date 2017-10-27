@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule keyCommandBackspaceToStartOfLine
+ * @format
  * @flow
  */
 
@@ -20,7 +21,7 @@ var moveSelectionBackward = require('moveSelectionBackward');
 var removeTextWithStrategy = require('removeTextWithStrategy');
 
 function keyCommandBackspaceToStartOfLine(
-  editorState: EditorState
+  editorState: EditorState,
 ): EditorState {
   var afterRemoval = removeTextWithStrategy(
     editorState,
@@ -40,21 +41,17 @@ function keyCommandBackspaceToStartOfLine(
         range.endContainer,
         range.endOffset,
         range.startContainer,
-        range.startOffset
+        range.startOffset,
       ).selectionState;
     },
-    'backward'
+    'backward',
   );
 
   if (afterRemoval === editorState.getCurrentContent()) {
     return editorState;
   }
 
-  return EditorState.push(
-    editorState,
-    afterRemoval,
-    'remove-range'
-  );
+  return EditorState.push(editorState, afterRemoval, 'remove-range');
 }
 
 module.exports = keyCommandBackspaceToStartOfLine;

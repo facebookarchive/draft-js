@@ -7,16 +7,17 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule ComposedEntityType
+ * @format
  * @flow
  */
 
 'use strict';
 
 var ComposedEntityType = {
-  'LINK': true,
-  'TOKEN': true,
-  'PHOTO': true,
-  'IMAGE': true,
+  LINK: true,
+  TOKEN: true,
+  PHOTO: true,
+  IMAGE: true,
 };
 
 module.exports = ComposedEntityType;

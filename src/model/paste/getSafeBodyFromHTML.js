@@ -7,12 +7,15 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getSafeBodyFromHTML
+ * @format
  * @flow
  */
 
 'use strict';
 
 var UserAgent = require('UserAgent');
+
+const invariant = require('invariant');
 
 var isOldIE = UserAgent.isBrowser('IE <= 9');
 
@@ -30,10 +33,9 @@ function getSafeBodyFromHTML(html: string): ?Element {
     document.implementation.createHTMLDocument
   ) {
     doc = document.implementation.createHTMLDocument('foo');
-    if (doc.documentElement) {
-      doc.documentElement.innerHTML = html;
-      root = doc.getElementsByTagName('body')[0];
-    }
+    invariant(doc.documentElement, 'Missing doc.documentElement');
+    doc.documentElement.innerHTML = html;
+    root = doc.getElementsByTagName('body')[0];
   }
   return root;
 }

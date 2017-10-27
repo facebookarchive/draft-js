@@ -46,8 +46,7 @@ All entities are stored in the ContentState record. The entites  are referenced
 by key within `ContentState` and React components used to decorate annotated
 ranges. (We are currently deprecating a previous API for accessing Entities; see
 issue
-[#839](https://github.com/facebook/draft-js/issues/839)
-.)
+[#839](https://github.com/facebook/draft-js/issues/839).)
 
 Using [decorators](/docs/advanced-topics-decorators.html) or
 [custom block components](/docs/advanced-topics-block-components.html), you can
@@ -56,8 +55,7 @@ add rich rendering to your editor based on entity metadata.
 ## Creating and Retrieving Entities
 
 Entities should be created using `contentState.createEntity`, which accepts the
-three properties above as arguments. This method returns a string key, which can
-then be used to refer to the entity.
+three properties above as arguments. This method returns a `ContentState` record updated to include the newly created entity, then you can call `contentState.getLastCreatedEntityKey` to get the key of the newly created entity record.
 
 This key is the value that should be used when applying entities to your
 content. For instance, the `Modifier` module contains an `applyEntity` method:
@@ -67,11 +65,11 @@ const contentState = editorState.getCurrentContent();
 const contentStateWithEntity = contentState.createEntity(
   'LINK',
   'MUTABLE',
-  {href: 'http://www.zombo.com'}
+  {url: 'http://www.zombo.com'}
 );
 const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 const contentStateWithLink = Modifier.applyEntity(
-  contentState,
+  contentStateWithEntity,
   selectionState,
   entityKey
 );
@@ -86,7 +84,7 @@ const blockWithLinkAtBeginning = contentState.getBlockForKey('...');
 const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
 const contentState = editorState.getCurrentContent();
 const linkInstance = contentState.getEntity(linkKey);
-const {href} = linkInstance.getData();
+const {url} = linkInstance.getData();
 ```
 ## "Mutability"
 

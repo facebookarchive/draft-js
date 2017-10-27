@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -19,21 +20,13 @@ var ContentState = require('ContentState');
 var DraftModifier = require('DraftModifier');
 var EditorState = require('EditorState');
 var Immutable = require('immutable');
-var SelectionState = require('SelectionState');
 var RichTextEditorUtil = require('RichTextEditorUtil');
-
-var {
-  NONE,
-  BOLD,
-  ITALIC,
-} = require('SampleDraftInlineStyle');
+var {NONE, BOLD, ITALIC} = require('SampleDraftInlineStyle');
+var SelectionState = require('SelectionState');
 
 var {EMPTY} = CharacterMetadata;
 
-var {
-  List,
-  Repeat,
-} = Immutable;
+var {List, Repeat} = Immutable;
 
 var plainBlock = new ContentBlock({
   key: 'a',
@@ -96,7 +89,6 @@ function getDecoratedEditorState(decorator) {
 }
 
 describe('EditorState', () => {
-
   describe('getCurrentInlineStyle', () => {
     var mainEditor = getUndecoratedEditorState();
 
@@ -166,7 +158,11 @@ describe('EditorState', () => {
         editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
 
-        editor = RichTextEditorUtil.onTab({ preventDefault: () => {} }, editor, 1);
+        editor = RichTextEditorUtil.onTab(
+          {preventDefault: () => {}},
+          editor,
+          1,
+        );
         expect(editor.getCurrentInlineStyle().toJS()).toEqual(['BOLD']);
       });
 
@@ -178,7 +174,7 @@ describe('EditorState', () => {
 
         var contentState = DraftModifier.splitBlock(
           editor.getCurrentContent(),
-          editor.getSelection()
+          editor.getSelection(),
         );
 
         editor = EditorState.push(editor, contentState, 'split-block');
@@ -233,7 +229,7 @@ describe('EditorState', () => {
             focusKey: 'c',
             focusOffset: 3,
             isBackward: false,
-          })
+          }),
         );
         expect(editor.getCurrentInlineStyle()).toBe(NONE);
       });
@@ -286,23 +282,19 @@ describe('EditorState', () => {
       expect(withNewDecorator.getDecorator()).toBe(newDecorator);
 
       // Preserve block trees that had the same decorator list.
-      expect(
-        editorState.getBlockTree(boldBlock.getKey())
-      ).toBe(
-        withNewDecorator.getBlockTree(boldBlock.getKey())
+      expect(editorState.getBlockTree(boldBlock.getKey())).toBe(
+        withNewDecorator.getBlockTree(boldBlock.getKey()),
       );
 
-      expect(
-        editorState.getBlockTree(italicBlock.getKey())
-      ).not.toBe(
-        withNewDecorator.getBlockTree(italicBlock.getKey())
+      expect(editorState.getBlockTree(italicBlock.getKey())).not.toBe(
+        withNewDecorator.getBlockTree(italicBlock.getKey()),
       );
     });
 
     it('must call decorator with correct argument types and order', () => {
       var decorator = new Decorator();
       getDecoratedEditorState(decorator);
-      decorator.getDecorations.mock.calls.forEach((call) => {
+      decorator.getDecorations.mock.calls.forEach(call => {
         expect(call[0] instanceof ContentBlock).toBe(true);
         expect(call[1] instanceof ContentState).toBe(true);
       });

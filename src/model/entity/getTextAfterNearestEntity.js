@@ -8,6 +8,7 @@
  *
  * @providesModule getTextAfterNearestEntity
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -21,7 +22,7 @@ import type ContentBlock from 'ContentBlock';
  */
 function getTextAfterNearestEntity(
   block: ContentBlock,
-  offset: number
+  offset: number,
 ): string {
   var start = offset;
 

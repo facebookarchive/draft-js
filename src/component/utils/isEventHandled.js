@@ -8,6 +8,7 @@
  *
  * @providesModule isEventHandled
  * @typechecks
+ * @format
  * @flow
  */
 

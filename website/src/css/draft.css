@@ -3,7 +3,7 @@ html {
   color: #484848;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-family: proxima-nova, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 300;
+  font-weight: normal;
   line-height: 1.28;
 }
 
@@ -727,6 +727,10 @@ figure {
 
 .inner-content {
   float: right;
+  width: 650px;
+}
+
+.inner-content img {
   width: 650px;
 }
 

@@ -7,19 +7,20 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule encodeInlineStyleRanges
+ * @format
  * @flow
  */
 
 'use strict';
 
-var UnicodeUtils = require('UnicodeUtils');
-
-var findRangesImmutable = require('findRangesImmutable');
-
 import type ContentBlock from 'ContentBlock';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {InlineStyleRange} from 'InlineStyleRange';
 import type {List} from 'immutable';
+
+var UnicodeUtils = require('UnicodeUtils');
+
+var findRangesImmutable = require('findRangesImmutable');
 
 var areEqual = (a, b) => a === b;
 var isTruthy = a => !!a;
@@ -32,7 +33,7 @@ var EMPTY_ARRAY = [];
 function getEncodedInlinesForType(
   block: ContentBlock,
   styleList: List<DraftInlineStyle>,
-  styleToEncode: string
+  styleToEncode: string,
 ): Array<InlineStyleRange> {
   var ranges = [];
 
@@ -53,7 +54,7 @@ function getEncodedInlinesForType(
         length: UnicodeUtils.strlen(text.slice(start, end)),
         style: styleToEncode,
       });
-    }
+    },
   );
 
   return ranges;
@@ -63,10 +64,11 @@ function getEncodedInlinesForType(
  * Retrieve the encoded arrays of inline styles, with each individual style
  * treated separately.
  */
-function encodeInlineStyleRanges(
-  block: ContentBlock
-): Array<InlineStyleRange> {
-  var styleList = block.getCharacterList().map(c => c.getStyle()).toList();
+function encodeInlineStyleRanges(block: ContentBlock): Array<InlineStyleRange> {
+  var styleList = block
+    .getCharacterList()
+    .map(c => c.getStyle())
+    .toList();
   var ranges = styleList
     .flatten()
     .toSet()

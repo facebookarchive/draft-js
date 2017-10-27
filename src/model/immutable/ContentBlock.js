@@ -7,25 +7,21 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule ContentBlock
+ * @format
  * @flow
  */
 
 'use strict';
 
-var Immutable = require('immutable');
-
-var findRangesImmutable = require('findRangesImmutable');
-
 import type CharacterMetadata from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var {
-  List,
-  Map,
-  OrderedSet,
-  Record,
-} = Immutable;
+var Immutable = require('immutable');
+
+var findRangesImmutable = require('findRangesImmutable');
+
+var {List, Map, OrderedSet, Record} = Immutable;
 
 const EMPTY_SET = OrderedSet();
 
@@ -91,13 +87,13 @@ class ContentBlock extends ContentBlockRecord {
    */
   findStyleRanges(
     filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void
+    callback: (start: number, end: number) => void,
   ): void {
     findRangesImmutable(
       this.getCharacterList(),
       haveEqualStyle,
       filterFn,
-      callback
+      callback,
     );
   }
 
@@ -106,27 +102,27 @@ class ContentBlock extends ContentBlockRecord {
    */
   findEntityRanges(
     filterFn: (value: CharacterMetadata) => boolean,
-    callback: (start: number, end: number) => void
+    callback: (start: number, end: number) => void,
   ): void {
     findRangesImmutable(
       this.getCharacterList(),
       haveEqualEntity,
       filterFn,
-      callback
+      callback,
     );
   }
 }
 
 function haveEqualStyle(
   charA: CharacterMetadata,
-  charB: CharacterMetadata
+  charB: CharacterMetadata,
 ): boolean {
   return charA.getStyle() === charB.getStyle();
 }
 
 function haveEqualEntity(
   charA: CharacterMetadata,
-  charB: CharacterMetadata
+  charB: CharacterMetadata,
 ): boolean {
   return charA.getEntity() === charB.getEntity();
 }
