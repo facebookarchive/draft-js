@@ -134,6 +134,7 @@ export type DraftEditorProps = {
     text: string,
     html?: string,
     editorState: EditorState,
+    modifyPastedText?: (modifiedText: string, modifiedHtml?: string) => void,
   ) => DraftHandleValue,
 
   handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
