@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -14,12 +15,7 @@
 jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
-var {
-  BOLD,
-  BOLD_ITALIC,
-  NONE,
-  UNDERLINE,
-} = require('SampleDraftInlineStyle');
+var {BOLD, BOLD_ITALIC, NONE, UNDERLINE} = require('SampleDraftInlineStyle');
 
 describe('CharacterMetadata', () => {
   it('must have appropriate default values', () => {
@@ -93,28 +89,20 @@ describe('CharacterMetadata', () => {
     it('must reuse the same objects', () => {
       expect(CharacterMetadata.create()).toBe(empty);
       expect(CharacterMetadata.create({style: BOLD})).toBe(withStyle);
-      expect(
-        CharacterMetadata.create({style: BOLD_ITALIC}),
-      ).toBe(
+      expect(CharacterMetadata.create({style: BOLD_ITALIC})).toBe(
         withTwoStyles,
       );
       expect(CharacterMetadata.create({entity: '1234'})).toBe(withEntity);
-      expect(
-        CharacterMetadata.create({entity: '1234', style: BOLD}),
-      ).toBe(
+      expect(CharacterMetadata.create({entity: '1234', style: BOLD})).toBe(
         withStyleAndEntity,
       );
     });
 
     it('must reuse objects by defaulting config properties', () => {
-      expect(
-        CharacterMetadata.create({style: BOLD, entity: null}),
-      ).toBe(
+      expect(CharacterMetadata.create({style: BOLD, entity: null})).toBe(
         withStyle,
       );
-      expect(
-        CharacterMetadata.create({style: NONE, entity: '1234'}),
-      ).toBe(
+      expect(CharacterMetadata.create({style: NONE, entity: '1234'})).toBe(
         withEntity,
       );
 
@@ -123,11 +111,7 @@ describe('CharacterMetadata', () => {
         entity: null,
       });
 
-      expect(
-        CharacterMetadata.create({style: UNDERLINE}),
-      ).toBe(
-        underlined,
-      );
+      expect(CharacterMetadata.create({style: UNDERLINE})).toBe(underlined);
     });
   });
 });

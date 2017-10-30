@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule keyCommandBackspaceToStartOfLine
+ * @format
  * @flow
  */
 
@@ -50,11 +51,7 @@ function keyCommandBackspaceToStartOfLine(
     return editorState;
   }
 
-  return EditorState.push(
-    editorState,
-    afterRemoval,
-    'remove-range',
-  );
+  return EditorState.push(editorState, afterRemoval, 'remove-range');
 }
 
 module.exports = keyCommandBackspaceToStartOfLine;

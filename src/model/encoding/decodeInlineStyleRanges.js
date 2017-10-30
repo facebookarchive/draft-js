@@ -8,6 +8,7 @@
  *
  * @providesModule decodeInlineStyleRanges
  * @typechecks
+ * @format
  * @flow
  */
 

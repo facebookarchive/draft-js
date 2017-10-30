@@ -8,6 +8,7 @@
  *
  * @providesModule findAncestorOffsetKey
  * @typechecks
+ * @format
  * @flow
  */
 

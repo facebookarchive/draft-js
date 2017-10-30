@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftDecoratorType
+ * @format
  * @flow
  */
 
@@ -26,10 +27,10 @@ export type DraftDecoratorType = {
   /**
    * Given a `ContentBlock`, return an immutable List of decorator keys.
    */
-   getDecorations(
-     block: ContentBlock,
-     contentState: ContentState,
-   ): List<?string>,
+  getDecorations(
+    block: ContentBlock,
+    contentState: ContentState,
+  ): List<?string>,
 
   /**
    * Given a decorator key, return the component to use when rendering

@@ -8,6 +8,7 @@
  *
  * @providesModule createCharacterList
  * @typechecks
+ * @format
  * @flow
  */
 

@@ -8,6 +8,7 @@
  *
  * @providesModule getSelectionOffsetKeyForNode
  * @typechecks
+ * @format
  * @flow
  */
 

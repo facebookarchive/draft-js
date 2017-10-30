@@ -8,6 +8,7 @@
  *
  * @providesModule generateRandomKey
  * @typechecks
+ * @format
  * @flow
  */
 

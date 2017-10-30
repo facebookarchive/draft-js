@@ -8,6 +8,7 @@
  *
  * @providesModule isSoftNewlineEvent
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -16,10 +17,11 @@
 var Keys = require('Keys');
 
 function isSoftNewlineEvent(e: SyntheticKeyboardEvent<>): boolean {
-  return e.which === Keys.RETURN && (
-    e.getModifierState('Shift') ||
-    e.getModifierState('Alt') ||
-    e.getModifierState('Control')
+  return (
+    e.which === Keys.RETURN &&
+    (e.getModifierState('Shift') ||
+      e.getModifierState('Alt') ||
+      e.getModifierState('Control'))
   );
 }
 

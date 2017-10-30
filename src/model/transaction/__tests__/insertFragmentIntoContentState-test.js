@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -69,21 +70,13 @@ describe('insertFragmentIntoContentState', () => {
   it('must throw if no fragment is provided', () => {
     var fragment = BlockMapBuilder.createFromArray([]);
     expect(() => {
-      insertFragmentIntoContentState(
-        content,
-        selection,
-        fragment,
-      );
+      insertFragmentIntoContentState(content, selection, fragment);
     }).toThrow();
   });
 
   it('must apply fragment to the start', () => {
     var fragment = createFragment();
-    var modified = insertFragmentIntoContentState(
-      content,
-      selection,
-      fragment,
-    );
+    var modified = insertFragmentIntoContentState(content, selection, fragment);
 
     var newBlock = modified.getBlockMap().first();
 
@@ -100,11 +93,7 @@ describe('insertFragmentIntoContentState', () => {
 
     var fragment = createFragment();
 
-    var modified = insertFragmentIntoContentState(
-      content,
-      target,
-      fragment,
-    );
+    var modified = insertFragmentIntoContentState(content, target, fragment);
 
     var newBlock = modified.getBlockMap().first();
 
@@ -121,11 +110,7 @@ describe('insertFragmentIntoContentState', () => {
     });
 
     var fragment = createFragment();
-    var modified = insertFragmentIntoContentState(
-      content,
-      target,
-      fragment,
-    );
+    var modified = insertFragmentIntoContentState(content, target, fragment);
 
     var newBlock = modified.getBlockMap().first();
 
@@ -135,11 +120,7 @@ describe('insertFragmentIntoContentState', () => {
 
   it('must apply multiblock fragments', () => {
     var fragment = createMultiblockFragment();
-    var modified = insertFragmentIntoContentState(
-      content,
-      selection,
-      fragment,
-    );
+    var modified = insertFragmentIntoContentState(content, selection, fragment);
 
     var newBlock = modified.getBlockMap().first();
     var secondBlock = modified.getBlockMap().toArray()[1];
@@ -149,5 +130,4 @@ describe('insertFragmentIntoContentState', () => {
     expect(secondBlock.getText().slice(0, 2)).toBe('yy');
     expect(secondBlock.getData()).toBe(secondData);
   });
-
 });

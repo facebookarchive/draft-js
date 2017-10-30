@@ -7,12 +7,12 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
 
-jest
-  .disableAutomock();
+jest.disableAutomock();
 
 var Immutable = require('immutable');
 
@@ -21,15 +21,9 @@ var getSampleStateForTesting = require('getSampleStateForTesting');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
 describe('removeEntitiesAtEdges', () => {
-  var {
-    List,
-    Repeat,
-  } = Immutable;
+  var {List, Repeat} = Immutable;
 
-  var {
-    contentState,
-    selectionState,
-  } = getSampleStateForTesting();
+  var {contentState, selectionState} = getSampleStateForTesting();
 
   var selectionOnEntity = selectionState.merge({
     anchorKey: 'b',
@@ -39,7 +33,10 @@ describe('removeEntitiesAtEdges', () => {
   });
 
   function getEntities(block) {
-    return block.getCharacterList().map(c => c.getEntity()).toJS();
+    return block
+      .getCharacterList()
+      .map(c => c.getEntity())
+      .toJS();
   }
 
   function expectSameBlockMap(before, after) {
@@ -47,9 +44,7 @@ describe('removeEntitiesAtEdges', () => {
   }
 
   function expectNullEntities(block) {
-    expect(
-      getEntities(block),
-    ).toEqual(
+    expect(getEntities(block)).toEqual(
       List(Repeat(null, block.getLength())).toJS(),
     );
   }
