@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -20,16 +21,17 @@ var applyEntityToContentState = require('applyEntityToContentState');
 var getSampleStateForTesting = require('getSampleStateForTesting');
 
 describe('applyEntityToContentState', () => {
-  var {
-    contentState,
-  } = getSampleStateForTesting();
+  var {contentState} = getSampleStateForTesting();
 
   function checkForCharacterList(block) {
     expect(Immutable.List.isList(block.getCharacterList())).toBe(true);
   }
 
   function getEntities(block) {
-    return block.getCharacterList().map(c => c.getEntity()).toJS();
+    return block
+      .getCharacterList()
+      .map(c => c.getEntity())
+      .toJS();
   }
 
   describe('Apply entity within single block', () => {

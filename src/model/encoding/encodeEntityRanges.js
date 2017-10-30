@@ -8,6 +8,7 @@
  *
  * @providesModule encodeEntityRanges
  * @typechecks
+ * @format
  * @flow
  */
 

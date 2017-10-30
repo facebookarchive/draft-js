@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  * @typechecks
  */
 
@@ -31,34 +32,30 @@ describe('DraftEditor.react', () => {
 
   describe('Basic rendering', () => {
     it('must has generated editorKey', () => {
-      shallow.render(
-        <DraftEditor />,
-      );
+      shallow.render(<DraftEditor />);
 
       // internally at Facebook we use a newer version of the shallowRenderer
       // which has a different level of wrapping of the '_instance'
       // long term we should rewrite this test to not depend on private
       // properties
       var getEditorKey =
-        shallow._instance.getEditorKey
-        || shallow._instance._instance.getEditorKey;
+        shallow._instance.getEditorKey ||
+        shallow._instance._instance.getEditorKey;
       var key = getEditorKey();
       expect(typeof key).toBe('string');
       expect(key.length).toBeGreaterThanOrEqual(4);
     });
 
     it('must has editorKey same as props', () => {
-      shallow.render(
-        <DraftEditor editorKey="hash" />,
-      );
+      shallow.render(<DraftEditor editorKey="hash" />);
 
       // internally at Facebook we use a newer version of the shallowRenderer
       // which has a different level of wrapping of the '_instance'
       // long term we should rewrite this test to not depend on private
       // properties
       var getEditorKey =
-        shallow._instance.getEditorKey
-        || shallow._instance._instance.getEditorKey;
+        shallow._instance.getEditorKey ||
+        shallow._instance._instance.getEditorKey;
       var key = getEditorKey();
       expect(key).toBe('hash');
     });

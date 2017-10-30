@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+ui_infra
+ * @format
  * @typechecks
  */
 
@@ -28,12 +29,9 @@ describe('CompositeDraftDecorator', () => {
   function searchWith(regex) {
     return function(block, callback, contentState) {
       var text = block.getText();
-      text.replace(
-        regex,
-        function(/*string*/ match, /*number*/ offset) {
-          callback(offset, offset + match.length);
-        },
-      );
+      text.replace(regex, function(/*string*/ match, /*number*/ offset) {
+        callback(offset, offset + match.length);
+      });
     };
   }
 

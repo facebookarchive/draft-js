@@ -56,7 +56,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             urlValue: '',
           };
 
-          this.focus = () => this.refs.editor.focus();
+          this.focus = () => this.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => {
             const content = this.state.editorState.getCurrentContent();
@@ -79,7 +79,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               showURLInput: true,
               urlValue: '',
             }, () => {
-              setTimeout(() => this.refs.url.focus(), 0);
+              setTimeout(() => this.url.focus(), 0);
             });
           }
         }
@@ -97,7 +97,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             showURLInput: false,
             urlValue: '',
           }, () => {
-            setTimeout(() => this.refs.editor.focus(), 0);
+            setTimeout(() => this.editor.focus(), 0);
           });
         }
 
@@ -159,7 +159,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   editorState={this.state.editorState}
                   onChange={this.onChange}
                   placeholder="Enter some text..."
-                  ref="editor"
+                  ref={(ref) => this.editor = ref}
                 />
               </div>
               <input

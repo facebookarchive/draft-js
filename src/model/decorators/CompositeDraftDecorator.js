@@ -8,6 +8,7 @@
  *
  * @providesModule CompositeDraftDecorator
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -58,22 +59,20 @@ class CompositeDraftDecorator {
   ): List<?string> {
     var decorations = Array(block.getText().length).fill(null);
 
-    this._decorators.forEach(
-      (/*object*/ decorator, /*number*/ ii) => {
-        var counter = 0;
-        var strategy = decorator.strategy;
-        var callback  = (/*number*/ start, /*number*/ end) => {
-          // Find out if any of our matching range is already occupied
-          // by another decorator. If so, discard the match. Otherwise, store
-          // the component key for rendering.
-          if (canOccupySlice(decorations, start, end)) {
-            occupySlice(decorations, start, end, ii + DELIMITER + counter);
-            counter++;
-          }
-        };
-        strategy(block, callback, contentState);
-      },
-    );
+    this._decorators.forEach((/*object*/ decorator, /*number*/ ii) => {
+      var counter = 0;
+      var strategy = decorator.strategy;
+      var callback = (/*number*/ start, /*number*/ end) => {
+        // Find out if any of our matching range is already occupied
+        // by another decorator. If so, discard the match. Otherwise, store
+        // the component key for rendering.
+        if (canOccupySlice(decorations, start, end)) {
+          occupySlice(decorations, start, end, ii + DELIMITER + counter);
+          counter++;
+        }
+      };
+      strategy(block, callback, contentState);
+    });
 
     return List(decorations);
   }

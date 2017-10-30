@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -22,12 +23,7 @@ describe('findRangesImmutable', () => {
 
   it('must be a no-op for an empty list', () => {
     var cb = jest.fn();
-    findRangesImmutable(
-      Immutable.List(),
-      returnTrue,
-      returnTrue,
-      cb,
-    );
+    findRangesImmutable(Immutable.List(), returnTrue, returnTrue, cb);
     expect(cb.mock.calls.length).toBe(0);
   });
 
@@ -78,12 +74,7 @@ describe('findRangesImmutable', () => {
 
     it('must identify each range', () => {
       var cb = jest.fn();
-      findRangesImmutable(
-        list,
-        (a, b) => a === b,
-        returnTrue,
-        cb,
-      );
+      findRangesImmutable(list, (a, b) => a === b, returnTrue, cb);
       var calls = cb.mock.calls;
       expect(calls.length).toBe(4);
       expect(calls[0]).toEqual([0, 2]);

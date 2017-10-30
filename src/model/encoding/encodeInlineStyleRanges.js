@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule encodeInlineStyleRanges
+ * @format
  * @flow
  */
 
@@ -63,10 +64,11 @@ function getEncodedInlinesForType(
  * Retrieve the encoded arrays of inline styles, with each individual style
  * treated separately.
  */
-function encodeInlineStyleRanges(
-  block: ContentBlock,
-): Array<InlineStyleRange> {
-  var styleList = block.getCharacterList().map(c => c.getStyle()).toList();
+function encodeInlineStyleRanges(block: ContentBlock): Array<InlineStyleRange> {
+  var styleList = block
+    .getCharacterList()
+    .map(c => c.getStyle())
+    .toList();
   var ranges = styleList
     .flatten()
     .toSet()

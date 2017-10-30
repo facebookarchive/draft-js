@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule BlockMapBuilder
+ * @format
  * @flow
  */
 
@@ -20,14 +21,8 @@ var Immutable = require('immutable');
 var {OrderedMap} = Immutable;
 
 var BlockMapBuilder = {
-  createFromArray: function(
-    blocks: Array<ContentBlock>,
-  ): BlockMap {
-    return OrderedMap(
-      blocks.map(
-        block => [block.getKey(), block],
-      ),
-    );
+  createFromArray: function(blocks: Array<ContentBlock>): BlockMap {
+    return OrderedMap(blocks.map(block => [block.getKey(), block]));
   },
 };
 

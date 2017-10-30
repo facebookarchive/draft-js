@@ -8,6 +8,7 @@
  *
  * @providesModule DraftEditorTextNode.react
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -41,13 +42,21 @@ function isNewline(node: Element): boolean {
  * See http://jsfiddle.net/9khdavod/ for the failure case, and
  * http://jsfiddle.net/7pg143f7/ for the fixed case.
  */
-const NEWLINE_A = useNewlineChar ?
-  <span key="A" data-text="true">{'\n'}</span> :
-  <br key="A" data-text="true" />;
+const NEWLINE_A = useNewlineChar ? (
+  <span key="A" data-text="true">
+    {'\n'}
+  </span>
+) : (
+  <br key="A" data-text="true" />
+);
 
-const NEWLINE_B = useNewlineChar ?
-  <span key="B" data-text="true">{'\n'}</span> :
-  <br key="B" data-text="true" />;
+const NEWLINE_B = useNewlineChar ? (
+  <span key="B" data-text="true">
+    {'\n'}
+  </span>
+) : (
+  <br key="B" data-text="true" />
+);
 
 type Props = {
   children: string,
