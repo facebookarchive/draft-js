@@ -47,8 +47,9 @@ function editOnInput(editor: DraftEditor): void {
     editor._pendingStateFromBeforeInput = undefined;
   }
 
-  var domSelection = ReactDOM.findDOMNode(editor.refs.editor)
-    .ownerDocument.defaultView.getSelection();
+  var domSelection = ReactDOM.findDOMNode(
+    editor.refs.editor,
+  ).ownerDocument.defaultView.getSelection();
 
   var {anchorNode, isCollapsed} = domSelection;
   const isNotTextNode = anchorNode.nodeType !== Node.TEXT_NODE;

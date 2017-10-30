@@ -108,10 +108,7 @@ class DraftEditorBlock extends React.Component<Props> {
         );
       }
     } else {
-      invariant(
-        blockNode.nodeType === 1,
-        'blockNode is not an Element',
-      );
+      invariant(blockNode.nodeType === 1, 'blockNode is not an Element');
       var blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
       var scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;

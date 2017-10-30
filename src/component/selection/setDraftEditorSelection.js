@@ -112,7 +112,6 @@ function setDraftEditorSelection(
   nodeStart: number,
   nodeEnd: number,
 ): void {
-
   var ownerDocument = node.ownerDocument;
 
   // It's possible that the editor has been removed from the DOM but
