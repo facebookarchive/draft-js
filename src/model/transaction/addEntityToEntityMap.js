@@ -25,9 +25,6 @@ function addEntityToEntityMap(
   entityMap: OrderedMap<*, *>,
   instance: DraftEntityInstance,
 ): OrderedMap<*, *> {
-  /* $FlowFixMe(>=0.53.0 site=www,mobile) -
-   * should be fixed by * https://github.com/facebook/immutable-js/pull/1112
-   */
   return entityMap.set(`${++key}`, instance);
 }
 

@@ -17,7 +17,4 @@ import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {Map} from 'immutable';
 
-/* $FlowFixMe this should be fixed when we update to Immutable.js 4.*
- * TODO: update Immutable, see https://github.com/facebook/immutable-js/issues/1371
- */
 export type DraftBlockRenderMap = Map<DraftBlockType, DraftBlockRenderConfig>;

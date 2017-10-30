@@ -31,7 +31,10 @@ const getScrollPosition = require('getScrollPosition');
  * In addition, we can keep a copy of the removed fragment, including all
  * styles and entities, for use as an internal paste.
  */
-function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
+function editOnCut(
+  editor: DraftEditor,
+  e: SyntheticClipboardEvent<HTMLElement>,
+): void {
   const editorState = editor._latestEditorState;
   const selection = editorState.getSelection();
 
@@ -43,8 +46,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Track the current scroll position so that it can be forced back in place
   // after the editor regains control of the DOM.
-  // $FlowFixMe e.target should be an instanceof Node
-  const scrollParent = Style.getScrollParent(e.target);
+  const scrollParent = Style.getScrollParent(e.currentTarget);
   const {x, y} = getScrollPosition(scrollParent);
 
   const fragment = getFragmentFromSelection(editorState);

@@ -524,9 +524,6 @@ function generateNewTreeMap(
   contentState: ContentState,
   decorator?: ?DraftDecoratorType,
 ): OrderedMap<string, List<any>> {
-  /* $FlowFixMe(>=0.53.0 site=www,mobile) -
-   * should be fixed by * https://github.com/facebook/immutable-js/pull/1112
-   */
   return contentState
     .getBlockMap()
     .map(block => BlockTree.generate(contentState, block, decorator))
@@ -572,9 +569,6 @@ function regenerateTreeForNewDecorator(
   decorator: DraftDecoratorType,
   existingDecorator: DraftDecoratorType,
 ): OrderedMap<string, List<any>> {
-  /* $FlowFixMe(>=0.53.0 site=www,mobile) -
-   * should be fixed by * https://github.com/facebook/immutable-js/pull/1112
-   */
   return previousTreeMap.merge(
     blockMap
       .toSeq()
