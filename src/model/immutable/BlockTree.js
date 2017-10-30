@@ -112,7 +112,7 @@ var BlockTree = {
       .map(leafSet => {
         var decoratorKey = leafSet.get('decoratorKey');
         var fingerprintString =
-          decoratorKey !== null
+          decoratorKey != null
             ? decoratorKey + '.' + (leafSet.get('end') - leafSet.get('start'))
             : '';
         return '' + fingerprintString + '.' + leafSet.get('leaves').size;

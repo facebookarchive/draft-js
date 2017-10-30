@@ -110,7 +110,9 @@ class ContentState extends ContentStateRecord<RecordProps> {
   }
 
   getBlocksAsArray(): Array<ContentBlock> {
-    return this.getBlockMap().valueSeq().toArray();
+    return this.getBlockMap()
+      .valueSeq()
+      .toArray();
   }
 
   getFirstBlock(): ContentBlock {
@@ -139,15 +141,8 @@ class ContentState extends ContentStateRecord<RecordProps> {
   }
 
   hasText(): boolean {
-<<<<<<< HEAD
-    return (
-      this.getBlockMap().size > 1 ||
-      this.getFirstBlock().getLength() > 0
-    );
-=======
     var blockMap = this.getBlockMap();
-    return blockMap.size > 1 || blockMap.first().getLength() > 0;
->>>>>>> upstream/master
+    return blockMap.size > 1 || this.getFirstBlock().getLength() > 0;
   }
 
   createEntity(
