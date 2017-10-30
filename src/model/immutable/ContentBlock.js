@@ -13,7 +13,8 @@
 
 'use strict';
 
-import type CharacterMetadata from 'CharacterMetadata';
+import CharacterMetadata from 'CharacterMetadata';
+
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
@@ -21,18 +22,20 @@ var Immutable = require('immutable');
 
 var findRangesImmutable = require('findRangesImmutable');
 
-var {List, Map, OrderedSet, Record} = Immutable;
+var {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
 const EMPTY_SET = OrderedSet();
 
-var defaultRecord: {
-  key: string,
-  type: DraftBlockType,
-  text: string,
-  characterList: List<CharacterMetadata>,
-  depth: number,
-  data: Map<any, any>,
-} = {
+type ContentBlockConfig = {|
+  key?: string,
+  type?: DraftBlockType,
+  text?: string,
+  characterList?: List<CharacterMetadata>,
+  depth?: number,
+  data?: Map<any, any>,
+|};
+
+var defaultRecord: ContentBlockConfig = {
   key: '',
   type: 'unstyled',
   text: '',
@@ -44,6 +47,20 @@ var defaultRecord: {
 var ContentBlockRecord = Record(defaultRecord);
 
 class ContentBlock extends ContentBlockRecord {
+  static create(config: ContentBlockConfig): ContentBlock {
+    const {characterList: _characterList, text} = config;
+    let characterList = _characterList;
+
+    if (text && !_characterList) {
+      characterList = List(Repeat(CharacterMetadata.EMPTY, text.length));
+    }
+
+    return new ContentBlock({
+      ...config,
+      characterList,
+    });
+  }
+
   getKey(): string {
     return this.get('key');
   }
