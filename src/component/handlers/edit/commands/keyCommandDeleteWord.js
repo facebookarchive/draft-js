@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule keyCommandDeleteWord
+ * @format
  * @flow
  */
 
@@ -32,14 +33,12 @@ function keyCommandDeleteWord(editorState: EditorState): EditorState {
       var key = selection.getStartKey();
       var content = strategyState.getCurrentContent();
       var text = nullthrows(content.getBlockForKey(key))
-        .getText().slice(offset);
+        .getText()
+        .slice(offset);
       var toRemove = DraftRemovableWord.getForward(text);
 
       // If there are no words in front of the cursor, remove the newline.
-      return moveSelectionForward(
-        strategyState,
-        toRemove.length || 1,
-      );
+      return moveSelectionForward(strategyState, toRemove.length || 1);
     },
     'forward',
   );

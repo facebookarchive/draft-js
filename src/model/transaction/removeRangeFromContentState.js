@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule removeRangeFromContentState
+ * @format
  * @flow
  */
 
@@ -53,10 +54,9 @@ function removeRangeFromContentState(
   }
 
   var modifiedStart = startBlock.merge({
-    text: (
+    text:
       startBlock.getText().slice(0, startOffset) +
-      endBlock.getText().slice(endOffset)
-    ),
+      endBlock.getText().slice(endOffset),
     characterList,
   });
 

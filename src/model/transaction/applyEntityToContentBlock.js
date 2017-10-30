@@ -8,6 +8,7 @@
  *
  * @providesModule applyEntityToContentBlock
  * @typechecks
+ * @format
  * @flow
  */
 

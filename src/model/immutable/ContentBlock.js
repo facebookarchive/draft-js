@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule ContentBlock
+ * @format
  * @flow
  */
 
@@ -20,12 +21,7 @@ var Immutable = require('immutable');
 
 var findRangesImmutable = require('findRangesImmutable');
 
-var {
-  List,
-  Map,
-  OrderedSet,
-  Record,
-} = Immutable;
+var {List, Map, OrderedSet, Record} = Immutable;
 
 const EMPTY_SET = OrderedSet();
 

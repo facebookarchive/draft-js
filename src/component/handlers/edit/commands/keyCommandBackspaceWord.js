@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule keyCommandBackspaceWord
+ * @format
  * @flow
  */
 
@@ -36,12 +37,10 @@ function keyCommandBackspaceWord(editorState: EditorState): EditorState {
       var key = selection.getStartKey();
       var content = strategyState.getCurrentContent();
       var text = nullthrows(content.getBlockForKey(key))
-        .getText().slice(0, offset);
+        .getText()
+        .slice(0, offset);
       var toRemove = DraftRemovableWord.getBackward(text);
-      return moveSelectionBackward(
-        strategyState,
-        toRemove.length || 1,
-      );
+      return moveSelectionBackward(strategyState, toRemove.length || 1);
     },
     'backward',
   );

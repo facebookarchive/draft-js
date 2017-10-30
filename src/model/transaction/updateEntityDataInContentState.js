@@ -8,6 +8,7 @@
  *
  * @providesModule updateEntityDataInContentState
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -23,9 +24,7 @@ function updateEntityDataInContentState(
 ): ContentState {
   const instance = contentState.getEntity(key);
   const entityData = instance.getData();
-  const newData = merge ?
-    {...entityData, ...data} :
-    data;
+  const newData = merge ? {...entityData, ...data} : data;
 
   const newInstance = instance.set('data', newData);
   const newEntityMap = contentState.getEntityMap().set(key, newInstance);

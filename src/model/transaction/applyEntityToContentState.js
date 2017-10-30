@@ -8,6 +8,7 @@
  *
  * @providesModule applyEntityToContentState
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -40,12 +41,7 @@ function applyEntityToContentState(
     .map((block, blockKey) => {
       const sliceStart = blockKey === startKey ? startOffset : 0;
       const sliceEnd = blockKey === endKey ? endOffset : block.getLength();
-      return applyEntityToContentBlock(
-        block,
-        sliceStart,
-        sliceEnd,
-        entityKey,
-      );
+      return applyEntityToContentBlock(block, sliceStart, sliceEnd, entityKey);
     });
 
   return contentState.merge({

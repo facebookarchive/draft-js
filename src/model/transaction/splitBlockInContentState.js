@@ -8,6 +8,7 @@
  *
  * @providesModule splitBlockInContentState
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -28,10 +29,7 @@ function splitBlockInContentState(
   contentState: ContentState,
   selectionState: SelectionState,
 ): ContentState {
-  invariant(
-    selectionState.isCollapsed(),
-    'Selection range must be collapsed.',
-  );
+  invariant(selectionState.isCollapsed(), 'Selection range must be collapsed.');
 
   var key = selectionState.getAnchorKey();
   var offset = selectionState.getAnchorOffset();
@@ -55,11 +53,16 @@ function splitBlockInContentState(
   });
 
   var blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
-  var blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
-  var newBlocks = blocksBefore.concat(
-    [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
-    blocksAfter,
-  ).toOrderedMap();
+  var blocksAfter = blockMap
+    .toSeq()
+    .skipUntil(v => v === blockToSplit)
+    .rest();
+  var newBlocks = blocksBefore
+    .concat(
+      [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
+      blocksAfter,
+    )
+    .toOrderedMap();
 
   return contentState.merge({
     blockMap: newBlocks,

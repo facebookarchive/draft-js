@@ -8,6 +8,7 @@
  *
  * @providesModule CharacterMetadata
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -15,11 +16,7 @@
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var {
-  Map,
-  OrderedSet,
-  Record,
-} = require('immutable');
+var {Map, OrderedSet, Record} = require('immutable');
 
 type CharacterMetadataConfig = {
   style?: DraftInlineStyle,
@@ -73,9 +70,10 @@ class CharacterMetadata extends CharacterMetadataRecord<RecordProps> {
     record: CharacterMetadata,
     entityKey: ?string,
   ): CharacterMetadata {
-    var withEntity = record.getEntity() === entityKey ?
-      record :
-      record.set('entity', entityKey);
+    var withEntity =
+      record.getEntity() === entityKey
+        ? record
+        : record.set('entity', entityKey);
     return CharacterMetadata.create(withEntity);
   }
 
@@ -91,7 +89,7 @@ class CharacterMetadata extends CharacterMetadataRecord<RecordProps> {
     }
 
     // Fill in unspecified properties, if necessary.
-    var configMap = Map({ ...defaultRecord, ...config });
+    var configMap = Map({...defaultRecord, ...config});
 
     var existing: ?CharacterMetadata = pool.get(configMap);
     if (existing) {
@@ -106,8 +104,8 @@ class CharacterMetadata extends CharacterMetadataRecord<RecordProps> {
   static EMPTY = new CharacterMetadata();
 }
 
-var pool: Map<Map<any, any>, CharacterMetadata> = Map(
-  [[Map(defaultRecord), CharacterMetadata.EMPTY]],
-);
+var pool: Map<Map<any, any>, CharacterMetadata> = Map([
+  [Map(defaultRecord), CharacterMetadata.EMPTY],
+]);
 
 module.exports = CharacterMetadata;

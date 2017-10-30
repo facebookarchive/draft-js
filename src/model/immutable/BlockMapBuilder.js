@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule BlockMapBuilder
+ * @format
  * @flow
  */
 
@@ -20,17 +21,11 @@ var Immutable = require('immutable');
 var {OrderedMap} = Immutable;
 
 var BlockMapBuilder = {
-  createFromArray: function(
-    blocks: Array<ContentBlock>,
-  ): BlockMap {
+  createFromArray: function(blocks: Array<ContentBlock>): BlockMap {
     /* $FlowFixMe(>=0.53.0 site=www,mobile) -
      * should be fixed by * https://github.com/facebook/immutable-js/pull/1112
      */
-    return OrderedMap(
-      blocks.map(
-        block => [block.getKey(), block],
-      ),
-    );
+    return OrderedMap(blocks.map(block => [block.getKey(), block]));
   },
 };
 

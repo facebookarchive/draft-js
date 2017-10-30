@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule moveSelectionForward
+ * @format
  * @flow
  */
 
@@ -39,7 +40,7 @@ function moveSelectionForward(
 
   var block = nullthrows(content.getBlockForKey(key));
 
-  if (maxDistance > (block.getText().length - offset)) {
+  if (maxDistance > block.getText().length - offset) {
     focusKey = content.getKeyAfter(key);
     focusOffset = 0;
   } else {

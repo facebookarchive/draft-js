@@ -8,6 +8,7 @@
  *
  * @providesModule ContentState
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -49,7 +50,6 @@ const defaultRecord: RecordProps = {
 const ContentStateRecord = Record(defaultRecord);
 
 class ContentState extends ContentStateRecord<RecordProps> {
-
   getEntityMap(): any {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity;
@@ -139,10 +139,15 @@ class ContentState extends ContentStateRecord<RecordProps> {
   }
 
   hasText(): boolean {
+<<<<<<< HEAD
     return (
       this.getBlockMap().size > 1 ||
       this.getFirstBlock().getLength() > 0
     );
+=======
+    var blockMap = this.getBlockMap();
+    return blockMap.size > 1 || blockMap.first().getLength() > 0;
+>>>>>>> upstream/master
   }
 
   createEntity(
@@ -151,27 +156,17 @@ class ContentState extends ContentStateRecord<RecordProps> {
     data?: Object,
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
-    DraftEntity.__create(
-      type,
-      mutability,
-      data,
-    );
+    DraftEntity.__create(type, mutability, data);
     return this;
   }
 
-  mergeEntityData(
-    key: string,
-    toMerge: {[key: string]: any},
-  ): ContentState {
+  mergeEntityData(key: string, toMerge: {[key: string]: any}): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity.__mergeData(key, toMerge);
     return this;
   }
 
-  replaceEntityData(
-    key: string,
-    newData: {[key: string]: any},
-  ): ContentState {
+  replaceEntityData(key: string, newData: {[key: string]: any}): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity.__replaceData(key, newData);
     return this;
@@ -212,17 +207,15 @@ class ContentState extends ContentStateRecord<RecordProps> {
     delimiter: string | RegExp = /\r\n?|\n/g,
   ): ContentState {
     const strings = text.split(delimiter);
-    const blocks = strings.map(
-      block => {
-        block = sanitizeDraftText(block);
-        return new ContentBlock({
-          key: generateRandomKey(),
-          text: block,
-          type: 'unstyled',
-          characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
-        });
-      },
-    );
+    const blocks = strings.map(block => {
+      block = sanitizeDraftText(block);
+      return new ContentBlock({
+        key: generateRandomKey(),
+        text: block,
+        type: 'unstyled',
+        characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
+      });
+    });
     return ContentState.createFromBlockArray(blocks);
   }
 }

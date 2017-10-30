@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -22,9 +23,7 @@ var {BOLD} = require('SampleDraftInlineStyle');
 
 var {EMPTY} = CharacterMetadata;
 
-var {
-  Repeat,
-} = Immutable;
+var {Repeat} = Immutable;
 
 var PLAIN_BLOCK = {
   key: 'a',
@@ -65,8 +64,8 @@ describe('BlockTree', () => {
 
   describe('generate tree with zero decorations', () => {
     function getDecorator(length) {
-      Decorator.prototype.getDecorations.mockImplementation(
-        () => Repeat(null, length).toList(),
+      Decorator.prototype.getDecorations.mockImplementation(() =>
+        Repeat(null, length).toList(),
       );
       return new Decorator();
     }
@@ -129,14 +128,14 @@ describe('BlockTree', () => {
     var RANGE_LENGTH = 3;
 
     function getDecorator(length) {
-      Decorator.prototype.getDecorations.mockImplementation(
-        () => {
-          return Repeat(null, RANGE_LENGTH).concat(
+      Decorator.prototype.getDecorations.mockImplementation(() => {
+        return Repeat(null, RANGE_LENGTH)
+          .concat(
             Repeat(DECORATOR_KEY, RANGE_LENGTH),
-            Repeat(null, (length - (2 * RANGE_LENGTH))),
-          ).toList();
-        },
-      );
+            Repeat(null, length - 2 * RANGE_LENGTH),
+          )
+          .toList();
+      });
       return new Decorator();
     }
 
@@ -216,14 +215,14 @@ describe('BlockTree', () => {
     var RANGE_LENGTH = 3;
 
     function getDecorator(length) {
-      Decorator.prototype.getDecorations.mockImplementation(
-        () => {
-          return Repeat(DECORATOR_KEY_A, RANGE_LENGTH).concat(
+      Decorator.prototype.getDecorations.mockImplementation(() => {
+        return Repeat(DECORATOR_KEY_A, RANGE_LENGTH)
+          .concat(
             Repeat(null, RANGE_LENGTH),
-            Repeat(DECORATOR_KEY_B, (length - (2 * RANGE_LENGTH))),
-          ).toList();
-        },
-      );
+            Repeat(DECORATOR_KEY_B, length - 2 * RANGE_LENGTH),
+          )
+          .toList();
+      });
       return new Decorator();
     }
 
@@ -290,20 +289,45 @@ describe('BlockTree', () => {
       });
 
       expect(tree.get(0).get('leaves').size).toBe(1);
-      expect(tree.get(0).get('leaves').get(0).toJS())
-        .toEqual({start: 0, end: 3});
+      expect(
+        tree
+          .get(0)
+          .get('leaves')
+          .get(0)
+          .toJS(),
+      ).toEqual({start: 0, end: 3});
 
       expect(tree.get(1).get('leaves').size).toBe(2);
-      expect(tree.get(1).get('leaves').get(0).toJS())
-        .toEqual({start: 3, end: 4});
-      expect(tree.get(1).get('leaves').get(1).toJS())
-        .toEqual({start: 4, end: 6});
+      expect(
+        tree
+          .get(1)
+          .get('leaves')
+          .get(0)
+          .toJS(),
+      ).toEqual({start: 3, end: 4});
+      expect(
+        tree
+          .get(1)
+          .get('leaves')
+          .get(1)
+          .toJS(),
+      ).toEqual({start: 4, end: 6});
 
       expect(tree.get(2).get('leaves').size).toBe(2);
-      expect(tree.get(2).get('leaves').get(0).toJS())
-        .toEqual({start: 6, end: 8});
-      expect(tree.get(2).get('leaves').get(1).toJS())
-        .toEqual({start: 8, end: 10});
+      expect(
+        tree
+          .get(2)
+          .get('leaves')
+          .get(0)
+          .toJS(),
+      ).toEqual({start: 6, end: 8});
+      expect(
+        tree
+          .get(2)
+          .get('leaves')
+          .get(1)
+          .toJS(),
+      ).toEqual({start: 8, end: 10});
 
       expect(BlockTree.getFingerprint(tree)).toBe('y.3.1-.2-z.4.2');
     });

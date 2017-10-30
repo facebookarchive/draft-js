@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -103,54 +104,40 @@ describe('getDraftEditorSelection', function() {
     var contentState = ContentState.createFromBlockArray(contentBlocks);
     editorState = EditorState.createWithContent(contentState);
 
-    textNodes = text
-      .map(
-        function(text) {
-          return document.createTextNode(text);
-        },
-      );
-    leafChildren = textNodes
-      .map(
-        function(textNode) {
-          var span = document.createElement('span');
-          span.appendChild(textNode);
-          return span;
-        },
-      );
-    leafs = ['a-0-0', 'a-0-1', 'b-0-0', 'b-0-1', 'c-0-0', 'c-0-1']
-      .map(
-        function(blockKey, ii) {
-          var span = document.createElement('span');
-          span.setAttribute('data-offset-key', '' + blockKey);
-          span.appendChild(leafChildren[ii]);
-          return span;
-        },
-      );
-    decorators = ['a-0-0', 'b-0-0', 'c-0-0']
-      .map(
-        function(decoratorKey, ii) {
-          var span = document.createElement('span');
-          // Decorators may not have `data-offset-key` attribute
-          span.setAttribute('decorator-key', '' + decoratorKey);
-          span.appendChild(leafs[(ii * 2)]);
-          span.appendChild(leafs[(ii * 2) + 1]);
-          return span;
-        },
-      );
-    blocks = ['a-0-0', 'b-0-0', 'c-0-0']
-      .map(
-        function(blockKey, ii) {
-          var blockElement = document.createElement('div');
-          blockElement.setAttribute('data-offset-key', '' + blockKey);
-          blockElement.appendChild(decorators[ii]);
-          return blockElement;
-        },
-      );
-    blocks.forEach(
-      function(blockElem) {
-        contents.appendChild(blockElem);
-      },
-    );
+    textNodes = text.map(function(text) {
+      return document.createTextNode(text);
+    });
+    leafChildren = textNodes.map(function(textNode) {
+      var span = document.createElement('span');
+      span.appendChild(textNode);
+      return span;
+    });
+    leafs = ['a-0-0', 'a-0-1', 'b-0-0', 'b-0-1', 'c-0-0', 'c-0-1'].map(function(
+      blockKey,
+      ii,
+    ) {
+      var span = document.createElement('span');
+      span.setAttribute('data-offset-key', '' + blockKey);
+      span.appendChild(leafChildren[ii]);
+      return span;
+    });
+    decorators = ['a-0-0', 'b-0-0', 'c-0-0'].map(function(decoratorKey, ii) {
+      var span = document.createElement('span');
+      // Decorators may not have `data-offset-key` attribute
+      span.setAttribute('decorator-key', '' + decoratorKey);
+      span.appendChild(leafs[ii * 2]);
+      span.appendChild(leafs[ii * 2 + 1]);
+      return span;
+    });
+    blocks = ['a-0-0', 'b-0-0', 'c-0-0'].map(function(blockKey, ii) {
+      var blockElement = document.createElement('div');
+      blockElement.setAttribute('data-offset-key', '' + blockKey);
+      blockElement.appendChild(decorators[ii]);
+      return blockElement;
+    });
+    blocks.forEach(function(blockElem) {
+      contents.appendChild(blockElem);
+    });
   });
 
   function assertEquals(result, assert) {
@@ -158,16 +145,17 @@ describe('getDraftEditorSelection', function() {
     var resultRecovery = result.needsRecovery;
     var assertSelection = assert.selectionState;
     var assertRecovery = assert.needsRecovery;
-    expect(resultSelection.getAnchorKey())
-      .toBe(assertSelection.getAnchorKey());
-    expect(resultSelection.getAnchorOffset())
-      .toBe(assertSelection.getAnchorOffset());
-    expect(resultSelection.getFocusKey())
-      .toBe(assertSelection.getFocusKey());
-    expect(resultSelection.getFocusOffset())
-      .toBe(assertSelection.getFocusOffset());
-    expect(resultSelection.getIsBackward())
-      .toBe(assertSelection.getIsBackward());
+    expect(resultSelection.getAnchorKey()).toBe(assertSelection.getAnchorKey());
+    expect(resultSelection.getAnchorOffset()).toBe(
+      assertSelection.getAnchorOffset(),
+    );
+    expect(resultSelection.getFocusKey()).toBe(assertSelection.getFocusKey());
+    expect(resultSelection.getFocusOffset()).toBe(
+      assertSelection.getFocusOffset(),
+    );
+    expect(resultSelection.getIsBackward()).toBe(
+      assertSelection.getIsBackward(),
+    );
     expect(resultRecovery).toBe(assertRecovery);
   }
 
@@ -177,7 +165,6 @@ describe('getDraftEditorSelection', function() {
     });
 
     describe('Selection is entirely within a single text node', function() {
-
       it('must find offsets when collapsed at start', function() {
         var textNode = textNodes[0];
         window.getSelection.mockReturnValueOnce({
@@ -295,7 +282,6 @@ describe('getDraftEditorSelection', function() {
     });
 
     describe('Selection spans multiple text nodes', function() {
-
       it('starts at head of one node and ends at head of another', function() {
         window.getSelection.mockReturnValueOnce({
           rangeCount: 1,
@@ -432,7 +418,6 @@ describe('getDraftEditorSelection', function() {
         });
       });
 
-
       it('starts within text node, ends at start of leaf child', function() {
         var leaf = leafChildren[4];
         window.getSelection.mockReturnValueOnce({
@@ -548,7 +533,6 @@ describe('getDraftEditorSelection', function() {
           needsRecovery: true,
         });
       });
-
 
       it('starts within text node, ends at start of leaf span', function() {
         var leaf = leafs[4];
@@ -667,7 +651,6 @@ describe('getDraftEditorSelection', function() {
         });
       });
 
-
       it('contains an entire leaf', function() {
         var leaf = leafs[4];
         window.getSelection.mockReturnValueOnce({
@@ -759,7 +742,6 @@ describe('getDraftEditorSelection', function() {
           needsRecovery: true,
         });
       });
-
 
       it('reversed leaf to leaf', function() {
         window.getSelection.mockReturnValueOnce({

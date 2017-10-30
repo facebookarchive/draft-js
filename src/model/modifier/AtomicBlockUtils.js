@@ -8,6 +8,7 @@
  *
  * @providesModule AtomicBlockUtils
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -27,10 +28,7 @@ const nullthrows = require('nullthrows');
 const generateRandomKey = require('generateRandomKey');
 const moveBlockInContentState = require('moveBlockInContentState');
 
-const {
-  List,
-  Repeat,
-} = Immutable;
+const {List, Repeat} = Immutable;
 
 const AtomicBlockUtils = {
   insertAtomicBlock: function(
@@ -102,11 +100,13 @@ const AtomicBlockUtils = {
     let withMovedAtomicBlock;
 
     if (insertionMode === 'before' || insertionMode === 'after') {
-      const targetBlock = nullthrows(contentState.getBlockForKey(
-        insertionMode === 'before' ?
-          targetRange.getStartKey() :
-          targetRange.getEndKey(),
-      ));
+      const targetBlock = nullthrows(
+        contentState.getBlockForKey(
+          insertionMode === 'before'
+            ? targetRange.getStartKey()
+            : targetRange.getEndKey(),
+        ),
+      );
 
       withMovedAtomicBlock = moveBlockInContentState(
         contentState,
@@ -122,9 +122,9 @@ const AtomicBlockUtils = {
       );
 
       const selectionAfterRemoval = afterRemoval.getSelectionAfter();
-      const targetBlock = nullthrows(afterRemoval.getBlockForKey(
-        selectionAfterRemoval.getFocusKey(),
-      ));
+      const targetBlock = nullthrows(
+        afterRemoval.getBlockForKey(selectionAfterRemoval.getFocusKey()),
+      );
 
       if (selectionAfterRemoval.getStartOffset() === 0) {
         withMovedAtomicBlock = moveBlockInContentState(
@@ -149,9 +149,9 @@ const AtomicBlockUtils = {
         );
 
         const selectionAfterSplit = afterSplit.getSelectionAfter();
-        const targetBlock = nullthrows(afterSplit.getBlockForKey(
-          selectionAfterSplit.getFocusKey(),
-        ));
+        const targetBlock = nullthrows(
+          afterSplit.getBlockForKey(selectionAfterSplit.getFocusKey()),
+        );
 
         withMovedAtomicBlock = moveBlockInContentState(
           afterSplit,
@@ -164,10 +164,9 @@ const AtomicBlockUtils = {
 
     const newContent = withMovedAtomicBlock.merge({
       selectionBefore: selectionState,
-      selectionAfter: withMovedAtomicBlock.getSelectionAfter().set(
-        'hasFocus',
-        true,
-      ),
+      selectionAfter: withMovedAtomicBlock
+        .getSelectionAfter()
+        .set('hasFocus', true),
     });
 
     return EditorState.push(editorState, newContent, 'move-block');

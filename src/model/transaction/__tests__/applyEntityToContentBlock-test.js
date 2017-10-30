@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -15,10 +16,7 @@ jest.disableAutomock();
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentBlock = require('ContentBlock');
-var {
-  List,
-  Repeat,
-} = require('immutable');
+var {List, Repeat} = require('immutable');
 
 var applyEntityToContentBlock = require('applyEntityToContentBlock');
 
@@ -30,7 +28,10 @@ describe('applyEntityToContentBlock', () => {
   });
 
   function getEntities(block) {
-    return block.getCharacterList().map(c => c.getEntity()).toJS();
+    return block
+      .getCharacterList()
+      .map(c => c.getEntity())
+      .toJS();
   }
 
   it('must apply from the start', () => {

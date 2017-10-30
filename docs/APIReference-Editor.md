@@ -106,6 +106,31 @@ for details on usage.
 
 ### Behavior (Optional)
 
+### autoCapitalize?: string
+
+```
+autoCapitalize?: string
+```
+
+Set if auto capitalization is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocapitalize).
+
+### autoComplete?: string
+
+```
+autoComplete?: string
+```
+
+Set if auto complete is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocomplete).
+
+### autoCorrect?: string
+
+```
+autoCorrect?: string
+```
+
+Set if auto correct is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocorrect).
+
+
 #### readOnly
 ```
 readOnly?: boolean

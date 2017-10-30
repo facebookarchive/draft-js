@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getUpdatedSelectionState
+ * @format
  * @flow
  */
 
@@ -31,14 +32,9 @@ function getUpdatedSelectionState(
   if (__DEV__) {
     if (!anchorKey || !focusKey) {
       /*eslint-disable no-console */
-      console.warn(
-        'Invalid selection state.',
-        arguments,
-        editorState.toJS(),
-      );
+      console.warn('Invalid selection state.', arguments, editorState.toJS());
       /*eslint-enable no-console */
       return selection;
-
     }
   }
 
@@ -46,21 +42,13 @@ function getUpdatedSelectionState(
   var anchorBlockKey = anchorPath.blockKey;
   var anchorLeaf = editorState
     .getBlockTree(anchorBlockKey)
-    .getIn([
-      anchorPath.decoratorKey,
-      'leaves',
-      anchorPath.leafKey,
-    ]);
+    .getIn([anchorPath.decoratorKey, 'leaves', anchorPath.leafKey]);
 
   var focusPath = DraftOffsetKey.decode(focusKey);
   var focusBlockKey = focusPath.blockKey;
   var focusLeaf = editorState
     .getBlockTree(focusBlockKey)
-    .getIn([
-      focusPath.decoratorKey,
-      'leaves',
-      focusPath.leafKey,
-    ]);
+    .getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
 
   invariant(
     anchorLeaf !== undefined && focusLeaf !== undefined,
@@ -72,12 +60,11 @@ function getUpdatedSelectionState(
   var anchorBlockOffset = anchorLeaf ? anchorLeafStart + anchorOffset : null;
   var focusBlockOffset = focusLeaf ? focusLeafStart + focusOffset : null;
 
-  var areEqual = (
+  var areEqual =
     selection.getAnchorKey() === anchorBlockKey &&
     selection.getAnchorOffset() === anchorBlockOffset &&
     selection.getFocusKey() === focusBlockKey &&
-    selection.getFocusOffset() === focusBlockOffset
-  );
+    selection.getFocusOffset() === focusBlockOffset;
 
   if (areEqual) {
     return selection;
@@ -87,10 +74,7 @@ function getUpdatedSelectionState(
   if (anchorBlockKey === focusBlockKey) {
     var anchorLeafEnd: number = anchorLeaf.get('end');
     var focusLeafEnd: number = focusLeaf.get('end');
-    if (
-      focusLeafStart === anchorLeafStart &&
-      focusLeafEnd === anchorLeafEnd
-    ) {
+    if (focusLeafStart === anchorLeafStart && focusLeafEnd === anchorLeafEnd) {
       isBackward = focusOffset < anchorOffset;
     } else {
       isBackward = focusLeafStart < anchorLeafStart;

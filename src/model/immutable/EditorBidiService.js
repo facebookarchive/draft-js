@@ -8,6 +8,7 @@
  *
  * @providesModule EditorBidiService
  * @typechecks
+ * @format
  * @flow
  */
 

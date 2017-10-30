@@ -19,7 +19,21 @@ A `ContentState` object contains an `OrderedMap` of these `ContentBlock` objects
 which together comprise the full contents of the editor.
 
 `ContentBlock` objects are largely analogous to block-level HTML elements like
-paragraphs and list items.
+paragraphs and list items. The available types are:
+
+  - unstyled
+  - paragraph
+  - header-one
+  - header-two
+  - header-three
+  - header-four
+  - header-five
+  - header-six
+  - unordered-list-item
+  - ordered-list-item
+  - blockquote
+  - code-block
+  - atomic
 
 New `ContentBlock` objects may be created directly using the constructor.
 Expected Record values are detailed below.

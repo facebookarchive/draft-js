@@ -8,6 +8,7 @@
  *
  * @providesModule getEntityKeyForSelection
  * @typechecks
+ * @format
  * @flow
  */
 
@@ -45,9 +46,10 @@ function getEntityKeyForSelection(
   var startOffset = targetSelection.getStartOffset();
   var startBlock = nullthrows(contentState.getBlockForKey(startKey));
 
-  entityKey = startOffset === startBlock.getLength() ?
-    null :
-    startBlock.getEntityAt(startOffset);
+  entityKey =
+    startOffset === startBlock.getLength()
+      ? null
+      : startBlock.getEntityAt(startOffset);
 
   return filterKey(contentState.getEntityMap(), entityKey);
 }
@@ -56,10 +58,7 @@ function getEntityKeyForSelection(
  * Determine whether an entity key corresponds to a `MUTABLE` entity. If so,
  * return it. If not, return null.
  */
-function filterKey(
-  entityMap: EntityMap,
-  entityKey: ?string,
-): ?string {
+function filterKey(entityMap: EntityMap, entityKey: ?string): ?string {
   if (entityKey) {
     var entity = entityMap.__get(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;
