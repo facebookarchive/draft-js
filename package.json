@@ -71,7 +71,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "jest": "^15.1.1",
+    "jest": "^21.2.1",
     "prettier": "^1.7.4",
     "react": "^15.0.0-rc.1",
     "react-dom": "^15.0.0-rc.1",
@@ -87,21 +87,16 @@
   },
   "jest": {
     "automock": true,
+    "globals": {
+      "__DEV__": true
+    },
     "rootDir": "./",
-    "scriptPreprocessor": "scripts/jest/preprocessor.js",
-    "setupFiles": [
-      "node_modules/fbjs-scripts/jest/environment.js"
-    ],
-    "modulePathIgnorePatterns": [
-      "<rootDir>/lib/",
-      "<rootDir>/node_modules/"
-    ],
-    "preprocessorIgnorePatterns": [
-      "<rootDir>/node_modules/"
-    ],
-    "testPathDirs": [
-      "<rootDir>/src/"
-    ],
+    "roots": ["<rootDir>/src/"],
+    "transform": {
+      ".*": "<rootDir>/scripts/jest/preprocessor.js"
+    },
+    "modulePathIgnorePatterns": ["<rootDir>/lib/", "<rootDir>/node_modules/"],
+    "transformIgnorePatterns": ["<rootDir>/node_modules/"],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/fbjs/node_modules/",
       "<rootDir>/node_modules/fbjs/lib/UserAgent.js",
