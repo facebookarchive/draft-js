@@ -41,9 +41,8 @@ describe('DraftEditor.react', () => {
           this.state = {
             editorState: EditorState.createEmpty(),
           };
-          this.toggleCustomBlock = this.toggleCustomBlock.bind(this);
         }
-        toggleCustomBlock() {
+        toggleCustomBlock = () => {
           this.setState(
             {
               editorState: RichUtils.toggleBlockType(
@@ -55,7 +54,7 @@ describe('DraftEditor.react', () => {
               setTimeout(() => this.focus(), 0);
             },
           );
-        }
+        };
         blockRenderFn(block) {
           if (block.getType() === CUSTOM_BLOCK_TYPE) {
             return {

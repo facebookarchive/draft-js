@@ -159,20 +159,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this._onPaste = this._buildHandler('onPaste');
     this._onSelect = this._buildHandler('onSelect');
 
-    // Manual binding for public and internal methods.
-    this.focus = this._focus.bind(this);
-    this.blur = this._blur.bind(this);
-    this.setMode = this._setMode.bind(this);
-    this.exitCurrentMode = this._exitCurrentMode.bind(this);
-    this.restoreEditorDOM = this._restoreEditorDOM.bind(this);
-    this.setClipboard = this._setClipboard.bind(this);
-    this.getClipboard = this._getClipboard.bind(this);
     this.getEditorKey = () => this._editorKey;
-    this.update = this._update.bind(this);
-    this.onDragEnter = this._onDragEnter.bind(this);
-    this.onDragLeave = this._onDragLeave.bind(this);
 
-    // See `_restoreEditorDOM()`.
+    // See `restoreEditorDOM()`.
     this.state = {contentsKey: 0};
   }
 
@@ -362,7 +351,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * a specified scroll position (for cases like `cut` behavior where it should
    * be restored to a known position).
    */
-  _focus(scrollPosition?: DraftScrollPosition): void {
+  focus = (scrollPosition?: DraftScrollPosition): void => {
     const {editorState} = this.props;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
     const editorNode = ReactDOM.findDOMNode(this.editor);
@@ -398,16 +387,16 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         EditorState.forceSelection(editorState, editorState.getSelection()),
       );
     }
-  }
+  };
 
-  _blur(): void {
+  blur = (): void => {
     const editorNode = ReactDOM.findDOMNode(this.editor);
     invariant(
       editorNode instanceof HTMLElement,
       'editorNode is not an HTMLElement',
     );
     editorNode.blur();
-  }
+  };
 
   /**
    * Used via `this.setMode(...)`.
@@ -416,13 +405,13 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * handler module to ensure that DOM events are managed appropriately for
    * the active mode.
    */
-  _setMode(mode: DraftEditorModes): void {
+  setMode = (mode: DraftEditorModes): void => {
     this._handler = handlerMap[mode];
-  }
+  };
 
-  _exitCurrentMode(): void {
+  exitCurrentMode = (): void => {
     this.setMode('edit');
-  }
+  };
 
   /**
    * Used via `this.restoreEditorDOM()`.
@@ -433,29 +422,29 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * reconciliation occurs on a version of the DOM that is synchronized with
    * our EditorState.
    */
-  _restoreEditorDOM(scrollPosition?: DraftScrollPosition): void {
+  restoreEditorDOM = (scrollPosition?: DraftScrollPosition): void => {
     this.setState({contentsKey: this.state.contentsKey + 1}, () => {
-      this._focus(scrollPosition);
+      this.focus(scrollPosition);
     });
-  }
+  };
 
   /**
    * Used via `this.setClipboard(...)`.
    *
    * Set the clipboard state for a cut/copy event.
    */
-  _setClipboard(clipboard: ?BlockMap): void {
+  setClipboard = (clipboard: ?BlockMap): void => {
     this._clipboard = clipboard;
-  }
+  };
 
   /**
    * Used via `this.getClipboard()`.
    *
    * Retrieve the clipboard state for a cut/copy event.
    */
-  _getClipboard(): ?BlockMap {
+  getClipboard = (): ?BlockMap => {
     return this._clipboard;
-  }
+  };
 
   /**
    * Used via `this.update(...)`.
@@ -466,29 +455,29 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * an `onChange` prop to receive state updates passed along from this
    * function.
    */
-  _update(editorState: EditorState): void {
+  update = (editorState: EditorState): void => {
     this._latestEditorState = editorState;
     this.props.onChange(editorState);
-  }
+  };
 
   /**
-   * Used in conjunction with `_onDragLeave()`, by counting the number of times
+   * Used in conjunction with `onDragLeave()`, by counting the number of times
    * a dragged element enters and leaves the editor (or any of its children),
    * to determine when the dragged element absolutely leaves the editor.
    */
-  _onDragEnter(): void {
+  onDragEnter = (): void => {
     this._dragCount++;
-  }
+  };
 
   /**
-   * See `_onDragEnter()`.
+   * See `onDragEnter()`.
    */
-  _onDragLeave(): void {
+  onDragLeave = (): void => {
     this._dragCount--;
     if (this._dragCount === 0) {
       this.exitCurrentMode();
     }
-  }
+  };
 }
 
 module.exports = DraftEditor;
