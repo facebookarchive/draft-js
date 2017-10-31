@@ -8,7 +8,6 @@
  *
  * @emails oncall+ui_infra
  * @format
- * @typechecks
  */
 
 jest.disableAutomock().mock('ContentState');
