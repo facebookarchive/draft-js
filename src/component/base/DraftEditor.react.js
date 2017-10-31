@@ -297,8 +297,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             style={contentStyle}
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
-            {}
-            {}
             {/* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
               * error when upgrading Flow's support for React. Common errors
               * found when upgrading Flow's React support are documented at
