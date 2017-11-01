@@ -37,6 +37,26 @@ describe('ContentBlock', () => {
     });
   }
 
+  it('must have appropriate default values', () => {
+    const text = 'Alpha';
+    const block = new ContentBlock({
+      key: 'a',
+      type: 'unstyled',
+      text,
+    });
+
+    const characterList = Immutable.List(
+      Immutable.Repeat(CharacterMetadata.EMPTY, text.length),
+    );
+
+    expect(block.getKey()).toBe('a');
+    expect(block.getText()).toBe('Alpha');
+    expect(block.getType()).toBe('unstyled');
+    expect(block.getLength()).toBe(5);
+    expect(block.getCharacterList().count()).toBe(5);
+    expect(block.getCharacterList()).toEqual(characterList);
+  });
+
   describe('basic retrieval', () => {
     it('must provide default values', () => {
       var block = new ContentBlock();
