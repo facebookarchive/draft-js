@@ -58,11 +58,6 @@ methods on a single `List` object.
 
 <ul class="apiIndex">
   <li>
-    <a href="#create">
-      <pre>static create(...): ContentBlock</pre>
-    </a>
-  </li>
-  <li>
     <a href="#getkey">
       <pre>getKey(): string</pre>
     </a>
@@ -160,15 +155,6 @@ methods on a single `List` object.
 </ul>
 
 ## Methods
-
-### create
-
-```
-static create(config: ContentBlockConfig): ContentBlock
-```
-Generates a `ContentBlock` object from the provided configuration. This
-function differs from constructor by providing a default `characterList` when 
-receiving ContentBlockConfig with `text` and without `characterList`.
 
 ### getKey()
 

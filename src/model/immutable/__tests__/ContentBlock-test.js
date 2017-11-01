@@ -39,7 +39,7 @@ describe('ContentBlock', () => {
 
   it('must have appropriate default values', () => {
     const text = 'Alpha';
-    const block = ContentBlock.create({
+    const block = new ContentBlock({
       key: 'a',
       type: 'unstyled',
       text,

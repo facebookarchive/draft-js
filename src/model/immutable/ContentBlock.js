@@ -46,19 +46,25 @@ var defaultRecord: ContentBlockConfig = {
 
 var ContentBlockRecord = Record(defaultRecord);
 
+const decorateCharacterList = (
+  config: ContentBlockConfig,
+): ContentBlockConfig => {
+  if (!config) {
+    return config;
+  }
+
+  const {characterList, text} = config;
+
+  if (text && !characterList) {
+    config.characterList = List(Repeat(CharacterMetadata.EMPTY, text.length));
+  }
+
+  return config;
+};
+
 class ContentBlock extends ContentBlockRecord {
-  static create(config: ContentBlockConfig): ContentBlock {
-    const {characterList: _characterList, text} = config;
-    let characterList = _characterList;
-
-    if (text && !_characterList) {
-      characterList = List(Repeat(CharacterMetadata.EMPTY, text.length));
-    }
-
-    return new ContentBlock({
-      ...config,
-      characterList,
-    });
+  constructor(config: ContentBlockConfig) {
+    super(decorateCharacterList(config));
   }
 
   getKey(): string {
