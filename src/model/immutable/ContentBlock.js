@@ -13,26 +13,28 @@
 
 'use strict';
 
-import type CharacterMetadata from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var Immutable = require('immutable');
+const CharacterMetadata = require('CharacterMetadata');
+const Immutable = require('immutable');
 
-var findRangesImmutable = require('findRangesImmutable');
+const findRangesImmutable = require('findRangesImmutable');
 
-var {List, Map, OrderedSet, Record} = Immutable;
+const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
 const EMPTY_SET = OrderedSet();
 
-var defaultRecord: {
-  key: string,
-  type: DraftBlockType,
-  text: string,
-  characterList: List<CharacterMetadata>,
-  depth: number,
-  data: Map<any, any>,
-} = {
+type ContentBlockConfig = {
+  key?: string,
+  type?: string,
+  text?: string,
+  characterList?: List<CharacterMetadata>,
+  depth?: number,
+  data?: Map<any, any>,
+};
+
+const defaultRecord: ContentBlockConfig = {
   key: '',
   type: 'unstyled',
   text: '',
@@ -41,9 +43,29 @@ var defaultRecord: {
   data: Map(),
 };
 
-var ContentBlockRecord = Record(defaultRecord);
+const ContentBlockRecord = Record(defaultRecord);
+
+const decorateCharacterList = (
+  config: ContentBlockConfig,
+): ContentBlockConfig => {
+  if (!config) {
+    return config;
+  }
+
+  const {characterList, text} = config;
+
+  if (text && !characterList) {
+    config.characterList = List(Repeat(CharacterMetadata.EMPTY, text.length));
+  }
+
+  return config;
+};
 
 class ContentBlock extends ContentBlockRecord {
+  constructor(config: ContentBlockConfig) {
+    super(decorateCharacterList(config));
+  }
+
   getKey(): string {
     return this.get('key');
   }
