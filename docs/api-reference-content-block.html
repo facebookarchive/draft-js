@@ -9,7 +9,9 @@ entities for a given block.</p><p>By making heavy use of immutability and data p
 <code>CharacterMetadata</code> objects, edits to the content generally have little impact
 on the memory footprint of the editor.</p><p>By encoding inline styles and entities together in this way, a function that
 performs edits on a <code>ContentBlock</code> can perform slices, concats, and other List
-methods on a single <code>List</code> object.</p><h2><a class="anchor" name="overview"></a>Overview <a class="hash-link" href="#overview">#</a></h2><p><em>Methods</em></p><div><ul class="apiIndex">
+methods on a single <code>List</code> object.</p><p>When creating a new <code>ContentBlock</code> containing <code>text</code> and without <code>characterList</code>
+it then will default to a <code>characterList</code> with empty <code>CharacterMetadata</code> for the
+supplied text.</p><h2><a class="anchor" name="overview"></a>Overview <a class="hash-link" href="#overview">#</a></h2><p><em>Methods</em></p><div><ul class="apiIndex">
   <li>
     <a href="#getkey">
       <pre>getKey(): string</pre>
