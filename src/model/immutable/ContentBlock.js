@@ -13,16 +13,14 @@
 
 'use strict';
 
-import CharacterMetadata from 'CharacterMetadata';
+const CharacterMetadata = require('CharacterMetadata');
+const Immutable = require('immutable');
+const findRangesImmutable = require('findRangesImmutable');
 
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var Immutable = require('immutable');
-
-var findRangesImmutable = require('findRangesImmutable');
-
-var {List, Map, OrderedSet, Record, Repeat} = Immutable;
+const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
 const EMPTY_SET = OrderedSet();
 
@@ -35,7 +33,7 @@ type ContentBlockConfig = {|
   data?: Map<any, any>,
 |};
 
-var defaultRecord: ContentBlockConfig = {
+const defaultRecord: ContentBlockConfig = {
   key: '',
   type: 'unstyled',
   text: '',
@@ -44,7 +42,7 @@ var defaultRecord: ContentBlockConfig = {
   data: Map(),
 };
 
-var ContentBlockRecord = Record(defaultRecord);
+const ContentBlockRecord = Record(defaultRecord);
 
 const decorateCharacterList = (
   config: ContentBlockConfig,
