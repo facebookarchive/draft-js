@@ -26,8 +26,8 @@ const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 const EMPTY_SET = OrderedSet();
 
 type ContentBlockConfig = {
-  key?: DraftBlockType,
-  type?: string,
+  key?: string,
+  type?: DraftBlockType,
   text?: string,
   characterList?: List<CharacterMetadata>,
   depth?: number,
