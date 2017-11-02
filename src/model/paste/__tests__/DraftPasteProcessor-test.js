@@ -46,6 +46,14 @@ var CUSTOM_BLOCK_MAP = Immutable.Map({
   },
 });
 
+var INLINE_STYLES = Immutable.List([
+  'BOLD',
+  'CODE',
+  'ITALIC',
+  'STRIKETHROUGH',
+  'UNDERLINE',
+]);
+
 describe('DraftPasteProcessor', function() {
   function assertInlineStyles(block, comparison) {
     var styles = block.getCharacterList().map(c => c.getStyle());
@@ -74,6 +82,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     var block = output[0];
     expect(block.getType()).toBe('unstyled');
@@ -95,6 +104,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     var block = output[0];
     expect(block.getType()).toBe('unstyled');
@@ -107,13 +117,44 @@ describe('DraftPasteProcessor', function() {
     expect(block.getText()).toBe('hehi');
   });
 
+  it('must identity only specified inline styles', function() {
+    var inlineStyles = Immutable.List(['BOLD', 'ITALIC']);
+    var html =
+      '<em>1</em><strong>2</strong><code>3</code><strike>4</strike><u>5</u>';
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      inlineStyles,
+    );
+    var block = output[0];
+    assertInlineStyles(block, [['ITALIC'], ['BOLD'], [], [], []]);
+  });
+
   it('must identify block styles', function() {
     var html = '<ol><li>hi</li><li>there</li></ol>';
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['ordered-list-item', 'ordered-list-item']);
+  });
+
+  it('must identify only specified block types', function() {
+    var blockRenderMap = Immutable.Map({
+      'header-one': {
+        element: 'h1',
+      },
+      unstyled: {
+        element: 'div',
+      },
+    });
+    var html = '<h1>yes</h1><h2>no</h2><div>yes</div><pre>no</pre>';
+    var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+      html,
+      blockRenderMap,
+    );
+    assertBlockTypes(output, ['header-one', 'unstyled']);
   });
 
   it('must collapse nested blocks to the topmost level', function() {
@@ -121,6 +162,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['unordered-list-item']);
   });
@@ -131,7 +173,7 @@ describe('DraftPasteProcessor', function() {
    *
    * it('must suppress blocks nested inside other blocks', function() {
    *   var html = '<p><h2>Some text here</h2> more text here </p>';
-   *   var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+   *   var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP, INLINE_STYLES);
    *   assertBlockTypes(output, [
    *   'unstyled',
    *   ]);
@@ -143,6 +185,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['header-one', 'header-two']);
   });
@@ -152,6 +195,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['header-one', 'unstyled', 'header-two']);
   });
@@ -163,6 +207,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['paragraph']);
   });
@@ -171,18 +216,30 @@ describe('DraftPasteProcessor', function() {
     var html, output;
 
     html = '<span>hello</span> <span>hi</span>';
-    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     expect(output.contentBlocks.length).toEqual(1);
     assertBlockTypes(output.contentBlocks, ['unstyled']);
     var block = output.contentBlocks[0];
     expect(block.getText()).toBe('hello hi');
 
     html = '<span>hello </span><span>hi</span>';
-    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     expect(output.contentBlocks[0].getText()).toBe('hello hi');
 
     html = '<span>hello</span><span> hi</span>';
-    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     expect(output.contentBlocks[0].getText()).toEqual('hello hi');
   });
 
@@ -191,6 +248,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['unstyled', 'unstyled']);
   });
@@ -200,6 +258,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['paragraph', 'paragraph']);
   });
@@ -209,6 +268,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     expect(output[0].getText()).toBe('hi\nhello');
   });
@@ -218,16 +278,25 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     expect(output[0].getText()).toBe('hihello');
   });
 
   it('must split unstyled blocks on two br tags', function() {
     var html = 'hi<br><br>hello';
-    var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    var output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     assertBlockTypes(output.contentBlocks, ['unstyled', 'unstyled']);
     html = '<div>hi<br><br>hello</div>';
-    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     assertBlockTypes(output.contentBlocks, ['unstyled', 'unstyled']);
   });
 
@@ -236,13 +305,18 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['code-block']);
   });
 
   it('must split unstyled blocks on two br tags', function() {
     var html = 'hi<br><br>hello';
-    var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    var output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     expect(output.contentBlocks[0].getText().length).toBe(3);
     expect(output.contentBlocks[1].getText()).toBe('hello');
     assertBlockTypes(output.contentBlocks, ['unstyled', 'unstyled']);
@@ -253,6 +327,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     expect(output[0].getText()).toBe('hello there');
   });
@@ -262,6 +337,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     expect(output[0].getText()).toBe('hello\nthere');
   });
@@ -271,6 +347,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     expect(output[0].getText()).toBe('hello\nthere');
     assertBlockTypes(output, ['code-block']);
@@ -283,6 +360,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['unstyled']);
     assertInlineStyles(output[0], [
@@ -302,48 +380,153 @@ describe('DraftPasteProcessor', function() {
     expect(output[0].getText()).toBe('Bold Italic.');
   });
 
-  it('must detect links in pasted content', function() {
-    var html = 'This is a <a href="http://www.facebook.com">link</a>, yep.';
-    var {contentBlocks: output, entityMap} = DraftPasteProcessor.processHTML(
-      html,
-      CUSTOM_BLOCK_MAP,
-    );
-    assertBlockTypes(output, ['unstyled']);
-    assertEntities(
-      output[0],
-      Array(10)
-        .fill(false)
-        .concat(Array(4).fill(true), Array(6).fill(false)),
-    );
-    expect(output[0].getText()).toBe('This is a link, yep.');
-    var entityId = output[0]
-      .getCharacterList()
-      .get(12)
-      .getEntity();
-    var entity = entityMap.__get(entityId);
-    expect(entity.getData().url).toBe('http://www.facebook.com/');
+  describe('`allowImages` prop is true', function() {
+    it('must detect images in pasted content', function() {
+      var html =
+        'This is an image <img src="http://www.facebook.com/image.jpg" />, yep.';
+      var {contentBlocks: output, entityMap} = DraftPasteProcessor.processHTML(
+        html,
+        CUSTOM_BLOCK_MAP,
+        INLINE_STYLES,
+        true,
+      );
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(
+        output[0],
+        Array(17)
+          .fill(false)
+          .concat(Array(33).fill(true), Array(6).fill(false)),
+      );
+      expect(output[0].getText()).toBe(
+        'This is an image http://www.facebook.com/image.jpg, yep.',
+      );
+      var entityId = output[0]
+        .getCharacterList()
+        .get(19)
+        .getEntity();
+      var entity = entityMap.__get(entityId);
+      expect(entity.getData().src).toBe('http://www.facebook.com/image.jpg');
+    });
   });
 
-  it('must preserve styles inside links in a good way', function() {
-    var html = 'A <a href="http://www.facebook.com"><i>cool</i> link</a>, yep.';
-    var {contentBlocks: output} = DraftPasteProcessor.processHTML(
-      html,
-      CUSTOM_BLOCK_MAP,
-    );
-    assertBlockTypes(output, ['unstyled']);
-    assertInlineStyles(
-      output[0],
-      Array(2)
-        .fill([])
-        .concat(Array(4).fill(['ITALIC']), Array(11).fill([])),
-    );
-    assertEntities(
-      output[0],
-      Array(2)
-        .fill(false)
-        .concat(Array(9).fill(true), Array(6).fill(false)),
-    );
-    expect(output[0].getText()).toBe('A cool link, yep.');
+  describe('`allowImages` prop is false', function() {
+    it('must ignore images in pasted content', function() {
+      var html =
+        'This is an image <img src="http://www.facebook.com/image.jpg" />, yep.';
+      var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+        html,
+        CUSTOM_BLOCK_MAP,
+        INLINE_STYLES,
+        false,
+      );
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(output[0], Array(56).fill(false));
+      expect(output[0].getText()).toBe('This is an image , yep.');
+      var entityId = output[0]
+        .getCharacterList()
+        .get(19)
+        .getEntity();
+      expect(entityId).toBe(null);
+    });
+  });
+
+  describe('`allowLinks` prop is true', function() {
+    it('must detect links in pasted content', function() {
+      var html = 'This is a <a href="http://www.facebook.com">link</a>, yep.';
+      var {contentBlocks: output, entityMap} = DraftPasteProcessor.processHTML(
+        html,
+        CUSTOM_BLOCK_MAP,
+        INLINE_STYLES,
+        true,
+        true,
+      );
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(
+        output[0],
+        Array(10)
+          .fill(false)
+          .concat(Array(4).fill(true), Array(6).fill(false)),
+      );
+      expect(output[0].getText()).toBe('This is a link, yep.');
+      var entityId = output[0]
+        .getCharacterList()
+        .get(12)
+        .getEntity();
+      var entity = entityMap.__get(entityId);
+      expect(entity.getData().url).toBe('http://www.facebook.com/');
+    });
+
+    it('must preserve styles inside links in a good way', function() {
+      var html =
+        'A <a href="http://www.facebook.com"><i>cool</i> link</a>, yep.';
+      var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+        html,
+        CUSTOM_BLOCK_MAP,
+        INLINE_STYLES,
+        true,
+        true,
+      );
+      assertBlockTypes(output, ['unstyled']);
+      assertInlineStyles(
+        output[0],
+        Array(2)
+          .fill([])
+          .concat(Array(4).fill(['ITALIC']), Array(11).fill([])),
+      );
+      assertEntities(
+        output[0],
+        Array(2)
+          .fill(false)
+          .concat(Array(9).fill(true), Array(6).fill(false)),
+      );
+      expect(output[0].getText()).toBe('A cool link, yep.');
+    });
+
+    it('must preserve mailto: links', function() {
+      var html =
+        'This is a <a href="mailto:example@example.com">link</a>, yep.';
+      var {contentBlocks: output, entityMap} = DraftPasteProcessor.processHTML(
+        html,
+        CUSTOM_BLOCK_MAP,
+        INLINE_STYLES,
+        true,
+        true,
+      );
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(
+        output[0],
+        Array(10)
+          .fill(false)
+          .concat(Array(4).fill(true), Array(6).fill(false)),
+      );
+      expect(output[0].getText()).toBe('This is a link, yep.');
+      var entityId = output[0]
+        .getCharacterList()
+        .get(12)
+        .getEntity();
+      var entity = entityMap.__get(entityId);
+      expect(entity.getData().url).toBe('mailto:example@example.com');
+    });
+  });
+
+  describe('`allowLinks` prop is false', function() {
+    it('must ignore links in pasted content', function() {
+      var html = 'This is a <a href="http://www.facebook.com">link</a>, yep.';
+      var {contentBlocks: output} = DraftPasteProcessor.processHTML(
+        html,
+        CUSTOM_BLOCK_MAP,
+        INLINE_STYLES,
+        false,
+      );
+      assertBlockTypes(output, ['unstyled']);
+      assertEntities(output[0], Array(20).fill(false));
+      expect(output[0].getText()).toBe('This is a link, yep.');
+      var entityId = output[0]
+        .getCharacterList()
+        .get(12)
+        .getEntity();
+      expect(entityId).toBe(null);
+    });
   });
 
   it('must ignore links that do not actually link anywhere', function() {
@@ -351,6 +534,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['unstyled']);
     assertEntities(output[0], Array(20).fill(false));
@@ -362,44 +546,35 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, ['unstyled']);
     assertEntities(output[0], Array(20).fill(false));
     expect(output[0].getText()).toBe('This is a link, yep.');
   });
 
-  it('must preserve mailto: links', function() {
-    var html = 'This is a <a href="mailto:example@example.com">link</a>, yep.';
-    var {contentBlocks: output, entityMap} = DraftPasteProcessor.processHTML(
-      html,
-      CUSTOM_BLOCK_MAP,
-    );
-    assertBlockTypes(output, ['unstyled']);
-    assertEntities(
-      output[0],
-      Array(10)
-        .fill(false)
-        .concat(Array(4).fill(true), Array(6).fill(false)),
-    );
-    expect(output[0].getText()).toBe('This is a link, yep.');
-    var entityId = output[0]
-      .getCharacterList()
-      .get(12)
-      .getEntity();
-    var entity = entityMap.__get(entityId);
-    expect(entity.getData().url).toBe('mailto:example@example.com');
-  });
-
   it('Tolerate doule BR tags separated by whitespace', function() {
     var html = 'hi<br>  <br>hello';
-    var output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    var output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     assertBlockTypes(output.contentBlocks, ['unstyled', 'unstyled']);
     html = '<div>hi<br> <br>hello</div>';
-    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     assertBlockTypes(output.contentBlocks, ['unstyled', 'unstyled']);
 
     html = '<div>hi<br> good stuff here <br>hello</div>';
-    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     assertBlockTypes(output.contentBlocks, ['unstyled']);
   });
 
@@ -408,13 +583,18 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     expect(output[1].getText()).toBe('what');
   });
 
   it('Should detect when somthing is un-styled in a child', function() {
     let html = '<b>hello<span style="font-weight:400;">there</span></b>';
-    let output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    let output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     assertInlineStyles(output.contentBlocks[0], [
       ['BOLD'],
       ['BOLD'],
@@ -429,7 +609,11 @@ describe('DraftPasteProcessor', function() {
     ]);
 
     html = '<i>hello<span style="font-style:normal;">there</span></i>';
-    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     assertInlineStyles(output.contentBlocks[0], [
       ['ITALIC'],
       ['ITALIC'],
@@ -445,7 +629,11 @@ describe('DraftPasteProcessor', function() {
 
     // nothing to remove. make sure we don't throw an error
     html = '<span>hello<span style="font-style:normal;">there</span></span>';
-    output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
+    output = DraftPasteProcessor.processHTML(
+      html,
+      CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
+    );
     assertInlineStyles(output.contentBlocks[0], [
       [],
       [],
@@ -478,6 +666,7 @@ describe('DraftPasteProcessor', function() {
     var {contentBlocks: output} = DraftPasteProcessor.processHTML(
       html,
       CUSTOM_BLOCK_MAP,
+      INLINE_STYLES,
     );
     assertBlockTypes(output, [
       'unstyled',

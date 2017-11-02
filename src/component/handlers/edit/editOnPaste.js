@@ -23,6 +23,7 @@ var DataTransfer = require('DataTransfer');
 var DraftModifier = require('DraftModifier');
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var EditorState = require('EditorState');
+const DefaultDraftPasteSupport = require('DefaultDraftPasteSupport');
 var RichTextEditorUtil = require('RichTextEditorUtil');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
@@ -151,9 +152,26 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
     // If there is html paste data, try to parse that.
     if (html) {
+      const pasteSupport = Object.assign(
+        DefaultDraftPasteSupport,
+        editor.props.pasteSupport,
+      );
+      const {blockTypes, inlineStyles, images, links} = pasteSupport;
+
+      // if supported block types are specified, support only them
+      const blockRenderMap = blockTypes
+        ? editor.props.blockRenderMap.filter(
+            (block?: Object, blockType: string) =>
+              blockTypes.includes(blockType),
+          )
+        : editor.props.blockRenderMap;
+
       var htmlFragment = DraftPasteProcessor.processHTML(
         html,
-        editor.props.blockRenderMap,
+        blockRenderMap,
+        inlineStyles,
+        images,
+        links,
       );
       if (htmlFragment) {
         const {contentBlocks, entityMap} = htmlFragment;

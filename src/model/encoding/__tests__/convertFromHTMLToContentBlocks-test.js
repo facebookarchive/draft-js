@@ -53,6 +53,10 @@ describe('convertFromHTMLToContentBlocks', () => {
     test('img with http protocol should have camera emoji content', function() {
       const blocks = convertFromHTMLToContentBlocks(
         '<img src="http://www.facebook.com">',
+        null,
+        null,
+        null,
+        true,
       );
       expect(blocks.contentBlocks[0].text).toBe('\ud83d\udcf7');
     });
@@ -60,6 +64,10 @@ describe('convertFromHTMLToContentBlocks', () => {
     test('img with data protocol should be correctly parsed', function() {
       const blocks = convertFromHTMLToContentBlocks(
         `<img src="${IMAGE_DATA_URL}">`,
+        null,
+        null,
+        null,
+        true,
       );
       expect(blocks.contentBlocks[0].text).toBe('\ud83d\udcf7');
     });
