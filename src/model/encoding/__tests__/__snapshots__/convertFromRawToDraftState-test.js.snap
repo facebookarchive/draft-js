@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must map falsey block types to default value of unstyled 1`] = `"unstyled"`;
+
+exports[`must map falsey block types to default value of unstyled 2`] = `"unstyled"`;
+
+exports[`must map falsey block types to default value of unstyled 3`] = `"unstyled"`;

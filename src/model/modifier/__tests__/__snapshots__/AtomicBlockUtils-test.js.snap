@@ -1,0 +1,1306 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must insert atomic after a block with collapsed selection 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key8",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key11",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic at end of block 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "Alp",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key45",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key48",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic at start of block 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key37",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key40",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic at start of block with collapsed seletion 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key3",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic for cross-block selection 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "Al",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key49",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key52",
+    "text": "st",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic within a block 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "A",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key41",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key44",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic within a block, via split with collapsed selection 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "Al",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key4",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key7",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic after block 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key70",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key73",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic after block 2`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key73",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+  Object {
+    "key": "key70",
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must move atomic after block with collapsed selection 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key29",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key32",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic after block with collapsed selection 2`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key32",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+  Object {
+    "key": "key29",
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must move atomic at end of block 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key57",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key60",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at end of block 2`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key60",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charl",
+    "type": "blockquote",
+  },
+  Object {
+    "key": "key57",
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must move atomic at end of block with collapsed selection 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key16",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key19",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at end of block with collapsed selection 2`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key19",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+  Object {
+    "key": "key16",
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must move atomic at start of block 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key53",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key56",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at start of block 2`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key56",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "key53",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "f",
+    "text": "arlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at start of block with collapsed selection 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key12",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key15",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at start of block with collapsed selection 2`] = `
+Array [
+  Object {
+    "key": "key12",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key15",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic before block 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key66",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key69",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic before block 2`] = `
+Array [
+  Object {
+    "key": "key66",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key69",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic before block with collapsed selection 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key25",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key28",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic before block with collapsed selection 2`] = `
+Array [
+  Object {
+    "key": "key25",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key28",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic inbetween block 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key61",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key64",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic inbetween block 2`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key64",
+    "text": "A",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key61",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key65",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic inbetween block with collapsed selection 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key20",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key23",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic inbetween block with collapsed selection 2`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key23",
+    "text": "Al",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key20",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key24",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`mustn't move atomic next to itself 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key74",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key77",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`mustn't move atomic next to itself with collapsed selection 1`] = `
+Array [
+  Object {
+    "key": "a",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "key33",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "key": "key36",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;

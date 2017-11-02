@@ -1,0 +1,377 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`img with data protocol should be correctly parsed 1`] = `"📷"`;
+
+exports[`img with http protocol should have camera emoji content 1`] = `"📷"`;
+
+exports[`must not merge tags when converting adjacent <blockquote /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key0",
+    "type": "blockquote",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key1",
+    "type": "blockquote",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <div /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key2",
+    "type": "unstyled",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key3",
+    "type": "unstyled",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <figure /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key4",
+    "type": "atomic",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key5",
+    "type": "atomic",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h1 /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key6",
+    "type": "header-one",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key7",
+    "type": "header-one",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h2 /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key8",
+    "type": "header-two",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key9",
+    "type": "header-two",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h3 /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key10",
+    "type": "header-three",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key11",
+    "type": "header-three",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h4 /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key12",
+    "type": "header-four",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key13",
+    "type": "header-four",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h5 /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key14",
+    "type": "header-five",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key15",
+    "type": "header-five",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h6 /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key16",
+    "type": "header-six",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key17",
+    "type": "header-six",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <li /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key18",
+    "type": "unordered-list-item",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key19",
+    "type": "unordered-list-item",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <p /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key20",
+    "type": "unstyled",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key21",
+    "type": "unstyled",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <pre /> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key22",
+    "type": "code-block",
+    "text": "a",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  Immutable.Record {
+    "key": "key23",
+    "type": "code-block",
+    "text": "b",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;

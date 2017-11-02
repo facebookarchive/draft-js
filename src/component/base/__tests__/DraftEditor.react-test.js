@@ -15,48 +15,39 @@
 jest
   .unmock('DraftEditor.react')
   .unmock('react-test-renderer/shallow')
-  .unmock('generateRandomKey');
+  .mock('generateRandomKey');
 
-var DraftEditor = require('DraftEditor.react');
-var React = require('React');
+const DraftEditor = require('DraftEditor.react');
+const React = require('React');
 
-var ReactShallowRenderer = require('react-test-renderer/shallow');
+const ReactShallowRenderer = require('react-test-renderer/shallow');
 
-describe('DraftEditor.react', () => {
-  var shallow;
+let shallow;
 
-  beforeEach(function() {
-    shallow = new ReactShallowRenderer();
-  });
+beforeEach(() => {
+  shallow = new ReactShallowRenderer();
+});
 
-  describe('Basic rendering', () => {
-    it('must has generated editorKey', () => {
-      shallow.render(<DraftEditor />);
+test('must has generated editorKey', () => {
+  shallow.render(<DraftEditor />);
 
-      // internally at Facebook we use a newer version of the shallowRenderer
-      // which has a different level of wrapping of the '_instance'
-      // long term we should rewrite this test to not depend on private
-      // properties
-      var getEditorKey =
-        shallow._instance.getEditorKey ||
-        shallow._instance._instance.getEditorKey;
-      var key = getEditorKey();
-      expect(typeof key).toBe('string');
-      expect(key.length).toBeGreaterThanOrEqual(4);
-    });
+  // internally at Facebook we use a newer version of the shallowRenderer
+  // which has a different level of wrapping of the '_instance'
+  // long term we should rewrite this test to not depend on private
+  // properties
+  const getEditorKey =
+    shallow._instance.getEditorKey || shallow._instance._instance.getEditorKey;
+  expect(getEditorKey()).toMatchSnapshot();
+});
 
-    it('must has editorKey same as props', () => {
-      shallow.render(<DraftEditor editorKey="hash" />);
+test('must has editorKey same as props', () => {
+  shallow.render(<DraftEditor editorKey="hash" />);
 
-      // internally at Facebook we use a newer version of the shallowRenderer
-      // which has a different level of wrapping of the '_instance'
-      // long term we should rewrite this test to not depend on private
-      // properties
-      var getEditorKey =
-        shallow._instance.getEditorKey ||
-        shallow._instance._instance.getEditorKey;
-      var key = getEditorKey();
-      expect(key).toBe('hash');
-    });
-  });
+  // internally at Facebook we use a newer version of the shallowRenderer
+  // which has a different level of wrapping of the '_instance'
+  // long term we should rewrite this test to not depend on private
+  // properties
+  const getEditorKey =
+    shallow._instance.getEditorKey || shallow._instance._instance.getEditorKey;
+  expect(getEditorKey()).toMatchSnapshot();
 });

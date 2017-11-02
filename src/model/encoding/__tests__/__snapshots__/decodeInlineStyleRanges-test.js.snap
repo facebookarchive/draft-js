@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must decode for a flat styled block 1`] = `
+Array [
+  Immutable.OrderedSet [
+    "BOLD",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+  ],
+]
+`;
+
+exports[`must decode for a mixed-style block 1`] = `
+Array [
+  Immutable.OrderedSet [
+    "BOLD",
+    "UNDERLINE",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+    "ITALIC",
+    "UNDERLINE",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+  ],
+]
+`;
+
+exports[`must decode for an unstyled block 1`] = `
+Array [
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+]
+`;
+
+exports[`must decode for strings that contain surrogate pairs in UTF-16 1`] = `
+Array [
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "BOLD",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "BOLD",
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [
+    "ITALIC",
+  ],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+]
+`;

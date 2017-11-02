@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must apply at the end 1`] = `
+Immutable.Record {
+  "key": "a",
+  "type": "unstyled",
+  "text": "Hello",
+  "characterList": Immutable.List [
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": null,
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": null,
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": null,
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+  ],
+  "depth": 0,
+  "data": Immutable.Map {},
+}
+`;
+
+exports[`must apply from the start 1`] = `
+Immutable.Record {
+  "key": "a",
+  "type": "unstyled",
+  "text": "Hello",
+  "characterList": Immutable.List [
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": null,
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": null,
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": null,
+    },
+  ],
+  "depth": 0,
+  "data": Immutable.Map {},
+}
+`;
+
+exports[`must apply to the entire text 1`] = `
+Immutable.Record {
+  "key": "a",
+  "type": "unstyled",
+  "text": "Hello",
+  "characterList": Immutable.List [
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+  ],
+  "depth": 0,
+  "data": Immutable.Map {},
+}
+`;
+
+exports[`must apply within 1`] = `
+Immutable.Record {
+  "key": "a",
+  "type": "unstyled",
+  "text": "Hello",
+  "characterList": Immutable.List [
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": null,
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": "x",
+    },
+    Immutable.Record {
+      "style": Immutable.OrderedSet [],
+      "entity": null,
+    },
+  ],
+  "depth": 0,
+  "data": Immutable.Map {},
+}
+`;

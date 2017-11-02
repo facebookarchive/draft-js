@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must force unchanged text back into the DOM 1`] = `
+<span
+  data-reactroot=""
+  data-text="true"
+>
+  Hello
+</span>
+`;
+
+exports[`must initialize correctly with a string, IE 1`] = `
+<span
+  data-reactroot=""
+  data-text="true"
+>
+  Hello
+</span>
+`;
+
+exports[`must initialize correctly with a string, non-IE 1`] = `
+<span
+  data-reactroot=""
+  data-text="true"
+>
+  Hello
+</span>
+`;
+
+exports[`must initialize correctly with an empty string, IE 1`] = `
+<span
+  data-reactroot=""
+  data-text="true"
+>
+  
+
+</span>
+`;
+
+exports[`must initialize correctly with an empty string, non-IE 1`] = `
+<br
+  data-reactroot=""
+  data-text="true"
+/>
+`;
+
+exports[`must render properly into a parent DOM node 1`] = `
+<div
+  data-reactroot=""
+>
+  <span
+    data-text="true"
+  >
+    Hello
+  </span>
+</div>
+`;
+
+exports[`must skip updates if text already matches DOM, IE 1`] = `0`;
+
+exports[`must skip updates if text already matches DOM, IE 2`] = `1`;
+
+exports[`must skip updates if text already matches DOM, non-IE 1`] = `0`;
+
+exports[`must skip updates if text already matches DOM, non-IE 2`] = `1`;
+
+exports[`must update from empty to non-empty, IE 1`] = `
+<span
+  data-reactroot=""
+  data-text="true"
+>
+  Hello
+</span>
+`;
+
+exports[`must update from empty to non-empty, non-IE 1`] = `
+<span
+  data-reactroot=""
+  data-text="true"
+>
+  Hello
+</span>
+`;
+
+exports[`must update from non-empty to empty, IE 1`] = `
+<span
+  data-reactroot=""
+  data-text="true"
+>
+  
+
+</span>
+`;
+
+exports[`must update from non-empty to empty, non-IE 1`] = `
+<br
+  data-reactroot=""
+  data-text="true"
+/>
+`;
+
+exports[`must update from non-empty to non-empty, non-IE 1`] = `
+<span
+  data-reactroot=""
+  data-text="true"
+>
+  Hello World!
+</span>
+`;
+
+exports[`must update from non-empty to non-empty, non-IE 2`] = `
+<span
+  data-reactroot=""
+  data-text="true"
+>
+   World!
+</span>
+`;

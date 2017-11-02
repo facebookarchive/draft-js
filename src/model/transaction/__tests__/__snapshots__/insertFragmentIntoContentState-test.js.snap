@@ -1,0 +1,796 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must apply fragment at the end 1`] = `
+Immutable.Record {
+  "entityMap": Immutable.OrderedMap {},
+  "blockMap": Immutable.OrderedMap {
+    "a": Immutable.Record {
+      "key": "a",
+      "type": "unstyled",
+      "text": "Alphaxx",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {
+        "a": 1,
+      },
+    },
+    "b": Immutable.Record {
+      "key": "b",
+      "type": "unordered-list-item",
+      "text": "Bravo",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "c": Immutable.Record {
+      "key": "c",
+      "type": "code-block",
+      "text": "Test",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "d": Immutable.Record {
+      "key": "d",
+      "type": "code-block",
+      "text": "",
+      "characterList": Immutable.List [],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "e": Immutable.Record {
+      "key": "e",
+      "type": "code-block",
+      "text": "",
+      "characterList": Immutable.List [],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "f": Immutable.Record {
+      "key": "f",
+      "type": "blockquote",
+      "text": "Charlie",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+  },
+  "selectionBefore": Immutable.Record {
+    "anchorKey": "a",
+    "anchorOffset": 5,
+    "focusKey": "a",
+    "focusOffset": 5,
+    "isBackward": false,
+    "hasFocus": true,
+  },
+  "selectionAfter": Immutable.Record {
+    "anchorKey": "a",
+    "anchorOffset": 7,
+    "focusKey": "a",
+    "focusOffset": 7,
+    "isBackward": false,
+    "hasFocus": true,
+  },
+}
+`;
+
+exports[`must apply fragment to the start 1`] = `
+Immutable.Record {
+  "entityMap": Immutable.OrderedMap {},
+  "blockMap": Immutable.OrderedMap {
+    "a": Immutable.Record {
+      "key": "a",
+      "type": "unstyled",
+      "text": "xxAlpha",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {
+        "a": 1,
+      },
+    },
+    "b": Immutable.Record {
+      "key": "b",
+      "type": "unordered-list-item",
+      "text": "Bravo",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "c": Immutable.Record {
+      "key": "c",
+      "type": "code-block",
+      "text": "Test",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "d": Immutable.Record {
+      "key": "d",
+      "type": "code-block",
+      "text": "",
+      "characterList": Immutable.List [],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "e": Immutable.Record {
+      "key": "e",
+      "type": "code-block",
+      "text": "",
+      "characterList": Immutable.List [],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "f": Immutable.Record {
+      "key": "f",
+      "type": "blockquote",
+      "text": "Charlie",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+  },
+  "selectionBefore": Immutable.Record {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "a",
+    "focusOffset": 0,
+    "isBackward": false,
+    "hasFocus": true,
+  },
+  "selectionAfter": Immutable.Record {
+    "anchorKey": "a",
+    "anchorOffset": 2,
+    "focusKey": "a",
+    "focusOffset": 2,
+    "isBackward": false,
+    "hasFocus": true,
+  },
+}
+`;
+
+exports[`must apply fragment to within block 1`] = `
+Immutable.Record {
+  "entityMap": Immutable.OrderedMap {},
+  "blockMap": Immutable.OrderedMap {
+    "a": Immutable.Record {
+      "key": "a",
+      "type": "unstyled",
+      "text": "Alxxpha",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {
+        "a": 1,
+      },
+    },
+    "b": Immutable.Record {
+      "key": "b",
+      "type": "unordered-list-item",
+      "text": "Bravo",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "c": Immutable.Record {
+      "key": "c",
+      "type": "code-block",
+      "text": "Test",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "d": Immutable.Record {
+      "key": "d",
+      "type": "code-block",
+      "text": "",
+      "characterList": Immutable.List [],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "e": Immutable.Record {
+      "key": "e",
+      "type": "code-block",
+      "text": "",
+      "characterList": Immutable.List [],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "f": Immutable.Record {
+      "key": "f",
+      "type": "blockquote",
+      "text": "Charlie",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+  },
+  "selectionBefore": Immutable.Record {
+    "anchorKey": "a",
+    "anchorOffset": 2,
+    "focusKey": "a",
+    "focusOffset": 2,
+    "isBackward": false,
+    "hasFocus": true,
+  },
+  "selectionAfter": Immutable.Record {
+    "anchorKey": "a",
+    "anchorOffset": 4,
+    "focusKey": "a",
+    "focusOffset": 4,
+    "isBackward": false,
+    "hasFocus": true,
+  },
+}
+`;
+
+exports[`must apply multiblock fragments 1`] = `
+Immutable.Record {
+  "entityMap": Immutable.OrderedMap {},
+  "blockMap": Immutable.OrderedMap {
+    "a": Immutable.Record {
+      "key": "a",
+      "type": "unstyled",
+      "text": "xx",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {
+        "a": 1,
+      },
+    },
+    "key0": Immutable.Record {
+      "key": "key0",
+      "type": "unstyled",
+      "text": "yyAlpha",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {
+        "b": 2,
+      },
+    },
+    "b": Immutable.Record {
+      "key": "b",
+      "type": "unordered-list-item",
+      "text": "Bravo",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "BOLD",
+          ],
+          "entity": "123",
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "c": Immutable.Record {
+      "key": "c",
+      "type": "code-block",
+      "text": "Test",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "d": Immutable.Record {
+      "key": "d",
+      "type": "code-block",
+      "text": "",
+      "characterList": Immutable.List [],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "e": Immutable.Record {
+      "key": "e",
+      "type": "code-block",
+      "text": "",
+      "characterList": Immutable.List [],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+    "f": Immutable.Record {
+      "key": "f",
+      "type": "blockquote",
+      "text": "Charlie",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [
+            "ITALIC",
+          ],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+  },
+  "selectionBefore": Immutable.Record {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "a",
+    "focusOffset": 0,
+    "isBackward": false,
+    "hasFocus": true,
+  },
+  "selectionAfter": Immutable.Record {
+    "anchorKey": "key0",
+    "anchorOffset": 2,
+    "focusKey": "key0",
+    "focusOffset": 2,
+    "isBackward": false,
+    "hasFocus": true,
+  },
+}
+`;
