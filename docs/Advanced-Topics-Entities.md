@@ -96,7 +96,9 @@ property is meant only to indicate how the annotated text may be "mutated" withi
 the editor. _(Future changes may rename this property to ward off potential
 confusion around naming.)_
 
-### Immutable
+### Values
+
+#### `IMMUTABLE`
 
 This text cannot be altered without removing the entity annotation
 from the text. Entities with this mutability type are effectively atomic.
@@ -109,13 +111,13 @@ the entire entity is removed.
 This mutability value is useful in cases where the text absolutely must match
 its relevant metadata, and may not be altered.
 
-### Mutable
+#### `MUTABLE`
 
 This text may be altered freely. For instance, link text is
 generally intended to be "mutable" since the href and linkified text are not
 tightly coupled.
 
-### Segmented
+#### `SEGMENTED`
 
 Entities that are "segmented" are tightly coupled to their text in much the
 same way as "immutable" entities, but allow customization via deletion.

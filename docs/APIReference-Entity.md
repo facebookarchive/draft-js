@@ -62,7 +62,7 @@ be used only for retrieval.
 ```
 create(
   type: DraftEntityType,
-  mutability: DraftEntityMutability,
+  mutability: [DraftEntityMutability](/docs/advanced-topics-entities.html#mutability),
   data?: Object
 ): string
 ```
