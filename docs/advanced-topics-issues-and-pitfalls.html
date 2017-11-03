@@ -26,9 +26,7 @@ the editor state may fail to remain in sync with the DOM.</p><p>Certain old ad b
 API -- a bad idea no matter what! -- and since Draft depends on this API to
 maintain controlled selection state, this can cause trouble for editor
 interaction.</p><h3><a class="anchor" name="ime-and-internet-explorer"></a>IME and Internet Explorer <a class="hash-link" href="#ime-and-internet-explorer">#</a></h3><p>As of IE11, Internet Explorer demonstrates notable issues with certain international
-input methods, most significantly Korean input.</p><h3><a class="anchor" name="mobile-support"></a>Mobile Support <a class="hash-link" href="#mobile-support">#</a></h3><p>At this time Draft does not fully support mobile browsers. There are some known
-issues with certain Android keyboards and with international input methods. Full
-mobile support is a goal that the framework is moving towards for the future.</p><h3><a class="anchor" name="polyfills"></a>Polyfills <a class="hash-link" href="#polyfills">#</a></h3><p>Some of Draft&#x27;s code and that of its dependencies make use of ES2015 language
+input methods, most significantly Korean input.</p><h3><a class="anchor" name="polyfills"></a>Polyfills <a class="hash-link" href="#polyfills">#</a></h3><p>Some of Draft&#x27;s code and that of its dependencies make use of ES2015 language
 features. Syntax features like <code>class</code> are compiled away via Babel when Draft is
 built, but it does not include polyfills for APIs now included in many modern
 browsers (for instance: <code>String.prototype.startsWith</code>). We expect your browser
