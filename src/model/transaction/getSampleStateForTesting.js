@@ -45,6 +45,24 @@ var BLOCKS = [
   }),
   new ContentBlock({
     key: 'c',
+    type: 'code-block',
+    text: 'Test',
+    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 4)),
+  }),
+  new ContentBlock({
+    key: 'd',
+    type: 'code-block',
+    text: '',
+    characterList: Immutable.List(),
+  }),
+  new ContentBlock({
+    key: 'e',
+    type: 'code-block',
+    text: '',
+    characterList: Immutable.List(),
+  }),
+  new ContentBlock({
+    key: 'f',
     type: 'blockquote',
     text: 'Charlie',
     characterList: Immutable.List(

@@ -367,8 +367,8 @@ const RichTextEditorUtil = {
   },
 
   /**
-   * When a collapsed cursor is at the start of the first styled block, or 
-   * an empty styled block, changes block to 'unstyled'. Returns null if 
+   * When a collapsed cursor is at the start of the first styled block, or
+   * an empty styled block, changes block to 'unstyled'. Returns null if
    * block or selection does not meet that criteria.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
@@ -389,7 +389,8 @@ const RichTextEditorUtil = {
       if (
         type === 'code-block' &&
         blockBefore &&
-        blockBefore.getType() === 'code-block'
+        blockBefore.getType() === 'code-block' &&
+        blockBefore.getLength() !== 0
       ) {
         return null;
       }

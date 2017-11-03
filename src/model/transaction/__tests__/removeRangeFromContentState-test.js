@@ -22,6 +22,7 @@ var removeRangeFromContentState = require('removeRangeFromContentState');
 
 describe('removeRangeFromContentState', () => {
   var {contentState, selectionState} = getSampleStateForTesting();
+  const blockSizeBeforeRemoval = contentState.getBlockMap().size;
 
   function checkForCharacterList(block) {
     expect(Immutable.List.isList(block.getCharacterList())).toBe(true);
@@ -119,7 +120,7 @@ describe('removeRangeFromContentState', () => {
         var selection = selectionState.set('focusKey', 'b');
         var afterRemoval = removeRangeFromContentState(contentState, selection);
         var afterBlockMap = afterRemoval.getBlockMap();
-        expect(afterBlockMap.size).toBe(2);
+        expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 1);
         var alteredBlock = afterBlockMap.first();
 
         // Block B is removed. Its contents replace the contents of block A,
@@ -147,7 +148,7 @@ describe('removeRangeFromContentState', () => {
 
         var afterRemoval = removeRangeFromContentState(contentState, selection);
         var afterBlockMap = afterRemoval.getBlockMap();
-        expect(afterBlockMap.size).toBe(2);
+        expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 1);
         var alteredBlock = afterBlockMap.first();
 
         // A slice of block B contents replace the contents of block A,
@@ -179,7 +180,7 @@ describe('removeRangeFromContentState', () => {
 
         var afterRemoval = removeRangeFromContentState(contentState, selection);
         var afterBlockMap = afterRemoval.getBlockMap();
-        expect(afterBlockMap.size).toBe(2);
+        expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 1);
         var alteredBlock = afterBlockMap.first();
 
         // Block A is effectively just emptied out, while block B is removed.
@@ -209,7 +210,7 @@ describe('removeRangeFromContentState', () => {
           .first();
         var afterRemoval = removeRangeFromContentState(contentState, selection);
         var afterBlockMap = afterRemoval.getBlockMap();
-        expect(afterBlockMap.size).toBe(2);
+        expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 1);
         var alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
@@ -244,7 +245,7 @@ describe('removeRangeFromContentState', () => {
           .first();
         var afterRemoval = removeRangeFromContentState(contentState, selection);
         var afterBlockMap = afterRemoval.getBlockMap();
-        expect(afterBlockMap.size).toBe(2);
+        expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 1);
         var alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
@@ -286,7 +287,7 @@ describe('removeRangeFromContentState', () => {
           .first();
         var afterRemoval = removeRangeFromContentState(contentState, selection);
         var afterBlockMap = afterRemoval.getBlockMap();
-        expect(afterBlockMap.size).toBe(2);
+        expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 1);
         var alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
@@ -325,7 +326,7 @@ describe('removeRangeFromContentState', () => {
           .first();
         var afterRemoval = removeRangeFromContentState(contentState, selection);
         var afterBlockMap = afterRemoval.getBlockMap();
-        expect(afterBlockMap.size).toBe(2);
+        expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 1);
         var alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
@@ -360,7 +361,7 @@ describe('removeRangeFromContentState', () => {
           .first();
         var afterRemoval = removeRangeFromContentState(contentState, selection);
         var afterBlockMap = afterRemoval.getBlockMap();
-        expect(afterBlockMap.size).toBe(2);
+        expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 1);
         var alteredBlock = afterBlockMap.first();
 
         expect(alteredBlock).not.toBe(originalBlockA);
@@ -395,7 +396,7 @@ describe('removeRangeFromContentState', () => {
 
         var afterRemoval = removeRangeFromContentState(contentState, selection);
         var afterBlockMap = afterRemoval.getBlockMap();
-        expect(afterBlockMap.size).toBe(2);
+        expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 1);
         var alteredBlock = afterBlockMap.first();
 
         // no-op for the first block, since no new content is appended.
@@ -429,7 +430,7 @@ describe('removeRangeFromContentState', () => {
 
       var afterRemoval = removeRangeFromContentState(contentState, selection);
       var afterBlockMap = afterRemoval.getBlockMap();
-      expect(afterBlockMap.size).toBe(1);
+      expect(afterBlockMap.size).toBe(blockSizeBeforeRemoval - 2);
       var alteredBlock = afterBlockMap.first();
 
       expect(alteredBlock).not.toBe(originalBlockA);

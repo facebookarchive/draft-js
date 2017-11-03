@@ -23,6 +23,7 @@ const {List} = Immutable;
 
 describe('splitBlockInContentState', () => {
   var {contentState, selectionState} = getSampleStateForTesting();
+  const blockSizeBeforeSplit = contentState.getBlockMap().size;
 
   function checkForCharacterList(block) {
     expect(List.isList(block.getCharacterList())).toBe(true);
@@ -54,10 +55,11 @@ describe('splitBlockInContentState', () => {
   });
 
   it('must split at the beginning of a block', () => {
+    const blockSizeBeforeInsert = contentState.getBlockMap().size;
     var initialBlock = contentState.getBlockMap().first();
     var afterSplit = splitBlockInContentState(contentState, selectionState);
     var afterBlockMap = afterSplit.getBlockMap();
-    expect(afterBlockMap.size).toBe(4);
+    expect(afterBlockMap.size).toBe(blockSizeBeforeInsert + 1);
 
     var preSplitBlock = afterBlockMap.first();
 
@@ -92,7 +94,7 @@ describe('splitBlockInContentState', () => {
 
     var afterSplit = splitBlockInContentState(contentState, selection);
     var afterBlockMap = afterSplit.getBlockMap();
-    expect(afterBlockMap.size).toBe(4);
+    expect(afterBlockMap.size).toBe(blockSizeBeforeSplit + 1);
 
     var preSplitBlock = afterBlockMap.first();
     var postSplitBlock = afterBlockMap.skip(1).first();
@@ -137,7 +139,7 @@ describe('splitBlockInContentState', () => {
 
     var afterSplit = splitBlockInContentState(contentState, selection);
     var afterBlockMap = afterSplit.getBlockMap();
-    expect(afterBlockMap.size).toBe(4);
+    expect(afterBlockMap.size).toBe(blockSizeBeforeSplit + 1);
 
     var preSplitBlock = afterBlockMap.first();
     var postSplitBlock = afterBlockMap.skip(1).first();

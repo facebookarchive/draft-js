@@ -104,11 +104,14 @@ describe('RichTextEditorUtil', () => {
     });
 
     it('removes a preceding atomic block', () => {
+      const blockSizeBeforeRemove = editorState
+        .getCurrentContent()
+        .getBlockMap().size;
       const withAtomicBlock = insertAtomicBlock(editorState);
       const afterBackspace = onBackspace(withAtomicBlock);
       const contentState = afterBackspace.getCurrentContent();
       const blockMap = contentState.getBlockMap();
-      expect(blockMap.size).toBe(4);
+      expect(blockMap.size).toBe(blockSizeBeforeRemove + 1);
       expect(blockMap.some(block => block.getType() === 'atomic')).toBe(false);
     });
   });
@@ -129,6 +132,9 @@ describe('RichTextEditorUtil', () => {
     });
 
     it('removes a following atomic block', () => {
+      const blockSizeBeforeRemove = editorState
+        .getCurrentContent()
+        .getBlockMap().size;
       const withAtomicBlock = insertAtomicBlock(editorState);
       const content = withAtomicBlock.getCurrentContent();
       const atomicKey = content
@@ -157,7 +163,22 @@ describe('RichTextEditorUtil', () => {
         blockMapAfterDelete.some(block => block.getType() === 'atomic'),
       ).toBe(false);
 
-      expect(blockMapAfterDelete.size).toBe(4);
+      expect(blockMapAfterDelete.size).toBe(blockSizeBeforeRemove + 1);
+    });
+  });
+
+  describe('tryToRemoveBlockStyle', () => {
+    const {tryToRemoveBlockStyle} = RichTextEditorUtil;
+
+    it('breaks out of code block on enter two blank lines', () => {
+      const blankLine = selectionState.merge({anchorKey: 'e', focusKey: 'e'});
+      const withBlankLine = EditorState.forceSelection(editorState, blankLine);
+
+      const afterEnter = tryToRemoveBlockStyle(withBlankLine);
+      const lastBlock = afterEnter.getLastBlock();
+
+      expect(lastBlock.getType()).toBe('blockquote');
+      expect(lastBlock.getText()).toBe('Charlie');
     });
   });
 });
