@@ -29,6 +29,8 @@ export type BlockNodeConfig = {
   type?: DraftBlockType,
 };
 
+// https://github.com/facebook/draft-js/issues/1492
+// prettier-ignore
 export interface BlockNode {
   findEntityRanges(
     filterFn: (value: CharacterMetadata) => boolean,
