@@ -6,9 +6,12 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule ContentBlock
+ * @providesModule ContentBlockNode
  * @format
  * @flow
+ *
+ * This is unstable and not part of the public API and should not be used by
+ * production systems. This file may be update/removed without notice.
  */
 
 'use strict';
@@ -24,20 +27,41 @@ const findRangesImmutable = require('findRangesImmutable');
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
-const EMPTY_SET = OrderedSet();
-
-const defaultRecord: BlockNodeConfig = {
-  key: '',
-  type: 'unstyled',
-  text: '',
-  characterList: List(),
-  depth: 0,
-  data: Map(),
+type ContentBlockNodeConfig = BlockNodeConfig & {
+  children?: List<BlockNodeKey>,
+  parent?: ?BlockNodeKey,
+  prevSibling?: ?BlockNodeKey,
+  nextSibling?: ?BlockNodeKey,
 };
 
-const ContentBlockRecord = Record(defaultRecord);
+const EMPTY_SET = OrderedSet();
 
-const decorateCharacterList = (config: BlockNodeConfig): BlockNodeConfig => {
+const defaultRecord: ContentBlockNodeConfig = {
+  parent: null,
+  characterList: List(),
+  data: Map(),
+  depth: 0,
+  key: '',
+  text: '',
+  type: 'unstyled',
+  children: List(),
+  prevSibling: null,
+  nextSibling: null,
+};
+
+const haveEqualStyle = (
+  charA: CharacterMetadata,
+  charB: CharacterMetadata,
+): boolean => charA.getStyle() === charB.getStyle();
+
+const haveEqualEntity = (
+  charA: CharacterMetadata,
+  charB: CharacterMetadata,
+): boolean => charA.getEntity() === charB.getEntity();
+
+const decorateCharacterList = (
+  config: ContentBlockNodeConfig,
+): ContentBlockNodeConfig => {
   if (!config) {
     return config;
   }
@@ -51,9 +75,9 @@ const decorateCharacterList = (config: BlockNodeConfig): BlockNodeConfig => {
   return config;
 };
 
-class ContentBlock extends ContentBlockRecord implements BlockNode {
-  constructor(config: BlockNodeConfig) {
-    super(decorateCharacterList(config));
+class ContentBlockNode extends Record(defaultRecord) implements BlockNode {
+  constructor(props: ContentBlockNodeConfig = defaultRecord) {
+    super(decorateCharacterList(props));
   }
 
   getKey(): BlockNodeKey {
@@ -94,9 +118,22 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
     return character ? character.getEntity() : null;
   }
 
-  /**
-   * Execute a callback for every contiguous range of styles within the block.
-   */
+  getChildKeys(): List<BlockNodeKey> {
+    return this.get('children');
+  }
+
+  getParentKey(): ?BlockNodeKey {
+    return this.get('parent');
+  }
+
+  getPrevSiblingKey(): ?BlockNodeKey {
+    return this.get('prevSibling');
+  }
+
+  getNextSiblingKey(): ?BlockNodeKey {
+    return this.get('nextSibling');
+  }
+
   findStyleRanges(
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
@@ -109,9 +146,6 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
     );
   }
 
-  /**
-   * Execute a callback for every contiguous range of entities within the block.
-   */
   findEntityRanges(
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
@@ -125,18 +159,4 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
   }
 }
 
-function haveEqualStyle(
-  charA: CharacterMetadata,
-  charB: CharacterMetadata,
-): boolean {
-  return charA.getStyle() === charB.getStyle();
-}
-
-function haveEqualEntity(
-  charA: CharacterMetadata,
-  charB: CharacterMetadata,
-): boolean {
-  return charA.getEntity() === charB.getEntity();
-}
-
-module.exports = ContentBlock;
+module.exports = ContentBlockNode;
