@@ -33,28 +33,28 @@ export interface BlockNode {
   findEntityRanges(
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
-  ): void,
+  ): void;
 
   findStyleRanges(
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
-  ): void,
+  ): void;
 
-  getCharacterList(): List<CharacterMetadata>,
+  getCharacterList(): List<CharacterMetadata>;
 
-  getData(): Map<any, any>,
+  getData(): Map<any, any>;
 
-  getDepth(): number,
+  getDepth(): number;
 
-  getEntityAt(offset: number): ?string,
+  getEntityAt(offset: number): ?string;
 
-  getInlineStyleAt(offset: number): DraftInlineStyle,
+  getInlineStyleAt(offset: number): DraftInlineStyle;
 
-  getKey(): BlockNodeKey,
+  getKey(): BlockNodeKey;
 
-  getLength(): number,
+  getLength(): number;
 
-  getText(): string,
+  getText(): string;
 
-  getType(): DraftBlockType,
+  getType(): DraftBlockType;
 }
