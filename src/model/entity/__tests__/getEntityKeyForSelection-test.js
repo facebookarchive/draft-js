@@ -42,7 +42,7 @@ describe('getEntityKeyForSelection', () => {
     it('must return key if mutable', () => {
       setEntityMutability('MUTABLE');
       var key = getEntityKeyForSelection(contentState, collapsed);
-      expect(key).toBe('123');
+      expect(key).toBe('1');
     });
 
     it('must not return key if immutable', () => {
@@ -76,7 +76,7 @@ describe('getEntityKeyForSelection', () => {
     it('must return key if mutable', () => {
       setEntityMutability('MUTABLE');
       var key = getEntityKeyForSelection(contentState, nonCollapsed);
-      expect(key).toBe('123');
+      expect(key).toBe('1');
     });
 
     it('must not return key if immutable', () => {

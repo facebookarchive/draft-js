@@ -16,24 +16,36 @@
 import type ContentState from 'ContentState';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
-var DraftStringKey = require('DraftStringKey');
+const DraftStringKey = require('DraftStringKey');
 
-var encodeEntityRanges = require('encodeEntityRanges');
-var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
+const encodeEntityRanges = require('encodeEntityRanges');
+const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 
-function convertFromDraftStateToRaw(
+const encodeBlock = (block, entityStorageMap) => {
+  return {
+    key: block.getKey(),
+    text: block.getText(),
+    type: block.getType(),
+    depth: block.getDepth(),
+    inlineStyleRanges: encodeInlineStyleRanges(block),
+    entityRanges: encodeEntityRanges(block, entityStorageMap),
+    data: block.getData().toObject(),
+  };
+};
+
+const convertFromDraftStateToRaw = (
   contentState: ContentState,
-): RawDraftContentState {
-  var entityStorageKey = 0;
-  var entityStorageMap = {};
-  var rawBlocks = [];
+): RawDraftContentState => {
+  let entityStorageKey = 0;
+  const entityStorageMap = {};
+  const rawBlocks = [];
 
-  contentState.getBlockMap().forEach((block, blockKey) => {
+  contentState.getBlockMap().forEach(block => {
     block.findEntityRanges(
       character => character.getEntity() !== null,
       start => {
         // Stringify to maintain order of otherwise numeric keys.
-        var stringifiedEntityKey = DraftStringKey.stringify(
+        const stringifiedEntityKey = DraftStringKey.stringify(
           block.getEntityAt(start),
         );
         if (!entityStorageMap.hasOwnProperty(stringifiedEntityKey)) {
@@ -42,23 +54,15 @@ function convertFromDraftStateToRaw(
       },
     );
 
-    rawBlocks.push({
-      key: blockKey,
-      text: block.getText(),
-      type: block.getType(),
-      depth: block.getDepth(),
-      inlineStyleRanges: encodeInlineStyleRanges(block),
-      entityRanges: encodeEntityRanges(block, entityStorageMap),
-      data: block.getData().toObject(),
-    });
+    rawBlocks.push(encodeBlock(block, entityStorageMap));
   });
 
   // Flip storage map so that our storage keys map to global
   // DraftEntity keys.
-  var entityKeys = Object.keys(entityStorageMap);
-  var flippedStorageMap = {};
+  const entityKeys = Object.keys(entityStorageMap);
+  const flippedStorageMap = {};
   entityKeys.forEach((key, jj) => {
-    var entity = contentState.getEntity(DraftStringKey.unstringify(key));
+    const entity = contentState.getEntity(DraftStringKey.unstringify(key));
     flippedStorageMap[jj] = {
       type: entity.getType(),
       mutability: entity.getMutability(),
@@ -70,6 +74,6 @@ function convertFromDraftStateToRaw(
     entityMap: flippedStorageMap,
     blocks: rawBlocks,
   };
-}
+};
 
 module.exports = convertFromDraftStateToRaw;
