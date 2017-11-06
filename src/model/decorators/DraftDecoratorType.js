@@ -13,7 +13,7 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNode} from 'BlockNode';
 import type ContentState from 'ContentState';
 import type {List} from 'immutable';
 
@@ -27,10 +27,7 @@ export type DraftDecoratorType = {
   /**
    * Given a `ContentBlock`, return an immutable List of decorator keys.
    */
-  getDecorations(
-    block: ContentBlock,
-    contentState: ContentState,
-  ): List<?string>,
+  getDecorations(block: BlockNode, contentState: ContentState): List<?string>,
 
   /**
    * Given a decorator key, return the component to use when rendering

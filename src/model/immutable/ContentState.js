@@ -13,6 +13,7 @@
 
 'use strict';
 
+import type {BlockNode} from 'BlockNode';
 import type {BlockMap} from 'BlockMap';
 import type DraftEntityInstance from 'DraftEntityInstance';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
@@ -62,8 +63,8 @@ class ContentState extends ContentStateRecord {
     return this.get('selectionAfter');
   }
 
-  getBlockForKey(key: string): ContentBlock {
-    var block: ContentBlock = this.getBlockMap().get(key);
+  getBlockForKey(key: string): BlockNode {
+    var block: BlockNode = this.getBlockMap().get(key);
     return block;
   }
 
@@ -84,14 +85,14 @@ class ContentState extends ContentStateRecord {
       .first();
   }
 
-  getBlockAfter(key: string): ?ContentBlock {
+  getBlockAfter(key: string): ?BlockNode {
     return this.getBlockMap()
       .skipUntil((_, k) => k === key)
       .skip(1)
       .first();
   }
 
-  getBlockBefore(key: string): ?ContentBlock {
+  getBlockBefore(key: string): ?BlockNode {
     return this.getBlockMap()
       .reverse()
       .skipUntil((_, k) => k === key)
@@ -99,15 +100,15 @@ class ContentState extends ContentStateRecord {
       .first();
   }
 
-  getBlocksAsArray(): Array<ContentBlock> {
+  getBlocksAsArray(): Array<BlockNode> {
     return this.getBlockMap().toArray();
   }
 
-  getFirstBlock(): ContentBlock {
+  getFirstBlock(): BlockNode {
     return this.getBlockMap().first();
   }
 
-  getLastBlock(): ContentBlock {
+  getLastBlock(): BlockNode {
     return this.getBlockMap().last();
   }
 
@@ -164,7 +165,7 @@ class ContentState extends ContentStateRecord {
 
   static createFromBlockArray(
     // TODO: update flow type when we completely deprecate the old entity API
-    blocks: Array<ContentBlock> | {contentBlocks: Array<ContentBlock>},
+    blocks: Array<BlockNode> | {contentBlocks: Array<BlockNode>},
     entityMap: ?any,
   ): ContentState {
     // TODO: remove this when we completely deprecate the old entity API

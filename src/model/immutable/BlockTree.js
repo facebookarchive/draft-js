@@ -14,7 +14,7 @@
 'use strict';
 
 import type CharacterMetadata from 'CharacterMetadata';
-import type ContentBlock from 'ContentBlock';
+import type {BlockNode} from 'BlockNode';
 import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 
@@ -59,7 +59,7 @@ var BlockTree = {
    */
   generate: function(
     contentState: ContentState,
-    block: ContentBlock,
+    block: BlockNode,
     decorator: ?DraftDecoratorType,
   ): List<DecoratorRange> {
     var textLength = block.getLength();

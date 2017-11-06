@@ -13,7 +13,7 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNode} from 'BlockNode';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {InlineStyleRange} from 'InlineStyleRange';
 import type {List} from 'immutable';
@@ -31,7 +31,7 @@ var EMPTY_ARRAY = [];
  * to UTF-8 character counts for storage.
  */
 function getEncodedInlinesForType(
-  block: ContentBlock,
+  block: BlockNode,
   styleList: List<DraftInlineStyle>,
   styleToEncode: string,
 ): Array<InlineStyleRange> {
@@ -64,7 +64,7 @@ function getEncodedInlinesForType(
  * Retrieve the encoded arrays of inline styles, with each individual style
  * treated separately.
  */
-function encodeInlineStyleRanges(block: ContentBlock): Array<InlineStyleRange> {
+function encodeInlineStyleRanges(block: BlockNode): Array<InlineStyleRange> {
   var styleList = block
     .getCharacterList()
     .map(c => c.getStyle())
