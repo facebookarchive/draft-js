@@ -98,8 +98,8 @@ const contentState = new ContentState({
 let editorState = EditorState.createWithContent(contentState);
 editorState = EditorState.forceSelection(editorState, selectionState);
 
-function getSampleStateForTesting(): Object {
+const getSampleStateForTesting = (): Object => {
   return {editorState, contentState, selectionState};
-}
+};
 
 module.exports = getSampleStateForTesting;

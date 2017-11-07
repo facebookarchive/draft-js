@@ -89,3 +89,63 @@ Object {
   },
 }
 `;
+
+exports[`must be able to convert from draft state with ContentBlockNode to raw 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "data": Object {},
+              "depth": 0,
+              "entityRanges": Array [],
+              "inlineStyleRanges": Array [],
+              "key": "C",
+              "text": "left block",
+              "type": "unstyled",
+            },
+            Object {
+              "children": Array [],
+              "data": Object {},
+              "depth": 0,
+              "entityRanges": Array [],
+              "inlineStyleRanges": Array [],
+              "key": "D",
+              "text": "right block",
+              "type": "unstyled",
+            },
+          ],
+          "data": Object {},
+          "depth": 0,
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "B",
+          "text": "",
+          "type": "unstyled",
+        },
+        Object {
+          "children": Array [],
+          "data": Object {},
+          "depth": 0,
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "E",
+          "text": "This is a tree based document!",
+          "type": "header-one",
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "A",
+      "text": "",
+      "type": "unstyled",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;

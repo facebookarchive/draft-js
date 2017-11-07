@@ -14,10 +14,48 @@
 
 jest.disableAutomock();
 
+const ContentBlockNode = require('ContentBlockNode');
+const BlockMapBuilder = require('BlockMapBuilder');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
+const Immutable = require('immutable');
 
 const {contentState} = getSampleStateForTesting();
+
+const treeContentState = contentState.set(
+  'blockMap',
+  BlockMapBuilder.createFromArray([
+    new ContentBlockNode({
+      key: 'A',
+      children: Immutable.List.of('B', 'E'),
+    }),
+    new ContentBlockNode({
+      parent: 'A',
+      key: 'B',
+      nextSibling: 'C',
+      children: Immutable.List.of('C', 'D'),
+    }),
+    new ContentBlockNode({
+      parent: 'B',
+      key: 'C',
+      text: 'left block',
+      nextSibling: 'D',
+    }),
+    new ContentBlockNode({
+      parent: 'B',
+      key: 'D',
+      text: 'right block',
+      prevSibling: 'C',
+    }),
+    new ContentBlockNode({
+      parent: 'A',
+      key: 'E',
+      text: 'This is a tree based document!',
+      type: 'header-one',
+      prevSibling: 'B',
+    }),
+  ]),
+);
 
 const assertConvertFromDraftStateToRaw = (content = contentState) => {
   expect(convertFromDraftStateToRaw(content)).toMatchSnapshot();
@@ -25,4 +63,8 @@ const assertConvertFromDraftStateToRaw = (content = contentState) => {
 
 test('must be able to convert from draft state with ContentBlock to raw', () => {
   assertConvertFromDraftStateToRaw();
+});
+
+test('must be able to convert from draft state with ContentBlockNode to raw', () => {
+  assertConvertFromDraftStateToRaw(treeContentState);
 });
