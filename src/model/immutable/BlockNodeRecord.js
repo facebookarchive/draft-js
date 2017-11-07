@@ -6,14 +6,14 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule BlockMap
+ * @providesModule BlockNodeRecord
  * @format
  * @flow
  */
 
 'use strict';
 
-import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {OrderedMap} from 'immutable';
+import type ContentBlock from 'ContentBlock';
+import type ContentBlockNode from 'ContentBlockNode';
 
-export type BlockMap = OrderedMap<string, BlockNodeRecord>;
+export type BlockNodeRecord = ContentBlock | ContentBlockNode;

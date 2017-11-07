@@ -13,6 +13,7 @@
 
 'use strict';
 
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftInsertionType} from 'DraftInsertionType';
 
 const BlockMapBuilder = require('BlockMapBuilder');
@@ -88,7 +89,7 @@ const AtomicBlockUtils = {
 
   moveAtomicBlock: function(
     editorState: EditorState,
-    atomicBlock: ContentBlock,
+    atomicBlock: BlockNodeRecord,
     targetRange: SelectionState,
     insertionMode?: DraftInsertionType,
   ): EditorState {

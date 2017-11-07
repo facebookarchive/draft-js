@@ -13,7 +13,7 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type SelectionState from 'SelectionState';
@@ -40,7 +40,7 @@ const SCROLL_BUFFER = 10;
 
 type Props = {
   contentState: ContentState,
-  block: ContentBlock,
+  block: BlockNodeRecord,
   customStyleMap: Object,
   customStyleFn: Function,
   tree: List<any>,

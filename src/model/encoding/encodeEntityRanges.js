@@ -13,7 +13,7 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {EntityRange} from 'EntityRange';
 
 var DraftStringKey = require('DraftStringKey');
@@ -25,7 +25,7 @@ var {strlen} = UnicodeUtils;
  * Convert to UTF-8 character counts for storage.
  */
 function encodeEntityRanges(
-  block: ContentBlock,
+  block: BlockNodeRecord,
   storageMap: Object,
 ): Array<EntityRange> {
   var encoded = [];

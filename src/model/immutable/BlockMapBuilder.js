@@ -14,14 +14,14 @@
 'use strict';
 
 import type {BlockMap} from 'BlockMap';
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 
 var Immutable = require('immutable');
 
 var {OrderedMap} = Immutable;
 
 var BlockMapBuilder = {
-  createFromArray: function(blocks: Array<ContentBlock>): BlockMap {
+  createFromArray: function(blocks: Array<BlockNodeRecord>): BlockMap {
     return OrderedMap(blocks.map(block => [block.getKey(), block]));
   },
 };
