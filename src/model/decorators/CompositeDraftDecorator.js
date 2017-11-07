@@ -13,7 +13,7 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNode} from 'BlockNode';
 import type ContentState from 'ContentState';
 import type {DraftDecorator} from 'DraftDecorator';
 
@@ -52,10 +52,7 @@ class CompositeDraftDecorator {
     this._decorators = decorators.slice();
   }
 
-  getDecorations(
-    block: ContentBlock,
-    contentState: ContentState,
-  ): List<?string> {
+  getDecorations(block: BlockNode, contentState: ContentState): List<?string> {
     var decorations = Array(block.getText().length).fill(null);
 
     this._decorators.forEach((/*object*/ decorator, /*number*/ ii) => {

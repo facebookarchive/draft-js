@@ -16,7 +16,7 @@
 import type CharacterMetadata from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {List, Map} from 'immutable';
+import type {List, Map, Record} from 'immutable';
 
 export type BlockNodeKey = string;
 
@@ -31,7 +31,7 @@ export type BlockNodeConfig = {
 
 // https://github.com/facebook/draft-js/issues/1492
 // prettier-ignore
-export interface BlockNode {
+export interface BlockNode extends Record {
   findEntityRanges(
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,

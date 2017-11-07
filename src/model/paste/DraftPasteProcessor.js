@@ -13,6 +13,7 @@
 
 'use strict';
 
+import type {BlockNode} from 'BlockNode';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {EntityMap} from 'EntityMap';
@@ -32,7 +33,7 @@ const DraftPasteProcessor = {
   processHTML(
     html: string,
     blockRenderMap?: DraftBlockRenderMap,
-  ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
+  ): ?{contentBlocks: ?Array<BlockNode>, entityMap: EntityMap} {
     return convertFromHTMLtoContentBlocks(
       html,
       getSafeBodyFromHTML,
@@ -44,7 +45,7 @@ const DraftPasteProcessor = {
     textBlocks: Array<string>,
     character: CharacterMetadata,
     type: DraftBlockType,
-  ): Array<ContentBlock> {
+  ): Array<BlockNode> {
     return textBlocks.map(textLine => {
       textLine = sanitizeDraftText(textLine);
       return new ContentBlock({

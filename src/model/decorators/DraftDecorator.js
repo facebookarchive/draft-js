@@ -13,11 +13,11 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNode} from 'BlockNode';
 import type ContentState from 'ContentState';
 
 export type DraftDecoratorStrategy = (
-  block: ContentBlock,
+  block: BlockNode,
   callback: (start: number, end: number) => void,
   contentState: ContentState,
 ) => void;

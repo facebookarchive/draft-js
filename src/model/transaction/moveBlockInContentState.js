@@ -13,7 +13,7 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNode} from 'BlockNode';
 import type ContentState from 'ContentState';
 import type {DraftInsertionType} from 'DraftInsertionType';
 
@@ -21,8 +21,8 @@ const invariant = require('invariant');
 
 function moveBlockInContentState(
   contentState: ContentState,
-  blockToBeMoved: ContentBlock,
-  targetBlock: ContentBlock,
+  blockToBeMoved: BlockNode,
+  targetBlock: BlockNode,
   insertionMode: DraftInsertionType,
 ): ContentState {
   invariant(

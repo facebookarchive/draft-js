@@ -13,16 +13,13 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNode} from 'BlockNode';
 
 /**
  * Find the string of text between the previous entity and the specified
  * offset. This allows us to narrow down search areas for regex matching.
  */
-function getTextAfterNearestEntity(
-  block: ContentBlock,
-  offset: number,
-): string {
+function getTextAfterNearestEntity(block: BlockNode, offset: number): string {
   var start = offset;
 
   // Get start based on where the last entity ended.
