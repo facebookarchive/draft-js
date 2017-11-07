@@ -13,16 +13,16 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 
 var CharacterMetadata = require('CharacterMetadata');
 
 function applyEntityToContentBlock(
-  contentBlock: ContentBlock,
+  contentBlock: BlockNodeRecord,
   start: number,
   end: number,
   entityKey: ?string,
-): ContentBlock {
+): BlockNodeRecord {
   var characterList = contentBlock.getCharacterList();
   while (start < end) {
     characterList = characterList.set(
