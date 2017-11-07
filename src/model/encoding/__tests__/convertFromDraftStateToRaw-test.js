@@ -57,12 +57,12 @@ const treeContentState = contentState.set(
   ]),
 );
 
-const assertConvertFromDraftStateToRaw = (content = contentState) => {
+const assertConvertFromDraftStateToRaw = content => {
   expect(convertFromDraftStateToRaw(content)).toMatchSnapshot();
 };
 
 test('must be able to convert from draft state with ContentBlock to raw', () => {
-  assertConvertFromDraftStateToRaw();
+  assertConvertFromDraftStateToRaw(contentState);
 });
 
 test('must be able to convert from draft state with ContentBlockNode to raw', () => {

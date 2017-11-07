@@ -150,7 +150,7 @@ const convertFromDraftStateToRaw = (
   // add blocks
   rawDraftContentState = encodeRawBlocks(contentState, rawDraftContentState);
 
-  // add entity
+  // add entities
   rawDraftContentState = encodeRawEntityMap(contentState, rawDraftContentState);
 
   return rawDraftContentState;
