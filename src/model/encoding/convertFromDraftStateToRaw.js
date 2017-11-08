@@ -13,7 +13,9 @@
 
 'use strict';
 
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
+import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
 const DraftStringKey = require('DraftStringKey');
@@ -25,7 +27,7 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const invariant = require('invariant');
 
-const createRawBlock = (block, entityStorageMap) => {
+const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
   return {
     key: block.getKey(),
     text: block.getText(),
@@ -37,7 +39,12 @@ const createRawBlock = (block, entityStorageMap) => {
   };
 };
 
-const insertRawBlock = (block, entityMap, rawBlocks, blockCacheRef) => {
+const insertRawBlock = (
+  block: BlockNodeRecord,
+  entityMap: *,
+  rawBlocks: Array<RawDraftContentBlock>,
+  blockCacheRef: *,
+) => {
   if (block instanceof ContentBlock) {
     rawBlocks.push(createRawBlock(block, entityMap));
     return;
@@ -60,10 +67,10 @@ const insertRawBlock = (block, entityMap, rawBlocks, blockCacheRef) => {
 };
 
 const insertRawEntity = (
-  entityStorageKey,
-  entityKey,
-  entityMap,
-  entityCacheRef,
+  entityStorageKey: number,
+  entityKey: mixed,
+  entityMap: *,
+  entityCacheRef: *,
 ) => {
   // Stringify to maintain order of otherwise numeric keys.
   const stringifiedEntityKey = DraftStringKey.stringify(entityKey);
