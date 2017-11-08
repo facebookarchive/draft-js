@@ -91,13 +91,13 @@ describe('encodeInlineStyleRanges', () => {
 
   it('must encode custom styles', () => {
     const custom = List([FOO, FOO, FOO_BAR, FOO_BAR, BOLD, BOLD]);
-    expect(
-      encodeInlineStyleRanges(createBlock(' '.repeat(6), custom)),
-    ).toEqual([
-      {offset: 0, length: 4, style: 'foo'},
-      {offset: 2, length: 2, style: 'bar'},
-      {offset: 4, length: 2, style: 'BOLD'},
-    ]);
+    expect(encodeInlineStyleRanges(createBlock(' '.repeat(6), custom))).toEqual(
+      [
+        {offset: 0, length: 4, style: 'foo'},
+        {offset: 2, length: 2, style: 'bar'},
+        {offset: 4, length: 2, style: 'BOLD'},
+      ],
+    );
   });
 
   it('must encode for a complex styled document', () => {
