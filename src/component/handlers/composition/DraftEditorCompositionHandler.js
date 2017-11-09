@@ -43,6 +43,7 @@ const RESOLVE_DELAY = 20;
 let resolved = false;
 let stillComposing = false;
 let textInputData = '';
+let compositionInputData = '';
 
 var DraftEditorCompositionHandler = {
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
@@ -71,9 +72,10 @@ var DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(editor: DraftEditor): void {
+  onCompositionEnd: function(editor: DraftEditor, e: SyntheticInputEvent): void {
     resolved = false;
     stillComposing = false;
+    compositionInputData = e.data;
     setTimeout(() => {
       if (!resolved) {
         DraftEditorCompositionHandler.resolveComposition(editor);
@@ -134,8 +136,9 @@ var DraftEditorCompositionHandler = {
     }
 
     resolved = true;
-    const composedChars = textInputData;
+    const composedChars = textInputData || compositionInputData;
     textInputData = '';
+    compositionInputData = '';
 
     const editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
