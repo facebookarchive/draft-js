@@ -47,12 +47,12 @@ Object {
 }
 `;
 
-exports[`must retrieve an entities instance given a key 1`] = `"LINK"`;
-
-exports[`must retrieve an entities instance given a key 2`] = `"MUTABLE"`;
-
-exports[`must retrieve an entities instance given a key 3`] = `
-Object {
-  "uri": "zombo.com",
+exports[`must retrieve an entities instance given a key 1`] = `
+Immutable.Record {
+  "type": "LINK",
+  "mutability": "MUTABLE",
+  "data": Object {
+    "uri": "zombo.com",
+  },
 }
 `;

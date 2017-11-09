@@ -496,5 +496,5 @@ test('must not scroll the window if unnecessary', () => {
   ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
   const scrollCalls = window.scrollTo.mock.calls;
-  expect(scrollCalls.length).toMatchSnapshot();
+  expect(scrollCalls).toMatchSnapshot();
 });

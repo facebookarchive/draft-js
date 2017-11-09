@@ -33,6 +33,12 @@ Immutable.Record {
 }
 `;
 
+exports[`detects collapsed selection properly 1`] = `true`;
+
+exports[`detects collapsed selection properly 2`] = `false`;
+
+exports[`detects collapsed selection properly 3`] = `false`;
+
 exports[`is false for non-edge block keys 1`] = `false`;
 
 exports[`is false for non-edge block keys 2`] = `false`;
@@ -109,6 +115,25 @@ exports[`properly identifies start and end keys 5`] = `"a"`;
 
 exports[`properly identifies start and end keys 6`] = `"c"`;
 
+exports[`properly identifies start and end keys when backward 1`] = `
+Immutable.Record {
+  "anchorKey": "b",
+  "anchorOffset": 10,
+  "focusKey": "c",
+  "focusOffset": 15,
+  "isBackward": true,
+  "hasFocus": true,
+}
+`;
+
+exports[`properly identifies start and end keys when backward 2`] = `"a"`;
+
+exports[`properly identifies start and end keys when backward 3`] = `"c"`;
+
+exports[`properly identifies start and end keys when backward 4`] = `"a"`;
+
+exports[`properly identifies start and end keys when backward 5`] = `"b"`;
+
 exports[`properly identifies start and end offsets 1`] = `0`;
 
 exports[`properly identifies start and end offsets 2`] = `10`;
@@ -121,7 +146,7 @@ exports[`properly identifies start and end offsets 5`] = `20`;
 
 exports[`properly identifies start and end offsets 6`] = `15`;
 
-exports[`properly identifies start end end keys when backward 1`] = `
+exports[`properly identifies start and end offsets when backward 1`] = `
 Immutable.Record {
   "anchorKey": "b",
   "anchorOffset": 10,
@@ -132,35 +157,10 @@ Immutable.Record {
 }
 `;
 
-exports[`properly identifies start end end keys when backward 2`] = `"a"`;
+exports[`properly identifies start and end offsets when backward 2`] = `10`;
 
-exports[`properly identifies start end end keys when backward 3`] = `"c"`;
+exports[`properly identifies start and end offsets when backward 3`] = `15`;
 
-exports[`properly identifies start end end keys when backward 4`] = `"a"`;
+exports[`properly identifies start and end offsets when backward 4`] = `20`;
 
-exports[`properly identifies start end end keys when backward 5`] = `"b"`;
-
-exports[`properly identifies start end end offsets when backward 1`] = `
-Immutable.Record {
-  "anchorKey": "b",
-  "anchorOffset": 10,
-  "focusKey": "c",
-  "focusOffset": 15,
-  "isBackward": true,
-  "hasFocus": true,
-}
-`;
-
-exports[`properly identifies start end end offsets when backward 2`] = `10`;
-
-exports[`properly identifies start end end offsets when backward 3`] = `15`;
-
-exports[`properly identifies start end end offsets when backward 4`] = `20`;
-
-exports[`properly identifies start end end offsets when backward 5`] = `10`;
-
-exports[`works properly 1`] = `true`;
-
-exports[`works properly 2`] = `false`;
-
-exports[`works properly 3`] = `false`;
+exports[`properly identifies start and end offsets when backward 5`] = `10`;

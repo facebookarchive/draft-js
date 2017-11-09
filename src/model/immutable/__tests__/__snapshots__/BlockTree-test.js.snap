@@ -122,7 +122,7 @@ Immutable.List [
 
 exports[`must generate for styled block with single decorator 2`] = `".1-x.3.2-.2"`;
 
-exports[`must generate for unstyled block with emtpy decorator 1`] = `
+exports[`must generate for unstyled block with empty decorator 1`] = `
 Immutable.List [
   Immutable.Record {
     "start": 0,
@@ -138,7 +138,7 @@ Immutable.List [
 ]
 `;
 
-exports[`must generate for unstyled block with emtpy decorator 2`] = `".1"`;
+exports[`must generate for unstyled block with empty decorator 2`] = `".1"`;
 
 exports[`must generate for unstyled block with multiple decorators 1`] = `
 Immutable.List [

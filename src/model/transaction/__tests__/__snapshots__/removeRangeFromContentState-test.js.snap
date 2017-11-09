@@ -255,7 +255,7 @@ Immutable.OrderedMap {
   "a": Immutable.Record {
     "key": "a",
     "type": "unstyled",
-    "text": "AlphaBravo",
+    "text": "Alpha",
     "characterList": Immutable.List [
       Immutable.Record {
         "style": Immutable.OrderedSet [],
@@ -276,36 +276,6 @@ Immutable.OrderedMap {
       Immutable.Record {
         "style": Immutable.OrderedSet [],
         "entity": null,
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
       },
     ],
     "depth": 0,
@@ -705,39 +675,8 @@ Immutable.OrderedMap {
   "a": Immutable.Record {
     "key": "a",
     "type": "unstyled",
-    "text": "Bravo",
-    "characterList": Immutable.List [
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [
-          "BOLD",
-        ],
-        "entity": "1",
-      },
-    ],
+    "text": "",
+    "characterList": Immutable.List [],
     "depth": 0,
     "data": Immutable.Map {},
   },

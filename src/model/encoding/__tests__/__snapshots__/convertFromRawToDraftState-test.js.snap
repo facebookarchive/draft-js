@@ -1,7 +1,81 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`must map falsey block types to default value of unstyled 1`] = `"unstyled"`;
-
-exports[`must map falsey block types to default value of unstyled 2`] = `"unstyled"`;
-
-exports[`must map falsey block types to default value of unstyled 3`] = `"unstyled"`;
+exports[`must map falsey block types to default value of unstyled 1`] = `
+Immutable.OrderedMap {
+  "key0": Immutable.Record {
+    "key": "key0",
+    "type": "unstyled",
+    "text": "AAAA",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  "key1": Immutable.Record {
+    "key": "key1",
+    "type": "unstyled",
+    "text": "BBBB",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+  "key2": Immutable.Record {
+    "key": "key2",
+    "type": "unstyled",
+    "text": "CCCC",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+}
+`;

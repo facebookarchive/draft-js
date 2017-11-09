@@ -22,7 +22,7 @@ const IMAGE_DATA_URL =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///' +
   'yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
-const testConvertingAdjacentHtmlElementsToContentBlocks = tag => {
+const testConvertingAdjacentHtmlElementsToContentBlocks = (tag: string) => {
   it(`must not merge tags when converting adjacent <${tag} />`, () => {
     const html_string = `
       <${tag}>a</${tag}>

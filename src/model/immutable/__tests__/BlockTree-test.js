@@ -103,7 +103,7 @@ const assertBlockTreeGenerate = (
   return tree;
 };
 
-it('must generate for unstyled block with emtpy decorator', () => {
+it('must generate for unstyled block with empty decorator', () => {
   assertBlockTreeGenerate(PLAIN_BLOCK);
 });
 

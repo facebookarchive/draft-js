@@ -26,6 +26,10 @@ const assertRemoveRangeFromContentState = selection => {
 };
 
 const initialBlock = contentState.getBlockMap().first();
+const secondBlock = contentState
+  .getBlockMap()
+  .skip(1)
+  .first();
 const selectionWithinA = selectionState.set('anchorOffset', 3);
 const selectionFromEndOfA = selectionState.merge({
   anchorOffset: initialBlock.getLength(),
@@ -86,10 +90,7 @@ test('must remove from the start of A to the end of B', () => {
   assertRemoveRangeFromContentState(
     selectionState.merge({
       focusKey: 'b',
-      focusOffset: contentState
-        .getBlockMap()
-        .skip(1)
-        .first(),
+      focusOffset: secondBlock.getLength(),
     }),
   );
 });
@@ -111,11 +112,7 @@ test('must remove from within A to the end of B', () => {
   assertRemoveRangeFromContentState(
     selectionWithinA.merge({
       focusKey: 'b',
-      focusOffset: contentState
-        .getBlockMap()
-        .skip(1)
-        .first()
-        .getLength(),
+      focusOffset: secondBlock.getLength(),
     }),
   );
 });
@@ -142,10 +139,7 @@ test('must remove from the end of A to the end of B', () => {
   assertRemoveRangeFromContentState(
     selectionFromEndOfA.merge({
       focusKey: 'b',
-      focusOffset: contentState
-        .getBlockMap()
-        .skip(1)
-        .first(),
+      focusOffset: secondBlock.getLength(),
     }),
   );
 });

@@ -95,9 +95,7 @@ test('must retrieve an entities instance given a key', () => {
   const retrieved = contentState.getEntity(
     contentState.getLastCreatedEntityKey(),
   );
-  expect(retrieved.getType()).toMatchSnapshot();
-  expect(retrieved.getMutability()).toMatchSnapshot();
-  expect(retrieved.getData()).toMatchSnapshot();
+  expect(retrieved).toMatchSnapshot();
 });
 
 test('must throw when retrieving entities for an invalid key', () => {

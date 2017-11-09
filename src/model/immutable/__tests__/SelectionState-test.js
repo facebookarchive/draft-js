@@ -134,7 +134,7 @@ test('is true if selection range edge overlaps test range', () => {
   expect(MULTI_BLOCK.hasEdgeWithin('c', 5, 20)).toMatchSnapshot();
 });
 
-test('works properly', () => {
+test('detects collapsed selection properly', () => {
   expect(COLLAPSED.isCollapsed()).toMatchSnapshot();
   expect(WITHIN_BLOCK.isCollapsed()).toMatchSnapshot();
   expect(MULTI_BLOCK.isCollapsed()).toMatchSnapshot();
@@ -158,7 +158,7 @@ test('properly identifies start and end offsets', () => {
   expect(MULTI_BLOCK.getEndOffset()).toMatchSnapshot();
 });
 
-test('properly identifies start end end keys when backward', () => {
+test('properly identifies start and end keys when backward', () => {
   const withinBlock = flip(WITHIN_BLOCK);
   const MULTI_BLOCK = getSample('MULTI_BLOCK', {
     isBackward: true,
@@ -170,7 +170,7 @@ test('properly identifies start end end keys when backward', () => {
   expect(MULTI_BLOCK.getEndKey()).toMatchSnapshot();
 });
 
-test('properly identifies start end end offsets when backward', () => {
+test('properly identifies start and end offsets when backward', () => {
   const withinBlock = flip(WITHIN_BLOCK);
   const MULTI_BLOCK = getSample('MULTI_BLOCK', {
     isBackward: true,

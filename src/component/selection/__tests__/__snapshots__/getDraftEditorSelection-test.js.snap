@@ -70,7 +70,7 @@ Object {
 }
 `;
 
-exports[`from start of one to end of other 1`] = `
+exports[`from start of one block to end of other block 1`] = `
 Object {
   "needsRecovery": true,
   "selectionState": Immutable.Record {
@@ -84,7 +84,7 @@ Object {
 }
 `;
 
-exports[`from start of one to start of another 1`] = `
+exports[`from start of one block to start of another 1`] = `
 Object {
   "needsRecovery": true,
   "selectionState": Immutable.Record {
@@ -98,7 +98,7 @@ Object {
 }
 `;
 
-exports[`goes from end of one to end of other 1`] = `
+exports[`goes from end of one to end of other block 1`] = `
 Object {
   "needsRecovery": true,
   "selectionState": Immutable.Record {
@@ -112,7 +112,7 @@ Object {
 }
 `;
 
-exports[`goes from start of one to end of other 1`] = `
+exports[`goes from start of one block to end of other block 1`] = `
 Object {
   "needsRecovery": true,
   "selectionState": Immutable.Record {
@@ -126,7 +126,7 @@ Object {
 }
 `;
 
-exports[`goes from start of one to start of other 1`] = `
+exports[`goes from start of one block to start of other 1`] = `
 Object {
   "needsRecovery": true,
   "selectionState": Immutable.Record {
@@ -140,7 +140,7 @@ Object {
 }
 `;
 
-exports[`goes from within one to within another 1`] = `
+exports[`goes from within one block to within another block 1`] = `
 Object {
   "needsRecovery": true,
   "selectionState": Immutable.Record {
@@ -574,7 +574,7 @@ Object {
 }
 `;
 
-exports[`starts within one text node and ends within another 1`] = `
+exports[`starts within one text node and ends within another block 1`] = `
 Object {
   "needsRecovery": false,
   "selectionState": Immutable.Record {

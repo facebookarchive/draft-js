@@ -221,7 +221,7 @@ test('extends from head of one node to end of another', () => {
   });
 });
 
-test('starts within one text node and ends within another', () => {
+test('starts within one text node and ends within another block', () => {
   assertGetDraftEditorSelection({
     rangeCount: 1,
     anchorNode: textNodes[0],
@@ -394,7 +394,7 @@ test('is reversed on entire leaf', () => {
   });
 });
 
-test('from start of one to start of another', () => {
+test('from start of one block to start of another', () => {
   assertGetDraftEditorSelection({
     rangeCount: 1,
     anchorNode: leafs[0],
@@ -404,7 +404,7 @@ test('from start of one to start of another', () => {
   });
 });
 
-test('from start of one to end of other', () => {
+test('from start of one block to end of other block', () => {
   assertGetDraftEditorSelection({
     rangeCount: 1,
     anchorNode: leafs[0],
@@ -502,7 +502,7 @@ test('is reversed from the first case', () => {
   });
 });
 
-test('goes from start of one to end of other', () => {
+test('goes from start of one block to end of other block', () => {
   assertGetDraftEditorSelection({
     rangeCount: 1,
     anchorNode: blocks[0],
@@ -512,7 +512,7 @@ test('goes from start of one to end of other', () => {
   });
 });
 
-test('goes from start of one to start of other', () => {
+test('goes from start of one block to start of other', () => {
   assertGetDraftEditorSelection({
     rangeCount: 1,
     anchorNode: blocks[0],
@@ -522,7 +522,7 @@ test('goes from start of one to start of other', () => {
   });
 });
 
-test('goes from end of one to end of other', () => {
+test('goes from end of one to end of other block', () => {
   assertGetDraftEditorSelection({
     rangeCount: 1,
     anchorNode: blocks[0],
@@ -532,7 +532,7 @@ test('goes from end of one to end of other', () => {
   });
 });
 
-test('goes from within one to within another', () => {
+test('goes from within one block to within another block', () => {
   assertGetDraftEditorSelection({
     rangeCount: 1,
     anchorNode: blocks[0],

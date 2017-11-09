@@ -53,7 +53,7 @@ test('must not remove mutable entities', () => {
 });
 
 test('must remove immutable entities', () => {
-  assertRemoveEntitiesAtEdges(selectionOnEntity);
+  assertRemoveEntitiesAtEdges(selectionOnEntity, 'IMMUTABLE');
 });
 
 test('must remove segmented entities', () => {

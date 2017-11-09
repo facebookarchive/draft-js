@@ -12,10 +12,9 @@
 
 'use strict';
 
-jest
-  .unmock('DraftEditor.react')
-  .unmock('react-test-renderer/shallow')
-  .mock('generateRandomKey');
+jest.disableAutomock();
+
+jest.mock('generateRandomKey');
 
 const DraftEditor = require('DraftEditor.react');
 const React = require('React');

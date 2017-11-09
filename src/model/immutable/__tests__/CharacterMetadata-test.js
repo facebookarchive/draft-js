@@ -24,7 +24,6 @@ const fancy = CharacterMetadata.create({style: BOLD_ITALIC});
 const withoutEntity = CharacterMetadata.create();
 const withEntity = CharacterMetadata.create({entity: 'a'});
 
-const empty = CharacterMetadata.create();
 const withStyleAndEntity = CharacterMetadata.create({
   entity: 'a',
   style: BOLD,
@@ -79,7 +78,7 @@ test('must remove entity correctly', () => {
 });
 
 test('must reuse the same objects', () => {
-  expect(CharacterMetadata.create() === empty).toMatchSnapshot();
+  expect(CharacterMetadata.create() === plain).toMatchSnapshot();
   expect(CharacterMetadata.create({style: BOLD}) === bold).toMatchSnapshot();
   expect(
     CharacterMetadata.create({style: BOLD_ITALIC}) === fancy,
