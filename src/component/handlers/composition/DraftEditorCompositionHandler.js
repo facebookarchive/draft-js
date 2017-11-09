@@ -72,7 +72,7 @@ var DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(editor: DraftEditor, e: SyntheticInputEvent): void {
+  onCompositionEnd: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     resolved = false;
     stillComposing = false;
     compositionInputData = e.data;
