@@ -13,60 +13,228 @@
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type {BlockNodeConfig} from 'BlockNode';
+import type CharacterMetadata from 'CharacterMetadata';
+import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
-var ContentBlock = require('ContentBlock');
-var ContentState = require('ContentState');
-var DraftEntity = require('DraftEntity');
-var Immutable = require('immutable');
+const ContentBlock = require('ContentBlock');
+const ContentBlockNode = require('ContentBlockNode');
+const ContentState = require('ContentState');
+const DraftEntity = require('DraftEntity');
+const invariant = require('invariant');
+const Immutable = require('immutable');
 
-var createCharacterList = require('createCharacterList');
-var decodeEntityRanges = require('decodeEntityRanges');
-var decodeInlineStyleRanges = require('decodeInlineStyleRanges');
-var generateRandomKey = require('generateRandomKey');
+const createCharacterList = require('createCharacterList');
+const decodeEntityRanges = require('decodeEntityRanges');
+const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
+const generateRandomKey = require('generateRandomKey');
 
-var {Map} = Immutable;
+const {List, Map} = Immutable;
 
-function convertFromRawToDraftState(
+const decodeBlockNodeConfig = (
+  block: RawDraftContentBlock,
+  entityMap: *,
+): BlockNodeConfig => {
+  const {key, type, data, text, depth} = block;
+  return {
+    text,
+    depth: depth || 0,
+    type: type || 'unstyled',
+    key: key || generateRandomKey(),
+    data: Map(data),
+    characterList: decodeCharacterList(block, entityMap),
+  };
+};
+
+const decodeCharacterList = (
+  block: RawDraftContentBlock,
+  entityMap: *,
+): ?List<CharacterMetadata> => {
+  const {
+    text,
+    entityRanges: rawEntityRanges,
+    inlineStyleRanges: rawInlineStyleRanges,
+  } = block;
+
+  const entityRanges = rawEntityRanges || [];
+  const inlineStyleRanges = rawInlineStyleRanges || [];
+
+  // Translate entity range keys to the DraftEntity map.
+  return createCharacterList(
+    decodeInlineStyleRanges(text, inlineStyleRanges),
+    decodeEntityRanges(
+      text,
+      entityRanges
+        .filter(range => entityMap.hasOwnProperty(range.key))
+        .map(range => ({...range, key: entityMap[range.key]})),
+    ),
+  );
+};
+
+const addKeyIfMissing = (block: RawDraftContentBlock): RawDraftContentBlock => {
+  return {
+    ...block,
+    key: block.key || generateRandomKey(),
+  };
+};
+
+/**
+ * Node stack is responsible to ensure we traverse the tree only once
+ * in depth order, while also providing parent refs to inner nodes to
+ * construct their links.
+ */
+const updateNodeStack = (
+  stack: Array<*>,
+  nodes: Array<*>,
+  parentRef: ContentBlockNode,
+): Array<*> => {
+  const decoratedNodes = nodes.map(block => {
+    return {
+      ...block,
+      parentRef,
+    };
+  });
+
+  // since we pop nodes from the stack we need to insert them in reverse
+  return stack.concat(decoratedNodes.reverse());
+};
+
+/**
+ * This will build a tree draft content state by creating the node
+ * reference links into a single tree walk. Each node has a link
+ * reference to "parent", "children", "nextSibling" and "prevSibling"
+ * blockMap will be created using depth ordering.
+ */
+const decodeContentBlockNodes = (
+  blocks: Array<RawDraftContentBlock>,
+  entityMap: *,
+): BlockMap => {
+  return (
+    blocks
+      // ensure children have valid keys to enable sibling links
+      .map(addKeyIfMissing)
+      .reduce((acc: BlockMap, block: RawDraftContentBlock, index: number) => {
+        invariant(
+          Array.isArray(block.children),
+          'invalid RawDraftContentBlock can not be converted to ContentBlockNode',
+        );
+
+        // ensure children have valid keys to enable sibling links
+        const children = block.children.map(addKeyIfMissing);
+
+        // root level nodes
+        const contentBlockNode = new ContentBlockNode({
+          ...decodeBlockNodeConfig(block, entityMap),
+          prevSibling: index === 0 ? null : blocks[index - 1].key,
+          nextSibling:
+            index === blocks.length - 1 ? null : blocks[index + 1].key,
+          children: children.map(child => child.key),
+        });
+
+        // push root node to blockMap
+        acc.push(contentBlockNode);
+
+        // this stack is used to ensure we visit all nodes respecting depth ordering
+        let stack = updateNodeStack([], children, contentBlockNode);
+
+        // start computing children nodes
+        while (stack.length > 0) {
+          // we pop from the stack and start processing this node
+          const node = stack.pop();
+
+          const parentRef = node.parentRef;
+          const siblings = parentRef.children;
+          const index = siblings.indexOf(node.key);
+          const isValidBlock = Array.isArray(node.children);
+
+          if (!isValidBlock) {
+            invariant(
+              isValidBlock,
+              'invalid RawDraftContentBlock can not be converted to ContentBlockNode',
+            );
+            break;
+          }
+
+          // ensure children have valid keys to enable sibling links
+          const children = node.children.map(addKeyIfMissing);
+
+          const contentBlockNode = new ContentBlockNode({
+            ...decodeBlockNodeConfig(node, entityMap),
+            parent: parentRef.key,
+            children: children.map(child => child.key),
+            prevSibling: index === 0 ? null : siblings[index - 1],
+            nextSibling:
+              index === siblings.length - 1 ? null : siblings[index + 1],
+          });
+
+          // push node to blockMap
+          acc.push(contentBlockNode);
+
+          // this stack is used to ensure we visit all nodes respecting depth ordering
+          stack = updateNodeStack(stack, children, contentBlockNode);
+        }
+
+        return acc;
+      }, [])
+  );
+};
+
+const decodeContentBlocks = (
+  blocks: Array<RawDraftContentBlock>,
+  entityMap: *,
+): BlockMap => {
+  return blocks.map(
+    (block: RawDraftContentBlock) =>
+      new ContentBlock(decodeBlockNodeConfig(block, entityMap)),
+  );
+};
+
+const decodeRawBlocks = (
   rawState: RawDraftContentState,
-): ContentState {
-  var {blocks, entityMap} = rawState;
+  entityMap: *,
+): BlockMap => {
+  const rawBlocks = rawState.blocks;
 
-  var fromStorageToLocal = {};
+  if (!Array.isArray(rawBlocks[0].children)) {
+    return decodeContentBlocks(rawBlocks, entityMap);
+  }
+
+  return decodeContentBlockNodes(rawBlocks, entityMap);
+};
+
+const decodeRawEntityMap = (rawState: RawDraftContentState): * => {
+  const {entityMap: rawEntityMap} = rawState;
+  const entityMap = {};
 
   // TODO: Update this once we completely remove DraftEntity
-  Object.keys(entityMap).forEach(storageKey => {
-    var encodedEntity = entityMap[storageKey];
-    var {type, mutability, data} = encodedEntity;
-    var newKey = DraftEntity.__create(type, mutability, data || {});
-    fromStorageToLocal[storageKey] = newKey;
+  Object.keys(rawEntityMap).forEach(rawEntityKey => {
+    const {type, mutability, data} = rawEntityMap[rawEntityKey];
+
+    // get the key reference to created entity
+    entityMap[rawEntityKey] = DraftEntity.__create(
+      type,
+      mutability,
+      data || {},
+    );
   });
 
-  var contentBlocks = blocks.map(block => {
-    var {key, type, text, depth, inlineStyleRanges, entityRanges, data} = block;
-    key = key || generateRandomKey();
-    type = type || 'unstyled';
-    depth = depth || 0;
-    inlineStyleRanges = inlineStyleRanges || [];
-    entityRanges = entityRanges || [];
-    data = Map(data);
+  return entityMap;
+};
 
-    var inlineStyles = decodeInlineStyleRanges(text, inlineStyleRanges);
+const convertFromRawToDraftState = (
+  rawState: RawDraftContentState,
+): ContentState => {
+  invariant(Array.isArray(rawState.blocks), 'invalid RawDraftContentState');
 
-    // Translate entity range keys to the DraftEntity map.
-    var filteredEntityRanges = entityRanges
-      .filter(range => fromStorageToLocal.hasOwnProperty(range.key))
-      .map(range => {
-        return {...range, key: fromStorageToLocal[range.key]};
-      });
+  // decode entities
+  const entityMap = decodeRawEntityMap(rawState);
 
-    var entities = decodeEntityRanges(text, filteredEntityRanges);
-    var characterList = createCharacterList(inlineStyles, entities);
+  // decode blockMap
+  const blockMap = decodeRawBlocks(rawState, entityMap);
 
-    return new ContentBlock({key, type, text, depth, characterList, data});
-  });
-
-  return ContentState.createFromBlockArray(contentBlocks);
-}
+  return ContentState.createFromBlockArray(blockMap);
+};
 
 module.exports = convertFromRawToDraftState;
