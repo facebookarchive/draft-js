@@ -1,0 +1,200 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders ContentBlockNodes 1`] = `
+<div
+  data-contents="true"
+  data-reactroot=""
+>
+  <blockquote
+    data-block="true"
+    data-editor="editor"
+    data-offset-key="A-0-0"
+  >
+    <div
+      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      data-offset-key="A-0-0"
+    >
+      <ol
+        class="public-DraftStyleDefault-ol"
+        data-offset-key="B-0-0"
+      >
+        <li
+          data-block="true"
+          data-editor="editor"
+          data-offset-key="B-0-0"
+        >
+          <div
+            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+            data-offset-key="B-0-0"
+          >
+            <h1
+              data-block="true"
+              data-editor="editor"
+              data-offset-key="C-0-0"
+            >
+              <div
+                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                data-offset-key="C-0-0"
+              >
+                <span
+                  data-offset-key="C-0-0"
+                >
+                  <span
+                    data-text="true"
+                  >
+                    header inside list
+                  </span>
+                </span>
+              </div>
+            </h1>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </blockquote>
+  <h2
+    data-block="true"
+    data-editor="editor"
+    data-offset-key="D-0-0"
+  >
+    <div
+      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      data-offset-key="D-0-0"
+    >
+      <span
+        data-offset-key="D-0-0"
+      >
+        <span
+          data-text="true"
+        >
+          header two
+        </span>
+      </span>
+    </div>
+  </h2>
+</div>
+`;
+
+exports[`renders ContentBlockNodes with root blocks that have wrapperTemplate 1`] = `
+<div
+  data-contents="true"
+  data-reactroot=""
+>
+  <ol
+    class="public-DraftStyleDefault-ol"
+    data-offset-key="A-0-0"
+  >
+    <li
+      data-block="true"
+      data-editor="editor"
+      data-offset-key="A-0-0"
+    >
+      <div
+        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+        data-offset-key="A-0-0"
+      >
+        <span
+          data-offset-key="A-0-0"
+        >
+          <span
+            data-text="true"
+          >
+            list one
+          </span>
+        </span>
+      </div>
+    </li>
+    <li
+      data-block="true"
+      data-editor="editor"
+      data-offset-key="B-0-0"
+    >
+      <div
+        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+        data-offset-key="B-0-0"
+      >
+        <span
+          data-offset-key="B-0-0"
+        >
+          <span
+            data-text="true"
+          >
+            list two
+          </span>
+        </span>
+      </div>
+    </li>
+  </ol>
+</div>
+`;
+
+exports[`renders ContentBlocks 1`] = `
+<div
+  data-contents="true"
+  data-reactroot=""
+>
+  <blockquote
+    class=""
+    data-block="true"
+    data-editor="editor"
+    data-offset-key="A-0-0"
+  >
+    <div
+      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      data-offset-key="A-0-0"
+    >
+      <span
+        data-offset-key="A-0-0"
+      >
+        <span
+          data-text="true"
+        >
+          Alpha
+        </span>
+      </span>
+    </div>
+  </blockquote>
+  <h1
+    class=""
+    data-block="true"
+    data-editor="editor"
+    data-offset-key="B-0-0"
+  >
+    <div
+      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      data-offset-key="B-0-0"
+    >
+      <span
+        data-offset-key="B-0-0"
+      >
+        <span
+          data-text="true"
+        >
+          Beta
+        </span>
+      </span>
+    </div>
+  </h1>
+  <div
+    class=""
+    data-block="true"
+    data-editor="editor"
+    data-offset-key="C-0-0"
+  >
+    <div
+      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      data-offset-key="C-0-0"
+    >
+      <span
+        data-offset-key="C-0-0"
+      >
+        <span
+          data-text="true"
+        >
+          Charlie
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
