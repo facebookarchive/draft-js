@@ -130,7 +130,7 @@ const decodeContentBlockNodes = (
           prevSibling: index === 0 ? null : blocks[index - 1].key,
           nextSibling:
             index === blocks.length - 1 ? null : blocks[index + 1].key,
-          children: children.map(child => child.key),
+          children: List(children.map(child => child.key)),
         });
 
         // push root node to blockMap
@@ -144,8 +144,9 @@ const decodeContentBlockNodes = (
           // we pop from the stack and start processing this node
           const node = stack.pop();
 
-          const parentRef = node.parentRef;
-          const siblings = parentRef.children;
+          // parentRef already points to a converted ContentBlockNode
+          const parentRef: ContentBlockNode = node.parentRef;
+          const siblings = parentRef.getChildKeys();
           const index = siblings.indexOf(node.key);
           const isValidBlock = Array.isArray(node.children);
 
@@ -162,11 +163,11 @@ const decodeContentBlockNodes = (
 
           const contentBlockNode = new ContentBlockNode({
             ...decodeBlockNodeConfig(node, entityMap),
-            parent: parentRef.key,
-            children: children.map(child => child.key),
-            prevSibling: index === 0 ? null : siblings[index - 1],
+            parent: parentRef.getKey(),
+            children: List(children.map(child => child.key)),
+            prevSibling: index === 0 ? null : siblings.get(index - 1),
             nextSibling:
-              index === siblings.length - 1 ? null : siblings[index + 1],
+              index === siblings.size - 1 ? null : siblings.get(index + 1),
           });
 
           // push node to blockMap
