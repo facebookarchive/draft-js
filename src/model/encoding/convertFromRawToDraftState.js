@@ -32,6 +32,10 @@ function convertFromRawToDraftState(
 ): ContentState {
   var {blocks, entityMap} = rawState;
 
+  if (blocks.length === 0) {
+    return ContentState.createFromText('');
+  }
+    
   var fromStorageToLocal = {};
 
   // TODO: Update this once we completely remove DraftEntity
