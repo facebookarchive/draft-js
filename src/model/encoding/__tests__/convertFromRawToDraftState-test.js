@@ -28,5 +28,5 @@ test('must map falsey block types to default value of unstyled', () => {
     entityMap: {},
   };
 
-  expect(convertFromRawToDraftState(rawState).getBlockMap()).toMatchSnapshot();
+  expect(convertFromRawToDraftState(rawState).getBlockMap().toJS()).toMatchSnapshot();
 });

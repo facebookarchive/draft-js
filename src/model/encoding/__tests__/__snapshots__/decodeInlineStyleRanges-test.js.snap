@@ -2,19 +2,19 @@
 
 exports[`must decode for a flat styled block 1`] = `
 Array [
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
   ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
   ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
   ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
   ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
   ],
 ]
@@ -22,23 +22,23 @@ Array [
 
 exports[`must decode for a mixed-style block 1`] = `
 Array [
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
     "UNDERLINE",
   ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
     "ITALIC",
     "UNDERLINE",
   ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
     "ITALIC",
   ],
-  Immutable.OrderedSet [
+  Array [
     "ITALIC",
   ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
   ],
 ]
@@ -46,57 +46,57 @@ Array [
 
 exports[`must decode for an unstyled block 1`] = `
 Array [
-  Immutable.OrderedSet [],
-  Immutable.OrderedSet [],
-  Immutable.OrderedSet [],
-  Immutable.OrderedSet [],
-  Immutable.OrderedSet [],
+  Array [],
+  Array [],
+  Array [],
+  Array [],
+  Array [],
 ]
 `;
 
 exports[`must decode for strings that contain surrogate pairs in UTF-16 1`] = `
 Array [
-  Immutable.OrderedSet [],
-  Immutable.OrderedSet [],
-  Immutable.OrderedSet [],
-  Immutable.OrderedSet [],
-  Immutable.OrderedSet [
+  Array [],
+  Array [],
+  Array [],
+  Array [],
+  Array [
     "BOLD",
   ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
   ],
-  Immutable.OrderedSet [
-    "BOLD",
-    "ITALIC",
-  ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
     "ITALIC",
   ],
-  Immutable.OrderedSet [
+  Array [
     "BOLD",
     "ITALIC",
   ],
-  Immutable.OrderedSet [
+  Array [
+    "BOLD",
     "ITALIC",
   ],
-  Immutable.OrderedSet [
+  Array [
     "ITALIC",
   ],
-  Immutable.OrderedSet [
+  Array [
     "ITALIC",
   ],
-  Immutable.OrderedSet [
+  Array [
     "ITALIC",
   ],
-  Immutable.OrderedSet [
+  Array [
     "ITALIC",
   ],
-  Immutable.OrderedSet [
+  Array [
     "ITALIC",
   ],
-  Immutable.OrderedSet [],
-  Immutable.OrderedSet [],
+  Array [
+    "ITALIC",
+  ],
+  Array [],
+  Array [],
 ]
 `;

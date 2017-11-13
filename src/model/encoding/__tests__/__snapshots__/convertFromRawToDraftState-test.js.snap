@@ -1,81 +1,81 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`must map falsey block types to default value of unstyled 1`] = `
-Immutable.OrderedMap {
-  "key0": Immutable.Record {
+Object {
+  "key0": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
     "key": "key0",
-    "type": "unstyled",
     "text": "AAAA",
-    "characterList": Immutable.List [
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
+    "type": "unstyled",
+  },
+  "key1": Object {
+    "characterList": Array [
+      Object {
         "entity": null,
+        "style": Array [],
       },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
+      Object {
         "entity": null,
+        "style": Array [],
       },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
+      Object {
         "entity": null,
+        "style": Array [],
       },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
+      Object {
         "entity": null,
+        "style": Array [],
       },
     ],
+    "data": Object {},
     "depth": 0,
-    "data": Immutable.Map {},
-  },
-  "key1": Immutable.Record {
     "key": "key1",
-    "type": "unstyled",
     "text": "BBBB",
-    "characterList": Immutable.List [
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
-        "entity": null,
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
-        "entity": null,
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
-        "entity": null,
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
-        "entity": null,
-      },
-    ],
-    "depth": 0,
-    "data": Immutable.Map {},
-  },
-  "key2": Immutable.Record {
-    "key": "key2",
     "type": "unstyled",
-    "text": "CCCC",
-    "characterList": Immutable.List [
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
+  },
+  "key2": Object {
+    "characterList": Array [
+      Object {
         "entity": null,
+        "style": Array [],
       },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
+      Object {
         "entity": null,
+        "style": Array [],
       },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
+      Object {
         "entity": null,
+        "style": Array [],
       },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
+      Object {
         "entity": null,
+        "style": Array [],
       },
     ],
+    "data": Object {},
     "depth": 0,
-    "data": Immutable.Map {},
+    "key": "key2",
+    "text": "CCCC",
+    "type": "unstyled",
   },
 }
 `;

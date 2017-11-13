@@ -30,7 +30,7 @@ const assertApplyEntityToContentBlock = (
   contentBlock = sampleBlock,
 ) => {
   expect(
-    applyEntityToContentBlock(contentBlock, start, end, entityKey),
+    applyEntityToContentBlock(contentBlock, start, end, entityKey).toJS(),
   ).toMatchSnapshot();
 };
 

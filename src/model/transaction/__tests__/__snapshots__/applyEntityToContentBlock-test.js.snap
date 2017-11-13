@@ -1,129 +1,129 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`must apply at the end 1`] = `
-Immutable.Record {
-  "key": "a",
-  "type": "unstyled",
-  "text": "Hello",
-  "characterList": Immutable.List [
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+Object {
+  "characterList": Array [
+    Object {
       "entity": null,
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": null,
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": null,
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
   ],
+  "data": Object {},
   "depth": 0,
-  "data": Immutable.Map {},
+  "key": "a",
+  "text": "Hello",
+  "type": "unstyled",
 }
 `;
 
 exports[`must apply from the start 1`] = `
-Immutable.Record {
-  "key": "a",
-  "type": "unstyled",
-  "text": "Hello",
-  "characterList": Immutable.List [
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+Object {
+  "characterList": Array [
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": null,
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": null,
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": null,
+      "style": Array [],
     },
   ],
+  "data": Object {},
   "depth": 0,
-  "data": Immutable.Map {},
+  "key": "a",
+  "text": "Hello",
+  "type": "unstyled",
 }
 `;
 
 exports[`must apply to the entire text 1`] = `
-Immutable.Record {
-  "key": "a",
-  "type": "unstyled",
-  "text": "Hello",
-  "characterList": Immutable.List [
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+Object {
+  "characterList": Array [
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
   ],
+  "data": Object {},
   "depth": 0,
-  "data": Immutable.Map {},
+  "key": "a",
+  "text": "Hello",
+  "type": "unstyled",
 }
 `;
 
 exports[`must apply within 1`] = `
-Immutable.Record {
-  "key": "a",
-  "type": "unstyled",
-  "text": "Hello",
-  "characterList": Immutable.List [
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+Object {
+  "characterList": Array [
+    Object {
       "entity": null,
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": "x",
+      "style": Array [],
     },
-    Immutable.Record {
-      "style": Immutable.OrderedSet [],
+    Object {
       "entity": null,
+      "style": Array [],
     },
   ],
+  "data": Object {},
   "depth": 0,
-  "data": Immutable.Map {},
+  "key": "a",
+  "text": "Hello",
+  "type": "unstyled",
 }
 `;

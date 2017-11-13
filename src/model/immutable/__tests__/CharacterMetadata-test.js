@@ -31,7 +31,7 @@ const withStyleAndEntity = CharacterMetadata.create({
 
 test('must have appropriate default values', () => {
   const character = CharacterMetadata.create();
-  expect(character).toMatchSnapshot();
+  expect(character.toJS()).toMatchSnapshot();
   expect(character.getStyle().size).toMatchSnapshot();
   expect(character.getEntity()).toMatchSnapshot();
 });
