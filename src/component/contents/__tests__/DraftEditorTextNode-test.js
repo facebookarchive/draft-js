@@ -14,202 +14,183 @@
 
 jest.disableAutomock().mock('UserAgent');
 
-var BLOCK_DELIMITER_CHAR = '\n';
-var TEST_A = 'Hello';
-var TEST_B = ' World!';
+const TEST_A = 'Hello';
+const TEST_B = ' World!';
 
-var DraftEditorTextNode = require('DraftEditorTextNode.react');
-var React = require('React');
-var ReactDOM = require('ReactDOM');
-var UserAgent = require('UserAgent');
+const DraftEditorTextNode = require('DraftEditorTextNode.react');
+const React = require('React');
+const ReactDOM = require('ReactDOM');
+const UserAgent = require('UserAgent');
 
-describe('DraftEditorTextNode', function() {
-  var container;
+let container;
 
-  beforeEach(function() {
-    jest.resetModules();
-    container = document.createElement('div');
-  });
+beforeEach(() => {
+  jest.resetModules();
+  container = document.createElement('div');
+});
 
-  function renderIntoContainer(element) {
-    return ReactDOM.render(element, container);
-  }
+const renderIntoContainer = element => {
+  return ReactDOM.render(element, container);
+};
 
-  function initializeAsIE() {
-    UserAgent.isBrowser.mockImplementation(() => true);
-  }
+const initializeAsIE = () => {
+  UserAgent.isBrowser.mockImplementation(() => true);
+};
 
-  function initializeAsNonIE() {
-    UserAgent.isBrowser.mockImplementation(() => false);
-  }
+const initializeAsNonIE = () => {
+  UserAgent.isBrowser.mockImplementation(() => false);
+};
 
-  function expectPopulatedSpan(stub, testString) {
-    var node = ReactDOM.findDOMNode(stub);
-    expect(node.tagName).toBe('SPAN');
-    expect(node.childNodes.length).toBe(1);
-    expect(node.firstChild.textContent).toBe(testString);
-  }
+test('must initialize correctly with an empty string, non-IE', () => {
+  initializeAsNonIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{''}</DraftEditorTextNode>,
+  );
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-  it('must initialize correctly with an empty string, non-IE', function() {
-    initializeAsNonIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{''}</DraftEditorTextNode>,
-    );
-    expect(ReactDOM.findDOMNode(stub).tagName).toBe('BR');
-  });
+test('must initialize correctly with an empty string, IE', () => {
+  initializeAsIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{''}</DraftEditorTextNode>,
+  );
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-  it('must initialize correctly with an empty string, IE', function() {
-    initializeAsIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{''}</DraftEditorTextNode>,
-    );
-    expectPopulatedSpan(stub, BLOCK_DELIMITER_CHAR);
-  });
+test('must initialize correctly with a string, non-IE', () => {
+  initializeAsNonIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
+  );
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-  it('must initialize correctly with a string, non-IE', function() {
-    initializeAsNonIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
-    );
-    expectPopulatedSpan(stub, TEST_A);
-  });
+test('must initialize correctly with a string, IE', () => {
+  initializeAsIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
+  );
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-  it('must initialize correctly with a string, IE', function() {
-    initializeAsIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
-    );
-    expectPopulatedSpan(stub, TEST_A);
-  });
+test('must update from empty to non-empty, non-IE', () => {
+  initializeAsNonIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{''}</DraftEditorTextNode>,
+  );
 
-  it('must update from empty to non-empty, non-IE', function() {
-    initializeAsNonIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{''}</DraftEditorTextNode>,
-    );
+  renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-    renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
-    expectPopulatedSpan(stub, TEST_A);
-  });
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-  it('must update from empty to non-empty, IE', function() {
-    initializeAsIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{''}</DraftEditorTextNode>,
-    );
+test('must update from empty to non-empty, IE', () => {
+  initializeAsIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{''}</DraftEditorTextNode>,
+  );
 
-    renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
-    expectPopulatedSpan(stub, TEST_A);
-  });
+  renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-  it('must update from non-empty to non-empty, non-IE', function() {
-    initializeAsNonIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
-    );
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-    renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A + TEST_B}</DraftEditorTextNode>,
-    );
+test('must update from non-empty to non-empty, non-IE', () => {
+  initializeAsIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
+  );
 
-    expectPopulatedSpan(stub, TEST_A + TEST_B);
+  renderIntoContainer(
+    <DraftEditorTextNode>{TEST_A + TEST_B}</DraftEditorTextNode>,
+  );
 
-    renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
-    expectPopulatedSpan(stub, TEST_B);
-  });
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
 
-  it('must update from non-empty to non-empty, non-IE', function() {
-    initializeAsIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
-    );
+  renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
-    renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A + TEST_B}</DraftEditorTextNode>,
-    );
-    expectPopulatedSpan(stub, TEST_A + TEST_B);
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-    renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
-    expectPopulatedSpan(stub, TEST_B);
-  });
+test('must skip updates if text already matches DOM, non-IE', () => {
+  initializeAsNonIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
+  );
 
-  it('must skip updates if text already matches DOM, non-IE', function() {
-    initializeAsNonIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
-    );
+  spyOn(stub, 'render').and.callThrough();
 
-    spyOn(stub, 'render').and.callThrough();
+  renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-    renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
+  expect(stub.render.calls.count()).toMatchSnapshot();
 
-    expect(stub.render.calls.count()).toBe(0);
+  // Sanity check that updating is performed when appropriate.
+  renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
-    // Sanity check that updating is performed when appropriate.
-    renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
+  expect(stub.render.calls.count()).toMatchSnapshot();
+});
 
-    expect(stub.render.calls.count()).toBe(1);
-  });
+test('must skip updates if text already matches DOM, IE', () => {
+  initializeAsIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
+  );
 
-  it('must skip updates if text already matches DOM, IE', function() {
-    initializeAsIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
-    );
+  spyOn(stub, 'render').and.callThrough();
 
-    spyOn(stub, 'render').and.callThrough();
+  renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-    renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
+  expect(stub.render.calls.count()).toMatchSnapshot();
 
-    expect(stub.render.calls.count()).toBe(0);
+  // Sanity check that updating is performed when appropriate.
+  renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
-    // Sanity check that updating is performed when appropriate.
-    renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
+  expect(stub.render.calls.count()).toMatchSnapshot();
+});
 
-    expect(stub.render.calls.count()).toBe(1);
-  });
+test('must update from non-empty to empty, non-IE', () => {
+  initializeAsNonIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
+  );
 
-  it('must update from non-empty to empty, non-IE', function() {
-    initializeAsNonIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
-    );
+  renderIntoContainer(<DraftEditorTextNode>{''}</DraftEditorTextNode>);
 
-    renderIntoContainer(<DraftEditorTextNode>{''}</DraftEditorTextNode>);
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-    expect(ReactDOM.findDOMNode(stub).tagName).toBe('BR');
-  });
+test('must update from non-empty to empty, IE', () => {
+  initializeAsIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
+  );
 
-  it('must update from non-empty to empty, IE', function() {
-    initializeAsIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
-    );
+  renderIntoContainer(<DraftEditorTextNode>{''}</DraftEditorTextNode>);
 
-    renderIntoContainer(<DraftEditorTextNode>{''}</DraftEditorTextNode>);
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-    expectPopulatedSpan(stub, BLOCK_DELIMITER_CHAR);
-  });
+test('must render properly into a parent DOM node', () => {
+  initializeAsNonIE();
 
-  it('must render properly into a parent DOM node', function() {
-    initializeAsNonIE();
-    renderIntoContainer(
-      <div>
-        <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
-      </div>,
-    );
-  });
+  const stub = renderIntoContainer(
+    <div>
+      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>
+    </div>,
+  );
 
-  it('must force unchanged text back into the DOM', function() {
-    initializeAsNonIE();
-    var stub = renderIntoContainer(
-      <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
-    );
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
+});
 
-    ReactDOM.findDOMNode(stub).textContent = TEST_B;
+test('must force unchanged text back into the DOM', () => {
+  initializeAsNonIE();
+  const stub = renderIntoContainer(
+    <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
+  );
 
-    renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
+  ReactDOM.findDOMNode(stub).textContent = TEST_B;
 
-    expect(ReactDOM.findDOMNode(stub).textContent).toBe(TEST_A);
-  });
+  renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
+
+  expect(ReactDOM.findDOMNode(stub)).toMatchSnapshot();
 });

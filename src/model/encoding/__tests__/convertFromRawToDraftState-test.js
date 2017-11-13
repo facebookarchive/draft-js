@@ -14,21 +14,19 @@
 
 jest.disableAutomock();
 
+jest.mock('generateRandomKey');
+
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 
-describe('convertFromRawToDraftState', () => {
-  it('must map falsey block types to default value of unstyled', () => {
-    const rawState = {
-      blocks: [
-        {text: 'AAAA'},
-        {text: 'BBBB', type: null},
-        {text: 'CCCC', type: undefined},
-      ],
-      entityMap: {},
-    };
+test('must map falsey block types to default value of unstyled', () => {
+  const rawState = {
+    blocks: [
+      {text: 'AAAA'},
+      {text: 'BBBB', type: null},
+      {text: 'CCCC', type: undefined},
+    ],
+    entityMap: {},
+  };
 
-    const contentState = convertFromRawToDraftState(rawState);
-    const blockMap = contentState.getBlockMap();
-    blockMap.forEach(block => expect(block.type).toEqual('unstyled'));
-  });
+  expect(convertFromRawToDraftState(rawState).getBlockMap().toJS()).toMatchSnapshot();
 });

@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`defaults to "unstyled" block type for unknown block types 1`] = `
+<div
+  class="container-root"
+  data-reactroot=""
+>
+  <div>
+    <button>
+      CenterAlign
+    </button>
+  </div>
+  <div
+    class="DraftEditor-root"
+  >
+    <div
+      class="public-DraftEditorPlaceholder-root"
+    >
+      <div
+        class="public-DraftEditorPlaceholder-inner"
+        id="placeholder-key3"
+      >
+        Type away :)
+      </div>
+    </div>
+    <div
+      class="DraftEditor-editorContainer"
+    >
+      <div
+        aria-describedby="placeholder-key3"
+        class="notranslate public-DraftEditor-content"
+        contenteditable="true"
+        role="textbox"
+        spellcheck="false"
+        style="outline: none; white-space: pre-wrap; word-wrap: break-word;"
+      >
+        <div
+          data-contents="true"
+        >
+          <div
+            class=""
+            data-block="true"
+            data-editor="key3"
+            data-offset-key="key2-0-0"
+          >
+            <div
+              class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+              data-offset-key="key2-0-0"
+            >
+              <span
+                data-offset-key="key2-0-0"
+              >
+                <br
+                  data-text="true"
+                />
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
