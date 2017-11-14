@@ -14,153 +14,57 @@
 
 jest.disableAutomock();
 
-var Immutable = require('immutable');
+jest.mock('generateRandomKey');
 
-var getSampleStateForTesting = require('getSampleStateForTesting');
-var splitBlockInContentState = require('splitBlockInContentState');
+const getSampleStateForTesting = require('getSampleStateForTesting');
+const splitBlockInContentState = require('splitBlockInContentState');
 
-const {List} = Immutable;
+const {contentState, selectionState} = getSampleStateForTesting();
 
-describe('splitBlockInContentState', () => {
-  var {contentState, selectionState} = getSampleStateForTesting();
-  const blockSizeBeforeSplit = contentState.getBlockMap().size;
+const assertSplitBlockInContentState = selection => {
+  expect(
+    splitBlockInContentState(contentState, selection)
+      .getBlockMap()
+      .toJS(),
+  ).toMatchSnapshot();
+};
 
-  function checkForCharacterList(block) {
-    expect(List.isList(block.getCharacterList())).toBe(true);
-  }
+test('must be restricted to collapsed selections', () => {
+  expect(() => {
+    const nonCollapsed = selectionState.set('focusOffset', 1);
+    return splitBlockInContentState(contentState, nonCollapsed);
+  }).toThrow();
 
-  function getInlineStyles(block) {
-    return block
-      .getCharacterList()
-      .map(c => c.getStyle())
-      .toJS();
-  }
+  expect(() => {
+    return splitBlockInContentState(contentState, selectionState);
+  }).not.toThrow();
+});
 
-  function getEntities(block) {
-    return block
-      .getCharacterList()
-      .map(c => c.getEntity())
-      .toJS();
-  }
+test('must split at the beginning of a block', () => {
+  assertSplitBlockInContentState(selectionState);
+});
 
-  it('must be restricted to collapsed selections', () => {
-    expect(() => {
-      var nonCollapsed = selectionState.set('focusOffset', 1);
-      return splitBlockInContentState(contentState, nonCollapsed);
-    }).toThrow();
+test('must split within a block', () => {
+  const SPLIT_OFFSET = 3;
 
-    expect(() => {
-      return splitBlockInContentState(contentState, selectionState);
-    }).not.toThrow();
-  });
-
-  it('must split at the beginning of a block', () => {
-    const blockSizeBeforeInsert = contentState.getBlockMap().size;
-    var initialBlock = contentState.getBlockMap().first();
-    var afterSplit = splitBlockInContentState(contentState, selectionState);
-    var afterBlockMap = afterSplit.getBlockMap();
-    expect(afterBlockMap.size).toBe(blockSizeBeforeInsert + 1);
-
-    var preSplitBlock = afterBlockMap.first();
-
-    expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
-    expect(preSplitBlock.getText()).toBe('');
-    expect(getInlineStyles(preSplitBlock)).toEqual([]);
-    expect(getEntities(preSplitBlock)).toEqual([]);
-
-    var postSplitBlock = afterBlockMap.skip(1).first();
-    expect(preSplitBlock.getKey()).not.toBe(postSplitBlock.getKey());
-    expect(preSplitBlock.getType()).toBe(postSplitBlock.getType());
-
-    expect(postSplitBlock.getKey()).not.toBe(initialBlock.getKey());
-    expect(postSplitBlock.getType()).toBe(initialBlock.getType());
-    expect(postSplitBlock.getText()).toBe(initialBlock.getText());
-    expect(getInlineStyles(initialBlock)).toEqual(
-      getInlineStyles(postSplitBlock),
-    );
-    expect(getEntities(postSplitBlock)).toEqual(getEntities(initialBlock));
-
-    checkForCharacterList(preSplitBlock);
-    checkForCharacterList(postSplitBlock);
-  });
-
-  it('must split within a block', () => {
-    var initialBlock = contentState.getBlockMap().first();
-    var SPLIT_OFFSET = 3;
-    var selection = selectionState.merge({
+  assertSplitBlockInContentState(
+    selectionState.merge({
       anchorOffset: SPLIT_OFFSET,
       focusOffset: SPLIT_OFFSET,
-    });
+    }),
+  );
+});
 
-    var afterSplit = splitBlockInContentState(contentState, selection);
-    var afterBlockMap = afterSplit.getBlockMap();
-    expect(afterBlockMap.size).toBe(blockSizeBeforeSplit + 1);
+test('must split at the end of a block', () => {
+  const SPLIT_OFFSET = contentState
+    .getBlockMap()
+    .first()
+    .getLength();
 
-    var preSplitBlock = afterBlockMap.first();
-    var postSplitBlock = afterBlockMap.skip(1).first();
-
-    expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
-    expect(preSplitBlock.getText()).toBe(
-      initialBlock.getText().slice(0, SPLIT_OFFSET),
-    );
-    expect(getInlineStyles(preSplitBlock)).toEqual(
-      getInlineStyles(initialBlock).slice(0, SPLIT_OFFSET),
-    );
-    expect(getEntities(preSplitBlock)).toEqual(
-      getEntities(initialBlock).slice(0, SPLIT_OFFSET),
-    );
-
-    expect(preSplitBlock.getKey()).not.toBe(postSplitBlock.getKey());
-    expect(preSplitBlock.getType()).toBe(postSplitBlock.getType());
-
-    expect(postSplitBlock.getKey()).not.toBe(initialBlock.getKey());
-    expect(postSplitBlock.getType()).toBe(initialBlock.getType());
-    expect(postSplitBlock.getText()).toBe(
-      initialBlock.getText().slice(SPLIT_OFFSET),
-    );
-    expect(getInlineStyles(postSplitBlock)).toEqual(
-      getInlineStyles(initialBlock).slice(SPLIT_OFFSET),
-    );
-    expect(getEntities(postSplitBlock)).toEqual(
-      getEntities(initialBlock).slice(SPLIT_OFFSET),
-    );
-
-    checkForCharacterList(preSplitBlock);
-    checkForCharacterList(postSplitBlock);
-  });
-
-  it('must split at the end of a block', () => {
-    var initialBlock = contentState.getBlockMap().first();
-    var end = initialBlock.getLength();
-    var selection = selectionState.merge({
-      anchorOffset: end,
-      focusOffset: end,
-    });
-
-    var afterSplit = splitBlockInContentState(contentState, selection);
-    var afterBlockMap = afterSplit.getBlockMap();
-    expect(afterBlockMap.size).toBe(blockSizeBeforeSplit + 1);
-
-    var preSplitBlock = afterBlockMap.first();
-    var postSplitBlock = afterBlockMap.skip(1).first();
-
-    expect(preSplitBlock.getKey()).toBe(initialBlock.getKey());
-
-    expect(preSplitBlock.getKey()).not.toBe(postSplitBlock.getKey());
-    expect(preSplitBlock.getType()).toBe(postSplitBlock.getType());
-    expect(preSplitBlock.getText()).toBe(initialBlock.getText());
-    expect(getInlineStyles(preSplitBlock)).toEqual(
-      getInlineStyles(initialBlock),
-    );
-    expect(getEntities(preSplitBlock)).toEqual(getEntities(initialBlock));
-
-    expect(postSplitBlock.getKey()).not.toBe(initialBlock.getKey());
-    expect(postSplitBlock.getType()).toBe(initialBlock.getType());
-    expect(postSplitBlock.getText()).toBe('');
-    expect(getInlineStyles(postSplitBlock)).toEqual([]);
-    expect(getEntities(postSplitBlock)).toEqual([]);
-
-    checkForCharacterList(preSplitBlock);
-    checkForCharacterList(postSplitBlock);
-  });
+  assertSplitBlockInContentState(
+    selectionState.merge({
+      anchorOffset: SPLIT_OFFSET,
+      focusOffset: SPLIT_OFFSET,
+    }),
+  );
 });

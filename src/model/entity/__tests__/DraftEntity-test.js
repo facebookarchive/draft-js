@@ -14,55 +14,48 @@
 
 jest.disableAutomock();
 
-var DraftEntity = require('DraftEntity');
+const DraftEntity = require('DraftEntity');
 
-describe('DraftEntity', () => {
-  beforeEach(() => {
-    jest.resetModules();
-  });
+beforeEach(() => {
+  jest.resetModules();
+});
 
-  function createLink() {
-    return DraftEntity.__create('LINK', 'MUTABLE', {uri: 'zombo.com'});
-  }
+const createLink = () => {
+  return DraftEntity.__create('LINK', 'MUTABLE', {uri: 'zombo.com'});
+};
 
-  it('must create instances', () => {
-    var key = createLink();
-    expect(typeof key).toBe('string');
-  });
+test('must create instances', () => {
+  const key = createLink();
+  expect(typeof key).toMatchSnapshot();
+});
 
-  it('must retrieve an instance given a key', () => {
-    var key = createLink();
-    var retrieved = DraftEntity.__get(key);
-    expect(retrieved.getType()).toBe('LINK');
-    expect(retrieved.getMutability()).toBe('MUTABLE');
-    expect(retrieved.getData()).toEqual({uri: 'zombo.com'});
-  });
+test('must retrieve an instance given a key', () => {
+  const key = createLink();
+  const retrieved = DraftEntity.__get(key);
+  expect(retrieved.getType()).toMatchSnapshot();
+  expect(retrieved.getMutability()).toMatchSnapshot();
+  expect(retrieved.getData()).toMatchSnapshot();
+});
 
-  it('must throw when retrieving for an invalid key', () => {
-    createLink();
-    expect(() => DraftEntity.__get('asdfzxcvqweriuop')).toThrow();
-    expect(() => DraftEntity.__get(null)).toThrow();
-  });
+test('must throw when retrieving for an invalid key', () => {
+  createLink();
+  expect(() => DraftEntity.__get('asdfzxcvqweriuop')).toThrow();
+  expect(() => DraftEntity.__get(null)).toThrow();
+});
 
-  it('must merge data', () => {
-    var key = createLink();
+test('must merge data', () => {
+  const key = createLink();
 
-    // Merge new property.
-    var newData = {foo: 'bar'};
-    DraftEntity.__mergeData(key, newData);
-    var newEntity = DraftEntity.__get(key);
-    expect(newEntity.getData()).toEqual({
-      uri: 'zombo.com',
-      foo: 'bar',
-    });
+  // Merge new property.
+  const newData = {foo: 'bar'};
+  DraftEntity.__mergeData(key, newData);
+  const newEntity = DraftEntity.__get(key);
 
-    // Replace existing property.
-    var withNewURI = {uri: 'homestarrunner.com'};
-    DraftEntity.__mergeData(key, withNewURI);
-    var entityWithNewURI = DraftEntity.__get(key);
-    expect(entityWithNewURI.getData()).toEqual({
-      uri: 'homestarrunner.com',
-      foo: 'bar',
-    });
-  });
+  // Replace existing property.
+  const withNewURI = {uri: 'homestarrunner.com'};
+  DraftEntity.__mergeData(key, withNewURI);
+  const entityWithNewURI = DraftEntity.__get(key);
+
+  expect(newEntity.getData()).toMatchSnapshot();
+  expect(entityWithNewURI.getData()).toMatchSnapshot();
 });

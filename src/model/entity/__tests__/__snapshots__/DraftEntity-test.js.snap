@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must create instances 1`] = `"string"`;
+
+exports[`must merge data 1`] = `
+Object {
+  "foo": "bar",
+  "uri": "zombo.com",
+}
+`;
+
+exports[`must merge data 2`] = `
+Object {
+  "foo": "bar",
+  "uri": "homestarrunner.com",
+}
+`;
+
+exports[`must retrieve an instance given a key 1`] = `"LINK"`;
+
+exports[`must retrieve an instance given a key 2`] = `"MUTABLE"`;
+
+exports[`must retrieve an instance given a key 3`] = `
+Object {
+  "uri": "zombo.com",
+}
+`;

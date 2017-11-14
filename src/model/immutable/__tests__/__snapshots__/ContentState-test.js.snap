@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`block fetching must retrieve or fail fetching block for key 1`] = `true`;
+
+exports[`block fetching must retrieve or fail fetching block for key 2`] = `"Lorem ipsum"`;
+
+exports[`block fetching must retrieve or fail fetching block for key 3`] = `undefined`;
+
+exports[`key fetching must succeed or fail properly 1`] = `undefined`;
+
+exports[`key fetching must succeed or fail properly 2`] = `undefined`;
+
+exports[`key fetching must succeed or fail properly 3`] = `undefined`;
+
+exports[`key fetching must succeed or fail properly 4`] = `undefined`;
+
+exports[`key fetching must succeed or fail properly 5`] = `"c"`;
+
+exports[`key fetching must succeed or fail properly 6`] = `"b"`;
+
+exports[`key fetching must succeed or fail properly 7`] = `undefined`;
+
+exports[`must create a new instance 1`] = `true`;
+
+exports[`must create entities instances 1`] = `"string"`;
+
+exports[`must create properly with an empty block array 1`] = `true`;
+
+exports[`must merge entities data 1`] = `
+Object {
+  "foo": "bar",
+  "uri": "zombo.com",
+}
+`;
+
+exports[`must merge entities data 2`] = `
+Object {
+  "foo": "bar",
+  "uri": "homestarrunner.com",
+}
+`;
+
+exports[`must replace entities data 1`] = `
+Object {
+  "newProp": "baz",
+  "uri": "something.com",
+}
+`;
+
+exports[`must retrieve an entities instance given a key 1`] = `
+Object {
+  "data": Object {
+    "uri": "zombo.com",
+  },
+  "mutability": "MUTABLE",
+  "type": "LINK",
+}
+`;

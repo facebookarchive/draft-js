@@ -1,0 +1,377 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`img with data protocol should be correctly parsed 1`] = `"📷"`;
+
+exports[`img with http protocol should have camera emoji content 1`] = `"📷"`;
+
+exports[`must not merge tags when converting adjacent <blockquote /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "a",
+    "type": "blockquote",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "text": "b",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <div /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key2",
+    "text": "a",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key3",
+    "text": "b",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <figure /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "a",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key5",
+    "text": "b",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h1 /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key6",
+    "text": "a",
+    "type": "header-one",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key7",
+    "text": "b",
+    "type": "header-one",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h2 /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key8",
+    "text": "a",
+    "type": "header-two",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key9",
+    "text": "b",
+    "type": "header-two",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h3 /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key10",
+    "text": "a",
+    "type": "header-three",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key11",
+    "text": "b",
+    "type": "header-three",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h4 /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key12",
+    "text": "a",
+    "type": "header-four",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key13",
+    "text": "b",
+    "type": "header-four",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h5 /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key14",
+    "text": "a",
+    "type": "header-five",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key15",
+    "text": "b",
+    "type": "header-five",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <h6 /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key16",
+    "text": "a",
+    "type": "header-six",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key17",
+    "text": "b",
+    "type": "header-six",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <li /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key18",
+    "text": "a",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key19",
+    "text": "b",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <p /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key20",
+    "text": "a",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key21",
+    "text": "b",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must not merge tags when converting adjacent <pre /> 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key22",
+    "text": "a",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key23",
+    "text": "b",
+    "type": "code-block",
+  },
+]
+`;

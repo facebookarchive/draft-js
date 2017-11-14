@@ -12,83 +12,78 @@
 
 jest.disableAutomock();
 
-var getEntityKeyForSelection = require('getEntityKeyForSelection');
-var getSampleStateForTesting = require('getSampleStateForTesting');
+const getEntityKeyForSelection = require('getEntityKeyForSelection');
+const getSampleStateForTesting = require('getSampleStateForTesting');
 
-var {contentState, selectionState} = getSampleStateForTesting();
+const {contentState, selectionState} = getSampleStateForTesting();
 
-selectionState = selectionState.merge({
+const initialSelectionState = selectionState.merge({
   anchorKey: 'b',
   focusKey: 'b',
 });
 
-function setEntityMutability(mutability) {
+const COLLAPSED_SELECTION = initialSelectionState.merge({
+  anchorOffset: 2,
+  focusOffset: 2,
+});
+
+const NON_COLLAPSED_SELECTION = initialSelectionState.merge({
+  anchorOffset: 2,
+  focusKey: 'c',
+  focusOffset: 2,
+});
+
+const setEntityMutability = mutability => {
   contentState.getEntityMap().__get = () => ({
     getMutability: () => mutability,
   });
-}
-describe('getEntityKeyForSelection', () => {
-  describe('collapsed selection', () => {
-    var collapsed = selectionState.merge({
-      anchorOffset: 2,
-      focusOffset: 2,
-    });
+};
 
-    it('must return null at start of block', () => {
-      var key = getEntityKeyForSelection(contentState, selectionState);
-      expect(key).toBe(null);
-    });
+test('must return null at start of block with collapsed selection', () => {
+  const key = getEntityKeyForSelection(contentState, initialSelectionState);
+  expect(key).toMatchSnapshot();
+});
 
-    it('must return key if mutable', () => {
-      setEntityMutability('MUTABLE');
-      var key = getEntityKeyForSelection(contentState, collapsed);
-      expect(key).toBe('1');
-    });
+test('must return key if mutable with collapsed selection', () => {
+  setEntityMutability('MUTABLE');
+  const key = getEntityKeyForSelection(contentState, COLLAPSED_SELECTION);
+  expect(key).toMatchSnapshot();
+});
 
-    it('must not return key if immutable', () => {
-      setEntityMutability('IMMUTABLE');
-      var key = getEntityKeyForSelection(contentState, collapsed);
-      expect(key).toBe(null);
-    });
+test('must not return key if immutable with collapsed selection', () => {
+  setEntityMutability('IMMUTABLE');
+  const key = getEntityKeyForSelection(contentState, COLLAPSED_SELECTION);
+  expect(key).toMatchSnapshot();
+});
 
-    it('must not return key if segmented', () => {
-      setEntityMutability('SEGMENTED');
-      var key = getEntityKeyForSelection(contentState, collapsed);
-      expect(key).toBe(null);
-    });
+test('must not return key if segmented with collapsed selection', () => {
+  setEntityMutability('SEGMENTED');
+  const key = getEntityKeyForSelection(contentState, COLLAPSED_SELECTION);
+  expect(key).toMatchSnapshot();
+});
+
+test('must return null if start is at end of block', () => {
+  const startsAtEnd = NON_COLLAPSED_SELECTION.merge({
+    anchorOffset: contentState.getBlockForKey('b').getLength(),
   });
+  const key = getEntityKeyForSelection(contentState, startsAtEnd);
+  expect(key).toMatchSnapshot();
+});
 
-  describe('non-collapsed selection', () => {
-    var nonCollapsed = selectionState.merge({
-      anchorOffset: 2,
-      focusKey: 'c',
-      focusOffset: 2,
-    });
+test('must return key if mutable', () => {
+  setEntityMutability('MUTABLE');
+  const key = getEntityKeyForSelection(contentState, NON_COLLAPSED_SELECTION);
+  expect(key).toMatchSnapshot();
+});
 
-    it('must return null if start is at end of block', () => {
-      var startsAtEnd = nonCollapsed.merge({
-        anchorOffset: contentState.getBlockForKey('b').getLength(),
-      });
-      var key = getEntityKeyForSelection(contentState, startsAtEnd);
-      expect(key).toBe(null);
-    });
+test('must not return key if immutable', () => {
+  setEntityMutability('IMMUTABLE');
+  const key = getEntityKeyForSelection(contentState, NON_COLLAPSED_SELECTION);
+  expect(key).toMatchSnapshot();
+});
 
-    it('must return key if mutable', () => {
-      setEntityMutability('MUTABLE');
-      var key = getEntityKeyForSelection(contentState, nonCollapsed);
-      expect(key).toBe('1');
-    });
-
-    it('must not return key if immutable', () => {
-      setEntityMutability('IMMUTABLE');
-      var key = getEntityKeyForSelection(contentState, nonCollapsed);
-      expect(key).toBe(null);
-    });
-
-    it('must not return key if segmented', () => {
-      setEntityMutability('SEGMENTED');
-      var key = getEntityKeyForSelection(contentState, nonCollapsed);
-      expect(key).toBe(null);
-    });
-  });
+test('must not return key if segmented', () => {
+  setEntityMutability('SEGMENTED');
+  const key = getEntityKeyForSelection(contentState, NON_COLLAPSED_SELECTION);
+  expect(key).toMatchSnapshot();
 });
