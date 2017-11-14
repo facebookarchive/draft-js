@@ -23,6 +23,7 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const DraftEntity = require('DraftEntity');
+const SelectionState = require('SelectionState');
 const invariant = require('invariant');
 const Immutable = require('immutable');
 
@@ -31,7 +32,7 @@ const decodeEntityRanges = require('decodeEntityRanges');
 const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 const generateRandomKey = require('generateRandomKey');
 
-const {List, Map} = Immutable;
+const {List, Map, OrderedMap} = Immutable;
 
 const decodeBlockNodeConfig = (
   block: RawDraftContentBlock,
@@ -90,7 +91,7 @@ const updateNodeStack = (
   nodes: Array<*>,
   parentRef: ContentBlockNode,
 ): Array<*> => {
-  const decoratedNodes = nodes.map(block => {
+  const nodesWithParentRef = nodes.map(block => {
     return {
       ...block,
       parentRef,
@@ -98,7 +99,7 @@ const updateNodeStack = (
   });
 
   // since we pop nodes from the stack we need to insert them in reverse
-  return stack.concat(decoratedNodes.reverse());
+  return stack.concat(nodesWithParentRef.reverse());
 };
 
 /**
@@ -115,70 +116,76 @@ const decodeContentBlockNodes = (
     blocks
       // ensure children have valid keys to enable sibling links
       .map(addKeyIfMissing)
-      .reduce((acc: BlockMap, block: RawDraftContentBlock, index: number) => {
-        invariant(
-          Array.isArray(block.children),
-          'invalid RawDraftContentBlock can not be converted to ContentBlockNode',
-        );
-
-        // ensure children have valid keys to enable sibling links
-        const children = block.children.map(addKeyIfMissing);
-
-        // root level nodes
-        const contentBlockNode = new ContentBlockNode({
-          ...decodeBlockNodeConfig(block, entityMap),
-          prevSibling: index === 0 ? null : blocks[index - 1].key,
-          nextSibling:
-            index === blocks.length - 1 ? null : blocks[index + 1].key,
-          children: List(children.map(child => child.key)),
-        });
-
-        // push root node to blockMap
-        acc.push(contentBlockNode);
-
-        // this stack is used to ensure we visit all nodes respecting depth ordering
-        let stack = updateNodeStack([], children, contentBlockNode);
-
-        // start computing children nodes
-        while (stack.length > 0) {
-          // we pop from the stack and start processing this node
-          const node = stack.pop();
-
-          // parentRef already points to a converted ContentBlockNode
-          const parentRef: ContentBlockNode = node.parentRef;
-          const siblings = parentRef.getChildKeys();
-          const index = siblings.indexOf(node.key);
-          const isValidBlock = Array.isArray(node.children);
-
-          if (!isValidBlock) {
-            invariant(
-              isValidBlock,
-              'invalid RawDraftContentBlock can not be converted to ContentBlockNode',
-            );
-            break;
-          }
+      .reduce(
+        (blockMap: BlockMap, block: RawDraftContentBlock, index: number) => {
+          invariant(
+            Array.isArray(block.children),
+            'invalid RawDraftContentBlock can not be converted to ContentBlockNode',
+          );
 
           // ensure children have valid keys to enable sibling links
-          const children = node.children.map(addKeyIfMissing);
+          const children = block.children.map(addKeyIfMissing);
 
+          // root level nodes
           const contentBlockNode = new ContentBlockNode({
-            ...decodeBlockNodeConfig(node, entityMap),
-            parent: parentRef.getKey(),
-            children: List(children.map(child => child.key)),
-            prevSibling: index === 0 ? null : siblings.get(index - 1),
+            ...decodeBlockNodeConfig(block, entityMap),
+            prevSibling: index === 0 ? null : blocks[index - 1].key,
             nextSibling:
-              index === siblings.size - 1 ? null : siblings.get(index + 1),
+              index === blocks.length - 1 ? null : blocks[index + 1].key,
+            children: List(children.map(child => child.key)),
           });
 
-          // push node to blockMap
-          acc.push(contentBlockNode);
+          // push root node to blockMap
+          blockMap = blockMap.set(contentBlockNode.getKey(), contentBlockNode);
 
           // this stack is used to ensure we visit all nodes respecting depth ordering
-          stack = updateNodeStack(stack, children, contentBlockNode);
-        }
+          let stack = updateNodeStack([], children, contentBlockNode);
 
-        return acc;
-      }, [])
+          // start computing children nodes
+          while (stack.length > 0) {
+            // we pop from the stack and start processing this node
+            const node = stack.pop();
+
+            // parentRef already points to a converted ContentBlockNode
+            const parentRef: ContentBlockNode = node.parentRef;
+            const siblings = parentRef.getChildKeys();
+            const index = siblings.indexOf(node.key);
+            const isValidBlock = Array.isArray(node.children);
+
+            if (!isValidBlock) {
+              invariant(
+                isValidBlock,
+                'invalid RawDraftContentBlock can not be converted to ContentBlockNode',
+              );
+              break;
+            }
+
+            // ensure children have valid keys to enable sibling links
+            const children = node.children.map(addKeyIfMissing);
+
+            const contentBlockNode = new ContentBlockNode({
+              ...decodeBlockNodeConfig(node, entityMap),
+              parent: parentRef.getKey(),
+              children: List(children.map(child => child.key)),
+              prevSibling: index === 0 ? null : siblings.get(index - 1),
+              nextSibling:
+                index === siblings.size - 1 ? null : siblings.get(index + 1),
+            });
+
+            // push node to blockMap
+            blockMap = blockMap.set(
+              contentBlockNode.getKey(),
+              contentBlockNode,
+            );
+
+            // this stack is used to ensure we visit all nodes respecting depth ordering
+            stack = updateNodeStack(stack, children, contentBlockNode);
+          }
+
+          return blockMap;
+        },
+        OrderedMap(),
+      )
   );
 };
 
@@ -186,9 +193,13 @@ const decodeContentBlocks = (
   blocks: Array<RawDraftContentBlock>,
   entityMap: *,
 ): BlockMap => {
-  return blocks.map(
-    (block: RawDraftContentBlock) =>
-      new ContentBlock(decodeBlockNodeConfig(block, entityMap)),
+  return OrderedMap(
+    blocks.map((block: RawDraftContentBlock) => {
+      const contentBlock = new ContentBlock(
+        decodeBlockNodeConfig(block, entityMap),
+      );
+      return [contentBlock.getKey(), contentBlock];
+    }),
   );
 };
 
@@ -235,7 +246,17 @@ const convertFromRawToDraftState = (
   // decode blockMap
   const blockMap = decodeRawBlocks(rawState, entityMap);
 
-  return ContentState.createFromBlockArray(blockMap);
+  // create initial selection
+  const selectionState = blockMap.isEmpty()
+    ? new SelectionState()
+    : SelectionState.createEmpty(blockMap.first().getKey());
+
+  return new ContentState({
+    blockMap,
+    entityMap,
+    selectionBefore: selectionState,
+    selectionAfter: selectionState,
+  });
 };
 
 module.exports = convertFromRawToDraftState;
