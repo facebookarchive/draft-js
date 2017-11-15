@@ -269,7 +269,7 @@ exports[`renders block with nested child that have same wrapperElement 1`] = `
 </blockquote>
 `;
 
-exports[`renders block with nested child that if of different block type 1`] = `
+exports[`renders block with nested child that is of different block type 1`] = `
 <blockquote
   data-block={true}
   data-editor="editor"

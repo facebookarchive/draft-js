@@ -252,7 +252,7 @@ test('renders block with nested child that have same wrapperElement', () => {
   });
 });
 
-test('renders block with nested child that if of different block type', () => {
+test('renders block with nested child that is of different block type', () => {
   const rootBlock = new ContentBlockNode({
     key: 'A',
     text: '',

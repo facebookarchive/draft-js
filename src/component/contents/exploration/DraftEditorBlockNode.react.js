@@ -10,6 +10,8 @@
  * @format
  * @flow
  *
+ * This file is a fork of DraftEditorBlock.react.js and DraftEditorContents.react.js
+ *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
  */
@@ -41,6 +43,9 @@ const SCROLL_BUFFER = 10;
 
 const {List} = Immutable;
 
+// we should harden up the bellow flow types to make them more strict
+type CustomRenderConfig = Object;
+type DraftRenderConfig = Object;
 type BlockRenderFn = (block: BlockNodeRecord) => ?Object;
 type BlockStyleFn = (block: BlockNodeRecord) => string;
 
@@ -128,7 +133,7 @@ const applyWrapperElementToSiblings = (
 const getDraftRenderConfig = (
   block: BlockNodeRecord,
   blockRenderMap: DraftBlockRenderMap,
-): * => {
+): DraftRenderConfig => {
   const configForType =
     blockRenderMap.get(block.getType()) || blockRenderMap.get('unstyled');
 
@@ -145,7 +150,7 @@ const getDraftRenderConfig = (
 const getCustomRenderConfig = (
   block: BlockNodeRecord,
   blockRendererFn: BlockRenderFn,
-): * => {
+): CustomRenderConfig => {
   const customRenderer = blockRendererFn(block);
 
   if (!customRenderer) {
@@ -198,15 +203,17 @@ const getElementPropsConfig = (
 class DraftEditorBlockNode extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const {block, direction, tree} = this.props;
-
-    return (
-      block.getChildKeys() !== List() ||
+    const isContainerNode = !block.getChildKeys.isEmpty();
+    const blockHasChanged =
       block !== nextProps.block ||
       tree !== nextProps.tree ||
       direction !== nextProps.direction ||
       (isBlockOnSelectionEdge(nextProps.selection, nextProps.block.getKey()) &&
-        nextProps.forceSelection)
-    );
+        nextProps.forceSelection);
+
+    // if we have children at this stage we always re-render container nodes
+    // else if its a root node we avoid re-rendering by checking for block updates
+    return isContainerNode || blockHasChanged;
   }
 
   /**
