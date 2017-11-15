@@ -52,6 +52,10 @@ By encoding inline styles and entities together in this way, a function that
 performs edits on a `ContentBlock` can perform slices, concats, and other List
 methods on a single `List` object.
 
+When creating a new `ContentBlock` containing `text` and without `characterList`
+it then will default to a `characterList` with empty `CharacterMetadata` for the
+supplied text.
+
 ## Overview
 
 *Methods*

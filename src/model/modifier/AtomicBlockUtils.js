@@ -7,13 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule AtomicBlockUtils
- * @typechecks
  * @format
  * @flow
  */
 
 'use strict';
 
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftInsertionType} from 'DraftInsertionType';
 
 const BlockMapBuilder = require('BlockMapBuilder');
@@ -89,7 +89,7 @@ const AtomicBlockUtils = {
 
   moveAtomicBlock: function(
     editorState: EditorState,
-    atomicBlock: ContentBlock,
+    atomicBlock: BlockNodeRecord,
     targetRange: SelectionState,
     insertionMode?: DraftInsertionType,
   ): EditorState {

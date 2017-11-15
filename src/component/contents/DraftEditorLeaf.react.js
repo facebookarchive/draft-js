@@ -7,17 +7,16 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorLeaf.react
- * @typechecks
  * @format
  * @flow
  */
 
 'use strict';
 
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 
-var ContentBlock = require('ContentBlock');
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
 var React = require('React');
 var ReactDOM = require('ReactDOM');
@@ -27,7 +26,7 @@ var setDraftEditorSelection = require('setDraftEditorSelection');
 
 type Props = {
   // The block that contains this leaf.
-  block: ContentBlock,
+  block: BlockNodeRecord,
 
   // Mapping of style names to CSS declarations.
   customStyleMap: Object,

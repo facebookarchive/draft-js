@@ -7,14 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule moveBlockInContentState
- * @typechecks
  * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftInsertionType} from 'DraftInsertionType';
 
@@ -22,8 +21,8 @@ const invariant = require('invariant');
 
 function moveBlockInContentState(
   contentState: ContentState,
-  blockToBeMoved: ContentBlock,
-  targetBlock: ContentBlock,
+  blockToBeMoved: BlockNodeRecord,
+  targetBlock: BlockNodeRecord,
   insertionMode: DraftInsertionType,
 ): ContentState {
   invariant(

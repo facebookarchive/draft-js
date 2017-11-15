@@ -16,7 +16,7 @@
 /**
  * The list of default valid block types.
  */
-export type DraftBlockType =
+export type CoreDraftBlockType =
   | 'unstyled'
   | 'paragraph'
   | 'header-one'
@@ -30,3 +30,10 @@ export type DraftBlockType =
   | 'blockquote'
   | 'code-block'
   | 'atomic';
+
+/**
+ * User defined types can be of any valid string.
+ */
+export type CustomBlockType = string;
+
+export type DraftBlockType = CoreDraftBlockType | CustomBlockType;

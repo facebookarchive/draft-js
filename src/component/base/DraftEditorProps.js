@@ -13,7 +13,7 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDragType} from 'DraftDragType';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
@@ -60,10 +60,10 @@ export type DraftEditorProps = {
   // For a given `ContentBlock` object, return an object that specifies
   // a custom block component and/or props. If no object is returned,
   // the default `DraftEditorBlock` is used.
-  blockRendererFn?: (block: ContentBlock) => ?Object,
+  blockRendererFn?: (block: BlockNodeRecord) => ?Object,
 
   // Function that returns a cx map corresponding to block-level styles.
-  blockStyleFn?: (block: ContentBlock) => string,
+  blockStyleFn?: (block: BlockNodeRecord) => string,
 
   // A function that accepts a synthetic key event and returns
   // the matching DraftEditorCommand constant, or a custom string,
@@ -170,7 +170,7 @@ export type DraftEditorProps = {
 
   // Provide a function that will construct CSS style objects given inline
   // style names.
-  customStyleFn?: (style: DraftInlineStyle, block: ContentBlock) => ?Object,
+  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
 
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration
@@ -180,8 +180,8 @@ export type DraftEditorProps = {
 
 export type DraftEditorDefaultProps = {
   blockRenderMap: DraftBlockRenderMap,
-  blockRendererFn: (block: ContentBlock) => ?Object,
-  blockStyleFn: (block: ContentBlock) => string,
+  blockRendererFn: (block: BlockNodeRecord) => ?Object,
+  blockStyleFn: (block: BlockNodeRecord) => string,
   keyBindingFn: (e: SyntheticKeyboardEvent<>) => ?string,
   readOnly: boolean,
   spellCheck: boolean,

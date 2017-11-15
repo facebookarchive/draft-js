@@ -7,14 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorContents.react
- * @typechecks
  * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
@@ -28,7 +27,7 @@ const nullthrows = require('nullthrows');
 
 type Props = {
   blockRendererFn: Function,
-  blockStyleFn: (block: ContentBlock) => string,
+  blockStyleFn: (block: BlockNodeRecord) => string,
   editorState: EditorState,
   textDirectionality?: BidiDirection,
 };

@@ -14,95 +14,54 @@
 
 jest.disableAutomock();
 
-var Immutable = require('immutable');
-var SelectionState = require('SelectionState');
+const SelectionState = require('SelectionState');
 
-var applyEntityToContentState = require('applyEntityToContentState');
-var getSampleStateForTesting = require('getSampleStateForTesting');
+const applyEntityToContentState = require('applyEntityToContentState');
+const getSampleStateForTesting = require('getSampleStateForTesting');
 
-describe('applyEntityToContentState', () => {
-  var {contentState} = getSampleStateForTesting();
+const {contentState, selectionState} = getSampleStateForTesting();
 
-  function checkForCharacterList(block) {
-    expect(Immutable.List.isList(block.getCharacterList())).toBe(true);
-  }
+const initialBlock = contentState.getBlockMap().first();
+const secondBlock = contentState.getBlockAfter(initialBlock.getKey());
 
-  function getEntities(block) {
-    return block
-      .getCharacterList()
-      .map(c => c.getEntity())
-      .toJS();
-  }
+const selectBlock = new SelectionState({
+  anchorKey: initialBlock.getKey(),
+  anchorOffset: 0,
+  focusKey: initialBlock.getKey(),
+  focusOffset: initialBlock.getLength(),
+});
 
-  describe('Apply entity within single block', () => {
-    var target = contentState.getBlockMap().first();
-    var targetSelection = new SelectionState({
-      anchorKey: target.getKey(),
-      anchorOffset: 0,
-      focusKey: target.getKey(),
-      focusOffset: target.getLength(),
-    });
+const selectAdjacentBlocks = new SelectionState({
+  anchorKey: initialBlock.getKey(),
+  anchorOffset: 0,
+  focusKey: secondBlock.getKey(),
+  focusOffset: secondBlock.getLength(),
+});
 
-    function applyAndCheck(entityKey) {
-      var withNewEntity = applyEntityToContentState(
-        contentState,
-        targetSelection,
-        entityKey,
-      );
-      var first = withNewEntity.getBlockMap().first();
+const assertApplyEntityToContentState = (
+  entityKey,
+  selection = selectionState,
+  content = contentState,
+) => {
+  expect(
+    applyEntityToContentState(content, selection, entityKey)
+      .getBlockMap()
+      .toJS(),
+  ).toMatchSnapshot();
+};
 
-      checkForCharacterList(first);
-      expect(getEntities(first)).toEqual(
-        Immutable.Repeat(entityKey, first.getLength()).toArray(),
-      );
-    }
+test('must apply entity key', () => {
+  assertApplyEntityToContentState('x', selectBlock);
+});
 
-    it('must apply entity key', () => {
-      applyAndCheck('x');
-    });
+test('must apply null entity', () => {
+  assertApplyEntityToContentState(null, selectBlock);
+});
 
-    it('must apply null entity', () => {
-      applyAndCheck(null);
-    });
-  });
+test('must apply entity key accross multiple blocks', () => {
+  assertApplyEntityToContentState('x', selectAdjacentBlocks);
+});
 
-  describe('Apply entity across multiple blocks', () => {
-    var blockMap = contentState.getBlockMap();
-    var first = blockMap.first();
-    var last = contentState.getBlockAfter(first.getKey());
-
-    var targetSelection = new SelectionState({
-      anchorKey: first.getKey(),
-      anchorOffset: 0,
-      focusKey: last.getKey(),
-      focusOffset: last.getLength(),
-    });
-
-    function applyAndCheck(entityKey) {
-      var withNewEntity = applyEntityToContentState(
-        contentState,
-        targetSelection,
-        entityKey,
-      );
-      var first = withNewEntity.getBlockMap().first();
-      var last = withNewEntity.getBlockAfter(first.getKey());
-
-      checkForCharacterList(first);
-      expect(getEntities(first)).toEqual(
-        Immutable.Repeat(entityKey, first.getLength()).toArray(),
-      );
-      checkForCharacterList(last);
-      expect(getEntities(last)).toEqual(
-        Immutable.Repeat(entityKey, last.getLength()).toArray(),
-      );
-    }
-
-    it('must apply entity key', () => {
-      applyAndCheck('x');
-    });
-
-    it('must apply null entity', () => {
-      applyAndCheck(null);
-    });
-  });
+test('must apply null entity key accross multiple blocks', () => {
+  assertApplyEntityToContentState(null, selectAdjacentBlocks);
 });
