@@ -16,12 +16,15 @@ jest.disableAutomock();
 
 jest.mock('generateRandomKey');
 
+const Adapter = require('enzyme-adapter-react-16');
 const Editor = require('DraftEditor.react');
 const EditorState = require('EditorState');
-const RichUtils = require('RichTextEditorUtil');
-
-const {mount} = require('enzyme');
+const Enzyme = require('enzyme');
 const React = require('react');
+const RichUtils = require('RichTextEditorUtil');
+const {mount} = require('enzyme');
+
+Enzyme.configure({adapter: new Adapter()});
 
 test('defaults to "unstyled" block type for unknown block types', () => {
   const CUSTOM_BLOCK_TYPE = 'CUSTOM_BLOCK_TYPE';
