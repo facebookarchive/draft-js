@@ -36,6 +36,7 @@ const getViewportDimensions = require('getViewportDimensions');
 
 const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
 const Immutable = require('immutable');
+const TestHelper = require('_DraftTestHelper');
 
 const {List} = Immutable;
 
@@ -128,7 +129,9 @@ const assertDraftEditorBlockRendering = props => {
     <DraftEditorBlockNode {...childProps} />,
   );
 
-  expect(blockNode.toJSON()).toMatchSnapshot();
+  expect(
+    TestHelper.transformSnapshotProps(blockNode.toJSON()),
+  ).toMatchSnapshot();
 };
 
 beforeEach(() => {

@@ -14,16 +14,17 @@
 
 jest.disableAutomock();
 
-const ContentBlockNode = require('ContentBlockNode');
 const ContentBlock = require('ContentBlock');
+const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
+const DraftEditorContents = require('DraftEditorContents.react');
 const EditorState = require('EditorState');
+const Immutable = require('immutable');
 const React = require('React');
 const ReactTestRenderer = require('react-test-renderer');
 const SelectionState = require('SelectionState');
-const DraftEditorContents = require('DraftEditorContents.react');
-const Immutable = require('immutable');
+const TestHelper = require('_DraftTestHelper');
 
 const {List} = Immutable;
 
@@ -75,7 +76,9 @@ const assertDraftEditorContentsRendering = props => {
     <DraftEditorContents {...childProps} />,
   );
 
-  expect(blockNode.toJSON()).toMatchSnapshot();
+  expect(
+    TestHelper.transformSnapshotProps(blockNode.toJSON()),
+  ).toMatchSnapshot();
 };
 
 test('renders ContentBlocks', () => {

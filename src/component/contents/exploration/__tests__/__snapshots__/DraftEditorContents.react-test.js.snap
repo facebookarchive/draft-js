@@ -10,11 +10,9 @@ exports[`renders ContentBlockNodes 1`] = `
     data-offset-key="A-0-0"
   >
     <div
-      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="A-0-0"
     >
       <ol
-        className="public-DraftStyleDefault-ol"
         data-offset-key="B-0-0"
       >
         <li
@@ -23,7 +21,6 @@ exports[`renders ContentBlockNodes 1`] = `
           data-offset-key="B-0-0"
         >
           <div
-            className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
             data-offset-key="B-0-0"
           >
             <h1
@@ -32,7 +29,6 @@ exports[`renders ContentBlockNodes 1`] = `
               data-offset-key="C-0-0"
             >
               <div
-                className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
                 data-offset-key="C-0-0"
               >
                 <span
@@ -58,7 +54,6 @@ exports[`renders ContentBlockNodes 1`] = `
     data-offset-key="D-0-0"
   >
     <div
-      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="D-0-0"
     >
       <span
@@ -81,7 +76,6 @@ exports[`renders ContentBlockNodes with root blocks that have wrapperTemplate 1`
   data-contents="true"
 >
   <ol
-    className="public-DraftStyleDefault-ol"
     data-offset-key="A-0-0"
   >
     <li
@@ -90,7 +84,6 @@ exports[`renders ContentBlockNodes with root blocks that have wrapperTemplate 1`
       data-offset-key="A-0-0"
     >
       <div
-        className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
         data-offset-key="A-0-0"
       >
         <span
@@ -111,7 +104,6 @@ exports[`renders ContentBlockNodes with root blocks that have wrapperTemplate 1`
       data-offset-key="B-0-0"
     >
       <div
-        className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
         data-offset-key="B-0-0"
       >
         <span
@@ -135,13 +127,11 @@ exports[`renders ContentBlocks 1`] = `
   data-contents="true"
 >
   <blockquote
-    className=""
     data-block={true}
     data-editor="editor"
     data-offset-key="A-0-0"
   >
     <div
-      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="A-0-0"
     >
       <span
@@ -157,13 +147,11 @@ exports[`renders ContentBlocks 1`] = `
     </div>
   </blockquote>
   <h1
-    className=""
     data-block={true}
     data-editor="editor"
     data-offset-key="B-0-0"
   >
     <div
-      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="B-0-0"
     >
       <span
@@ -179,13 +167,11 @@ exports[`renders ContentBlocks 1`] = `
     </div>
   </h1>
   <div
-    className=""
     data-block={true}
     data-editor="editor"
     data-offset-key="C-0-0"
   >
     <div
-      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="C-0-0"
     >
       <span
