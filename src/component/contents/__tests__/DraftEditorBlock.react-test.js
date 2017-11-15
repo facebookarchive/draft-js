@@ -27,7 +27,6 @@ const DraftEditorBlock = require('DraftEditorBlock.react');
 const Immutable = require('immutable');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
-const ReactTestUtils = require('ReactTestUtils');
 const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
 const SelectionState = require('SelectionState');
 const Style = require('Style');
@@ -36,7 +35,7 @@ const UnicodeBidiDirection = require('UnicodeBidiDirection');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
-const reactComponentExpect = require('reactComponentExpect');
+const ReactTestRenderer = require('react-test-renderer');
 
 const {BOLD, NONE, ITALIC} = SampleDraftInlineStyle;
 
@@ -121,15 +120,15 @@ const getProps = (block, decorator) => {
 const arePropsEqual = (renderedChild, leafPropSet) => {
   Object.keys(leafPropSet).forEach(key => {
     expect(
-      Immutable.is(leafPropSet[key], renderedChild.instance().props[key]),
+      Immutable.is(leafPropSet[key], renderedChild.props[key]),
     ).toMatchSnapshot();
   });
 };
 
 const assertLeaves = (renderedBlock, leafProps) => {
   leafProps.forEach((leafPropSet, ii) => {
-    const child = renderedBlock.expectRenderedChildAt(ii);
-    child.toBeComponentOfType(DraftEditorLeaf);
+    const child = renderedBlock[ii];
+    expect(child.type).toBe(DraftEditorLeaf);
     arePropsEqual(child, leafPropSet);
   });
 };
@@ -142,15 +141,12 @@ beforeEach(() => {
 
 test('must render a leaf node', () => {
   const props = getProps(getHelloBlock());
-  const block = ReactTestUtils.renderIntoDocument(
-    <DraftEditorBlock {...props} />,
-  );
+  const block = ReactTestRenderer.create(<DraftEditorBlock {...props} />);
+  const blockInstance = block.root;
 
-  const rendered = reactComponentExpect(block)
-    .expectRenderedChild()
-    .toBeComponentOfType('div');
+  expect(blockInstance.children[0].type).toBe('div');
 
-  assertLeaves(rendered, [
+  assertLeaves(blockInstance.children[0].children, [
     {
       text: 'hello',
       offsetKey: 'a-0-0',
@@ -173,15 +169,12 @@ test('must render multiple leaf nodes', () => {
   helloBlock = helloBlock.set('characterList', characters.toList());
 
   const props = getProps(helloBlock);
-  const block = ReactTestUtils.renderIntoDocument(
-    <DraftEditorBlock {...props} />,
-  );
+  const block = ReactTestRenderer.create(<DraftEditorBlock {...props} />);
+  const blockInstance = block.root;
 
-  const rendered = reactComponentExpect(block)
-    .expectRenderedChild()
-    .toBeComponentOfType('div');
+  expect(blockInstance.children[0].type).toBe('div');
 
-  assertLeaves(rendered, [
+  assertLeaves(blockInstance.children[0].children, [
     {
       text: 'he',
       offsetKey: 'a-0-0',
@@ -335,25 +328,24 @@ test('must split apart two decorated and undecorated', () => {
   const props = getProps(helloBlock, decorator);
 
   const container = document.createElement('div');
-  const block = ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const block = ReactTestRenderer.create(
+    <DraftEditorBlock {...props} />,
+    container,
+  );
+  const blockInstance = block.root;
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
-  const rendered = reactComponentExpect(block)
-    .expectRenderedChild()
-    .toBeComponentOfType('div');
+  const el = blockInstance.children[0];
+  expect(el.type).toBe('div');
 
-  rendered
-    .expectRenderedChildAt(0)
-    .scalarPropsEqual({offsetKey: 'a-0-0'})
-    .toBeComponentOfType(DecoratorSpan)
-    .expectRenderedChild()
-    .toBeComponentOfType('span');
+  arePropsEqual(el.children[0], {offsetKey: 'a-0-0'});
+  expect(el.children[0].type).toBe(DecoratorSpan);
+  expect(el.children[0].children.length).toBe(1);
+  expect(el.children[0].children[0].type).toBe('span');
 
-  rendered
-    .expectRenderedChildAt(1)
-    .scalarPropsEqual({offsetKey: 'a-1-0'})
-    .toBeComponentOfType(DraftEditorLeaf);
+  arePropsEqual(el.children[1], {offsetKey: 'a-1-0'});
+  expect(el.children[1].type).toBe(DraftEditorLeaf);
 });
 
 test('must split apart two decorators', () => {
@@ -367,23 +359,24 @@ test('must split apart two decorators', () => {
   const props = getProps(helloBlock, decorator);
 
   const container = document.createElement('div');
-  const block = ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const block = ReactTestRenderer.create(
+    <DraftEditorBlock {...props} />,
+    container,
+  );
+  const blockInstance = block.root;
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
-  const rendered = reactComponentExpect(block)
-    .expectRenderedChild()
-    .toBeComponentOfType('div');
+  const el = blockInstance.children[0];
+  expect(el.type).toBe('div');
 
-  rendered
-    .expectRenderedChildAt(0)
-    .scalarPropsEqual({offsetKey: 'a-0-0'})
-    .toBeComponentOfType(DecoratorSpan);
+  arePropsEqual(el.children[0], {offsetKey: 'a-0-0'});
+  expect(el.children[0].type).toBe(DecoratorSpan);
+  expect(el.children[0].children.length).toBe(1);
+  expect(el.children[0].children[0].type).toBe('span');
 
-  rendered
-    .expectRenderedChildAt(1)
-    .scalarPropsEqual({offsetKey: 'a-1-0'})
-    .toBeComponentOfType(DecoratorSpan);
+  arePropsEqual(el.children[1], {offsetKey: 'a-1-0'});
+  expect(el.children[1].type).toBe(DecoratorSpan);
 });
 
 test('must split apart styled spans', () => {
@@ -400,21 +393,22 @@ test('must split apart styled spans', () => {
   const props = getProps(helloBlock);
 
   const container = document.createElement('div');
-  const block = ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const block = ReactTestRenderer.create(
+    <DraftEditorBlock {...props} />,
+    container,
+  );
+  const blockInstance = block.root;
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
-  const rendered = reactComponentExpect(block)
-    .expectRenderedChild()
-    .toBeComponentOfType('div');
+  const el = blockInstance.children[0];
+  expect(el.type).toBe('div');
 
-  let child = rendered.expectRenderedChildAt(0);
-  child.toBeComponentOfType(DraftEditorLeaf);
-  arePropsEqual(child, {offsetKey: 'a-0-0', styleSet: BOLD});
+  arePropsEqual(el.children[0], {offsetKey: 'a-0-0', styleSet: BOLD});
+  expect(el.children[0].type).toBe(DraftEditorLeaf);
 
-  child = rendered.expectRenderedChildAt(1);
-  child.toBeComponentOfType(DraftEditorLeaf);
-  arePropsEqual(child, {offsetKey: 'a-0-1', styleSet: NONE});
+  arePropsEqual(el.children[1], {offsetKey: 'a-0-1', styleSet: NONE});
+  expect(el.children[1].type).toBe(DraftEditorLeaf);
 });
 
 test('must split styled spans apart within decorator', () => {
@@ -434,31 +428,32 @@ test('must split styled spans apart within decorator', () => {
   const props = getProps(helloBlock, decorator);
 
   const container = document.createElement('div');
-  const block = ReactDOM.render(<DraftEditorBlock {...props} />, container);
+  const block = ReactTestRenderer.create(
+    <DraftEditorBlock {...props} />,
+    container,
+  );
+  const blockInstance = block.root;
 
   expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
 
-  const rendered = reactComponentExpect(block)
-    .expectRenderedChild()
-    .toBeComponentOfType('div');
+  const el = blockInstance.children[0];
+  expect(el.type).toBe('div');
 
-  const decoratedSpan = rendered
-    .expectRenderedChildAt(0)
-    .scalarPropsEqual({offsetKey: 'a-0-0'})
-    .toBeComponentOfType(DecoratorSpan)
-    .expectRenderedChild();
+  arePropsEqual(el.children[0], {offsetKey: 'a-0-0'});
+  expect(el.children[0].type).toBe(DecoratorSpan);
 
-  let child = decoratedSpan.expectRenderedChildAt(0);
-  child.toBeComponentOfType(DraftEditorLeaf);
-  arePropsEqual(child, {offsetKey: 'a-0-0', styleSet: BOLD});
+  var renderer = el.children[0].props;
+  arePropsEqual(renderer.children[0], {offsetKey: 'a-0-0', styleSet: BOLD});
+  expect(renderer.children[0].type).toBe(DraftEditorLeaf);
 
-  child = decoratedSpan.expectRenderedChildAt(1);
-  child.toBeComponentOfType(DraftEditorLeaf);
-  arePropsEqual(child, {offsetKey: 'a-0-1', styleSet: ITALIC});
+  arePropsEqual(renderer.children[1], {
+    offsetKey: 'a-0-1',
+    styleSet: ITALIC,
+  });
+  expect(renderer.children[0].type).toBe(DraftEditorLeaf);
 
-  child = rendered.expectRenderedChildAt(1);
-  child.toBeComponentOfType(DraftEditorLeaf);
-  arePropsEqual(child, {offsetKey: 'a-1-0', styleSet: NONE});
+  arePropsEqual(el.children[1], {offsetKey: 'a-1-0', styleSet: NONE});
+  expect(el.children[1].type).toBe(DraftEditorLeaf);
 });
 
 test('must scroll the window if needed', () => {
