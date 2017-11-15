@@ -2,30 +2,30 @@
 
 exports[`renders block with child that have wrapperElement 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <ol
-      class="public-DraftStyleDefault-ol"
+      className="public-DraftStyleDefault-ol"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="B-0-0"
         >
           <span
             data-offset-key="B-0-0"
+            style={Object {}}
           >
             <span
               data-text="true"
@@ -42,26 +42,26 @@ exports[`renders block with child that have wrapperElement 1`] = `
 
 exports[`renders block with children 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <h3
-      data-block="true"
+      data-block={true}
       data-editor="editor"
       data-offset-key="B-0-0"
     >
       <div
-        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+        className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
         data-offset-key="B-0-0"
       >
         <span
           data-offset-key="B-0-0"
+          style={Object {}}
         >
           <span
             data-text="true"
@@ -72,16 +72,17 @@ exports[`renders block with children 1`] = `
       </div>
     </h3>
     <h1
-      data-block="true"
+      data-block={true}
       data-editor="editor"
       data-offset-key="C-0-0"
     >
       <div
-        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+        className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
         data-offset-key="C-0-0"
       >
         <span
           data-offset-key="C-0-0"
+          style={Object {}}
         >
           <span
             data-text="true"
@@ -92,16 +93,17 @@ exports[`renders block with children 1`] = `
       </div>
     </h1>
     <h2
-      data-block="true"
+      data-block={true}
       data-editor="editor"
       data-offset-key="D-0-0"
     >
       <div
-        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+        className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
         data-offset-key="D-0-0"
       >
         <span
           data-offset-key="D-0-0"
+          style={Object {}}
         >
           <span
             data-text="true"
@@ -117,30 +119,30 @@ exports[`renders block with children 1`] = `
 
 exports[`renders block with children that have same wrapperElement 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <ol
-      class="public-DraftStyleDefault-ol"
+      className="public-DraftStyleDefault-ol"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="B-0-0"
         >
           <span
             data-offset-key="B-0-0"
+            style={Object {}}
           >
             <span
               data-text="true"
@@ -151,16 +153,17 @@ exports[`renders block with children that have same wrapperElement 1`] = `
         </div>
       </li>
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="C-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="C-0-0"
         >
           <span
             data-offset-key="C-0-0"
+            style={Object {}}
           >
             <span
               data-text="true"
@@ -177,43 +180,43 @@ exports[`renders block with children that have same wrapperElement 1`] = `
 
 exports[`renders block with nested child that have different wrapperElement 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <ul
-      class="public-DraftStyleDefault-ul"
+      className="public-DraftStyleDefault-ul"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="B-0-0"
         >
           <ol
-            class="public-DraftStyleDefault-ol"
+            className="public-DraftStyleDefault-ol"
             data-offset-key="C-0-0"
           >
             <li
-              data-block="true"
+              data-block={true}
               data-editor="editor"
               data-offset-key="C-0-0"
             >
               <div
-                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
                 data-offset-key="C-0-0"
               >
                 <span
                   data-offset-key="C-0-0"
+                  style={Object {}}
                 >
                   <span
                     data-text="true"
@@ -233,43 +236,43 @@ exports[`renders block with nested child that have different wrapperElement 1`] 
 
 exports[`renders block with nested child that have same wrapperElement 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <ul
-      class="public-DraftStyleDefault-ul"
+      className="public-DraftStyleDefault-ul"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="B-0-0"
         >
           <ul
-            class="public-DraftStyleDefault-ul"
+            className="public-DraftStyleDefault-ul"
             data-offset-key="C-0-0"
           >
             <li
-              data-block="true"
+              data-block={true}
               data-editor="editor"
               data-offset-key="C-0-0"
             >
               <div
-                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
                 data-offset-key="C-0-0"
               >
                 <span
                   data-offset-key="C-0-0"
+                  style={Object {}}
                 >
                   <span
                     data-text="true"
@@ -289,39 +292,39 @@ exports[`renders block with nested child that have same wrapperElement 1`] = `
 
 exports[`renders block with nested child that if of different block type 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <ol
-      class="public-DraftStyleDefault-ol"
+      className="public-DraftStyleDefault-ol"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="B-0-0"
         >
           <h1
-            data-block="true"
+            data-block={true}
             data-editor="editor"
             data-offset-key="C-0-0"
           >
             <div
-              class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+              className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
               data-offset-key="C-0-0"
             >
               <span
                 data-offset-key="C-0-0"
+                style={Object {}}
               >
                 <span
                   data-text="true"
@@ -340,40 +343,40 @@ exports[`renders block with nested child that if of different block type 1`] = `
 
 exports[`renders block with nested children with blockStyleFn 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <ol
-      class="public-DraftStyleDefault-ol"
+      className="public-DraftStyleDefault-ol"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="B-0-0"
         >
           <h1
-            class="My-fancy-custom-class"
-            data-block="true"
+            className="My-fancy-custom-class"
+            data-block={true}
             data-editor="editor"
             data-offset-key="C-0-0"
           >
             <div
-              class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+              className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
               data-offset-key="C-0-0"
             >
               <span
                 data-offset-key="C-0-0"
+                style={Object {}}
               >
                 <span
                   data-text="true"
@@ -392,35 +395,34 @@ exports[`renders block with nested children with blockStyleFn 1`] = `
 
 exports[`renders block with nested children with custom component 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <ol
-      class="public-DraftStyleDefault-ol"
+      className="public-DraftStyleDefault-ol"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="B-0-0"
         >
           <h1
-            data-block="true"
+            data-block={true}
             data-editor="editor"
             data-offset-key="C-0-0"
           >
             <div
-              class="custom-header-one"
+              className="custom-header-one"
             >
               Custom Component
             </div>
@@ -434,43 +436,39 @@ exports[`renders block with nested children with custom component 1`] = `
 
 exports[`renders block with nested children with custom component and editable prop 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <ol
-      class="public-DraftStyleDefault-ol"
+      className="public-DraftStyleDefault-ol"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="B-0-0"
         >
           <h1
-            contenteditable="false"
-            data-block="true"
+            contentEditable={false}
+            data-block={true}
             data-editor="editor"
             data-offset-key="C-0-0"
+            suppressContentEditableWarning={true}
           >
             <div
-              class="custom-header-one"
+              className="custom-header-one"
             >
-              <!-- react-text: 8 -->
               Custom Component 
-              <!-- /react-text -->
-              <!-- react-text: 9 -->
               bar
-              <!-- /react-text -->
             </div>
           </h1>
         </div>
@@ -482,42 +480,42 @@ exports[`renders block with nested children with custom component and editable p
 
 exports[`renders block with nested children with decorator 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <ol
-      class="public-DraftStyleDefault-ol"
+      className="public-DraftStyleDefault-ol"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
           data-offset-key="B-0-0"
         >
           <h1
-            data-block="true"
+            data-block={true}
             data-editor="editor"
             data-offset-key="C-0-0"
           >
             <div
-              class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+              className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
               data-offset-key="C-0-0"
             >
               <span
-                class="custom-decorated-text"
+                className="custom-decorated-text"
               >
                 <span
                   data-offset-key="C-0-0"
+                  style={Object {}}
                 >
                   <span
                     data-text="true"
@@ -537,39 +535,39 @@ exports[`renders block with nested children with decorator 1`] = `
 
 exports[`renders block with nested children with different direction 1`] = `
 <blockquote
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-rtl"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-rtl"
     data-offset-key="A-0-0"
   >
     <ol
-      class="public-DraftStyleDefault-ol"
+      className="public-DraftStyleDefault-ol"
       data-offset-key="B-0-0"
     >
       <li
-        data-block="true"
+        data-block={true}
         data-editor="editor"
         data-offset-key="B-0-0"
       >
         <div
-          class="public-DraftStyleDefault-block public-DraftStyleDefault-rtl"
+          className="public-DraftStyleDefault-block public-DraftStyleDefault-rtl"
           data-offset-key="B-0-0"
         >
           <h1
-            data-block="true"
+            data-block={true}
             data-editor="editor"
             data-offset-key="C-0-0"
           >
             <div
-              class="public-DraftStyleDefault-block public-DraftStyleDefault-rtl"
+              className="public-DraftStyleDefault-block public-DraftStyleDefault-rtl"
               data-offset-key="C-0-0"
             >
               <span
                 data-offset-key="C-0-0"
+                style={Object {}}
               >
                 <span
                   data-text="true"
@@ -588,17 +586,17 @@ exports[`renders block with nested children with different direction 1`] = `
 
 exports[`renders block with no children 1`] = `
 <h1
-  data-block="true"
+  data-block={true}
   data-editor="editor"
   data-offset-key="A-0-0"
-  data-reactroot=""
 >
   <div
-    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+    className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
     data-offset-key="A-0-0"
   >
     <span
       data-offset-key="A-0-0"
+      style={Object {}}
     >
       <span
         data-text="true"

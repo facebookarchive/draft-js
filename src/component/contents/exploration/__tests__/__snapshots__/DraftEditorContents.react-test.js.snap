@@ -3,41 +3,41 @@
 exports[`renders ContentBlockNodes 1`] = `
 <div
   data-contents="true"
-  data-reactroot=""
 >
   <blockquote
-    data-block="true"
+    data-block={true}
     data-editor="editor"
     data-offset-key="A-0-0"
   >
     <div
-      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="A-0-0"
     >
       <ol
-        class="public-DraftStyleDefault-ol"
+        className="public-DraftStyleDefault-ol"
         data-offset-key="B-0-0"
       >
         <li
-          data-block="true"
+          data-block={true}
           data-editor="editor"
           data-offset-key="B-0-0"
         >
           <div
-            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+            className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
             data-offset-key="B-0-0"
           >
             <h1
-              data-block="true"
+              data-block={true}
               data-editor="editor"
               data-offset-key="C-0-0"
             >
               <div
-                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
                 data-offset-key="C-0-0"
               >
                 <span
                   data-offset-key="C-0-0"
+                  style={Object {}}
                 >
                   <span
                     data-text="true"
@@ -53,16 +53,17 @@ exports[`renders ContentBlockNodes 1`] = `
     </div>
   </blockquote>
   <h2
-    data-block="true"
+    data-block={true}
     data-editor="editor"
     data-offset-key="D-0-0"
   >
     <div
-      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="D-0-0"
     >
       <span
         data-offset-key="D-0-0"
+        style={Object {}}
       >
         <span
           data-text="true"
@@ -78,23 +79,23 @@ exports[`renders ContentBlockNodes 1`] = `
 exports[`renders ContentBlockNodes with root blocks that have wrapperTemplate 1`] = `
 <div
   data-contents="true"
-  data-reactroot=""
 >
   <ol
-    class="public-DraftStyleDefault-ol"
+    className="public-DraftStyleDefault-ol"
     data-offset-key="A-0-0"
   >
     <li
-      data-block="true"
+      data-block={true}
       data-editor="editor"
       data-offset-key="A-0-0"
     >
       <div
-        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+        className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
         data-offset-key="A-0-0"
       >
         <span
           data-offset-key="A-0-0"
+          style={Object {}}
         >
           <span
             data-text="true"
@@ -105,16 +106,17 @@ exports[`renders ContentBlockNodes with root blocks that have wrapperTemplate 1`
       </div>
     </li>
     <li
-      data-block="true"
+      data-block={true}
       data-editor="editor"
       data-offset-key="B-0-0"
     >
       <div
-        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+        className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
         data-offset-key="B-0-0"
       >
         <span
           data-offset-key="B-0-0"
+          style={Object {}}
         >
           <span
             data-text="true"
@@ -131,20 +133,20 @@ exports[`renders ContentBlockNodes with root blocks that have wrapperTemplate 1`
 exports[`renders ContentBlocks 1`] = `
 <div
   data-contents="true"
-  data-reactroot=""
 >
   <blockquote
-    class=""
-    data-block="true"
+    className=""
+    data-block={true}
     data-editor="editor"
     data-offset-key="A-0-0"
   >
     <div
-      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="A-0-0"
     >
       <span
         data-offset-key="A-0-0"
+        style={Object {}}
       >
         <span
           data-text="true"
@@ -155,17 +157,18 @@ exports[`renders ContentBlocks 1`] = `
     </div>
   </blockquote>
   <h1
-    class=""
-    data-block="true"
+    className=""
+    data-block={true}
     data-editor="editor"
     data-offset-key="B-0-0"
   >
     <div
-      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="B-0-0"
     >
       <span
         data-offset-key="B-0-0"
+        style={Object {}}
       >
         <span
           data-text="true"
@@ -176,17 +179,18 @@ exports[`renders ContentBlocks 1`] = `
     </div>
   </h1>
   <div
-    class=""
-    data-block="true"
+    className=""
+    data-block={true}
     data-editor="editor"
     data-offset-key="C-0-0"
   >
     <div
-      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+      className="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
       data-offset-key="C-0-0"
     >
       <span
         data-offset-key="C-0-0"
+        style={Object {}}
       >
         <span
           data-text="true"

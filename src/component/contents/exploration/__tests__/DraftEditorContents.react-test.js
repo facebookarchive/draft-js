@@ -20,8 +20,7 @@ const ContentState = require('ContentState');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const EditorState = require('EditorState');
 const React = require('React');
-const ReactDOM = require('ReactDOM');
-const ReactTestUtils = require('ReactTestUtils');
+const ReactTestRenderer = require('react-test-renderer');
 const SelectionState = require('SelectionState');
 const DraftEditorContents = require('DraftEditorContents.react');
 const Immutable = require('immutable');
@@ -72,11 +71,11 @@ const assertDraftEditorContentsRendering = props => {
     editorState: EditorState.createWithContent(props.contentState),
   };
 
-  const blockNode = ReactTestUtils.renderIntoDocument(
+  const blockNode = ReactTestRenderer.create(
     <DraftEditorContents {...childProps} />,
   );
 
-  expect(ReactDOM.findDOMNode(blockNode)).toMatchSnapshot();
+  expect(blockNode.toJSON()).toMatchSnapshot();
 };
 
 test('renders ContentBlocks', () => {

@@ -26,8 +26,7 @@ const CompositeDraftDecorator = require('CompositeDraftDecorator');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const EditorState = require('EditorState');
 const React = require('React');
-const ReactDOM = require('ReactDOM');
-const ReactTestUtils = require('ReactTestUtils');
+const ReactTestRenderer = require('react-test-renderer');
 const SelectionState = require('SelectionState');
 const UnicodeBidiDirection = require('UnicodeBidiDirection');
 const Style = require('Style');
@@ -82,7 +81,7 @@ const selectionState = new SelectionState({
   focusKey: 'A',
   focusOffset: 0,
   isBackward: false,
-  hasFocus: true,
+  hasFocus: false,
 });
 
 const PROPS = {
@@ -125,11 +124,11 @@ const assertDraftEditorBlockRendering = props => {
     ),
   };
 
-  const blockNode = ReactTestUtils.renderIntoDocument(
+  const blockNode = ReactTestRenderer.create(
     <DraftEditorBlockNode {...childProps} />,
   );
 
-  expect(ReactDOM.findDOMNode(blockNode)).toMatchSnapshot();
+  expect(blockNode.toJSON()).toMatchSnapshot();
 };
 
 beforeEach(() => {
