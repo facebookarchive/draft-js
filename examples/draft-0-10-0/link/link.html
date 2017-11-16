@@ -105,18 +105,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             {url: urlValue}
           );
           const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-          const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
+          let newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity });
+          newEditorState = RichUtils.toggleLink(
+            newEditorState,
+            newEditorState.getSelection(),
+            entityKey,
+          );
+
           this.setState({
-            editorState: RichUtils.toggleLink(
-              newEditorState,
-              newEditorState.getSelection(),
-              entityKey
-            ),
             showURLInput: false,
             urlValue: '',
-          }, () => {
-            setTimeout(() => this.refs.editor.focus(), 0);
-          });
+          }, () => this.refs.editor.focus(null, newEditorState));
         }
 
         _onLinkInputKeyDown(e) {

@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`focus must call update 1`] = `1`;
+
+exports[`focus when already focused must not call update 1`] = `0`;
+
+exports[`focus when already focused with newEditorState must call update with newEditorState 1`] = `1`;
+
+exports[`focus when already focused with newEditorState must call update with newEditorState 2`] = `"example content text"`;
+
 exports[`must has editorKey same as props 1`] = `"hash"`;
 
 exports[`must has generated editorKey 1`] = `"key0"`;

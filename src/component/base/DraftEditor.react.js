@@ -349,13 +349,16 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * We attempt to preserve scroll position when focusing. You can also pass
    * a specified scroll position (for cases like `cut` behavior where it should
-   * be restored to a known position).
+   * be restored to a known position).  In situations where you need to also update
+   * EditorState and focus, you can pass your new EditorState as a param to avoid race conditions.
    */
-  focus = (scrollPosition?: DraftScrollPosition): void => {
-    const {editorState} = this.props;
+  focus = (
+    scrollPosition?: DraftScrollPosition,
+    newEditorState?: EditorState,
+  ): void => {
+    const editorState = newEditorState || this.props.editorState;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
     const editorNode = ReactDOM.findDOMNode(this.editor);
-
     if (!editorNode) {
       // once in a while people call 'focus' in a setTimeout, and the node has
       // been deleted, so it can be null in that case.
@@ -382,7 +385,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     // cursor at the first character. This is something you don't expect when
     // you're clicking on an input element but not directly on a character.
     // Put the cursor back where it was before the blur.
-    if (!alreadyHasFocus) {
+    if (!alreadyHasFocus || newEditorState) {
       this.update(
         EditorState.forceSelection(editorState, editorState.getSelection()),
       );

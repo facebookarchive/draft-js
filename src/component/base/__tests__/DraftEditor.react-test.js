@@ -12,12 +12,13 @@
 
 'use strict';
 
-jest.disableAutomock();
-
-jest.mock('generateRandomKey');
+jest.disableAutomock().mock('generateRandomKey');
 
 const DraftEditor = require('DraftEditor.react');
 const React = require('React');
+const ReactDOM = require('ReactDOM');
+const EditorState = require('EditorState');
+const ContentState = require('ContentState');
 
 const ReactShallowRenderer = require('react-test-renderer/shallow');
 
@@ -50,3 +51,62 @@ test('must has editorKey same as props', () => {
     shallow._instance.getEditorKey || shallow._instance._instance.getEditorKey;
   expect(getEditorKey()).toMatchSnapshot();
 });
+
+describe('focus', function() {
+  let props;
+  beforeEach(function() {
+    props = {editorState: EditorState.createEmpty(), onChange: jest.fn()};
+  });
+
+  describe('when already focused', function() {
+    beforeEach(function() {
+      const selection = props.editorState.getSelection();
+      props.editorState = EditorState.forceSelection(
+        props.editorState,
+        selection.merge({hasFocus: true}),
+      );
+    });
+
+    test('must not call update', function() {
+      const selection = props.editorState.getSelection();
+      props.editorState = EditorState.forceSelection(
+        props.editorState,
+        selection.merge({hasFocus: true}),
+      );
+      const instance = renderEditorInContainer(props);
+      instance.focus();
+      expect(props.onChange.mock.calls.length).toMatchSnapshot();
+    });
+
+    test('with newEditorState must call update with newEditorState', function() {
+      const selection = props.editorState.getSelection();
+      const testText = 'example content text';
+      const content = ContentState.createFromText(testText);
+      const newEditorState = EditorState.forceSelection(
+        EditorState.createWithContent(content),
+        selection.merge({hasFocus: true}),
+      );
+      const instance = renderEditorInContainer(props);
+      instance.focus(null, newEditorState);
+      expect(props.onChange.mock.calls.length).toMatchSnapshot();
+      const updatedEditorState = props.onChange.mock.calls[0][0];
+      expect(
+        updatedEditorState.getCurrentContent().getPlainText(),
+      ).toMatchSnapshot();
+    });
+  });
+
+  test('must call update', function() {
+    const instance = renderEditorInContainer(props);
+    instance.focus();
+    expect(props.onChange.mock.calls.length).toMatchSnapshot();
+  });
+});
+
+function renderEditorInContainer(props) {
+  const container = document.createElement('div');
+  let instance;
+  const element = <DraftEditor ref={e => (instance = e)} {...props} />;
+  ReactDOM.render(element, container);
+  return instance;
+}
