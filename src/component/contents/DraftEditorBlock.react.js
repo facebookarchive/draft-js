@@ -16,6 +16,7 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 import type {List} from 'immutable';
@@ -39,18 +40,29 @@ const nullthrows = require('nullthrows');
 const SCROLL_BUFFER = 10;
 
 type Props = {
-  contentState: ContentState,
   block: BlockNodeRecord,
-  customStyleMap: Object,
-  customStyleFn: Function,
-  tree: List<any>,
-  selection: SelectionState,
-  decorator: DraftDecoratorType,
-  forceSelection: boolean,
-  direction: BidiDirection,
   blockProps?: Object,
+  blockStyleFn: (block: BlockNodeRecord) => string,
+  contentState: ContentState,
+  customStyleFn: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
+  customStyleMap: Object,
+  decorator: ?DraftDecoratorType,
+  direction: BidiDirection,
+  forceSelection: boolean,
+  offsetKey: string,
+  selection: SelectionState,
   startIndent?: boolean,
-  blockStyleFn: Function,
+  tree: List<any>,
+};
+
+/**
+ * Return whether a block overlaps with either edge of the `SelectionState`.
+ */
+const isBlockOnSelectionEdge = (
+  selection: SelectionState,
+  key: string,
+): boolean => {
+  return selection.getAnchorKey() === key || selection.getFocusKey() === key;
 };
 
 /**
@@ -83,21 +95,21 @@ class DraftEditorBlock extends React.Component<Props> {
    * scroll parent.
    */
   componentDidMount(): void {
-    var selection = this.props.selection;
-    var endKey = selection.getEndKey();
+    const selection = this.props.selection;
+    const endKey = selection.getEndKey();
     if (!selection.getHasFocus() || endKey !== this.props.block.getKey()) {
       return;
     }
 
-    var blockNode = ReactDOM.findDOMNode(this);
-    var scrollParent = Style.getScrollParent(blockNode);
-    var scrollPosition = getScrollPosition(scrollParent);
-    var scrollDelta;
+    const blockNode = ReactDOM.findDOMNode(this);
+    const scrollParent = Style.getScrollParent(blockNode);
+    const scrollPosition = getScrollPosition(scrollParent);
+    let scrollDelta;
 
     if (scrollParent === window) {
-      var nodePosition = getElementPosition(blockNode);
-      var nodeBottom = nodePosition.y + nodePosition.height;
-      var viewportHeight = getViewportDimensions().height;
+      const nodePosition = getElementPosition(blockNode);
+      const nodeBottom = nodePosition.y + nodePosition.height;
+      const viewportHeight = getViewportDimensions().height;
       scrollDelta = nodeBottom - viewportHeight;
       if (scrollDelta > 0) {
         window.scrollTo(
@@ -110,8 +122,8 @@ class DraftEditorBlock extends React.Component<Props> {
         blockNode instanceof HTMLElement,
         'blockNode is not an HTMLElement',
       );
-      var blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
-      var scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
+      const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
+      const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
       if (scrollDelta > 0) {
         Scroll.setTop(
@@ -123,32 +135,28 @@ class DraftEditorBlock extends React.Component<Props> {
   }
 
   _renderChildren(): Array<React.Element<any>> {
-    var block = this.props.block;
-    var blockKey = block.getKey();
-    var text = block.getText();
-    var lastLeafSet = this.props.tree.size - 1;
-    var hasSelection = isBlockOnSelectionEdge(this.props.selection, blockKey);
+    const block = this.props.block;
+    const blockKey = block.getKey();
+    const text = block.getText();
+    const lastLeafSet = this.props.tree.size - 1;
+    const hasSelection = isBlockOnSelectionEdge(this.props.selection, blockKey);
 
     return this.props.tree
       .map((leafSet, ii) => {
-        var leavesForLeafSet = leafSet.get('leaves');
-        var lastLeaf = leavesForLeafSet.size - 1;
-        var leaves = leavesForLeafSet
+        const leavesForLeafSet = leafSet.get('leaves');
+        const lastLeaf = leavesForLeafSet.size - 1;
+        const leaves = leavesForLeafSet
           .map((leaf, jj) => {
-            var offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
-            var start = leaf.get('start');
-            var end = leaf.get('end');
+            const offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
+            const start = leaf.get('start');
+            const end = leaf.get('end');
             return (
-              /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
-           * error when upgrading Flow's support for React. Common errors found
-           * when upgrading Flow's React support are documented at
-           * https://fburl.com/eq7bs81w */
               <DraftEditorLeaf
                 key={offsetKey}
                 offsetKey={offsetKey}
                 block={block}
                 start={start}
-                selection={hasSelection ? this.props.selection : undefined}
+                selection={hasSelection ? this.props.selection : null}
                 forceSelection={this.props.forceSelection}
                 text={text.slice(start, end)}
                 styleSet={block.getInlineStyleAt(start)}
@@ -160,7 +168,7 @@ class DraftEditorBlock extends React.Component<Props> {
           })
           .toArray();
 
-        var decoratorKey = leafSet.get('decoratorKey');
+        const decoratorKey = leafSet.get('decoratorKey');
         if (decoratorKey == null) {
           return leaves;
         }
@@ -169,23 +177,23 @@ class DraftEditorBlock extends React.Component<Props> {
           return leaves;
         }
 
-        var decorator = nullthrows(this.props.decorator);
+        const decorator = nullthrows(this.props.decorator);
 
-        var DecoratorComponent = decorator.getComponentForKey(decoratorKey);
+        const DecoratorComponent = decorator.getComponentForKey(decoratorKey);
         if (!DecoratorComponent) {
           return leaves;
         }
 
-        var decoratorProps = decorator.getPropsForKey(decoratorKey);
-        var decoratorOffsetKey = DraftOffsetKey.encode(blockKey, ii, 0);
-        var decoratedText = text.slice(
+        const decoratorProps = decorator.getPropsForKey(decoratorKey);
+        const decoratorOffsetKey = DraftOffsetKey.encode(blockKey, ii, 0);
+        const decoratedText = text.slice(
           leavesForLeafSet.first().get('start'),
           leavesForLeafSet.last().get('end'),
         );
 
         // Resetting dir to the same value on a child node makes Chrome/Firefox
         // confused on cursor movement. See http://jsfiddle.net/d157kLck/3/
-        var dir = UnicodeBidiDirection.getHTMLDirIfDifferent(
+        const dir = UnicodeBidiDirection.getHTMLDirIfDifferent(
           UnicodeBidi.getDirection(decoratedText),
           this.props.direction,
         );
@@ -207,10 +215,6 @@ class DraftEditorBlock extends React.Component<Props> {
   }
 
   render(): React.Node {
-    /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an error
-     * when upgrading Flow's support for React. Common errors found when
-     * upgrading Flow's React support are documented at
-     * https://fburl.com/eq7bs81w */
     const {direction, offsetKey} = this.props;
     const className = cx({
       'public/DraftStyleDefault/block': true,
@@ -224,16 +228,6 @@ class DraftEditorBlock extends React.Component<Props> {
       </div>
     );
   }
-}
-
-/**
- * Return whether a block overlaps with either edge of the `SelectionState`.
- */
-function isBlockOnSelectionEdge(
-  selection: SelectionState,
-  key: string,
-): boolean {
-  return selection.getAnchorKey() === key || selection.getFocusKey() === key;
 }
 
 module.exports = DraftEditorBlock;

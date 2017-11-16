@@ -34,6 +34,8 @@ const getScrollPosition = require('getScrollPosition');
 function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   const editorState = editor._latestEditorState;
   const selection = editorState.getSelection();
+  const element = e.target;
+  let scrollPosition;
 
   // No selection, so there's nothing to cut.
   if (selection.isCollapsed()) {
@@ -43,9 +45,9 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Track the current scroll position so that it can be forced back in place
   // after the editor regains control of the DOM.
-  // $FlowFixMe e.target should be an instanceof Node
-  const scrollParent = Style.getScrollParent(e.target);
-  const {x, y} = getScrollPosition(scrollParent);
+  if (element instanceof Node) {
+    scrollPosition = getScrollPosition(Style.getScrollParent(element));
+  }
 
   const fragment = getFragmentFromSelection(editorState);
   editor.setClipboard(fragment);
@@ -55,7 +57,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Let native `cut` behavior occur, then recover control.
   setTimeout(() => {
-    editor.restoreEditorDOM({x, y});
+    editor.restoreEditorDOM(scrollPosition);
     editor.exitCurrentMode();
     editor.update(removeFragment(editorState));
   }, 0);
