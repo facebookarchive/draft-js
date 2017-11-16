@@ -14,7 +14,7 @@ challenging attempts at controlling focus state.
 
 With that in mind, at Facebook we often choose to expose `focus()` methods
 on components that wrap text inputs. This breaks the declarative paradigm,
-but it also simplifies the work needed for engineers to successfully manage
+but it also simplifies the work needed to successfully manage
 focus behavior within their apps.
 
 The `Editor` component follows this pattern, so there is a public `focus()`
@@ -24,6 +24,10 @@ higher-level component to call `focus()` directly on the component when needed.
 The event listeners within the component will observe focus changes and
 propagate them through `onChange` as expected, so state and DOM will remain
 correctly in sync.
+
+If you need to apply focus and update editor state in the same operation, 
+you can do so by passing a new editor state to the `focus()` method which will
+propagate your changes and the selection changes. 
 
 ## Translating container clicks to focus
 

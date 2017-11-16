@@ -309,10 +309,13 @@ onBlur?: (e: SyntheticFocusEvent) => void
 #### focus
 
 ```
-focus(): void
+focus(scrollPosition?: DraftScrollPosition, newEditorState?: EditorState): void
 ```
 
-Force focus back onto the editor node.
+Force focus back onto the editor node.  Optionally pass a scroll position to restore and an editor state to set while you focus.
+
+> Beware, this method will cause an update on your editor state which could cause race conditions if not handled.
+You may use the second argument to set a new editor state as you focus.
 
 #### blur
 
