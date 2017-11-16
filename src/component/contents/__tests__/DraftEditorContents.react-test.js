@@ -85,8 +85,7 @@ test('defaults to "unstyled" block type for unknown block types', () => {
   }
 
   const block = ReactTestRenderer.create(<Container />);
-  const blockInstance = block.root;
-  const editorInstace = blockInstance._fiber.stateNode;
+  const editorInstace = block.getInstance();
 
   expect(() => {
     editorInstace.toggleCustomBlock(
