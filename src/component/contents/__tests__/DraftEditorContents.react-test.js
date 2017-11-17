@@ -20,8 +20,8 @@ const Editor = require('DraftEditor.react');
 const EditorState = require('EditorState');
 const RichUtils = require('RichTextEditorUtil');
 
-const {mount} = require('enzyme');
 const React = require('react');
+const ReactTestRenderer = require('react-test-renderer');
 
 test('defaults to "unstyled" block type for unknown block types', () => {
   const CUSTOM_BLOCK_TYPE = 'CUSTOM_BLOCK_TYPE';
@@ -84,10 +84,13 @@ test('defaults to "unstyled" block type for unknown block types', () => {
     };
   }
 
-  const mountedEditorContainer = mount(<Container />);
-  const triggerCustomBlockRender = () => {
-    mountedEditorContainer.find('button').simulate('click');
-  };
+  const block = ReactTestRenderer.create(<Container />);
+  const editorInstace = block.getInstance();
 
-  expect(triggerCustomBlockRender).not.toThrow();
+  expect(() => {
+    editorInstace.toggleCustomBlock(
+      editorInstace.state.editorState,
+      CUSTOM_BLOCK_TYPE,
+    );
+  }).not.toThrow();
 });
