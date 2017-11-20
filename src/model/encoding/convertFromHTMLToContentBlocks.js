@@ -428,27 +428,23 @@ const genFragment = (
   }
 
   const blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
+  const inListBlock = lastList && inBlock === 'li' && nodeName === 'li';
+  const inBlockOrHasNestedBlocks =
+    (!inBlock || experimentalTreeDataSupport) &&
+    blockTags.indexOf(nodeName) !== -1;
 
   // Block Tags
-  if (lastList && inBlock === 'li' && nodeName === 'li') {
+  if (inListBlock || inBlockOrHasNestedBlocks) {
     chunk = getBlockDividerChunk(blockType, depth, parentKey);
     blockKey = chunk.blocks[0].key;
     inBlock = nodeName;
+    newBlock = !experimentalTreeDataSupport;
+  }
+
+  // this is required so that we can handle 'ul' and 'ol'
+  if (inListBlock) {
     nextBlockType =
       lastList === 'ul' ? 'unordered-list-item' : 'ordered-list-item';
-    newBlock = !experimentalTreeDataSupport;
-  } else if (
-    (!inBlock || experimentalTreeDataSupport) &&
-    blockTags.indexOf(nodeName) !== -1
-  ) {
-    chunk = getBlockDividerChunk(
-      getBlockTypeForTag(nodeName, lastList, blockRenderMap),
-      depth,
-      parentKey,
-    );
-    blockKey = chunk.blocks[0].key;
-    inBlock = nodeName;
-    newBlock = !experimentalTreeDataSupport;
   }
 
   // Recurse through children

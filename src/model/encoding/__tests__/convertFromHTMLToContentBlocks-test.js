@@ -170,7 +170,7 @@ SUPPORTED_TAGS.forEach(tag =>
   testConvertingAdjacentHtmlElementsToContentBlocks(tag, true),
 );
 
-// assert that using tree blocks wtesth
+// assert that using tree blocks and root content block nodes are equivalent
 SUPPORTED_TAGS.forEach(tag =>
   testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch(tag),
 );
