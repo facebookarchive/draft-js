@@ -1,0 +1,35 @@
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule DraftOffsetKey
+ * @format
+ * @flow
+ */
+
+'use strict';
+
+import type { DraftOffsetKeyPath } from './DraftOffsetKeyPath';
+
+var KEY_DELIMITER = '-';
+
+var DraftOffsetKey = {
+  encode: function (blockKey: string, decoratorKey: number, leafKey: number): string {
+    return blockKey + KEY_DELIMITER + decoratorKey + KEY_DELIMITER + leafKey;
+  },
+
+  decode: function (offsetKey: string): DraftOffsetKeyPath {
+    var [blockKey, decoratorKey, leafKey] = offsetKey.split(KEY_DELIMITER);
+    return {
+      blockKey,
+      decoratorKey: parseInt(decoratorKey, 10),
+      leafKey: parseInt(leafKey, 10)
+    };
+  }
+};
+
+module.exports = DraftOffsetKey;
