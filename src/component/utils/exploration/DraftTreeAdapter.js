@@ -26,11 +26,12 @@ const traverseInDepthOrder = (
   let stack = [...blocks].reverse();
   while (stack.length) {
     const block = stack.pop();
+
+    fn(block);
+
     const children = block.children;
 
     invariant(Array.isArray(children), 'Invalid tree raw block');
-
-    fn(block);
 
     stack = stack.concat([...children.reverse()]);
   }

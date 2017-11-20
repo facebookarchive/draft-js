@@ -132,19 +132,19 @@ Object {
       "type": "ordered-list-item",
     },
     Object {
-      "depth": 0,
+      "depth": 1,
       "key": "B",
       "text": "Beta",
       "type": "ordered-list-item",
     },
     Object {
-      "depth": 0,
+      "depth": 2,
       "key": "C",
       "text": "Charlie",
       "type": "ordered-list-item",
     },
     Object {
-      "depth": 0,
+      "depth": 1,
       "key": "D",
       "text": "Delta",
       "type": "ordered-list-item",
@@ -164,7 +164,7 @@ Object {
       "type": "ordered-list-item",
     },
     Object {
-      "depth": 0,
+      "depth": 1,
       "key": "B",
       "text": "Beta",
       "type": "ordered-list-item",
