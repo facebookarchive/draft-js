@@ -25,6 +25,7 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
+const DraftFeatureFlags = require('DraftFeatureFlags');
 const Immutable = require('immutable');
 const {Set} = require('immutable');
 const URI = require('URI');
@@ -33,6 +34,8 @@ const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const invariant = require('invariant');
 const sanitizeDraftText = require('sanitizeDraftText');
+
+const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
 
 type Block = {
   type: DraftBlockType,
@@ -336,7 +339,6 @@ const genFragment = (
   depth: number,
   blockRenderMap: DraftBlockRenderMap,
   inEntity?: ?string,
-  experimentalTreeDataSupport?: boolean,
   parentKey?: string,
 ): {chunk: Chunk, entityMap: EntityMap} => {
   const lastLastBlock = lastBlock;
@@ -491,7 +493,6 @@ const genFragment = (
       depth,
       blockRenderMap,
       entityId || inEntity,
-      experimentalTreeDataSupport,
       blockKey,
     );
 
@@ -526,7 +527,6 @@ const getChunkForHTML = (
   DOMBuilder: Function,
   blockRenderMap: DraftBlockRenderMap,
   entityMap: EntityMap,
-  experimentalTreeDataSupport?: boolean,
 ): ?{chunk: Chunk, entityMap: EntityMap} => {
   html = html
     .trim()
@@ -561,8 +561,6 @@ const getChunkForHTML = (
     workingBlocks,
     -1,
     blockRenderMap,
-    undefined,
-    experimentalTreeDataSupport,
   );
 
   let chunk = fragment.chunk;
@@ -605,10 +603,7 @@ const getChunkForHTML = (
   return {chunk, entityMap: newEntityMap};
 };
 
-const convertChunkToContentBlocks = (
-  chunk: Chunk,
-  experimentalTreeDataSupport: boolean,
-): ?Array<BlockNodeRecord> => {
+const convertChunkToContentBlocks = (chunk: Chunk): ?Array<BlockNodeRecord> => {
   if (!chunk || !chunk.text || !Array.isArray(chunk.blocks)) {
     return null;
   }
@@ -686,17 +681,10 @@ const convertChunkToContentBlocks = (
   }, initialState).contentBlocks;
 };
 
-/**
- * Note for `experimentalTreeDataSupport`:
- *
- * This is unstable and not part of the public API and should not be used by
- * production systems. This functionality may be update/removed without notice.
- */
 const convertFromHTMLtoContentBlocks = (
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
-  experimentalTreeDataSupport?: boolean = false,
 ): ?{contentBlocks: ?Array<BlockNodeRecord>, entityMap: EntityMap} => {
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
@@ -708,7 +696,6 @@ const convertFromHTMLtoContentBlocks = (
     DOMBuilder,
     blockRenderMap,
     DraftEntity,
-    experimentalTreeDataSupport,
   );
 
   if (chunkData == null) {
@@ -716,10 +703,7 @@ const convertFromHTMLtoContentBlocks = (
   }
 
   const {chunk, entityMap} = chunkData;
-  const contentBlocks = convertChunkToContentBlocks(
-    chunk,
-    experimentalTreeDataSupport,
-  );
+  const contentBlocks = convertChunkToContentBlocks(chunk);
 
   return {
     contentBlocks,
