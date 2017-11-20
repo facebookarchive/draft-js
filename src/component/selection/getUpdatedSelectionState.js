@@ -43,11 +43,16 @@ function getUpdatedSelectionState(
     .getBlockTree(anchorBlockKey)
     .getIn([anchorPath.decoratorKey, 'leaves', anchorPath.leafKey]);
 
+  if (!anchorLeaf) return selection;
+
   var focusPath = DraftOffsetKey.decode(focusKey);
   var focusBlockKey = focusPath.blockKey;
+  
   var focusLeaf = editorState
     .getBlockTree(focusBlockKey)
     .getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
+
+  if (!focusLeaf) return selection;
 
   var anchorLeafStart: number = anchorLeaf.get('start');
   var focusLeafStart: number = focusLeaf.get('start');
