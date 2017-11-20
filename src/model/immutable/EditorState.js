@@ -617,8 +617,7 @@ function getInlineStyleForCollapsedSelection(
     return startBlock.getInlineStyleAt(0);
   }
 
-  // Otherwise, look upward in the document to find the closest character.
-  return lookUpwardForInlineStyle(content, startKey);
+  return OrderedSet();
 }
 
 function getInlineStyleForNonCollapsedSelection(
@@ -640,24 +639,6 @@ function getInlineStyleForNonCollapsedSelection(
     return startBlock.getInlineStyleAt(startOffset - 1);
   }
 
-  // Otherwise, look upward in the document to find the closest character.
-  return lookUpwardForInlineStyle(content, startKey);
-}
-
-function lookUpwardForInlineStyle(
-  content: ContentState,
-  fromKey: string,
-): DraftInlineStyle {
-  var lastNonEmpty = content
-    .getBlockMap()
-    .reverse()
-    .skipUntil((_, k) => k === fromKey)
-    .skip(1)
-    .skipUntil((block, _) => block.getLength())
-    .first();
-
-  if (lastNonEmpty)
-    return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
   return OrderedSet();
 }
 
