@@ -27,6 +27,11 @@ const COLLAPSED_SELECTION = initialSelectionState.merge({
   focusOffset: 2,
 });
 
+const COLLAPSED_SELECTION_ENTITY_END = initialSelectionState.merge({
+  anchorOffset: 5,
+  focusOffset: 5,
+});
+
 const NON_COLLAPSED_SELECTION = initialSelectionState.merge({
   anchorOffset: 2,
   focusKey: 'c',
@@ -47,6 +52,15 @@ test('must return null at start of block with collapsed selection', () => {
 test('must return key if mutable with collapsed selection', () => {
   setEntityMutability('MUTABLE');
   const key = getEntityKeyForSelection(contentState, COLLAPSED_SELECTION);
+  expect(key).toMatchSnapshot();
+});
+
+test('must not return key if mutable with collapsed selection at end of an entity', () => {
+  setEntityMutability('MUTABLE');
+  const key = getEntityKeyForSelection(
+    contentState,
+    COLLAPSED_SELECTION_ENTITY_END,
+  );
   expect(key).toMatchSnapshot();
 });
 
