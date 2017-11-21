@@ -339,7 +339,7 @@ const genFragment = (
   depth: number,
   blockRenderMap: DraftBlockRenderMap,
   inEntity?: ?string,
-  parentKey?: string,
+  parentKey?: ?string,
 ): {chunk: Chunk, entityMap: EntityMap} => {
   const lastLastBlock = lastBlock;
   let nodeName = node.nodeName.toLowerCase();
@@ -493,7 +493,7 @@ const genFragment = (
       depth,
       blockRenderMap,
       entityId || inEntity,
-      blockKey,
+      experimentalTreeDataSupport ? blockKey : null,
     );
 
     newChunk = generatedChunk;
