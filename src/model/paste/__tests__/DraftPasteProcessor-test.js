@@ -54,13 +54,18 @@ const assertDraftPasteProcessorProcessHTML = (
   blockMap = CUSTOM_BLOCK_MAP,
   experimentalTreeDataSupport = false,
 ) => {
-  const {contentBlocks} = DraftPasteProcessor.processHTML(
-    html,
-    blockMap,
-    experimentalTreeDataSupport,
-  );
+  jest.doMock('DraftFeatureFlags', () => {
+    return {
+      draft_tree_data_support: experimentalTreeDataSupport,
+    };
+  });
+  const {contentBlocks} = DraftPasteProcessor.processHTML(html, blockMap);
   expect(contentBlocks.map(block => block.toJS())).toMatchSnapshot();
 };
+
+beforeEach(() => {
+  jest.resetModules();
+});
 
 test('must identify italics text', () => {
   assertDraftPasteProcessorProcessHTML(`

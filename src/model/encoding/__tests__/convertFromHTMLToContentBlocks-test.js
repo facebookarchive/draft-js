@@ -46,6 +46,29 @@ const SUPPORTED_TAGS = [
   'pre',
 ];
 
+const normalizeBlock = block => {
+  const {type, depth, textBlock, characterList} = block;
+
+  return {
+    type,
+    depth,
+    textBlock,
+    characterList,
+  };
+};
+
+const toggleExperimentalTreeDataSupport = enabled => {
+  jest.doMock('DraftFeatureFlags', () => {
+    return {
+      draft_tree_data_support: enabled,
+    };
+  });
+};
+
+beforeEach(() => {
+  jest.resetModules();
+});
+
 const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
   const options = {
     ...DEFAULT_CONFIG,
@@ -54,12 +77,13 @@ const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
 
   const {DOMBuilder, blockRenderMap, experimentalTreeDataSupport} = options;
 
+  toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
+
   expect(
     convertFromHTMLToContentBlocks(
       html_string,
       DOMBuilder,
       blockRenderMap,
-      experimentalTreeDataSupport,
     ).contentBlocks.map(block => block.toJS()),
   ).toMatchSnapshot();
 };
@@ -81,38 +105,28 @@ const testConvertingAdjacentHtmlElementsToContentBlocks = (
   });
 };
 
-const normalizeBlock = block => {
-  const {type, depth, textBlock, characterList} = block;
-
-  return {
-    type,
-    depth,
-    textBlock,
-    characterList,
-  };
-};
-
 const testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch = (
   tag: string,
 ) => {
   test(`must convert root ContentBlockNodes to matching ContentBlock nodes for <${tag} />`, () => {
     const {DOMBuilder, blockRenderMap} = DEFAULT_CONFIG;
     const html_string = `<${tag}>a</${tag}> `;
-    expect(
-      convertFromHTMLToContentBlocks(
-        html_string,
-        DOMBuilder,
-        blockRenderMap,
-        false,
-      ).contentBlocks.map(block => normalizeBlock(block.toJS())),
-    ).toEqual(
-      convertFromHTMLToContentBlocks(
-        html_string,
-        DOMBuilder,
-        blockRenderMap,
-        true,
-      ).contentBlocks.map(block => normalizeBlock(block.toJS())),
-    );
+
+    toggleExperimentalTreeDataSupport(false);
+    const contentBlocks = convertFromHTMLToContentBlocks(
+      html_string,
+      DOMBuilder,
+      blockRenderMap,
+    ).contentBlocks.map(block => normalizeBlock(block.toJS()));
+
+    toggleExperimentalTreeDataSupport(true);
+    const contentBlockNodes = convertFromHTMLToContentBlocks(
+      html_string,
+      DOMBuilder,
+      blockRenderMap,
+    ).contentBlocks.map(block => normalizeBlock(block.toJS()));
+
+    expect(contentBlocks).toEqual(contentBlockNodes);
   });
 };
 

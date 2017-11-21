@@ -33,13 +33,11 @@ const DraftPasteProcessor = {
   processHTML(
     html: string,
     blockRenderMap?: DraftBlockRenderMap,
-    experimentalTreeDataSupport?: boolean = false,
   ): ?{contentBlocks: ?Array<BlockNodeRecord>, entityMap: EntityMap} {
     return convertFromHTMLtoContentBlocks(
       html,
       getSafeBodyFromHTML,
       blockRenderMap,
-      experimentalTreeDataSupport,
     );
   },
 
