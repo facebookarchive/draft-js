@@ -52,8 +52,13 @@ const CUSTOM_BLOCK_MAP = Immutable.Map({
 const assertDraftPasteProcessorProcessHTML = (
   html,
   blockMap = CUSTOM_BLOCK_MAP,
+  experimentalTreeDataSupport = false,
 ) => {
-  const {contentBlocks} = DraftPasteProcessor.processHTML(html, blockMap);
+  const {contentBlocks} = DraftPasteProcessor.processHTML(
+    html,
+    blockMap,
+    experimentalTreeDataSupport,
+  );
   expect(contentBlocks.map(block => block.toJS())).toMatchSnapshot();
 };
 
@@ -291,4 +296,17 @@ test('must preserve list formatting', () => {
       <li>what</li>
     </ul>
   `);
+});
+
+test('must create nested elements when experimentalTreeDataSupport is enabled', () => {
+  assertDraftPasteProcessorProcessHTML(
+    `
+    <blockquote>
+      <h2>Heading inside blockquote</h2>
+      <p><em>some</em> <strong>text</strong></p>
+    </blockquote>
+  `,
+    CUSTOM_BLOCK_MAP,
+    true,
+  );
 });

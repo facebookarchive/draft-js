@@ -602,6 +602,222 @@ Array [
 ]
 `;
 
+exports[`must create nested elements when experimentalTreeDataSupport is enabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key73",
+      "key74",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key72",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "blockquote",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key73",
+    "nextSibling": "key74",
+    "parent": "key72",
+    "prevSibling": null,
+    "text": "Heading inside blockquote
+ ",
+    "type": "header-two",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key74",
+    "nextSibling": null,
+    "parent": "key72",
+    "prevSibling": "key73",
+    "text": "some text
+ ",
+    "type": "paragraph",
+  },
+]
+`;
+
 exports[`must detect links in pasted content 1`] = `
 Array [
   Object {
