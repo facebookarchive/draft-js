@@ -50,16 +50,15 @@ let compositionUpdateData = null;
 let compositionEndData = null;
 
 var DraftEditorCompositionHandler = {
-
   /**
    * Some IMEs (Firefox Mobile, notably) fire multiple `beforeinput` events
-   * which include the text so far typed, in addition to (broken) 
-   * `compositionend` events. In these cases, we construct beforeInputData from 
+   * which include the text so far typed, in addition to (broken)
+   * `compositionend` events. In these cases, we construct beforeInputData from
    * the `beforeinput` and cnsider that to be the definitive version of what
    * was actually typed.
    *
    * Proper, compliant browsers will not do this and will instead include the
-   * entire resolved composition result in the `data` member of the 
+   * entire resolved composition result in the `data` member of the
    * `compositionend` events that they fire.
    */
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
@@ -105,8 +104,10 @@ var DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(editor: DraftEditor, 
-                             e: SyntheticCompositionEvent<>): void {
+  onCompositionEnd: function(
+    editor: DraftEditor,
+    e: SyntheticCompositionEvent<>,
+  ): void {
     resolved = false;
     stillComposing = false;
     if (DraftFeatureFlags.draft_enable_composition_fixes) {
@@ -154,17 +155,17 @@ var DraftEditorCompositionHandler = {
 
   /**
    * Normalizes platform inconsistencies with input event data.
-   * 
+   *
    * When beforeInputData is present, it is only preferred if its length
    * is greater than that of the last compositionUpdate event data. This is
-   * meant to resolve IME incosistencies where compositionUpdate may contain 
+   * meant to resolve IME incosistencies where compositionUpdate may contain
    * only the last character or the entire composition depending on language
    * (e.g. Korean vs. Japanese).
-   * 
+   *
    * When beforeInputData is not present, compositionUpdate data is preferred.
    * This resolves issues with some platforms where beforeInput is never fired
    * (e.g. Android with certain keyboard and browser combinations).
-   * 
+   *
    * Lastly, if neither beforeInput nor compositionUpdate events are fired, use
    * the data in the compositionEnd event
    */
@@ -173,9 +174,10 @@ var DraftEditorCompositionHandler = {
     const compositionUpdateDataLength = compositionUpdateData
       ? compositionUpdateData.length
       : 0;
-    const updateData = beforeInputDataLength > compositionUpdateDataLength
-      ? beforeInputData
-      : compositionUpdateData;
+    const updateData =
+      beforeInputDataLength > compositionUpdateDataLength
+        ? beforeInputData
+        : compositionUpdateData;
     return updateData || compositionEndData;
   },
 
