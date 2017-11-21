@@ -84,7 +84,7 @@ var DraftEditorCompositionHandler = {
    */
   onCompositionUpdate: function(
     editor: DraftEditor,
-    e: SyntheticInputEvent,
+    e: SyntheticInputEvent<>,
   ): void {
     if (DraftFeatureFlags.draft_enable_composition_fixes) {
       compositionUpdateData = e.data;
@@ -106,7 +106,7 @@ var DraftEditorCompositionHandler = {
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
   onCompositionEnd: function(editor: DraftEditor, 
-                             e: SyntheticCompositionEvent): void {
+                             e: SyntheticCompositionEvent<>): void {
     resolved = false;
     stillComposing = false;
     if (DraftFeatureFlags.draft_enable_composition_fixes) {
