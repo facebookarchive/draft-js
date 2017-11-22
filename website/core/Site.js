@@ -29,6 +29,7 @@ var Site = React.createClass({
           <meta property="og:url" content="http://draftjs.org/index.html" />
           <meta property="og:description" content="Rich Text Editor Framework for React" />
 
+          <link rel="icon" type="image/png" href="/img/draft-js-logo.png" />
           <link rel="stylesheet" href="/css/draft.css" />
 
           <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script>
