@@ -403,9 +403,230 @@ Array [
 ]
 `;
 
+exports[`does not convert deeply nested html blocks when experimentalTreeDataSupport is disabled 1`] = `false`;
+
+exports[`does not convert deeply nested html blocks when experimentalTreeDataSupport is disabled 2`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": " ",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "Some quote",
+    "type": "ordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key2",
+    "text": "Hello World!
+ lorem ipsum
+ 
+ ",
+    "type": "ordered-list-item",
+  },
+]
+`;
+
 exports[`img with data protocol should be correctly parsed 1`] = `"📷"`;
 
 exports[`img with http protocol should have camera emoji content 1`] = `"📷"`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <blockquote /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <div /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <figure /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <h1 /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <h2 /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <h3 /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <h4 /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <h5 /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <h6 /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <li /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <p /> 1`] = `true`;
+
+exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <pre /> 1`] = `true`;
 
 exports[`must not merge tags when converting adjacent <blockquote /> 1`] = `
 Array [
