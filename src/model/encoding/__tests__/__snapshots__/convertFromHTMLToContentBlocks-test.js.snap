@@ -1,9 +1,91 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`converts deeply nested html blocks when experimentalTreeDataSupport is enabled 1`] = `
+exports[`Should not create empty container blocks around ol and their list items 1`] = `
 Array [
   Object {
     "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "something",
+    "type": "ordered-list-item",
+  },
+]
+`;
+
+exports[`Should not create empty container blocks around ol and their list items when nesting enabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
       Object {
         "entity": null,
         "style": Array [],
@@ -12,19 +94,124 @@ Array [
     "children": Array [],
     "data": Object {},
     "depth": 0,
-    "key": "key5",
+    "key": "key0",
     "nextSibling": null,
-    "parent": undefined,
+    "parent": null,
     "prevSibling": null,
-    "text": " ",
-    "type": "unstyled",
+    "text": "something",
+    "type": "ordered-list-item",
   },
+]
+`;
+
+exports[`Should not create empty container blocks around ul and their list items 1`] = `
+Array [
   Object {
     "characterList": Array [
       Object {
         "entity": null,
         "style": Array [],
       },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "something",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`Should not create empty container blocks around ul and their list items when nesting enabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "something",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`converts deeply nested html blocks when experimentalTreeDataSupport is enabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [
       Object {
         "entity": null,
         "style": Array [],
@@ -73,7 +260,7 @@ Array [
     "nextSibling": "key1",
     "parent": null,
     "prevSibling": null,
-    "text": "Some quote ",
+    "text": "Some quote",
     "type": "ordered-list-item",
   },
   Object {
@@ -228,10 +415,6 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "children": Array [],
     "data": Object {},
@@ -241,7 +424,7 @@ Array [
     "parent": "key2",
     "prevSibling": "key3",
     "text": "lorem ipsum 
-  ",
+ ",
     "type": "unstyled",
   },
 ]
@@ -407,19 +590,6 @@ exports[`does not convert deeply nested html blocks when experimentalTreeDataSup
 
 exports[`does not convert deeply nested html blocks when experimentalTreeDataSupport is disabled 2`] = `
 Array [
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "key4",
-    "text": " ",
-    "type": "unstyled",
-  },
   Object {
     "characterList": Array [
       Object {
