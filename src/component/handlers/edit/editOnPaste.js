@@ -7,10 +7,15 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnPaste
+ * @format
  * @flow
  */
 
 'use strict';
+
+import type {BlockMap} from 'BlockMap';
+import type DraftEditor from 'DraftEditor.react';
+import type {EntityMap} from 'EntityMap';
 
 var BlockMapBuilder = require('BlockMapBuilder');
 var CharacterMetadata = require('CharacterMetadata');
@@ -18,18 +23,17 @@ var DataTransfer = require('DataTransfer');
 var DraftModifier = require('DraftModifier');
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var EditorState = require('EditorState');
+var RichTextEditorUtil = require('RichTextEditorUtil');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
 const isEventHandled = require('isEventHandled');
 var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 
-import type {BlockMap} from 'BlockMap';
-import type {EntityMap} from 'EntityMap';
 /**
  * Paste content.
  */
-function editOnPaste(e: SyntheticClipboardEvent): void {
+function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   e.preventDefault();
   var data = new DataTransfer(e.clipboardData);
 
@@ -41,8 +45,8 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       // Allow customized paste handling for images, etc. Otherwise, fall
       // through to insert text contents into the editor.
       if (
-        this.props.handlePastedFiles &&
-        isEventHandled(this.props.handlePastedFiles(files))
+        editor.props.handlePastedFiles &&
+        isEventHandled(editor.props.handlePastedFiles(files))
       ) {
         return;
       }
@@ -53,31 +57,34 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
           return;
         }
 
-        var editorState = this._latestEditorState;
+        var editorState = editor._latestEditorState;
         var blocks = splitTextIntoTextBlocks(fileText);
         var character = CharacterMetadata.create({
           style: editorState.getCurrentInlineStyle(),
           entity: getEntityKeyForSelection(
             editorState.getCurrentContent(),
-            editorState.getSelection()
+            editorState.getSelection(),
           ),
         });
+        var currentBlockType = RichTextEditorUtil.getCurrentBlockType(
+          editorState,
+        );
 
-        var text = DraftPasteProcessor.processText(blocks, character);
+        var text = DraftPasteProcessor.processText(
+          blocks,
+          character,
+          currentBlockType,
+        );
         var fragment = BlockMapBuilder.createFromArray(text);
 
         var withInsertedText = DraftModifier.replaceWithFragment(
           editorState.getCurrentContent(),
           editorState.getSelection(),
-          fragment
+          fragment,
         );
 
-        this.update(
-          EditorState.push(
-            editorState,
-            withInsertedText,
-            'insert-fragment'
-          )
+        editor.update(
+          EditorState.push(editorState, withInsertedText, 'insert-fragment'),
         );
       });
 
@@ -88,10 +95,11 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
   let textBlocks: Array<string> = [];
   const text = data.getText();
   const html = data.getHTML();
+  const editorState = editor._latestEditorState;
 
   if (
-    this.props.handlePastedText &&
-    isEventHandled(this.props.handlePastedText(text, html))
+    editor.props.handlePastedText &&
+    isEventHandled(editor.props.handlePastedText(text, html, editorState))
   ) {
     return;
   }
@@ -100,7 +108,7 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     textBlocks = splitTextIntoTextBlocks(text);
   }
 
-  if (!this.props.stripPastedStyles) {
+  if (!editor.props.stripPastedStyles) {
     // If the text from the paste event is rich content that matches what we
     // already have on the internal clipboard, assume that we should just use
     // the clipboard fragment for the paste. This will allow us to preserve
@@ -108,23 +116,21 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     // stripped during comparison -- this is because copy/paste within the
     // editor in Firefox and IE will not include empty lines. The resulting
     // paste will preserve the newlines correctly.
-    const internalClipboard = this.getClipboard();
+    const internalClipboard = editor.getClipboard();
     if (data.isRichText() && internalClipboard) {
       if (
         // If the editorKey is present in the pasted HTML, it should be safe to
         // assume this is an internal paste.
-        html.indexOf(this.getEditorKey()) !== -1 ||
+        html.indexOf(editor.getEditorKey()) !== -1 ||
         // The copy may have been made within a single block, in which case the
         // editor key won't be part of the paste. In this case, just check
         // whether the pasted text matches the internal clipboard.
-        (
-          textBlocks.length === 1 &&
+        (textBlocks.length === 1 &&
           internalClipboard.size === 1 &&
-          internalClipboard.first().getText() === text
-        )
+          internalClipboard.first().getText() === text)
       ) {
-        this.update(
-          insertFragment(this._latestEditorState, internalClipboard)
+        editor.update(
+          insertFragment(editor._latestEditorState, internalClipboard),
         );
         return;
       }
@@ -137,8 +143,8 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
       // Safari does not properly store text/html in some cases.
       // Use the internalClipboard if present and equal to what is on
       // the clipboard. See https://bugs.webkit.org/show_bug.cgi?id=19893.
-      this.update(
-        insertFragment(this._latestEditorState, internalClipboard)
+      editor.update(
+        insertFragment(editor._latestEditorState, internalClipboard),
       );
       return;
     }
@@ -147,14 +153,14 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
     if (html) {
       var htmlFragment = DraftPasteProcessor.processHTML(
         html,
-        this.props.blockRenderMap
+        editor.props.blockRenderMap,
       );
       if (htmlFragment) {
-        const { contentBlocks, entityMap } = htmlFragment;
+        const {contentBlocks, entityMap} = htmlFragment;
         if (contentBlocks) {
           var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
-          this.update(
-            insertFragment(this._latestEditorState, htmlMap, entityMap)
+          editor.update(
+            insertFragment(editor._latestEditorState, htmlMap, entityMap),
           );
           return;
         }
@@ -163,26 +169,28 @@ function editOnPaste(e: SyntheticClipboardEvent): void {
 
     // Otherwise, create a new fragment from our pasted text. Also
     // empty the internal clipboard, since it's no longer valid.
-    this.setClipboard(null);
+    editor.setClipboard(null);
   }
 
   if (textBlocks.length) {
-    var editorState = this._latestEditorState;
     var character = CharacterMetadata.create({
       style: editorState.getCurrentInlineStyle(),
       entity: getEntityKeyForSelection(
         editorState.getCurrentContent(),
-        editorState.getSelection()
+        editorState.getSelection(),
       ),
     });
 
+    var currentBlockType = RichTextEditorUtil.getCurrentBlockType(editorState);
+
     var textFragment = DraftPasteProcessor.processText(
       textBlocks,
-      character
+      character,
+      currentBlockType,
     );
 
     var textMap = BlockMapBuilder.createFromArray(textFragment);
-    this.update(insertFragment(this._latestEditorState, textMap));
+    editor.update(insertFragment(editor._latestEditorState, textMap));
   }
 }
 
@@ -194,20 +202,22 @@ function insertFragment(
   var newContent = DraftModifier.replaceWithFragment(
     editorState.getCurrentContent(),
     editorState.getSelection(),
-    fragment
+    fragment,
   );
-  const mergedEntityMap = newContent.getEntityMap().merge(entityMap);
+  // TODO: merge the entity map once we stop using DraftEntity
+  // like this:
+  // const mergedEntityMap = newContent.getEntityMap().merge(entityMap);
 
   return EditorState.push(
     editorState,
-    newContent.set('entityMap', mergedEntityMap),
-    'insert-fragment'
+    newContent.set('entityMap', entityMap),
+    'insert-fragment',
   );
 }
 
 function areTextBlocksAndClipboardEqual(
   textBlocks: Array<string>,
-  blockMap: BlockMap
+  blockMap: BlockMap,
 ): boolean {
   return (
     textBlocks.length === blockMap.size &&

@@ -7,17 +7,20 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnDragOver
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 /**
  * Drag behavior has begun from outside the editor element.
  */
-function editOnDragOver(e: SyntheticDragEvent): void {
-  this._internalDrag = false;
-  this.setMode('drag');
+function editOnDragOver(editor: DraftEditor, e: SyntheticDragEvent<>): void {
+  editor._internalDrag = false;
+  editor.setMode('drag');
   e.preventDefault();
 }
 

@@ -1,4 +1,4 @@
-# [Draft.js](https://facebook.github.io/draft-js/) [![Build Status](https://img.shields.io/travis/facebook/draft-js/master.svg?style=flat)](https://travis-ci.org/facebook/draft-js) [![npm version](https://img.shields.io/npm/v/draft-js.svg?style=flat)](https://www.npmjs.com/package/draft-js)
+# [Draft.js](http://draftjs.org/) [![Build Status](https://img.shields.io/travis/facebook/draft-js/master.svg?style=flat)](https://travis-ci.org/facebook/draft-js) [![npm version](https://img.shields.io/npm/v/draft-js.svg?style=flat)](https://yarn.pm/draft-js)
 
 Draft.js is a JavaScript rich text editor framework, built for React and
 backed by an immutable model.
@@ -15,11 +15,64 @@ with [immutable-js](https://facebook.github.io/immutable-js/), offering
 an API with functional state updates and aggressively leveraging data persistence
 for scalable memory usage.
 
-[Learn how to use Draft.js in your own project.](https://facebook.github.io/draft-js/docs/overview.html)
+[Learn how to use Draft.js in your own project.](http://draftjs.org/docs/overview.html)
 
-## Examples
+## API Notice
 
-Visit https://facebook.github.io/draft-js/ to try out a simple rich editor example.
+Before getting started, please be aware that we recently changed the API of
+Entity storage in Draft. The latest version, `v0.10.0`, supports both the old
+and new API.  Following that up will be `v0.11.0` which will remove the old API.
+If you are interested in helping out, or tracking the progress, please follow
+[issue 839](https://github.com/facebook/draft-js/issues/839).
+
+## Getting Started
+
+Currently Draft.js is distributed via npm. It depends on React and React DOM which must also be installed.
+
+```
+npm install --save draft-js react react-dom
+
+or
+
+yarn add draft-js react react-dom
+```
+
+### Using Draft.js
+
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Editor, EditorState} from 'draft-js';
+
+class MyEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {editorState: EditorState.createEmpty()};
+    this.onChange = (editorState) => this.setState({editorState});
+  }
+  render() {
+    return (
+      <Editor editorState={this.state.editorState} onChange={this.onChange} />
+    );
+  }
+}
+
+ReactDOM.render(
+  <MyEditor />,
+  document.getElementById('container')
+);
+```
+
+Because Draft.js supports unicode, you must have the following meta tag in the `<head>` `</head>` block of your HTML file:
+
+```html
+<meta charset="utf-8" />
+```
+Further examples of how Draft.js can be used are provided below.
+
+### Examples
+
+Visit http://draftjs.org/ to try out a simple rich editor example.
 
 The repository includes a variety of different editor examples to demonstrate
 some of the features offered by the framework.
@@ -38,6 +91,18 @@ then open the example HTML files in your browser.
 Draft.js is used in production on Facebook, including status and
 comment inputs, [Notes](https://www.facebook.com/notes/), and
 [messenger.com](https://www.messenger.com).
+
+## Browser Support
+
+| ![IE / Edge](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png) <br /> IE / Edge | ![Firefox](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png) <br /> Firefox | ![Chrome](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png) <br /> Chrome | ![Safari](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png ) <br /> Safari | ![iOS Safari](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari-ios.png) <br />iOS Safari | ![Chrome for Anroid](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome-android.png) <br/> Chrome for Android |
+| --------- | --------- | --------- | --------- | --------- | --------- |
+| IE11, Edge [1, 2]| last 2 versions| last 2 versions| last 2 versions| not fully supported [3] | not fully supported [3]
+
+[1] May need a shim or a polyfill for some syntax used in Draft.js ([docs](https://draftjs.org/docs/advanced-topics-issues-and-pitfalls.html#polyfills)). 
+
+[2] IME inputs have known issues in these browsers, especially Korean ([docs](https://draftjs.org/docs/advanced-topics-issues-and-pitfalls.html#ime-and-internet-explorer)).
+
+[3] There are known issues with mobile browsers, especially on Android ([docs](https://draftjs.org/docs/advanced-topics-issues-and-pitfalls.html#mobile-not-yet-supported)).
 
 ## Resources and Ecosystem
 

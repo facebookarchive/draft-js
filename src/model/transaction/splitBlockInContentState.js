@@ -7,30 +7,27 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule splitBlockInContentState
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
+
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
 
 var Immutable = require('immutable');
 
 var generateRandomKey = require('generateRandomKey');
 var invariant = require('invariant');
 
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
-
 const {Map} = Immutable;
 
 function splitBlockInContentState(
   contentState: ContentState,
-  selectionState: SelectionState
+  selectionState: SelectionState,
 ): ContentState {
-  invariant(
-    selectionState.isCollapsed(),
-    'Selection range must be collapsed.'
-  );
+  invariant(selectionState.isCollapsed(), 'Selection range must be collapsed.');
 
   var key = selectionState.getAnchorKey();
   var offset = selectionState.getAnchorOffset();
@@ -54,11 +51,16 @@ function splitBlockInContentState(
   });
 
   var blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
-  var blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
-  var newBlocks = blocksBefore.concat(
-    [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
-    blocksAfter
-  ).toOrderedMap();
+  var blocksAfter = blockMap
+    .toSeq()
+    .skipUntil(v => v === blockToSplit)
+    .rest();
+  var newBlocks = blocksBefore
+    .concat(
+      [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
+      blocksAfter,
+    )
+    .toOrderedMap();
 
   return contentState.merge({
     blockMap: newBlocks,

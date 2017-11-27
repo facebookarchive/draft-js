@@ -7,27 +7,27 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule applyEntityToContentBlock
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type {BlockNodeRecord} from 'BlockNodeRecord';
+
 var CharacterMetadata = require('CharacterMetadata');
 
-import type ContentBlock from 'ContentBlock';
-
 function applyEntityToContentBlock(
-  contentBlock: ContentBlock,
+  contentBlock: BlockNodeRecord,
   start: number,
   end: number,
-  entityKey: ?string
-): ContentBlock {
+  entityKey: ?string,
+): BlockNodeRecord {
   var characterList = contentBlock.getCharacterList();
   while (start < end) {
     characterList = characterList.set(
       start,
-      CharacterMetadata.applyEntity(characterList.get(start), entityKey)
+      CharacterMetadata.applyEntity(characterList.get(start), entityKey),
     );
     start++;
   }

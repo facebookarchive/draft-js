@@ -7,25 +7,26 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule removeEntitiesAtEdges
+ * @format
  * @flow
  */
 
 'use strict';
+
+import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type ContentState from 'ContentState';
+import type {EntityMap} from 'EntityMap';
+import type SelectionState from 'SelectionState';
+import type {List} from 'immutable';
 
 var CharacterMetadata = require('CharacterMetadata');
 
 var findRangesImmutable = require('findRangesImmutable');
 var invariant = require('invariant');
 
-import type ContentBlock from 'ContentBlock';
-import type {EntityMap} from 'EntityMap';
-import type ContentState from 'ContentState';
-import type {List} from 'immutable';
-import type SelectionState from 'SelectionState';
-
 function removeEntitiesAtEdges(
   contentState: ContentState,
-  selectionState: SelectionState
+  selectionState: SelectionState,
 ): ContentState {
   var blockMap = contentState.getBlockMap();
   var entityMap = contentState.getEntityMap();
@@ -67,7 +68,7 @@ function removeEntitiesAtEdges(
 function getRemovalRange(
   characters: List<CharacterMetadata>,
   key: ?string,
-  offset: number
+  offset: number,
 ): Object {
   var removalRange;
   findRangesImmutable(
@@ -78,20 +79,20 @@ function getRemovalRange(
       if (start <= offset && end >= offset) {
         removalRange = {start, end};
       }
-    }
+    },
   );
   invariant(
     typeof removalRange === 'object',
-    'Removal range must exist within character list.'
+    'Removal range must exist within character list.',
   );
   return removalRange;
 }
 
 function removeForBlock(
   entityMap: EntityMap,
-  block: ContentBlock,
-  offset: number
-): ContentBlock {
+  block: BlockNodeRecord,
+  offset: number,
+): BlockNodeRecord {
   var chars = block.getCharacterList();
   var charBefore = offset > 0 ? chars.get(offset - 1) : undefined;
   var charAfter = offset < chars.count() ? chars.get(offset) : undefined;
@@ -99,7 +100,7 @@ function removeForBlock(
   var entityAfterCursor = charAfter ? charAfter.getEntity() : undefined;
 
   if (entityAfterCursor && entityAfterCursor === entityBeforeCursor) {
-    var entity = entityMap.get(entityAfterCursor);
+    var entity = entityMap.__get(entityAfterCursor);
     if (entity.getMutability() !== 'MUTABLE') {
       var {start, end} = getRemovalRange(chars, entityAfterCursor, offset);
       var current;

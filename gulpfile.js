@@ -76,13 +76,28 @@ var buildDist = function(opts) {
   var webpackOpts = {
     debug: opts.debug,
     externals: {
-      immutable: 'Immutable',
-      react: 'React',
-      'react-dom': 'ReactDOM',
+      immutable: {
+        root: 'Immutable',
+        commonjs2: 'immutable',
+        commonjs: 'immutable',
+        amd: 'immutable',
+      },
+      react: {
+        root: 'React',
+        commonjs2: 'react',
+        commonjs: 'react',
+        amd: 'react',
+      },
+      'react-dom': {
+        root: 'ReactDOM',
+        commonjs2: 'react-dom',
+        commonjs: 'react-dom',
+        amd: 'react-dom',
+      },
     },
     output: {
       filename: opts.output,
-      libraryTarget: 'var',
+      libraryTarget: 'umd',
       library: 'Draft',
     },
     plugins: [
@@ -159,8 +174,8 @@ gulp.task('css', function() {
         /\bvar\(([\w-]+)\)/g,
         function(match, name) {
           var vars = {
-            'fbui-desktop-text-placeholder': '#9197a3',
-            'fbui-desktop-text-placeholder-focused': '#bdc1c9',
+            'fig-secondary-text': '#9197a3',
+            'fig-light-20': '#bdc1c9',
           };
           if (vars[name]) {
             return vars[name];

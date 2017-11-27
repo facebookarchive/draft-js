@@ -25,7 +25,7 @@ operations are already implemented and available via utility modules. The getter
 methods, however, may come in handy at render time.
 
 See the API reference on
-[ContentBlock](/draft-js/docs/api-reference-content-block.html#representing-styles-and-entities)
+[ContentBlock](/docs/api-reference-content-block.html#representing-styles-and-entities)
 for information on how `CharacterMetadata` is used within `ContentBlock`.
 
 ## Overview

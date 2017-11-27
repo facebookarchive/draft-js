@@ -7,13 +7,16 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftBlockRenderMap
+ * @format
  * @flow
  */
 
 'use strict';
 
 import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
-import type {DraftBlockType} from 'DraftBlockType';
 import type {Map} from 'immutable';
 
-export type DraftBlockRenderMap = Map<DraftBlockType, DraftBlockRenderConfig>;
+// We should be able to be more specific on the key type
+// once we upgrade to immutable v4
+// https://github.com/facebook/immutable-js/issues/1371
+export type DraftBlockRenderMap = Map<any, DraftBlockRenderConfig>;

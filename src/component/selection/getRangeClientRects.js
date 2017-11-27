@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getRangeClientRects
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -53,7 +53,7 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
 
   invariant(
     false,
-    'Found an unexpected detached subtree when getting range client rects.'
+    'Found an unexpected detached subtree when getting range client rects.',
   );
 }
 /* eslint-enable consistent-return */
@@ -61,10 +61,10 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
 /**
  * Like range.getClientRects() but normalizes for browser bugs.
  */
-var getRangeClientRects = isChrome ?
-  getRangeClientRectsChrome :
-  function(range: Range): Array<ClientRect> {
-    return Array.from(range.getClientRects());
-  };
+var getRangeClientRects = isChrome
+  ? getRangeClientRectsChrome
+  : function(range: Range): Array<ClientRect> {
+      return Array.from(range.getClientRects());
+    };
 
 module.exports = getRangeClientRects;

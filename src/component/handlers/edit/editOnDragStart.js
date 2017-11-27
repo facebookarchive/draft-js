@@ -7,17 +7,20 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnDragStart
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type DraftEditor from 'DraftEditor.react';
+
 /**
  * A `dragstart` event has begun within the text editor component.
  */
-function editOnDragStart(): void {
-  this._internalDrag = true;
-  this.setMode('drag');
+function editOnDragStart(editor: DraftEditor): void {
+  editor._internalDrag = true;
+  editor.setMode('drag');
 }
 
 module.exports = editOnDragStart;

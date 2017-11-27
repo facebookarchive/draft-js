@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`onBackspace does not handle non-zero-offset or non-collapsed selections 1`] = `null`;
+
+exports[`onBackspace does not handle non-zero-offset or non-collapsed selections 2`] = `null`;
+
+exports[`onBackspace removes a preceding atomic block 1`] = `true`;
+
+exports[`onBackspace removes a preceding atomic block 2`] = `false`;
+
+exports[`onBackspace resets the current block type at the start of the first block 1`] = `
+Object {
+  "characterList": Array [
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+  ],
+  "data": Object {},
+  "depth": 0,
+  "key": "a",
+  "text": "Alpha",
+  "type": "unstyled",
+}
+`;
+
+exports[`onBackspace resets the current block type if empty 1`] = `
+Object {
+  "characterList": Array [],
+  "data": Object {},
+  "depth": 0,
+  "key": "f",
+  "text": "",
+  "type": "unstyled",
+}
+`;
+
+exports[`onDelete does not handle non-block-end or non-collapsed selections 1`] = `true`;
+
+exports[`onDelete does not handle non-block-end or non-collapsed selections 2`] = `true`;
+
+exports[`onDelete removes a following atomic block 1`] = `false`;
+
+exports[`onDelete removes a following atomic block 2`] = `true`;
+
+exports[`tryToRemoveBlockStyleonDelete breaks out of code block on enter two blank lines 1`] = `
+Object {
+  "characterList": Array [
+    Object {
+      "entity": null,
+      "style": Array [
+        "ITALIC",
+      ],
+    },
+    Object {
+      "entity": null,
+      "style": Array [
+        "ITALIC",
+      ],
+    },
+    Object {
+      "entity": null,
+      "style": Array [
+        "ITALIC",
+      ],
+    },
+    Object {
+      "entity": null,
+      "style": Array [
+        "ITALIC",
+      ],
+    },
+    Object {
+      "entity": null,
+      "style": Array [
+        "ITALIC",
+      ],
+    },
+    Object {
+      "entity": null,
+      "style": Array [
+        "ITALIC",
+      ],
+    },
+    Object {
+      "entity": null,
+      "style": Array [
+        "ITALIC",
+      ],
+    },
+  ],
+  "data": Object {},
+  "depth": 0,
+  "key": "f",
+  "text": "Charlie",
+  "type": "blockquote",
+}
+`;

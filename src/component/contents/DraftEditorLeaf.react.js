@@ -7,25 +7,26 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorLeaf.react
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-var DraftEditorTextNode = require('DraftEditorTextNode.react');
+import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type SelectionState from 'SelectionState';
+
+const DraftEditorTextNode = require('DraftEditorTextNode.react');
 var React = require('React');
 var ReactDOM = require('ReactDOM');
-var SelectionState = require('SelectionState');
 
+const invariant = require('invariant');
 var setDraftEditorSelection = require('setDraftEditorSelection');
 
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-
 type Props = {
-  // A function passed through from the the top level to define a cx
-  // style map for the provided style value.
-  blockKey: string,
+  // The block that contains this leaf.
+  block: BlockNodeRecord,
 
   // Mapping of style names to CSS declarations.
   customStyleMap: Object,
@@ -41,8 +42,9 @@ type Props = {
 
   offsetKey: string,
 
-  // The current `SelectionState`, used to
-  selection: SelectionState,
+  // The current `SelectionState`, used to represent a selection range in the
+  // editor
+  selection: ?SelectionState,
 
   // The offset of this string within its block.
   start: number,
@@ -63,16 +65,19 @@ type Props = {
  * DOM Selection API. In this way, top-level components can declaratively
  * maintain the selection state.
  */
-class DraftEditorLeaf extends React.Component {
+class DraftEditorLeaf extends React.Component<Props> {
   /**
    * By making individual leaf instances aware of their context within
    * the text of the editor, we can set our selection range more
    * easily than we could in the non-React world.
    *
    * Note that this depends on our maintaining tight control over the
-   * DOM structure of the TextEditor component. If leaves had multiple
+   * DOM structure of the DraftEditor component. If leaves had multiple
    * text nodes, this would be harder.
    */
+
+  leaf: ?HTMLElement;
+
   _setSelection(): void {
     const {selection} = this.props;
 
@@ -81,7 +86,8 @@ class DraftEditorLeaf extends React.Component {
       return;
     }
 
-    const {blockKey, start, text} = this.props;
+    const {block, start, text} = this.props;
+    const blockKey = block.getKey();
     const end = start + text.length;
     if (!selection.hasEdgeWithin(blockKey, start, end)) {
       return;
@@ -91,7 +97,9 @@ class DraftEditorLeaf extends React.Component {
     // is not a text node, it is a <br /> spacer. In this case, use the
     // <span> itself as the selection target.
     const node = ReactDOM.findDOMNode(this);
+    invariant(node, 'Missing node');
     const child = node.firstChild;
+    invariant(child, 'Missing child');
     let targetNode;
 
     if (child.nodeType === Node.TEXT_NODE) {
@@ -100,14 +108,17 @@ class DraftEditorLeaf extends React.Component {
       targetNode = node;
     } else {
       targetNode = child.firstChild;
+      invariant(targetNode, 'Missing targetNode');
     }
 
     setDraftEditorSelection(selection, targetNode, blockKey, start, end);
   }
 
   shouldComponentUpdate(nextProps: Props): boolean {
+    const leafNode = ReactDOM.findDOMNode(this.leaf);
+    invariant(leafNode, 'Missing leafNode');
     return (
-      ReactDOM.findDOMNode(this.refs.leaf).textContent !== nextProps.text ||
+      leafNode.textContent !== nextProps.text ||
       nextProps.styleSet !== this.props.styleSet ||
       nextProps.forceSelection
     );
@@ -121,7 +132,8 @@ class DraftEditorLeaf extends React.Component {
     this._setSelection();
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
+    const {block} = this.props;
     let {text} = this.props;
 
     // If the leaf is at the end of its block and ends in a soft newline, append
@@ -137,27 +149,25 @@ class DraftEditorLeaf extends React.Component {
       const mergedStyles = {};
       const style = customStyleMap[styleName];
 
-      if (
-        style !== undefined &&
-        map.textDecoration !== style.textDecoration
-      ) {
+      if (style !== undefined && map.textDecoration !== style.textDecoration) {
         // .trim() is necessary for IE9/10/11 and Edge
-        mergedStyles.textDecoration =
-          [map.textDecoration, style.textDecoration].join(' ').trim();
+        mergedStyles.textDecoration = [map.textDecoration, style.textDecoration]
+          .join(' ')
+          .trim();
       }
 
       return Object.assign(map, style, mergedStyles);
     }, {});
 
     if (customStyleFn) {
-      const newStyles = customStyleFn(styleSet);
+      const newStyles = customStyleFn(styleSet, block);
       styleObj = Object.assign(styleObj, newStyles);
     }
 
     return (
       <span
         data-offset-key={offsetKey}
-        ref="leaf"
+        ref={ref => (this.leaf = ref)}
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>

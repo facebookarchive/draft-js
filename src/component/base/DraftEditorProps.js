@@ -7,20 +7,22 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorProps
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDragType} from 'DraftDragType';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type {DraftTextAlignment} from 'DraftTextAlignment';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftHandleValue} from 'DraftHandleValue';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
+import type {BidiDirection} from 'UnicodeBidiDirection';
 
 export type DraftEditorProps = {
   /**
@@ -36,48 +38,67 @@ export type DraftEditorProps = {
   editorState: EditorState,
   onChange: (editorState: EditorState) => void,
 
+  // specify editorKey when rendering serverside. If you do not set this prop
+  // react will complain that there is a server/client mismatch because Draft
+  // will generate a random editorKey when rendering in each context. The key
+  // is used to figure out if content is being pasted within a draft block to
+  // better apply formatting and styles.  If two editors share the same key &
+  // `stripPastedStyles` is false, draft will assume both editors share their
+  // styling and formatting when re-applying styles.
+  editorKey?: string,
+
   placeholder?: string,
 
   // Specify whether text alignment should be forced in a direction
   // regardless of input characters.
   textAlignment?: DraftTextAlignment,
 
+  // Specify whether text directionality should be forced in a direction
+  // regardless of input characters.
+  textDirectionality?: BidiDirection,
+
   // For a given `ContentBlock` object, return an object that specifies
   // a custom block component and/or props. If no object is returned,
-  // the default `TextEditorBlock` is used.
-  blockRendererFn?: (block: ContentBlock) => ?Object,
+  // the default `DraftEditorBlock` is used.
+  blockRendererFn: (block: BlockNodeRecord) => ?Object,
 
   // Function that returns a cx map corresponding to block-level styles.
-  blockStyleFn?: (type: number) => string,
+  blockStyleFn: (block: BlockNodeRecord) => string,
 
   // A function that accepts a synthetic key event and returns
-  // the matching DraftEditorCommand constant, or null if no command should
-  // be invoked.
-  keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string,
+  // the matching DraftEditorCommand constant, or a custom string,
+  // or null if no command should be invoked.
+  keyBindingFn: (e: SyntheticKeyboardEvent<>) => ?string,
 
   // Set whether the `DraftEditor` component should be editable. Useful for
   // temporarily disabling edit behavior or allowing `DraftEditor` rendering
   // to be used for consumption purposes.
-  readOnly?: boolean,
+  readOnly: boolean,
 
   // Note: spellcheck is always disabled for IE. If enabled in Safari, OSX
   // autocorrect is enabled as well.
-  spellCheck?: boolean,
+  spellCheck: boolean,
 
   // Set whether to remove all style information from pasted content. If your
   // use case should not have any block or inline styles, it is recommended
   // that you set this to `true`.
-  stripPastedStyles?: boolean,
+  stripPastedStyles: boolean,
 
   tabIndex?: number,
 
+  // exposed especially to help improve mobile web behaviors
+  autoCapitalize?: string,
+  autoComplete?: string,
+  autoCorrect?: string,
+
   ariaActiveDescendantID?: string,
   ariaAutoComplete?: string,
+  ariaControls?: string,
   ariaDescribedBy?: string,
   ariaExpanded?: boolean,
-  ariaHasPopup?: boolean,
   ariaLabel?: string,
-  ariaOwneeID?: string,
+  ariaLabelledBy?: string,
+  ariaMultiline?: boolean,
 
   webDriverTestID?: string,
 
@@ -88,46 +109,61 @@ export type DraftEditorProps = {
 
   // Useful for managing special behavior for pressing the `Return` key. E.g.
   // removing the style from an empty list item.
-  handleReturn?: (e: SyntheticKeyboardEvent) => DraftHandleValue,
+  handleReturn?: (
+    e: SyntheticKeyboardEvent<>,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
   // Map a key command string provided by your key binding function to a
   // specified behavior.
-  handleKeyCommand?: (command: DraftEditorCommand) => DraftHandleValue,
+  handleKeyCommand?: (
+    command: DraftEditorCommand | string,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be
   // useful in cases where the user has entered characters that you would like
   // to trigger some special behavior. E.g. immediately converting `:)` to an
   // emoji Unicode character, or replacing ASCII quote characters with smart
   // quotes.
-  handleBeforeInput?: (chars: string) => DraftHandleValue,
+  handleBeforeInput?: (
+    chars: string,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
-  handlePastedText?: (text: string, html?: string) => DraftHandleValue,
+  handlePastedText?: (
+    text: string,
+    html?: string,
+    editorState: EditorState,
+  ) => DraftHandleValue,
 
   handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
 
   // Handle dropped files
   handleDroppedFiles?: (
     selection: SelectionState,
-    files: Array<Blob>
+    files: Array<Blob>,
   ) => DraftHandleValue,
 
   // Handle other drops to prevent default text movement/insertion behaviour
   handleDrop?: (
     selection: SelectionState,
     dataTransfer: Object,
-    isInternal: DraftDragType
+    isInternal: DraftDragType,
   ) => DraftHandleValue,
 
   /**
    * Non-cancelable event triggers.
    */
-  onEscape?: (e: SyntheticKeyboardEvent) => void,
-  onTab?: (e: SyntheticKeyboardEvent) => void,
-  onUpArrow?: (e: SyntheticKeyboardEvent) => void,
-  onDownArrow?: (e: SyntheticKeyboardEvent) => void,
+  onEscape?: (e: SyntheticKeyboardEvent<>) => void,
+  onTab?: (e: SyntheticKeyboardEvent<>) => void,
+  onUpArrow?: (e: SyntheticKeyboardEvent<>) => void,
+  onRightArrow?: (e: SyntheticKeyboardEvent<>) => void,
+  onDownArrow?: (e: SyntheticKeyboardEvent<>) => void,
+  onLeftArrow?: (e: SyntheticKeyboardEvent<>) => void,
 
-  onBlur?: (e: SyntheticEvent) => void,
-  onFocus?: (e: SyntheticEvent) => void,
+  onBlur?: (e: SyntheticEvent<>) => void,
+  onFocus?: (e: SyntheticEvent<>) => void,
 
   // Provide a map of inline style names corresponding to CSS style objects
   // that will be rendered for matching ranges.
@@ -135,10 +171,20 @@ export type DraftEditorProps = {
 
   // Provide a function that will construct CSS style objects given inline
   // style names.
-  customStyleFn?: (style: DraftInlineStyle) => ?Object,
+  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
 
   // Provide a map of block rendering configurations. Each block type maps to
   // an element tag and an optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
-  blockRenderMap: DraftBlockRenderMap
+  blockRenderMap: DraftBlockRenderMap,
+};
+
+export type DraftEditorDefaultProps = {
+  blockRenderMap: DraftBlockRenderMap,
+  blockRendererFn: (block: BlockNodeRecord) => ?Object,
+  blockStyleFn: (block: BlockNodeRecord) => string,
+  keyBindingFn: (e: SyntheticKeyboardEvent<>) => ?string,
+  readOnly: boolean,
+  spellCheck: boolean,
+  stripPastedStyles: boolean,
 };

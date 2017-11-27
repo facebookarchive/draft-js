@@ -7,29 +7,29 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule createEntityInContentState
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-const DraftEntityInstance = require('DraftEntityInstance');
-
-const addEntityToContentState = require('addEntityToContentState');
-
 import type ContentState from 'ContentState';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
+
+const DraftEntityInstance = require('DraftEntityInstance');
+
+const addEntityToContentState = require('addEntityToContentState');
 
 function createEntityInContentState(
   contentState: ContentState,
   type: DraftEntityType,
   mutability: DraftEntityMutability,
-  data?: Object
+  data?: Object,
 ): ContentState {
   return addEntityToContentState(
     contentState,
-    new DraftEntityInstance({type, mutability, data: data || {}})
+    new DraftEntityInstance({type, mutability, data: data || {}}),
   );
 }
 

@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule insertTextIntoContentState
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -28,11 +28,11 @@ function insertTextIntoContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   text: string,
-  characterMetadata: CharacterMetadata
+  characterMetadata: CharacterMetadata,
 ): ContentState {
   invariant(
     selectionState.isCollapsed(),
-    '`insertText` should only be called with a collapsed range.'
+    '`insertText` should only be called with a collapsed range.',
   );
 
   var len = text.length;
@@ -47,15 +47,14 @@ function insertTextIntoContentState(
   var blockText = block.getText();
 
   var newBlock = block.merge({
-    text: (
+    text:
       blockText.slice(0, offset) +
       text +
-      blockText.slice(offset, block.getLength())
-    ),
+      blockText.slice(offset, block.getLength()),
     characterList: insertIntoList(
       block.getCharacterList(),
       Repeat(characterMetadata, len).toList(),
-      offset
+      offset,
     ),
   });
 

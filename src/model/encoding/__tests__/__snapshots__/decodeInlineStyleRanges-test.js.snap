@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must decode for a flat styled block 1`] = `
+Array [
+  Array [
+    "BOLD",
+  ],
+  Array [
+    "BOLD",
+  ],
+  Array [
+    "BOLD",
+  ],
+  Array [
+    "BOLD",
+  ],
+  Array [
+    "BOLD",
+  ],
+]
+`;
+
+exports[`must decode for a mixed-style block 1`] = `
+Array [
+  Array [
+    "BOLD",
+    "UNDERLINE",
+  ],
+  Array [
+    "BOLD",
+    "ITALIC",
+    "UNDERLINE",
+  ],
+  Array [
+    "BOLD",
+    "ITALIC",
+  ],
+  Array [
+    "ITALIC",
+  ],
+  Array [
+    "BOLD",
+  ],
+]
+`;
+
+exports[`must decode for an unstyled block 1`] = `
+Array [
+  Array [],
+  Array [],
+  Array [],
+  Array [],
+  Array [],
+]
+`;
+
+exports[`must decode for strings that contain surrogate pairs in UTF-16 1`] = `
+Array [
+  Array [],
+  Array [],
+  Array [],
+  Array [],
+  Array [
+    "BOLD",
+  ],
+  Array [
+    "BOLD",
+  ],
+  Array [
+    "BOLD",
+    "ITALIC",
+  ],
+  Array [
+    "BOLD",
+    "ITALIC",
+  ],
+  Array [
+    "BOLD",
+    "ITALIC",
+  ],
+  Array [
+    "ITALIC",
+  ],
+  Array [
+    "ITALIC",
+  ],
+  Array [
+    "ITALIC",
+  ],
+  Array [
+    "ITALIC",
+  ],
+  Array [
+    "ITALIC",
+  ],
+  Array [
+    "ITALIC",
+  ],
+  Array [],
+  Array [],
+]
+`;

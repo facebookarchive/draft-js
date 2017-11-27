@@ -7,21 +7,30 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DefaultDraftBlockRenderMap
+ * @format
  * @flow
  */
 
 'use strict';
+
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
+import type {CoreDraftBlockType} from 'DraftBlockType';
 
 const {Map} = require('immutable');
 const React = require('React');
 
 const cx = require('cx');
 
+type DefaultCoreDraftBlockRenderMap = Map<
+  CoreDraftBlockType,
+  DraftBlockRenderConfig,
+>;
+
 const UL_WRAP = <ul className={cx('public/DraftStyleDefault/ul')} />;
 const OL_WRAP = <ol className={cx('public/DraftStyleDefault/ol')} />;
 const PRE_WRAP = <pre className={cx('public/DraftStyleDefault/pre')} />;
 
-module.exports = Map({
+const DefaultDraftBlockRenderMap: DefaultCoreDraftBlockRenderMap = Map({
   'header-one': {
     element: 'h1',
   },
@@ -48,17 +57,20 @@ module.exports = Map({
     element: 'li',
     wrapper: OL_WRAP,
   },
-  'blockquote': {
+  blockquote: {
     element: 'blockquote',
   },
-  'atomic': {
+  atomic: {
     element: 'figure',
   },
   'code-block': {
     element: 'pre',
     wrapper: PRE_WRAP,
   },
-  'unstyled': {
+  unstyled: {
     element: 'div',
+    aliasedElements: ['p'],
   },
 });
+
+module.exports = DefaultDraftBlockRenderMap;

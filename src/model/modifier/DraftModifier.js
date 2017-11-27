@@ -7,14 +7,23 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftModifier
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
+import type ContentState from 'ContentState';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftRemovalDirection} from 'DraftRemovalDirection';
+import type SelectionState from 'SelectionState';
+import type {Map} from 'immutable';
+
 var CharacterMetadata = require('CharacterMetadata');
 var ContentStateInlineStyle = require('ContentStateInlineStyle');
+const DraftFeatureFlags = require('DraftFeatureFlags');
 var Immutable = require('immutable');
 
 var applyEntityToContentState = require('applyEntityToContentState');
@@ -27,14 +36,6 @@ var modifyBlockForContentState = require('modifyBlockForContentState');
 var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 var removeRangeFromContentState = require('removeRangeFromContentState');
 var splitBlockInContentState = require('splitBlockInContentState');
-
-import type {BlockMap} from 'BlockMap';
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftInlineStyle} from 'DraftInlineStyle';
-import type {DraftRemovalDirection} from 'DraftRemovalDirection';
-import type {Map} from 'immutable';
-import type SelectionState from 'SelectionState';
 
 const {OrderedSet} = Immutable;
 
@@ -54,12 +55,12 @@ var DraftModifier = {
     rangeToReplace: SelectionState,
     text: string,
     inlineStyle?: DraftInlineStyle,
-    entityKey?: ?string
+    entityKey?: ?string,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, rangeToReplace);
     var withoutText = removeRangeFromContentState(
       withoutEntities,
-      rangeToReplace
+      rangeToReplace,
     );
 
     var character = CharacterMetadata.create({
@@ -71,7 +72,7 @@ var DraftModifier = {
       withoutText,
       withoutText.getSelectionAfter(),
       text,
-      character
+      character,
     );
   },
 
@@ -80,138 +81,162 @@ var DraftModifier = {
     targetRange: SelectionState,
     text: string,
     inlineStyle?: DraftInlineStyle,
-    entityKey?: ?string
+    entityKey?: ?string,
   ): ContentState {
     invariant(
       targetRange.isCollapsed(),
-      'Target range must be collapsed for `insertText`.'
+      'Target range must be collapsed for `insertText`.',
     );
     return DraftModifier.replaceText(
       contentState,
       targetRange,
       text,
       inlineStyle,
-      entityKey
+      entityKey,
     );
   },
 
   moveText: function(
     contentState: ContentState,
     removalRange: SelectionState,
-    targetRange: SelectionState
+    targetRange: SelectionState,
   ): ContentState {
     var movedFragment = getContentStateFragment(contentState, removalRange);
 
     var afterRemoval = DraftModifier.removeRange(
       contentState,
       removalRange,
-      'backward'
+      'backward',
     );
 
     return DraftModifier.replaceWithFragment(
       afterRemoval,
       targetRange,
-      movedFragment
+      movedFragment,
     );
   },
 
   replaceWithFragment: function(
     contentState: ContentState,
     targetRange: SelectionState,
-    fragment: BlockMap
+    fragment: BlockMap,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
-    var withoutText = removeRangeFromContentState(
-      withoutEntities,
-      targetRange
-    );
+    var withoutText = removeRangeFromContentState(withoutEntities, targetRange);
 
     return insertFragmentIntoContentState(
       withoutText,
       withoutText.getSelectionAfter(),
-      fragment
+      fragment,
     );
   },
 
   removeRange: function(
     contentState: ContentState,
     rangeToRemove: SelectionState,
-    removalDirection: DraftRemovalDirection
+    removalDirection: DraftRemovalDirection,
   ): ContentState {
+    let startKey, endKey, startBlock, endBlock;
+    if (rangeToRemove.getIsBackward()) {
+      rangeToRemove = rangeToRemove.merge({
+        anchorKey: rangeToRemove.getFocusKey(),
+        anchorOffset: rangeToRemove.getFocusOffset(),
+        focusKey: rangeToRemove.getAnchorKey(),
+        focusOffset: rangeToRemove.getAnchorOffset(),
+        isBackward: false,
+      });
+    }
+    startKey = rangeToRemove.getAnchorKey();
+    endKey = rangeToRemove.getFocusKey();
+    startBlock = contentState.getBlockForKey(startKey);
+    endBlock = contentState.getBlockForKey(endKey);
+    const startOffset = rangeToRemove.getStartOffset();
+    const endOffset = rangeToRemove.getEndOffset();
+
+    const startEntityKey = startBlock.getEntityAt(startOffset);
+    const endEntityKey = endBlock.getEntityAt(endOffset - 1);
+
     // Check whether the selection state overlaps with a single entity.
     // If so, try to remove the appropriate substring of the entity text.
-    if (rangeToRemove.getAnchorKey() === rangeToRemove.getFocusKey()) {
-      var key = rangeToRemove.getAnchorKey();
-      var startOffset = rangeToRemove.getStartOffset();
-      var endOffset = rangeToRemove.getEndOffset();
-      var block = contentState.getBlockForKey(key);
-
-      var startEntity = block.getEntityAt(startOffset);
-      var endEntity = block.getEntityAt(endOffset - 1);
-      if (startEntity && startEntity === endEntity) {
-        var adjustedRemovalRange = getCharacterRemovalRange(
+    if (startKey === endKey) {
+      if (startEntityKey && startEntityKey === endEntityKey) {
+        const adjustedRemovalRange = getCharacterRemovalRange(
           contentState.getEntityMap(),
-          block,
+          startBlock,
+          endBlock,
           rangeToRemove,
-          removalDirection
+          removalDirection,
         );
         return removeRangeFromContentState(contentState, adjustedRemovalRange);
       }
     }
+    let adjustedRemovalRange = rangeToRemove;
+    if (DraftFeatureFlags.draft_segmented_entities_behavior) {
+      // Adjust the selection to properly delete segemented and immutable
+      // entities
+      adjustedRemovalRange = getCharacterRemovalRange(
+        contentState.getEntityMap(),
+        startBlock,
+        endBlock,
+        rangeToRemove,
+        removalDirection,
+      );
+    }
 
-    var withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
-    return removeRangeFromContentState(withoutEntities, rangeToRemove);
+    var withoutEntities = removeEntitiesAtEdges(
+      contentState,
+      adjustedRemovalRange,
+    );
+    return removeRangeFromContentState(withoutEntities, adjustedRemovalRange);
   },
 
   splitBlock: function(
     contentState: ContentState,
-    selectionState: SelectionState
+    selectionState: SelectionState,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     var withoutText = removeRangeFromContentState(
       withoutEntities,
-      selectionState
+      selectionState,
     );
 
     return splitBlockInContentState(
       withoutText,
-      withoutText.getSelectionAfter()
+      withoutText.getSelectionAfter(),
     );
   },
 
   applyInlineStyle: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    inlineStyle: string
+    inlineStyle: string,
   ): ContentState {
     return ContentStateInlineStyle.add(
       contentState,
       selectionState,
-      inlineStyle
+      inlineStyle,
     );
   },
 
   removeInlineStyle: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    inlineStyle: string
+    inlineStyle: string,
   ): ContentState {
     return ContentStateInlineStyle.remove(
       contentState,
       selectionState,
-      inlineStyle
+      inlineStyle,
     );
   },
 
   setBlockType: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    blockType: DraftBlockType
+    blockType: DraftBlockType,
   ): ContentState {
-    return modifyBlockForContentState(
-      contentState,
-      selectionState,
-      (block) => block.merge({type: blockType, depth: 0})
+    return modifyBlockForContentState(contentState, selectionState, block =>
+      block.merge({type: blockType, depth: 0}),
     );
   },
 
@@ -220,10 +245,8 @@ var DraftModifier = {
     selectionState: SelectionState,
     blockData: Map<any, any>,
   ): ContentState {
-    return modifyBlockForContentState(
-      contentState,
-      selectionState,
-      (block) => block.merge({data: blockData})
+    return modifyBlockForContentState(contentState, selectionState, block =>
+      block.merge({data: blockData}),
     );
   },
 
@@ -232,24 +255,21 @@ var DraftModifier = {
     selectionState: SelectionState,
     blockData: Map<any, any>,
   ): ContentState {
-    return modifyBlockForContentState(
-      contentState,
-      selectionState,
-      (block) => block.merge({data: block.getData().merge(blockData)})
+    return modifyBlockForContentState(contentState, selectionState, block =>
+      block.merge({data: block.getData().merge(blockData)}),
     );
   },
-
 
   applyEntity: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    entityKey: ?string
+    entityKey: ?string,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     return applyEntityToContentState(
       withoutEntities,
       selectionState,
-      entityKey
+      entityKey,
     );
   },
 };

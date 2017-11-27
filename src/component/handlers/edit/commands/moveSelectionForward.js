@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule moveSelectionForward
+ * @format
  * @flow
  */
 
@@ -25,7 +26,7 @@ import type SelectionState from 'SelectionState';
  */
 function moveSelectionForward(
   editorState: EditorState,
-  maxDistance: number
+  maxDistance: number,
 ): SelectionState {
   var selection = editorState.getSelection();
   var key = selection.getStartKey();
@@ -37,7 +38,7 @@ function moveSelectionForward(
 
   var block = content.getBlockForKey(key);
 
-  if (maxDistance > (block.getText().length - offset)) {
+  if (maxDistance > block.getText().length - offset) {
     focusKey = content.getKeyAfter(key);
     focusOffset = 0;
   } else {

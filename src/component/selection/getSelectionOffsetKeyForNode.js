@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getSelectionOffsetKeyForNode
- * @typechecks
+ * @format
  * @flow
  */
 

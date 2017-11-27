@@ -24,3 +24,14 @@ insertAtomicBlock: function(
   character: string
 ): EditorState
 ```
+
+### moveAtomicBlock
+
+```
+moveAtomicBlock: function(
+  editorState: EditorState,
+  atomicBlock: ContentBlock,
+  targetRange: SelectionState,
+  insertionMode?: DraftInsertionType
+): EditorState
+```

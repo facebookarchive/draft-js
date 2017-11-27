@@ -7,15 +7,15 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getVisibleSelectionRect
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
-
 import type {FakeClientRect} from 'getRangeBoundingClientRect';
+
+const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
 
 /**
  * Return the bounding ClientRect for the visible DOM selection, if any.

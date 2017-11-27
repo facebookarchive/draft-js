@@ -7,32 +7,30 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getSampleStateForTesting
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-var BlockMapBuilder = require('BlockMapBuilder');
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
-var ContentState = require('ContentState');
-var EditorState = require('EditorState');
-var Immutable = require('immutable');
-var SampleDraftInlineStyle = require('SampleDraftInlineStyle');
-var SelectionState = require('SelectionState');
+const BlockMapBuilder = require('BlockMapBuilder');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentBlock = require('ContentBlock');
+const ContentState = require('ContentState');
+const EditorState = require('EditorState');
+const Immutable = require('immutable');
+const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
+const SelectionState = require('SelectionState');
 
-var {BOLD, ITALIC} = SampleDraftInlineStyle;
-var ENTITY_KEY = '123';
+const {BOLD, ITALIC} = SampleDraftInlineStyle;
+const ENTITY_KEY = '1';
 
-var BLOCKS = [
+const BLOCKS = [
   new ContentBlock({
     key: 'a',
     type: 'unstyled',
     text: 'Alpha',
-    characterList: Immutable.List(
-      Immutable.Repeat(CharacterMetadata.EMPTY, 5)
-    ),
+    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 5)),
   }),
   new ContentBlock({
     key: 'b',
@@ -41,24 +39,42 @@ var BLOCKS = [
     characterList: Immutable.List(
       Immutable.Repeat(
         CharacterMetadata.create({style: BOLD, entity: ENTITY_KEY}),
-        5
-      )
+        5,
+      ),
     ),
   }),
   new ContentBlock({
     key: 'c',
+    type: 'code-block',
+    text: 'Test',
+    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 4)),
+  }),
+  new ContentBlock({
+    key: 'd',
+    type: 'code-block',
+    text: '',
+    characterList: Immutable.List(),
+  }),
+  new ContentBlock({
+    key: 'e',
+    type: 'code-block',
+    text: '',
+    characterList: Immutable.List(),
+  }),
+  new ContentBlock({
+    key: 'f',
     type: 'blockquote',
     text: 'Charlie',
     characterList: Immutable.List(
       Immutable.Repeat(
         CharacterMetadata.create({style: ITALIC, entity: null}),
-        7
-      )
+        7,
+      ),
     ),
   }),
 ];
 
-var selectionState = new SelectionState({
+const selectionState = new SelectionState({
   anchorKey: 'a',
   anchorOffset: 0,
   focusKey: 'a',
@@ -67,19 +83,23 @@ var selectionState = new SelectionState({
   hasFocus: true,
 });
 
-var blockMap = BlockMapBuilder.createFromArray(BLOCKS);
-var contentState = new ContentState({
+const blockMap = BlockMapBuilder.createFromArray(BLOCKS);
+const contentState = new ContentState({
   blockMap,
   entityMap: Immutable.OrderedMap(),
   selectionBefore: selectionState,
   selectionAfter: selectionState,
+}).createEntity({
+  type: 'IMAGE',
+  mutability: 'IMMUTABLE',
+  data: null,
 });
 
-var editorState = EditorState.createWithContent(contentState);
+let editorState = EditorState.createWithContent(contentState);
 editorState = EditorState.forceSelection(editorState, selectionState);
 
-function getSampleStateForTesting(): Object {
+const getSampleStateForTesting = (): Object => {
   return {editorState, contentState, selectionState};
-}
+};
 
 module.exports = getSampleStateForTesting;

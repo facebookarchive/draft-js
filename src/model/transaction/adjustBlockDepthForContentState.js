@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule adjustBlockDepthForContentState
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -20,7 +20,7 @@ function adjustBlockDepthForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   adjustment: number,
-  maxDepth: number
+  maxDepth: number,
 ): ContentState {
   var startKey = selectionState.getStartKey();
   var endKey = selectionState.getEndKey();

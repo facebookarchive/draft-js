@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must identify nothing in an empty string 1`] = `""`;
+
+exports[`must identify nothing in an empty string 2`] = `""`;
+
+exports[`must identify punct/whitespace strings looking backward 1`] = `"    "`;
+
+exports[`must identify punct/whitespace strings looking backward 2`] = `"؍﴾﴿"`;
+
+exports[`must identify punct/whitespace strings looking backward 3`] = `". . . . ."`;
+
+exports[`must identify punct/whitespace strings looking backward 4`] = `"   !!!???   "`;
+
+exports[`must identify punct/whitespace strings looking forward 1`] = `"    "`;
+
+exports[`must identify punct/whitespace strings looking forward 2`] = `"؍﴾﴿"`;
+
+exports[`must identify punct/whitespace strings looking forward 3`] = `". . . . ."`;
+
+exports[`must identify punct/whitespace strings looking forward 4`] = `"   !!!???   "`;
+
+exports[`must identify punctuation with apostrophes 1`] = `"'hello"`;
+
+exports[`must identify punctuation with apostrophes 2`] = `"hello'"`;
+
+exports[`must identify punctuation with apostrophes 3`] = `"‘hello"`;
+
+exports[`must identify punctuation with apostrophes 4`] = `"hello’"`;
+
+exports[`must identify punctuation with apostrophes 5`] = `"('hello"`;
+
+exports[`must identify punctuation with apostrophes 6`] = `"hello')"`;
+
+exports[`must identify punctuation with apostrophes 7`] = `".'."`;
+
+exports[`must identify punctuation with apostrophes 8`] = `".'."`;
+
+exports[`must identify words ended by punctuation looking backward 1`] = `"animals."`;
+
+exports[`must identify words ended by punctuation looking backward 2`] = `"animals|"`;
+
+exports[`must identify words ended by punctuation looking backward 3`] = `"animals^"`;
+
+exports[`must identify words ended by punctuation looking backward 4`] = `"animals؍﴾﴿"`;
+
+exports[`must identify words ended by punctuation looking backward 5`] = `"animals.. .. .."`;
+
+exports[`must identify words ended by spaces looking backward 1`] = `"animals  "`;
+
+exports[`must identify words ended by spaces looking backward 2`] = `"fàbregas    "`;
+
+exports[`must identify words ended by spaces looking backward 3`] = `"غػؼ      "`;
+
+exports[`must identify words led by punctuation looking forward 1`] = `".the"`;
+
+exports[`must identify words led by punctuation looking forward 2`] = `"|the"`;
+
+exports[`must identify words led by punctuation looking forward 3`] = `"^the"`;
+
+exports[`must identify words led by punctuation looking forward 4`] = `"؍﴾﴿the"`;
+
+exports[`must identify words led by punctuation looking forward 5`] = `".. .. ..the"`;
+
+exports[`must identify words led by spaces looking forward 1`] = `"  the"`;
+
+exports[`must identify words led by spaces looking forward 2`] = `"    thé"`;
+
+exports[`must identify words led by spaces looking forward 3`] = `"      طظع"`;
+
+exports[`must identify words looking backward 1`] = `"animals"`;
+
+exports[`must identify words looking backward 2`] = `"fàbregas"`;
+
+exports[`must identify words looking backward 3`] = `"غػؼ"`;
+
+exports[`must identify words looking backward 4`] = `"ハッシュ"`;
+
+exports[`must identify words looking backward 5`] = `"트위터"`;
+
+exports[`must identify words looking backward 6`] = `"ﾡﾢﾲ"`;
+
+exports[`must identify words looking backward 7`] = `"бДЖЦ"`;
+
+exports[`must identify words looking backward 8`] = `"tomcat"`;
+
+exports[`must identify words looking forward 1`] = `"the"`;
+
+exports[`must identify words looking forward 2`] = `"thé"`;
+
+exports[`must identify words looking forward 3`] = `"طظع"`;
+
+exports[`must identify words looking forward 4`] = `"会議中"`;
+
+exports[`must identify words looking forward 5`] = `"트위터"`;
+
+exports[`must identify words looking forward 6`] = `"ﾣﾦﾰ"`;
+
+exports[`must identify words looking forward 7`] = `"ашок"`;
+
+exports[`must identify words looking forward 8`] = `"f14"`;
+
+exports[`must identify words with apostrophes looking backward 1`] = `"don't"`;
+
+exports[`must identify words with apostrophes looking forward 1`] = `"you're"`;
+
+exports[`must identify words with curly quotes looking forward 1`] = `"you’re"`;
+
+exports[`must identify words with underscores 1`] = `"under_score"`;
+
+exports[`must identify words with underscores 2`] = `"under_score"`;

@@ -7,23 +7,23 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule ContentStateInlineStyle
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-var CharacterMetadata = require('CharacterMetadata');
-var {Map} = require('immutable');
-
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
+
+var CharacterMetadata = require('CharacterMetadata');
+var {Map} = require('immutable');
 
 var ContentStateInlineStyle = {
   add: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    inlineStyle: string
+    inlineStyle: string,
   ): ContentState {
     return modifyInlineStyle(contentState, selectionState, inlineStyle, true);
   },
@@ -31,7 +31,7 @@ var ContentStateInlineStyle = {
   remove: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    inlineStyle: string
+    inlineStyle: string,
   ): ContentState {
     return modifyInlineStyle(contentState, selectionState, inlineStyle, false);
   },
@@ -41,7 +41,7 @@ function modifyInlineStyle(
   contentState: ContentState,
   selectionState: SelectionState,
   inlineStyle: string,
-  addOrRemove: boolean
+  addOrRemove: boolean,
 ): ContentState {
   var blockMap = contentState.getBlockMap();
   var startKey = selectionState.getStartKey();
@@ -71,9 +71,9 @@ function modifyInlineStyle(
         current = chars.get(sliceStart);
         chars = chars.set(
           sliceStart,
-          addOrRemove ?
-            CharacterMetadata.applyStyle(current, inlineStyle) :
-            CharacterMetadata.removeStyle(current, inlineStyle)
+          addOrRemove
+            ? CharacterMetadata.applyStyle(current, inlineStyle)
+            : CharacterMetadata.removeStyle(current, inlineStyle),
         );
         sliceStart++;
       }

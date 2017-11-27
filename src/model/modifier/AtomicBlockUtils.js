@@ -7,11 +7,14 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule AtomicBlockUtils
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
+
+import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {DraftInsertionType} from 'DraftInsertionType';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -19,19 +22,18 @@ const ContentBlock = require('ContentBlock');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Immutable = require('immutable');
+const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
+const moveBlockInContentState = require('moveBlockInContentState');
 
-const {
-  List,
-  Repeat,
-} = Immutable;
+const {List, Repeat} = Immutable;
 
 const AtomicBlockUtils = {
   insertAtomicBlock: function(
     editorState: EditorState,
     entityKey: string,
-    character: string
+    character: string,
   ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
@@ -39,7 +41,7 @@ const AtomicBlockUtils = {
     const afterRemoval = DraftModifier.removeRange(
       contentState,
       selectionState,
-      'backward'
+      'backward',
     );
 
     const targetSelection = afterRemoval.getSelectionAfter();
@@ -49,7 +51,7 @@ const AtomicBlockUtils = {
     const asAtomicBlock = DraftModifier.setBlockType(
       afterSplit,
       insertionTarget,
-      'atomic'
+      'atomic',
     );
 
     const charData = CharacterMetadata.create({entity: entityKey});
@@ -74,7 +76,7 @@ const AtomicBlockUtils = {
     const withAtomicBlock = DraftModifier.replaceWithFragment(
       asAtomicBlock,
       insertionTarget,
-      fragment
+      fragment,
     );
 
     const newContent = withAtomicBlock.merge({
@@ -83,6 +85,88 @@ const AtomicBlockUtils = {
     });
 
     return EditorState.push(editorState, newContent, 'insert-fragment');
+  },
+
+  moveAtomicBlock: function(
+    editorState: EditorState,
+    atomicBlock: BlockNodeRecord,
+    targetRange: SelectionState,
+    insertionMode?: DraftInsertionType,
+  ): EditorState {
+    const contentState = editorState.getCurrentContent();
+    const selectionState = editorState.getSelection();
+
+    let withMovedAtomicBlock;
+
+    if (insertionMode === 'before' || insertionMode === 'after') {
+      const targetBlock = contentState.getBlockForKey(
+        insertionMode === 'before'
+          ? targetRange.getStartKey()
+          : targetRange.getEndKey(),
+      );
+
+      withMovedAtomicBlock = moveBlockInContentState(
+        contentState,
+        atomicBlock,
+        targetBlock,
+        insertionMode,
+      );
+    } else {
+      const afterRemoval = DraftModifier.removeRange(
+        contentState,
+        targetRange,
+        'backward',
+      );
+
+      const selectionAfterRemoval = afterRemoval.getSelectionAfter();
+      const targetBlock = afterRemoval.getBlockForKey(
+        selectionAfterRemoval.getFocusKey(),
+      );
+
+      if (selectionAfterRemoval.getStartOffset() === 0) {
+        withMovedAtomicBlock = moveBlockInContentState(
+          afterRemoval,
+          atomicBlock,
+          targetBlock,
+          'before',
+        );
+      } else if (
+        selectionAfterRemoval.getEndOffset() === targetBlock.getLength()
+      ) {
+        withMovedAtomicBlock = moveBlockInContentState(
+          afterRemoval,
+          atomicBlock,
+          targetBlock,
+          'after',
+        );
+      } else {
+        const afterSplit = DraftModifier.splitBlock(
+          afterRemoval,
+          selectionAfterRemoval,
+        );
+
+        const selectionAfterSplit = afterSplit.getSelectionAfter();
+        const targetBlock = afterSplit.getBlockForKey(
+          selectionAfterSplit.getFocusKey(),
+        );
+
+        withMovedAtomicBlock = moveBlockInContentState(
+          afterSplit,
+          atomicBlock,
+          targetBlock,
+          'before',
+        );
+      }
+    }
+
+    const newContent = withMovedAtomicBlock.merge({
+      selectionBefore: selectionState,
+      selectionAfter: withMovedAtomicBlock
+        .getSelectionAfter()
+        .set('hasFocus', true),
+    });
+
+    return EditorState.push(editorState, newContent, 'move-block');
   },
 };
 

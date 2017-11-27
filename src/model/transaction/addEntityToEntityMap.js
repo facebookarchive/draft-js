@@ -7,21 +7,23 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule addEntityToEntityMap
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
 import type DraftEntityInstance from 'DraftEntityInstance';
-import type {EntityMap} from 'EntityMap';
+import type {OrderedMap} from 'immutable';
+// TODO: when removing the deprecated API update this to use the EntityMap type
+// instead of OrderedMap
 
 let key = 0;
 
 function addEntityToEntityMap(
-  entityMap: EntityMap,
+  entityMap: OrderedMap<*, *>,
   instance: DraftEntityInstance,
-): EntityMap {
+): OrderedMap<*, *> {
   return entityMap.set(`${++key}`, instance);
 }
 

@@ -7,22 +7,22 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule createCharacterList
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+
 var CharacterMetadata = require('CharacterMetadata');
 var Immutable = require('immutable');
-
-import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 var {List} = Immutable;
 
 function createCharacterList(
   inlineStyles: Array<DraftInlineStyle>,
-  entities: Array<?string>
+  entities: Array<?string>,
 ): List<CharacterMetadata> {
   var characterArray = inlineStyles.map((style, ii) => {
     var entity = entities[ii];
