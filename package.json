@@ -90,12 +90,19 @@
       "__DEV__": true
     },
     "rootDir": "./",
-    "roots": ["<rootDir>/src/"],
+    "roots": [
+      "<rootDir>/src/"
+    ],
     "transform": {
       ".*": "<rootDir>/scripts/jest/preprocessor.js"
     },
-    "modulePathIgnorePatterns": ["<rootDir>/lib/", "<rootDir>/node_modules/"],
-    "transformIgnorePatterns": ["<rootDir>/node_modules/"],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib/",
+      "<rootDir>/node_modules/"
+    ],
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/fbjs/node_modules/",
       "<rootDir>/node_modules/fbjs/lib/UserAgent.js",

@@ -47,12 +47,12 @@ const SUPPORTED_TAGS = [
 ];
 
 const normalizeBlock = block => {
-  const {type, depth, textBlock, characterList} = block;
+  const {type, depth, text, characterList} = block;
 
   return {
     type,
     depth,
-    textBlock,
+    text,
     characterList,
   };
 };
@@ -69,7 +69,7 @@ beforeEach(() => {
   jest.resetModules();
 });
 
-const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
+const convertFromHTML = (html_string, config) => {
   const options = {
     ...DEFAULT_CONFIG,
     ...config,
@@ -77,14 +77,34 @@ const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
 
   const {DOMBuilder, blockRenderMap, experimentalTreeDataSupport} = options;
 
+  jest.resetModules();
   toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
+  return convertFromHTMLToContentBlocks(
+    html_string,
+    DOMBuilder,
+    blockRenderMap,
+  );
+};
 
+const AreTreeBlockNodesEquivalent = (html_string, config = {}) => {
+  const treeEnabled = convertFromHTML(html_string, {
+    ...config,
+    experimentalTreeDataSupport: true,
+  }).contentBlocks.map(block => normalizeBlock(block.toJS()));
+
+  const treeDisabled = convertFromHTML(html_string, {
+    ...config,
+    experimentalTreeDataSupport: false,
+  }).contentBlocks.map(block => normalizeBlock(block.toJS()));
+
+  return JSON.stringify(treeEnabled) === JSON.stringify(treeDisabled);
+};
+
+const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
   expect(
-    convertFromHTMLToContentBlocks(
-      html_string,
-      DOMBuilder,
-      blockRenderMap,
-    ).contentBlocks.map(block => block.toJS()),
+    convertFromHTML(html_string, config).contentBlocks.map(block =>
+      block.toJS(),
+    ),
   ).toMatchSnapshot();
 };
 
@@ -109,24 +129,9 @@ const testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch = (
   tag: string,
 ) => {
   test(`must convert root ContentBlockNodes to matching ContentBlock nodes for <${tag} />`, () => {
-    const {DOMBuilder, blockRenderMap} = DEFAULT_CONFIG;
-    const html_string = `<${tag}>a</${tag}> `;
-
-    toggleExperimentalTreeDataSupport(false);
-    const contentBlocks = convertFromHTMLToContentBlocks(
-      html_string,
-      DOMBuilder,
-      blockRenderMap,
-    ).contentBlocks.map(block => normalizeBlock(block.toJS()));
-
-    toggleExperimentalTreeDataSupport(true);
-    const contentBlockNodes = convertFromHTMLToContentBlocks(
-      html_string,
-      DOMBuilder,
-      blockRenderMap,
-    ).contentBlocks.map(block => normalizeBlock(block.toJS()));
-
-    expect(contentBlocks).toEqual(contentBlockNodes);
+    expect(
+      AreTreeBlockNodesEquivalent(`<${tag}>a</${tag}> `),
+    ).toMatchSnapshot();
   });
 };
 
@@ -176,6 +181,25 @@ test('converts deeply nested html blocks when experimentalTreeDataSupport is ena
 
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: true,
+  });
+});
+
+test('does not convert deeply nested html blocks when experimentalTreeDataSupport is disabled', () => {
+  const html_string = `
+    <ol>
+      <li>Some quote</li>
+      <li>
+        <blockquote>
+          <h1>Hello World!</h1>
+          <p>lorem ipsum</p>
+        </blockquote>
+      </li>
+    </ol>
+  `;
+
+  expect(AreTreeBlockNodesEquivalent(html_string)).toMatchSnapshot();
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
   });
 });
 
