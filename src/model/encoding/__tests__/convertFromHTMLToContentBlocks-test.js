@@ -128,7 +128,9 @@ const testConvertingAdjacentHtmlElementsToContentBlocks = (
 const testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch = (
   tag: string,
 ) => {
-  test(`must convert root ContentBlockNodes to matching ContentBlock nodes for <${tag} />`, () => {
+  test(`must convert root ContentBlockNodes to matching ContentBlock nodes for <${
+    tag
+  } />`, () => {
     expect(
       AreTreeBlockNodesEquivalent(`<${tag}>a</${tag}> `),
     ).toMatchSnapshot();
@@ -158,6 +160,19 @@ test('converts nested html blocks when experimentalTreeDataSupport is enabled', 
     <blockquote>
       <h1>Hello World!</h1>
       <p>lorem ipsum</p>
+    </blockquote>
+  `;
+
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
+test('converts text nodes to unstyled elements when leading nested blocks when experimentalTreeDataSupport is enabled', () => {
+  const html_string = `
+    <blockquote>
+      Hello World!
+      <h1>lorem ipsum</h1>
     </blockquote>
   `;
 
