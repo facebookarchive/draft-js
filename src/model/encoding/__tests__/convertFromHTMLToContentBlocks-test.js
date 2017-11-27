@@ -128,7 +128,9 @@ const testConvertingAdjacentHtmlElementsToContentBlocks = (
 const testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch = (
   tag: string,
 ) => {
-  test(`must convert root ContentBlockNodes to matching ContentBlock nodes for <${tag} />`, () => {
+  test(`must convert root ContentBlockNodes to matching ContentBlock nodes for <${
+    tag
+  } />`, () => {
     expect(
       AreTreeBlockNodesEquivalent(`<${tag}>a</${tag}> `),
     ).toMatchSnapshot();
