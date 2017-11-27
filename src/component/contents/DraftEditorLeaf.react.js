@@ -44,7 +44,7 @@ type Props = {
 
   // The current `SelectionState`, used to represent a selection range in the
   // editor
-  selection: SelectionState,
+  selection: ?SelectionState,
 
   // The offset of this string within its block.
   start: number,

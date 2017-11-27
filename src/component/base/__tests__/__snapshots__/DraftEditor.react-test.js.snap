@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must has editorKey same as props 1`] = `"hash"`;
+
+exports[`must has generated editorKey 1`] = `"key0"`;

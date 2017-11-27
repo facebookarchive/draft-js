@@ -16,7 +16,7 @@ jest.disableAutomock();
 
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 
-const assertDraftState = (rawState, expected) => {
+const assertDraftState = rawState => {
   expect(
     convertFromRawToDraftState(rawState)
       .getBlockMap()

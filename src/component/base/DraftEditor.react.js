@@ -189,24 +189,31 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
   _renderPlaceholder(): ?React.Element<any> {
     if (this._showPlaceholder()) {
-      return (
-        /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
-         * error when upgrading Flow's support for React. Common errors found
-         * when upgrading Flow's React support are documented at
-         * https://fburl.com/eq7bs81w */
-        <DraftEditorPlaceholder
-          text={nullthrows(this.props.placeholder)}
-          editorState={this.props.editorState}
-          textAlignment={this.props.textAlignment}
-          accessibilityID={this._placeholderAccessibilityID}
-        />
-      );
+      const placeHolderProps = {
+        text: nullthrows(this.props.placeholder),
+        editorState: this.props.editorState,
+        textAlignment: this.props.textAlignment,
+        accessibilityID: this._placeholderAccessibilityID,
+      };
+
+      return <DraftEditorPlaceholder {...placeHolderProps} />;
     }
     return null;
   }
 
   render(): React.Node {
-    const {readOnly, textAlignment} = this.props;
+    const {
+      blockRenderMap,
+      blockRendererFn,
+      blockStyleFn,
+      customStyleFn,
+      customStyleMap,
+      editorState,
+      readOnly,
+      textAlignment,
+      textDirectionality,
+    } = this.props;
+
     const rootClass = cx({
       'DraftEditor/root': true,
       'DraftEditor/alignLeft': textAlignment === 'left',
@@ -229,6 +236,21 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     const ariaExpanded =
       ariaRole === 'combobox' ? !!this.props.ariaExpanded : null;
 
+    const editorContentsProps = {
+      blockRenderMap,
+      blockRendererFn,
+      blockStyleFn,
+      customStyleMap: {
+        ...DefaultDraftInlineStyle,
+        ...customStyleMap,
+      },
+      customStyleFn,
+      editorKey: this._editorKey,
+      editorState,
+      key: 'contents' + this.state.contentsKey,
+      textDirectionality,
+    };
+
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
@@ -246,6 +268,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             }
             aria-expanded={readOnly ? null : ariaExpanded}
             aria-label={this.props.ariaLabel}
+            aria-labelledby={this.props.ariaLabelledBy}
             aria-multiline={this.props.ariaMultiline}
             autoCapitalize={this.props.autoCapitalize}
             autoComplete={this.props.autoComplete}
@@ -286,24 +309,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             style={contentStyle}
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
-            {/* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
-              * error when upgrading Flow's support for React. Common errors
-              * found when upgrading Flow's React support are documented at
-              * https://fburl.com/eq7bs81w */}
-            <DraftEditorContents
-              blockRenderMap={this.props.blockRenderMap}
-              blockRendererFn={this.props.blockRendererFn}
-              blockStyleFn={this.props.blockStyleFn}
-              customStyleMap={{
-                ...DefaultDraftInlineStyle,
-                ...this.props.customStyleMap,
-              }}
-              customStyleFn={this.props.customStyleFn}
-              editorKey={this._editorKey}
-              editorState={this.props.editorState}
-              key={'contents' + this.state.contentsKey}
-              textDirectionality={this.props.textDirectionality}
-            />
+            <DraftEditorContents {...editorContentsProps} />
           </div>
         </div>
       </div>

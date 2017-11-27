@@ -1,0 +1,521 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must split at the beginning of a block 1`] = `
+Object {
+  "a": Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  "b": Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  "c": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  "d": Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  "e": Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  "f": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+  "key1": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+}
+`;
+
+exports[`must split at the end of a block 1`] = `
+Object {
+  "a": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  "b": Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  "c": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  "d": Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  "e": Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  "f": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+  "key3": Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key3",
+    "text": "",
+    "type": "unstyled",
+  },
+}
+`;
+
+exports[`must split within a block 1`] = `
+Object {
+  "a": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "Alp",
+    "type": "unstyled",
+  },
+  "b": Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  "c": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  "d": Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  "e": Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  "f": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+  "key2": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key2",
+    "text": "ha",
+    "type": "unstyled",
+  },
+}
+`;

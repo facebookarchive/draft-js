@@ -33,6 +33,9 @@ function getEntityKeyForSelection(
     var offset = targetSelection.getAnchorOffset();
     if (offset > 0) {
       entityKey = contentState.getBlockForKey(key).getEntityAt(offset - 1);
+      if (entityKey !== contentState.getBlockForKey(key).getEntityAt(offset)) {
+        return null;
+      }
       return filterKey(contentState.getEntityMap(), entityKey);
     }
     return null;

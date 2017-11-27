@@ -10,6 +10,9 @@
  * @format
  * @flow
  *
+ * This file is a fork of ContentBlock adding support for nesting references by
+ * providing links to children, parent, prevSibling, and nextSibling.
+ *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
  */
