@@ -36,7 +36,7 @@ var Site = React.createClass({
           <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5" />
           <link rel="shortcut icon" href="/img/favicon.ico" />
           <meta name="msapplication-config" content="/img/browserconfig.xml" />
-          <meta name="theme-color" content="#ffffff" />
+          <meta name="theme-color" content="#852d2d" />
           <link rel="stylesheet" href="/css/draft.css" />
 
           <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script>
