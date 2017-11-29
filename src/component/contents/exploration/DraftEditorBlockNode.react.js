@@ -34,6 +34,8 @@ const React = require('React');
 const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
 const Style = require('Style');
+const applyWrapperElementToSiblings = require('applyWrapperElementToSiblings');
+const shouldNotAddWrapperElement = require('shouldNotAddWrapperElement');
 
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
@@ -77,58 +79,6 @@ const isBlockOnSelectionEdge = (
   key: string,
 ): boolean => {
   return selection.getAnchorKey() === key || selection.getFocusKey() === key;
-};
-
-/**
- * We will use this helper to identify blocks that need to be wrapped but have siblings that
- * also share the same wrapper element, this way we can do the wrapping once the last sibling
- * is added.
- */
-const shouldNotAddWrapperElement = (
-  block: BlockNodeRecord,
-  contentState: ContentState,
-): boolean => {
-  const nextSiblingKey = block.getNextSiblingKey();
-
-  return nextSiblingKey
-    ? contentState.getBlockForKey(nextSiblingKey).getType() === block.getType()
-    : false;
-};
-
-const applyWrapperElementToSiblings = (
-  wrapperTemplate: *,
-  Element: string,
-  nodes: Array<React.Node>,
-): Array<React.Node> => {
-  const wrappedSiblings = [];
-
-  // we check back until we find a sibbling that does not have same wrapper
-  for (const sibling: any of nodes.reverse()) {
-    if (sibling.type !== Element) {
-      break;
-    }
-    wrappedSiblings.push(sibling);
-  }
-
-  // we now should remove from acc the wrappedSiblings and add them back under same wrap
-  nodes.splice(nodes.indexOf(wrappedSiblings[0]), wrappedSiblings.length + 1);
-
-  const childrenIs = wrappedSiblings.reverse();
-
-  const key = childrenIs[0].key;
-
-  nodes.push(
-    React.cloneElement(
-      wrapperTemplate,
-      {
-        key: `${key}-wrap`,
-        'data-offset-key': DraftOffsetKey.encode(key, 0, 0),
-      },
-      childrenIs,
-    ),
-  );
-
-  return nodes;
 };
 
 const getDraftRenderConfig = (
@@ -299,6 +249,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
           child,
           blockRenderMap,
         );
+
         const elementProps = getElementPropsConfig(
           child,
           editorKey,
@@ -306,6 +257,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
           blockStyleFn,
           customConfig,
         );
+
         const childProps = {
           ...this.props,
           tree: editorState.getBlockTree(key),

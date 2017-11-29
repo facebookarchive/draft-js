@@ -23,10 +23,12 @@ import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
+const applyWrapperElementToSiblings = require('applyWrapperElementToSiblings');
 const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
 const EditorState = require('EditorState');
 const React = require('React');
+const shouldNotAddWrapperElement = require('shouldNotAddWrapperElement');
 
 const nullthrows = require('nullthrows');
 
@@ -159,32 +161,24 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
     }
 
     // Group contiguous runs of blocks that have the same wrapperTemplate
-    const outputBlocks = [];
-    for (let ii = 0; ii < processedBlocks.length; ) {
-      const info: any = processedBlocks[ii];
-      if (info.wrapperTemplate) {
-        const blocks = [];
-        do {
-          blocks.push(processedBlocks[ii].block);
-          ii++;
-        } while (
-          ii < processedBlocks.length &&
-          processedBlocks[ii].wrapperTemplate === info.wrapperTemplate
-        );
-        const wrapperElement = React.cloneElement(
-          info.wrapperTemplate,
-          {
-            key: info.key + '-wrap',
-            'data-offset-key': info.offsetKey,
-          },
-          blocks,
-        );
-        outputBlocks.push(wrapperElement);
-      } else {
-        outputBlocks.push(info.block);
-        ii++;
+    const outputBlocks = processedBlocks.reduce((acc, block) => {
+      acc.push(block.block);
+
+      if (
+        !block.wrapperTemplate ||
+        shouldNotAddWrapperElement(block.block.props.block, content)
+      ) {
+        return acc;
       }
-    }
+
+      applyWrapperElementToSiblings(
+        block.wrapperTemplate,
+        block.block.type,
+        acc,
+      );
+
+      return acc;
+    }, []);
 
     return <div data-contents="true">{outputBlocks}</div>;
   }
