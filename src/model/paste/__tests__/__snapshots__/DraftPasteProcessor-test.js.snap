@@ -558,19 +558,6 @@ Array [
         "entity": null,
         "style": Array [],
       },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "key2",
-    "text": " ",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
       Object {
         "entity": null,
         "style": Array [],
@@ -953,19 +940,6 @@ Array [
 
 exports[`must identify block styles 1`] = `
 Array [
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "key4",
-    "text": " ",
-    "type": "unstyled",
-  },
   Object {
     "characterList": Array [
       Object {
@@ -1716,15 +1690,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key10",
-    "text": "what      ",
+    "text": "what     ",
     "type": "unstyled",
   },
   Object {
@@ -1838,15 +1808,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key2",
-    "text": "        what          ",
+    "text": "        what         ",
     "type": "unordered-list-item",
   },
   Object {
