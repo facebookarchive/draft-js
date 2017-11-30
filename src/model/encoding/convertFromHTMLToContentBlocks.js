@@ -355,7 +355,18 @@ const genFragment = (
   // Base Case
   if (nodeName === '#text') {
     let text = node.textContent;
-    if (text.trim() === '' && inBlock !== 'pre') {
+    let nodeTextContent = text.trim();
+
+    // We should not create blocks for leading spaces that are
+    // existing around ol/ul and their children list items
+    if (lastList && nodeTextContent === '' && node.parentElement) {
+      const parentNodeName = node.parentElement.nodeName.toLowerCase();
+      if (parentNodeName === 'ol' || parentNodeName === 'ul') {
+        return {chunk: {...EMPTY_CHUNK}, entityMap};
+      }
+    }
+
+    if (nodeTextContent === '' && inBlock !== 'pre') {
       return {chunk: getWhitespaceChunk(inEntity), entityMap};
     }
     if (inBlock !== 'pre') {

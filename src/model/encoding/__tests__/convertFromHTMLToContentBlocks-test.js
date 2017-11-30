@@ -211,3 +211,47 @@ SUPPORTED_TAGS.forEach(tag =>
 SUPPORTED_TAGS.forEach(tag =>
   testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch(tag),
 );
+
+test('Should not create empty container blocks around ul and their list items', () => {
+  const html_string = `
+    <ul>
+      <li>something</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should not create empty container blocks around ul and their list items when nesting enabled', () => {
+  const html_string = `
+    <ul>
+      <li>something</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should not create empty container blocks around ol and their list items', () => {
+  const html_string = `
+    <ol>
+      <li>something</li>
+    </ol>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should not create empty container blocks around ol and their list items when nesting enabled', () => {
+  const html_string = `
+    <ol>
+      <li>something</li>
+    </ol>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
