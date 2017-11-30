@@ -30,32 +30,35 @@ const blockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftOffsetKey = require('DraftOffsetKey');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
-const assertWrapBlockNodes = (contentState, extraProps = {}) => {
-  const nodes = contentState.getBlocksAsArray().map(block => {
+const PROPS = {
+  blockRenderMap: DefaultDraftBlockRenderMap,
+  blockRendererFn: block => null,
+  blockStyleFn: block => '',
+  customStyleFn: (style, block) => null,
+  editorKey: 'editor',
+  blockProps: {},
+};
+
+const assertWrapBlockNodes = (props = {}) => {
+  const editorState = EditorState.createWithContent(props.contentState);
+  const nodes = props.contentState.getBlocksAsArray().map(block => {
     const configForType =
       blockRenderMap.get(block.getType()) || blockRenderMap.get('unstyled');
 
     const wrapperTemplate = configForType.wrapper;
     const key = block.getKey();
-    const editorState = EditorState.createWithContent(contentState);
     const offsetKey = DraftOffsetKey.encode(key, 0, 0);
 
     const childProps = {
-      blockRenderMap: DefaultDraftBlockRenderMap,
-      blockRendererFn: block => null,
-      blockStyleFn: block => '',
-      contentState,
-      customStyleFn: (style, block) => null,
-      editorState,
-      editorKey: 'editor',
+      ...PROPS,
+      ...props,
       selection: editorState.getSelection(),
-      tree: editorState.getBlockTree(key),
-      key,
-      blockProps: {},
-      offsetKey,
-      wrapperTemplate,
       block,
-      ...extraProps,
+      wrapperTemplate,
+      editorState,
+      tree: editorState.getBlockTree(key),
+      offsetKey,
+      key,
     };
 
     return {
@@ -66,7 +69,7 @@ const assertWrapBlockNodes = (contentState, extraProps = {}) => {
   });
 
   const blockNode = ReactTestRenderer.create(
-    <div>{wrapBlockNodes(nodes, contentState)}</div>,
+    <div>{wrapBlockNodes(nodes, props.contentState)}</div>,
   );
 
   expect(
@@ -82,7 +85,7 @@ test('renders block with no children', () => {
   });
 
   const contentState = ContentState.createFromBlockArray([rootBlock]);
-  assertWrapBlockNodes(contentState);
+  assertWrapBlockNodes({ contentState });
 });
 
 test('renders block with child that have wrapperElement', () => {
@@ -103,7 +106,8 @@ test('renders block with child that have wrapperElement', () => {
     }),
   ]);
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
   });
@@ -135,7 +139,8 @@ test('renders block with children that have same wrapperElement', () => {
     }),
   ]);
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
   });
@@ -166,7 +171,8 @@ test('renders block with nested child that have same wrapperElement', () => {
     }),
   ]);
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
   });
@@ -197,7 +203,8 @@ test('renders block with nested child that is of different block type', () => {
     }),
   ]);
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
   });
@@ -228,7 +235,8 @@ test('renders block with nested child that have different wrapperElement', () =>
     }),
   ]);
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
   });
@@ -274,7 +282,8 @@ test('renders block with nested children with decorator', () => {
     },
   ]);
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     decorator,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
@@ -306,7 +315,8 @@ test('renders block with nested children with different direction', () => {
     }),
   ]);
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     block: rootBlock,
     direction: UnicodeBidiDirection.RTL,
     tree: BlockTree.generate(contentState, rootBlock, null),
@@ -342,7 +352,8 @@ test('renders block with nested children with custom component', () => {
     return <div className={'custom-header-one'}>Custom Component</div>;
   };
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     block: rootBlock,
     blockRendererFn: block => {
       if (block.getType() === 'header-one') {
@@ -389,7 +400,8 @@ test('renders block with nested children with custom component and editable prop
     );
   };
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     block: rootBlock,
     blockRendererFn: block => {
       if (block.getType() === 'header-one') {
@@ -432,7 +444,8 @@ test('renders block with nested children with blockStyleFn', () => {
     }),
   ]);
 
-  assertWrapBlockNodes(contentState, {
+  assertWrapBlockNodes({
+    contentState,
     block: rootBlock,
     blockStyleFn: block => {
       if (block.getType() === 'header-one') {
