@@ -75,8 +75,8 @@ const wrapBlockNodes = (
   nodes: [
     {
       wrapperTemplate: *,
-      block: *,
-      element: *,
+      block: BlockNodeRecord,
+      element: React.Node,
     },
   ],
   contentState,

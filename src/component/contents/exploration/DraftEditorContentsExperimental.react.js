@@ -125,16 +125,9 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
     while (nodeBlock) {
       const blockKey = nodeBlock.getKey();
 
-      const configForType =
-        blockRenderMap.get(nodeBlock.getType()) ||
-        blockRenderMap.get('unstyled');
-
-      const wrapperTemplate = configForType.wrapper;
-
       const blockProps = {
         blockRenderMap,
         blockRendererFn,
-        wrapperTemplate,
         blockStyleFn,
         contentState: content,
         customStyleFn,
@@ -150,6 +143,12 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
           : directionMap.get(blockKey),
         tree: editorState.getBlockTree(blockKey),
       };
+
+      const configForType =
+        blockRenderMap.get(nodeBlock.getType()) ||
+        blockRenderMap.get('unstyled');
+
+      const wrapperTemplate = configForType.wrapper;
 
       processedBlocks.push({
         wrapperTemplate,
