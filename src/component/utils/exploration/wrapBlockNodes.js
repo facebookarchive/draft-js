@@ -9,6 +9,9 @@
  * @providesModule wrapBlockNodes
  * @format
  * @flow
+ *
+ * This is unstable and not part of the public API and should not be used by
+ * production systems. This file may be update/removed without notice.
  */
 
 'use strict';
