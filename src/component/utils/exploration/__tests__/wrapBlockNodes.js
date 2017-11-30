@@ -85,7 +85,7 @@ test('renders block with no children', () => {
   });
 
   const contentState = ContentState.createFromBlockArray([rootBlock]);
-  assertWrapBlockNodes({ contentState });
+  assertWrapBlockNodes({contentState});
 });
 
 test('renders block with child that have wrapperElement', () => {
