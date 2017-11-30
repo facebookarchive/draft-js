@@ -166,6 +166,19 @@ test('converts nested html blocks when experimentalTreeDataSupport is enabled', 
   });
 });
 
+test('converts text nodes to unstyled elements when leading nested blocks when experimentalTreeDataSupport is enabled', () => {
+  const html_string = `
+    <blockquote>
+      Hello World!
+      <h1>lorem ipsum</h1>
+    </blockquote>
+  `;
+
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
 test('converts deeply nested html blocks when experimentalTreeDataSupport is enabled', () => {
   const html_string = `
     <ol>
