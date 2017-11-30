@@ -72,14 +72,12 @@ const shouldNotAddWrapperElement = (
 };
 
 const wrapBlockNodes = (
-  nodes: [
-    {
-      wrapperTemplate: *,
-      block: BlockNodeRecord,
-      element: React.Node,
-    },
-  ],
-  contentState,
+  nodes: Array<{
+    wrapperTemplate: *,
+    block: BlockNodeRecord,
+    element: React.Element<*>,
+  }>,
+  contentState: ContentState,
 ) =>
   nodes.reduce((acc, {element, block, wrapperTemplate}) => {
     acc.push(element);

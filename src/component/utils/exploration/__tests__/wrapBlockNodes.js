@@ -55,7 +55,7 @@ const assertWrapBlockNodes = (contentState, extraProps = {}) => {
       offsetKey,
       wrapperTemplate,
       block,
-      ...extraProps
+      ...extraProps,
     };
 
     return {

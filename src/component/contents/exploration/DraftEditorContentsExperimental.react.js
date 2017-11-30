@@ -50,6 +50,7 @@ type Props = {
  * (for instance, ARIA props) must be allowed to update without affecting
  * the contents of the editor.
  */
+
 class DraftEditorContentsExperimental extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const prevEditorState = this.props.editorState;
