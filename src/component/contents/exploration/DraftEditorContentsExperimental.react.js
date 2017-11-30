@@ -23,12 +23,10 @@ import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
-const applyWrapperElementToSiblings = require('applyWrapperElementToSiblings');
 const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
-const DraftOffsetKey = require('DraftOffsetKey');
 const EditorState = require('EditorState');
 const React = require('React');
-const shouldNotAddWrapperElement = require('shouldNotAddWrapperElement');
+const wrapBlockNodes = require('wrapBlockNodes');
 
 const nullthrows = require('nullthrows');
 
@@ -126,9 +124,17 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
 
     while (nodeBlock) {
       const blockKey = nodeBlock.getKey();
+
+      const configForType =
+        blockRenderMap.get(nodeBlock.getType()) ||
+        blockRenderMap.get('unstyled');
+
+      const wrapperTemplate = configForType.wrapper;
+
       const blockProps = {
         blockRenderMap,
         blockRendererFn,
+        wrapperTemplate,
         blockStyleFn,
         contentState: content,
         customStyleFn,
@@ -145,40 +151,16 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
         tree: editorState.getBlockTree(blockKey),
       };
 
-      const configForType =
-        blockRenderMap.get(nodeBlock.getType()) ||
-        blockRenderMap.get('unstyled');
-      const wrapperTemplate = configForType.wrapper;
-      processedBlocks.push({
-        block: <DraftEditorBlockNode key={blockKey} {...blockProps} />,
-        wrapperTemplate,
-        key: blockKey,
-        offsetKey: DraftOffsetKey.encode(blockKey, 0, 0),
-      });
+      processedBlocks.push(
+        <DraftEditorBlockNode key={blockKey} {...blockProps} />,
+      );
 
       const nextBlockKey = nodeBlock.getNextSiblingKey();
       nodeBlock = nextBlockKey ? content.getBlockForKey(nextBlockKey) : null;
     }
 
     // Group contiguous runs of blocks that have the same wrapperTemplate
-    const outputBlocks = processedBlocks.reduce((acc, block) => {
-      acc.push(block.block);
-
-      if (
-        !block.wrapperTemplate ||
-        shouldNotAddWrapperElement(block.block.props.block, content)
-      ) {
-        return acc;
-      }
-
-      applyWrapperElementToSiblings(
-        block.wrapperTemplate,
-        block.block.type,
-        acc,
-      );
-
-      return acc;
-    }, []);
+    const outputBlocks = wrapBlockNodes(processedBlocks, content);
 
     return <div data-contents="true">{outputBlocks}</div>;
   }
