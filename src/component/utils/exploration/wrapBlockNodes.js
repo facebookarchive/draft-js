@@ -37,9 +37,9 @@ const applyWrapperElementToSiblings = (
   // we now should remove from acc the wrappedSiblings and add them back under same wrap
   nodes.splice(nodes.indexOf(wrappedSiblings[0]), wrappedSiblings.length + 1);
 
-  const childrenIs = wrappedSiblings.reverse();
+  const children = wrappedSiblings.reverse();
 
-  const key = childrenIs[0].key;
+  const key = children[0].key;
 
   nodes.push(
     React.cloneElement(
@@ -48,7 +48,7 @@ const applyWrapperElementToSiblings = (
         key: `${key}-wrap`,
         'data-offset-key': DraftOffsetKey.encode(key, 0, 0),
       },
-      childrenIs,
+      children,
     ),
   );
 
