@@ -151,9 +151,11 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
         tree: editorState.getBlockTree(blockKey),
       };
 
-      processedBlocks.push(
-        <DraftEditorBlockNode key={blockKey} {...blockProps} />,
-      );
+      processedBlocks.push({
+        wrapperTemplate,
+        block: nodeBlock,
+        element: <DraftEditorBlockNode key={blockKey} {...blockProps} />,
+      });
 
       const nextBlockKey = nodeBlock.getNextSiblingKey();
       nodeBlock = nextBlockKey ? content.getBlockForKey(nextBlockKey) : null;

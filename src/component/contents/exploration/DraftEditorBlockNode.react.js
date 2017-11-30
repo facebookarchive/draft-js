@@ -35,8 +35,7 @@ const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
 const Style = require('Style');
 
-const applyWrapperElementToSiblings = require('applyWrapperElementToSiblings');
-const shouldNotAddWrapperElement = require('shouldNotAddWrapperElement');
+const wrapBlockNodes = require('wrapBlockNodes');
 
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
@@ -264,31 +263,25 @@ class DraftEditorBlockNode extends React.Component<Props> {
           tree: editorState.getBlockTree(key),
           blockProps: customConfig.customProps,
           offsetKey,
+          wrapperTemplate,
           block: child,
         };
 
-        acc.push(
-          React.createElement(
+        acc.push({
+          wrapperTemplate,
+          block: child,
+          element: React.createElement(
             Element,
             elementProps,
             <Component {...childProps} />,
           ),
-        );
-
-        if (
-          !wrapperTemplate ||
-          shouldNotAddWrapperElement(child, contentState)
-        ) {
-          return acc;
-        }
-
+        });
         // if we are here it means we are the last block
         // that has a wrapperTemplate so we should wrap itself
         // and all other previous siblings that share the same wrapper
-        applyWrapperElementToSiblings(wrapperTemplate, Element, acc);
-
         return acc;
       }, []);
+      children = wrapBlockNodes(children, contentState);
     }
 
     const blockKey = block.getKey();

@@ -14,9 +14,12 @@
 
 jest.disableAutomock();
 
+const React = require('react');
 const EditorState = require('EditorState');
 const ContentState = require('ContentState');
 const ContentBlockNode = require('ContentBlockNode');
+const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
+const wrapBlockNodes = require('wrapBlockNodes');
 
 const assertDraftEditorContentsRendering = props => {
   const childProps = {
@@ -50,7 +53,13 @@ test('renders ContentBlockNodes with root blocks that have wrapperTemplate', () 
     }),
   ]);
 
-  const blocksAsArray = content.getBlocksAsArray();
+  const nodes = content.getBlocksAsArray().map(block => ({
+    wrapperTemplate: 'div',
+    block,
+    element: <DraftEditorBlockNode {...block.toJS()} />,
+  }));
+
+  // console.log(wrapBlockNodes(nodes, content));
 
   // assertDraftEditorContentsRendering({
   //   ...PROPS,

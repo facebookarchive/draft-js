@@ -13,31 +13,82 @@
 
 'use strict';
 
-const applyWrapperElementToSiblings = require('applyWrapperElementToSiblings');
-const shouldNotAddWrapperElement = require('shouldNotAddWrapperElement');
+import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type ContentState from 'ContentState';
+
+const React = require('React');
+const DraftOffsetKey = require('DraftOffsetKey');
+
+const applyWrapperElementToSiblings = (
+  wrapperTemplate: *,
+  Element: string,
+  nodes: Array<React.Node>,
+): Array<React.Node> => {
+  const wrappedSiblings = [];
+
+  // we check back until we find a sibbling that does not have same wrapper
+  for (const sibling: any of nodes.reverse()) {
+    if (sibling.type !== Element) {
+      break;
+    }
+    wrappedSiblings.push(sibling);
+  }
+
+  // we now should remove from acc the wrappedSiblings and add them back under same wrap
+  nodes.splice(nodes.indexOf(wrappedSiblings[0]), wrappedSiblings.length + 1);
+
+  const childrenIs = wrappedSiblings.reverse();
+
+  const key = childrenIs[0].key;
+
+  nodes.push(
+    React.cloneElement(
+      wrapperTemplate,
+      {
+        key: `${key}-wrap`,
+        'data-offset-key': DraftOffsetKey.encode(key, 0, 0),
+      },
+      childrenIs,
+    ),
+  );
+
+  return nodes;
+};
+
+/**
+ * We will use this helper to identify blocks that need to be wrapped but have siblings that
+ * also share the same wrapper element, this way we can do the wrapping once the last sibling
+ * is added.
+ */
+const shouldNotAddWrapperElement = (
+  block: BlockNodeRecord,
+  contentState: ContentState,
+): boolean => {
+  const nextSiblingKey = block.getNextSiblingKey();
+
+  return nextSiblingKey
+    ? contentState.getBlockForKey(nextSiblingKey).getType() === block.getType()
+    : false;
+};
 
 const wrapBlockNodes = (
   nodes: [
     {
       wrapperTemplate: *,
-      type: string,
+      block: *,
+      element: *,
     },
   ],
   contentState,
 ) =>
-  nodes.reduce((acc, block) => {
-    acc.push(block);
+  nodes.reduce((acc, {element, block, wrapperTemplate}) => {
+    acc.push(element);
 
-    console.log('yoyoyoyo', block.props.wrapperTemplate);
-
-    if (
-      !block.props.wrapperTemplate ||
-      shouldNotAddWrapperElement(block.props.block, contentState)
-    ) {
+    if (!wrapperTemplate || shouldNotAddWrapperElement(block, contentState)) {
       return acc;
     }
 
-    applyWrapperElementToSiblings(block.wrapperTemplate, block.type, acc);
+    applyWrapperElementToSiblings(wrapperTemplate, element.type, acc);
 
     return acc;
   }, []);
