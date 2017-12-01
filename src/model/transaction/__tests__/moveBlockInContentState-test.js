@@ -68,7 +68,7 @@ const contentBlockNodes = [
   new ContentBlockNode({
     key: 'E',
     parent: 'D',
-    text: 'Elefant',
+    text: 'Elephant',
   }),
 ];
 
@@ -95,15 +95,16 @@ const assertMoveBlockInContentState = (
       .getBlockMap()
       .toSetSeq()
       .toArray()
+      // doing this filtering to make the snapshot more precise/concise in what we test
       .map(filter => {
-          const {
-             data,
-             characterList,
-             depth,
-             type,
-             text,
-             ...other,
-          } = filter.toJS();
+        const {
+          data,
+          characterList,
+          depth,
+          type,
+          text,
+          ...other
+        } = filter.toJS();
         return other;
       }),
   ).toMatchSnapshot();

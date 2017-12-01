@@ -13,7 +13,6 @@
 
 'use strict';
 
-import type {BlockNodeConfig} from 'BlockNode';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftInsertionType} from 'DraftInsertionType';
@@ -66,7 +65,7 @@ const updateBlockMapLinks = (
   if (!isExperimentalTreeBlock) {
     return blockMap;
   }
-  // insertionMode can only either be after or before
+  // possible values of 'insertionMode' are: 'after', 'before'
   const isInsertedAfterTarget = insertionMode === 'after';
 
   const originalBlockKey = originalBlockToBeMoved.getKey();
@@ -212,10 +211,10 @@ const moveBlockInContentState = (
             nextSiblingKey && key !== nextSiblingKey;
           const doesNotHaveNextSiblingAndIsNotDelimiter =
             !nextSiblingKey &&
-            (!nextDelimiterBlockKey ||
-              block.getKey() !== nextDelimiterBlockKey);
+            block.getParentKey() &&
+            (!nextDelimiterBlockKey || key !== nextDelimiterBlockKey);
 
-          return (
+          return !!(
             isBlockToBeMoved ||
             hasNextSiblingAndIsNotNextSibling ||
             doesNotHaveNextSiblingAndIsNotDelimiter

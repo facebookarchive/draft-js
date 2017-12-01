@@ -313,6 +313,13 @@ Array [
     "prevSibling": "A",
   },
   Object {
+    "children": Array [],
+    "key": "B",
+    "nextSibling": "D",
+    "parent": null,
+    "prevSibling": "C",
+  },
+  Object {
     "children": Array [
       "E",
     ],
@@ -327,13 +334,6 @@ Array [
     "nextSibling": null,
     "parent": "D",
     "prevSibling": null,
-  },
-  Object {
-    "children": Array [],
-    "key": "B",
-    "nextSibling": "D",
-    "parent": null,
-    "prevSibling": "C",
   },
 ]
 `;
@@ -345,22 +345,6 @@ Array [
     "key": "C",
     "nextSibling": "A",
     "parent": null,
-    "prevSibling": null,
-  },
-  Object {
-    "children": Array [
-      "E",
-    ],
-    "key": "D",
-    "nextSibling": null,
-    "parent": null,
-    "prevSibling": "B",
-  },
-  Object {
-    "children": Array [],
-    "key": "E",
-    "nextSibling": null,
-    "parent": "D",
     "prevSibling": null,
   },
   Object {
@@ -376,6 +360,22 @@ Array [
     "nextSibling": "D",
     "parent": null,
     "prevSibling": "A",
+  },
+  Object {
+    "children": Array [
+      "E",
+    ],
+    "key": "D",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+  },
+  Object {
+    "children": Array [],
+    "key": "E",
+    "nextSibling": null,
+    "parent": "D",
+    "prevSibling": null,
   },
 ]
 `;
