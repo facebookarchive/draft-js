@@ -68,10 +68,15 @@ const DraftPasteProcessor = {
       if (experimentalTreeDataSupport && index !== 0) {
         const prevSiblingIndex = index - 1;
         // update previous block
-        const previousBlock = acc[prevSiblingIndex] = acc[prevSiblingIndex].merge({
+        const previousBlock = (acc[prevSiblingIndex] = acc[
+          prevSiblingIndex
+        ].merge({
           nextSibling: key,
-        });
-        blockNodeConfig.prevSibling = previousBlock.getKey();
+        }));
+        blockNodeConfig = {
+          ...blockNodeConfig,
+          prevSibling: previousBlock.getKey(),
+        };
       }
 
       acc.push(new ContentBlockRecord(blockNodeConfig));
