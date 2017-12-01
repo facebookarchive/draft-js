@@ -23,6 +23,8 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const DraftEntity = require('DraftEntity');
+const DraftFeatureFlags = require('DraftFeatureFlags');
+const DraftTreeAdapter = require('DraftTreeAdapter');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
@@ -31,6 +33,8 @@ const decodeEntityRanges = require('decodeEntityRanges');
 const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 const generateRandomKey = require('generateRandomKey');
 const invariant = require('invariant');
+
+const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
 
 const {List, Map, OrderedMap} = Immutable;
 
@@ -210,10 +214,19 @@ const decodeRawBlocks = (
   rawState: RawDraftContentState,
   entityMap: *,
 ): BlockMap => {
-  const rawBlocks = rawState.blocks;
+  const isTreeRawBlock = Array.isArray(rawState.blocks[0].children);
+  const rawBlocks =
+    experimentalTreeDataSupport && !isTreeRawBlock
+      ? DraftTreeAdapter.fromRawStateToRawTreeState(rawState).blocks
+      : rawState.blocks;
 
-  if (!Array.isArray(rawBlocks[0].children)) {
-    return decodeContentBlocks(rawBlocks, entityMap);
+  if (!experimentalTreeDataSupport) {
+    return decodeContentBlocks(
+      isTreeRawBlock
+        ? DraftTreeAdapter.fromRawTreeStateToRawState(rawState).blocks
+        : rawBlocks,
+      entityMap,
+    );
   }
 
   return decodeContentBlockNodes(rawBlocks, entityMap);
