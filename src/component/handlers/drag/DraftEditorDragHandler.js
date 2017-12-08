@@ -117,10 +117,12 @@ var DraftEditorDragHandler = {
       editor.update(moveText(editorState, dropSelection));
       return;
     }
-
-    editor.update(
-      insertTextAtSelection(editorState, dropSelection, data.getText()),
-    );
+    const text = data.getText();
+    if (text) { 
+      editor.update(
+        insertTextAtSelection(editorState, dropSelection, text),
+      );
+    }
   },
 };
 
