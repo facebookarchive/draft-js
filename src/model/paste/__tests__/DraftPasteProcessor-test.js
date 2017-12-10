@@ -19,7 +19,9 @@ jest.mock('generateRandomKey');
 const DraftPasteProcessor = require('DraftPasteProcessor');
 const Immutable = require('immutable');
 
-const CUSTOM_BLOCK_MAP = Immutable.Map({
+const {OrderedSet, Map} = Immutable;
+
+const CUSTOM_BLOCK_MAP = Map({
   'header-one': {
     element: 'h1',
   },
@@ -49,16 +51,35 @@ const CUSTOM_BLOCK_MAP = Immutable.Map({
   },
 });
 
+const EMPTY_CHAR_METADATA = OrderedSet();
+
+const toggleExperimentalTreeDataSupport = enabled => {
+  jest.doMock('DraftFeatureFlags', () => {
+    return {
+      draft_tree_data_support: enabled,
+    };
+  });
+};
+
+const assertDraftPasteProcessorProcessText = (
+  textBlocks,
+  experimentalTreeDataSupport = false,
+) => {
+  toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
+  const contentBlocks = DraftPasteProcessor.processText(
+    textBlocks,
+    EMPTY_CHAR_METADATA,
+    'unstyled',
+  );
+  expect(contentBlocks.map(block => block.toJS())).toMatchSnapshot();
+};
+
 const assertDraftPasteProcessorProcessHTML = (
   html,
   blockMap = CUSTOM_BLOCK_MAP,
   experimentalTreeDataSupport = false,
 ) => {
-  jest.doMock('DraftFeatureFlags', () => {
-    return {
-      draft_tree_data_support: experimentalTreeDataSupport,
-    };
-  });
+  toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
   const {contentBlocks} = DraftPasteProcessor.processHTML(html, blockMap);
   expect(contentBlocks.map(block => block.toJS())).toMatchSnapshot();
 };
@@ -314,4 +335,12 @@ test('must create nested elements when experimentalTreeDataSupport is enabled', 
     CUSTOM_BLOCK_MAP,
     true,
   );
+});
+
+test('must create ContentBlocks when experimentalTreeDataSupport is disabled while processing text', () => {
+  assertDraftPasteProcessorProcessText(['Alpha', 'Beta', 'Charlie']);
+});
+
+test('must create ContentBlockNodes when experimentalTreeDataSupport is enabled while processing text', () => {
+  assertDraftPasteProcessorProcessText(['Alpha', 'Beta', 'Charlie'], true);
 });
