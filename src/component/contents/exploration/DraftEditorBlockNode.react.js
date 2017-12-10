@@ -37,6 +37,9 @@ const Style = require('Style');
 
 const wrapBlockNodes = require('wrapBlockNodes');
 
+const getCustomRenderConfig = require('getCustomRenderConfig');
+const getDraftRenderConfig = require('getDraftRenderConfig');
+const getElementPropsConfig = require('getElementPropsConfig');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
@@ -47,8 +50,6 @@ const SCROLL_BUFFER = 10;
 const {List} = Immutable;
 
 // we should harden up the bellow flow types to make them more strict
-type CustomRenderConfig = Object;
-type DraftRenderConfig = Object;
 type BlockRenderFn = (block: BlockNodeRecord) => ?Object;
 type BlockStyleFn = (block: BlockNodeRecord) => string;
 
@@ -79,76 +80,6 @@ const isBlockOnSelectionEdge = (
   key: string,
 ): boolean => {
   return selection.getAnchorKey() === key || selection.getFocusKey() === key;
-};
-
-const getDraftRenderConfig = (
-  block: BlockNodeRecord,
-  blockRenderMap: DraftBlockRenderMap,
-): DraftRenderConfig => {
-  const configForType =
-    blockRenderMap.get(block.getType()) || blockRenderMap.get('unstyled');
-
-  const wrapperTemplate = configForType.wrapper;
-  const Element =
-    configForType.element || blockRenderMap.get('unstyled').element;
-
-  return {
-    Element,
-    wrapperTemplate,
-  };
-};
-
-const getCustomRenderConfig = (
-  block: BlockNodeRecord,
-  blockRendererFn: BlockRenderFn,
-): CustomRenderConfig => {
-  const customRenderer = blockRendererFn(block);
-
-  if (!customRenderer) {
-    return {};
-  }
-
-  const {
-    component: CustomComponent,
-    props: customProps,
-    editable: customEditable,
-  } = customRenderer;
-
-  return {
-    CustomComponent,
-    customProps,
-    customEditable,
-  };
-};
-
-const getElementPropsConfig = (
-  block: BlockNodeRecord,
-  editorKey: string,
-  offsetKey: string,
-  blockStyleFn: BlockStyleFn,
-  customConfig: *,
-): Object => {
-  let elementProps: Object = {
-    'data-block': true,
-    'data-editor': editorKey,
-    'data-offset-key': offsetKey,
-    key: block.getKey(),
-  };
-  const customClass = blockStyleFn(block);
-
-  if (customClass) {
-    elementProps.className = customClass;
-  }
-
-  if (customConfig.customEditable !== undefined) {
-    elementProps = {
-      ...elementProps,
-      contentEditable: customConfig.customEditable,
-      suppressContentEditableWarning: true,
-    };
-  }
-
-  return elementProps;
 };
 
 class DraftEditorBlockNode extends React.Component<Props> {
@@ -240,7 +171,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
     let children = null;
 
     if (block.children.size) {
-      children = block.children.reduce((acc, key) => {
+      children = block.children.map(key => {
         const offsetKey = DraftOffsetKey.encode(key, 0, 0);
         const child = contentState.getBlockForKey(key);
         const customConfig = getCustomRenderConfig(child, blockRendererFn);
@@ -267,7 +198,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
           block: child,
         };
 
-        acc.push({
+        return {
           wrapperTemplate,
           block: child,
           element: React.createElement(
@@ -275,11 +206,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
             elementProps,
             <Component {...childProps} />,
           ),
-        });
-        // if we are here it means we are the last block
-        // that has a wrapperTemplate so we should wrap itself
-        // and all other previous siblings that share the same wrapper
-        return acc;
+        };
       }, []);
       children = wrapBlockNodes(children, contentState);
     }

@@ -17,6 +17,7 @@ jest.disableAutomock();
 const React = require('react');
 const UnicodeBidiDirection = require('UnicodeBidiDirection');
 const CompositeDraftDecorator = require('CompositeDraftDecorator');
+const DraftEditorNode = require('DraftEditorNode.react');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');
 const BlockTree = require('BlockTree');
@@ -29,51 +30,159 @@ const {List} = require('immutable');
 const blockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftOffsetKey = require('DraftOffsetKey');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
+const getElementPropsConfig = require('getElementPropsConfig');
+const getDraftRenderConfig = require('getDraftRenderConfig');
+const getCustomRenderConfig = require('getCustomRenderConfig');
+const SelectionState = require('SelectionState');
+
+const rootBlock = new ContentBlockNode({
+  key: 'A',
+  text: '',
+  type: 'blockquote',
+  children: List(['B', 'C', 'D']),
+});
+
+const contentState = ContentState.createFromBlockArray([
+  rootBlock,
+  new ContentBlockNode({
+    parent: 'A',
+    nextSibling: 'C',
+    type: 'header-three',
+    key: 'B',
+    text: 'Left',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    parent: 'A',
+    type: 'header-one',
+    prevSibling: 'B',
+    nextSibling: 'D',
+    key: 'C',
+    text: 'Middle',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    parent: 'A',
+    prevSibling: 'C',
+    type: 'header-two',
+    key: 'D',
+    text: 'Right',
+    children: List([]),
+  }),
+]);
+
+const selectionState = new SelectionState({
+  anchorKey: 'A',
+  anchorOffset: 0,
+  focusKey: 'A',
+  focusOffset: 0,
+  isBackward: false,
+  hasFocus: false,
+});
 
 const PROPS = {
+  block: rootBlock,
   blockRenderMap: DefaultDraftBlockRenderMap,
   blockRendererFn: block => null,
   blockStyleFn: block => '',
+  contentState,
   customStyleFn: (style, block) => null,
+  customStyleMap: {},
+  decorator: null,
+  direction: UnicodeBidiDirection.LTR,
   editorKey: 'editor',
-  blockProps: {},
+  editorState: EditorState.createWithContent(contentState, null),
+  forceSelection: false,
+  offsetKey: 'A-0-0',
+  selection: selectionState,
+  tree: BlockTree.generate(contentState, rootBlock, null),
 };
 
 const assertWrapBlockNodes = (props = {}) => {
   const editorState = EditorState.createWithContent(props.contentState);
-  const nodes = props.contentState.getBlocksAsArray().map(block => {
-    const configForType =
-      blockRenderMap.get(block.getType()) || blockRenderMap.get('unstyled');
+  const blockArray = props.contentState.getBlocksAsArray();
+  const block = blockArray.filter(block => !block.parent)[0];
 
-    const wrapperTemplate = configForType.wrapper;
-    const key = block.getKey();
-    const offsetKey = DraftOffsetKey.encode(key, 0, 0);
+  const nodes = blockArray
+    .filter(block => !!block.parent)
+    .map((block, index) => {
+      const key = block.getKey();
 
-    const childProps = {
-      ...PROPS,
-      ...props,
-      selection: editorState.getSelection(),
-      block,
-      wrapperTemplate,
-      editorState,
-      tree: editorState.getBlockTree(key),
-      offsetKey,
-      key,
-    };
+      const offsetKey = DraftOffsetKey.encode(key, 0, 0);
+      const child = props.contentState.getBlockForKey(key);
+      const customConfig = getCustomRenderConfig(child, props.blockRendererFn);
+      const Component = customConfig.CustomComponent || DraftEditorBlockNode;
+      const {Element, wrapperTemplate} = getDraftRenderConfig(
+        child,
+        blockRenderMap,
+      );
 
-    return {
-      wrapperTemplate,
-      block,
-      element: <DraftEditorBlockNode {...childProps} />,
-    };
-  });
+      const elementProps = getElementPropsConfig(
+        child,
+        props.editorKey,
+        offsetKey,
+        props.blockStyleFn,
+        customConfig,
+      );
 
-  const blockNode = ReactTestRenderer.create(
-    <div>{wrapBlockNodes(nodes, props.contentState)}</div>,
+      const childProps = {
+        ...props,
+        tree: editorState.getBlockTree(key),
+        blockProps: customConfig.customProps,
+        offsetKey,
+        wrapperTemplate,
+        block: child,
+      };
+
+      const res = {
+        wrapperTemplate,
+        block: child,
+        element: React.createElement(
+          Element,
+          elementProps,
+          <Component {...childProps} />,
+        ),
+      };
+
+      return res;
+    });
+
+  const children = wrapBlockNodes(nodes, props.contentState);
+
+  const blockNode = (
+    <DraftEditorNode
+      block={block}
+      children={children}
+      contentState={props.contentState}
+      customStyleFn={props.customStyleFn}
+      customStyleMap={props.customStyleMap}
+      decorator={props.decorator}
+      direction={props.direction}
+      forceSelection={props.forceSelection}
+      hasSelection={props.hasSelection}
+      selection={props.selection}
+      tree={props.tree}
+    />
   );
 
+  const blockKey = block.getKey();
+  const offsetKey = DraftOffsetKey.encode(blockKey, 0, 0);
+
+  const {Element} = getDraftRenderConfig(block, blockRenderMap);
+  const elementProps = getElementPropsConfig(
+    block,
+    props.editorKey,
+    offsetKey,
+    props.blockStyleFn,
+    getCustomRenderConfig(block, props.blockRendererFn),
+  );
+
+  const TestNode = React.createElement(Element, elementProps, blockNode);
+
   expect(
-    TestHelper.transformSnapshotProps(blockNode.toJSON()),
+    TestHelper.transformSnapshotProps(
+      ReactTestRenderer.create(TestNode).toJSON(),
+    ),
   ).toMatchSnapshot();
 };
 
@@ -85,7 +194,10 @@ test('renders block with no children', () => {
   });
 
   const contentState = ContentState.createFromBlockArray([rootBlock]);
-  assertWrapBlockNodes({contentState});
+  assertWrapBlockNodes({
+    ...PROPS,
+    contentState,
+  });
 });
 
 test('renders block with child that have wrapperElement', () => {
@@ -101,12 +213,13 @@ test('renders block with child that have wrapperElement', () => {
     new ContentBlockNode({
       parent: 'A',
       key: 'B',
-      text: 'fist list item',
+      text: 'first list item',
       type: 'ordered-list-item',
     }),
   ]);
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
@@ -126,7 +239,7 @@ test('renders block with children that have same wrapperElement', () => {
     new ContentBlockNode({
       parent: 'A',
       key: 'B',
-      text: 'fist list item',
+      text: 'first list item',
       type: 'ordered-list-item',
       nextSibling: 'C',
     }),
@@ -140,6 +253,7 @@ test('renders block with children that have same wrapperElement', () => {
   ]);
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
@@ -172,6 +286,7 @@ test('renders block with nested child that have same wrapperElement', () => {
   ]);
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
@@ -191,7 +306,7 @@ test('renders block with nested child that is of different block type', () => {
     new ContentBlockNode({
       parent: 'A',
       key: 'B',
-      text: 'fist list item',
+      text: 'first list item',
       type: 'ordered-list-item',
       children: List(['C']),
     }),
@@ -204,6 +319,7 @@ test('renders block with nested child that is of different block type', () => {
   ]);
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
@@ -236,6 +352,7 @@ test('renders block with nested child that have different wrapperElement', () =>
   ]);
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     block: rootBlock,
     tree: BlockTree.generate(contentState, rootBlock, null),
@@ -255,7 +372,7 @@ test('renders block with nested children with decorator', () => {
     new ContentBlockNode({
       parent: 'A',
       key: 'B',
-      text: 'fist list item',
+      text: 'first list item',
       type: 'ordered-list-item',
       children: List(['C']),
     }),
@@ -283,6 +400,7 @@ test('renders block with nested children with decorator', () => {
   ]);
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     decorator,
     block: rootBlock,
@@ -303,7 +421,7 @@ test('renders block with nested children with different direction', () => {
     new ContentBlockNode({
       parent: 'A',
       key: 'B',
-      text: 'fist list item',
+      text: 'first list item',
       type: 'ordered-list-item',
       children: List(['C']),
     }),
@@ -316,6 +434,7 @@ test('renders block with nested children with different direction', () => {
   ]);
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     block: rootBlock,
     direction: UnicodeBidiDirection.RTL,
@@ -336,7 +455,7 @@ test('renders block with nested children with custom component', () => {
     new ContentBlockNode({
       parent: 'A',
       key: 'B',
-      text: 'fist list item',
+      text: 'first list item',
       type: 'ordered-list-item',
       children: List(['C']),
     }),
@@ -353,6 +472,7 @@ test('renders block with nested children with custom component', () => {
   };
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     block: rootBlock,
     blockRendererFn: block => {
@@ -380,7 +500,7 @@ test('renders block with nested children with custom component and editable prop
     new ContentBlockNode({
       parent: 'A',
       key: 'B',
-      text: 'fist list item',
+      text: 'first list item',
       type: 'ordered-list-item',
       children: List(['C']),
     }),
@@ -401,6 +521,7 @@ test('renders block with nested children with custom component and editable prop
   };
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     block: rootBlock,
     blockRendererFn: block => {
@@ -432,7 +553,7 @@ test('renders block with nested children with blockStyleFn', () => {
     new ContentBlockNode({
       parent: 'A',
       key: 'B',
-      text: 'fist list item',
+      text: 'first list item',
       type: 'ordered-list-item',
       children: List(['C']),
     }),
@@ -445,6 +566,7 @@ test('renders block with nested children with blockStyleFn', () => {
   ]);
 
   assertWrapBlockNodes({
+    ...PROPS,
     contentState,
     block: rootBlock,
     blockStyleFn: block => {
