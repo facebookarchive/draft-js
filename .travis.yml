@@ -53,6 +53,7 @@ script:
     set -e
     ./node_modules/.bin/gulp
     cd website
+    rm -rf ./node_modules
     npm install
     ./setup.sh
     if [ "$TRAVIS_PULL_REQUEST" = false ] && [ "$TRAVIS_BRANCH" = master ]; then
