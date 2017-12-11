@@ -1,8 +1,9 @@
-lib/
-dist/
-docs/
-node_modules/
-website/
+**/lib/*
+**/dist/*
+**/node_modules/*
+**/__mocks__/*
+**/website/*
+**/__snapshots__/*
 gulpfile.js
 scripts/module-map.js
 scripts/jest/preprocessor.js
