@@ -20,8 +20,6 @@ import type {EntityMap} from 'EntityMap';
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const DraftFeatureFlags = require('DraftFeatureFlags');
 const Immutable = require('immutable');
 
 const convertFromHTMLtoContentBlocks = require('convertFromHTMLToContentBlocks');
@@ -30,11 +28,6 @@ const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 const {List, Repeat} = Immutable;
-
-const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
-const ContentBlockRecord = experimentalTreeDataSupport
-  ? ContentBlockNode
-  : ContentBlock;
 
 const DraftPasteProcessor = {
   processHTML(
@@ -53,36 +46,15 @@ const DraftPasteProcessor = {
     character: CharacterMetadata,
     type: DraftBlockType,
   ): Array<BlockNodeRecord> {
-    return textBlocks.reduce((acc, textLine, index) => {
+    return textBlocks.map(textLine => {
       textLine = sanitizeDraftText(textLine);
-      const key = generateRandomKey();
-
-      let blockNodeConfig = {
-        key,
+      return new ContentBlock({
+        key: generateRandomKey(),
         type,
         text: textLine,
         characterList: List(Repeat(character, textLine.length)),
-      };
-
-      // next block updates previous block
-      if (experimentalTreeDataSupport && index !== 0) {
-        const prevSiblingIndex = index - 1;
-        // update previous block
-        const previousBlock = (acc[prevSiblingIndex] = acc[
-          prevSiblingIndex
-        ].merge({
-          nextSibling: key,
-        }));
-        blockNodeConfig = {
-          ...blockNodeConfig,
-          prevSibling: previousBlock.getKey(),
-        };
-      }
-
-      acc.push(new ContentBlockRecord(blockNodeConfig));
-
-      return acc;
-    }, []);
+      });
+    });
   },
 };
 
