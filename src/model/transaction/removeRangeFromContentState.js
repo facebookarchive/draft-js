@@ -298,7 +298,7 @@ const removeRangeFromContentState = (
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
-    .filterNot((_, k) => parentAncestors.indexOf(k) !== -1)
+    .filter((_, k) => parentAncestors.indexOf(k) === -1)
     .concat(Map([[endKey, null]]))
     .map((_, k) => {
       return k === startKey ? modifiedStart : null;
