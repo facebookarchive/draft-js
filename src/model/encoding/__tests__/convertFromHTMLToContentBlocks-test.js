@@ -166,6 +166,19 @@ test('converts nested html blocks when experimentalTreeDataSupport is enabled', 
   });
 });
 
+test('converts text nodes to unstyled elements when leading nested blocks when experimentalTreeDataSupport is enabled', () => {
+  const html_string = `
+    <blockquote>
+      Hello World!
+      <h1>lorem ipsum</h1>
+    </blockquote>
+  `;
+
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
 test('converts deeply nested html blocks when experimentalTreeDataSupport is enabled', () => {
   const html_string = `
     <ol>
@@ -211,3 +224,47 @@ SUPPORTED_TAGS.forEach(tag =>
 SUPPORTED_TAGS.forEach(tag =>
   testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch(tag),
 );
+
+test('Should not create empty container blocks around ul and their list items', () => {
+  const html_string = `
+    <ul>
+      <li>something</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should not create empty container blocks around ul and their list items when nesting enabled', () => {
+  const html_string = `
+    <ul>
+      <li>something</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should not create empty container blocks around ol and their list items', () => {
+  const html_string = `
+    <ol>
+      <li>something</li>
+    </ol>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should not create empty container blocks around ol and their list items when nesting enabled', () => {
+  const html_string = `
+    <ol>
+      <li>something</li>
+    </ol>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});

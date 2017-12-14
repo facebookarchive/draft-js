@@ -355,7 +355,18 @@ const genFragment = (
   // Base Case
   if (nodeName === '#text') {
     let text = node.textContent;
-    if (text.trim() === '' && inBlock !== 'pre') {
+    let nodeTextContent = text.trim();
+
+    // We should not create blocks for leading spaces that are
+    // existing around ol/ul and their children list items
+    if (lastList && nodeTextContent === '' && node.parentElement) {
+      const parentNodeName = node.parentElement.nodeName.toLowerCase();
+      if (parentNodeName === 'ol' || parentNodeName === 'ul') {
+        return {chunk: {...EMPTY_CHUNK}, entityMap};
+      }
+    }
+
+    if (nodeTextContent === '' && inBlock !== 'pre') {
       return {chunk: getWhitespaceChunk(inEntity), entityMap};
     }
     if (inBlock !== 'pre') {
@@ -643,6 +654,42 @@ const convertChunkToContentBlocks = (chunk: Chunk): ?Array<BlockNodeRecord> => {
     const {depth, type, parent} = block;
 
     const key = block.key || generateRandomKey();
+    let parentTextNodeKey = null; // will be used to store container text nodes
+
+    // childrens add themselves to their parents since we are iterating in order
+    if (parent) {
+      const parentIndex = acc.cacheRef[parent];
+      let parentRecord = acc.contentBlocks[parentIndex];
+
+      // if parent has text we need to split it into a separate unstyled element
+      if (parentRecord.getChildKeys().isEmpty() && parentRecord.getText()) {
+        const parentCharacterList = parentRecord.getCharacterList();
+        const parentText = parentRecord.getText();
+        parentTextNodeKey = generateRandomKey();
+
+        const textNode = new ContentBlockNode({
+          key: parentTextNodeKey,
+          text: parentText,
+          characterList: parentCharacterList,
+          parent: parent,
+          nextSibling: key,
+        });
+
+        acc.contentBlocks.push(textNode);
+
+        parentRecord = parentRecord.withMutations(block => {
+          block
+            .set('characterList', List())
+            .set('text', '')
+            .set('children', parentRecord.children.push(textNode.getKey()));
+        });
+      }
+
+      acc.contentBlocks[parentIndex] = parentRecord.set(
+        'children',
+        parentRecord.children.push(key),
+      );
+    }
 
     const blockNode = new BlockNodeRecord({
       key,
@@ -652,24 +699,15 @@ const convertChunkToContentBlocks = (chunk: Chunk): ?Array<BlockNodeRecord> => {
       text: textBlock,
       characterList,
       prevSibling:
-        index === 0 || rawBlocks[index - 1].parent !== parent
+        parentTextNodeKey ||
+        (index === 0 || rawBlocks[index - 1].parent !== parent
           ? null
-          : rawBlocks[index - 1].key,
+          : rawBlocks[index - 1].key),
       nextSibling:
         index === rawBlocks.length - 1 || rawBlocks[index + 1].parent !== parent
           ? null
           : rawBlocks[index + 1].key,
     });
-
-    // childrens add themselves to their parents since we are iterating in order
-    if (parent) {
-      const parentIndex = acc.cacheRef[parent];
-      const parentRecord = acc.contentBlocks[parentIndex];
-      acc.contentBlocks[parentIndex] = parentRecord.set(
-        'children',
-        parentRecord.children.push(key),
-      );
-    }
 
     // insert node
     acc.contentBlocks.push(blockNode);
