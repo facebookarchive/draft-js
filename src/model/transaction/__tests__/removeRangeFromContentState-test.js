@@ -14,14 +14,72 @@
 
 jest.disableAutomock();
 
+const BlockMapBuilder = require('BlockMapBuilder');
+const ContentBlockNode = require('ContentBlockNode');
+const Immutable = require('immutable');
+const SelectionState = require('SelectionState');
+
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const removeRangeFromContentState = require('removeRangeFromContentState');
 
+const {List} = Immutable;
+
 const {contentState, selectionState} = getSampleStateForTesting();
 
-const assertRemoveRangeFromContentState = selection => {
+const contentBlockNodes = [
+  new ContentBlockNode({
+    key: 'A',
+    nextSibling: 'B',
+    text: 'Alpha',
+  }),
+  new ContentBlockNode({
+    key: 'B',
+    prevSibling: 'A',
+    nextSibling: 'G',
+    children: List(['C', 'F']),
+  }),
+  new ContentBlockNode({
+    parent: 'B',
+    key: 'C',
+    nextSibling: 'F',
+    children: List(['D', 'E']),
+  }),
+  new ContentBlockNode({
+    parent: 'C',
+    key: 'D',
+    nextSibling: 'E',
+    text: 'Delta',
+  }),
+  new ContentBlockNode({
+    parent: 'C',
+    key: 'E',
+    prevSibling: 'D',
+    text: 'Elephant',
+  }),
+  new ContentBlockNode({
+    parent: 'B',
+    key: 'F',
+    prevSibling: 'C',
+    text: 'Fire',
+  }),
+  new ContentBlockNode({
+    key: 'G',
+    prevSibling: 'B',
+    text: 'Gorila',
+  }),
+];
+const treeSelectionState = SelectionState.createEmpty('A');
+const treeContentState = contentState.set(
+  'blockMap',
+  BlockMapBuilder.createFromArray(contentBlockNodes),
+);
+
+const assertRemoveRangeFromContentState = (
+  selection,
+  content = contentState,
+) => {
   expect(
-    removeRangeFromContentState(contentState, selection)
+    removeRangeFromContentState(content, selection)
       .getBlockMap()
       .toJS(),
   ).toMatchSnapshot();
@@ -153,5 +211,53 @@ test('must remove blocks entirely within the selection', () => {
       focusKey: 'c',
       focusOffset: 3,
     }),
+  );
+});
+
+test('must remove E and F entirely when selection is from end of D to end of F on nested blocks', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'D',
+      focusKey: 'F',
+      anchorOffset: contentBlockNodes[3].getLength(),
+      focusOffset: contentBlockNodes[5].getLength(),
+    }),
+    treeContentState,
+  );
+});
+
+test('must preserve B and C since E has not been removed', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'A',
+      focusKey: 'D',
+      anchorOffset: contentBlockNodes[0].getLength(),
+      focusOffset: contentBlockNodes[3].getLength(),
+    }),
+    treeContentState,
+  );
+});
+
+test('must remove B and all its children', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'A',
+      focusKey: 'F',
+      anchorOffset: contentBlockNodes[0].getLength(),
+      focusOffset: contentBlockNodes[5].getLength(),
+    }),
+    treeContentState,
+  );
+});
+
+test('must retain B since F has not been removed', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'A',
+      focusKey: 'E',
+      anchorOffset: contentBlockNodes[0].getLength(),
+      focusOffset: contentBlockNodes[4].getLength(),
+    }),
+    treeContentState,
   );
 });

@@ -21,42 +21,10 @@ import type {DraftInsertionType} from 'DraftInsertionType';
 const ContentBlockNode = require('ContentBlockNode');
 const Immutable = require('immutable');
 
+const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
 const invariant = require('invariant');
 
 const {OrderedMap, List} = Immutable;
-
-const getNextDelimiterBlockKey = (
-  blockToBeMoved: BlockNodeRecord,
-  blockMap: BlockMap,
-): ?string => {
-  const nextSiblingKey = blockToBeMoved.getNextSiblingKey();
-
-  if (nextSiblingKey) {
-    return nextSiblingKey;
-  }
-
-  const parent = blockToBeMoved.getParentKey();
-
-  if (!parent) {
-    return null;
-  }
-
-  let nextNonDescendantBlock = blockMap.get(parent);
-  while (
-    nextNonDescendantBlock &&
-    (!nextNonDescendantBlock.getNextSiblingKey() ||
-      !nextNonDescendantBlock.getParentKey())
-  ) {
-    const parentKey = nextNonDescendantBlock.getParentKey();
-    nextNonDescendantBlock = parentKey ? blockMap.get(parentKey) : null;
-  }
-
-  if (!nextNonDescendantBlock) {
-    return null;
-  }
-
-  return nextNonDescendantBlock.getNextSiblingKey();
-};
 
 const updateBlockMapLinks = (
   blockMap: BlockMap,
