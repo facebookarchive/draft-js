@@ -31,11 +31,6 @@ before_install:
 cache:
   yarn: true
 
-install:
-# Update runs install, but will also pull in the latest updates so the cache
-# doesn't get stale
-- yarn upgrade
-
 before_script:
 # For additional debugging when Travis inevitably gets into a bad state.
 - yarn list --depth=0
