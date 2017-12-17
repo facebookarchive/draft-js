@@ -102,12 +102,12 @@ var DraftModifier = {
     targetRange: SelectionState,
   ): ContentState {
     var movedFragment = getContentStateFragment(contentState, removalRange);
-    var removeRangeEndOffset = removalRange.isBackward ?
-      removalRange.getAnchorOffset() :
-      removalRange.getFocusOffset();
-    var targetRangeStartOffset = targetRange.isBackward ?
-      targetRange.getFocusOffset() :
-      targetRange.getAnchorOffset();
+    var removeRangeEndOffset = removalRange.isBackward
+      ? removalRange.getAnchorOffset()
+      : removalRange.getFocusOffset();
+    var targetRangeStartOffset = targetRange.isBackward
+      ? targetRange.getFocusOffset()
+      : targetRange.getAnchorOffset();
 
     if (
       removalRange.getEndKey() === targetRange.getEndKey() &&
@@ -116,16 +116,16 @@ var DraftModifier = {
       var afterReplaced = DraftModifier.replaceWithFragment(
         contentState,
         targetRange,
-        movedFragment
+        movedFragment,
       );
 
       var afterRemoval = DraftModifier.removeRange(
         afterReplaced,
         removalRange,
-        'backward'
+        'backward',
       );
 
-      return afterRemoval.merge({ selectionAfter: targetRange });
+      return afterRemoval.merge({selectionAfter: targetRange});
     }
 
     var afterRemoval = DraftModifier.removeRange(
