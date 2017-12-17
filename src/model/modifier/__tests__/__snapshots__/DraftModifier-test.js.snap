@@ -13,222 +13,216 @@ Object {
 
 exports[`moveText moves a portion of a line selected backward to the back of the same block 1`] = `
 Object {
-  "a": Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "a",
-    "text": "foo bazbar  foo",
-    "type": "unstyled",
-  },
+  "characterList": Array [
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+  ],
+  "data": Object {},
+  "depth": 0,
+  "key": "a",
+  "text": "foo bazbar  foo",
+  "type": "unstyled",
 }
 `;
 
 exports[`moveText moves a portion of a line selected forward to the back of the same block 1`] = `
 Object {
-  "a": Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "a",
-    "text": "foo bazbar  foo",
-    "type": "unstyled",
-  },
+  "characterList": Array [
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+  ],
+  "data": Object {},
+  "depth": 0,
+  "key": "a",
+  "text": "foo bazbar  foo",
+  "type": "unstyled",
 }
 `;
 
 exports[`moveText moves a portion of a line to the front of the same block 1`] = `
 Object {
-  "a": Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "a",
-    "text": "foo bazbar  foo",
-    "type": "unstyled",
-  },
+  "characterList": Array [
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+    Object {
+      "entity": null,
+      "style": Array [],
+    },
+  ],
+  "data": Object {},
+  "depth": 0,
+  "key": "a",
+  "text": "foo bazbar  foo",
+  "type": "unstyled",
 }
 `;

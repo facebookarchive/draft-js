@@ -71,7 +71,7 @@ test('moveText moves a portion of a line selected forward to the back of the sam
   });
   const newContentState = moveText(contentState, removalRange, targetRange);
 
-  expect(newContentState.getBlockMap().toJS()).toMatchSnapshot();
+  expect(newContentState.getFirstBlock().toJS()).toMatchSnapshot();
 });
 
 test('moveText moves a portion of a line selected backward to the back of the same block', () => {
@@ -93,7 +93,7 @@ test('moveText moves a portion of a line selected backward to the back of the sa
   });
   const newContentState = moveText(contentState, removalRange, targetRange);
 
-  expect(newContentState.getBlockMap().toJS()).toMatchSnapshot();
+  expect(newContentState.getFirstBlock().toJS()).toMatchSnapshot();
 });
 
 test('moveText ends with a selection at the target when moving text back', () => {
@@ -137,5 +137,5 @@ test('moveText moves a portion of a line to the front of the same block', () => 
   });
   const newContentState = moveText(contentState, removalRange, targetRange);
 
-  expect(newContentState.getBlockMap().toJS()).toMatchSnapshot();
+  expect(newContentState.getFirstBlock().toJS()).toMatchSnapshot();
 });
