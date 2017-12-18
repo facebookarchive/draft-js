@@ -73,6 +73,15 @@ const contentBlockNodes = [
   }),
 ];
 
+// doing this filtering to make the snapshot more precise/concise in what we test
+const BLOCK_PROPS_BLACKLIST = [
+  'characterList',
+  'data',
+  'depth',
+  'text',
+  'type',
+];
+
 const assertMoveBlockInContentState = (
   blockToBeMovedKey,
   targetBlockKey,
@@ -96,18 +105,15 @@ const assertMoveBlockInContentState = (
       .getBlockMap()
       .toSetSeq()
       .toArray()
-      // doing this filtering to make the snapshot more precise/concise in what we test
-      .map(filter => {
-        const {
-          data,
-          characterList,
-          depth,
-          type,
-          text,
-          ...other
-        } = filter.toJS();
-        return other;
-      }),
+      .map(filter => filter.toJS())
+      .map(block =>
+        Object.keys(block)
+          .filter(prop => BLOCK_PROPS_BLACKLIST.indexOf(prop) === -1)
+          .reduce((acc, prop) => {
+            acc[prop] = block[prop];
+            return acc;
+          }, {}),
+      ),
   ).toMatchSnapshot();
 };
 
