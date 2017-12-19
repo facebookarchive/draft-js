@@ -1,5 +1,394 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`must preserve B and C since E has not been removed 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  "B": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+      "F",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "G",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "unstyled",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [
+      "E",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "F",
+    "parent": "B",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": null,
+    "parent": "C",
+    "prevSibling": null,
+    "text": "Elephant",
+    "type": "unstyled",
+  },
+  "F": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": "C",
+    "text": "Fire",
+    "type": "unstyled",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+    "text": "Gorila",
+    "type": "unstyled",
+  },
+}
+`;
+
+exports[`must remove B and all its children 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "G",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "A",
+    "text": "Gorila",
+    "type": "unstyled",
+  },
+}
+`;
+
+exports[`must remove E and F entirely when selection is from end of D to end of F on nested blocks 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  "B": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "G",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "unstyled",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [
+      "D",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": null,
+    "parent": "C",
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "unstyled",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+    "text": "Gorila",
+    "type": "unstyled",
+  },
+}
+`;
+
 exports[`must remove blocks entirely within the selection 1`] = `
 Object {
   "a": Object {
@@ -1735,6 +2124,124 @@ Object {
     "key": "f",
     "text": "Charlie",
     "type": "blockquote",
+  },
+}
+`;
+
+exports[`must retain B since F has not been removed 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  "B": Object {
+    "characterList": Array [],
+    "children": Array [
+      "F",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "G",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "unstyled",
+  },
+  "F": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": null,
+    "text": "Fire",
+    "type": "unstyled",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+    "text": "Gorila",
+    "type": "unstyled",
   },
 }
 `;
