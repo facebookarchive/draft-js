@@ -93,6 +93,9 @@
     "roots": [
       "<rootDir>/src/"
     ],
+    "setupFiles": [
+      "<rootDir>/scripts/jest/shims.js"
+    ],
     "transform": {
       ".*": "<rootDir>/scripts/jest/preprocessor.js"
     },

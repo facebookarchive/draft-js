@@ -16,7 +16,7 @@ module.exports = {
     'prettier/standard',
   ],
   rules: {
-    'prettier/prettier': [1, 'fb'],
+    'prettier/prettier': ['error', 'fb'],
   },
   plugins: ['prettier'],
   overrides: [
