@@ -75,12 +75,6 @@ interaction.
 As of IE11, Internet Explorer demonstrates notable issues with certain international
 input methods, most significantly Korean input.
 
-### Mobile Support
-
-At this time Draft does not fully support mobile browsers. There are some known
-issues with certain Android keyboards and with international input methods. Full
-mobile support is a goal that the framework is moving towards for the future.
-
 ### Polyfills
 
 Some of Draft's code and that of its dependencies make use of ES2015 language

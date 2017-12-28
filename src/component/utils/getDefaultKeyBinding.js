@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getDefaultKeyBinding
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -27,10 +27,7 @@ var isWindows = UserAgent.isPlatform('Windows');
 // so we just check the version number. See #342765.
 var shouldFixFirefoxMovement = isOSX && UserAgent.isBrowser('Firefox < 29');
 
-var {
-  hasCommandModifier,
-  isCtrlKeyCommand,
-} = KeyBindingUtil;
+var {hasCommandModifier, isCtrlKeyCommand} = KeyBindingUtil;
 
 function shouldRemoveWord(e: SyntheticKeyboardEvent<>): boolean {
   return (isOSX && e.altKey) || isCtrlKeyCommand(e);
@@ -39,18 +36,14 @@ function shouldRemoveWord(e: SyntheticKeyboardEvent<>): boolean {
 /**
  * Get the appropriate undo/redo command for a Z key command.
  */
-function getZCommand(
-  e: SyntheticKeyboardEvent<>,
-): ?DraftEditorCommand {
+function getZCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
   if (!hasCommandModifier(e)) {
     return null;
   }
   return e.shiftKey ? 'redo' : 'undo';
 }
 
-function getDeleteCommand(
-  e: SyntheticKeyboardEvent<>,
-): ?DraftEditorCommand {
+function getDeleteCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
   // Allow default "cut" behavior for Windows on Shift + Delete.
   if (isWindows && e.shiftKey) {
     return null;
@@ -58,9 +51,7 @@ function getDeleteCommand(
   return shouldRemoveWord(e) ? 'delete-word' : 'delete';
 }
 
-function getBackspaceCommand(
-  e: SyntheticKeyboardEvent<>,
-): ?DraftEditorCommand {
+function getBackspaceCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
   if (hasCommandModifier(e) && isOSX) {
     return 'backspace-to-start-of-line';
   }
@@ -85,17 +76,17 @@ function getDefaultKeyBinding(
     case 74: // J
       return hasCommandModifier(e) ? 'code' : null;
     case 75: // K
-      return (!isWindows && isCtrlKeyCommand(e)) ? 'secondary-cut' : null;
+      return !isWindows && isCtrlKeyCommand(e) ? 'secondary-cut' : null;
     case 77: // M
       return isCtrlKeyCommand(e) ? 'split-block' : null;
     case 79: // O
       return isCtrlKeyCommand(e) ? 'split-block' : null;
     case 84: // T
-      return (isOSX && isCtrlKeyCommand(e)) ? 'transpose-characters' : null;
+      return isOSX && isCtrlKeyCommand(e) ? 'transpose-characters' : null;
     case 85: // U
       return hasCommandModifier(e) ? 'underline' : null;
     case 87: // W
-      return (isOSX && isCtrlKeyCommand(e)) ? 'backspace-word' : null;
+      return isOSX && isCtrlKeyCommand(e) ? 'backspace-word' : null;
     case 89: // Y
       if (isCtrlKeyCommand(e)) {
         return isWindows ? 'redo' : 'secondary-paste';
@@ -111,17 +102,13 @@ function getDefaultKeyBinding(
       return getBackspaceCommand(e);
     // LEFT/RIGHT handlers serve as a workaround for a Firefox bug.
     case Keys.LEFT:
-      return (
-        shouldFixFirefoxMovement && hasCommandModifier(e) ?
-          'move-selection-to-start-of-block' :
-          null
-      );
+      return shouldFixFirefoxMovement && hasCommandModifier(e)
+        ? 'move-selection-to-start-of-block'
+        : null;
     case Keys.RIGHT:
-      return (
-        shouldFixFirefoxMovement && hasCommandModifier(e) ?
-          'move-selection-to-end-of-block' :
-          null
-      );
+      return shouldFixFirefoxMovement && hasCommandModifier(e)
+        ? 'move-selection-to-end-of-block'
+        : null;
     default:
       return null;
   }

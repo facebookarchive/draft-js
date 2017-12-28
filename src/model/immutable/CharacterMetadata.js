@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule CharacterMetadata
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -15,11 +15,7 @@
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var {
-  Map,
-  OrderedSet,
-  Record,
-} = require('immutable');
+var {Map, OrderedSet, Record} = require('immutable');
 
 // Immutable.map is typed such that the value for every key in the map
 // must be the same type
@@ -72,9 +68,10 @@ class CharacterMetadata extends CharacterMetadataRecord {
     record: CharacterMetadata,
     entityKey: ?string,
   ): CharacterMetadata {
-    var withEntity = record.getEntity() === entityKey ?
-      record :
-      record.set('entity', entityKey);
+    var withEntity =
+      record.getEntity() === entityKey
+        ? record
+        : record.set('entity', entityKey);
     return CharacterMetadata.create(withEntity);
   }
 
@@ -89,8 +86,10 @@ class CharacterMetadata extends CharacterMetadataRecord {
       return EMPTY;
     }
 
-    const defaultConfig: CharacterMetadataConfig =
-      {style: EMPTY_SET, entity: (null: ?string)};
+    const defaultConfig: CharacterMetadataConfig = {
+      style: EMPTY_SET,
+      entity: (null: ?string),
+    };
 
     // Fill in unspecified properties, if necessary.
     var configMap = Map(defaultConfig).merge(config);
@@ -107,9 +106,9 @@ class CharacterMetadata extends CharacterMetadataRecord {
 }
 
 var EMPTY = new CharacterMetadata();
-var pool: Map<Map<any, any>, CharacterMetadata> = Map(
-  [[Map(defaultRecord), EMPTY]],
-);
+var pool: Map<Map<any, any>, CharacterMetadata> = Map([
+  [Map(defaultRecord), EMPTY],
+]);
 
 CharacterMetadata.EMPTY = EMPTY;
 

@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule RawDraftContentBlock
+ * @format
  * @flow
  */
 
@@ -28,4 +29,5 @@ export type RawDraftContentBlock = {
   inlineStyleRanges: ?Array<InlineStyleRange>,
   entityRanges: ?Array<EntityRange>,
   data?: Object,
+  children?: Array<RawDraftContentBlock>,
 };

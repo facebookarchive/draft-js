@@ -7,13 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule modifyBlockForContentState
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
@@ -24,7 +24,7 @@ const {Map} = Immutable;
 function modifyBlockForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-  operation: (block: ContentBlock) => ContentBlock,
+  operation: (block: BlockNodeRecord) => BlockNodeRecord,
 ): ContentState {
   var startKey = selectionState.getStartKey();
   var endKey = selectionState.getEndKey();

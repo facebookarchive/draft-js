@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftFeatureFlags-core
+ * @format
  * @flow
  */
 
@@ -15,6 +16,8 @@
 var DraftFeatureFlags = {
   draft_killswitch_allow_nontextnodes: false,
   draft_segmented_entities_behavior: false,
+  draft_handlebeforeinput_composed_text: false,
+  draft_tree_data_support: false,
 };
 
 module.exports = DraftFeatureFlags;

@@ -7,13 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getRangesForDraftEntity
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftRange} from 'DraftRange';
 
 var invariant = require('invariant');
@@ -27,7 +27,7 @@ var invariant = require('invariant');
  * the subsequent range.
  */
 function getRangesForDraftEntity(
-  block: ContentBlock,
+  block: BlockNodeRecord,
   key: string,
 ): Array<DraftRange> {
   var ranges = [];
@@ -38,10 +38,7 @@ function getRangesForDraftEntity(
     },
   );
 
-  invariant(
-    !!ranges.length,
-    'Entity key not found in this range.',
-  );
+  invariant(!!ranges.length, 'Entity key not found in this range.');
 
   return ranges;
 }

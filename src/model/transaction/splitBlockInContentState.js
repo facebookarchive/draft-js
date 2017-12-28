@@ -7,58 +7,130 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule splitBlockInContentState
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-var Immutable = require('immutable');
+const ContentBlockNode = require('ContentBlockNode');
+const Immutable = require('immutable');
 
-var generateRandomKey = require('generateRandomKey');
-var invariant = require('invariant');
+const generateRandomKey = require('generateRandomKey');
+const invariant = require('invariant');
 
-const {Map} = Immutable;
+const {List, Map} = Immutable;
 
-function splitBlockInContentState(
+const transformBlock = (
+  key: ?string,
+  blockMap: BlockMap,
+  func: (block: ContentBlockNode) => ContentBlockNode,
+): void => {
+  if (!key) {
+    return;
+  }
+
+  const block = blockMap.get(key);
+
+  if (!block) {
+    return;
+  }
+
+  blockMap.set(key, func(block));
+};
+
+const updateBlockMapLinks = (
+  blockMap: BlockMap,
+  originalBlock: ContentBlockNode,
+  belowBlock: ContentBlockNode,
+): BlockMap => {
+  return blockMap.withMutations(blocks => {
+    const originalBlockKey = originalBlock.getKey();
+    const belowBlockKey = belowBlock.getKey();
+
+    // update block parent
+    transformBlock(originalBlock.getParentKey(), blocks, block => {
+      const parentChildrenList = block.getChildKeys();
+      const insertionIndex = parentChildrenList.indexOf(originalBlockKey) + 1;
+      const newChildrenArray = parentChildrenList.toArray();
+
+      newChildrenArray.splice(insertionIndex, 0, belowBlockKey);
+
+      return block.merge({
+        children: List(newChildrenArray),
+      });
+    });
+
+    // update original next block
+    transformBlock(originalBlock.getNextSiblingKey(), blocks, block =>
+      block.merge({
+        prevSibling: belowBlockKey,
+      }),
+    );
+
+    // update original block
+    transformBlock(originalBlockKey, blocks, block =>
+      block.merge({
+        nextSibling: belowBlockKey,
+      }),
+    );
+
+    // update below block
+    transformBlock(belowBlockKey, blocks, block =>
+      block.merge({
+        prevSibling: originalBlockKey,
+      }),
+    );
+  });
+};
+
+const splitBlockInContentState = (
   contentState: ContentState,
   selectionState: SelectionState,
-): ContentState {
-  invariant(
-    selectionState.isCollapsed(),
-    'Selection range must be collapsed.',
-  );
+): ContentState => {
+  invariant(selectionState.isCollapsed(), 'Selection range must be collapsed.');
 
-  var key = selectionState.getAnchorKey();
-  var offset = selectionState.getAnchorOffset();
-  var blockMap = contentState.getBlockMap();
-  var blockToSplit = blockMap.get(key);
+  const key = selectionState.getAnchorKey();
+  const offset = selectionState.getAnchorOffset();
+  const blockMap = contentState.getBlockMap();
+  const blockToSplit = blockMap.get(key);
+  const text = blockToSplit.getText();
+  const chars = blockToSplit.getCharacterList();
+  const keyBelow = generateRandomKey();
+  const isExperimentalTreeBlock = blockToSplit instanceof ContentBlockNode;
 
-  var text = blockToSplit.getText();
-  var chars = blockToSplit.getCharacterList();
-
-  var blockAbove = blockToSplit.merge({
+  const blockAbove = blockToSplit.merge({
     text: text.slice(0, offset),
     characterList: chars.slice(0, offset),
   });
-
-  var keyBelow = generateRandomKey();
-  var blockBelow = blockAbove.merge({
+  const blockBelow = blockAbove.merge({
     key: keyBelow,
     text: text.slice(offset),
     characterList: chars.slice(offset),
     data: Map(),
   });
 
-  var blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
-  var blocksAfter = blockMap.toSeq().skipUntil(v => v === blockToSplit).rest();
-  var newBlocks = blocksBefore.concat(
-    [[blockAbove.getKey(), blockAbove], [blockBelow.getKey(), blockBelow]],
-    blocksAfter,
-  ).toOrderedMap();
+  const blocksBefore = blockMap.toSeq().takeUntil(v => v === blockToSplit);
+  const blocksAfter = blockMap
+    .toSeq()
+    .skipUntil(v => v === blockToSplit)
+    .rest();
+  let newBlocks = blocksBefore
+    .concat([[key, blockAbove], [keyBelow, blockBelow]], blocksAfter)
+    .toOrderedMap();
+
+  if (isExperimentalTreeBlock) {
+    invariant(
+      blockToSplit.getChildKeys().isEmpty(),
+      'ContentBlockNode must not have children',
+    );
+
+    newBlocks = updateBlockMapLinks(newBlocks, blockAbove, blockBelow);
+  }
 
   return contentState.merge({
     blockMap: newBlocks,
@@ -71,6 +143,6 @@ function splitBlockInContentState(
       isBackward: false,
     }),
   });
-}
+};
 
 module.exports = splitBlockInContentState;

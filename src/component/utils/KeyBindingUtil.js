@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule KeyBindingUtil
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -32,9 +32,9 @@ var KeyBindingUtil = {
   },
 
   hasCommandModifier: function(e: SyntheticKeyboardEvent<>): boolean {
-    return isOSX ?
-      (!!e.metaKey && !e.altKey) :
-      KeyBindingUtil.isCtrlKeyCommand(e);
+    return isOSX
+      ? !!e.metaKey && !e.altKey
+      : KeyBindingUtil.isCtrlKeyCommand(e);
   },
 };
 

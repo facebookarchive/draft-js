@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnBeforeInput
+ * @format
  * @flow
  */
 
@@ -33,16 +34,14 @@ var setImmediate = require('setImmediate');
 // This breaks the input. Special case these characters to ensure that when
 // they are typed, we prevent default on the event to make sure not to
 // trigger quickfind.
-var FF_QUICKFIND_CHAR = '\'';
-var FF_QUICKFIND_LINK_CHAR = '\/';
+var FF_QUICKFIND_CHAR = "'";
+var FF_QUICKFIND_LINK_CHAR = '/';
 var isFirefox = UserAgent.isBrowser('Firefox');
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
-    isFirefox && (
-      character == FF_QUICKFIND_CHAR ||
-      character == FF_QUICKFIND_LINK_CHAR
-    )
+    isFirefox &&
+    (character == FF_QUICKFIND_CHAR || character == FF_QUICKFIND_LINK_CHAR)
   );
 }
 
@@ -111,21 +110,42 @@ function editOnBeforeInput(
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
   var selection = editorState.getSelection();
+  var selectionStart = selection.getStartOffset();
+  var selectionEnd = selection.getEndOffset();
   var anchorKey = selection.getAnchorKey();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
-    editor.update(
-      replaceText(
-        editorState,
-        chars,
-        editorState.getCurrentInlineStyle(),
-        getEntityKeyForSelection(
-          editorState.getCurrentContent(),
-          editorState.getSelection(),
+
+    // If the character that the user is trying to replace with
+    // is the same as the current selection text the just update the
+    // `SelectionState`.  Else, update the ContentState with the new text
+    var currentlySelectedChars = editorState
+      .getCurrentContent()
+      .getPlainText()
+      .slice(selectionStart, selectionEnd);
+    if (chars === currentlySelectedChars) {
+      this.update(
+        EditorState.forceSelection(
+          editorState,
+          selection.merge({
+            focusOffset: selectionEnd,
+          }),
         ),
-      ),
-    );
+      );
+    } else {
+      editor.update(
+        replaceText(
+          editorState,
+          chars,
+          editorState.getCurrentInlineStyle(),
+          getEntityKeyForSelection(
+            editorState.getCurrentContent(),
+            editorState.getSelection(),
+          ),
+        ),
+      );
+    }
     return;
   }
 

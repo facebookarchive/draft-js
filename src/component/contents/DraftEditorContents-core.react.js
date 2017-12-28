@@ -6,14 +6,16 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEditorContents.react
- * @typechecks
+ * @providesModule DraftEditorContents-core.react
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
@@ -26,10 +28,41 @@ const joinClasses = require('joinClasses');
 const nullthrows = require('nullthrows');
 
 type Props = {
-  blockRendererFn: Function,
-  blockStyleFn: (block: ContentBlock) => string,
+  blockRenderMap: DraftBlockRenderMap,
+  blockRendererFn: (block: BlockNodeRecord) => ?Object,
+  blockStyleFn?: (block: BlockNodeRecord) => string,
+  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
+  customStyleMap?: Object,
+  editorKey?: string,
   editorState: EditorState,
   textDirectionality?: BidiDirection,
+};
+
+/**
+ * Provide default styling for list items. This way, lists will be styled with
+ * proper counters and indentation even if the caller does not specify
+ * their own styling at all. If more than five levels of nesting are needed,
+ * the necessary CSS classes can be provided via `blockStyleFn` configuration.
+ */
+const getListItemClasses = (
+  type: string,
+  depth: number,
+  shouldResetCount: boolean,
+  direction: BidiDirection,
+): string => {
+  return cx({
+    'public/DraftStyleDefault/unorderedListItem':
+      type === 'unordered-list-item',
+    'public/DraftStyleDefault/orderedListItem': type === 'ordered-list-item',
+    'public/DraftStyleDefault/reset': shouldResetCount,
+    'public/DraftStyleDefault/depth0': depth === 0,
+    'public/DraftStyleDefault/depth1': depth === 1,
+    'public/DraftStyleDefault/depth2': depth === 2,
+    'public/DraftStyleDefault/depth3': depth === 3,
+    'public/DraftStyleDefault/depth4': depth === 4,
+    'public/DraftStyleDefault/listLTR': direction === 'LTR',
+    'public/DraftStyleDefault/listRTL': direction === 'RTL',
+  });
 };
 
 /**
@@ -70,10 +103,8 @@ class DraftEditorContents extends React.Component<Props> {
     // rendered state, there's nothing new to be done.
     if (
       prevEditorState === nextEditorState ||
-      (
-        nextNativeContent !== null &&
-        nextEditorState.getCurrentContent() === nextNativeContent
-      ) ||
+      (nextNativeContent !== null &&
+        nextEditorState.getCurrentContent() === nextNativeContent) ||
       (wasComposing && nowComposing)
     ) {
       return false;
@@ -93,23 +124,14 @@ class DraftEditorContents extends React.Component<Props> {
 
   render(): React.Node {
     const {
-      /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an error
-       * when upgrading Flow's support for React. Common errors found when
-       * upgrading Flow's React support are documented at
-       * https://fburl.com/eq7bs81w */
       blockRenderMap,
       blockRendererFn,
-      /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an error
-       * when upgrading Flow's support for React. Common errors found when
-       * upgrading Flow's React support are documented at
-       * https://fburl.com/eq7bs81w */
+      blockStyleFn,
       customStyleMap,
-      /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an error
-       * when upgrading Flow's support for React. Common errors found when
-       * upgrading Flow's React support are documented at
-       * https://fburl.com/eq7bs81w */
       customStyleFn,
       editorState,
+      editorKey,
+      textDirectionality,
     } = this.props;
 
     const content = editorState.getCurrentContent();
@@ -120,6 +142,7 @@ class DraftEditorContents extends React.Component<Props> {
 
     const blocksAsArray = content.getBlocksAsArray();
     const processedBlocks = [];
+
     let currentDepth = null;
     let lastWrapperTemplate = null;
 
@@ -136,7 +159,6 @@ class DraftEditorContents extends React.Component<Props> {
         customEditable = customRenderer.editable;
       }
 
-      const {textDirectionality} = this.props;
       const direction = textDirectionality
         ? textDirectionality
         : directionMap.get(key);
@@ -145,6 +167,7 @@ class DraftEditorContents extends React.Component<Props> {
         contentState: content,
         block,
         blockProps: customProps,
+        blockStyleFn,
         customStyleMap,
         customStyleFn,
         decorator,
@@ -156,28 +179,26 @@ class DraftEditorContents extends React.Component<Props> {
         tree: editorState.getBlockTree(key),
       };
 
-      const configForType = (
-        blockRenderMap.get(blockType) ||
-        blockRenderMap.get('unstyled')
-      );
+      const configForType =
+        blockRenderMap.get(blockType) || blockRenderMap.get('unstyled');
       const wrapperTemplate = configForType.wrapper;
 
-      const Element = (
-        configForType.element ||
-        blockRenderMap.get('unstyled').element
-      );
+      const Element =
+        configForType.element || blockRenderMap.get('unstyled').element;
 
       const depth = block.getDepth();
-      let className = this.props.blockStyleFn(block);
+      let className = '';
+      if (blockStyleFn) {
+        className = blockStyleFn(block);
+      }
 
       // List items are special snowflakes, since we handle nesting and
       // counters manually.
       if (Element === 'li') {
-        const shouldResetCount = (
+        const shouldResetCount =
           lastWrapperTemplate !== wrapperTemplate ||
           currentDepth === null ||
-          depth > currentDepth
-        );
+          depth > currentDepth;
         className = joinClasses(
           className,
           getListItemClasses(blockType, depth, shouldResetCount, direction),
@@ -188,11 +209,7 @@ class DraftEditorContents extends React.Component<Props> {
       let childProps = {
         className,
         'data-block': true,
-        /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
-         * error when upgrading Flow's support for React. Common errors found
-         * when upgrading Flow's React support are documented at
-         * https://fburl.com/eq7bs81w */
-        'data-editor': this.props.editorKey,
+        'data-editor': editorKey,
         'data-offset-key': offsetKey,
         key,
       };
@@ -207,10 +224,6 @@ class DraftEditorContents extends React.Component<Props> {
       const child = React.createElement(
         Element,
         childProps,
-        /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
-         * error when upgrading Flow's support for React. Common errors found
-         * when upgrading Flow's React support are documented at
-         * https://fburl.com/eq7bs81w */
         <Component {...componentProps} />,
       );
 
@@ -232,7 +245,7 @@ class DraftEditorContents extends React.Component<Props> {
     // Group contiguous runs of blocks that have the same wrapperTemplate
     const outputBlocks = [];
     for (let ii = 0; ii < processedBlocks.length; ) {
-      const info = processedBlocks[ii];
+      const info: any = processedBlocks[ii];
       if (info.wrapperTemplate) {
         const blocks = [];
         do {
@@ -259,34 +272,6 @@ class DraftEditorContents extends React.Component<Props> {
 
     return <div data-contents="true">{outputBlocks}</div>;
   }
-}
-
-/**
- * Provide default styling for list items. This way, lists will be styled with
- * proper counters and indentation even if the caller does not specify
- * their own styling at all. If more than five levels of nesting are needed,
- * the necessary CSS classes can be provided via `blockStyleFn` configuration.
- */
-function getListItemClasses(
-  type: string,
-  depth: number,
-  shouldResetCount: boolean,
-  direction: BidiDirection,
-): string {
-  return cx({
-    'public/DraftStyleDefault/unorderedListItem':
-      type === 'unordered-list-item',
-    'public/DraftStyleDefault/orderedListItem':
-      type === 'ordered-list-item',
-    'public/DraftStyleDefault/reset': shouldResetCount,
-    'public/DraftStyleDefault/depth0': depth === 0,
-    'public/DraftStyleDefault/depth1': depth === 1,
-    'public/DraftStyleDefault/depth2': depth === 2,
-    'public/DraftStyleDefault/depth3': depth === 3,
-    'public/DraftStyleDefault/depth4': depth === 4,
-    'public/DraftStyleDefault/listLTR': direction === 'LTR',
-    'public/DraftStyleDefault/listRTL': direction === 'RTL',
-  });
 }
 
 module.exports = DraftEditorContents;

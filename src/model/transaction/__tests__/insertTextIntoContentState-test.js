@@ -7,108 +7,78 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
 
 jest.disableAutomock();
 
-var CharacterMetadata = require('CharacterMetadata');
-var Immutable = require('immutable');
-var {BOLD} = require('SampleDraftInlineStyle');
+const CharacterMetadata = require('CharacterMetadata');
+const {BOLD} = require('SampleDraftInlineStyle');
 
-var getSampleStateForTesting = require('getSampleStateForTesting');
-var insertTextIntoContentState = require('insertTextIntoContentState');
+const getSampleStateForTesting = require('getSampleStateForTesting');
+const insertTextIntoContentState = require('insertTextIntoContentState');
 
-describe('insertTextIntoContentState', () => {
-  var sample = getSampleStateForTesting();
-  var content = sample.contentState;
-  var selection = sample.selectionState;
+const {contentState, selectionState} = getSampleStateForTesting();
 
-  var EMPTY = CharacterMetadata.EMPTY;
+const EMPTY = CharacterMetadata.EMPTY;
+const initialBlock = contentState.getBlockMap().first();
 
-  var block = content.getBlockMap().first();
+const assertInsertTextIntoContentState = (
+  text,
+  characterMetadata,
+  selection = selectionState,
+) => {
+  expect(
+    insertTextIntoContentState(contentState, selection, text, characterMetadata)
+      .getBlockMap()
+      .toJS(),
+  ).toMatchSnapshot();
+};
 
-  it('must throw if selection is not collapsed', () => {
-    var target = selection.set('focusOffset', 2);
-    expect(() => {
-      insertTextIntoContentState(content, target, 'hey', EMPTY);
-    }).toThrow();
-  });
-
-  it('must return early if no text is provided', () => {
-    var modified = insertTextIntoContentState(content, selection, '', EMPTY);
-    expect(modified).toBe(content);
-  });
-
-  it('must insert at the start', () => {
-    var character = CharacterMetadata.create({style: BOLD});
-    var modified = insertTextIntoContentState(
-      content,
-      selection,
-      'xx',
-      character,
+test('must throw if selection is not collapsed', () => {
+  expect(() => {
+    insertTextIntoContentState(
+      contentState,
+      selectionState.set('focusOffset', 2),
+      'hey',
+      EMPTY,
     );
+  }).toThrow();
+});
 
-    var newBlock = modified.getBlockMap().first();
-    expect(newBlock.getText().slice(0, 2)).toBe('xx');
-    expect(newBlock.getText().slice(2)).toBe(block.getText());
+test('must return early if no text is provided', () => {
+  assertInsertTextIntoContentState('', EMPTY);
+});
 
-    expect(
-      Immutable.is(
-        Immutable.List.of(
-          character, character, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY,
-        ),
-        newBlock.getCharacterList(),
-      ),
-    ).toBe(true);
-  });
+test('must insert at the start', () => {
+  assertInsertTextIntoContentState(
+    'xx',
+    CharacterMetadata.create({style: BOLD}),
+  );
+});
 
-  it('must insert within block', () => {
-    var target = selection.merge({
+test('must insert within block', () => {
+  assertInsertTextIntoContentState(
+    'xx',
+    CharacterMetadata.create({style: BOLD}),
+    selectionState.merge({
       focusOffset: 2,
       anchorOffset: 2,
       isBackward: false,
-    });
-    var character = CharacterMetadata.create({style: BOLD});
-    var modified = insertTextIntoContentState(content, target, 'xx', character);
-    var newBlock = modified.getBlockMap().first();
+    }),
+  );
+});
 
-    expect(newBlock.getText().slice(2, 4)).toBe('xx');
-    expect(newBlock.getText().slice(0, 2)).toBe(block.getText().slice(0, 2));
-    expect(newBlock.getText().slice(4, 7)).toBe(block.getText().slice(2, 5));
-
-    expect(
-      Immutable.is(
-        newBlock.getCharacterList(),
-        Immutable.List([
-          EMPTY, EMPTY, character, character, EMPTY, EMPTY, EMPTY,
-        ]),
-      ),
-    ).toBe(true);
-  });
-
-  it('must insert at the end', () => {
-    var target = selection.merge({
-      focusOffset: block.getLength(),
-      anchorOffset: block.getLength(),
+test('must insert at the end', () => {
+  assertInsertTextIntoContentState(
+    'xx',
+    CharacterMetadata.create({style: BOLD}),
+    selectionState.merge({
+      focusOffset: initialBlock.getLength(),
+      anchorOffset: initialBlock.getLength(),
       isBackward: false,
-    });
-
-    var character = CharacterMetadata.create({style: BOLD});
-    var modified = insertTextIntoContentState(content, target, 'xx', character);
-
-    var newBlock = modified.getBlockMap().first();
-    expect(newBlock.getText().slice(5, 7)).toBe('xx');
-    expect(newBlock.getText().slice(0, 5)).toBe(block.getText());
-
-    expect(
-      Immutable.is(
-        newBlock.getCharacterList(),
-        Immutable.List([
-          EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, character, character,
-        ]),
-      ),
-    ).toBe(true);
-  });
+    }),
+  );
 });

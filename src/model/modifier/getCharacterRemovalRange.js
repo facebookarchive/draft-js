@@ -7,13 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getCharacterRemovalRange
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
@@ -34,8 +34,8 @@ var invariant = require('invariant');
  */
 function getCharacterRemovalRange(
   entityMap: EntityMap,
-  startBlock: ContentBlock,
-  endBlock: ContentBlock,
+  startBlock: BlockNodeRecord,
+  endBlock: BlockNodeRecord,
   selectionState: SelectionState,
   direction: DraftRemovalDirection,
 ): SelectionState {
@@ -47,7 +47,7 @@ function getCharacterRemovalRange(
     return selectionState;
   }
   var newSelectionState = selectionState;
-  if (startEntityKey && (startEntityKey === endEntityKey)) {
+  if (startEntityKey && startEntityKey === endEntityKey) {
     newSelectionState = getEntityRemovalRange(
       entityMap,
       startBlock,
@@ -115,7 +115,7 @@ function getCharacterRemovalRange(
 
 function getEntityRemovalRange(
   entityMap: EntityMap,
-  block: ContentBlock,
+  block: BlockNodeRecord,
   selectionState: SelectionState,
   direction: DraftRemovalDirection,
   entityKey: string,
@@ -136,7 +136,7 @@ function getEntityRemovalRange(
 
   // Find the entity range that overlaps with our removal range.
   var entityRanges = getRangesForDraftEntity(block, entityKey).filter(
-    (range) => sideToConsider <= range.end && sideToConsider >= range.start,
+    range => sideToConsider <= range.end && sideToConsider >= range.start,
   );
 
   invariant(

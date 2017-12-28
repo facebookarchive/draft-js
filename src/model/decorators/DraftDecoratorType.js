@@ -7,12 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftDecoratorType
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {List} from 'immutable';
 
@@ -26,10 +27,10 @@ export type DraftDecoratorType = {
   /**
    * Given a `ContentBlock`, return an immutable List of decorator keys.
    */
-   getDecorations(
-     contentState: ContentState,
-     block: ContentBlock
-   ): List<?string>,
+  getDecorations(
+    contentState: ContentState,
+    block: BlockNodeRecord,
+  ): List<?string>,
 
   /**
    * Given a decorator key, return the component to use when rendering

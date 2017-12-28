@@ -7,35 +7,274 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule removeRangeFromContentState
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type {BlockMap} from 'BlockMap';
 import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
-import type {List} from 'immutable';
 
-var Immutable = require('immutable');
+const ContentBlockNode = require('ContentBlockNode');
+const Immutable = require('immutable');
 
-function removeRangeFromContentState(
+const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
+
+const {List, Map} = Immutable;
+
+const transformBlock = (
+  key: ?string,
+  blockMap: BlockMap,
+  func: (block: ContentBlockNode) => ContentBlockNode,
+): void => {
+  if (!key) {
+    return;
+  }
+
+  const block = blockMap.get(key);
+
+  if (!block) {
+    return;
+  }
+
+  blockMap.set(key, func(block));
+};
+
+/**
+ * Ancestors needs to be preserved when there are non selected
+ * children to make sure we do not leave any orphans behind
+ */
+const getAncestorsKeys = (
+  blockKey: ?string,
+  blockMap: BlockMap,
+): Array<string> => {
+  const parents = [];
+
+  if (!blockKey) {
+    return parents;
+  }
+
+  let blockNode = blockMap.get(blockKey);
+  while (blockNode && blockNode.getParentKey()) {
+    const parentKey = blockNode.getParentKey();
+    if (parentKey) {
+      parents.push(parentKey);
+    }
+    blockNode = parentKey ? blockMap.get(parentKey) : null;
+  }
+
+  return parents;
+};
+
+/**
+ * Get all next delimiter keys until we hit a root delimiter and return
+ * an array of key references
+ */
+const getNextDelimitersBlockKeys = (
+  block: ContentBlockNode,
+  blockMap: BlockMap,
+): Array<string> => {
+  const nextDelimiters = [];
+
+  if (!block) {
+    return nextDelimiters;
+  }
+
+  let nextDelimiter = getNextDelimiterBlockKey(block, blockMap);
+  while (nextDelimiter && blockMap.get(nextDelimiter)) {
+    const block = blockMap.get(nextDelimiter);
+    nextDelimiters.push(nextDelimiter);
+
+    // we do not need to keep checking all root node siblings, just the first occurance
+    nextDelimiter = block.getParentKey()
+      ? getNextDelimiterBlockKey(block, blockMap)
+      : null;
+  }
+
+  return nextDelimiters;
+};
+
+const getNextValidSibling = (
+  block: ?ContentBlockNode,
+  blockMap: BlockMap,
+  originalBlockMap: BlockMap,
+): ?string => {
+  if (!block) {
+    return null;
+  }
+
+  // note that we need to make sure we refer to the original block since this
+  // function is called within a withMutations
+  let nextValidSiblingKey = originalBlockMap
+    .get(block.getKey())
+    .getNextSiblingKey();
+
+  while (nextValidSiblingKey && !blockMap.get(nextValidSiblingKey)) {
+    nextValidSiblingKey =
+      originalBlockMap.get(nextValidSiblingKey).getNextSiblingKey() || null;
+  }
+
+  return nextValidSiblingKey;
+};
+
+const getPrevValidSibling = (
+  block: ?ContentBlockNode,
+  blockMap: BlockMap,
+  originalBlockMap: BlockMap,
+): ?string => {
+  if (!block) {
+    return null;
+  }
+
+  // note that we need to make sure we refer to the original block since this
+  // function is called within a withMutations
+  let prevValidSiblingKey = originalBlockMap
+    .get(block.getKey())
+    .getPrevSiblingKey();
+
+  while (prevValidSiblingKey && !blockMap.get(prevValidSiblingKey)) {
+    prevValidSiblingKey =
+      originalBlockMap.get(prevValidSiblingKey).getPrevSiblingKey() || null;
+  }
+
+  return prevValidSiblingKey;
+};
+
+const updateBlockMapLinks = (
+  blockMap: BlockMap,
+  startBlock: ContentBlockNode,
+  endBlock: ContentBlockNode,
+  originalBlockMap: BlockMap,
+): BlockMap => {
+  return blockMap.withMutations(blocks => {
+    // update start block if its retained
+    transformBlock(startBlock.getKey(), blocks, block =>
+      block.merge({
+        nextSibling: getNextValidSibling(startBlock, blocks, originalBlockMap),
+        prevSibling: getPrevValidSibling(startBlock, blocks, originalBlockMap),
+      }),
+    );
+
+    // update endblock if its retained
+    transformBlock(endBlock.getKey(), blocks, block =>
+      block.merge({
+        nextSibling: getNextValidSibling(endBlock, blocks, originalBlockMap),
+        prevSibling: getPrevValidSibling(endBlock, blocks, originalBlockMap),
+      }),
+    );
+
+    // update start block parent ancestors
+    getAncestorsKeys(startBlock.getKey(), originalBlockMap).forEach(parentKey =>
+      transformBlock(parentKey, blocks, block =>
+        block.merge({
+          children: block.getChildKeys().filter(key => blocks.get(key)),
+          nextSibling: getNextValidSibling(block, blocks, originalBlockMap),
+          prevSibling: getPrevValidSibling(block, blocks, originalBlockMap),
+        }),
+      ),
+    );
+
+    // update start block next - can only happen if startBlock == endBlock
+    transformBlock(startBlock.getNextSiblingKey(), blocks, block =>
+      block.merge({
+        prevSibling: startBlock.getPrevSiblingKey(),
+      }),
+    );
+
+    // update start block prev
+    transformBlock(startBlock.getPrevSiblingKey(), blocks, block =>
+      block.merge({
+        nextSibling: getNextValidSibling(startBlock, blocks, originalBlockMap),
+      }),
+    );
+
+    // update end block next
+    transformBlock(endBlock.getNextSiblingKey(), blocks, block =>
+      block.merge({
+        prevSibling: getPrevValidSibling(endBlock, blocks, originalBlockMap),
+      }),
+    );
+
+    // update end block prev
+    transformBlock(endBlock.getPrevSiblingKey(), blocks, block =>
+      block.merge({
+        nextSibling: endBlock.getNextSiblingKey(),
+      }),
+    );
+
+    // update end block parent ancestors
+    getAncestorsKeys(endBlock.getKey(), originalBlockMap).forEach(parentKey => {
+      transformBlock(parentKey, blocks, block =>
+        block.merge({
+          children: block.getChildKeys().filter(key => blocks.get(key)),
+          nextSibling: getNextValidSibling(block, blocks, originalBlockMap),
+          prevSibling: getPrevValidSibling(block, blocks, originalBlockMap),
+        }),
+      );
+    });
+
+    // update next delimiters all the way to a root delimiter
+    getNextDelimitersBlockKeys(endBlock, originalBlockMap).forEach(
+      delimiterKey =>
+        transformBlock(delimiterKey, blocks, block =>
+          block.merge({
+            nextSibling: getNextValidSibling(block, blocks, originalBlockMap),
+            prevSibling: getPrevValidSibling(block, blocks, originalBlockMap),
+          }),
+        ),
+    );
+  });
+};
+
+const removeRangeFromContentState = (
   contentState: ContentState,
   selectionState: SelectionState,
-): ContentState {
+): ContentState => {
   if (selectionState.isCollapsed()) {
     return contentState;
   }
 
-  var blockMap = contentState.getBlockMap();
-  var startKey = selectionState.getStartKey();
-  var startOffset = selectionState.getStartOffset();
-  var endKey = selectionState.getEndKey();
-  var endOffset = selectionState.getEndOffset();
+  const blockMap = contentState.getBlockMap();
+  const startKey = selectionState.getStartKey();
+  const startOffset = selectionState.getStartOffset();
+  const endKey = selectionState.getEndKey();
+  const endOffset = selectionState.getEndOffset();
 
-  var startBlock = blockMap.get(startKey);
-  var endBlock = blockMap.get(endKey);
-  var characterList;
+  const startBlock = blockMap.get(startKey);
+  const endBlock = blockMap.get(endKey);
+
+  // we assume that ContentBlockNode and ContentBlocks are not mixed together
+  const isExperimentalTreeBlock = startBlock instanceof ContentBlockNode;
+
+  // used to retain blocks that should not be deleted to avoid orphan children
+  let parentAncestors = [];
+
+  if (isExperimentalTreeBlock) {
+    const endBlockchildrenKeys = endBlock.getChildKeys();
+    const endBlockAncestors = getAncestorsKeys(endKey, blockMap);
+
+    // endBlock has unselected sibblings so we can not remove its ancestors parents
+    if (endBlock.getNextSiblingKey()) {
+      parentAncestors = parentAncestors.concat(endBlockAncestors);
+    }
+
+    // endBlock has children so can not remove this block or any of its ancestors
+    if (!endBlockchildrenKeys.isEmpty()) {
+      parentAncestors = parentAncestors.concat(
+        endBlockAncestors.concat([endKey]),
+      );
+    }
+
+    // we need to retain all ancestors of the next delimiter block
+    parentAncestors = parentAncestors.concat(
+      getAncestorsKeys(getNextDelimiterBlockKey(endBlock, blockMap), blockMap),
+    );
+  }
+
+  let characterList;
 
   if (startBlock === endBlock) {
     characterList = removeFromList(
@@ -50,25 +289,36 @@ function removeRangeFromContentState(
       .concat(endBlock.getCharacterList().slice(endOffset));
   }
 
-  var modifiedStart = startBlock.merge({
-    text: (
+  const modifiedStart = startBlock.merge({
+    text:
       startBlock.getText().slice(0, startOffset) +
-      endBlock.getText().slice(endOffset)
-    ),
+      endBlock.getText().slice(endOffset),
     characterList,
   });
 
-  var newBlocks = blockMap
+  const newBlocks = blockMap
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
-    .concat(Immutable.Map([[endKey, null]]))
-    .map((_, k) => { return k === startKey ? modifiedStart : null; });
+    .filter((_, k) => parentAncestors.indexOf(k) === -1)
+    .concat(Map([[endKey, null]]))
+    .map((_, k) => {
+      return k === startKey ? modifiedStart : null;
+    });
 
-  blockMap = blockMap.merge(newBlocks).filter(block => !!block);
+  let updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
+
+  if (isExperimentalTreeBlock) {
+    updatedBlockMap = updateBlockMapLinks(
+      updatedBlockMap,
+      startBlock,
+      endBlock,
+      blockMap,
+    );
+  }
 
   return contentState.merge({
-    blockMap,
+    blockMap: updatedBlockMap,
     selectionBefore: selectionState,
     selectionAfter: selectionState.merge({
       anchorKey: startKey,
@@ -78,17 +328,17 @@ function removeRangeFromContentState(
       isBackward: false,
     }),
   });
-}
+};
 
 /**
  * Maintain persistence for target list when removing characters on the
  * head and tail of the character list.
  */
-function removeFromList(
+const removeFromList = (
   targetList: List<CharacterMetadata>,
   startOffset: number,
   endOffset: number,
-): List<CharacterMetadata> {
+): List<CharacterMetadata> => {
   if (startOffset === 0) {
     while (startOffset < endOffset) {
       targetList = targetList.shift();
@@ -100,11 +350,11 @@ function removeFromList(
       endOffset--;
     }
   } else {
-    var head = targetList.slice(0, startOffset);
-    var tail = targetList.slice(endOffset);
+    const head = targetList.slice(0, startOffset);
+    const tail = targetList.slice(endOffset);
     targetList = head.concat(tail).toList();
   }
   return targetList;
-}
+};
 
 module.exports = removeRangeFromContentState;
