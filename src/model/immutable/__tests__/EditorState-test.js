@@ -107,7 +107,7 @@ const assertGetCurrentInlineStyle = (selection, state = UNDECORATED_STATE) => {
 
 beforeEach(() => {
   Decorator.prototype.getDecorations.mockClear();
-  Decorator.prototype.getDecorations.mockImplementation((v, c) => {
+  Decorator.prototype.getDecorations.mockImplementation((c, v) => {
     return v === boldBlock ? boldA : List(Repeat(undefined, v.getLength()));
   });
 });
@@ -230,7 +230,7 @@ test('must set a new decorator', () => {
 
   expect(decorator.getDecorations.mock.calls.length).toMatchSnapshot();
 
-  Decorator.prototype.getDecorations.mockImplementation((v, c) => {
+  Decorator.prototype.getDecorations.mockImplementation((c, v) => {
     return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
   });
 
@@ -239,7 +239,7 @@ test('must set a new decorator', () => {
 
   const newDecorator = new NextDecorator();
 
-  NextDecorator.prototype.getDecorations.mockImplementation((v, c) => {
+  NextDecorator.prototype.getDecorations.mockImplementation((c, v) => {
     return v === boldBlock ? boldB : List(Repeat(undefined, v.getLength()));
   });
 

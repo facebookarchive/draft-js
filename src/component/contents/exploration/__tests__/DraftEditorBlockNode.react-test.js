@@ -349,7 +349,7 @@ test('renders block with nested children with decorator', () => {
 
   const decorator = new CompositeDraftDecorator([
     {
-      strategy: (block, callback, contentState) => {
+      strategy: (contentState, block, callback) => {
         if (block.getType() === 'header-one') {
           callback(0, block.getLength());
         }

@@ -22,7 +22,7 @@ import type {RawDraftContentState} from 'RawDraftContentState';
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
-const DraftEntity = require('DraftEntity');
+const DraftEntityInstance = require('DraftEntityInstance');
 const DraftFeatureFlags = require('DraftFeatureFlags');
 const DraftTreeAdapter = require('DraftTreeAdapter');
 const Immutable = require('immutable');
@@ -77,7 +77,10 @@ const decodeCharacterList = (
       text,
       entityRanges
         .filter(range => entityMap.hasOwnProperty(range.key))
-        .map(range => ({...range, key: entityMap[range.key]})),
+        .map(range => ({
+          ...range,
+          key: entityMap[range.key],
+        })),
     ),
   );
 };
@@ -233,8 +236,12 @@ const decodeRawBlocks = (
   return decodeContentBlockNodes(rawBlocks, entityMap);
 };
 
-const decodeRawEntityMap = (rawState: RawDraftContentState): * => {
-  const newEntityMap = Object.keys(rawState.entityMap).reduce(
+const decodeRawEntities = (rawState: RawDraftContentState): * => {
+  const {entityMap} = rawState;
+
+  const fromStorageToLocal = {};
+
+  const newEntityMap = Object.keys(entityMap).reduce(
     (updatedEntityMap, storageKey) => {
       var encodedEntity = entityMap[storageKey];
       var {type, mutability, data} = encodedEntity;
@@ -251,7 +258,7 @@ const decodeRawEntityMap = (rawState: RawDraftContentState): * => {
     OrderedMap(),
   );
 
-  return newEntityMap;
+  return {map: newEntityMap, storageLookup: fromStorageToLocal};
 };
 
 const convertFromRawToDraftState = (
@@ -260,10 +267,10 @@ const convertFromRawToDraftState = (
   invariant(Array.isArray(rawState.blocks), 'invalid RawDraftContentState');
 
   // decode entities
-  const entityMap = decodeRawEntityMap(rawState);
+  const entities = decodeRawEntities(rawState);
 
   // decode blockMap
-  const blockMap = decodeRawBlocks(rawState, entityMap);
+  const blockMap = decodeRawBlocks(rawState, entities.storageLookup);
 
   // create initial selection
   const selectionState = blockMap.isEmpty()
@@ -272,7 +279,7 @@ const convertFromRawToDraftState = (
 
   return new ContentState({
     blockMap,
-    entityMap,
+    entityMap: entities.map,
     selectionBefore: selectionState,
     selectionAfter: selectionState,
   });

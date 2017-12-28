@@ -174,7 +174,13 @@ Object {
       "type": "blockquote",
     },
   },
-  "entityMap": Object {},
+  "entityMap": Object {
+    "1": Object {
+      "data": Object {},
+      "mutability": "IMMUTABLE",
+      "type": "IMAGE",
+    },
+  },
   "selectionAfter": Object {
     "anchorKey": "a",
     "anchorOffset": 7,
@@ -368,7 +374,13 @@ Object {
       "type": "blockquote",
     },
   },
-  "entityMap": Object {},
+  "entityMap": Object {
+    "1": Object {
+      "data": Object {},
+      "mutability": "IMMUTABLE",
+      "type": "IMAGE",
+    },
+  },
   "selectionAfter": Object {
     "anchorKey": "a",
     "anchorOffset": 2,
@@ -562,7 +574,13 @@ Object {
       "type": "blockquote",
     },
   },
-  "entityMap": Object {},
+  "entityMap": Object {
+    "1": Object {
+      "data": Object {},
+      "mutability": "IMMUTABLE",
+      "type": "IMAGE",
+    },
+  },
   "selectionAfter": Object {
     "anchorKey": "a",
     "anchorOffset": 4,
@@ -775,7 +793,13 @@ Object {
       "type": "unstyled",
     },
   },
-  "entityMap": Object {},
+  "entityMap": Object {
+    "1": Object {
+      "data": Object {},
+      "mutability": "IMMUTABLE",
+      "type": "IMAGE",
+    },
+  },
   "selectionAfter": Object {
     "anchorKey": "key0",
     "anchorOffset": 2,

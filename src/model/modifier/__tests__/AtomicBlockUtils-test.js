@@ -25,7 +25,7 @@ const getSampleStateForTesting = require('getSampleStateForTesting');
 const {editorState, contentState, selectionState} = getSampleStateForTesting();
 
 const initialBlock = contentState.getBlockMap().first();
-const ENTITY_KEY = Entity.create('TOKEN', 'MUTABLE');
+const ENTITY_KEY = '1';
 const CHARACTER = ' ';
 
 const assertAtomic = state => {

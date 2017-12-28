@@ -25,7 +25,7 @@ class ContentBlock {
   }
 }
 
-const searchWith = regex => (block, callback, contentState) => {
+const searchWith = regex => (contentState, block, callback) => {
   block.getText().replace(regex, (match, offset) => {
     callback(offset, offset + match.length);
   });
@@ -49,8 +49,8 @@ const assertCompositeDraftDecorator = (
 ) => {
   expect(
     new CompositeDraftDecorator(decorators).getDecorations(
-      new ContentBlock(text),
       ContentState.createFromText(text),
+      new ContentBlock(text),
     ),
   ).toMatchSnapshot();
 };
