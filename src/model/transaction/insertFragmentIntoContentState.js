@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule insertFragmentIntoContentState
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -49,11 +49,10 @@ function insertFragmentIntoContentState(
     var chars = targetBlock.getCharacterList();
 
     var newBlock = targetBlock.merge({
-      text: (
+      text:
         text.slice(0, targetOffset) +
         pastedBlock.getText() +
-        text.slice(targetOffset)
-      ),
+        text.slice(targetOffset),
       characterList: insertIntoList(
         chars,
         pastedBlock.getCharacterList(),
@@ -80,56 +79,50 @@ function insertFragmentIntoContentState(
 
   var newBlockArr = [];
 
-  contentState.getBlockMap().forEach(
-    (block, blockKey) => {
-      if (blockKey !== targetKey) {
-        newBlockArr.push(block);
-        return;
-      }
+  contentState.getBlockMap().forEach((block, blockKey) => {
+    if (blockKey !== targetKey) {
+      newBlockArr.push(block);
+      return;
+    }
 
-      var text = block.getText();
-      var chars = block.getCharacterList();
+    var text = block.getText();
+    var chars = block.getCharacterList();
 
-      // Modify head portion of block.
-      var blockSize = text.length;
-      var headText = text.slice(0, targetOffset);
-      var headCharacters = chars.slice(0, targetOffset);
-      var appendToHead = fragment.first();
+    // Modify head portion of block.
+    var blockSize = text.length;
+    var headText = text.slice(0, targetOffset);
+    var headCharacters = chars.slice(0, targetOffset);
+    var appendToHead = fragment.first();
 
-      var modifiedHead = block.merge({
-        text: headText + appendToHead.getText(),
-        characterList: headCharacters.concat(appendToHead.getCharacterList()),
-        type: headText ? block.getType() : appendToHead.getType(),
-        data: appendToHead.getData(),
-      });
+    var modifiedHead = block.merge({
+      text: headText + appendToHead.getText(),
+      characterList: headCharacters.concat(appendToHead.getCharacterList()),
+      type: headText ? block.getType() : appendToHead.getType(),
+      data: appendToHead.getData(),
+    });
 
-      newBlockArr.push(modifiedHead);
+    newBlockArr.push(modifiedHead);
 
-      // Insert fragment blocks after the head and before the tail.
-      fragment.slice(1, fragmentSize - 1).forEach(
-        fragmentBlock => {
-          newBlockArr.push(fragmentBlock.set('key', generateRandomKey()));
-        },
-      );
+    // Insert fragment blocks after the head and before the tail.
+    fragment.slice(1, fragmentSize - 1).forEach(fragmentBlock => {
+      newBlockArr.push(fragmentBlock.set('key', generateRandomKey()));
+    });
 
-      // Modify tail portion of block.
-      var tailText = text.slice(targetOffset, blockSize);
-      var tailCharacters = chars.slice(targetOffset, blockSize);
-      var prependToTail = fragment.last();
-      finalKey = generateRandomKey();
+    // Modify tail portion of block.
+    var tailText = text.slice(targetOffset, blockSize);
+    var tailCharacters = chars.slice(targetOffset, blockSize);
+    var prependToTail = fragment.last();
+    finalKey = generateRandomKey();
 
-      var modifiedTail = prependToTail.merge({
-        key: finalKey,
-        text: prependToTail.getText() + tailText,
-        characterList: prependToTail
-          .getCharacterList()
-          .concat(tailCharacters),
-        data: prependToTail.getData(),
-      });
+    var modifiedTail = prependToTail.merge({
+      key: finalKey,
+      text: prependToTail.getText() + tailText,
+      characterList: prependToTail.getCharacterList().concat(tailCharacters),
+      data: prependToTail.getData(),
+    });
 
-      newBlockArr.push(modifiedTail);
-    },
-  );
+    newBlockArr.push(modifiedTail);
+  });
 
   finalOffset = fragment.last().getLength();
 

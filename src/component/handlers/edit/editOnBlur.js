@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnBlur
+ * @format
  * @flow
  */
 
@@ -30,7 +31,7 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<>): void {
   // opposed to clicking to another tab or window).
   if (getActiveElement() === document.body) {
     const selection = global.getSelection();
-    const editorNode = editor.refs.editor;
+    const editorNode = editor.editor;
     if (
       selection.rangeCount === 1 &&
       containsNode(editorNode, selection.anchorNode) &&

@@ -17,14 +17,17 @@
     "PATENTS"
   ],
   "main": "lib/Draft.js",
+  "style": "dist/Draft.css",
   "repository": "facebook/draft-js",
   "license": "BSD-3-Clause",
   "scripts": {
     "prepublish": "npm run build",
     "pretest": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "build": "gulp",
+    "dev": "gulp dev",
     "postbuild": "node node_modules/fbjs-scripts/node/check-lib-requires.js lib",
     "lint": "eslint .",
+    "format": "eslint . --fix",
     "flow": "flow src",
     "test": "NODE_ENV=test jest",
     "test-ci": "NODE_ENV=test npm run lint && npm run flow && npm run test"
@@ -44,17 +47,18 @@
     "babel-preset-fbjs": "^2.1.0",
     "del": "^2.2.0",
     "envify": "^3.4.0",
-    "enzyme": "^2.9.1",
     "es6-shim": "^0.34.4",
     "eslint": "^4.2.0",
     "eslint-config-fbjs": "^2.0.0",
+    "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-flowtype": "^2.17.1",
     "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.3.0",
     "eslint-plugin-relay": "^0.0.8",
     "fbjs-scripts": "^0.8.0",
-    "flow-bin": "^0.53.1",
+    "flow-bin": "^0.59.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.2",
     "gulp-browserify-thin": "^0.1.5",
@@ -66,36 +70,41 @@
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "jest": "^15.1.1",
-    "jest-immutable-matchers": "^1.5.0",
-    "react": "^15.0.0-rc.1",
-    "react-dom": "^15.0.0-rc.1",
-    "react-test-renderer": "^15.5.4",
+    "jest": "^21.2.1",
+    "prettier": "1.9.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-test-renderer": "^16.0.0",
     "run-sequence": "^1.1.2",
     "through2": "^2.0.1",
     "vinyl-buffer": "^1.0.0",
     "webpack-stream": "^3.0.0"
   },
   "devEngines": {
-    "node": "4.x || 6.x || 8.x",
-    "npm": "2.x || 3.x || 5.x"
+    "node": "6.x || 8.x",
+    "npm": "2.x || 3.x"
   },
   "jest": {
     "automock": true,
+    "globals": {
+      "__DEV__": true
+    },
     "rootDir": "./",
-    "scriptPreprocessor": "scripts/jest/preprocessor.js",
-    "setupFiles": [
-      "node_modules/fbjs-scripts/jest/environment.js"
+    "roots": [
+      "<rootDir>/src/"
     ],
+    "setupFiles": [
+      "<rootDir>/scripts/jest/shims.js"
+    ],
+    "transform": {
+      ".*": "<rootDir>/scripts/jest/preprocessor.js"
+    },
     "modulePathIgnorePatterns": [
       "<rootDir>/lib/",
       "<rootDir>/node_modules/"
     ],
-    "preprocessorIgnorePatterns": [
+    "transformIgnorePatterns": [
       "<rootDir>/node_modules/"
-    ],
-    "testPathDirs": [
-      "<rootDir>/src/"
     ],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/fbjs/node_modules/",

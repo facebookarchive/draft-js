@@ -7,190 +7,161 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
 
 jest.disableAutomock();
 
-var Immutable = require('immutable');
+const applyEntityToContentBlock = require('applyEntityToContentBlock');
+const getSampleStateForTesting = require('getSampleStateForTesting');
+const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
-var applyEntityToContentBlock = require('applyEntityToContentBlock');
-var getSampleStateForTesting = require('getSampleStateForTesting');
-var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
+const {contentState, selectionState} = getSampleStateForTesting();
 
-describe('removeEntitiesAtEdges', () => {
-  var {List, Repeat, OrderedSet} = Immutable;
+const selectionOnEntity = selectionState.merge({
+  anchorKey: 'b',
+  anchorOffset: 2,
+  focusKey: 'b',
+  focusOffset: 2,
+});
 
-  var {contentState, selectionState} = getSampleStateForTesting();
-
-  var selectionOnEntity = selectionState.merge({
-    anchorKey: 'b',
-    anchorOffset: 2,
-    focusKey: 'b',
-    focusOffset: 2,
+const setEntityMutability = (mutability, content = contentState) => {
+  content.getEntityMap().get = () => ({
+    getMutability: () => mutability,
   });
+};
 
-  function getEntities(block) {
-    return block.getCharacterList().map(c => c.getEntity()).toJS();
-  }
+const assertRemoveEntitiesAtEdges = (
+  selection,
+  mutability = 'IMMUTABLE',
+  content = contentState,
+) => {
+  setEntityMutability(mutability, content);
+  expect(
+    removeEntitiesAtEdges(content, selection)
+      .getBlockMap()
+      .toJS(),
+  ).toMatchSnapshot();
+};
 
-  function expectSameBlockMap(before, after) {
-    expect(before.getBlockMap()).toBe(after.getBlockMap());
-  }
+test('must not affect blockMap if there are no entities', () => {
+  assertRemoveEntitiesAtEdges(selectionState);
+});
 
-  function expectEmptyEntities(block) {
-    expect(getEntities(block)).toEqual(
-      List(Repeat(OrderedSet(), block.getLength())).toJS(),
-    );
-  }
+test('must not remove mutable entities', () => {
+  assertRemoveEntitiesAtEdges(selectionOnEntity, 'MUTABLE');
+});
 
-  function setEntityMutability(mutability) {
-    contentState.getEntityMap().get = () => ({
-      getMutability: () => mutability,
-    });
-  }
+test('must remove immutable entities', () => {
+  assertRemoveEntitiesAtEdges(selectionOnEntity, 'IMMUTABLE');
+});
 
-  describe('Within a single block', () => {
-    it('must not affect blockMap if there are no entities', () => {
-      var result = removeEntitiesAtEdges(contentState, selectionState);
-      expectSameBlockMap(contentState, result);
-    });
+test('must remove segmented entities', () => {
+  assertRemoveEntitiesAtEdges(selectionOnEntity, 'SEGMENTED');
+});
 
-    describe('Handling different mutability types', () => {
-      it('must not remove mutable entities', () => {
-        setEntityMutability('MUTABLE');
-        var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
-        expectSameBlockMap(contentState, result);
-      });
+test('must not remove if cursor is at start of entity', () => {
+  assertRemoveEntitiesAtEdges(
+    selectionOnEntity.merge({
+      anchorOffset: 0,
+      focusOffset: 0,
+    }),
+  );
+});
 
-      it('must remove immutable entities', () => {
-        setEntityMutability('IMMUTABLE');
-        var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
-        expect(result.getBlockMap()).not.toBe(contentState.getBlockMap());
-        expectEmptyEntities(result.getBlockForKey('b'));
-      });
+test('must remove if cursor is within entity', () => {
+  assertRemoveEntitiesAtEdges(selectionOnEntity);
+});
 
-      it('must remove segmented entities', () => {
-        setEntityMutability('SEGMENTED');
-        var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
-        expect(result.getBlockMap()).not.toBe(contentState.getBlockMap());
-        expectEmptyEntities(result.getBlockForKey('b'));
-      });
-    });
+test('must not remove if cursor is at end of entity', () => {
+  const length = contentState.getBlockForKey('b').getLength();
+  assertRemoveEntitiesAtEdges(
+    selectionOnEntity.merge({
+      anchorOffset: length,
+      focusOffset: length,
+    }),
+  );
+});
 
-    describe('Removal for a collapsed cursor', () => {
-      setEntityMutability('IMMUTABLE');
+test('must remove for non-collapsed cursor within a single entity', () => {
+  assertRemoveEntitiesAtEdges(selectionOnEntity.set('anchorOffset', 1));
+});
 
-      it('must not remove if cursor is at start of entity', () => {
-        var selection = selectionOnEntity.merge({
-          anchorOffset: 0,
-          focusOffset: 0,
-        });
-        var result = removeEntitiesAtEdges(contentState, selection);
-        expectSameBlockMap(contentState, result);
-      });
+test('must remove for non-collapsed cursor on multiple entities', () => {
+  const block = contentState.getBlockForKey('b');
+  const newBlock = applyEntityToContentBlock(block, 3, 5, '456');
+  const newBlockMap = contentState.getBlockMap().set('b', newBlock);
+  const newContent = contentState.set('blockMap', newBlockMap);
 
-      it('must remove if cursor is within entity', () => {
-        var result = removeEntitiesAtEdges(contentState, selectionOnEntity);
-        expectEmptyEntities(result.getBlockForKey('b'));
-      });
+  assertRemoveEntitiesAtEdges(
+    selectionOnEntity.merge({
+      anchorOffset: 1,
+      focusOffset: 4,
+    }),
+    'IMMUTABLE',
+    newContent,
+  );
+});
 
-      it('must not remove if cursor is at end of entity', () => {
-        var length = contentState.getBlockForKey('b').getLength();
-        var selection = selectionOnEntity.merge({
-          anchorOffset: length,
-          focusOffset: length,
-        });
-        var result = removeEntitiesAtEdges(contentState, selection);
-        expectSameBlockMap(contentState, result);
-      });
-    });
+test('must ignore an entity that is entirely within the selection', () => {
+  const block = contentState.getBlockForKey('b');
 
-    describe('Removal for a non-collapsed cursor', () => {
-      setEntityMutability('IMMUTABLE');
+  // Remove entity from beginning and end of block.
+  let newBlock = applyEntityToContentBlock(block, 0, 1, '123', false);
+  newBlock = applyEntityToContentBlock(newBlock, 4, 5, '123', false);
 
-      it('must remove for non-collapsed cursor within a single entity', () => {
-        setEntityMutability('IMMUTABLE');
-        var selection = selectionOnEntity.set('anchorOffset', 1);
-        var result = removeEntitiesAtEdges(contentState, selection);
-        expectEmptyEntities(result.getBlockForKey('b'));
-      });
+  const newBlockMap = contentState.getBlockMap().set('b', newBlock);
+  const newContent = contentState.set('blockMap', newBlockMap);
 
-      it('must remove for non-collapsed cursor on multiple entities', () => {
-        var block = contentState.getBlockForKey('b');
-        var newBlock = applyEntityToContentBlock(block, 3, 5, '456');
-        var newBlockMap = contentState.getBlockMap().set('b', newBlock);
-        var newContent = contentState.set('blockMap', newBlockMap);
-        var selection = selectionOnEntity.merge({
-          anchorOffset: 1,
-          focusOffset: 4,
-        });
-        var result = removeEntitiesAtEdges(newContent, selection);
-        expectEmptyEntities(result.getBlockForKey('b'));
-      });
+  assertRemoveEntitiesAtEdges(
+    selectionOnEntity.merge({
+      anchorOffset: 0,
+      focusOffset: 5,
+    }),
+    'IMMUTABLE',
+    newContent,
+  );
+});
 
-      it('must ignore an entity that is entirely within the selection', () => {
-        var block = contentState.getBlockForKey('b');
+test('must remove entity at start of selection', () => {
+  assertRemoveEntitiesAtEdges(
+    selectionState.merge({
+      anchorKey: 'b',
+      anchorOffset: 3,
+      focusKey: 'c',
+      focusOffset: 3,
+    }),
+  );
+});
 
-        // Remove entity from beginning and end of block.
-        var newBlock = applyEntityToContentBlock(block, 0, 1, null);
-        newBlock = applyEntityToContentBlock(newBlock, 4, 5, null);
+test('must remove entity at end of selection', () => {
+  assertRemoveEntitiesAtEdges(
+    selectionState.merge({
+      anchorKey: 'a',
+      anchorOffset: 3,
+      focusKey: 'b',
+      focusOffset: 3,
+    }),
+  );
+});
 
-        var newBlockMap = contentState.getBlockMap().set('b', newBlock);
-        var newContent = contentState.set('blockMap', newBlockMap);
-        var selection = selectionOnEntity.merge({
-          anchorOffset: 0,
-          focusOffset: 5,
-        });
-        var result = removeEntitiesAtEdges(newContent, selection);
-        expectSameBlockMap(newContent, result);
-      });
-    });
-  });
+test('must remove entities at both ends of selection', () => {
+  const cBlock = contentState.getBlockForKey('c');
+  const len = cBlock.getLength();
+  const modifiedC = applyEntityToContentBlock(cBlock, 0, len, '456');
+  const newBlockMap = contentState.getBlockMap().set('c', modifiedC);
+  const newContent = contentState.set('blockMap', newBlockMap);
 
-  describe('Across multiple blocks', () => {
-    setEntityMutability('IMMUTABLE');
-
-    it('must remove entity at start of selection', () => {
-      var selection = selectionState.merge({
-        anchorKey: 'b',
-        anchorOffset: 3,
-        focusKey: 'c',
-        focusOffset: 3,
-      });
-      var result = removeEntitiesAtEdges(contentState, selection);
-      expectEmptyEntities(result.getBlockForKey('b'));
-      expectEmptyEntities(result.getBlockForKey('c'));
-    });
-
-    it('must remove entity at end of selection', () => {
-      var selection = selectionState.merge({
-        anchorKey: 'a',
-        anchorOffset: 3,
-        focusKey: 'b',
-        focusOffset: 3,
-      });
-      var result = removeEntitiesAtEdges(contentState, selection);
-      expectEmptyEntities(result.getBlockForKey('a'));
-      expectEmptyEntities(result.getBlockForKey('b'));
-    });
-
-    it('must remove entities at both ends of selection', () => {
-      var cBlock = contentState.getBlockForKey('c');
-      var len = cBlock.getLength();
-      var modifiedC = applyEntityToContentBlock(cBlock, 0, len, '456');
-      var newBlockMap = contentState.getBlockMap().set('c', modifiedC);
-      var newContent = contentState.set('blockMap', newBlockMap);
-      var selection = selectionState.merge({
-        anchorKey: 'b',
-        anchorOffset: 3,
-        focusKey: 'c',
-        focusOffset: 3,
-      });
-      var result = removeEntitiesAtEdges(newContent, selection);
-      expectEmptyEntities(result.getBlockForKey('b'));
-      expectEmptyEntities(result.getBlockForKey('c'));
-    });
-  });
+  assertRemoveEntitiesAtEdges(
+    selectionState.merge({
+      anchorKey: 'b',
+      anchorOffset: 3,
+      focusKey: 'c',
+      focusOffset: 3,
+    }),
+    'IMMUTABLE',
+    newContent,
+  );
 });

@@ -7,46 +7,35 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
 
 jest.disableAutomock();
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
-var insertIntoList = require('insertIntoList');
+const insertIntoList = require('insertIntoList');
 
-describe('insertIntoList', () => {
-  var list = Immutable.List.of(0, 1, 2, 3, 4);
+const SAMPLE_LIST = Immutable.List.of(0, 1, 2, 3, 4);
 
-  it('must insert at end of list', () => {
-    var result = insertIntoList(
-      list,
-      Immutable.List.of(100, 101, 102),
-      list.size,
-    );
-    expect(result.size).toBe(8);
-    expect(result.toJS()).toEqual([0, 1, 2, 3, 4, 100, 101, 102]);
-  });
+const assertAssertInsertIntoList = (
+  toInsert,
+  offset = SAMPLE_LIST.size,
+  targetList = SAMPLE_LIST,
+) => {
+  expect(insertIntoList(targetList, toInsert, offset)).toMatchSnapshot();
+};
 
-  it('must insert at beginning of list', () => {
-    var result = insertIntoList(
-      list,
-      Immutable.List.of(100, 101, 102),
-      0,
-    );
-    expect(result.size).toBe(8);
-    expect(result.toJS()).toEqual([100, 101, 102, 0, 1, 2, 3, 4]);
-  });
+test('must insert at end of list', () => {
+  assertAssertInsertIntoList(Immutable.List.of(100, 101, 102));
+});
 
-  it('must insert within a list', () => {
-    var result = insertIntoList(
-      list,
-      Immutable.List.of(100, 101, 102),
-      3,
-    );
-    expect(result.size).toBe(8);
-    expect(result.toJS()).toEqual([0, 1, 2, 100, 101, 102, 3, 4]);
-  });
+test('must insert at beginning of list', () => {
+  assertAssertInsertIntoList(Immutable.List.of(100, 101, 102), 0);
+});
+
+test('must insert within a list', () => {
+  assertAssertInsertIntoList(Immutable.List.of(100, 101, 102), 3);
 });

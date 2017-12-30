@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule CharacterMetadata
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -81,8 +81,11 @@ class CharacterMetadata extends CharacterMetadataRecord {
     record: CharacterMetadata,
     entityKey: string,
   ): CharacterMetadata {
-    var withEntity = record.set('entity', record.getEntity().remove(entityKey));
-    return CharacterMetadata.create(withEntity);
+    var withoutEntity = record.set(
+      'entity',
+      record.getEntity().remove(entityKey),
+    );
+    return CharacterMetadata.create(withoutEntity);
   }
 
   /**

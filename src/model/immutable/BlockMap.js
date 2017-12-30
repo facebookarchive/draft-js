@@ -7,12 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule BlockMap
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {OrderedMap} from 'immutable';
 
-export type BlockMap = OrderedMap<string, ContentBlock>;
+export type BlockMap = OrderedMap<string, BlockNodeRecord>;

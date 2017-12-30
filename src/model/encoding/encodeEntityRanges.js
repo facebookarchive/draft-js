@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule encodeEntityRanges
+ * @format
  * @flow
  */
 
@@ -14,6 +15,7 @@
 
 import type ContentBlock from 'ContentBlock';
 import type {DraftEntitySet} from 'DraftEntitySet';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {EntityRange} from 'EntityRange';
 import type {List} from 'immutable';
 
@@ -26,7 +28,7 @@ var isTruthy = a => !!a;
 var EMPTY_ARRAY = [];
 
 /**
- * Helper function for getting encoded styles for each inline style. Convert
+ * Helper function for getting encoded styles for each entity. Convert
  * to UTF-8 character counts for storage.
  */
 function getEncodedInlinesForType(
@@ -36,13 +38,13 @@ function getEncodedInlinesForType(
 ): Array<EntityRange> {
   var ranges = [];
 
-  // Obtain an array with ranges for only the specified style.
-  var filteredInlines = entities.map(style => style.has(entityKey)).toList();
+  // Obtain an array with ranges for only the specified key.
+  var filteredInlines = entities.map(e => e.has(entityKey)).toList();
 
   findRangesImmutable(
     filteredInlines,
     areEqual,
-    // We only want to keep ranges with nonzero style values.
+    // We only want to keep ranges with nonzero entity values.
     isTruthy,
     (start, end) => {
       var text = block.getText();
@@ -58,11 +60,14 @@ function getEncodedInlinesForType(
 }
 
 /*
- * Retrieve the encoded arrays of inline styles, with each individual style
+ * Retrieve the encoded arrays of entities, with each entity
  * treated separately.
  */
 function encodeEntityRanges(block: ContentBlock): Array<EntityRange> {
-  var entities = block.getCharacterList().map(c => c.getEntity()).toList();
+  var entities = block
+    .getCharacterList()
+    .map(c => c.getEntity())
+    .toList();
   var ranges = entities
     .flatten()
     .toSet()

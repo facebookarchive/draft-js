@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must encode custom styles 1`] = `
+Array [
+  Object {
+    "length": 4,
+    "offset": 0,
+    "style": "foo",
+  },
+  Object {
+    "length": 2,
+    "offset": 2,
+    "style": "bar",
+  },
+  Object {
+    "length": 2,
+    "offset": 4,
+    "style": "BOLD",
+  },
+]
+`;
+
+exports[`must encode for a complex styled document 1`] = `
+Array [
+  Object {
+    "length": 4,
+    "offset": 0,
+    "style": "BOLD",
+  },
+  Object {
+    "length": 2,
+    "offset": 5,
+    "style": "BOLD",
+  },
+  Object {
+    "length": 2,
+    "offset": 8,
+    "style": "BOLD",
+  },
+  Object {
+    "length": 3,
+    "offset": 5,
+    "style": "ITALIC",
+  },
+  Object {
+    "length": 1,
+    "offset": 9,
+    "style": "ITALIC",
+  },
+  Object {
+    "length": 3,
+    "offset": 7,
+    "style": "UNDERLINE",
+  },
+]
+`;
+
+exports[`must encode for a flat styled document 1`] = `
+Array [
+  Object {
+    "length": 20,
+    "offset": 0,
+    "style": "BOLD",
+  },
+]
+`;
+
+exports[`must encode for a flat styled document 2`] = `
+Array [
+  Object {
+    "length": 20,
+    "offset": 0,
+    "style": "BOLD",
+  },
+  Object {
+    "length": 20,
+    "offset": 0,
+    "style": "ITALIC",
+  },
+]
+`;
+
+exports[`must encode for a flat styled document 3`] = `
+Array [
+  Object {
+    "length": 20,
+    "offset": 0,
+    "style": "BOLD",
+  },
+  Object {
+    "length": 20,
+    "offset": 0,
+    "style": "ITALIC",
+  },
+  Object {
+    "length": 20,
+    "offset": 0,
+    "style": "UNDERLINE",
+  },
+]
+`;
+
+exports[`must encode for an unstyled document 1`] = `Array []`;
+
+exports[`must encode for an unstyled document 2`] = `Array []`;
+
+exports[`must encode for an unstyled document 3`] = `Array []`;
+
+exports[`must encode for an unstyled document 4`] = `Array []`;
+
+exports[`must encode for strings with surrogate pairs 1`] = `
+Array [
+  Object {
+    "length": 4,
+    "offset": 4,
+    "style": "BOLD",
+  },
+  Object {
+    "length": 8,
+    "offset": 6,
+    "style": "ITALIC",
+  },
+]
+`;

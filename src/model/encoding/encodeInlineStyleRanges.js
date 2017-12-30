@@ -7,12 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule encodeInlineStyleRanges
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {InlineStyleRange} from 'InlineStyleRange';
 import type {List} from 'immutable';
@@ -30,7 +31,7 @@ var EMPTY_ARRAY = [];
  * to UTF-8 character counts for storage.
  */
 function getEncodedInlinesForType(
-  block: ContentBlock,
+  block: BlockNodeRecord,
   styleList: List<DraftInlineStyle>,
   styleToEncode: string,
 ): Array<InlineStyleRange> {
@@ -64,9 +65,12 @@ function getEncodedInlinesForType(
  * treated separately.
  */
 function encodeInlineStyleRanges(
-  block: ContentBlock,
+  block: BlockNodeRecord,
 ): Array<InlineStyleRange> {
-  var styleList = block.getCharacterList().map(c => c.getStyle()).toList();
+  var styleList = block
+    .getCharacterList()
+    .map(c => c.getStyle())
+    .toList();
   var ranges = styleList
     .flatten()
     .toSet()

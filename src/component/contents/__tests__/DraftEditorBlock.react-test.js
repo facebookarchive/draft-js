@@ -7,45 +7,45 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
- * @typechecks
+ * @format
  */
 
 'use strict';
 
-jest.disableAutomock()
+jest
+  .disableAutomock()
   .mock('Style')
   .mock('getElementPosition')
   .mock('getScrollPosition')
   .mock('getViewportDimensions');
 
-var BlockTree = require('BlockTree');
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
-var ContentState = require('ContentState');
-var Immutable = require('immutable');
-var React = require('React');
-var ReactDOM = require('ReactDOM');
-var ReactTestUtils = require('ReactTestUtils');
-var SampleDraftInlineStyle = require('SampleDraftInlineStyle');
-var SelectionState = require('SelectionState');
-var Style = require('Style');
-var UnicodeBidiDirection = require('UnicodeBidiDirection');
+const BlockTree = require('BlockTree');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentBlock = require('ContentBlock');
+const ContentState = require('ContentState');
+const DraftEditorBlock = require('DraftEditorBlock.react');
+const Immutable = require('immutable');
+const React = require('React');
+const ReactDOM = require('ReactDOM');
+const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
+const SelectionState = require('SelectionState');
+const Style = require('Style');
+const UnicodeBidiDirection = require('UnicodeBidiDirection');
 
-var getElementPosition = require('getElementPosition');
-var getScrollPosition = require('getScrollPosition');
-var getViewportDimensions = require('getViewportDimensions');
-var reactComponentExpect = require('reactComponentExpect');
-var {BOLD, NONE, ITALIC} = SampleDraftInlineStyle;
+const getElementPosition = require('getElementPosition');
+const getScrollPosition = require('getScrollPosition');
+const getViewportDimensions = require('getViewportDimensions');
+const ReactTestRenderer = require('react-test-renderer');
 
-var mockGetDecorations = jest.fn();
+const {BOLD, NONE, ITALIC} = SampleDraftInlineStyle;
+
+const mockGetDecorations = jest.fn();
 
 class DecoratorSpan extends React.Component {
   render() {
     return <span>{this.props.children}</span>;
   }
 }
-
-var DraftEditorBlock = require('DraftEditorBlock.react');
 
 // Define a class to satisfy typechecks.
 class Decorator {
@@ -60,35 +60,40 @@ class Decorator {
   }
 }
 
-var mockLeafRender = jest.fn(() => <span />);
+const mockLeafRender = jest.fn(() => <span />);
 class MockEditorLeaf extends React.Component {
   render() {
     return mockLeafRender();
   }
 }
-jest.setMock(
-  'DraftEditorLeaf.react',
-  MockEditorLeaf,
-);
+jest.setMock('DraftEditorLeaf.react', MockEditorLeaf);
+Style.getScrollParent.mockReturnValue(window);
+window.scrollTo = jest.fn();
+getElementPosition.mockReturnValue({
+  x: 0,
+  y: 600,
+  width: 500,
+  height: 16,
+});
+getScrollPosition.mockReturnValue({x: 0, y: 0});
+getViewportDimensions.mockReturnValue({width: 1200, height: 800});
 
-var DraftEditorLeaf = require('DraftEditorLeaf.react');
+const DraftEditorLeaf = require('DraftEditorLeaf.react');
 
-function returnEmptyString() {
+const returnEmptyString = () => {
   return '';
-}
+};
 
-function getHelloBlock() {
+const getHelloBlock = () => {
   return new ContentBlock({
     key: 'a',
     type: 'unstyled',
     text: 'hello',
-    characterList: Immutable.List(
-      Immutable.Repeat(CharacterMetadata.EMPTY, 5),
-    ),
+    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 5)),
   });
-}
+};
 
-function getSelection() {
+const getSelection = () => {
   return new SelectionState({
     anchorKey: 'a',
     anchorOffset: 0,
@@ -97,9 +102,9 @@ function getSelection() {
     isBackward: false,
     hasFocus: true,
   });
-}
+};
 
-function getProps(block, decorator) {
+const getProps = (block, decorator) => {
   return {
     block,
     tree: BlockTree.generate(ContentState.createFromText(''), block, decorator),
@@ -110,452 +115,369 @@ function getProps(block, decorator) {
     blockStyleFn: returnEmptyString,
     styleSet: NONE,
   };
-}
+};
 
-function arePropsEqual(renderedChild, leafPropSet) {
+const arePropsEqual = (renderedChild, leafPropSet) => {
   Object.keys(leafPropSet).forEach(key => {
     expect(
-      Immutable.is(leafPropSet[key], renderedChild.instance().props[key]),
-    ).toBeTruthy();
+      Immutable.is(leafPropSet[key], renderedChild.props[key]),
+    ).toMatchSnapshot();
   });
-}
+};
 
-function assertLeaves(renderedBlock, leafProps) {
+const assertLeaves = (renderedBlock, leafProps) => {
   leafProps.forEach((leafPropSet, ii) => {
-    const child = renderedBlock.expectRenderedChildAt(ii);
-    child.toBeComponentOfType(DraftEditorLeaf);
+    const child = renderedBlock[ii];
+    expect(child.type).toBe(DraftEditorLeaf);
     arePropsEqual(child, leafPropSet);
   });
-}
+};
 
-describe('DraftEditorBlock.react', () => {
-  Style.getScrollParent.mockReturnValue(window);
-  window.scrollTo = jest.fn();
-  getElementPosition.mockReturnValue({
+beforeEach(() => {
+  window.scrollTo.mockClear();
+  mockGetDecorations.mockClear();
+  mockLeafRender.mockClear();
+});
+
+test('must render a leaf node', () => {
+  const props = getProps(getHelloBlock());
+  const block = ReactTestRenderer.create(<DraftEditorBlock {...props} />);
+  const blockInstance = block.root;
+
+  expect(blockInstance.children[0].type).toBe('div');
+
+  assertLeaves(blockInstance.children[0].children, [
+    {
+      text: 'hello',
+      offsetKey: 'a-0-0',
+      start: 0,
+      styleSet: NONE,
+      isLast: true,
+    },
+  ]);
+});
+
+test('must render multiple leaf nodes', () => {
+  const boldLength = 2;
+  let helloBlock = getHelloBlock();
+  let characters = helloBlock.getCharacterList();
+  characters = characters
+    .slice(0, boldLength)
+    .map(c => CharacterMetadata.applyStyle(c, 'BOLD'))
+    .concat(characters.slice(boldLength));
+
+  helloBlock = helloBlock.set('characterList', characters.toList());
+
+  const props = getProps(helloBlock);
+  const block = ReactTestRenderer.create(<DraftEditorBlock {...props} />);
+  const blockInstance = block.root;
+
+  expect(blockInstance.children[0].type).toBe('div');
+
+  assertLeaves(blockInstance.children[0].children, [
+    {
+      text: 'he',
+      offsetKey: 'a-0-0',
+      start: 0,
+      styleSet: BOLD,
+      isLast: false,
+    },
+    {
+      text: 'llo',
+      offsetKey: 'a-0-1',
+      start: 2,
+      styleSet: NONE,
+      isLast: true,
+    },
+  ]);
+});
+
+test('must allow update when `block` has changed', () => {
+  const helloBlock = getHelloBlock();
+  const props = getProps(helloBlock);
+
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  const updatedHelloBlock = helloBlock.set('text', 'hxllo');
+  const nextProps = getProps(updatedHelloBlock);
+
+  expect(updatedHelloBlock !== helloBlock).toMatchSnapshot();
+  expect(props.block !== nextProps.block).toMatchSnapshot();
+
+  ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+});
+
+test('must allow update when `tree` has changed', () => {
+  const helloBlock = getHelloBlock();
+  const props = getProps(helloBlock);
+
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  mockGetDecorations.mockReturnValue(
+    Immutable.List.of('x', 'x', null, null, null),
+  );
+  const decorator = new Decorator();
+
+  const newTree = BlockTree.generate(
+    ContentState.createFromText(helloBlock.getText()),
+    helloBlock,
+    decorator,
+  );
+  const nextProps = {...props, tree: newTree, decorator};
+
+  expect(props.tree !== nextProps.tree).toMatchSnapshot();
+
+  ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+});
+
+test('must allow update when `direction` has changed', () => {
+  const helloBlock = getHelloBlock();
+  const props = getProps(helloBlock);
+
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  const nextProps = {...props, direction: UnicodeBidiDirection.RTL};
+  expect(props.direction !== nextProps.direction).toMatchSnapshot();
+
+  ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+});
+
+test('must allow update when forcing selection', () => {
+  const helloBlock = getHelloBlock();
+  const props = getProps(helloBlock);
+
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  // The default selection state in this test is on a selection edge.
+  const nextProps = {
+    ...props,
+    forceSelection: true,
+  };
+
+  ReactDOM.render(<DraftEditorBlock {...nextProps} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+});
+
+test('must reject update if conditions are not met', () => {
+  const helloBlock = getHelloBlock();
+  const props = getProps(helloBlock);
+
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  // Render again with the exact same props as before.
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+
+  // No new leaf renders.
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+});
+
+test('must reject update if selection is not on an edge', () => {
+  const helloBlock = getHelloBlock();
+  const props = getProps(helloBlock);
+
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  // Move selection state to some other block.
+  const nonEdgeSelection = props.selection.merge({
+    anchorKey: 'z',
+    focusKey: 'z',
+  });
+
+  const newProps = {...props, selection: nonEdgeSelection};
+
+  // Render again with selection now moved elsewhere and the contents
+  // unchanged.
+  ReactDOM.render(<DraftEditorBlock {...newProps} />, container);
+
+  // No new leaf renders.
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+});
+
+test('must split apart two decorated and undecorated', () => {
+  const helloBlock = getHelloBlock();
+
+  mockGetDecorations.mockReturnValue(
+    Immutable.List.of('x', 'x', null, null, null),
+  );
+  const decorator = new Decorator();
+  const props = getProps(helloBlock, decorator);
+
+  const container = document.createElement('div');
+  const block = ReactTestRenderer.create(
+    <DraftEditorBlock {...props} />,
+    container,
+  );
+  const blockInstance = block.root;
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  const el = blockInstance.children[0];
+  expect(el.type).toBe('div');
+
+  arePropsEqual(el.children[0], {offsetKey: 'a-0-0'});
+  expect(el.children[0].type).toBe(DecoratorSpan);
+  expect(el.children[0].children.length).toBe(1);
+  expect(el.children[0].children[0].type).toBe('span');
+
+  arePropsEqual(el.children[1], {offsetKey: 'a-1-0'});
+  expect(el.children[1].type).toBe(DraftEditorLeaf);
+});
+
+test('must split apart two decorators', () => {
+  const helloBlock = getHelloBlock();
+
+  mockGetDecorations.mockReturnValue(
+    Immutable.List.of('x', 'x', 'y', 'y', 'y'),
+  );
+
+  const decorator = new Decorator();
+  const props = getProps(helloBlock, decorator);
+
+  const container = document.createElement('div');
+  const block = ReactTestRenderer.create(
+    <DraftEditorBlock {...props} />,
+    container,
+  );
+  const blockInstance = block.root;
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  const el = blockInstance.children[0];
+  expect(el.type).toBe('div');
+
+  arePropsEqual(el.children[0], {offsetKey: 'a-0-0'});
+  expect(el.children[0].type).toBe(DecoratorSpan);
+  expect(el.children[0].children.length).toBe(1);
+  expect(el.children[0].children[0].type).toBe('span');
+
+  arePropsEqual(el.children[1], {offsetKey: 'a-1-0'});
+  expect(el.children[1].type).toBe(DecoratorSpan);
+});
+
+test('must split apart styled spans', () => {
+  let helloBlock = getHelloBlock();
+  const characters = helloBlock.getCharacterList();
+  const newChars = characters
+    .slice(0, 2)
+    .map(ch => {
+      return CharacterMetadata.applyStyle(ch, 'BOLD');
+    })
+    .concat(characters.slice(2));
+
+  helloBlock = helloBlock.set('characterList', Immutable.List(newChars));
+  const props = getProps(helloBlock);
+
+  const container = document.createElement('div');
+  const block = ReactTestRenderer.create(
+    <DraftEditorBlock {...props} />,
+    container,
+  );
+  const blockInstance = block.root;
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  const el = blockInstance.children[0];
+  expect(el.type).toBe('div');
+
+  arePropsEqual(el.children[0], {offsetKey: 'a-0-0', styleSet: BOLD});
+  expect(el.children[0].type).toBe(DraftEditorLeaf);
+
+  arePropsEqual(el.children[1], {offsetKey: 'a-0-1', styleSet: NONE});
+  expect(el.children[1].type).toBe(DraftEditorLeaf);
+});
+
+test('must split styled spans apart within decorator', () => {
+  let helloBlock = getHelloBlock();
+  const characters = helloBlock.getCharacterList();
+  const newChars = Immutable.List([
+    CharacterMetadata.applyStyle(characters.get(0), 'BOLD'),
+    CharacterMetadata.applyStyle(characters.get(1), 'ITALIC'),
+  ]).concat(characters.slice(2));
+
+  helloBlock = helloBlock.set('characterList', Immutable.List(newChars));
+
+  mockGetDecorations.mockReturnValue(
+    Immutable.List.of('x', 'x', null, null, null),
+  );
+  const decorator = new Decorator();
+  const props = getProps(helloBlock, decorator);
+
+  const container = document.createElement('div');
+  const block = ReactTestRenderer.create(
+    <DraftEditorBlock {...props} />,
+    container,
+  );
+  const blockInstance = block.root;
+
+  expect(mockLeafRender.mock.calls.length).toMatchSnapshot();
+
+  const el = blockInstance.children[0];
+  expect(el.type).toBe('div');
+
+  arePropsEqual(el.children[0], {offsetKey: 'a-0-0'});
+  expect(el.children[0].type).toBe(DecoratorSpan);
+
+  var renderer = el.children[0].props;
+  arePropsEqual(renderer.children[0], {offsetKey: 'a-0-0', styleSet: BOLD});
+  expect(renderer.children[0].type).toBe(DraftEditorLeaf);
+
+  arePropsEqual(renderer.children[1], {
+    offsetKey: 'a-0-1',
+    styleSet: ITALIC,
+  });
+  expect(renderer.children[0].type).toBe(DraftEditorLeaf);
+
+  arePropsEqual(el.children[1], {offsetKey: 'a-1-0', styleSet: NONE});
+  expect(el.children[1].type).toBe(DraftEditorLeaf);
+});
+
+test('must scroll the window if needed', () => {
+  const props = getProps(getHelloBlock());
+
+  getElementPosition.mockReturnValueOnce({
     x: 0,
-    y: 600,
+    y: 800,
     width: 500,
     height: 16,
   });
-  getScrollPosition.mockReturnValue({x: 0, y: 0});
-  getViewportDimensions.mockReturnValue({width: 1200, height: 800});
 
-  beforeEach(() => {
-    window.scrollTo.mockClear();
-    mockGetDecorations.mockClear();
-    mockLeafRender.mockClear();
-  });
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
-  describe('Basic rendering', () => {
-    it('must render a leaf node', () => {
-      var props = getProps(getHelloBlock());
-      var block = ReactTestUtils.renderIntoDocument(
-        <DraftEditorBlock {...props} />,
-      );
+  const scrollCalls = window.scrollTo.mock.calls;
+  expect(scrollCalls).toMatchSnapshot();
+});
 
-      var rendered = reactComponentExpect(block)
-        .expectRenderedChild()
-        .toBeComponentOfType('div');
+test('must not scroll the window if unnecessary', () => {
+  const props = getProps(getHelloBlock());
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
 
-      assertLeaves(rendered, [
-        {
-          text: 'hello',
-          offsetKey: 'a-0-0',
-          start: 0,
-          styleSet: NONE,
-          isLast: true,
-        },
-      ]);
-    });
-
-    it('must render multiple leaf nodes', () => {
-      var boldLength = 2;
-      var helloBlock = getHelloBlock();
-      var characters = helloBlock.getCharacterList();
-      characters = characters
-        .slice(0, boldLength)
-        .map(c => CharacterMetadata.applyStyle(c, 'BOLD'))
-        .concat(characters.slice(boldLength));
-
-      helloBlock = helloBlock.set('characterList', characters.toList());
-
-      var props = getProps(helloBlock);
-      var block = ReactTestUtils.renderIntoDocument(
-        <DraftEditorBlock {...props} />,
-      );
-
-      var rendered = reactComponentExpect(block)
-        .expectRenderedChild()
-        .toBeComponentOfType('div');
-
-      assertLeaves(rendered, [
-        {
-          text: 'he',
-          offsetKey: 'a-0-0',
-          start: 0,
-          styleSet: BOLD,
-          isLast: false,
-        },
-        {
-          text: 'llo',
-          offsetKey: 'a-0-1',
-          start: 2,
-          styleSet: NONE,
-          isLast: true,
-        },
-      ]);
-    });
-  });
-
-  describe('Allow/reject component updates', () => {
-    it('must allow update when `block` has changed', () => {
-      var helloBlock = getHelloBlock();
-      var props = getProps(helloBlock);
-
-      var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(1);
-
-      var updatedHelloBlock = helloBlock.set('text', 'hxllo');
-      var nextProps = getProps(updatedHelloBlock);
-
-      expect(updatedHelloBlock).not.toBe(helloBlock);
-      expect(props.block).not.toBe(nextProps.block);
-
-      ReactDOM.render(
-        <DraftEditorBlock {...nextProps} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(2);
-    });
-
-    it('must allow update when `tree` has changed', () => {
-      var helloBlock = getHelloBlock();
-      var props = getProps(helloBlock);
-
-      var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(1);
-
-      mockGetDecorations.mockReturnValue(
-        Immutable.List.of('x', 'x', null, null, null),
-      );
-      var decorator = new Decorator();
-
-      var newTree = BlockTree.generate(
-        ContentState.createFromText(helloBlock.getText()),
-        helloBlock,
-        decorator,
-      );
-      var nextProps = {...props, tree: newTree, decorator};
-
-      expect(props.tree).not.toBe(nextProps.tree);
-
-      ReactDOM.render(
-        <DraftEditorBlock {...nextProps} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(3);
-    });
-
-    it('must allow update when `direction` has changed', () => {
-      var helloBlock = getHelloBlock();
-      var props = getProps(helloBlock);
-
-      var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(1);
-
-      var nextProps = {...props, direction: UnicodeBidiDirection.RTL};
-      expect(props.direction).not.toBe(nextProps.direction);
-
-      ReactDOM.render(
-        <DraftEditorBlock {...nextProps} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(2);
-    });
-
-    it('must allow update when forcing selection', () => {
-      var helloBlock = getHelloBlock();
-      var props = getProps(helloBlock);
-
-      var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(1);
-
-      // The default selection state in this test is on a selection edge.
-      var nextProps = {
-        ...props,
-        forceSelection: true,
-      };
-
-      ReactDOM.render(
-        <DraftEditorBlock {...nextProps} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(2);
-    });
-
-    it('must reject update if conditions are not met', () => {
-      var helloBlock = getHelloBlock();
-      var props = getProps(helloBlock);
-
-      var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(1);
-
-      // Render again with the exact same props as before.
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      // No new leaf renders.
-      expect(mockLeafRender.mock.calls.length).toBe(1);
-    });
-
-    it('must reject update if selection is not on an edge', () => {
-      var helloBlock = getHelloBlock();
-      var props = getProps(helloBlock);
-
-      var container = document.createElement('div');
-      ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(1);
-
-      // Move selection state to some other block.
-      var nonEdgeSelection = props.selection.merge({
-        anchorKey: 'z',
-        focusKey: 'z',
-      });
-
-      var newProps = {...props, selection: nonEdgeSelection};
-
-      // Render again with selection now moved elsewhere and the contents
-      // unchanged.
-      ReactDOM.render(
-        <DraftEditorBlock {...newProps} />,
-        container,
-      );
-
-      // No new leaf renders.
-      expect(mockLeafRender.mock.calls.length).toBe(1);
-    });
-  });
-
-  describe('Complex rendering with a decorator', () => {
-    it('must split apart two decorated and undecorated', () => {
-      var helloBlock = getHelloBlock();
-
-      mockGetDecorations.mockReturnValue(
-        Immutable.List.of('x', 'x', null, null, null),
-      );
-      var decorator = new Decorator();
-      var props = getProps(helloBlock, decorator);
-
-      var container = document.createElement('div');
-      var block = ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(2);
-
-      var rendered = reactComponentExpect(block)
-        .expectRenderedChild()
-        .toBeComponentOfType('div');
-
-      rendered
-        .expectRenderedChildAt(0)
-        .scalarPropsEqual({offsetKey: 'a-0-0'})
-        .toBeComponentOfType(DecoratorSpan)
-          .expectRenderedChild()
-          .toBeComponentOfType('span');
-
-      rendered
-        .expectRenderedChildAt(1)
-        .scalarPropsEqual({offsetKey: 'a-1-0'})
-        .toBeComponentOfType(DraftEditorLeaf);
-    });
-
-    it('must split apart two decorators', () => {
-      var helloBlock = getHelloBlock();
-
-      mockGetDecorations.mockReturnValue(
-        Immutable.List.of('x', 'x', 'y', 'y', 'y'),
-      );
-
-      var decorator = new Decorator();
-      var props = getProps(helloBlock, decorator);
-
-      var container = document.createElement('div');
-      var block = ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(2);
-
-      var rendered = reactComponentExpect(block)
-        .expectRenderedChild()
-        .toBeComponentOfType('div');
-
-      rendered
-        .expectRenderedChildAt(0)
-        .scalarPropsEqual({offsetKey: 'a-0-0'})
-        .toBeComponentOfType(DecoratorSpan);
-
-      rendered
-        .expectRenderedChildAt(1)
-        .scalarPropsEqual({offsetKey: 'a-1-0'})
-        .toBeComponentOfType(DecoratorSpan);
-    });
-  });
-
-  describe('Complex rendering with inline styles', () => {
-    it('must split apart styled spans', () => {
-      var helloBlock = getHelloBlock();
-      var characters = helloBlock.getCharacterList();
-      var newChars = characters.slice(0, 2).map(ch => {
-        return CharacterMetadata.applyStyle(ch, 'BOLD');
-      }).concat(characters.slice(2));
-
-      helloBlock = helloBlock.set('characterList', Immutable.List(newChars));
-      var props = getProps(helloBlock);
-
-      var container = document.createElement('div');
-      var block = ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(2);
-
-      var rendered = reactComponentExpect(block)
-        .expectRenderedChild()
-        .toBeComponentOfType('div');
-
-      let child = rendered.expectRenderedChildAt(0);
-      child.toBeComponentOfType(DraftEditorLeaf);
-      arePropsEqual(child, {offsetKey: 'a-0-0', styleSet: BOLD});
-
-      child = rendered.expectRenderedChildAt(1);
-      child.toBeComponentOfType(DraftEditorLeaf);
-      arePropsEqual(child, {offsetKey: 'a-0-1', styleSet: NONE});
-    });
-
-    it('must split styled spans apart within decorator', () => {
-      var helloBlock = getHelloBlock();
-      var characters = helloBlock.getCharacterList();
-      var newChars = Immutable.List([
-        CharacterMetadata.applyStyle(characters.get(0), 'BOLD'),
-        CharacterMetadata.applyStyle(characters.get(1), 'ITALIC'),
-      ]).concat(characters.slice(2));
-
-      helloBlock = helloBlock.set('characterList', Immutable.List(newChars));
-
-      mockGetDecorations.mockReturnValue(
-        Immutable.List.of('x', 'x', null, null, null),
-      );
-      var decorator = new Decorator();
-      var props = getProps(helloBlock, decorator);
-
-      var container = document.createElement('div');
-      var block = ReactDOM.render(
-        <DraftEditorBlock {...props} />,
-        container,
-      );
-
-      expect(mockLeafRender.mock.calls.length).toBe(3);
-
-      var rendered = reactComponentExpect(block)
-        .expectRenderedChild()
-        .toBeComponentOfType('div');
-
-      var decoratedSpan = rendered
-        .expectRenderedChildAt(0)
-        .scalarPropsEqual({offsetKey: 'a-0-0'})
-        .toBeComponentOfType(DecoratorSpan)
-          .expectRenderedChild();
-
-      let child = decoratedSpan.expectRenderedChildAt(0);
-      child.toBeComponentOfType(DraftEditorLeaf);
-      arePropsEqual(child, {offsetKey: 'a-0-0', styleSet: BOLD});
-
-      child = decoratedSpan.expectRenderedChildAt(1);
-      child.toBeComponentOfType(DraftEditorLeaf);
-      arePropsEqual(child, {offsetKey: 'a-0-1', styleSet: ITALIC});
-
-      child = rendered.expectRenderedChildAt(1);
-      child.toBeComponentOfType(DraftEditorLeaf);
-      arePropsEqual(child, {offsetKey: 'a-1-0', styleSet: NONE});
-    });
-  });
-
-  describe('Scroll-to-cursor on mount', () => {
-    var props = getProps(getHelloBlock());
-
-    describe('Scroll parent is `window`', () => {
-      it('must scroll the window if needed', () => {
-        getElementPosition.mockReturnValueOnce({
-          x: 0,
-          y: 800,
-          width: 500,
-          height: 16,
-        });
-
-        var container = document.createElement('div');
-        ReactDOM.render(
-          <DraftEditorBlock {...props} />,
-          container,
-        );
-
-        var scrollCalls = window.scrollTo.mock.calls;
-        expect(scrollCalls.length).toBe(1);
-        expect(scrollCalls[0][0]).toBe(0);
-
-        // (current scroll position) + (block height) + (buffer)
-        expect(scrollCalls[0][1]).toBe(26);
-      });
-
-      it('must not scroll the window if unnecessary', () => {
-        var container = document.createElement('div');
-        ReactDOM.render(
-          <DraftEditorBlock {...props} />,
-          container,
-        );
-
-        var scrollCalls = window.scrollTo.mock.calls;
-        expect(scrollCalls.length).toBe(0);
-      });
-    });
-  });
+  const scrollCalls = window.scrollTo.mock.calls;
+  expect(scrollCalls).toMatchSnapshot();
 });

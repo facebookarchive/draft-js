@@ -7,305 +7,122 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
 
 jest.disableAutomock();
 
-var BlockTree = require('BlockTree');
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
+const BlockTree = require('BlockTree');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
-var Immutable = require('immutable');
-var {BOLD} = require('SampleDraftInlineStyle');
+const Immutable = require('immutable');
+const {BOLD} = require('SampleDraftInlineStyle');
 
-var {EMPTY} = CharacterMetadata;
+const {EMPTY} = CharacterMetadata;
 
-var {
-  Repeat,
-} = Immutable;
+const {Repeat} = Immutable;
 
-var PLAIN_BLOCK = {
+const PLAIN_BLOCK = {
   key: 'a',
   text: 'Lincoln',
   characterList: Repeat(EMPTY, 7).toList(),
 };
 
-var boldChar = CharacterMetadata.create({style: BOLD});
-var styledChars = Repeat(EMPTY, 4).concat(
-  Repeat(boldChar, 4),
-  Repeat(EMPTY, 2),
-);
-
-var STYLED_BLOCK = {
+const STYLED_BLOCK = {
   key: 'b',
   text: 'Washington',
-  characterList: styledChars,
+  characterList: Repeat(EMPTY, 4).concat(
+    Repeat(CharacterMetadata.create({style: BOLD}), 4),
+    Repeat(EMPTY, 2),
+  ),
 };
 
-function assertLeafSetValues(leafSet, values) {
-  var {start, end, decoratorKey} = values;
-  expect(leafSet.get('start')).toBe(start);
-  expect(leafSet.get('end')).toBe(end);
-  expect(leafSet.get('decoratorKey')).toBe(decoratorKey);
-}
+class Decorator {}
+Decorator.prototype.getDecorations = jest.fn();
 
-function assertLeafValues(leaf, values) {
-  expect(leaf.get('start')).toBe(values.start);
-  expect(leaf.get('end')).toBe(values.end);
-}
+beforeEach(() => {
+  jest.resetModules();
+});
 
-describe('BlockTree', () => {
-  class Decorator {}
-  Decorator.prototype.getDecorations = jest.fn();
-  beforeEach(() => {
-    jest.resetModules();
+// empty decorator
+const emptyDecoratorFactory = length => {
+  Decorator.prototype.getDecorations.mockImplementation(() =>
+    Repeat(null, length).toList(),
+  );
+  return new Decorator();
+};
+
+// single decorator
+const singleDecoratorFactory = length => {
+  const DECORATOR_KEY = 'x';
+  const RANGE_LENGTH = 3;
+
+  Decorator.prototype.getDecorations.mockImplementation(() => {
+    return Repeat(null, RANGE_LENGTH)
+      .concat(
+        Repeat(DECORATOR_KEY, RANGE_LENGTH),
+        Repeat(null, length - 2 * RANGE_LENGTH),
+      )
+      .toList();
   });
+  return new Decorator();
+};
 
-  describe('generate tree with zero decorations', () => {
-    function getDecorator(length) {
-      Decorator.prototype.getDecorations.mockImplementation(
-        () => Repeat(null, length).toList(),
-      );
-      return new Decorator();
-    }
+const multiDecoratorFactory = length => {
+  const DECORATOR_KEY_A = 'y';
+  const DECORATOR_KEY_B = 'z';
+  const RANGE_LENGTH = 3;
 
-    it('must generate for unstyled block', () => {
-      var block = new ContentBlock(PLAIN_BLOCK);
-      var length = PLAIN_BLOCK.text.length;
-      var decorator = getDecorator(length);
-      const contentState = ContentState.createFromText(PLAIN_BLOCK.text);
-      var tree = BlockTree.generate(contentState, block, decorator);
-
-      // No decorations, so only one leaf set.
-      expect(tree.size).toBe(1);
-      var leafSet = tree.get(0);
-      assertLeafSetValues(leafSet, {
-        start: 0,
-        end: length,
-        decoratorKey: null,
-      });
-
-      var leaves = leafSet.get('leaves');
-      expect(leaves.size).toBe(1);
-
-      var leaf = leaves.get(0);
-      assertLeafValues(leaf, {start: 0, end: length});
-
-      expect(BlockTree.getFingerprint(tree)).toBe('.1');
-    });
-
-    it('must generate for styled block', () => {
-      var block = new ContentBlock(STYLED_BLOCK);
-      var length = STYLED_BLOCK.text.length;
-      var decorator = getDecorator(length);
-      const contentState = ContentState.createFromText(STYLED_BLOCK.text);
-      var tree = BlockTree.generate(contentState, block, decorator);
-
-      // No decorations, so only one leaf set.
-      expect(tree.size).toBe(1);
-      var leafSet = tree.get(0);
-      assertLeafSetValues(leafSet, {
-        start: 0,
-        end: length,
-        decoratorKey: null,
-      });
-
-      // Three styled sections, so three leaves in this leaf set.
-      var leaves = leafSet.get('leaves');
-      expect(leaves.size).toBe(3);
-
-      assertLeafValues(leaves.get(0), {start: 0, end: 4});
-      assertLeafValues(leaves.get(1), {start: 4, end: 8});
-      assertLeafValues(leaves.get(2), {start: 8, end: 10});
-
-      expect(BlockTree.getFingerprint(tree)).toBe('.3');
-    });
+  Decorator.prototype.getDecorations.mockImplementation(() => {
+    return Repeat(DECORATOR_KEY_A, RANGE_LENGTH)
+      .concat(
+        Repeat(null, RANGE_LENGTH),
+        Repeat(DECORATOR_KEY_B, length - 2 * RANGE_LENGTH),
+      )
+      .toList();
   });
+  return new Decorator();
+};
 
-  describe('generate tree with single decoration', () => {
-    var DECORATOR_KEY = 'x';
-    var RANGE_LENGTH = 3;
+const assertBlockTreeGenerate = (
+  config,
+  getDecorator = emptyDecoratorFactory,
+) => {
+  const block = new ContentBlock(config);
+  const content = ContentState.createFromText(config.text);
+  const decorator = getDecorator(config.text.length);
+  const tree = BlockTree.generate(content, block, decorator);
 
-    function getDecorator(length) {
-      Decorator.prototype.getDecorations.mockImplementation(
-        () => {
-          return Repeat(null, RANGE_LENGTH).concat(
-            Repeat(DECORATOR_KEY, RANGE_LENGTH),
-            Repeat(null, (length - (2 * RANGE_LENGTH))),
-          ).toList();
-        },
-      );
-      return new Decorator();
-    }
+  expect(tree.toJS()).toMatchSnapshot();
+  expect(BlockTree.getFingerprint(tree)).toMatchSnapshot();
 
-    it('must generate for unstyled block', () => {
-      var block = new ContentBlock(PLAIN_BLOCK);
-      var length = PLAIN_BLOCK.text.length;
-      var decorator = getDecorator(length);
-      const contentState = ContentState.createFromText(PLAIN_BLOCK.text);
-      var tree = BlockTree.generate(contentState, block, decorator);
+  // to remove
+  return tree;
+};
 
-      // One leaf set for each decoration range.
-      expect(tree.size).toBe(3);
-      assertLeafSetValues(tree.get(0), {
-        start: 0,
-        end: RANGE_LENGTH,
-        decoratorKey: null,
-      });
-      assertLeafSetValues(tree.get(1), {
-        start: RANGE_LENGTH,
-        end: RANGE_LENGTH * 2,
-        decoratorKey: DECORATOR_KEY,
-      });
-      assertLeafSetValues(tree.get(2), {
-        start: RANGE_LENGTH * 2,
-        end: length,
-        decoratorKey: null,
-      });
+it('must generate for unstyled block with empty decorator', () => {
+  assertBlockTreeGenerate(PLAIN_BLOCK);
+});
 
-      expect(tree.get(0).get('leaves').size).toBe(1);
-      expect(tree.get(1).get('leaves').size).toBe(1);
-      expect(tree.get(2).get('leaves').size).toBe(1);
+it('must generate for styled block with empty decorator', () => {
+  assertBlockTreeGenerate(STYLED_BLOCK);
+});
 
-      expect(BlockTree.getFingerprint(tree)).toBe('.1-x.3.1-.1');
-    });
+it('must generate for unstyled block with single decorator', () => {
+  assertBlockTreeGenerate(PLAIN_BLOCK, singleDecoratorFactory);
+});
 
-    it('must generate for styled block', () => {
-      var block = new ContentBlock(STYLED_BLOCK);
-      var length = STYLED_BLOCK.text.length;
-      var decorator = getDecorator(length);
-      const contentState = ContentState.createFromText(STYLED_BLOCK.text);
-      var tree = BlockTree.generate(contentState, block, decorator);
+it('must generate for styled block with single decorator', () => {
+  assertBlockTreeGenerate(STYLED_BLOCK, singleDecoratorFactory);
+});
 
-      // Leaf Sets: ['Was', 'hin', 'gton']
-      // Set 0 leaves (null entity): ['Was'] with NONE
-      // Set 1 leaves ('x' entity): ['h', 'in'] with NONE, BOLD
-      // Set 2 leaves (null entity): ['gt', 'on'] with BOLD, NONE
+it('must generate for unstyled block with multiple decorators', () => {
+  assertBlockTreeGenerate(PLAIN_BLOCK, multiDecoratorFactory);
+});
 
-      // One leaf set for each decoration range.
-      expect(tree.size).toBe(3);
-      assertLeafSetValues(tree.get(0), {
-        start: 0,
-        end: RANGE_LENGTH,
-        decoratorKey: null,
-      });
-      assertLeafSetValues(tree.get(1), {
-        start: RANGE_LENGTH,
-        end: RANGE_LENGTH * 2,
-        decoratorKey: DECORATOR_KEY,
-      });
-      assertLeafSetValues(tree.get(2), {
-        start: RANGE_LENGTH * 2,
-        end: length,
-        decoratorKey: null,
-      });
-
-      expect(tree.get(0).get('leaves').size).toBe(1);
-      expect(tree.get(1).get('leaves').size).toBe(2);
-      expect(tree.get(2).get('leaves').size).toBe(2);
-
-      expect(BlockTree.getFingerprint(tree)).toBe('.1-x.3.2-.2');
-    });
-  });
-
-  describe('generate tree with multiple decorations', () => {
-    var DECORATOR_KEY_A = 'y';
-    var DECORATOR_KEY_B = 'z';
-    var RANGE_LENGTH = 3;
-
-    function getDecorator(length) {
-      Decorator.prototype.getDecorations.mockImplementation(
-        () => {
-          return Repeat(DECORATOR_KEY_A, RANGE_LENGTH).concat(
-            Repeat(null, RANGE_LENGTH),
-            Repeat(DECORATOR_KEY_B, (length - (2 * RANGE_LENGTH))),
-          ).toList();
-        },
-      );
-      return new Decorator();
-    }
-
-    it('must generate for unstyled block', () => {
-      var block = new ContentBlock(PLAIN_BLOCK);
-      var length = PLAIN_BLOCK.text.length;
-      var decorator = getDecorator(length);
-      const contentState = ContentState.createFromText(PLAIN_BLOCK.text);
-      var tree = BlockTree.generate(contentState, block, decorator);
-
-      // One leaf set for each decoration range.
-      expect(tree.size).toBe(3);
-      assertLeafSetValues(tree.get(0), {
-        start: 0,
-        end: RANGE_LENGTH,
-        decoratorKey: DECORATOR_KEY_A,
-      });
-      assertLeafSetValues(tree.get(1), {
-        start: RANGE_LENGTH,
-        end: RANGE_LENGTH * 2,
-        decoratorKey: null,
-      });
-      assertLeafSetValues(tree.get(2), {
-        start: RANGE_LENGTH * 2,
-        end: length,
-        decoratorKey: DECORATOR_KEY_B,
-      });
-
-      expect(tree.get(0).get('leaves').size).toBe(1);
-      expect(tree.get(1).get('leaves').size).toBe(1);
-      expect(tree.get(2).get('leaves').size).toBe(1);
-
-      expect(BlockTree.getFingerprint(tree)).toBe('y.3.1-.1-z.1.1');
-    });
-
-    it('must generate for styled block', () => {
-      var block = new ContentBlock(STYLED_BLOCK);
-      var length = STYLED_BLOCK.text.length;
-      var decorator = getDecorator(length);
-      const contentState = ContentState.createFromText(STYLED_BLOCK.text);
-      var tree = BlockTree.generate(contentState, block, decorator);
-
-      // Leaf Sets: ['Was', 'hin', 'gton']
-      // Set 0 leaves ('y' entity): ['Was'] with NONE
-      // Set 1 leaves (null entity): ['h', 'in'] with NONE, BOLD
-      // Set 2 leaves ('z' entity): ['gt', 'on'] with BOLD, NONE
-
-      // One leaf set for each decoration range.
-      expect(tree.size).toBe(3);
-      assertLeafSetValues(tree.get(0), {
-        start: 0,
-        end: RANGE_LENGTH,
-        decoratorKey: DECORATOR_KEY_A,
-      });
-      assertLeafSetValues(tree.get(1), {
-        start: RANGE_LENGTH,
-        end: RANGE_LENGTH * 2,
-        decoratorKey: null,
-      });
-      assertLeafSetValues(tree.get(2), {
-        start: RANGE_LENGTH * 2,
-        end: length,
-        decoratorKey: DECORATOR_KEY_B,
-      });
-
-      expect(tree.get(0).get('leaves').size).toBe(1);
-      expect(tree.get(0).get('leaves').get(0).toJS())
-        .toEqual({start: 0, end: 3});
-
-      expect(tree.get(1).get('leaves').size).toBe(2);
-      expect(tree.get(1).get('leaves').get(0).toJS())
-        .toEqual({start: 3, end: 4});
-      expect(tree.get(1).get('leaves').get(1).toJS())
-        .toEqual({start: 4, end: 6});
-
-      expect(tree.get(2).get('leaves').size).toBe(2);
-      expect(tree.get(2).get('leaves').get(0).toJS())
-        .toEqual({start: 6, end: 8});
-      expect(tree.get(2).get('leaves').get(1).toJS())
-        .toEqual({start: 8, end: 10});
-
-      expect(BlockTree.getFingerprint(tree)).toBe('y.3.1-.2-z.4.2');
-    });
-  });
+it('must generate for styled block with multiple decorators', () => {
+  assertBlockTreeGenerate(STYLED_BLOCK, multiDecoratorFactory);
 });

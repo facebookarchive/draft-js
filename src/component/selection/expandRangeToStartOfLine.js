@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule expandRangeToStartOfLine
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -82,7 +82,8 @@ function areRectsOnOneLine(
 
   return (
     maxTop <= minBottom &&
-    maxTop - minTop < lineHeight && maxBottom - minBottom < lineHeight
+    maxTop - minTop < lineHeight &&
+    maxBottom - minBottom < lineHeight
   );
 }
 
@@ -143,8 +144,10 @@ function expandRangeToStartOfLine(range: Range): Range {
       'Found unexpected detached subtree when traversing.',
     );
     range.setStartBefore(bestContainer);
-    if (bestContainer.nodeType === 1 &&
-        getComputedStyle((bestContainer: any)).display !== 'inline') {
+    if (
+      bestContainer.nodeType === 1 &&
+      getComputedStyle((bestContainer: any)).display !== 'inline'
+    ) {
       // The start of the line is never in a different block-level container.
       break;
     }
@@ -166,8 +169,11 @@ function expandRangeToStartOfLine(range: Range): Range {
     var nodeValue = currentContainer.nodeValue;
 
     for (var ii = maxIndexToConsider; ii >= 0; ii--) {
-      if (nodeValue != null && ii > 0 &&
-          UnicodeUtils.isSurrogatePair(nodeValue, ii - 1)) {
+      if (
+        nodeValue != null &&
+        ii > 0 &&
+        UnicodeUtils.isSurrogatePair(nodeValue, ii - 1)
+      ) {
         // We're in the middle of a surrogate pair -- skip over so we never
         // return a range with an endpoint in the middle of a code point.
         continue;

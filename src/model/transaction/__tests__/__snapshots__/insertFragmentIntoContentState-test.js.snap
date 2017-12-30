@@ -1,0 +1,860 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must apply fragment at the end 1`] = `
+Object {
+  "blockMap": Object {
+    "a": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+      ],
+      "data": Object {
+        "a": 1,
+      },
+      "depth": 0,
+      "key": "a",
+      "text": "Alphaxx",
+      "type": "unstyled",
+    },
+    "b": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "b",
+      "text": "Bravo",
+      "type": "unordered-list-item",
+    },
+    "c": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "c",
+      "text": "Test",
+      "type": "code-block",
+    },
+    "d": Object {
+      "characterList": Array [],
+      "data": Object {},
+      "depth": 0,
+      "key": "d",
+      "text": "",
+      "type": "code-block",
+    },
+    "e": Object {
+      "characterList": Array [],
+      "data": Object {},
+      "depth": 0,
+      "key": "e",
+      "text": "",
+      "type": "code-block",
+    },
+    "f": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "f",
+      "text": "Charlie",
+      "type": "blockquote",
+    },
+  },
+  "entityMap": Object {
+    "123": Object {
+      "data": Object {},
+      "mutability": "IMMUTABLE",
+      "type": "IMAGE",
+    },
+  },
+  "selectionAfter": Object {
+    "anchorKey": "a",
+    "anchorOffset": 7,
+    "focusKey": "a",
+    "focusOffset": 7,
+    "hasFocus": true,
+    "isBackward": false,
+  },
+  "selectionBefore": Object {
+    "anchorKey": "a",
+    "anchorOffset": 5,
+    "focusKey": "a",
+    "focusOffset": 5,
+    "hasFocus": true,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`must apply fragment to the start 1`] = `
+Object {
+  "blockMap": Object {
+    "a": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+      ],
+      "data": Object {
+        "a": 1,
+      },
+      "depth": 0,
+      "key": "a",
+      "text": "xxAlpha",
+      "type": "unstyled",
+    },
+    "b": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "b",
+      "text": "Bravo",
+      "type": "unordered-list-item",
+    },
+    "c": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "c",
+      "text": "Test",
+      "type": "code-block",
+    },
+    "d": Object {
+      "characterList": Array [],
+      "data": Object {},
+      "depth": 0,
+      "key": "d",
+      "text": "",
+      "type": "code-block",
+    },
+    "e": Object {
+      "characterList": Array [],
+      "data": Object {},
+      "depth": 0,
+      "key": "e",
+      "text": "",
+      "type": "code-block",
+    },
+    "f": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "f",
+      "text": "Charlie",
+      "type": "blockquote",
+    },
+  },
+  "entityMap": Object {
+    "123": Object {
+      "data": Object {},
+      "mutability": "IMMUTABLE",
+      "type": "IMAGE",
+    },
+  },
+  "selectionAfter": Object {
+    "anchorKey": "a",
+    "anchorOffset": 2,
+    "focusKey": "a",
+    "focusOffset": 2,
+    "hasFocus": true,
+    "isBackward": false,
+  },
+  "selectionBefore": Object {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "a",
+    "focusOffset": 0,
+    "hasFocus": true,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`must apply fragment to within block 1`] = `
+Object {
+  "blockMap": Object {
+    "a": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+      ],
+      "data": Object {
+        "a": 1,
+      },
+      "depth": 0,
+      "key": "a",
+      "text": "Alxxpha",
+      "type": "unstyled",
+    },
+    "b": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "b",
+      "text": "Bravo",
+      "type": "unordered-list-item",
+    },
+    "c": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "c",
+      "text": "Test",
+      "type": "code-block",
+    },
+    "d": Object {
+      "characterList": Array [],
+      "data": Object {},
+      "depth": 0,
+      "key": "d",
+      "text": "",
+      "type": "code-block",
+    },
+    "e": Object {
+      "characterList": Array [],
+      "data": Object {},
+      "depth": 0,
+      "key": "e",
+      "text": "",
+      "type": "code-block",
+    },
+    "f": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "f",
+      "text": "Charlie",
+      "type": "blockquote",
+    },
+  },
+  "entityMap": Object {
+    "123": Object {
+      "data": Object {},
+      "mutability": "IMMUTABLE",
+      "type": "IMAGE",
+    },
+  },
+  "selectionAfter": Object {
+    "anchorKey": "a",
+    "anchorOffset": 4,
+    "focusKey": "a",
+    "focusOffset": 4,
+    "hasFocus": true,
+    "isBackward": false,
+  },
+  "selectionBefore": Object {
+    "anchorKey": "a",
+    "anchorOffset": 2,
+    "focusKey": "a",
+    "focusOffset": 2,
+    "hasFocus": true,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`must apply multiblock fragments 1`] = `
+Object {
+  "blockMap": Object {
+    "a": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+      ],
+      "data": Object {
+        "a": 1,
+      },
+      "depth": 0,
+      "key": "a",
+      "text": "xx",
+      "type": "unstyled",
+    },
+    "b": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": Array [
+            "123",
+          ],
+          "style": Array [
+            "BOLD",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "b",
+      "text": "Bravo",
+      "type": "unordered-list-item",
+    },
+    "c": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "c",
+      "text": "Test",
+      "type": "code-block",
+    },
+    "d": Object {
+      "characterList": Array [],
+      "data": Object {},
+      "depth": 0,
+      "key": "d",
+      "text": "",
+      "type": "code-block",
+    },
+    "e": Object {
+      "characterList": Array [],
+      "data": Object {},
+      "depth": 0,
+      "key": "e",
+      "text": "",
+      "type": "code-block",
+    },
+    "f": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [
+            "ITALIC",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "f",
+      "text": "Charlie",
+      "type": "blockquote",
+    },
+    "key0": Object {
+      "characterList": Array [
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+        Object {
+          "entity": Array [],
+          "style": Array [],
+        },
+      ],
+      "data": Object {
+        "b": 2,
+      },
+      "depth": 0,
+      "key": "key0",
+      "text": "yyAlpha",
+      "type": "unstyled",
+    },
+  },
+  "entityMap": Object {
+    "123": Object {
+      "data": Object {},
+      "mutability": "IMMUTABLE",
+      "type": "IMAGE",
+    },
+  },
+  "selectionAfter": Object {
+    "anchorKey": "key0",
+    "anchorOffset": 2,
+    "focusKey": "key0",
+    "focusOffset": 2,
+    "hasFocus": true,
+    "isBackward": false,
+  },
+  "selectionBefore": Object {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "a",
+    "focusOffset": 0,
+    "hasFocus": true,
+    "isBackward": false,
+  },
+}
+`;

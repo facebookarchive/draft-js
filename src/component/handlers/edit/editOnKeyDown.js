@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnKeyDown
+ * @format
  * @flow
  */
 
@@ -129,11 +130,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
           '\u00a0',
         );
         editor.update(
-          EditorState.push(
-            editorState,
-            contentState,
-            'insert-characters',
-          ),
+          EditorState.push(editorState, contentState, 'insert-characters'),
         );
         return;
       }

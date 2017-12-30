@@ -7,46 +7,45 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
 
 jest.disableAutomock();
 
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
-var {List, Repeat} = require('immutable');
+const ContentBlock = require('ContentBlock');
 
-var applyEntityToContentBlock = require('applyEntityToContentBlock');
+const applyEntityToContentBlock = require('applyEntityToContentBlock');
 
-describe('applyEntityToContentBlock', () => {
-  var block = new ContentBlock({
-    key: 'a',
-    text: 'Hello',
-    characterList: List(Repeat(CharacterMetadata.EMPTY, 5)),
-  });
+const sampleBlock = new ContentBlock({
+  key: 'a',
+  text: 'Hello',
+});
 
-  function getEntities(block) {
-    return block.getCharacterList().map(c => c.getEntity()).toJS();
-  }
+const assertApplyEntityToContentBlock = (
+  start,
+  end,
+  entityKey = 'x',
+  contentBlock = sampleBlock,
+) => {
+  expect(
+    applyEntityToContentBlock(contentBlock, start, end, entityKey, true).toJS(),
+  ).toMatchSnapshot();
+};
 
-  it('must apply from the start', () => {
-    var modified = applyEntityToContentBlock(block, 0, 2, 'x', true);
-    expect(getEntities(modified)).toEqual([['x'], ['x'], [], [], []]);
-  });
+test('must apply from the start', () => {
+  assertApplyEntityToContentBlock(0, 2);
+});
 
-  it('must apply within', () => {
-    var modified = applyEntityToContentBlock(block, 1, 4, 'x', true);
-    expect(getEntities(modified)).toEqual([[], ['x'], ['x'], ['x'], []]);
-  });
+test('must apply within', () => {
+  assertApplyEntityToContentBlock(1, 4);
+});
 
-  it('must apply at the end', () => {
-    var modified = applyEntityToContentBlock(block, 3, 5, 'x', true);
-    expect(getEntities(modified)).toEqual([[], [], [], ['x'], ['x']]);
-  });
+test('must apply at the end', () => {
+  assertApplyEntityToContentBlock(3, 5);
+});
 
-  it('must apply to the entire text', () => {
-    var modified = applyEntityToContentBlock(block, 0, 5, 'x', true);
-    expect(getEntities(modified)).toEqual([['x'], ['x'], ['x'], ['x'], ['x']]);
-  });
+test('must apply to the entire text', () => {
+  assertApplyEntityToContentBlock(0, 5);
 });

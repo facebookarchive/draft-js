@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule RichTextEditorUtil
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -381,9 +381,9 @@ const RichTextEditorUtil = {
   },
 
   /**
-   * When a collapsed cursor is at the start of an empty styled block, 
-   * changes block to 'unstyled'. Returns null if block or selection does not
-   * meet that criteria.
+   * When a collapsed cursor is at the start of the first styled block, or
+   * an empty styled block, changes block to 'unstyled'. Returns null if
+   * block or selection does not meet that criteria.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
     var selection = editorState.getSelection();
@@ -392,7 +392,9 @@ const RichTextEditorUtil = {
       var key = selection.getAnchorKey();
       var content = editorState.getCurrentContent();
       var block = content.getBlockForKey(key);
-      if (block.getLength() > 0) {
+
+      var firstBlock = content.getFirstBlock();
+      if (block.getLength() > 0 && block !== firstBlock) {
         return null;
       }
 
@@ -401,7 +403,8 @@ const RichTextEditorUtil = {
       if (
         type === 'code-block' &&
         blockBefore &&
-        blockBefore.getType() === 'code-block'
+        blockBefore.getType() === 'code-block' &&
+        blockBefore.getLength() !== 0
       ) {
         return null;
       }

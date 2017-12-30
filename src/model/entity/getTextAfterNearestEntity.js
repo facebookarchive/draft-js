@@ -7,20 +7,20 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getTextAfterNearestEntity
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 
 /**
  * Find the string of text between the previous entity and the specified
  * offset. This allows us to narrow down search areas for regex matching.
  */
 function getTextAfterNearestEntity(
-  block: ContentBlock,
+  block: BlockNodeRecord,
   offset: number,
 ): string {
   var start = offset;

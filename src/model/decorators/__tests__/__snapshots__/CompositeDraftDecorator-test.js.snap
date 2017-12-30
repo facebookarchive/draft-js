@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must behave correctly if there are no matches 1`] = `
+Immutable.List [
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+]
+`;
+
+exports[`must find decoration matches 1`] = `
+Immutable.List [
+  null,
+  null,
+  "0.0",
+  "0.0",
+  "0.0",
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  "0.1",
+  "0.1",
+  "0.1",
+  null,
+]
+`;
+
+exports[`must find matches for multiple decorators 1`] = `
+Immutable.List [
+  null,
+  null,
+  "0.0",
+  "0.0",
+  "0.0",
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  "1.0",
+  "1.0",
+  "1.0",
+]
+`;
+
+exports[`must find matches regardless of text location 1`] = `
+Immutable.List [
+  null,
+  null,
+  null,
+  null,
+  null,
+  "1.0",
+  "1.0",
+  "1.0",
+  null,
+  "0.0",
+  "0.0",
+  "0.0",
+  null,
+]
+`;
+
+exports[`must separate adjacent ranges that have the same decorator 1`] = `
+Immutable.List [
+  "0.0",
+  "0.0",
+  "0.0",
+  "0.1",
+  "0.1",
+  "0.1",
+  "0.2",
+  "0.2",
+  "0.2",
+]
+`;
+
+exports[`must throw out matches if earlier match is shorter 1`] = `
+Immutable.List [
+  "0.0",
+  "0.0",
+  "0.0",
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  "0.1",
+  "0.1",
+  "0.1",
+]
+`;
+
+exports[`must throw out overlaps with existing decorations 1`] = `
+Immutable.List [
+  "0.0",
+  "0.0",
+  "0.0",
+  "0.0",
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  "1.0",
+  "1.0",
+  "1.0",
+]
+`;

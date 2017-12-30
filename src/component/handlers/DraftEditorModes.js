@@ -7,37 +7,37 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorModes
+ * @format
  * @flow
  */
 
 'use strict';
 
-export type DraftEditorModes = (
+export type DraftEditorModes =
   /**
    * `edit` is the most common mode for text entry. This includes most typing,
    * deletion, cut/copy/paste, and other behaviors.
    */
-  'edit' |
+  | 'edit'
 
   /**
    * `composite` mode handles IME text entry.
    */
-  'composite' |
+  | 'composite'
 
   /**
    * `drag` mode handles editor behavior while a drag event is occurring.
    */
-  'drag' |
+  | 'drag'
 
   /**
    * `cut` mode allows us to effectively ignore all edit behaviors while the`
    * browser performs a native `cut` operation on the DOM.
    */
-  'cut' |
+  | 'cut'
 
   /**
    * `render` mode is the normal "null" mode, during which no edit behavior is
    * expected or observed.
    */
-  'render'
-);
+  | 'render';

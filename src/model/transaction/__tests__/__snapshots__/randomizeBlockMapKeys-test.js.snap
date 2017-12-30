@@ -1,0 +1,194 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must be able to randomize keys for ContentBlockNodes BlockMap and update reference links to the new keys 1`] = `
+Object {
+  "key0": Object {
+    "characterList": Array [],
+    "children": Array [
+      "key1",
+      "key3",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  "key1": Object {
+    "characterList": Array [],
+    "children": Array [
+      "key2",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "nextSibling": "key3",
+    "parent": "key0",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  "key2": Object {
+    "characterList": Array [
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key2",
+    "nextSibling": null,
+    "parent": "key1",
+    "prevSibling": null,
+    "text": "X",
+    "type": "unstyled",
+  },
+  "key3": Object {
+    "characterList": Array [
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key3",
+    "nextSibling": null,
+    "parent": "key0",
+    "prevSibling": "key1",
+    "text": "Y",
+    "type": "unstyled",
+  },
+}
+`;
+
+exports[`must be able to randomize keys for ContentBlocks BlockMap 1`] = `
+Object {
+  "key0": Object {
+    "characterList": Array [
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  "key1": Object {
+    "characterList": Array [
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "text": "Beta",
+    "type": "unstyled",
+  },
+  "key2": Object {
+    "characterList": Array [
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key2",
+    "text": "Charlie",
+    "type": "unstyled",
+  },
+  "key3": Object {
+    "characterList": Array [
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+      Object {
+        "entity": Array [],
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key3",
+    "text": "Delta",
+    "type": "unstyled",
+  },
+}
+`;

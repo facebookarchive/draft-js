@@ -7,36 +7,40 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftPasteProcessor
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {EntityMap} from 'EntityMap';
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
+const ContentBlockNode = require('ContentBlockNode');
+const DraftFeatureFlags = require('DraftFeatureFlags');
 const Immutable = require('immutable');
 
-const convertFromHTMLtoContentBlocks
-  = require('convertFromHTMLToContentBlocks');
+const convertFromHTMLtoContentBlocks = require('convertFromHTMLToContentBlocks');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-const {
-  List,
-  Repeat,
-} = Immutable;
+const {List, Repeat} = Immutable;
+
+const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
+const ContentBlockRecord = experimentalTreeDataSupport
+  ? ContentBlockNode
+  : ContentBlock;
 
 const DraftPasteProcessor = {
   processHTML(
     html: string,
     blockRenderMap?: DraftBlockRenderMap,
-  ): ?{contentBlocks: ?Array<ContentBlock>, entityMap: EntityMap} {
+  ): ?{contentBlocks: ?Array<BlockNodeRecord>, entityMap: EntityMap} {
     return convertFromHTMLtoContentBlocks(
       html,
       getSafeBodyFromHTML,
@@ -48,18 +52,37 @@ const DraftPasteProcessor = {
     textBlocks: Array<string>,
     character: CharacterMetadata,
     type: DraftBlockType,
-  ): Array<ContentBlock> {
-    return textBlocks.map(
-      textLine => {
-        textLine = sanitizeDraftText(textLine);
-        return new ContentBlock({
-          key: generateRandomKey(),
-          type,
-          text: textLine,
-          characterList: List(Repeat(character, textLine.length)),
-        });
-      },
-    );
+  ): Array<BlockNodeRecord> {
+    return textBlocks.reduce((acc, textLine, index) => {
+      textLine = sanitizeDraftText(textLine);
+      const key = generateRandomKey();
+
+      let blockNodeConfig = {
+        key,
+        type,
+        text: textLine,
+        characterList: List(Repeat(character, textLine.length)),
+      };
+
+      // next block updates previous block
+      if (experimentalTreeDataSupport && index !== 0) {
+        const prevSiblingIndex = index - 1;
+        // update previous block
+        const previousBlock = (acc[prevSiblingIndex] = acc[
+          prevSiblingIndex
+        ].merge({
+          nextSibling: key,
+        }));
+        blockNodeConfig = {
+          ...blockNodeConfig,
+          prevSibling: previousBlock.getKey(),
+        };
+      }
+
+      acc.push(new ContentBlockRecord(blockNodeConfig));
+
+      return acc;
+    }, []);
   },
 };
 

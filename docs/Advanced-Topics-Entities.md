@@ -8,9 +8,9 @@ permalink: docs/advanced-topics-entities.html
 ---
 
 This article discusses the Entity system, which Draft uses for annotating
-ranges of text with metadata. Entities enable engineers to introduce levels of
-richness beyond styled text to their editors. Links, mentions, and embedded
-content can all be implemented using entities.
+ranges of text with metadata. Entities introduce levels of richness beyond
+styled text. Links, mentions, and embedded content can all be implemented 
+using entities.
 
 In the Draft repository, the
 [link editor](https://github.com/facebook/draft-js/tree/master/examples/link)

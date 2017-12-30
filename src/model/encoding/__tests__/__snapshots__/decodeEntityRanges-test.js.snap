@@ -1,0 +1,168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must decode when an entity is present 1`] = `
+Array [
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [],
+]
+`;
+
+exports[`must decode when an entity is present more than once 1`] = `
+Array [
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [],
+]
+`;
+
+exports[`must decode when multiple entities present 1`] = `
+Array [
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "8",
+  ],
+  Immutable.OrderedSet [
+    "8",
+  ],
+  Immutable.OrderedSet [],
+]
+`;
+
+exports[`must decode when no entities present 1`] = `
+Array [
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+]
+`;
+
+exports[`must handle ranges that include surrogate pairs 1`] = `
+Array [
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "8",
+  ],
+  Immutable.OrderedSet [
+    "8",
+  ],
+  Immutable.OrderedSet [],
+]
+`;
+
+exports[`must return interior ranges with multiple entities present 1`] = `
+Array [
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+    "8",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [],
+]
+`;
+
+exports[`must return overlapping ranges with multiple entities present 1`] = `
+Array [
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+  ],
+  Immutable.OrderedSet [
+    "6",
+    "8",
+  ],
+  Immutable.OrderedSet [
+    "8",
+  ],
+  Immutable.OrderedSet [
+    "8",
+  ],
+  Immutable.OrderedSet [],
+]
+`;

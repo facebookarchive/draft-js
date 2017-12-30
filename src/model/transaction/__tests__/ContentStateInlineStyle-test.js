@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
@@ -14,82 +15,87 @@
 jest.disableAutomock();
 
 const ContentStateInlineStyle = require('ContentStateInlineStyle');
-const {List, Repeat} = require('immutable');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 
-describe('ContentStateInlineStyle', () => {
-  const {contentState, selectionState} = getSampleStateForTesting();
+const {contentState, selectionState} = getSampleStateForTesting();
 
-  function getStyles(block) {
-    return block.getCharacterList().map(c => c.getStyle()).flatten().toJS();
-  }
+const initialSelection = selectionState.set(
+  'focusOffset',
+  contentState.getBlockForKey(selectionState.getStartKey()).getLength(),
+);
 
-  describe('Within a single block', () => {
-    const blockKey = selectionState.getStartKey();
-    const length = contentState.getBlockForKey(blockKey).getLength();
-    const target = selectionState.set('focusOffset', length);
+const assertAddContentStateInlineStyle = (
+  inlineStyle,
+  selection = selectionState,
+  content = contentState,
+) => {
+  const newContentState = ContentStateInlineStyle.add(
+    content,
+    selection,
+    inlineStyle,
+  );
 
-    it('must add styles', () => {
-      let modified = ContentStateInlineStyle.add(contentState, target, 'BOLD');
-      expect(getStyles(modified.getBlockForKey(blockKey))).toEqual(
-        Repeat('BOLD', length).toJS(),
-      );
+  expect(newContentState.getBlockMap().toJS()).toMatchSnapshot();
 
-      const nextTarget = target.set('focusOffset', 2);
-      modified = ContentStateInlineStyle.add(modified, nextTarget, 'ITALIC');
-      expect(getStyles(modified.getBlockForKey(blockKey))).toEqual(
-        List(['BOLD', 'ITALIC', 'BOLD', 'ITALIC'])
-          .concat(List(Repeat('BOLD', 3)))
-          .toJS(),
-      );
-    });
+  return newContentState;
+};
 
-    it('must remove styles', () => {
-      // Go ahead and add some styles that we'll then remove.
-      let modified = ContentStateInlineStyle.add(contentState, target, 'BOLD');
-      modified = ContentStateInlineStyle.add(modified, target, 'ITALIC');
-      modified = ContentStateInlineStyle.remove(modified, target, 'BOLD');
-      expect(getStyles(modified.getBlockForKey(blockKey))).toEqual(
-        Repeat('ITALIC', length).toJS(),
-      );
+const assertRemoveContentStateInlineStyle = (
+  inlineStyle,
+  selection = selectionState,
+  content = contentState,
+) => {
+  const newContentState = ContentStateInlineStyle.remove(
+    content,
+    selection,
+    inlineStyle,
+  );
 
-      const nextTarget = target.set('focusOffset', 2);
-      modified = ContentStateInlineStyle.remove(modified, nextTarget, 'ITALIC');
-      expect(getStyles(modified.getBlockForKey(blockKey))).toEqual(
-        List(Repeat('ITALIC', 3)).toJS(),
-      );
-    });
+  expect(newContentState.getBlockMap().toJS()).toMatchSnapshot();
+
+  return newContentState;
+};
+
+test('must add styles', () => {
+  let modified = assertAddContentStateInlineStyle('BOLD', initialSelection);
+
+  assertAddContentStateInlineStyle(
+    'ITALIC',
+    selectionState.set('focusOffset', 2),
+    modified,
+  );
+});
+
+test('must remove styles', () => {
+  // Go ahead and add some styles that we'll then remove.
+  let modified = assertAddContentStateInlineStyle('BOLD', initialSelection);
+  modified = assertAddContentStateInlineStyle(
+    'ITALIC',
+    initialSelection,
+    modified,
+  );
+
+  // we then remove the added styles
+  modified = assertRemoveContentStateInlineStyle(
+    'BOLD',
+    initialSelection,
+    modified,
+  );
+  assertRemoveContentStateInlineStyle(
+    'ITALIC',
+    initialSelection.set('focusOffset', 2),
+    modified,
+  );
+});
+
+test('must add and remove styles accross multiple blocks', () => {
+  const nextBlock = contentState.getBlockAfter(selectionState.getStartKey());
+  const selection = selectionState.merge({
+    focusKey: nextBlock.getKey(),
+    focusOffset: nextBlock.getLength(),
   });
 
-  describe('Across multiple blocks', () => {
-    const nextBlock = contentState.getBlockAfter(selectionState.getStartKey());
-    const target = selectionState.merge({
-      focusKey: nextBlock.getKey(),
-      focusOffset: nextBlock.getLength(),
-    });
-
-    it('must add and remove styles', () => {
-      let modified = ContentStateInlineStyle.add(contentState, target, 'BOLD');
-      const start = contentState.getBlockForKey(target.getStartKey());
-
-      expect(getStyles(modified.getBlockForKey(target.getStartKey()))).toEqual(
-        Repeat('BOLD', start.getLength()).toJS(),
-      );
-
-      expect(getStyles(modified.getBlockForKey(nextBlock.getKey()))).toEqual(
-        Repeat('BOLD', nextBlock.getLength()).toJS(),
-      );
-
-      modified = ContentStateInlineStyle.remove(contentState, target, 'BOLD');
-
-      expect(
-        getStyles(modified.getBlockForKey(target.getStartKey())).length,
-      ).toEqual(0);
-
-      expect(
-        getStyles(modified.getBlockForKey(nextBlock.getKey())).length,
-      ).toEqual(0);
-    });
-  });
+  const modified = assertAddContentStateInlineStyle('BOLD', selection);
+  assertRemoveContentStateInlineStyle('BOLD', selection, modified);
 });

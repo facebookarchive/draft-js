@@ -7,53 +7,109 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule convertFromDraftStateToRaw
+ * @format
  * @flow
  */
 
 'use strict';
 
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
+import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
-var encodeEntityRanges = require('encodeEntityRanges');
-var encodeInlineStyleRanges = require('encodeInlineStyleRanges');
+const ContentBlock = require('ContentBlock');
+const ContentBlockNode = require('ContentBlockNode');
+const DraftStringKey = require('DraftStringKey');
 
-function convertFromDraftStateToRaw(
+const encodeEntityRanges = require('encodeEntityRanges');
+const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
+const invariant = require('invariant');
+
+const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
+  return {
+    key: block.getKey(),
+    text: block.getText(),
+    type: block.getType(),
+    depth: block.getDepth(),
+    inlineStyleRanges: encodeInlineStyleRanges(block),
+    entityRanges: encodeEntityRanges(block, entityStorageMap),
+    data: block.getData().toObject(),
+  };
+};
+
+const insertRawBlock = (
+  block: BlockNodeRecord,
+  entityMap: *,
+  rawBlocks: Array<RawDraftContentBlock>,
+  blockCacheRef: *,
+) => {
+  if (block instanceof ContentBlock) {
+    rawBlocks.push(createRawBlock(block, entityMap));
+    return;
+  }
+
+  invariant(block instanceof ContentBlockNode, 'block is not a BlockNode');
+
+  const parentKey = block.getParentKey();
+  const rawBlock = (blockCacheRef[block.getKey()] = {
+    ...createRawBlock(block, entityMap),
+    children: [],
+  });
+
+  if (parentKey) {
+    blockCacheRef[parentKey].children.push(rawBlock);
+    return;
+  }
+
+  rawBlocks.push(rawBlock);
+};
+
+const encodeRawBlocks = (
   contentState: ContentState,
-): RawDraftContentState {
-  var entityStorageMap = {};
-  var rawBlocks = [];
+  rawState: RawDraftContentState,
+): RawDraftContentState => {
+  const {entityMap} = rawState;
 
-  contentState.getBlockMap().forEach((block, blockKey) => {
+  const rawBlocks = [];
+
+  const blockCacheRef = {};
+  const entityCacheRef = {};
+
+  contentState.getBlockMap().forEach(block => {
     block.findEntityRanges(
       character => character.getEntity().size > 0,
       start => {
         block.getEntityAt(start).forEach(k => {
-          if (!entityStorageMap.hasOwnProperty(k)) {
-            entityStorageMap[k] = true;
+          if (!entityMap.hasOwnProperty(k)) {
+            entityMap[k] = true;
           }
         });
       },
     );
 
-    rawBlocks.push({
-      key: blockKey,
-      text: block.getText(),
-      type: block.getType(),
-      depth: block.getDepth(),
-      inlineStyleRanges: encodeInlineStyleRanges(block),
-      entityRanges: encodeEntityRanges(block),
-      data: block.getData().toObject(),
-    });
+    insertRawBlock(block, entityMap, rawBlocks, blockCacheRef);
   });
 
-  // Flip storage map so that our storage keys map to global
-  // DraftEntity keys.
-  var entityKeys = Object.keys(entityStorageMap);
-  var flippedStorageMap = {};
-  entityKeys.forEach(key => {
-    var entity = contentState.getEntity(key);
-    flippedStorageMap[key] = {
+  return {
+    blocks: rawBlocks,
+    entityMap,
+  };
+};
+
+// Flip storage map so that our storage keys map to global
+// DraftEntity keys.
+const encodeRawEntityMap = (
+  contentState: ContentState,
+  rawState: RawDraftContentState,
+): RawDraftContentState => {
+  const {blocks, entityMap} = rawState;
+
+  const rawEntityMap = {};
+
+  Object.keys(entityMap).forEach((key, index) => {
+    const entity = contentState.getEntity(key);
+    rawEntityMap[index] = {
       type: entity.getType(),
       mutability: entity.getMutability(),
       data: entity.getData(),
@@ -61,9 +117,26 @@ function convertFromDraftStateToRaw(
   });
 
   return {
-    entityMap: flippedStorageMap,
-    blocks: rawBlocks,
+    blocks,
+    entityMap: rawEntityMap,
   };
-}
+};
+
+const convertFromDraftStateToRaw = (
+  contentState: ContentState,
+): RawDraftContentState => {
+  let rawDraftContentState = {
+    entityMap: {},
+    blocks: [],
+  };
+
+  // add blocks
+  rawDraftContentState = encodeRawBlocks(contentState, rawDraftContentState);
+
+  // add entities
+  rawDraftContentState = encodeRawEntityMap(contentState, rawDraftContentState);
+
+  return rawDraftContentState;
+};
 
 module.exports = convertFromDraftStateToRaw;

@@ -7,13 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getCharacterRemovalRange
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
@@ -35,8 +35,8 @@ var invariant = require('invariant');
  */
 function getCharacterRemovalRange(
   entityMap: EntityMap,
-  startBlock: ContentBlock,
-  endBlock: ContentBlock,
+  startBlock: BlockNodeRecord,
+  endBlock: BlockNodeRecord,
   selectionState: SelectionState,
   direction: DraftRemovalDirection,
 ): SelectionState {
@@ -116,7 +116,7 @@ function getCharacterRemovalRange(
 
 function getEntityRemovalRange(
   entityMap: EntityMap,
-  block: ContentBlock,
+  block: BlockNodeRecord,
   selectionState: SelectionState,
   direction: DraftRemovalDirection,
   entities: DraftEntitySet,
