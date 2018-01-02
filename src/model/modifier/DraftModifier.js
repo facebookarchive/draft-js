@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftModifier
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -17,6 +17,7 @@ import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftEntitySet} from 'DraftEntitySet';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type SelectionState from 'SelectionState';
 import type {Map} from 'immutable';
@@ -55,7 +56,7 @@ var DraftModifier = {
     rangeToReplace: SelectionState,
     text: string,
     inlineStyle?: DraftInlineStyle,
-    entityKey?: ?string,
+    entities?: DraftEntitySet,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, rangeToReplace);
     var withoutText = removeRangeFromContentState(
@@ -65,7 +66,7 @@ var DraftModifier = {
 
     var character = CharacterMetadata.create({
       style: inlineStyle || OrderedSet(),
-      entity: entityKey || null,
+      entity: entities || OrderedSet(),
     });
 
     return insertTextIntoContentState(
@@ -81,7 +82,7 @@ var DraftModifier = {
     targetRange: SelectionState,
     text: string,
     inlineStyle?: DraftInlineStyle,
-    entityKey?: ?string,
+    entityKey?: DraftEntitySet,
   ): ContentState {
     invariant(
       targetRange.isCollapsed(),
@@ -122,10 +123,7 @@ var DraftModifier = {
     fragment: BlockMap,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
-    var withoutText = removeRangeFromContentState(
-      withoutEntities,
-      targetRange,
-    );
+    var withoutText = removeRangeFromContentState(withoutEntities, targetRange);
 
     return insertFragmentIntoContentState(
       withoutText,
@@ -156,13 +154,13 @@ var DraftModifier = {
     const startOffset = rangeToRemove.getStartOffset();
     const endOffset = rangeToRemove.getEndOffset();
 
-    const startEntityKey = startBlock.getEntityAt(startOffset);
-    const endEntityKey = endBlock.getEntityAt(endOffset - 1);
+    const startEntityKeys = startBlock.getEntityAt(startOffset);
+    const endEntityKeys = endBlock.getEntityAt(endOffset - 1);
 
     // Check whether the selection state overlaps with a single entity.
     // If so, try to remove the appropriate substring of the entity text.
     if (startKey === endKey) {
-      if (startEntityKey && startEntityKey === endEntityKey) {
+      if (startEntityKeys.intersect(endEntityKeys).size > 0) {
         const adjustedRemovalRange = getCharacterRemovalRange(
           contentState.getEntityMap(),
           startBlock,
@@ -238,10 +236,8 @@ var DraftModifier = {
     selectionState: SelectionState,
     blockType: DraftBlockType,
   ): ContentState {
-    return modifyBlockForContentState(
-      contentState,
-      selectionState,
-      (block) => block.merge({type: blockType, depth: 0}),
+    return modifyBlockForContentState(contentState, selectionState, block =>
+      block.merge({type: blockType, depth: 0}),
     );
   },
 
@@ -250,10 +246,8 @@ var DraftModifier = {
     selectionState: SelectionState,
     blockData: Map<any, any>,
   ): ContentState {
-    return modifyBlockForContentState(
-      contentState,
-      selectionState,
-      (block) => block.merge({data: blockData}),
+    return modifyBlockForContentState(contentState, selectionState, block =>
+      block.merge({data: blockData}),
     );
   },
 
@@ -262,24 +256,35 @@ var DraftModifier = {
     selectionState: SelectionState,
     blockData: Map<any, any>,
   ): ContentState {
-    return modifyBlockForContentState(
-      contentState,
-      selectionState,
-      (block) => block.merge({data: block.getData().merge(blockData)}),
+    return modifyBlockForContentState(contentState, selectionState, block =>
+      block.merge({data: block.getData().merge(blockData)}),
     );
   },
 
-
-  applyEntity: function(
+  addEntity: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    entityKey: ?string,
+    entityKey: string,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     return applyEntityToContentState(
       withoutEntities,
       selectionState,
       entityKey,
+      true,
+    );
+  },
+
+  removeEntity: function(
+    contentState: ContentState,
+    selectionState: SelectionState,
+    entityKey: string,
+  ): ContentState {
+    return applyEntityToContentState(
+      contentState,
+      selectionState,
+      entityKey,
+      false,
     );
   },
 };

@@ -7,17 +7,18 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftDecorator
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 
 export type DraftDecoratorStrategy = (
   contentState: ContentState,
-  block: ContentBlock,
+  block: BlockNodeRecord,
   callback: (start: number, end: number) => void,
 ) => void;
 

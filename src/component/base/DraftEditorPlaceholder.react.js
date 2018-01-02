@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorPlaceholder.react
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -33,18 +33,16 @@ type Props = {
  *
  * Override placeholder style via CSS.
  */
-class DraftEditorPlaceholder extends React.Component {
+class DraftEditorPlaceholder extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     return (
       this.props.text !== nextProps.text ||
-      (
-        this.props.editorState.getSelection().getHasFocus() !==
+      this.props.editorState.getSelection().getHasFocus() !==
         nextProps.editorState.getSelection().getHasFocus()
-      )
     );
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     const hasFocus = this.props.editorState.getSelection().getHasFocus();
 
     const className = cx({
@@ -52,11 +50,16 @@ class DraftEditorPlaceholder extends React.Component {
       'public/DraftEditorPlaceholder/hasFocus': hasFocus,
     });
 
+    const contentStyle = {
+      whiteSpace: 'pre-wrap',
+    };
+
     return (
       <div className={className}>
         <div
           className={cx('public/DraftEditorPlaceholder/inner')}
-          id={this.props.accessibilityID}>
+          id={this.props.accessibilityID}
+          style={contentStyle}>
           {this.props.text}
         </div>
       </div>

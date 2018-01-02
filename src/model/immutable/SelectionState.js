@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule SelectionState
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -38,10 +38,21 @@ var SelectionStateRecord = Record(defaultRecord);
 class SelectionState extends SelectionStateRecord {
   serialize(): string {
     return (
-      'Anchor: ' + this.getAnchorKey() + ':' + this.getAnchorOffset() + ', ' +
-      'Focus: ' + this.getFocusKey() + ':' + this.getFocusOffset() + ', ' +
-      'Is Backward: ' + String(this.getIsBackward()) + ', ' +
-      'Has Focus: ' + String(this.getHasFocus())
+      'Anchor: ' +
+      this.getAnchorKey() +
+      ':' +
+      this.getAnchorOffset() +
+      ', ' +
+      'Focus: ' +
+      this.getFocusKey() +
+      ':' +
+      this.getFocusOffset() +
+      ', ' +
+      'Is Backward: ' +
+      String(this.getIsBackward()) +
+      ', ' +
+      'Has Focus: ' +
+      String(this.getHasFocus())
     );
   }
 
@@ -73,11 +84,7 @@ class SelectionState extends SelectionStateRecord {
    * Return whether the specified range overlaps with an edge of the
    * SelectionState.
    */
-  hasEdgeWithin(
-    blockKey: string,
-    start: number,
-    end: number,
-  ): boolean {
+  hasEdgeWithin(blockKey: string, start: number, end: number): boolean {
     var anchorKey = this.getAnchorKey();
     var focusKey = this.getFocusKey();
 
@@ -91,9 +98,8 @@ class SelectionState extends SelectionStateRecord {
       return false;
     }
 
-    var offsetToCheck = blockKey === anchorKey ?
-      this.getAnchorOffset() :
-      this.getFocusOffset();
+    var offsetToCheck =
+      blockKey === anchorKey ? this.getAnchorOffset() : this.getFocusOffset();
 
     return start <= offsetToCheck && end >= offsetToCheck;
   }
@@ -106,32 +112,26 @@ class SelectionState extends SelectionStateRecord {
   }
 
   getStartKey(): string {
-    return this.getIsBackward() ?
-      this.getFocusKey() :
-      this.getAnchorKey();
+    return this.getIsBackward() ? this.getFocusKey() : this.getAnchorKey();
   }
 
   getStartOffset(): number {
-    return this.getIsBackward() ?
-      this.getFocusOffset() :
-      this.getAnchorOffset();
+    return this.getIsBackward()
+      ? this.getFocusOffset()
+      : this.getAnchorOffset();
   }
 
   getEndKey(): string {
-    return this.getIsBackward() ?
-      this.getAnchorKey() :
-      this.getFocusKey();
+    return this.getIsBackward() ? this.getAnchorKey() : this.getFocusKey();
   }
 
   getEndOffset(): number {
-    return this.getIsBackward() ?
-      this.getAnchorOffset() :
-      this.getFocusOffset();
+    return this.getIsBackward()
+      ? this.getAnchorOffset()
+      : this.getFocusOffset();
   }
 
-  static createEmpty(
-    key: string,
-  ): SelectionState {
+  static createEmpty(key: string): SelectionState {
     return new SelectionState({
       anchorKey: key,
       anchorOffset: 0,

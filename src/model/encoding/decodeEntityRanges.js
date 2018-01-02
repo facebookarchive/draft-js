@@ -7,36 +7,38 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule decodeEntityRanges
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
+var {OrderedSet} = require('immutable');
 var UnicodeUtils = require('UnicodeUtils');
 
 var {substr} = UnicodeUtils;
+
+import type {DraftEntitySet} from 'DraftEntitySet';
+
+const EMPTY_SET = OrderedSet();
 
 /**
  * Convert to native JavaScript string lengths to determine ranges.
  */
 function decodeEntityRanges(
   text: string,
-  ranges: Array<Object>,
-): Array<?string> {
-  var entities = Array(text.length).fill(null);
+  ranges?: Array<Object>,
+): Array<DraftEntitySet> {
+  var entities = Array(text.length).fill(EMPTY_SET);
   if (ranges) {
-    ranges.forEach(
-      range => {
-        // Using Unicode-enabled substrings converted to JavaScript lengths,
-        // fill the output array with entity keys.
-        var start = substr(text, 0, range.offset).length;
-        var end = start + substr(text, range.offset, range.length).length;
-        for (var ii = start; ii < end; ii++) {
-          entities[ii] = range.key;
-        }
-      },
-    );
+    ranges.forEach((/*object*/ range) => {
+      var cursor = substr(text, 0, range.offset).length;
+      var end = cursor + substr(text, range.offset, range.length).length;
+      while (cursor < end) {
+        entities[cursor] = entities[cursor].add(range.key);
+        cursor++;
+      }
+    });
   }
   return entities;
 }

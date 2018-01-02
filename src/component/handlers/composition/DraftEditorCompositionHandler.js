@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorCompositionHandler
+ * @format
  * @flow
  */
 
@@ -14,11 +15,13 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
+const DraftFeatureFlags = require('DraftFeatureFlags');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Keys = require('Keys');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
+const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 
 /**
@@ -44,7 +47,7 @@ let stillComposing = false;
 let textInputData = '';
 
 var DraftEditorCompositionHandler = {
-  onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent): void {
+  onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     textInputData = (textInputData || '') + e.data;
   },
 
@@ -85,7 +88,7 @@ var DraftEditorCompositionHandler = {
    * the arrow keys are used to commit, prevent default so that the cursor
    * doesn't move, otherwise it will jump back noticeably on re-render.
    */
-  onKeyDown: function(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
+  onKeyDown: function(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     if (!stillComposing) {
       // If a keydown event is received after compositionend but before the
       // 20ms timer expires (ex: type option-E then backspace, or type A then
@@ -106,7 +109,7 @@ var DraftEditorCompositionHandler = {
    * characters that we do not want. `preventDefault` allows the composition
    * to be committed while preventing the extra characters.
    */
-  onKeyPress: function(editor: DraftEditor, e: SyntheticKeyboardEvent): void {
+  onKeyPress: function(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     if (e.which === Keys.RETURN) {
       e.preventDefault();
     }
@@ -146,12 +149,11 @@ var DraftEditorCompositionHandler = {
       editorState.getSelection(),
     );
 
-    const mustReset = (
+    const mustReset =
       !composedChars ||
       isSelectionAtLeafStart(editorState) ||
       currentStyle.size > 0 ||
-      entityKey !== null
-    );
+      (entityKey != null && entityKey.size > 0);
 
     if (mustReset) {
       editor.restoreEditorDOM();
@@ -160,6 +162,15 @@ var DraftEditorCompositionHandler = {
     editor.exitCurrentMode();
 
     if (composedChars) {
+      if (
+        DraftFeatureFlags.draft_handlebeforeinput_composed_text &&
+        editor.props.handleBeforeInput &&
+        isEventHandled(
+          editor.props.handleBeforeInput(composedChars, editorState),
+        )
+      ) {
+        return;
+      }
       // If characters have been composed, re-rendering with the update
       // is sufficient to reset the editor.
       const contentState = DraftModifier.replaceText(
@@ -170,11 +181,7 @@ var DraftEditorCompositionHandler = {
         entityKey,
       );
       editor.update(
-        EditorState.push(
-          editorState,
-          contentState,
-          'insert-characters',
-        ),
+        EditorState.push(editorState, contentState, 'insert-characters'),
       );
       return;
     }

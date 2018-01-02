@@ -7,16 +7,17 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getCharacterRemovalRange
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
+import type {DraftEntitySet} from 'DraftEntitySet';
 
 var DraftEntitySegments = require('DraftEntitySegments');
 
@@ -34,36 +35,36 @@ var invariant = require('invariant');
  */
 function getCharacterRemovalRange(
   entityMap: EntityMap,
-  startBlock: ContentBlock,
-  endBlock: ContentBlock,
+  startBlock: BlockNodeRecord,
+  endBlock: BlockNodeRecord,
   selectionState: SelectionState,
   direction: DraftRemovalDirection,
 ): SelectionState {
   var start = selectionState.getStartOffset();
   var end = selectionState.getEndOffset();
-  var startEntityKey = startBlock.getEntityAt(start);
-  var endEntityKey = endBlock.getEntityAt(end - 1);
-  if (!startEntityKey && !endEntityKey) {
+  var startEntities = startBlock.getEntityAt(start);
+  var endEntities = endBlock.getEntityAt(end - 1);
+  if (startEntities.size == 0 && endEntities.size == 0) {
     return selectionState;
   }
   var newSelectionState = selectionState;
-  if (startEntityKey && (startEntityKey === endEntityKey)) {
+  if (startEntities.size > 0 && startEntities.intersect(endEntities).size > 0) {
     newSelectionState = getEntityRemovalRange(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
-      startEntityKey,
+      startEntities,
       true,
       true,
     );
-  } else if (startEntityKey && endEntityKey) {
+  } else if (startEntities.size > 0 && endEntities.size > 0) {
     const startSelectionState = getEntityRemovalRange(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
-      startEntityKey,
+      startEntities,
       false,
       true,
     );
@@ -72,7 +73,7 @@ function getCharacterRemovalRange(
       endBlock,
       newSelectionState,
       direction,
-      endEntityKey,
+      endEntities,
       false,
       false,
     );
@@ -81,13 +82,13 @@ function getCharacterRemovalRange(
       focusOffset: endSelectionState.getFocusOffset(),
       isBackward: false,
     });
-  } else if (startEntityKey) {
+  } else if (startEntities.size > 0) {
     const startSelectionState = getEntityRemovalRange(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
-      startEntityKey,
+      startEntities,
       false,
       true,
     );
@@ -95,13 +96,13 @@ function getCharacterRemovalRange(
       anchorOffset: startSelectionState.getStartOffset(),
       isBackward: false,
     });
-  } else if (endEntityKey) {
+  } else if (endEntities.size > 0) {
     const endSelectionState = getEntityRemovalRange(
       entityMap,
       endBlock,
       newSelectionState,
       direction,
-      endEntityKey,
+      endEntities,
       false,
       false,
     );
@@ -115,69 +116,82 @@ function getCharacterRemovalRange(
 
 function getEntityRemovalRange(
   entityMap: EntityMap,
-  block: ContentBlock,
+  block: BlockNodeRecord,
   selectionState: SelectionState,
   direction: DraftRemovalDirection,
-  entityKey: string,
+  entities: DraftEntitySet,
   isEntireSelectionWithinEntity: boolean,
   isEntityAtStart: boolean,
 ): SelectionState {
   var start = selectionState.getStartOffset();
   var end = selectionState.getEndOffset();
-  var entity = entityMap.get(entityKey);
-  var mutability = entity.getMutability();
-  const sideToConsider = isEntityAtStart ? start : end;
 
-  // `MUTABLE` entities can just have the specified range of text removed
-  // directly. No adjustments are needed.
-  if (mutability === 'MUTABLE') {
-    return selectionState;
-  }
+  entities.forEach(entityKey => {
+    var entity = entityMap.get(entityKey);
+    var mutability = entity.getMutability();
 
-  // Find the entity range that overlaps with our removal range.
-  var entityRanges = getRangesForDraftEntity(block, entityKey).filter(
-    (range) => sideToConsider <= range.end && sideToConsider >= range.start,
-  );
+    // `MUTABLE` entities can just have the specified range of text removed
+    // directly. No adjustments are needed.
+    if (mutability === 'MUTABLE') {
+      return;
+    }
 
-  invariant(
-    entityRanges.length == 1,
-    'There should only be one entity range within this removal range.',
-  );
+    const sideToConsider = isEntityAtStart ? start : end;
 
-  var entityRange = entityRanges[0];
+    // Find the entity range that overlaps with our removal range.
+    var entityRanges = getRangesForDraftEntity(block, entityKey).filter(
+      range => sideToConsider <= range.end && sideToConsider >= range.start,
+    );
 
-  // For `IMMUTABLE` entity types, we will remove the entire entity range.
-  if (mutability === 'IMMUTABLE') {
-    return selectionState.merge({
-      anchorOffset: entityRange.start,
-      focusOffset: entityRange.end,
+    invariant(
+      entityRanges.length == 1,
+      'There should only be one entity range within this removal range.',
+    );
+
+    var entityRange = entityRanges[0];
+
+    // For `IMMUTABLE` entity types, we will remove the entire entity range.
+    if (mutability === 'IMMUTABLE') {
+      selectionState = selectionState.merge({
+        anchorOffset: Math.min(
+          selectionState.getAnchorOffset(),
+          entityRange.start,
+        ),
+        focusOffset: Math.max(selectionState.getFocusOffset(), entityRange.end),
+        isBackward: false,
+      });
+      return;
+    }
+
+    // For `SEGMENTED` entity types, determine the appropriate segment to
+    // remove.
+    if (!isEntireSelectionWithinEntity) {
+      if (isEntityAtStart) {
+        end = entityRange.end;
+      } else {
+        start = entityRange.start;
+      }
+    }
+
+    var removalRange = DraftEntitySegments.getRemovalRange(
+      start,
+      end,
+      block.getText().slice(entityRange.start, entityRange.end),
+      entityRange.start,
+      direction,
+    );
+
+    selectionState = selectionState.merge({
+      anchorOffset: Math.min(
+        selectionState.getAnchorOffset(),
+        removalRange.start,
+      ),
+      focusOffset: Math.max(selectionState.getFocusOffset(), removalRange.end),
       isBackward: false,
     });
-  }
-
-  // For `SEGMENTED` entity types, determine the appropriate segment to
-  // remove.
-  if (!isEntireSelectionWithinEntity) {
-    if (isEntityAtStart) {
-      end = entityRange.end;
-    } else {
-      start = entityRange.start;
-    }
-  }
-
-  var removalRange = DraftEntitySegments.getRemovalRange(
-    start,
-    end,
-    block.getText().slice(entityRange.start, entityRange.end),
-    entityRange.start,
-    direction,
-  );
-
-  return selectionState.merge({
-    anchorOffset: removalRange.start,
-    focusOffset: removalRange.end,
-    isBackward: false,
   });
+
+  return selectionState;
 }
 
 module.exports = getCharacterRemovalRange;

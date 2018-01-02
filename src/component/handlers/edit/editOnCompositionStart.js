@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnCompositionStart
+ * @format
  * @flow
  */
 
@@ -20,7 +21,10 @@ var EditorState = require('EditorState');
  * The user has begun using an IME input system. Switching to `composite` mode
  * allows handling composition input and disables other edit behavior.
  */
-function editOnCompositionStart(editor: DraftEditor, e: SyntheticEvent): void {
+function editOnCompositionStart(
+  editor: DraftEditor,
+  e: SyntheticEvent<>,
+): void {
   editor.setMode('composite');
   editor.update(
     EditorState.set(editor._latestEditorState, {inCompositionMode: true}),

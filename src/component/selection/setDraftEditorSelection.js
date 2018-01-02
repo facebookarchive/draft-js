@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule setDraftEditorSelection
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -21,12 +21,15 @@ const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
 const invariant = require('invariant');
 
-function getAnonymizedDOM(node: Node): string {
+function getAnonymizedDOM(
+  node: Node,
+  getNodeLabels?: (n: Node) => Array<string>,
+): string {
   if (!node) {
     return '[empty]';
   }
 
-  var anonymized = anonymizeText(node);
+  var anonymized = anonymizeTextWithin(node, getNodeLabels);
   if (anonymized.nodeType === Node.TEXT_NODE) {
     return anonymized.textContent;
   }
@@ -35,34 +38,50 @@ function getAnonymizedDOM(node: Node): string {
     anonymized instanceof Element,
     'Node must be an Element if it is not a text node.',
   );
-  return anonymized.innerHTML;
+  return anonymized.outerHTML;
 }
 
-function anonymizeText(node: Node): Node {
+function anonymizeTextWithin(
+  node: Node,
+  getNodeLabels?: (n: Node) => Array<string>,
+): Node {
+  const labels = getNodeLabels !== undefined ? getNodeLabels(node) : [];
+
   if (node.nodeType === Node.TEXT_NODE) {
     var length = node.textContent.length;
-    return document.createTextNode('[text ' + length + ']');
+    return document.createTextNode(
+      '[text ' +
+        length +
+        (labels.length ? ' | ' + labels.join(', ') : '') +
+        ']',
+    );
   }
 
   var clone = node.cloneNode();
+  if (clone.nodeType === 1 && labels.length) {
+    ((clone: any): Element).setAttribute('data-labels', labels.join(', '));
+  }
   var childNodes = node.childNodes;
   for (var ii = 0; ii < childNodes.length; ii++) {
-    clone.appendChild(anonymizeText(childNodes[ii]));
+    clone.appendChild(anonymizeTextWithin(childNodes[ii], getNodeLabels));
   }
 
   return clone;
 }
 
-function getAnonymizedEditorDOM(node: Node): string {
+function getAnonymizedEditorDOM(
+  node: Node,
+  getNodeLabels?: (n: Node) => Array<string>,
+): string {
   // grabbing the DOM content of the Draft editor
   let currentNode = node;
   while (currentNode) {
     if (
-      currentNode instanceof Element
-      && currentNode.hasAttribute('contenteditable')
+      currentNode instanceof Element &&
+      currentNode.hasAttribute('contenteditable')
     ) {
       // found the Draft editor container
-      return getAnonymizedDOM(currentNode);
+      return getAnonymizedDOM(currentNode, getNodeLabels);
     } else {
       currentNode = currentNode.parentNode;
     }
@@ -117,17 +136,13 @@ function setDraftEditorSelection(
     isBackward = false;
   }
 
-  var hasAnchor = (
+  var hasAnchor =
     anchorKey === blockKey &&
     nodeStart <= anchorOffset &&
-    nodeEnd >= anchorOffset
-  );
+    nodeEnd >= anchorOffset;
 
-  var hasFocus = (
-    focusKey === blockKey &&
-    nodeStart <= focusOffset &&
-    nodeEnd >= focusOffset
-  );
+  var hasFocus =
+    focusKey === blockKey && nodeStart <= focusOffset && nodeEnd >= focusOffset;
 
   // If the selection is entirely bound within this node, set the selection
   // and be done.
@@ -219,7 +234,8 @@ function addFocusToSelection(
   offset: number,
   selectionState: SelectionState,
 ): void {
-  if (selection.extend && containsNode(getActiveElement(), node)) {
+  const activeElement = getActiveElement();
+  if (selection.extend && containsNode(activeElement, node)) {
     // If `extend` is called while another element has focus, an error is
     // thrown. We therefore disable `extend` if the active element is somewhere
     // other than the node we are selecting. This should only occur in Firefox,
@@ -237,13 +253,45 @@ function addFocusToSelection(
     }
 
     // logging to catch bug that is being reported in t18110632
+    const nodeWasFocus = node === selection.focusNode;
     try {
       selection.extend(node, offset);
     } catch (e) {
       DraftJsDebugLogging.logSelectionStateFailure({
-        anonymizedDom: getAnonymizedEditorDOM(node),
-        extraParams: JSON.stringify({offset: offset}),
-        selectionState: JSON.stringify(selectionState.toJS()),
+        anonymizedDom: getAnonymizedEditorDOM(node, function(n) {
+          const labels = [];
+          if (n === activeElement) {
+            labels.push('active element');
+          }
+          if (n === selection.anchorNode) {
+            labels.push('selection anchor node');
+          }
+          if (n === selection.focusNode) {
+            labels.push('selection focus node');
+          }
+          return labels;
+        }),
+        extraParams: JSON.stringify(
+          {
+            activeElementName: activeElement ? activeElement.nodeName : null,
+            nodeIsFocus: node === selection.focusNode,
+            nodeWasFocus: nodeWasFocus,
+            selectionRangeCount: selection.rangeCount,
+            selectionAnchorNodeName: selection.anchorNode
+              ? selection.anchorNode.nodeName
+              : null,
+            selectionAnchorOffset: selection.anchorOffset,
+            selectionFocusNodeName: selection.focusNode
+              ? selection.focusNode.nodeName
+              : null,
+            selectionFocusOffset: selection.focusOffset,
+            message: e ? '' + e : null,
+            offset: offset,
+          },
+          null,
+          2,
+        ),
+        selectionState: JSON.stringify(selectionState.toJS(), null, 2),
       });
       // allow the error to be thrown -
       // better than continuing in a broken state

@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must apply at the end 1`] = `
+Object {
+  "characterList": Array [
+    Object {
+      "entity": Array [],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+  ],
+  "data": Object {},
+  "depth": 0,
+  "key": "a",
+  "text": "Hello",
+  "type": "unstyled",
+}
+`;
+
+exports[`must apply from the start 1`] = `
+Object {
+  "characterList": Array [
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [],
+      "style": Array [],
+    },
+  ],
+  "data": Object {},
+  "depth": 0,
+  "key": "a",
+  "text": "Hello",
+  "type": "unstyled",
+}
+`;
+
+exports[`must apply to the entire text 1`] = `
+Object {
+  "characterList": Array [
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+  ],
+  "data": Object {},
+  "depth": 0,
+  "key": "a",
+  "text": "Hello",
+  "type": "unstyled",
+}
+`;
+
+exports[`must apply within 1`] = `
+Object {
+  "characterList": Array [
+    Object {
+      "entity": Array [],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [
+        "x",
+      ],
+      "style": Array [],
+    },
+    Object {
+      "entity": Array [],
+      "style": Array [],
+    },
+  ],
+  "data": Object {},
+  "depth": 0,
+  "key": "a",
+  "text": "Hello",
+  "type": "unstyled",
+}
+`;

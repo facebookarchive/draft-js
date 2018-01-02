@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule keyCommandUndo
+ * @format
  * @flow
  */
 
@@ -15,7 +16,7 @@
 var EditorState = require('EditorState');
 
 function keyCommandUndo(
-  e: SyntheticKeyboardEvent,
+  e: SyntheticKeyboardEvent<>,
   editorState: EditorState,
   updateFn: (editorState: EditorState) => void,
 ): void {

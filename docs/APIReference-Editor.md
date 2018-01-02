@@ -106,6 +106,31 @@ for details on usage.
 
 ### Behavior (Optional)
 
+### autoCapitalize?: string
+
+```
+autoCapitalize?: string
+```
+
+Set if auto capitalization is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocapitalize).
+
+### autoComplete?: string
+
+```
+autoComplete?: string
+```
+
+Set if auto complete is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocomplete).
+
+### autoCorrect?: string
+
+```
+autoCorrect?: string
+```
+
+Set if auto correct is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocorrect).
+
+
 #### readOnly
 ```
 readOnly?: boolean
@@ -175,14 +200,14 @@ the event is handled and the Draft core should do nothing more with it. By retur
 
 #### handleReturn
 ```
-handleReturn?: (e: SyntheticKeyboardEvent) => DraftHandleValue
+handleReturn?: (e: SyntheticKeyboardEvent, editorState: EditorState) => DraftHandleValue
 ```
 Handle a `RETURN` keydown event. Example usage: Choosing a mention tag from a
 rendered list of results to trigger applying the mention entity to your content.
 
 #### handleKeyCommand
 ```
-handleKeyCommand?: (command: string) => DraftHandleValue
+handleKeyCommand?: (command: string, editorState: EditorState) => DraftHandleValue
 ```
 Handle the named editor command. See
 [Advanced Topics: Key Bindings](/docs/advanced-topics-key-bindings.html)
@@ -190,7 +215,7 @@ for details on usage.
 
 #### handleBeforeInput
 ```
-handleBeforeInput?: (chars: string) => DraftHandleValue
+handleBeforeInput?: (chars: string, editorState: EditorState) => DraftHandleValue
 ```
 Handle the characters to be inserted from a `beforeInput` event. Returning `'handled'`
 causes the default behavior of the `beforeInput` event to be prevented (i.e. it is
@@ -203,7 +228,7 @@ and to convert typed emoticons into images.
 
 #### handlePastedText
 ```
-handlePastedText?: (text: string, html?: string) => DraftHandleValue
+handlePastedText?: (text: string, html?: string, editorState: EditorState) => DraftHandleValue
 ```
 Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior.
 
@@ -245,10 +270,28 @@ onTab?: (e: SyntheticKeyboardEvent) => void
 onUpArrow?: (e: SyntheticKeyboardEvent) => void
 ```
 
+#### onRightArrow
+```
+onRightArrow?: (e: SyntheticKeyboardEvent) => void
+```
+
 #### onDownArrow
 ```
 onDownArrow?: (e: SyntheticKeyboardEvent) => void
 ```
+#### keyBindingFn
+
+```
+keyBindingFn?: (e: SyntheticKeyboardEvent) => void
+```
+
+This prop lets you handle key events directly and provides an opportunity to return custom editor commands. You can find a more detailed explanation of this [here](/docs/advanced-topics-key-bindings.html).
+
+#### onLeftArrow
+```
+onLeftArrow?: (e: SyntheticKeyboardEvent) => void
+```
+
 ### Mouse events
 
 ### onFocus

@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnPaste
+ * @format
  * @flow
  */
 
@@ -22,6 +23,7 @@ var DataTransfer = require('DataTransfer');
 var DraftModifier = require('DraftModifier');
 var DraftPasteProcessor = require('DraftPasteProcessor');
 var EditorState = require('EditorState');
+var RichTextEditorUtil = require('RichTextEditorUtil');
 
 var getEntityKeyForSelection = require('getEntityKeyForSelection');
 var getTextContentFromFiles = require('getTextContentFromFiles');
@@ -31,7 +33,7 @@ var splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
 /**
  * Paste content.
  */
-function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
+function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   e.preventDefault();
   var data = new DataTransfer(e.clipboardData);
 
@@ -64,8 +66,15 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
             editorState.getSelection(),
           ),
         });
+        var currentBlockType = RichTextEditorUtil.getCurrentBlockType(
+          editorState,
+        );
 
-        var text = DraftPasteProcessor.processText(blocks, character);
+        var text = DraftPasteProcessor.processText(
+          blocks,
+          character,
+          currentBlockType,
+        );
         var fragment = BlockMapBuilder.createFromArray(text);
 
         var withInsertedText = DraftModifier.replaceWithFragment(
@@ -75,11 +84,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
         );
 
         editor.update(
-          EditorState.push(
-            editorState,
-            withInsertedText,
-            'insert-fragment',
-          ),
+          EditorState.push(editorState, withInsertedText, 'insert-fragment'),
         );
       });
 
@@ -120,11 +125,9 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
         // The copy may have been made within a single block, in which case the
         // editor key won't be part of the paste. In this case, just check
         // whether the pasted text matches the internal clipboard.
-        (
-          textBlocks.length === 1 &&
+        (textBlocks.length === 1 &&
           internalClipboard.size === 1 &&
-          internalClipboard.first().getText() === text
-        )
+          internalClipboard.first().getText() === text)
       ) {
         editor.update(
           insertFragment(editor._latestEditorState, internalClipboard),
@@ -153,7 +156,7 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
         editor.props.blockRenderMap,
       );
       if (htmlFragment) {
-        const { contentBlocks, entityMap } = htmlFragment;
+        const {contentBlocks, entityMap} = htmlFragment;
         if (contentBlocks) {
           var htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
           editor.update(
@@ -178,9 +181,12 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent): void {
       ),
     });
 
+    var currentBlockType = RichTextEditorUtil.getCurrentBlockType(editorState);
+
     var textFragment = DraftPasteProcessor.processText(
       textBlocks,
       character,
+      currentBlockType,
     );
 
     var textMap = BlockMapBuilder.createFromArray(textFragment);

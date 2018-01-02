@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule RichTextEditorUtil
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -26,9 +26,7 @@ const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState
 const nullthrows = require('nullthrows');
 
 const RichTextEditorUtil = {
-  currentBlockContainsLink: function(
-    editorState: EditorState,
-  ): boolean {
+  currentBlockContainsLink: function(editorState: EditorState): boolean {
     var selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
     const entityMap = contentState.getEntityMap();
@@ -38,13 +36,14 @@ const RichTextEditorUtil = {
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
         var entity = v.getEntity();
-        return !!entity && entityMap.get(entity).getType() === 'LINK';
+        return entity.some(k => entityMap.get(k).getType === 'LINK');
       });
   },
 
   getCurrentBlockType: function(editorState: EditorState): DraftBlockType {
     var selection = editorState.getSelection();
-    return editorState.getCurrentContent()
+    return editorState
+      .getCurrentContent()
       .getBlockForKey(selection.getStartKey())
       .getType();
   },
@@ -74,7 +73,8 @@ const RichTextEditorUtil = {
       case 'delete-word':
       case 'delete-to-end-of-block':
         return RichTextEditorUtil.onDelete(editorState);
-      default: // they may have custom editor commands; ignore those
+      default:
+        // they may have custom editor commands; ignore those
         return null;
     }
   },
@@ -121,9 +121,10 @@ const RichTextEditorUtil = {
 
     if (blockBefore && blockBefore.getType() === 'atomic') {
       const blockMap = content.getBlockMap().delete(blockBefore.getKey());
-      var withoutAtomicBlock = content.merge(
-        {blockMap, selectionAfter: selection},
-      );
+      var withoutAtomicBlock = content.merge({
+        blockMap,
+        selectionAfter: selection,
+      });
       if (withoutAtomicBlock !== content) {
         return EditorState.push(
           editorState,
@@ -183,18 +184,14 @@ const RichTextEditorUtil = {
     );
 
     if (withoutAtomicBlock !== content) {
-      return EditorState.push(
-        editorState,
-        withoutAtomicBlock,
-        'remove-range',
-      );
+      return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');
     }
 
     return null;
   },
 
   onTab: function(
-    event: SyntheticKeyboardEvent,
+    event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
     maxDepth: number,
   ): EditorState {
@@ -242,11 +239,7 @@ const RichTextEditorUtil = {
       maxDepth,
     );
 
-    return EditorState.push(
-      editorState,
-      withAdjustment,
-      'adjust-depth',
-    );
+    return EditorState.push(editorState, withAdjustment, 'adjust-depth');
   },
 
   toggleBlockType: function(
@@ -275,7 +268,8 @@ const RichTextEditorUtil = {
       });
     }
 
-    var hasAtomicBlock = content.getBlockMap()
+    var hasAtomicBlock = content
+      .getBlockMap()
       .skipWhile((_, k) => k !== startKey)
       .reverse()
       .skipWhile((_, k) => k !== endKey)
@@ -285,9 +279,10 @@ const RichTextEditorUtil = {
       return editorState;
     }
 
-    var typeToSet = content.getBlockForKey(startKey).getType() === blockType ?
-      'unstyled' :
-      blockType;
+    var typeToSet =
+      content.getBlockForKey(startKey).getType() === blockType
+        ? 'unstyled'
+        : blockType;
 
     return EditorState.push(
       editorState,
@@ -354,35 +349,41 @@ const RichTextEditorUtil = {
       );
     }
 
-    return EditorState.push(
-      editorState,
-      newContent,
-      'change-inline-style',
-    );
+    return EditorState.push(editorState, newContent, 'change-inline-style');
   },
 
-  toggleLink: function(
+  addLink: function(
     editorState: EditorState,
     targetSelection: SelectionState,
-    entityKey: ?string,
+    entityKey: string,
   ): EditorState {
-    var withoutLink = DraftModifier.applyEntity(
+    var withEntity = DraftModifier.addEntity(
       editorState.getCurrentContent(),
       targetSelection,
       entityKey,
     );
 
-    return EditorState.push(
-      editorState,
-      withoutLink,
-      'apply-entity',
+    return EditorState.push(editorState, withEntity, 'apply-entity');
+  },
+
+  removeLink: function(
+    editorState: EditorState,
+    targetSelection: SelectionState,
+    entityKey: string,
+  ): EditorState {
+    var withoutEntity = DraftModifier.removeEntity(
+      editorState.getCurrentContent(),
+      targetSelection,
+      entityKey,
     );
+
+    return EditorState.push(editorState, withoutEntity, 'apply-entity');
   },
 
   /**
-   * When a collapsed cursor is at the start of an empty styled block, 
-   * changes block to 'unstyled'. Returns null if block or selection does not
-   * meet that criteria.
+   * When a collapsed cursor is at the start of the first styled block, or
+   * an empty styled block, changes block to 'unstyled'. Returns null if
+   * block or selection does not meet that criteria.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
     var selection = editorState.getSelection();
@@ -391,7 +392,9 @@ const RichTextEditorUtil = {
       var key = selection.getAnchorKey();
       var content = editorState.getCurrentContent();
       var block = content.getBlockForKey(key);
-      if (block.getLength() > 0) {
+
+      var firstBlock = content.getFirstBlock();
+      if (block.getLength() > 0 && block !== firstBlock) {
         return null;
       }
 
@@ -400,7 +403,8 @@ const RichTextEditorUtil = {
       if (
         type === 'code-block' &&
         blockBefore &&
-        blockBefore.getType() === 'code-block'
+        blockBefore.getType() === 'code-block' &&
+        blockBefore.getLength() !== 0
       ) {
         return null;
       }

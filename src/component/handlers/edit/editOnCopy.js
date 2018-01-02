@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule editOnCopy
+ * @format
  * @flow
  */
 
@@ -21,7 +22,7 @@ var getFragmentFromSelection = require('getFragmentFromSelection');
  * it in our internal clipboard. Subsequent paste events will use this
  * fragment if no external clipboard data is supplied.
  */
-function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent): void {
+function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   var editorState = editor._latestEditorState;
   var selection = editorState.getSelection();
 

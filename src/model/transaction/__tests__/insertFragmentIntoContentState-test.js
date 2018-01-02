@@ -7,147 +7,103 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+ui_infra
+ * @format
  */
 
 'use strict';
 
 jest.disableAutomock();
 
-var BlockMapBuilder = require('BlockMapBuilder');
-var CharacterMetadata = require('CharacterMetadata');
-var ContentBlock = require('ContentBlock');
-var Immutable = require('immutable');
+jest.mock('generateRandomKey');
 
-var getSampleStateForTesting = require('getSampleStateForTesting');
-var insertFragmentIntoContentState = require('insertFragmentIntoContentState');
+const BlockMapBuilder = require('BlockMapBuilder');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentBlock = require('ContentBlock');
+const Immutable = require('immutable');
 
+const getSampleStateForTesting = require('getSampleStateForTesting');
+const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
+
+const {contentState, selectionState} = getSampleStateForTesting();
 const {EMPTY} = CharacterMetadata;
 const {List, Map} = Immutable;
 
-describe('insertFragmentIntoContentState', () => {
-  var sample = getSampleStateForTesting();
-  var content = sample.contentState;
-  var selection = sample.selectionState;
+const DEFAULT_BLOCK_CONFIG = {
+  key: 'j',
+  type: 'unstyled',
+  text: 'xx',
+  characterList: List.of(EMPTY, EMPTY),
+  data: new Map({a: 1}),
+};
 
-  var block = content.getBlockMap().first();
-  var data = new Map({a: 1});
-  var secondData = new Map({b: 2});
+const initialBlock = contentState.getBlockMap().first();
 
-  function createFragment() {
-    var fragmentArray = [
-      new ContentBlock({
-        key: 'j',
-        type: 'unstyled',
-        text: 'xx',
-        characterList: List.of(EMPTY, EMPTY),
-        data,
-      }),
-    ];
-    return BlockMapBuilder.createFromArray(fragmentArray);
-  }
+const createFragment = (fragment = {}) => {
+  fragment = Array.isArray(fragment) ? fragment : [fragment];
 
-  function createMultiblockFragment() {
-    var fragmentArray = [
-      new ContentBlock({
-        key: 'j',
-        type: 'unstyled',
-        text: 'xx',
-        characterList: List.of(EMPTY, EMPTY),
-        data,
-      }),
-      new ContentBlock({
-        key: 'k',
-        type: 'unstyled',
-        text: 'yy',
-        characterList: List.of(EMPTY, EMPTY),
-        data: secondData,
-      }),
-    ];
-    return BlockMapBuilder.createFromArray(fragmentArray);
-  }
+  return BlockMapBuilder.createFromArray(
+    fragment.map(
+      config =>
+        new ContentBlock({
+          ...DEFAULT_BLOCK_CONFIG,
+          ...config,
+        }),
+    ),
+  );
+};
 
-  it('must throw if no fragment is provided', () => {
-    var fragment = BlockMapBuilder.createFromArray([]);
-    expect(() => {
-      insertFragmentIntoContentState(
-        content,
-        selection,
-        fragment,
-      );
-    }).toThrow();
-  });
+const assertInsertFragmentIntoContentState = (
+  fragment,
+  selection = selectionState,
+  content = contentState,
+) => {
+  expect(
+    insertFragmentIntoContentState(content, selection, fragment).toJS(),
+  ).toMatchSnapshot();
+};
 
-  it('must apply fragment to the start', () => {
-    var fragment = createFragment();
-    var modified = insertFragmentIntoContentState(
-      content,
-      selection,
-      fragment,
-    );
+test('must throw if no fragment is provided', () => {
+  const fragment = BlockMapBuilder.createFromArray([]);
+  expect(() => {
+    insertFragmentIntoContentState(contentState, selectionState, fragment);
+  }).toThrow();
+});
 
-    var newBlock = modified.getBlockMap().first();
+test('must apply fragment to the start', () => {
+  assertInsertFragmentIntoContentState(createFragment());
+});
 
-    expect(newBlock.getText().slice(0, 2)).toBe('xx');
-    expect(newBlock.getData()).toBe(data);
-  });
-
-  it('must apply fragment to within block', () => {
-    var target = selection.merge({
+test('must apply fragment to within block', () => {
+  assertInsertFragmentIntoContentState(
+    createFragment(),
+    selectionState.merge({
       focusOffset: 2,
       anchorOffset: 2,
       isBackward: false,
-    });
+    }),
+  );
+});
 
-    var fragment = createFragment();
-
-    var modified = insertFragmentIntoContentState(
-      content,
-      target,
-      fragment,
-    );
-
-    var newBlock = modified.getBlockMap().first();
-
-    expect(newBlock.getText().slice(2, 4)).toBe('xx');
-    expect(newBlock.getData()).toBe(data);
-  });
-
-  it('must apply fragment at the end', () => {
-    var length = block.getLength();
-    var target = selection.merge({
-      focusOffset: length,
-      anchorOffset: length,
+test('must apply fragment at the end', () => {
+  assertInsertFragmentIntoContentState(
+    createFragment(),
+    selectionState.merge({
+      focusOffset: initialBlock.getLength(),
+      anchorOffset: initialBlock.getLength(),
       isBackward: false,
-    });
+    }),
+  );
+});
 
-    var fragment = createFragment();
-    var modified = insertFragmentIntoContentState(
-      content,
-      target,
-      fragment,
-    );
-
-    var newBlock = modified.getBlockMap().first();
-
-    expect(newBlock.getText().slice(length, length + 2)).toBe('xx');
-    expect(newBlock.getData()).toBe(data);
-  });
-
-  it('must apply multiblock fragments', () => {
-    var fragment = createMultiblockFragment();
-    var modified = insertFragmentIntoContentState(
-      content,
-      selection,
-      fragment,
-    );
-
-    var newBlock = modified.getBlockMap().first();
-    var secondBlock = modified.getBlockMap().toArray()[1];
-
-    expect(newBlock.getText()).toBe('xx');
-    expect(newBlock.getData()).toBe(data);
-    expect(secondBlock.getText().slice(0, 2)).toBe('yy');
-    expect(secondBlock.getData()).toBe(secondData);
-  });
-
+test('must apply multiblock fragments', () => {
+  assertInsertFragmentIntoContentState(
+    createFragment([
+      DEFAULT_BLOCK_CONFIG,
+      {
+        key: 'k',
+        text: 'yy',
+        data: new Map({b: 2}),
+      },
+    ]),
+  );
 });

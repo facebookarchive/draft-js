@@ -7,12 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule removeEntitiesAtEdges
+ * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
@@ -66,14 +67,14 @@ function removeEntitiesAtEdges(
 
 function getRemovalRange(
   characters: List<CharacterMetadata>,
-  key: ?string,
+  key: string,
   offset: number,
 ): Object {
   var removalRange;
   findRangesImmutable(
     characters,
-    (a, b) => a.getEntity() === b.getEntity(),
-    element => element.getEntity() === key,
+    (a, b) => a.getEntity().intersect(b.getEntity()).size > 0,
+    element => element.getEntity().has(key),
     (start, end) => {
       if (start <= offset && end >= offset) {
         removalRange = {start, end};
@@ -89,27 +90,34 @@ function getRemovalRange(
 
 function removeForBlock(
   entityMap: EntityMap,
-  block: ContentBlock,
+  block: BlockNodeRecord,
   offset: number,
-): ContentBlock {
+): BlockNodeRecord {
   var chars = block.getCharacterList();
   var charBefore = offset > 0 ? chars.get(offset - 1) : undefined;
   var charAfter = offset < chars.count() ? chars.get(offset) : undefined;
   var entityBeforeCursor = charBefore ? charBefore.getEntity() : undefined;
   var entityAfterCursor = charAfter ? charAfter.getEntity() : undefined;
 
-  if (entityAfterCursor && entityAfterCursor === entityBeforeCursor) {
-    var entity = entityMap.get(entityAfterCursor);
-    if (entity.getMutability() !== 'MUTABLE') {
-      var {start, end} = getRemovalRange(chars, entityAfterCursor, offset);
-      var current;
-      while (start < end) {
-        current = chars.get(start);
-        chars = chars.set(start, CharacterMetadata.applyEntity(current, null));
-        start++;
+  if (entityAfterCursor) {
+    entityAfterCursor.forEach(entityKey => {
+      if (entityBeforeCursor && entityBeforeCursor.has(entityKey)) {
+        var entity = entityMap.get(entityKey);
+        if (entity.getMutability() !== 'MUTABLE') {
+          var {start, end} = getRemovalRange(chars, entityKey, offset);
+          var current;
+          while (start < end) {
+            current = chars.get(start);
+            chars = chars.set(
+              start,
+              CharacterMetadata.removeEntity(current, entityKey),
+            );
+            start++;
+          }
+          block = block.set('characterList', chars);
+        }
       }
-      return block.set('characterList', chars);
-    }
+    });
   }
 
   return block;

@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule EditorState
+ * @format
  * @flow
  */
 
@@ -25,11 +26,7 @@ var EditorBidiService = require('EditorBidiService');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
 
-var {
-  OrderedSet,
-  Record,
-  Stack,
-} = Immutable;
+var {OrderedSet, Record, Stack} = Immutable;
 
 type EditorStateRecordType = {
   allowUndo: boolean,
@@ -68,9 +65,7 @@ var EditorStateRecord = Record(defaultRecord);
 class EditorState {
   _immutable: EditorStateRecord;
 
-  static createEmpty(
-    decorator?: ?DraftDecoratorType,
-  ): EditorState {
+  static createEmpty(decorator?: ?DraftDecoratorType): EditorState {
     return EditorState.createWithContent(
       ContentState.createFromText(''),
       decorator,
@@ -81,7 +76,10 @@ class EditorState {
     contentState: ContentState,
     decorator?: ?DraftDecoratorType,
   ): EditorState {
-    var firstKey = contentState.getBlockMap().first().getKey();
+    var firstKey = contentState
+      .getBlockMap()
+      .first()
+      .getKey();
     return EditorState.create({
       currentContent: contentState,
       undoStack: Stack(),
@@ -98,9 +96,7 @@ class EditorState {
       treeMap: generateNewTreeMap(currentContent, decorator),
       directionMap: EditorBidiService.getDirectionMap(currentContent),
     };
-    return new EditorState(
-      new EditorStateRecord(recordConfig),
-    );
+    return new EditorState(new EditorStateRecord(recordConfig));
   }
 
   static set(editorState: EditorState, put: Object): EditorState {
@@ -142,12 +138,7 @@ class EditorState {
       if (newContent !== existingContent) {
         state.set(
           'treeMap',
-          regenerateTreeForNewBlocks(
-            editorState,
-            newContent.getBlockMap(),
-            newContent.getEntityMap(),
-            decorator,
-          ),
+          regenerateTreeForNewBlocks(editorState, newContent, decorator),
         );
       }
 
@@ -246,7 +237,10 @@ class EditorState {
   }
 
   isSelectionAtStartOfContent(): boolean {
-    var firstKey = this.getCurrentContent().getBlockMap().first().getKey();
+    var firstKey = this.getCurrentContent()
+      .getBlockMap()
+      .first()
+      .getKey();
     return this.getSelection().hasEdgeWithin(firstKey, 0, 0);
   }
 
@@ -535,21 +529,19 @@ function generateNewTreeMap(
  */
 function regenerateTreeForNewBlocks(
   editorState: EditorState,
-  newBlockMap: BlockMap,
-  newEntityMap: EntityMap,
+  newContentState: ContentState,
   decorator?: ?DraftDecoratorType,
 ): OrderedMap<string, List<any>> {
-  const contentState = editorState.getCurrentContent().set(
-    'entityMap',
-    newEntityMap,
-  );
-  var prevBlockMap = contentState.getBlockMap();
+  const prevContentState = editorState.getCurrentContent();
+  const newBlockMap = newContentState.getBlockMap();
+  const newEntityMap = newContentState.getEntityMap();
+  var prevBlockMap = prevContentState.getBlockMap();
   var prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(contentState, block, decorator)),
+      .map(block => BlockTree.generate(newContentState, block, decorator)),
   );
 }
 
@@ -593,11 +585,9 @@ function mustBecomeBoundary(
   var lastChangeType = editorState.getLastChangeType();
   return (
     changeType !== lastChangeType ||
-    (
-      changeType !== 'insert-characters' &&
+    (changeType !== 'insert-characters' &&
       changeType !== 'backspace-character' &&
-      changeType !== 'delete-character'
-    )
+      changeType !== 'delete-character')
   );
 }
 
@@ -652,17 +642,16 @@ function lookUpwardForInlineStyle(
   content: ContentState,
   fromKey: string,
 ): DraftInlineStyle {
-  var previousBlock = content.getBlockBefore(fromKey);
-  var previousLength;
+  var lastNonEmpty = content
+    .getBlockMap()
+    .reverse()
+    .skipUntil((_, k) => k === fromKey)
+    .skip(1)
+    .skipUntil((block, _) => block.getLength())
+    .first();
 
-  while (previousBlock) {
-    previousLength = previousBlock.getLength();
-    if (previousLength) {
-      return previousBlock.getInlineStyleAt(previousLength - 1);
-    }
-    previousBlock = content.getBlockBefore(previousBlock.getKey());
-  }
-
+  if (lastNonEmpty)
+    return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
   return OrderedSet();
 }
 

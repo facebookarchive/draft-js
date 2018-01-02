@@ -7,17 +7,25 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule ContentState
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
 import type {BlockMap} from 'BlockMap';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {EntityMap} from 'EntityMap';
+import type DraftEntityInstance from 'DraftEntityInstance';
+import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
+const ContentBlockNode = require('ContentBlockNode');
+const DraftEntity = require('DraftEntity');
+const DraftFeatureFlags = require('DraftFeatureFlags');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
@@ -28,12 +36,9 @@ const generateRandomKey = require('generateRandomKey');
 const sanitizeDraftText = require('sanitizeDraftText');
 const updateEntityDataInContentState = require('updateEntityDataInContentState');
 
-import type {EntityMap} from 'EntityMap';
-import type DraftEntityInstance from 'DraftEntityInstance';
-import type {DraftEntityMutability} from 'DraftEntityMutability';
-import type {DraftEntityType} from 'DraftEntityType';
-
 const {List, Record, Repeat, OrderedMap} = Immutable;
+
+const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
 
 const defaultRecord: {
   entityMap: ?EntityMap,
@@ -47,10 +52,13 @@ const defaultRecord: {
   selectionAfter: null,
 };
 
+const ContentBlockNodeRecord = experimentalTreeDataSupport
+  ? ContentBlockNode
+  : ContentBlock;
+
 const ContentStateRecord = Record(defaultRecord);
 
 class ContentState extends ContentStateRecord {
-
   getEntityMap(): any {
     return this.get('entityMap');
   }
@@ -67,8 +75,8 @@ class ContentState extends ContentStateRecord {
     return this.get('selectionAfter');
   }
 
-  getBlockForKey(key: string): ContentBlock {
-    var block: ContentBlock = this.getBlockMap().get(key);
+  getBlockForKey(key: string): BlockNodeRecord {
+    var block: BlockNodeRecord = this.getBlockMap().get(key);
     return block;
   }
 
@@ -89,14 +97,14 @@ class ContentState extends ContentStateRecord {
       .first();
   }
 
-  getBlockAfter(key: string): ?ContentBlock {
+  getBlockAfter(key: string): ?BlockNodeRecord {
     return this.getBlockMap()
       .skipUntil((_, k) => k === key)
       .skip(1)
       .first();
   }
 
-  getBlockBefore(key: string): ?ContentBlock {
+  getBlockBefore(key: string): ?BlockNodeRecord {
     return this.getBlockMap()
       .reverse()
       .skipUntil((_, k) => k === key)
@@ -104,15 +112,15 @@ class ContentState extends ContentStateRecord {
       .first();
   }
 
-  getBlocksAsArray(): Array<ContentBlock> {
+  getBlocksAsArray(): Array<BlockNodeRecord> {
     return this.getBlockMap().toArray();
   }
 
-  getFirstBlock(): ContentBlock {
+  getFirstBlock(): BlockNodeRecord {
     return this.getBlockMap().first();
   }
 
-  getLastBlock(): ContentBlock {
+  getLastBlock(): BlockNodeRecord {
     return this.getBlockMap().last();
   }
 
@@ -125,15 +133,14 @@ class ContentState extends ContentStateRecord {
   }
 
   getLastCreatedEntityKey() {
-    return this.getEntityMap().keySeq().last();
+    return this.getEntityMap()
+      .keySeq()
+      .last();
   }
 
   hasText(): boolean {
     var blockMap = this.getBlockMap();
-    return (
-      blockMap.size > 1 ||
-      blockMap.first().getLength() > 0
-    );
+    return blockMap.size > 1 || blockMap.first().getLength() > 0;
   }
 
   createEntity(
@@ -144,17 +151,11 @@ class ContentState extends ContentStateRecord {
     return createEntityInContentState(this, type, mutability, data);
   }
 
-  mergeEntityData(
-    key: string,
-    toMerge: {[key: string]: any},
-  ): ContentState {
+  mergeEntityData(key: string, toMerge: {[key: string]: any}): ContentState {
     return updateEntityDataInContentState(this, key, toMerge, true);
   }
 
-  replaceEntityData(
-    key: string,
-    newData: {[key: string]: any},
-  ): ContentState {
+  replaceEntityData(key: string, newData: {[key: string]: any}): ContentState {
     return updateEntityDataInContentState(this, key, newData, false);
   }
 
@@ -169,10 +170,11 @@ class ContentState extends ContentStateRecord {
   }
 
   static createFromBlockArray(
-    blocks: Array<ContentBlock>,
+    blocks: Array<BlockNodeRecord> | {contentBlocks: Array<BlockNodeRecord>},
     entityMap: ?OrderedMap,
   ): ContentState {
-    var blockMap = BlockMapBuilder.createFromArray(blocks);
+    const theBlocks = Array.isArray(blocks) ? blocks : blocks.contentBlocks;
+    var blockMap = BlockMapBuilder.createFromArray(theBlocks);
     var selectionState = blockMap.isEmpty()
       ? new SelectionState()
       : SelectionState.createEmpty(blockMap.first().getKey());
@@ -189,17 +191,15 @@ class ContentState extends ContentStateRecord {
     delimiter: string | RegExp = /\r\n?|\n/g,
   ): ContentState {
     const strings = text.split(delimiter);
-    const blocks = strings.map(
-      block => {
-        block = sanitizeDraftText(block);
-        return new ContentBlock({
-          key: generateRandomKey(),
-          text: block,
-          type: 'unstyled',
-          characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
-        });
-      },
-    );
+    const blocks = strings.map(block => {
+      block = sanitizeDraftText(block);
+      return new ContentBlockNodeRecord({
+        key: generateRandomKey(),
+        text: block,
+        type: 'unstyled',
+        characterList: List(Repeat(CharacterMetadata.EMPTY, block.length)),
+      });
+    });
     return ContentState.createFromBlockArray(blocks);
   }
 }

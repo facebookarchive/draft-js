@@ -7,23 +7,20 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule CharacterMetadata
- * @typechecks
+ * @format
  * @flow
  */
 
 'use strict';
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftEntitySet} from 'DraftEntitySet';
 
-var {
-  Map,
-  OrderedSet,
-  Record,
-} = require('immutable');
+var {Map, OrderedSet, Record} = require('immutable');
 
 // Immutable.map is typed such that the value for every key in the map
 // must be the same type
-type CharacterMetadataConfigValueType = DraftInlineStyle | ?string;
+type CharacterMetadataConfigValueType = DraftInlineStyle | DraftEntitySet;
 
 type CharacterMetadataConfig = {
   style?: CharacterMetadataConfigValueType,
@@ -34,7 +31,7 @@ const EMPTY_SET = OrderedSet();
 
 var defaultRecord: CharacterMetadataConfig = {
   style: EMPTY_SET,
-  entity: null,
+  entity: EMPTY_SET,
 };
 
 var CharacterMetadataRecord = Record(defaultRecord);
@@ -44,12 +41,16 @@ class CharacterMetadata extends CharacterMetadataRecord {
     return this.get('style');
   }
 
-  getEntity(): ?string {
+  getEntity(): DraftEntitySet {
     return this.get('entity');
   }
 
   hasStyle(style: string): boolean {
     return this.getStyle().includes(style);
+  }
+
+  hasEntity(entity: string): boolean {
+    return this.getEntity().includes(entity);
   }
 
   static applyStyle(
@@ -68,14 +69,23 @@ class CharacterMetadata extends CharacterMetadataRecord {
     return CharacterMetadata.create(withoutStyle);
   }
 
-  static applyEntity(
+  static addEntity(
     record: CharacterMetadata,
-    entityKey: ?string,
+    entityKey: string,
   ): CharacterMetadata {
-    var withEntity = record.getEntity() === entityKey ?
-      record :
-      record.set('entity', entityKey);
+    var withEntity = record.set('entity', record.getEntity().add(entityKey));
     return CharacterMetadata.create(withEntity);
+  }
+
+  static removeEntity(
+    record: CharacterMetadata,
+    entityKey: string,
+  ): CharacterMetadata {
+    var withoutEntity = record.set(
+      'entity',
+      record.getEntity().remove(entityKey),
+    );
+    return CharacterMetadata.create(withoutEntity);
   }
 
   /**
@@ -89,8 +99,10 @@ class CharacterMetadata extends CharacterMetadataRecord {
       return EMPTY;
     }
 
-    const defaultConfig: CharacterMetadataConfig =
-      {style: EMPTY_SET, entity: (null: ?string)};
+    const defaultConfig: CharacterMetadataConfig = {
+      style: EMPTY_SET,
+      entity: EMPTY_SET,
+    };
 
     // Fill in unspecified properties, if necessary.
     var configMap = Map(defaultConfig).merge(config);
@@ -107,9 +119,9 @@ class CharacterMetadata extends CharacterMetadataRecord {
 }
 
 var EMPTY = new CharacterMetadata();
-var pool: Map<Map<any, any>, CharacterMetadata> = Map(
-  [[Map(defaultRecord), EMPTY]],
-);
+var pool: Map<Map<any, any>, CharacterMetadata> = Map([
+  [Map(defaultRecord), EMPTY],
+]);
 
 CharacterMetadata.EMPTY = EMPTY;
 

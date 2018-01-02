@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule getRangeBoundingClientRect
- * @typechecks
+ * @format
  * @flow
  */
 
@@ -16,13 +16,13 @@
 var getRangeClientRects = require('getRangeClientRects');
 
 export type FakeClientRect = {
-    left: number,
-    width: number,
-    right: number,
-    top: number,
-    bottom: number,
-    height: number,
-}
+  left: number,
+  width: number,
+  right: number,
+  top: number,
+  bottom: number,
+  height: number,
+};
 
 /**
  * Like range.getBoundingClientRect() but normalizes for browser bugs.
