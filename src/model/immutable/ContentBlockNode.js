@@ -22,6 +22,7 @@
 import type {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {DraftEntitySet} from 'DraftEntitySet';
 
 const CharacterMetadata = require('CharacterMetadata');
 const Immutable = require('immutable');
@@ -116,7 +117,7 @@ class ContentBlockNode extends Record(defaultRecord) implements BlockNode {
     return character ? character.getStyle() : EMPTY_SET;
   }
 
-  getEntityAt(offset: number): ?string {
+  getEntityAt(offset: number): DraftEntitySet {
     var character = this.getCharacterList().get(offset);
     return character ? character.getEntity() : null;
   }
