@@ -77,7 +77,7 @@ Object {
     },
   ],
   "entityMap": Object {
-    "0": Object {
+    "123": Object {
       "data": Object {},
       "mutability": "IMMUTABLE",
       "type": "IMAGE",
