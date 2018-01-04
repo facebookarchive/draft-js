@@ -237,6 +237,48 @@ class EditorState {
     return getInlineStyleForNonCollapsedSelection(content, selection);
   }
 
+  /**
+   * Similar to getCurrentInlineStyle(), but for collapsed selection
+   * common styles of whole selection will be returned.
+   */
+  getCurrentCommonInlineStyles(): DraftInlineStyle {
+    var override = this.getInlineStyleOverride();
+    if (override != null) {
+      return override;
+    }
+
+    var content = this.getCurrentContent();
+    var selection = this.getSelection();
+
+    if (selection.isCollapsed()) {
+      return getInlineStyleForCollapsedSelection(content, selection);
+    }
+
+    const {commonStyles} = getInlineStyleForNonCollapsedSelectionExt(content, selection);
+    return commonStyles;
+  }
+
+  /**
+   * Similar to getCurrentInlineStyle(), but for collapsed selection
+   * all styles found in whole selection will be returned.
+   */
+  getCurrentAllInlineStyles(): DraftInlineStyle {
+    var override = this.getInlineStyleOverride();
+    if (override != null) {
+      return override;
+    }
+
+    var content = this.getCurrentContent();
+    var selection = this.getSelection();
+
+    if (selection.isCollapsed()) {
+      return getInlineStyleForCollapsedSelection(content, selection);
+    }
+
+    const {foundStyles} = getInlineStyleForNonCollapsedSelectionExt(content, selection);
+    return foundStyles;
+  }
+
   getBlockTree(blockKey: string): List<any> {
     return this.getImmutable().getIn(['treeMap', blockKey]);
   }
@@ -659,6 +701,82 @@ function lookUpwardForInlineStyle(
   if (lastNonEmpty)
     return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
   return OrderedSet();
+}
+
+function getInlineStyleForNonCollapsedSelectionExt(
+  content: ContentState,
+  selection: SelectionState,
+): {commonStyles: DraftInlineStyle, foundStyles: DraftInlineStyle} {
+  if (selection.isCollapsed())
+    return null;
+  const selStart = selection.getStartOffset();
+  const selEnd = selection.getEndOffset();
+  if (selStart < 0 || selEnd < 0) //no selection
+    return null;
+
+  const blockMap = content.getBlockMap();
+  const blockKeys = Array.from(blockMap.keys());
+  let blocksByKeys = {};
+  blockMap.map((blk) => {
+    blocksByKeys[blk.key] = blk;
+  });
+  const selStartKeyInd = blockKeys.indexOf(selection.getStartKey());
+  const selEndKeyInd = blockKeys.indexOf(selection.getEndKey());
+
+  //let allStyledParts = [];
+  let foundStyles = OrderedSet();
+  let stylesLengths = {};
+  let selFullLength = 0;
+  for (let ind = selStartKeyInd ; ind <= selEndKeyInd ; ind++) {
+    const blockKey = blockKeys[ind];
+    const block = blocksByKeys[blockKey];
+
+    const chars = block.getCharacterList();
+    const blockCharsCount = chars.count();
+    let bsStart = 0, bsEnd = blockCharsCount;
+    if (ind == selStartKeyInd)
+      bsStart = selStart;
+    if (ind == selEndKeyInd)
+      bsEnd = selEnd;
+    const bsEndR = bsEnd - 1; //tip: 'R' means include last char, not exclude
+    const bsLength = bsEnd - bsStart;
+    selFullLength += bsLength;
+
+    block.findStyleRanges(
+      (character) => {
+        const styleKeysSet = character.getStyle(); //OrderedSet
+        return (styleKeysSet !== null && styleKeysSet.size > 0);
+      },
+      (start, end) => {
+        const endR = end - 1; //tip: 'R' means include last char, not exclude
+        const isInSelection = !(start < bsStart && endR < bsStart || start > bsEndR && endR > bsEndR);
+        if (!isInSelection)
+          return;
+        const fStart = Math.max(start, bsStart),
+          fEnd = Math.min(end, bsEnd),
+          fEndR = fEnd - 1;
+        const len = fEnd - fStart;
+        const stlSet = block.getInlineStyleAt(start);
+        for (const stl of stlSet) {
+          foundStyles = foundStyles.add(stl);
+          if (!stylesLengths[stl])
+              stylesLengths[stl] = 0;
+          stylesLengths[stl] += len;
+        }
+        //allStyledParts.push([blockKey, start, end, stlSet]);
+    });
+  }
+
+  const commonStylesArr = Object.keys(stylesLengths).filter(stl => stylesLengths[stl] == selFullLength);
+  const commonStyles = OrderedSet(commonStylesArr);;
+
+  let res = {
+    commonStyles,
+    foundStyles,
+    //allStyledParts
+  };
+
+  return res;
 }
 
 module.exports = EditorState;
