@@ -1,22 +1,18 @@
 /**
- * Copyright 2004-present Facebook. All Rights Reserved.
+ * Copyright (c) 2017-present, Facebook, Inc.
  *
- * This file provided by Facebook is for non-commercial testing and evaluation
- * purposes only. Facebook reserves all rights not expressly granted.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
-var React = require('React');
-var Site = require('Site');
-var Prism = require('Prism');
-var Marked = require('Marked');
-var unindent = require('unindent');
+const React = require('react');
+
+const CompLibrary = require('../../core/CompLibrary.js');
+const MarkdownBlock = CompLibrary.MarkdownBlock; /* Used to read markdown */
+const Container = CompLibrary.Container;
+const GridBlock = CompLibrary.GridBlock;
+
+const siteConfig = require(process.cwd() + '/siteConfig.js');
 
 var richExample = `
 'use strict';
@@ -216,10 +212,10 @@ ReactDOM.render(
 );
 `;
 
-var index = React.createClass({
-  render: function() {
+class Index extends React.Component {
+  render() {
     return (
-      <Site>
+      <div>
         <div className="hero">
           <div className="wrap">
             <div className="text"><strong>Draft.js</strong></div>
@@ -256,7 +252,7 @@ var index = React.createClass({
 
           <section className="home-bottom-section">
             <div className="buttons-unit">
-              <a href="docs/overview.html#content" className="button">Learn more about Draft</a>
+              <a href="docs/getting-started.html" className="button">Learn more about Draft</a>
             </div>
           </section>
         </section>
@@ -266,14 +262,12 @@ var index = React.createClass({
         <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.6/immutable.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
         <script src="lib/Draft.js"></script>
-        <style dangerouslySetInnerHTML={{__html: `
-          @import "lib/Draft.css";
-          @import "lib/RichEditor.css";
-        `}} />
+        <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script>
+        <script type="text/javascript">{'try{Typekit.load();}catch(e){}'}</script>
         <script type="text/babel" dangerouslySetInnerHTML={{__html: richExample}} />
-      </Site>
+      </div>
     );
-  },
-});
+  }
+}
 
-module.exports = index;
+module.exports = Index;

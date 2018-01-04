@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-inline-styles
 title: Complex Inline Styles
-layout: docs
-category: Advanced Topics
-next: advanced-topics-nested-lists
-permalink: docs/advanced-topics-inline-styles.html
 ---
 
 Within your editor, you may wish to provide a wide variety of inline style

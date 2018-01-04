@@ -1,10 +1,6 @@
 ---
 id: api-reference-selection-state
 title: SelectionState
-layout: docs
-category: API Reference
-next: api-reference-composite-decorator
-permalink: docs/api-reference-selection-state.html
 ---
 
 `SelectionState` is an Immutable

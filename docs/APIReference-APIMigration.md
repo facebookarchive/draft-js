@@ -1,10 +1,6 @@
 ---
 id: v0-10-api-migration
 title: v0.10 API Migration
-layout: docs
-category: Advanced Topics
-next: advanced-topics-decorators
-permalink: docs/v0-10-api-migration.html
 ---
 
 The Draft.js v0.10 release includes a change to the API for managing
@@ -152,4 +148,3 @@ function findLinkEntities(contentBlock, callback, contentState) {
 ## More Information
 
 For more information see the [updated examples](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0).
-
