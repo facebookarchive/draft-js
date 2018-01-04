@@ -249,6 +249,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       editorState,
       key: 'contents' + this.state.contentsKey,
       textDirectionality,
+      editor: this,
     };
 
     return (

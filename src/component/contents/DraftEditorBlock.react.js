@@ -96,40 +96,53 @@ class DraftEditorBlock extends React.Component<Props> {
    */
   componentDidMount(): void {
     const selection = this.props.selection;
+    const editor = this.props.editor;
     const endKey = selection.getEndKey();
     if (!selection.getHasFocus() || endKey !== this.props.block.getKey()) {
       return;
     }
 
     const blockNode = ReactDOM.findDOMNode(this);
-    const scrollParent = Style.getScrollParent(blockNode);
+    let scrollParent = Style.getScrollParent(blockNode);
     const scrollPosition = getScrollPosition(scrollParent);
-    let scrollDelta;
 
-    if (scrollParent === window) {
-      const nodePosition = getElementPosition(blockNode);
-      const nodeBottom = nodePosition.y + nodePosition.height;
-      const viewportHeight = getViewportDimensions().height;
-      scrollDelta = nodeBottom - viewportHeight;
-      if (scrollDelta > 0) {
-        window.scrollTo(
-          scrollPosition.x,
-          scrollPosition.y + scrollDelta + SCROLL_BUFFER,
-        );
-      }
-    } else {
-      invariant(
-        blockNode instanceof HTMLElement,
-        'blockNode is not an HTMLElement',
-      );
-      const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
-      const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
-      scrollDelta = blockBottom - scrollBottom;
-      if (scrollDelta > 0) {
-        Scroll.setTop(
-          scrollParent,
-          Scroll.getTop(scrollParent) + scrollDelta + SCROLL_BUFFER,
-        );
+    const isWindow = (scrollParent === window);
+    if (isWindow) {
+      scrollParent = window.document.body;
+    }
+    invariant(
+      blockNode instanceof HTMLElement,
+      'blockNode is not an HTMLElement',
+    );
+    //Fix issue #304
+    const blockPosition = getElementPosition(blockNode);
+    //const viewportHeight = getViewportDimensions().height;
+    const oldScrollTop = scrollPosition.y;
+    const scrollParentPosition = !isWindow ? getElementPosition(scrollParent) : null;
+    const editorNode = ReactDOM.findDOMNode(editor);
+    const editorPosition = getElementPosition(editorNode);
+    const gapTop = editorPosition.y + oldScrollTop - (!isWindow ? scrollParentPosition.y : 0); //gap between editor & scroll parent
+    const gapBottom = scrollParent.scrollHeight - (gapTop + editorNode.offsetHeight);
+    const blockTop = blockPosition.y - editorPosition.y;
+    const blockHeight = blockNode.offsetHeight;
+    const blockBottom = blockTop + blockHeight;
+    const visTop = scrollParent.offsetTop + scrollPosition.y - gapTop; //viewport of editor
+    const visHeight = scrollParent.offsetHeight;
+    const visBottom = visTop + visHeight;
+    let scrollDeltaTop = visTop - blockTop;
+    let scrollDeltaBottom = visBottom - blockBottom;
+    const isBigBlock = (blockHeight >= visHeight); //for big block scroll to its top
+    let correctScrollTop = undefined;
+    if (visTop > blockTop || isBigBlock && blockTop > visBottom) {
+      correctScrollTop = scrollPosition.y - SCROLL_BUFFER - scrollDeltaTop;
+    } else if (!isBigBlock && blockBottom > visBottom) {
+      correctScrollTop = scrollPosition.y + SCROLL_BUFFER - scrollDeltaBottom;
+    }
+    if (correctScrollTop !== undefined) {
+      if (isWindow) {
+        window.scrollTo(scrollPosition.x, correctScrollTop);
+      } else {
+        Scroll.setTop(scrollParent, correctScrollTop);
       }
     }
   }
