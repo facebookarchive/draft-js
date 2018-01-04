@@ -254,7 +254,10 @@ class EditorState {
       return getInlineStyleForCollapsedSelection(content, selection);
     }
 
-    const {commonStyles} = getInlineStyleForNonCollapsedSelectionExt(content, selection);
+    const {commonStyles} = getInlineStyleForNonCollapsedSelectionExt(
+      content,
+      selection,
+    );
     return commonStyles;
   }
 
@@ -275,7 +278,10 @@ class EditorState {
       return getInlineStyleForCollapsedSelection(content, selection);
     }
 
-    const {foundStyles} = getInlineStyleForNonCollapsedSelectionExt(content, selection);
+    const {foundStyles} = getInlineStyleForNonCollapsedSelectionExt(
+      content,
+      selection,
+    );
     return foundStyles;
   }
 
@@ -707,76 +713,72 @@ function getInlineStyleForNonCollapsedSelectionExt(
   content: ContentState,
   selection: SelectionState,
 ): {commonStyles: DraftInlineStyle, foundStyles: DraftInlineStyle} {
-  if (selection.isCollapsed())
-    return null;
+  let commonStyles = OrderedSet();
+  let foundStyles = OrderedSet();
   const selStart = selection.getStartOffset();
   const selEnd = selection.getEndOffset();
-  if (selStart < 0 || selEnd < 0) //no selection
-    return null;
-
-  const blockMap = content.getBlockMap();
-  const blockKeys = Array.from(blockMap.keys());
-  let blocksByKeys = {};
-  blockMap.map((blk) => {
-    blocksByKeys[blk.key] = blk;
-  });
-  const selStartKeyInd = blockKeys.indexOf(selection.getStartKey());
-  const selEndKeyInd = blockKeys.indexOf(selection.getEndKey());
-
-  //let allStyledParts = [];
-  let foundStyles = OrderedSet();
-  let stylesLengths = {};
-  let selFullLength = 0;
-  for (let ind = selStartKeyInd ; ind <= selEndKeyInd ; ind++) {
-    const blockKey = blockKeys[ind];
-    const block = blocksByKeys[blockKey];
-
-    const chars = block.getCharacterList();
-    const blockCharsCount = chars.count();
-    let bsStart = 0, bsEnd = blockCharsCount;
-    if (ind == selStartKeyInd)
-      bsStart = selStart;
-    if (ind == selEndKeyInd)
-      bsEnd = selEnd;
-    const bsEndR = bsEnd - 1; //tip: 'R' means include last char, not exclude
-    const bsLength = bsEnd - bsStart;
-    selFullLength += bsLength;
-
-    block.findStyleRanges(
-      (character) => {
-        const styleKeysSet = character.getStyle(); //OrderedSet
-        return (styleKeysSet !== null && styleKeysSet.size > 0);
-      },
-      (start, end) => {
-        const endR = end - 1; //tip: 'R' means include last char, not exclude
-        const isInSelection = !(start < bsStart && endR < bsStart || start > bsEndR && endR > bsEndR);
-        if (!isInSelection)
-          return;
-        const fStart = Math.max(start, bsStart),
-          fEnd = Math.min(end, bsEnd),
-          fEndR = fEnd - 1;
-        const len = fEnd - fStart;
-        const stlSet = block.getInlineStyleAt(start);
-        for (const stl of stlSet) {
-          foundStyles = foundStyles.add(stl);
-          if (!stylesLengths[stl])
-              stylesLengths[stl] = 0;
-          stylesLengths[stl] += len;
-        }
-        //allStyledParts.push([blockKey, start, end, stlSet]);
+  if (selection.isCollapsed() && selStart >= 0 && selEnd >= 0) {
+    const blockMap = content.getBlockMap();
+    const blockKeys = Array.from(blockMap.keys());
+    let blocksByKeys = {};
+    blockMap.map(blk => {
+      blocksByKeys[blk.key] = blk;
     });
+    const selStartKeyInd = blockKeys.indexOf(selection.getStartKey());
+    const selEndKeyInd = blockKeys.indexOf(selection.getEndKey());
+
+    let stylesLengths = {};
+    let selFullLength = 0;
+    for (let ind = selStartKeyInd; ind <= selEndKeyInd; ind++) {
+      const blockKey = blockKeys[ind];
+      const block = blocksByKeys[blockKey];
+
+      const chars = block.getCharacterList();
+      const blockCharsCount = chars.count();
+      let bsStart = 0;
+      let bsEnd = blockCharsCount;
+      if (ind == selStartKeyInd) bsStart = selStart;
+      if (ind == selEndKeyInd) bsEnd = selEnd;
+      const bsEndR = bsEnd - 1; //tip: 'R' means include last char, not exclude
+      const bsLength = bsEnd - bsStart;
+      selFullLength += bsLength;
+
+      block.findStyleRanges(
+        character => {
+          const styleKeysSet = character.getStyle(); //OrderedSet
+          return styleKeysSet !== null && styleKeysSet.size > 0;
+        },
+        (start, end) => {
+          const endR = end - 1; //tip: 'R' means include last char, not exclude
+          const isInSelection = !(
+            (start < bsStart && endR < bsStart) ||
+            (start > bsEndR && endR > bsEndR)
+          );
+          if (!isInSelection) return;
+          const fStart = Math.max(start, bsStart);
+          const fEnd = Math.min(end, bsEnd);
+          //const fEndR = fEnd - 1;
+          const len = fEnd - fStart;
+          const stlSet = block.getInlineStyleAt(start);
+          for (const stl of stlSet) {
+            foundStyles = foundStyles.add(stl);
+            if (!stylesLengths[stl]) stylesLengths[stl] = 0;
+            stylesLengths[stl] += len;
+          }
+        },
+      );
+    }
+
+    const commonStylesArr = Object.keys(stylesLengths).filter(
+      stl => stylesLengths[stl] == selFullLength,
+    );
+    commonStyles = OrderedSet(commonStylesArr);
   }
 
-  const commonStylesArr = Object.keys(stylesLengths).filter(stl => stylesLengths[stl] == selFullLength);
-  const commonStyles = OrderedSet(commonStylesArr);;
-
-  let res = {
+  return {
     commonStyles,
     foundStyles,
-    //allStyledParts
   };
-
-  return res;
 }
 
 module.exports = EditorState;
