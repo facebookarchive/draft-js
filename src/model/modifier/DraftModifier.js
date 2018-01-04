@@ -56,7 +56,7 @@ var DraftModifier = {
     text: string,
     inlineStyle?: DraftInlineStyle,
     entityKey?: ?string,
-    modifyStartBlock: boolean,
+    modifyStartBlock: ?boolean,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, rangeToReplace);
     var withoutText = removeRangeFromContentState(
@@ -122,10 +122,14 @@ var DraftModifier = {
     contentState: ContentState,
     targetRange: SelectionState,
     fragment: BlockMap,
-    modifyStartBlock: boolean,
+    modifyStartBlock: ?boolean,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
-    var withoutText = removeRangeFromContentState(withoutEntities, targetRange, modifyStartBlock);
+    var withoutText = removeRangeFromContentState(
+      withoutEntities,
+      targetRange,
+      modifyStartBlock,
+    );
 
     return insertFragmentIntoContentState(
       withoutText,
@@ -138,7 +142,7 @@ var DraftModifier = {
     contentState: ContentState,
     rangeToRemove: SelectionState,
     removalDirection: DraftRemovalDirection,
-    modifyStartBlock: boolean,
+    modifyStartBlock: ?boolean,
   ): ContentState {
     let startKey, endKey, startBlock, endBlock;
     if (rangeToRemove.getIsBackward()) {
@@ -171,7 +175,11 @@ var DraftModifier = {
           rangeToRemove,
           removalDirection,
         );
-        return removeRangeFromContentState(contentState, adjustedRemovalRange, modifyStartBlock);
+        return removeRangeFromContentState(
+          contentState,
+          adjustedRemovalRange,
+          modifyStartBlock,
+        );
       }
     }
     let adjustedRemovalRange = rangeToRemove;
@@ -191,13 +199,17 @@ var DraftModifier = {
       contentState,
       adjustedRemovalRange,
     );
-    return removeRangeFromContentState(withoutEntities, adjustedRemovalRange, modifyStartBlock);
+    return removeRangeFromContentState(
+      withoutEntities,
+      adjustedRemovalRange,
+      modifyStartBlock,
+    );
   },
 
   splitBlock: function(
     contentState: ContentState,
     selectionState: SelectionState,
-    modifyStartBlock: boolean,
+    modifyStartBlock: ?boolean,
   ): ContentState {
     var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     var withoutText = removeRangeFromContentState(

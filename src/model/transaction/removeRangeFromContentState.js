@@ -232,7 +232,7 @@ const updateBlockMapLinks = (
 const removeRangeFromContentState = (
   contentState: ContentState,
   selectionState: SelectionState,
-  modifyStartBlock: boolean
+  modifyStartBlock: ?boolean,
 ): ContentState => {
   if (selectionState.isCollapsed()) {
     return contentState;
@@ -277,8 +277,8 @@ const removeRangeFromContentState = (
 
   let characterList;
 
-  const charsLeftBeforeCrop = startOffset;
-  const charsLeftAfterCrop = endBlock.getCharacterList().count() - endOffset;
+  //const charsLeftBeforeCrop = startOffset;
+  //const charsLeftAfterCrop = endBlock.getCharacterList().count() - endOffset;
 
   if (startBlock === endBlock) {
     characterList = removeFromList(
@@ -305,7 +305,7 @@ const removeRangeFromContentState = (
     modifyStartBlock = true; //default
   }
 
-  let modifiedKey = (modifyStartBlock ? startKey : endKey);
+  let modifiedKey = modifyStartBlock ? startKey : endKey;
 
   const modifiedStart = startBlock.merge({
     text:
