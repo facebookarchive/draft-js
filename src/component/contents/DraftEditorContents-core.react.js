@@ -17,6 +17,7 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {BidiDirection} from 'UnicodeBidiDirection';
+import type DraftEditor from 'DraftEditor.react';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
@@ -36,6 +37,7 @@ type Props = {
   editorKey?: string,
   editorState: EditorState,
   textDirectionality?: BidiDirection,
+  editor: DraftEditor,
 };
 
 /**

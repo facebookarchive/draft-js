@@ -20,6 +20,7 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 import type {List} from 'immutable';
+import type DraftEditor from 'DraftEditor.react';
 
 const DraftEditorLeaf = require('DraftEditorLeaf.react');
 const DraftOffsetKey = require('DraftOffsetKey');
@@ -34,7 +35,6 @@ const cx = require('cx');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
-const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 
 const SCROLL_BUFFER = 10;
@@ -53,6 +53,7 @@ type Props = {
   selection: SelectionState,
   startIndent?: boolean,
   tree: List<any>,
+  editor: DraftEditor,
 };
 
 /**
@@ -103,43 +104,40 @@ class DraftEditorBlock extends React.Component<Props> {
     }
 
     const blockNode = ReactDOM.findDOMNode(this);
+    const editorNode = ReactDOM.findDOMNode(editor);
     let scrollParent = Style.getScrollParent(blockNode);
     const scrollPosition = getScrollPosition(scrollParent);
-
-    const isWindow = (scrollParent === window);
-    if (isWindow) {
+    const blockPosition = getElementPosition(blockNode);
+    const editorPosition = getElementPosition(editorNode);
+    const isScrParentWindow = scrollParent === window;
+    const viewportHeight = getViewportDimensions().height;
+    if (isScrParentWindow) {
       scrollParent = window.document.body;
     }
-    invariant(
-      blockNode instanceof HTMLElement,
-      'blockNode is not an HTMLElement',
-    );
+    const scrollParentPosition = !isScrParentWindow
+      ? getElementPosition(scrollParent)
+      : {y: 0, height: viewportHeight};
+
     //Fix issue #304
-    const blockPosition = getElementPosition(blockNode);
-    //const viewportHeight = getViewportDimensions().height;
-    const oldScrollTop = scrollPosition.y;
-    const scrollParentPosition = !isWindow ? getElementPosition(scrollParent) : null;
-    const editorNode = ReactDOM.findDOMNode(editor);
-    const editorPosition = getElementPosition(editorNode);
-    const gapTop = editorPosition.y + oldScrollTop - (!isWindow ? scrollParentPosition.y : 0); //gap between editor & scroll parent
-    const gapBottom = scrollParent.scrollHeight - (gapTop + editorNode.offsetHeight);
+    const blockHeight = blockPosition.height;
     const blockTop = blockPosition.y - editorPosition.y;
-    const blockHeight = blockNode.offsetHeight;
     const blockBottom = blockTop + blockHeight;
-    const visTop = scrollParent.offsetTop + scrollPosition.y - gapTop; //viewport of editor
-    const visHeight = scrollParent.offsetHeight;
+    //viewport of editor:
+    const visTop = scrollParentPosition.y - editorPosition.y;
+    const visHeight = scrollParentPosition.height;
     const visBottom = visTop + visHeight;
     let scrollDeltaTop = visTop - blockTop;
     let scrollDeltaBottom = visBottom - blockBottom;
-    const isBigBlock = (blockHeight >= visHeight); //for big block scroll to its top
+    const isBigBlock = blockHeight >= visHeight;
+    //for big block scroll to its top
     let correctScrollTop = undefined;
-    if (visTop > blockTop || isBigBlock && blockTop > visBottom) {
+    if (visTop > blockTop || (isBigBlock && blockTop > visBottom)) {
       correctScrollTop = scrollPosition.y - SCROLL_BUFFER - scrollDeltaTop;
     } else if (!isBigBlock && blockBottom > visBottom) {
       correctScrollTop = scrollPosition.y + SCROLL_BUFFER - scrollDeltaBottom;
     }
     if (correctScrollTop !== undefined) {
-      if (isWindow) {
+      if (isScrParentWindow) {
         window.scrollTo(scrollPosition.x, correctScrollTop);
       } else {
         Scroll.setTop(scrollParent, correctScrollTop);
