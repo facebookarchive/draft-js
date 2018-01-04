@@ -1,10 +1,6 @@
 ---
 id: api-reference-rich-utils
 title: RichUtils
-layout: docs
-category: API Reference
-next: api-reference-atomic-block-utils
-permalink: docs/api-reference-rich-utils.html
 ---
 
 The `RichUtils` module is a static set of utility functions for rich text

@@ -1,13 +1,9 @@
 ---
 id: api-reference-key-binding-util
 title: KeyBindingUtil
-layout: docs
-category: API Reference
-next: api-reference-modifier
-permalink: docs/api-reference-key-binding-util.html
 ---
 
-The `KeyBindingUtil` module is a static set of utility functions for 
+The `KeyBindingUtil` module is a static set of utility functions for
 defining key bindings.
 
 ## Static Methods
