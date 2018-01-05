@@ -21,7 +21,8 @@ const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Immutable = require('immutable');
 const RichTextEditorUtil = require('RichTextEditorUtil');
-const {BOLD, ITALIC} = require('SampleDraftInlineStyle');
+const {BOLD, ITALIC, BOLD_ITALIC, UNDERLINE} = require('SampleDraftInlineStyle');
+const {EMPTY} = CharacterMetadata;
 const SelectionState = require('SelectionState');
 
 const {List, Repeat} = Immutable;
@@ -67,6 +68,16 @@ const italicBlock = new ContentBlock({
   characterList: List(Repeat(CharacterMetadata.create({style: ITALIC}), 7)),
 });
 
+const mixedBlock = new ContentBlock({
+  key: 'm',
+  text: 'Underline Bold BoldItalic ',
+  characterList: Repeat(CharacterMetadata.create({style: UNDERLINE}), 10).concat(
+    Repeat(CharacterMetadata.create({style: BOLD}), 5),
+    Repeat(CharacterMetadata.create({style: BOLD_ITALIC}), 10),
+    Repeat(EMPTY, 1)
+  )
+});
+
 const getSampleEditorState = (type, decorator) => {
   switch (type) {
     case 'DECORATED':
@@ -91,6 +102,7 @@ const getSampleEditorState = (type, decorator) => {
           emptyBlockA,
           emptyBlockB,
           italicBlock,
+          mixedBlock,
         ]),
       );
   }
@@ -103,6 +115,16 @@ const MULTI_BLOCK_STATE = getSampleEditorState('MULTI_BLOCK');
 const assertGetCurrentInlineStyle = (selection, state = UNDECORATED_STATE) => {
   const editorState = EditorState.acceptSelection(state, selection);
   expect(editorState.getCurrentInlineStyle().toJS()).toMatchSnapshot();
+};
+
+const assertGetCurrentCommonInlineStyles = (selection, state = UNDECORATED_STATE) => {
+  const editorState = EditorState.acceptSelection(state, selection);
+  expect(editorState.getCurrentCommonInlineStyles().toJS()).toMatchSnapshot();
+};
+
+const assertGetCurrentAllInlineStyles = (selection, state = UNDECORATED_STATE) => {
+  const editorState = EditorState.acceptSelection(state, selection);
+  expect(editorState.getCurrentAllInlineStyles().toJS()).toMatchSnapshot();
 };
 
 beforeEach(() => {
@@ -148,6 +170,54 @@ test('looks upward through empty blocks to find a character with collapsed selec
     collapsedSelection.merge({
       anchorKey: 'emptyB',
       focusKey: 'emptyB',
+    }),
+  );
+});
+
+//should be UNDERLINE (which is confusing)
+test('getCurrentInlineStyle() for non-collapsed selection returns just style of 1st char', () => {
+  assertGetCurrentInlineStyle(
+    collapsedSelection.merge({
+      anchorKey: 'm',
+      focusKey: 'm',
+      anchorOffset: 0,
+      focusOffset: 10+5+10, //Underline, Bold, BoldItalic
+    }),
+  );
+});
+
+//should be - (which is correct)
+test('getCurrentCommonInlineStyles() returns common styles for whole selection', () => {
+  assertGetCurrentCommonInlineStyles(
+    collapsedSelection.merge({
+      anchorKey: 'm',
+      focusKey: 'm',
+      anchorOffset: 0,
+      focusOffset: 10+5+10, //Underline, Bold, BoldItalic
+    }),
+  );
+});
+
+//should be BOLD
+test('getCurrentCommonInlineStyles() returns common styles for whole selection', () => {
+  assertGetCurrentCommonInlineStyles(
+    collapsedSelection.merge({
+      anchorKey: 'm',
+      focusKey: 'm',
+      anchorOffset: 10,
+      focusOffset: 10 + 5+10, //Bold, BoldItalic
+    }),
+  );
+});
+
+//should be BOLD, ITALIC
+test('getCurrentAllInlineStyles() returns all found styles inside selection', () => {
+  assertGetCurrentAllInlineStyles(
+    collapsedSelection.merge({
+      anchorKey: 'm',
+      focusKey: 'm',
+      anchorOffset: 10,
+      focusOffset: 10 + 5+10, //Bold, BoldItalic
     }),
   );
 });
