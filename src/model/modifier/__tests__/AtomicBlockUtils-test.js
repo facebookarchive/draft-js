@@ -28,6 +28,7 @@ const {editorState, contentState, selectionState} = getSampleStateForTesting();
 const initialBlock = contentState.getBlockMap().first();
 const ENTITY_KEY = Entity.create('TOKEN', 'MUTABLE');
 const CHARACTER = ' ';
+const BLOCK_DATA = {};
 
 const assertAtomic = state => {
   expect(
@@ -47,8 +48,9 @@ const assertInsertAtomicBlock = (
   state = editorState,
   entity = ENTITY_KEY,
   character = CHARACTER,
+  blockData = BLOCK_DATA
 ) => {
-  const newState = insertAtomicBlock(state, entity, character);
+  const newState = insertAtomicBlock(state, entity, character, blockData);
   assertAtomic(newState);
   return newState;
 };
