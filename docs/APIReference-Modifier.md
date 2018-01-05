@@ -251,5 +251,5 @@ cutBySelection(
   selection: SelectionState
 ): ContentState?
 ```
-Extract part of content state by selection.
+Extract part of content state by selection. Preserves original block keys.
 
