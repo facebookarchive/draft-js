@@ -717,7 +717,7 @@ function getInlineStyleForNonCollapsedSelectionExt(
   let foundStyles = OrderedSet();
   const selStart = selection.getStartOffset();
   const selEnd = selection.getEndOffset();
-  if (selection.isCollapsed() && selStart >= 0 && selEnd >= 0) {
+  if (!selection.isCollapsed() && selStart >= 0 && selEnd >= 0) {
     const blockMap = content.getBlockMap();
     const blockKeys = Array.from(blockMap.keys());
     let blocksByKeys = {};
