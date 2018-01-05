@@ -132,7 +132,10 @@ class DraftEditorBlock extends React.Component<Props> {
     //for big block scroll to its top
     let correctScrollTop = undefined;
     if (visTop > blockTop || (isBigBlock && blockTop > visBottom)) {
-      correctScrollTop = Math.max(0, scrollPosition.y - SCROLL_BUFFER - scrollDeltaTop);
+      correctScrollTop = Math.max(
+        0,
+        scrollPosition.y - SCROLL_BUFFER - scrollDeltaTop,
+      );
     } else if (!isBigBlock && blockBottom > visBottom) {
       correctScrollTop = scrollPosition.y + SCROLL_BUFFER - scrollDeltaBottom;
     }

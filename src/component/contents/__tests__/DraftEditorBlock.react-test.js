@@ -98,7 +98,9 @@ const getHugeBlock = () => {
     key: 'a',
     type: 'unstyled',
     text: 'hello '.repeat(1000),
-    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 6*1000)),
+    characterList: Immutable.List(
+      Immutable.Repeat(CharacterMetadata.EMPTY, 6 * 1000),
+    ),
   });
 };
 
@@ -482,8 +484,7 @@ test('must scroll the window if block is below viewport, block should be at bott
       y: 0,
       width: 500,
       height: 800,
-    })
-  ;
+    });
 
   const container = document.createElement('div');
   ReactDOM.render(<DraftEditorBlock {...props} />, container);
@@ -509,8 +510,7 @@ test('must scroll the window if block is above viewport, block should be at top 
       y: -200,
       width: 500,
       height: 800,
-    })
-  ;
+    });
   getScrollPosition.mockReturnValue({x: 0, y: 200});
   getViewportDimensions.mockReturnValue({width: 1200, height: 800});
 
@@ -538,8 +538,7 @@ test('must scroll the window if huge block is below viewport, block should be at
       y: 0,
       width: 500,
       height: 800,
-    })
-  ;
+    });
   getScrollPosition.mockReturnValue({x: 0, y: 0});
   getViewportDimensions.mockReturnValue({width: 1200, height: 800});
 
