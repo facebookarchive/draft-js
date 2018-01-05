@@ -238,10 +238,10 @@ class EditorState {
   }
 
   /**
-   * Similar to getCurrentInlineStyle(), but for collapsed selection
-   * common styles of whole selection will be returned.
+   * Similar to getCurrentInlineStyle(), but for non-collapsed selection
+   * common styles of whole selection (intersection) will be returned.
    */
-  getCurrentCommonInlineStyles(): DraftInlineStyle {
+  getCurrentCommonInlineStyle(): DraftInlineStyle {
     var override = this.getInlineStyleOverride();
     if (override != null) {
       return override;
@@ -262,10 +262,10 @@ class EditorState {
   }
 
   /**
-   * Similar to getCurrentInlineStyle(), but for collapsed selection
-   * all styles found in whole selection will be returned.
+   * Similar to getCurrentInlineStyle(), but for non-collapsed selection
+   * all styles found in whole selection (union) will be returned.
    */
-  getCurrentAllInlineStyles(): DraftInlineStyle {
+  getCurrentUnionInlineStyle(): DraftInlineStyle {
     var override = this.getInlineStyleOverride();
     if (override != null) {
       return override;

@@ -46,6 +46,16 @@ The list below includes the most commonly used instance methods for `EditorState
     </a>
   </li>
   <li>
+    <a href="#getcurrentcommoninlinestyle">
+      <pre>getCurrentCommonInlineStyle(): DraftInlineStyle</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#getcurrentunioninlinestyle">
+      <pre>getCurrentUnionInlineStyle(): DraftInlineStyle</pre>
+    </a>
+  </li>
+  <li>
     <a href="#getblocktree">
       <pre>getBlockTree(): OrderedMap</pre>
     </a>
@@ -219,6 +229,22 @@ for the editor.
 This is the inline style value that would be used if a character were inserted
 for the current `ContentState` and `SelectionState`, and takes into account
 any inline style overrides that should be applied.
+
+### getCurrentCommonInlineStyle
+
+```
+getCurrentCommonInlineStyle(): DraftInlineStyle
+```
+Returns an `OrderedSet<string>` that represents the common inline style
+of the selection for the editor (intersection).
+
+### getCurrentUnionInlineStyle
+
+```
+getCurrentUnionInlineStyle(): DraftInlineStyle
+```
+Returns an `OrderedSet<string>` that represents all inline styles in the 
+selection for the editor (union).
 
 ### getBlockTree
 

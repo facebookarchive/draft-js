@@ -21,7 +21,12 @@ const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Immutable = require('immutable');
 const RichTextEditorUtil = require('RichTextEditorUtil');
-const {BOLD, ITALIC, BOLD_ITALIC, UNDERLINE} = require('SampleDraftInlineStyle');
+const {
+  BOLD,
+  ITALIC,
+  BOLD_ITALIC,
+  UNDERLINE,
+} = require('SampleDraftInlineStyle');
 const {EMPTY} = CharacterMetadata;
 const SelectionState = require('SelectionState');
 
@@ -71,11 +76,14 @@ const italicBlock = new ContentBlock({
 const mixedBlock = new ContentBlock({
   key: 'm',
   text: 'Underline Bold BoldItalic ',
-  characterList: Repeat(CharacterMetadata.create({style: UNDERLINE}), 10).concat(
+  characterList: Repeat(
+    CharacterMetadata.create({style: UNDERLINE}),
+    10,
+  ).concat(
     Repeat(CharacterMetadata.create({style: BOLD}), 5),
     Repeat(CharacterMetadata.create({style: BOLD_ITALIC}), 10),
-    Repeat(EMPTY, 1)
-  )
+    Repeat(EMPTY, 1),
+  ),
 });
 
 const getSampleEditorState = (type, decorator) => {
@@ -117,14 +125,20 @@ const assertGetCurrentInlineStyle = (selection, state = UNDECORATED_STATE) => {
   expect(editorState.getCurrentInlineStyle().toJS()).toMatchSnapshot();
 };
 
-const assertGetCurrentCommonInlineStyles = (selection, state = UNDECORATED_STATE) => {
+const assertGetCurrentCommonInlineStyle = (
+  selection,
+  state = UNDECORATED_STATE,
+) => {
   const editorState = EditorState.acceptSelection(state, selection);
-  expect(editorState.getCurrentCommonInlineStyles().toJS()).toMatchSnapshot();
+  expect(editorState.getCurrentCommonInlineStyle().toJS()).toMatchSnapshot();
 };
 
-const assertGetCurrentAllInlineStyles = (selection, state = UNDECORATED_STATE) => {
+const assertgetCurrentUnionInlineStyle = (
+  selection,
+  state = UNDECORATED_STATE,
+) => {
   const editorState = EditorState.acceptSelection(state, selection);
-  expect(editorState.getCurrentAllInlineStyles().toJS()).toMatchSnapshot();
+  expect(editorState.getCurrentUnionInlineStyle().toJS()).toMatchSnapshot();
 };
 
 beforeEach(() => {
@@ -174,50 +188,50 @@ test('looks upward through empty blocks to find a character with collapsed selec
   );
 });
 
-//should be UNDERLINE (which is confusing)
+//should be ['UNDERLINE'] (which is confusing)
 test('getCurrentInlineStyle() for non-collapsed selection returns just style of 1st char', () => {
   assertGetCurrentInlineStyle(
     collapsedSelection.merge({
       anchorKey: 'm',
       focusKey: 'm',
       anchorOffset: 0,
-      focusOffset: 10+5+10, //Underline, Bold, BoldItalic
+      focusOffset: 10 + 5 + 10, //Underline, Bold, BoldItalic
     }),
   );
 });
 
-//should be - (which is correct)
-test('getCurrentCommonInlineStyles() returns common styles for whole selection', () => {
-  assertGetCurrentCommonInlineStyles(
+//should be [] (which is correct)
+test('getCurrentCommonInlineStyle() returns common styles for whole selection', () => {
+  assertGetCurrentCommonInlineStyle(
     collapsedSelection.merge({
       anchorKey: 'm',
       focusKey: 'm',
       anchorOffset: 0,
-      focusOffset: 10+5+10, //Underline, Bold, BoldItalic
+      focusOffset: 10 + 5 + 10, //Underline, Bold, BoldItalic
     }),
   );
 });
 
-//should be BOLD
-test('getCurrentCommonInlineStyles() returns common styles for whole selection', () => {
-  assertGetCurrentCommonInlineStyles(
+//should be ['BOLD']
+test('getCurrentCommonInlineStyle() returns common styles for whole selection', () => {
+  assertGetCurrentCommonInlineStyle(
     collapsedSelection.merge({
       anchorKey: 'm',
       focusKey: 'm',
       anchorOffset: 10,
-      focusOffset: 10 + 5+10, //Bold, BoldItalic
+      focusOffset: 10 + 5 + 10, //Bold, BoldItalic
     }),
   );
 });
 
-//should be BOLD, ITALIC
-test('getCurrentAllInlineStyles() returns all found styles inside selection', () => {
-  assertGetCurrentAllInlineStyles(
+//should be ['BOLD', 'ITALIC']
+test('getCurrentUnionInlineStyle() returns all found styles inside selection', () => {
+  assertgetCurrentUnionInlineStyle(
     collapsedSelection.merge({
       anchorKey: 'm',
       focusKey: 'm',
       anchorOffset: 10,
-      focusOffset: 10 + 5+10, //Bold, BoldItalic
+      focusOffset: 10 + 5 + 10, //Bold, BoldItalic
     }),
   );
 });

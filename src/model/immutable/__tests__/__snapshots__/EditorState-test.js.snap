@@ -20,16 +20,16 @@ Array [
 
 exports[`falls back to no style if in empty block at document start 1`] = `Array []`;
 
-exports[`getCurrentAllInlineStyles() returns all found styles inside selection 1`] = `
+exports[`getCurrentUnionInlineStyle() returns all found styles inside selection 1`] = `
 Array [
   "BOLD",
   "ITALIC",
 ]
 `;
 
-exports[`getCurrentCommonInlineStyles() returns common styles for whole selection 1`] = `Array []`;
+exports[`getCurrentCommonInlineStyle() returns common styles for whole selection 1`] = `Array []`;
 
-exports[`getCurrentCommonInlineStyles() returns common styles for whole selection 2`] = `
+exports[`getCurrentCommonInlineStyle() returns common styles for whole selection 2`] = `
 Array [
   "BOLD",
 ]
