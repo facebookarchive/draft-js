@@ -34,6 +34,7 @@ const AtomicBlockUtils = {
     editorState: EditorState,
     entityKey: string,
     character: string,
+    blockData?: Object
   ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
@@ -62,6 +63,7 @@ const AtomicBlockUtils = {
         type: 'atomic',
         text: character,
         characterList: List(Repeat(charData, character.length)),
+        data: blockData
       }),
       new ContentBlock({
         key: generateRandomKey(),
