@@ -18,7 +18,7 @@ import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
-import type SelectionState from 'SelectionState';
+//const SelectionState = require('SelectionState');
 import type {Map} from 'immutable';
 
 var CharacterMetadata = require('CharacterMetadata');
@@ -26,6 +26,7 @@ var ContentStateInlineStyle = require('ContentStateInlineStyle');
 const DraftFeatureFlags = require('DraftFeatureFlags');
 var Immutable = require('immutable');
 
+const SelectionState = require('SelectionState');
 var applyEntityToContentState = require('applyEntityToContentState');
 var getCharacterRemovalRange = require('getCharacterRemovalRange');
 var getContentStateFragment = require('getContentStateFragment');
@@ -289,6 +290,67 @@ var DraftModifier = {
       selectionState,
       entityKey,
     );
+  },
+
+  cutBySelection: function(
+    contentState: ContentState,
+    selection: SelectionState,
+  ): ?ContentState {
+    let startKey = selection.getStartKey();
+    let endKey = selection.getEndKey();
+    let start = selection.getStartOffset();
+    let end = selection.getEndOffset();
+    const isSingleBlockSelection = startKey == endKey;
+    let newContentState = null;
+
+    if (!selection.isCollapsed() && start >= 0 && end >= 0) {
+      newContentState = contentState;
+      let blockMap = contentState.getBlockMap();
+
+      const selectionBefore = SelectionState.createEmpty(startKey).merge({
+        anchorKey: blockMap.first().key,
+        anchorOffset: 0,
+        focusKey: startKey,
+        focusOffset: start,
+      });
+      const isSelectionBeforeEmpty =
+        selectionBefore.getStartKey() == selectionBefore.getEndKey() &&
+        selectionBefore.getStartOffset() == selectionBefore.getEndOffset();
+      if (!isSelectionBeforeEmpty) {
+        newContentState = DraftModifier.removeRange(
+          newContentState,
+          selectionBefore,
+          'forward',
+          false,
+        );
+        blockMap = newContentState.getBlockMap();
+        if (isSingleBlockSelection) {
+          end -= start;
+          endKey = blockMap.first().key;
+        }
+      }
+
+      const selectionAfter = SelectionState.createEmpty(endKey).merge({
+        anchorKey: endKey,
+        anchorOffset: end,
+        focusKey: blockMap.last().key,
+        focusOffset: blockMap.last().text.length,
+      });
+
+      const isSelectionAfterEmpty =
+        selectionAfter.getStartKey() == selectionAfter.getEndKey() &&
+        selectionAfter.getStartOffset() == selectionAfter.getEndOffset();
+      if (!isSelectionAfterEmpty) {
+        newContentState = DraftModifier.removeRange(
+          newContentState,
+          selectionAfter,
+          'forward',
+          true,
+        );
+      }
+    }
+
+    return newContentState;
   },
 };
 

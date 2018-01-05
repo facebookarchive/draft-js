@@ -277,9 +277,6 @@ const removeRangeFromContentState = (
 
   let characterList;
 
-  //const charsLeftBeforeCrop = startOffset;
-  //const charsLeftAfterCrop = endBlock.getCharacterList().count() - endOffset;
-
   if (startBlock === endBlock) {
     characterList = removeFromList(
       startBlock.getCharacterList(),
@@ -297,11 +294,6 @@ const removeRangeFromContentState = (
   // By default its key will be startKey
   // But you can force using endKey by specifying param modifyStartBlock = false
   if (modifyStartBlock === undefined) {
-    // if ((charsLeftAfterCrop > 0) != (charsLeftBeforeCrop > 0)) {
-    //   modifyStartBlock = charsLeftAfterCrop > 0;
-    // } else {
-    //   modifyStartBlock = true; //default
-    // }
     modifyStartBlock = true; //default
   }
 
