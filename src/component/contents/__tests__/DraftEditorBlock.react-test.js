@@ -93,6 +93,15 @@ const getHelloBlock = () => {
   });
 };
 
+const getHugeBlock = () => {
+  return new ContentBlock({
+    key: 'a',
+    type: 'unstyled',
+    text: 'hello '.repeat(1000),
+    characterList: Immutable.List(Immutable.Repeat(CharacterMetadata.EMPTY, 6*1000)),
+  });
+};
+
 const getSelection = () => {
   return new SelectionState({
     anchorKey: 'a',
@@ -456,15 +465,83 @@ test('must split styled spans apart within decorator', () => {
   expect(el.children[1].type).toBe(DraftEditorLeaf);
 });
 
-test('must scroll the window if needed', () => {
+test('must scroll the window if block is below viewport, block should be at bottom of viewport', () => {
   const props = getProps(getHelloBlock());
 
-  getElementPosition.mockReturnValueOnce({
-    x: 0,
-    y: 800,
-    width: 500,
-    height: 16,
-  });
+  getElementPosition
+    //block
+    .mockReturnValueOnce({
+      x: 0,
+      y: 800,
+      width: 500,
+      height: 16,
+    })
+    //editor
+    .mockReturnValueOnce({
+      x: 0,
+      y: 0,
+      width: 500,
+      height: 800,
+    })
+  ;
+
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+
+  const scrollCalls = window.scrollTo.mock.calls;
+  expect(scrollCalls).toMatchSnapshot();
+});
+
+test('must scroll the window if block is above viewport, block should be at top of viewport', () => {
+  const props = getProps(getHelloBlock());
+
+  getElementPosition
+    //block
+    .mockReturnValueOnce({
+      x: 0,
+      y: -200,
+      width: 500,
+      height: 16,
+    })
+    //editor
+    .mockReturnValueOnce({
+      x: 0,
+      y: -200,
+      width: 500,
+      height: 800,
+    })
+  ;
+  getScrollPosition.mockReturnValue({x: 0, y: 200});
+  getViewportDimensions.mockReturnValue({width: 1200, height: 800});
+
+  const container = document.createElement('div');
+  ReactDOM.render(<DraftEditorBlock {...props} />, container);
+
+  const scrollCalls = window.scrollTo.mock.calls;
+  expect(scrollCalls).toMatchSnapshot();
+});
+
+test('must scroll the window if huge block is below viewport, block should be at top of viewport', () => {
+  const props = getProps(getHugeBlock());
+
+  getElementPosition
+    //block
+    .mockReturnValueOnce({
+      x: 0,
+      y: 900,
+      width: 500,
+      height: 945,
+    })
+    //editor
+    .mockReturnValueOnce({
+      x: 0,
+      y: 0,
+      width: 500,
+      height: 800,
+    })
+  ;
+  getScrollPosition.mockReturnValue({x: 0, y: 0});
+  getViewportDimensions.mockReturnValue({width: 1200, height: 800});
 
   const container = document.createElement('div');
   ReactDOM.render(<DraftEditorBlock {...props} />, container);

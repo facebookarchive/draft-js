@@ -64,11 +64,29 @@ exports[`must render multiple leaf nodes 9`] = `true`;
 
 exports[`must render multiple leaf nodes 10`] = `true`;
 
-exports[`must scroll the window if needed 1`] = `
+exports[`must scroll the window if block is above viewport, block should be at top of viewport 1`] = `
+Array [
+  Array [
+    0,
+    0,
+  ],
+]
+`;
+
+exports[`must scroll the window if block is below viewport, block should be at bottom of viewport 1`] = `
 Array [
   Array [
     0,
     26,
+  ],
+]
+`;
+
+exports[`must scroll the window if huge block is below viewport, block should be at top of viewport 1`] = `
+Array [
+  Array [
+    0,
+    890,
   ],
 ]
 `;
