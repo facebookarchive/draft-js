@@ -102,6 +102,10 @@ class DraftEditorBlock extends React.Component<Props> {
     }
 
     const blockNode = ReactDOM.findDOMNode(this);
+    if (!blockNode || !blockNode.ownerDocument) {
+      return;
+    }
+
     const scrollParent = Style.getScrollParent(blockNode);
     const scrollPosition = getScrollPosition(scrollParent);
     const win = blockNode.ownerDocument.defaultView;
@@ -119,7 +123,7 @@ class DraftEditorBlock extends React.Component<Props> {
         );
       }
     } else {
-      invariant(blockNode.nodeType === 1, 'blockNode is not an HTMLElement');
+      invariant(blockNode.nodeType === 1, 'blockNode is not an Element');
       const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
       const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
