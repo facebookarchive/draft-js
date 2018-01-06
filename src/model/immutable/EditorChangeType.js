@@ -30,5 +30,5 @@ export type EditorChangeType =
   | 'remove-range'
   | 'spellcheck-change'
   | 'split-block'
-  | 'replace-block-to-softline' 
+  | 'replace-block-to-softline'
   | 'undo';

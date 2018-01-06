@@ -114,25 +114,25 @@ const RichTextEditorUtil = {
       return null;
     }
 
-    // Try to use behaviour of text processors for backspace  
-    // on empty list item block - remove it and replace to soft newline 
-    // at preceding list item block. 
-    var replacedToSoftLine = RichTextEditorUtil.tryToReplaceBlockToSoftLine( 
-      editorState, 
-    ); 
-    if (replacedToSoftLine) { 
-      let newState = EditorState.push( 
-        editorState, 
-        replacedToSoftLine, 
-        'replace-block-to-softline', 
-      ); 
-      newState = EditorState.forceSelection( 
-        newState, 
-        replacedToSoftLine.getSelectionAfter(), 
-      ); 
-      return newState; 
-    } 
- 
+    // Try to use behaviour of text processors for backspace
+    // on empty list item block - remove it and replace to soft newline
+    // at preceding list item block.
+    var replacedToSoftLine = RichTextEditorUtil.tryToReplaceBlockToSoftLine(
+      editorState,
+    );
+    if (replacedToSoftLine) {
+      let newState = EditorState.push(
+        editorState,
+        replacedToSoftLine,
+        'replace-block-to-softline',
+      );
+      newState = EditorState.forceSelection(
+        newState,
+        replacedToSoftLine.getSelectionAfter(),
+      );
+      return newState;
+    }
+
     // Then, try to remove a preceding atomic block.
     var content = editorState.getCurrentContent();
     var startKey = selection.getStartKey();
@@ -385,51 +385,56 @@ const RichTextEditorUtil = {
     return EditorState.push(editorState, withoutLink, 'apply-entity');
   },
 
-  /** 
-   * When a collapsed cursor is at the start of non-first empty list  
-   * item then remove current block and insert soft newline at  
-   * preceding list item block. 
-   * Returns null if block or selection does not meet that criteria. 
-   */ 
-  tryToReplaceBlockToSoftLine: function(editorState: EditorState): ?ContentState { 
-    var selection = editorState.getSelection(); 
-    var offset = selection.getAnchorOffset(); 
-    if (selection.isCollapsed() && offset === 0) { 
-      var key = selection.getAnchorKey(); 
-      var content = editorState.getCurrentContent(); 
-      var block = content.getBlockForKey(key); 
-      var type = block.getType(); 
-      var depth = block.getDepth(); 
-      var blockBefore = content.getBlockBefore(key); 
- 
-      if ((type == 'ordered-list-item' || type == 'unordered-list-item')   
-        && blockBefore 
-        && blockBefore.getType() === type 
-      ) { 
-        const blockMap = content.getBlockMap().delete(block.getKey()); 
-        let selectionAtEndOfBlockBefore = SelectionState.createEmpty(blockBefore.getKey()).merge({ 
-          anchorKey: blockBefore.getKey(), 
-          anchorOffset: blockBefore.getLength(), 
-          focusKey: blockBefore.getKey(), 
-          focusOffset: blockBefore.getLength(), 
-        }); 
-        var withoutBlock = content.merge({ 
-          blockMap, 
-          selectionAfter: selectionAtEndOfBlockBefore, 
-        }); 
- 
-        var newContentState = DraftModifier.insertText( 
-          withoutBlock, 
-          selectionAtEndOfBlockBefore, 
-          '\n', 
-          editorState.getCurrentInlineStyle(), 
-          null, 
-        ); 
- 
-        return newContentState; 
-      } 
-    } 
-    return null; 
+  /**
+   * When a collapsed cursor is at the start of non-first empty list
+   * item then remove current block and insert soft newline at
+   * preceding list item block.
+   * Returns null if block or selection does not meet that criteria.
+   */
+
+  tryToReplaceBlockToSoftLine: function(
+    editorState: EditorState,
+  ): ?ContentState {
+    var selection = editorState.getSelection();
+    var offset = selection.getAnchorOffset();
+    if (selection.isCollapsed() && offset === 0) {
+      var key = selection.getAnchorKey();
+      var content = editorState.getCurrentContent();
+      var block = content.getBlockForKey(key);
+      var type = block.getType();
+      var blockBefore = content.getBlockBefore(key);
+
+      if (
+        (type == 'ordered-list-item' || type == 'unordered-list-item') &&
+        blockBefore &&
+        blockBefore.getType() === type
+      ) {
+        const blockMap = content.getBlockMap().delete(block.getKey());
+        let selectionAtEndOfBlockBefore = SelectionState.createEmpty(
+          blockBefore.getKey(),
+        ).merge({
+          anchorKey: blockBefore.getKey(),
+          anchorOffset: blockBefore.getLength(),
+          focusKey: blockBefore.getKey(),
+          focusOffset: blockBefore.getLength(),
+        });
+        var withoutBlock = content.merge({
+          blockMap,
+          selectionAfter: selectionAtEndOfBlockBefore,
+        });
+
+        var newContentState = DraftModifier.insertText(
+          withoutBlock,
+          selectionAtEndOfBlockBefore,
+          '\n',
+          editorState.getCurrentInlineStyle(),
+          null,
+        );
+
+        return newContentState;
+      }
+    }
+    return null;
   },
 
   /**
