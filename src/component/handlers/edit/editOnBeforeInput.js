@@ -125,7 +125,7 @@ function editOnBeforeInput(
       .getPlainText()
       .slice(selectionStart, selectionEnd);
     if (chars === currentlySelectedChars) {
-      this.update(
+      editor.update(
         EditorState.forceSelection(
           editorState,
           selection.merge({
