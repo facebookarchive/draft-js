@@ -104,19 +104,22 @@ const splitBlockInContentState = (
   const keyBelow = generateRandomKey();
   const isExperimentalTreeBlock = blockToSplit instanceof ContentBlockNode;
   const blockAfter = contentState.getBlockAfter(key);
-  const isListItem = (blockToSplit.getType() === 'ordered-list-item' || blockToSplit.getType() === 'unordered-list-item');
-  const isNextListItem = blockAfter && (blockAfter.getType() === 'ordered-list-item' || blockAfter.getType() === 'unordered-list-item');
+  const isListItem =
+    blockToSplit.getType() === 'ordered-list-item' ||
+    blockToSplit.getType() === 'unordered-list-item';
+  const isNextListItem =
+    blockAfter &&
+    (blockAfter.getType() === 'ordered-list-item' ||
+      blockAfter.getType() === 'unordered-list-item');
 
-  // If the block is a last list item without any text, unstyle the block (this will end list). 
-  if (text == "") { 
-    if (isListItem && (!blockAfter || blockAfter && !isNextListItem)) { 
-      return modifyBlockForContentState( 
-        contentState, 
-        selectionState, 
-        (block) => block.merge({type: 'unstyled', depth: 0}) 
-      ); 
-    } 
-  } 
+  // If the block is a last list item without any text, unstyle the block (this will end list).
+  if (text == '') {
+    if (isListItem && (!blockAfter || (blockAfter && !isNextListItem))) {
+      return modifyBlockForContentState(contentState, selectionState, block =>
+        block.merge({type: 'unstyled', depth: 0}),
+      );
+    }
+  }
 
   const blockAbove = blockToSplit.merge({
     text: text.slice(0, offset),
