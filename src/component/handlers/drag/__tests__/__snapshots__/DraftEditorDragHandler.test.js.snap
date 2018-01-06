@@ -1,0 +1,310 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`drag-n-drop should be done correctly 1`] = `
+Object {
+  "anchorKey": "b",
+  "anchorOffset": 12,
+  "focusKey": "b",
+  "focusOffset": 12,
+  "hasFocus": true,
+  "isBackward": false,
+}
+`;
+
+exports[`drag-n-drop should be done correctly 2`] = `
+Object {
+  "blockMap": Object {
+    "a": Object {
+      "characterList": Array [
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "a",
+      "text": "WashingtonJefferson",
+      "type": "unstyled",
+    },
+    "b": Object {
+      "characterList": Array [
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+        Object {
+          "entity": null,
+          "style": Array [
+            "BOLD",
+          ],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "b",
+      "text": "LincolnObamaRoosevelt",
+      "type": "unstyled",
+    },
+    "key3": Object {
+      "characterList": Array [
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+        Object {
+          "entity": null,
+          "style": Array [],
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "key": "key3",
+      "text": "Kennedy",
+      "type": "unstyled",
+    },
+  },
+  "entityMap": Object {
+    "__add": [Function],
+    "__create": [Function],
+    "__get": [Function],
+    "__getLastCreatedEntityKey": [Function],
+    "__mergeData": [Function],
+    "__replaceData": [Function],
+    "add": [Function],
+    "create": [Function],
+    "get": [Function],
+    "getLastCreatedEntityKey": [Function],
+    "mergeData": [Function],
+    "replaceData": [Function],
+  },
+  "selectionAfter": Object {
+    "anchorKey": "b",
+    "anchorOffset": 12,
+    "focusKey": "b",
+    "focusOffset": 12,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+  "selectionBefore": Object {
+    "anchorKey": "b",
+    "anchorOffset": 7,
+    "focusKey": "c",
+    "focusOffset": 7,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
