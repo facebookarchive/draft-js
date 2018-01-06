@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must decode when an entity is present 1`] = `
+Array [
+  null,
+  null,
+  "6",
+  "6",
+  null,
+]
+`;
+
+exports[`must decode when an entity is present more than once 1`] = `
+Array [
+  null,
+  null,
+  "6",
+  "6",
+  null,
+  "6",
+  "6",
+  null,
+]
+`;
+
+exports[`must decode when multiple entities present 1`] = `
+Array [
+  null,
+  null,
+  "6",
+  "6",
+  null,
+  "8",
+  "8",
+  null,
+]
+`;
+
+exports[`must decode when no entities present 1`] = `
+Array [
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+]
+`;
+
+exports[`must handle ranges that include surrogate pairs 1`] = `
+Array [
+  null,
+  null,
+  null,
+  null,
+  null,
+  null,
+  "6",
+  "6",
+  "6",
+  "6",
+  "6",
+  "6",
+  null,
+  null,
+  "8",
+  "8",
+  null,
+]
+`;

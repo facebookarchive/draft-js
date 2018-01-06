@@ -7,7 +7,6 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorTextNode.react
- * @typechecks
  * @format
  * @flow
  */
@@ -74,6 +73,8 @@ class DraftEditorTextNode extends React.Component<Props> {
 
   constructor(props: Props) {
     super(props);
+    // By flipping this flag, we also keep flipping keys which forces
+    // React to remount this node every time it rerenders.
     this._forceFlag = false;
   }
 
@@ -87,9 +88,11 @@ class DraftEditorTextNode extends React.Component<Props> {
     return node.textContent !== nextProps.children;
   }
 
-  componentWillUpdate(): void {
-    // By flipping this flag, we also keep flipping keys which forces
-    // React to remount this node every time it rerenders.
+  componentDidMount(): void {
+    this._forceFlag = !this._forceFlag;
+  }
+
+  componentDidUpdate(): void {
     this._forceFlag = !this._forceFlag;
   }
 

@@ -32,7 +32,7 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
   const {ownerDocument} = e.currentTarget;
   if (getActiveElement(ownerDocument) === ownerDocument.body) {
     const selection = ownerDocument.defaultView.getSelection();
-    const editorNode = editor.refs.editor;
+    const editorNode = editor.editor;
     if (
       selection.rangeCount === 1 &&
       containsNode(editorNode, selection.anchorNode) &&

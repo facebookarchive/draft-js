@@ -7,14 +7,13 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule CompositeDraftDecorator
- * @typechecks
  * @format
  * @flow
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftDecorator} from 'DraftDecorator';
 
@@ -54,7 +53,7 @@ class CompositeDraftDecorator {
   }
 
   getDecorations(
-    block: ContentBlock,
+    block: BlockNodeRecord,
     contentState: ContentState,
   ): List<?string> {
     var decorations = Array(block.getText().length).fill(null);

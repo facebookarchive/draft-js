@@ -13,7 +13,7 @@
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {List} from 'immutable';
 
@@ -28,7 +28,7 @@ export type DraftDecoratorType = {
    * Given a `ContentBlock`, return an immutable List of decorator keys.
    */
   getDecorations(
-    block: ContentBlock,
+    block: BlockNodeRecord,
     contentState: ContentState,
   ): List<?string>,
 

@@ -7,7 +7,6 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @providesModule DraftEditorPlaceholder.react
- * @typechecks
  * @format
  * @flow
  */
@@ -51,11 +50,16 @@ class DraftEditorPlaceholder extends React.Component<Props> {
       'public/DraftEditorPlaceholder/hasFocus': hasFocus,
     });
 
+    const contentStyle = {
+      whiteSpace: 'pre-wrap',
+    };
+
     return (
       <div className={className}>
         <div
           className={cx('public/DraftEditorPlaceholder/inner')}
-          id={this.props.accessibilityID}>
+          id={this.props.accessibilityID}
+          style={contentStyle}>
           {this.props.text}
         </div>
       </div>
