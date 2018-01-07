@@ -249,8 +249,6 @@ const RichTextEditorUtil = {
       return editorState;
     }
 
-    maxDepth = Math.min(blockAbove.getDepth() + 1, maxDepth);
-
     var withAdjustment = adjustBlockDepthForContentState(
       content,
       selection,
