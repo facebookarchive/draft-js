@@ -37,7 +37,6 @@ const updateExistingBlock = (
   targetOffset: number,
 ): ContentState => {
   const targetBlock = blockMap.get(targetKey);
-  //const fragmentBlock = fragment.first();
   const text = targetBlock.getText();
   const chars = targetBlock.getCharacterList();
   const finalKey = targetKey;
