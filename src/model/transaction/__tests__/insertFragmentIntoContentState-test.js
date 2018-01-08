@@ -181,7 +181,7 @@ test('must be able to insert fragment of ContentBlockNodes', () => {
       },
       {
         key: 'E',
-        text: 'Delta',
+        text: 'Elephant',
         prevSibling: 'B',
       },
     ]),
@@ -236,7 +236,7 @@ test('must be able to insert fragment of ContentBlockNodes after nested block', 
       },
       {
         key: 'E',
-        text: 'Delta',
+        text: 'Elephant',
         prevSibling: 'B',
       },
     ]),
@@ -345,7 +345,7 @@ test('must be able to insert a fragment of ContentBlockNodes while updating the 
       },
       {
         key: 'E',
-        text: 'Delta',
+        text: 'Elephant',
         prevSibling: 'B',
       },
     ]),

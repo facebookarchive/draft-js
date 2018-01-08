@@ -13,10 +13,6 @@
 
 'use strict';
 
-// TODO
-// => once tests are passing refactor to make sure we pass the least amount of arguments
-// to each of the bellow functions transforms
-
 import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
@@ -36,28 +32,28 @@ const updateExistingBlock = (
   contentState: ContentState,
   selectionState: SelectionState,
   blockMap: BlockMap,
-  fragment: BlockMap,
+  fragmentBlock: BlockNodeRecord,
   targetKey: string,
   targetOffset: number,
 ): ContentState => {
   const targetBlock = blockMap.get(targetKey);
-  const pastedBlock = fragment.first();
+  //const fragmentBlock = fragment.first();
   const text = targetBlock.getText();
   const chars = targetBlock.getCharacterList();
   const finalKey = targetKey;
-  const finalOffset = targetOffset + pastedBlock.getText().length;
+  const finalOffset = targetOffset + fragmentBlock.getText().length;
 
   const newBlock = targetBlock.merge({
     text:
       text.slice(0, targetOffset) +
-      pastedBlock.getText() +
+      fragmentBlock.getText() +
       text.slice(targetOffset),
     characterList: insertIntoList(
       chars,
-      pastedBlock.getCharacterList(),
+      fragmentBlock.getCharacterList(),
       targetOffset,
     ),
-    data: pastedBlock.getData(),
+    data: fragmentBlock.getData(),
   });
 
   return contentState.merge({
@@ -81,12 +77,7 @@ const updateHead = (
   block: BlockNodeRecord,
   targetOffset: number,
   fragment: BlockMap,
-  shouldNotUpdateFromFragmentBlock: boolean,
 ): BlockNodeRecord => {
-  if (shouldNotUpdateFromFragmentBlock) {
-    return block;
-  }
-
   const text = block.getText();
   const chars = block.getCharacterList();
 
@@ -129,20 +120,29 @@ const updateTail = (
   });
 };
 
-// TODO fix flow
-const getRootBlocks = (block: ContentBlockNode, blockMap: BlockMap): any => {
+const getRootBlocks = (
+  block: ContentBlockNode,
+  blockMap: BlockMap,
+): Array<string> => {
   const headKey = block.getKey();
   let rootBlock = block;
   let rootBlocks = [];
 
-  // we need to account to when the head fragment block is merged with the target block
+  // sometimes the fragment head block will not be part of the blockMap itself this can happen when
+  // the fragment head is used to update the target block, however when this does not happen we need
+  // to make sure that we include it on the rootBlocks since the first block of a fragment is always a
+  // fragment root block
   if (blockMap.get(headKey)) {
     rootBlocks.push(headKey);
   }
 
   while (rootBlock && rootBlock.getNextSiblingKey()) {
     const lastSiblingKey = rootBlock.getNextSiblingKey();
-    rootBlocks.push(lastSiblingKey);
+
+    if (lastSiblingKey) {
+      rootBlocks.push(lastSiblingKey);
+    }
+
     rootBlock = blockMap.get(lastSiblingKey);
   }
 
@@ -154,7 +154,6 @@ const updateBlockMapLinks = (
   originalBlockMap: BlockMap,
   targetBlock: ContentBlockNode,
   fragmentHeadBlock: ContentBlockNode,
-  didNotMergeFirstFragmentBlockWithTargetBlock: boolean,
 ): BlockMap => {
   return blockMap.withMutations(blockMapState => {
     const targetKey = targetBlock.getKey();
@@ -165,10 +164,12 @@ const updateBlockMapLinks = (
     const lastRootFragmentBlockKey =
       fragmentRootBlocks[fragmentRootBlocks.length - 1];
 
-    if (didNotMergeFirstFragmentBlockWithTargetBlock) {
+    if (blockMapState.get(headKey)) {
+      // update the fragment head when it is part of the blockMap otherwise
       blockMapState.setIn([targetKey, 'nextSibling'], headKey);
       blockMapState.setIn([headKey, 'prevSibling'], targetKey);
     } else {
+      // update the target block that had the fragment head contents merged into it
       blockMapState.setIn(
         [targetKey, 'nextSibling'],
         fragmentHeadBlock.getNextSiblingKey(),
@@ -206,14 +207,14 @@ const updateBlockMapLinks = (
       const targetBlockIndex = originalTargetParentChildKeys.indexOf(targetKey);
       const insertionIndex = targetBlockIndex + 1;
 
-      const newChildrenArray = originalTargetParentChildKeys.toArray();
+      const newChildrenKeysArray = originalTargetParentChildKeys.toArray();
 
       // insert fragment children
-      newChildrenArray.splice(insertionIndex, 0, ...fragmentRootBlocks);
+      newChildrenKeysArray.splice(insertionIndex, 0, ...fragmentRootBlocks);
 
       blockMapState.setIn(
         [targetParentKey, 'children'],
-        new List(newChildrenArray),
+        new List(newChildrenKeysArray),
       );
     }
   });
@@ -239,34 +240,24 @@ const insertFragment = (
     isTreeBasedBlockMap &&
     (!target.getChildKeys().isEmpty() || !head.getChildKeys().isEmpty());
 
-  //
-  // TODO - improve the bellow comment
-  // the first fragment block's content is used to update the target block
-  // we should not skip the first fragment block since we cannot merge the
-  // target block with the first fragment block contents
-  const startFragmentOffset = shouldNotUpdateFromFragmentBlock ? 0 : 1;
-
-  // check here why the fragment block insertion seems messed up
-  // on the snapshots the 'root' block is not appearing correct order
   blockMap.forEach((block, blockKey) => {
     if (blockKey !== targetKey) {
       newBlockArr.push(block);
       return;
     }
 
-    // update head
-    newBlockArr.push(
-      updateHead(
-        block,
-        targetOffset,
-        fragment,
-        shouldNotUpdateFromFragmentBlock,
-      ),
-    );
+    if (shouldNotUpdateFromFragmentBlock) {
+      newBlockArr.push(block);
+    } else {
+      newBlockArr.push(updateHead(block, targetOffset, fragment));
+    }
 
     // Insert fragment blocks after the head and before the tail.
     fragment
-      .slice(startFragmentOffset, fragmentSize - 1)
+      // when we are updating the target block with the head fragment block we skip the first fragment
+      // head since its contents have already been merged with the target block otherwise we include
+      // the whole fragment
+      .slice(shouldNotUpdateFromFragmentBlock ? 0 : 1, fragmentSize - 1)
       .forEach(fragmentBlock => newBlockArr.push(fragmentBlock));
 
     // update tail
@@ -281,7 +272,6 @@ const insertFragment = (
       blockMap,
       target,
       head,
-      shouldNotUpdateFromFragmentBlock,
     );
   }
 
@@ -329,7 +319,7 @@ const insertFragmentIntoContentState = (
       contentState,
       selectionState,
       blockMap,
-      fragment,
+      fragment.first(),
       targetKey,
       targetOffset,
     );

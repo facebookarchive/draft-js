@@ -985,6 +985,18 @@ Array [
         "entity": null,
         "style": Array [],
       },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
     ],
     "children": Array [],
     "data": Object {
@@ -995,7 +1007,7 @@ Array [
     "nextSibling": "lastChild",
     "parent": "root",
     "prevSibling": "key19",
-    "text": "Delta",
+    "text": "Elephant",
     "type": "unstyled",
   },
   Object {
@@ -1176,6 +1188,18 @@ Array [
         "entity": null,
         "style": Array [],
       },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
     ],
     "children": Array [],
     "data": Object {
@@ -1186,7 +1210,7 @@ Array [
     "nextSibling": "second",
     "parent": null,
     "prevSibling": "key6",
-    "text": "Delta",
+    "text": "Elephant",
     "type": "unstyled",
   },
   Object {
@@ -1330,6 +1354,18 @@ Array [
         "entity": null,
         "style": Array [],
       },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
     ],
     "children": Array [],
     "data": Object {
@@ -1340,7 +1376,7 @@ Array [
     "nextSibling": "lastChild",
     "parent": "root",
     "prevSibling": "key10",
-    "text": "Delta",
+    "text": "Elephant",
     "type": "unstyled",
   },
   Object {
