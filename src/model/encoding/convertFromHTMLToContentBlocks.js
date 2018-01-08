@@ -346,15 +346,14 @@ const getBlockDividerChunk = (
  *  If we're pasting from one DraftEditor to another we can check to see if
  *  existing list item depth classes are being used and preserve this style
  */
-const getListItemDepth = (node: HTMLElement): number => {
-  let depth = 0;
+const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
   Object.keys(knownListItemDepthClasses).some(depthClass => {
     if (node.classList.contains(depthClass)) {
       depth = knownListItemDepthClasses[depthClass];
     }
   });
   return depth;
-}
+};
 
 const genFragment = (
   entityMap: EntityMap,
@@ -468,7 +467,7 @@ const genFragment = (
   }
 
   if (nodeName === 'li' && node instanceof HTMLElement) {
-    depth = getListItemDepth(node);
+    depth = getListItemDepth(node, depth);
   }
 
   const blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
