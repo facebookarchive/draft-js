@@ -1,11 +1,11 @@
 {
   "scripts": {
-    "start": "node server/server.js",
-    "postinstall": "npm install .."
+    "start": "node server/server.js"
   },
   "dependencies": {
     "compression": "1.2.2",
     "connect": "3.3.3",
+    "draft-js": "file:..",
     "errorhandler": "1.3.0",
     "fbjs": "^0.8.7",
     "fs.extra": "*",
