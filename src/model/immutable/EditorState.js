@@ -26,7 +26,7 @@ var EditorBidiService = require('EditorBidiService');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
 
-var {OrderedSet, Record, Stack} = Immutable;
+var {Record, Stack} = Immutable;
 
 type EditorStateRecordType = {
   allowUndo: boolean,
@@ -230,11 +230,7 @@ class EditorState {
     var content = this.getCurrentContent();
     var selection = this.getSelection();
 
-    if (selection.isCollapsed()) {
-      return getInlineStyleForCollapsedSelection(content, selection);
-    }
-
-    return getInlineStyleForNonCollapsedSelection(content, selection);
+    return content.getInlineStyleForSelection(selection);
   }
 
   /**
@@ -242,23 +238,17 @@ class EditorState {
    * common styles of whole selection (intersection) will be returned.
    */
   getCurrentCommonInlineStyle(): DraftInlineStyle {
-    var override = this.getInlineStyleOverride();
-    if (override != null) {
-      return override;
-    }
-
     var content = this.getCurrentContent();
     var selection = this.getSelection();
 
     if (selection.isCollapsed()) {
-      return getInlineStyleForCollapsedSelection(content, selection);
+      var override = this.getInlineStyleOverride();
+      if (override != null) {
+        return override;
+      }
     }
 
-    const {commonStyles} = getInlineStyleForNonCollapsedSelectionExt(
-      content,
-      selection,
-    );
-    return commonStyles;
+    return content.getCommonInlineStyleForSelection(selection);
   }
 
   /**
@@ -266,23 +256,17 @@ class EditorState {
    * all styles found in whole selection (union) will be returned.
    */
   getCurrentUnionInlineStyle(): DraftInlineStyle {
-    var override = this.getInlineStyleOverride();
-    if (override != null) {
-      return override;
-    }
-
     var content = this.getCurrentContent();
     var selection = this.getSelection();
 
     if (selection.isCollapsed()) {
-      return getInlineStyleForCollapsedSelection(content, selection);
+      var override = this.getInlineStyleOverride();
+      if (override != null) {
+        return override;
+      }
     }
 
-    const {foundStyles} = getInlineStyleForNonCollapsedSelectionExt(
-      content,
-      selection,
-    );
-    return foundStyles;
+    return content.getUnionInlineStyleForSelection(selection);
   }
 
   getBlockTree(blockKey: string): List<any> {
@@ -643,142 +627,6 @@ function mustBecomeBoundary(
       changeType !== 'backspace-character' &&
       changeType !== 'delete-character')
   );
-}
-
-function getInlineStyleForCollapsedSelection(
-  content: ContentState,
-  selection: SelectionState,
-): DraftInlineStyle {
-  var startKey = selection.getStartKey();
-  var startOffset = selection.getStartOffset();
-  var startBlock = content.getBlockForKey(startKey);
-
-  // If the cursor is not at the start of the block, look backward to
-  // preserve the style of the preceding character.
-  if (startOffset > 0) {
-    return startBlock.getInlineStyleAt(startOffset - 1);
-  }
-
-  // The caret is at position zero in this block. If the block has any
-  // text at all, use the style of the first character.
-  if (startBlock.getLength()) {
-    return startBlock.getInlineStyleAt(0);
-  }
-
-  // Otherwise, look upward in the document to find the closest character.
-  return lookUpwardForInlineStyle(content, startKey);
-}
-
-function getInlineStyleForNonCollapsedSelection(
-  content: ContentState,
-  selection: SelectionState,
-): DraftInlineStyle {
-  var startKey = selection.getStartKey();
-  var startOffset = selection.getStartOffset();
-  var startBlock = content.getBlockForKey(startKey);
-
-  // If there is a character just inside the selection, use its style.
-  if (startOffset < startBlock.getLength()) {
-    return startBlock.getInlineStyleAt(startOffset);
-  }
-
-  // Check if the selection at the end of a non-empty block. Use the last
-  // style in the block.
-  if (startOffset > 0) {
-    return startBlock.getInlineStyleAt(startOffset - 1);
-  }
-
-  // Otherwise, look upward in the document to find the closest character.
-  return lookUpwardForInlineStyle(content, startKey);
-}
-
-function lookUpwardForInlineStyle(
-  content: ContentState,
-  fromKey: string,
-): DraftInlineStyle {
-  var lastNonEmpty = content
-    .getBlockMap()
-    .reverse()
-    .skipUntil((_, k) => k === fromKey)
-    .skip(1)
-    .skipUntil((block, _) => block.getLength())
-    .first();
-
-  if (lastNonEmpty)
-    return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
-  return OrderedSet();
-}
-
-function getInlineStyleForNonCollapsedSelectionExt(
-  content: ContentState,
-  selection: SelectionState,
-): {commonStyles: DraftInlineStyle, foundStyles: DraftInlineStyle} {
-  let commonStyles = OrderedSet();
-  let foundStyles = OrderedSet();
-  const selStart = selection.getStartOffset();
-  const selEnd = selection.getEndOffset();
-  if (!selection.isCollapsed() && selStart >= 0 && selEnd >= 0) {
-    const blockMap = content.getBlockMap();
-    const blockKeys = Array.from(blockMap.keys());
-    let blocksByKeys = {};
-    blockMap.map(blk => {
-      blocksByKeys[blk.key] = blk;
-    });
-    const selStartKeyInd = blockKeys.indexOf(selection.getStartKey());
-    const selEndKeyInd = blockKeys.indexOf(selection.getEndKey());
-
-    let stylesLengths = {};
-    let selFullLength = 0;
-    for (let ind = selStartKeyInd; ind <= selEndKeyInd; ind++) {
-      const blockKey = blockKeys[ind];
-      const block = blocksByKeys[blockKey];
-
-      const chars = block.getCharacterList();
-      const blockCharsCount = chars.count();
-      let bsStart = 0;
-      let bsEnd = blockCharsCount;
-      if (ind == selStartKeyInd) bsStart = selStart;
-      if (ind == selEndKeyInd) bsEnd = selEnd;
-      const bsEndR = bsEnd - 1; //tip: 'R' means include last char, not exclude
-      const bsLength = bsEnd - bsStart;
-      selFullLength += bsLength;
-
-      block.findStyleRanges(
-        character => {
-          const styleKeysSet = character.getStyle(); //OrderedSet
-          return styleKeysSet !== null && styleKeysSet.size > 0;
-        },
-        (start, end) => {
-          const endR = end - 1; //tip: 'R' means include last char, not exclude
-          const isInSelection = !(
-            (start < bsStart && endR < bsStart) ||
-            (start > bsEndR && endR > bsEndR)
-          );
-          if (!isInSelection) return;
-          const fStart = Math.max(start, bsStart);
-          const fEnd = Math.min(end, bsEnd);
-          //const fEndR = fEnd - 1;
-          const len = fEnd - fStart;
-          const stlSet = block.getInlineStyleAt(start);
-          for (const stl of stlSet) {
-            foundStyles = foundStyles.add(stl);
-            if (!stylesLengths[stl]) stylesLengths[stl] = 0;
-            stylesLengths[stl] += len;
-          }
-        },
-      );
-    }
-
-    const commonStylesArr = Object.keys(stylesLengths).filter(
-      stl => stylesLengths[stl] == selFullLength,
-    );
-    commonStyles = OrderedSet(commonStylesArr);
-  }
-
-  return {
-    commonStyles,
-    foundStyles,
-  };
 }
 
 module.exports = EditorState;
