@@ -285,11 +285,15 @@ const hasValidLinkText = (link: Node): boolean => {
 };
 
 const getWhitespaceChunk = (inEntity: ?string): Chunk => {
+  const entities = new Array(1);
+  if (inEntity) {
+    entities[0] = inEntity;
+  }
   return {
     ...EMPTY_CHUNK,
     text: SPACE,
     inlines: [OrderedSet()],
-    entities: new Array(1).map(none => (inEntity ? inEntity : none)),
+    entities,
   };
 };
 

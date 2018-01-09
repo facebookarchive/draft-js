@@ -82,7 +82,7 @@
   },
   "devEngines": {
     "node": "6.x || 8.x",
-    "npm": "2.x || 3.x"
+    "npm": "2.x || 3.x || 5.x"
   },
   "jest": {
     "automock": true,
