@@ -268,3 +268,14 @@ test('Should not create empty container blocks around ol and their list items wh
     experimentalTreeDataSupport: true,
   });
 });
+
+test('Should preserve entities for whitespace-only content', () => {
+  const html_string = `
+    <a href="http://www.facebook.com">
+      <b>before</b> <b>after</b>
+    </a>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});

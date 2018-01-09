@@ -26,6 +26,24 @@ const invariant = require('invariant');
 
 const {OrderedMap, List} = Immutable;
 
+const transformBlock = (
+  key: ?string,
+  blockMap: BlockMap,
+  func: (block: ContentBlockNode) => ContentBlockNode,
+): void => {
+  if (!key) {
+    return;
+  }
+
+  const block = blockMap.get(key);
+
+  if (!block) {
+    return;
+  }
+
+  blockMap.set(key, func(block));
+};
+
 const updateBlockMapLinks = (
   blockMap: BlockMap,
   originalBlockToBeMoved: BlockNodeRecord,
@@ -41,7 +59,7 @@ const updateBlockMapLinks = (
 
   const originalBlockKey = originalBlockToBeMoved.getKey();
   const originalTargetKey = originalTargetBlock.getKey();
-  const originialParentKey = originalBlockToBeMoved.getParentKey();
+  const originalParentKey = originalBlockToBeMoved.getParentKey();
   const originalNextSiblingKey = originalBlockToBeMoved.getNextSiblingKey();
   const originalPrevSiblingKey = originalBlockToBeMoved.getPrevSiblingKey();
   const newParentKey = originalTargetBlock.getParentKey();
@@ -54,67 +72,46 @@ const updateBlockMapLinks = (
 
   return blockMap.withMutations(blocks => {
     // update old parent
-    if (originialParentKey) {
-      const originialParentBlock = blocks.get(originialParentKey);
-      const parentChildrenList = originialParentBlock.getChildKeys();
-      blocks.mergeIn(
-        originialParentKey,
-        originialParentBlock.merge({
-          children: parentChildrenList.delete(
-            parentChildrenList.indexOf(originalBlockKey),
-          ),
-        }),
-      );
-    }
+    transformBlock(originalParentKey, blocks, block => {
+      const parentChildrenList = block.getChildKeys();
+      return block.merge({
+        children: parentChildrenList.delete(
+          parentChildrenList.indexOf(originalBlockKey),
+        ),
+      });
+    });
 
     // update old prev
-    if (originalPrevSiblingKey) {
-      const originalPrevSiblingBlock = blocks.get(originalPrevSiblingKey);
-      blocks.mergeIn(
-        originalPrevSiblingKey,
-        originalPrevSiblingBlock.merge({
-          nextSibling: originalBlockToBeMoved.getNextSiblingKey(),
-        }),
-      );
-    }
+    transformBlock(originalPrevSiblingKey, blocks, block =>
+      block.merge({
+        nextSibling: originalNextSiblingKey,
+      }),
+    );
 
     // update old next
-    if (originalNextSiblingKey) {
-      const originalNextSiblingBlock = blocks.get(originalNextSiblingKey);
-      blocks.mergeIn(
-        originalNextSiblingKey,
-        originalNextSiblingBlock.merge({
-          prevSibling: originalBlockToBeMoved.getPrevSiblingKey(),
-        }),
-      );
-    }
+    transformBlock(originalNextSiblingKey, blocks, block =>
+      block.merge({
+        prevSibling: originalPrevSiblingKey,
+      }),
+    );
 
     // update new next
-    if (newNextSiblingKey) {
-      const newNextSiblingBlock = blocks.get(newNextSiblingKey);
-      blocks.mergeIn(
-        newNextSiblingKey,
-        newNextSiblingBlock.merge({
-          prevSibling: originalBlockKey,
-        }),
-      );
-    }
+    transformBlock(newNextSiblingKey, blocks, block =>
+      block.merge({
+        prevSibling: originalBlockKey,
+      }),
+    );
 
     // update new prev
-    if (newPrevSiblingKey) {
-      const newPrevSiblingBlock = blocks.get(newPrevSiblingKey);
-      blocks.mergeIn(
-        newPrevSiblingKey,
-        newPrevSiblingBlock.merge({
-          nextSibling: originalBlockKey,
-        }),
-      );
-    }
+    transformBlock(newPrevSiblingKey, blocks, block =>
+      block.merge({
+        nextSibling: originalBlockKey,
+      }),
+    );
 
     // update new parent
-    if (newParentKey) {
-      const newParentBlock = blocks.get(newParentKey);
-      const newParentChildrenList = newParentBlock.getChildKeys();
+    transformBlock(newParentKey, blocks, block => {
+      const newParentChildrenList = block.getChildKeys();
       const targetBlockIndex = newParentChildrenList.indexOf(originalTargetKey);
 
       const insertionIndex = isInsertedAfterTarget
@@ -124,18 +121,14 @@ const updateBlockMapLinks = (
       const newChildrenArray = newParentChildrenList.toArray();
       newChildrenArray.splice(insertionIndex, 0, originalBlockKey);
 
-      blocks.mergeIn(
-        newParentKey,
-        newParentBlock.merge({
-          children: List(newChildrenArray),
-        }),
-      );
-    }
+      return block.merge({
+        children: List(newChildrenArray),
+      });
+    });
 
     // update block
-    blocks.mergeIn(
-      originalBlockKey,
-      originalBlockToBeMoved.merge({
+    transformBlock(originalBlockKey, blocks, block =>
+      block.merge({
         nextSibling: newNextSiblingKey,
         prevSibling: newPrevSiblingKey,
         parent: newParentKey,

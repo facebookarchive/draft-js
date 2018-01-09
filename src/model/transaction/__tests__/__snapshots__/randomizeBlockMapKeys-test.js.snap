@@ -1,8 +1,130 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`must be able to randomize keys for ContentBlockNodes BlockMap and make orphan blocks become root blocks 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": "key1",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key2",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "nextSibling": "key3",
+    "parent": null,
+    "prevSibling": "key0",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key2",
+    "nextSibling": null,
+    "parent": "key1",
+    "prevSibling": null,
+    "text": "Fire",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key3",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key1",
+    "text": "Gorilla",
+    "type": "unstyled",
+  },
+]
+`;
+
 exports[`must be able to randomize keys for ContentBlockNodes BlockMap and update reference links to the new keys 1`] = `
-Object {
-  "key0": Object {
+Array [
+  Object {
     "characterList": Array [],
     "children": Array [
       "key1",
@@ -17,7 +139,7 @@ Object {
     "text": "",
     "type": "unstyled",
   },
-  "key1": Object {
+  Object {
     "characterList": Array [],
     "children": Array [
       "key2",
@@ -31,7 +153,7 @@ Object {
     "text": "",
     "type": "unstyled",
   },
-  "key2": Object {
+  Object {
     "characterList": Array [
       Object {
         "entity": null,
@@ -48,7 +170,7 @@ Object {
     "text": "X",
     "type": "unstyled",
   },
-  "key3": Object {
+  Object {
     "characterList": Array [
       Object {
         "entity": null,
@@ -65,12 +187,12 @@ Object {
     "text": "Y",
     "type": "unstyled",
   },
-}
+]
 `;
 
 exports[`must be able to randomize keys for ContentBlocks BlockMap 1`] = `
-Object {
-  "key0": Object {
+Array [
+  Object {
     "characterList": Array [
       Object {
         "entity": null,
@@ -99,7 +221,7 @@ Object {
     "text": "Alpha",
     "type": "unstyled",
   },
-  "key1": Object {
+  Object {
     "characterList": Array [
       Object {
         "entity": null,
@@ -124,7 +246,7 @@ Object {
     "text": "Beta",
     "type": "unstyled",
   },
-  "key2": Object {
+  Object {
     "characterList": Array [
       Object {
         "entity": null,
@@ -161,7 +283,7 @@ Object {
     "text": "Charlie",
     "type": "unstyled",
   },
-  "key3": Object {
+  Object {
     "characterList": Array [
       Object {
         "entity": null,
@@ -190,5 +312,5 @@ Object {
     "text": "Delta",
     "type": "unstyled",
   },
-}
+]
 `;
