@@ -16,7 +16,9 @@ jest.disableAutomock();
 
 jest.mock('generateRandomKey');
 
-const {insertAtomicBlock, moveAtomicBlock} = require('AtomicBlockUtils');
+const AtomicBlockUtils = require('AtomicBlockUtils');
+const BlockMapBuilder = require('BlockMapBuilder');
+const ContentBlockNode = require('ContentBlockNode');
 const Entity = require('DraftEntity');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
@@ -29,16 +31,20 @@ const initialBlock = contentState.getBlockMap().first();
 const ENTITY_KEY = Entity.create('TOKEN', 'MUTABLE');
 const CHARACTER = ' ';
 
+const toggleExperimentalTreeDataSupport = enabled => {
+  jest.doMock('DraftFeatureFlags', () => {
+    return {
+      draft_tree_data_support: enabled,
+    };
+  });
+};
+
 const assertAtomic = state => {
   expect(
     state
       .getCurrentContent()
       .getBlockMap()
-      .map(block => ({
-        key: block.getKey(),
-        type: block.getType(),
-        text: block.getText(),
-      }))
+      .toIndexedSeq()
       .toJS(),
   ).toMatchSnapshot();
 };
@@ -47,8 +53,10 @@ const assertInsertAtomicBlock = (
   state = editorState,
   entity = ENTITY_KEY,
   character = CHARACTER,
+  experimentalTreeDataSupport = false,
 ) => {
-  const newState = insertAtomicBlock(state, entity, character);
+  toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
+  const newState = AtomicBlockUtils.insertAtomicBlock(state, entity, character);
   assertAtomic(newState);
   return newState;
 };
@@ -59,10 +67,17 @@ const assertMoveAtomicBlock = (
   state = editorState,
   insertionType = null,
 ) => {
-  const newState = moveAtomicBlock(state, atomicBlock, seletion, insertionType);
+  const newState = AtomicBlockUtils.moveAtomicBlock(
+    state,
+    atomicBlock,
+    seletion,
+    insertionType,
+  );
   assertAtomic(newState);
   return newState;
 };
+
+beforeEach(() => jest.resetModules());
 
 test('must insert atomic at start of block with collapsed seletion', () => {
   assertInsertAtomicBlock();
@@ -228,7 +243,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
   // Move atomic block above itself by moving it after preceding block by
   // replacement
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
@@ -242,7 +257,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
 
   // Move atomic block above itself by moving it after preceding block
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
@@ -255,19 +270,21 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
 
   // Move atomic block above itself by replacement
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
         anchorKey: atomicBlock.getKey(),
         focusKey: atomicBlock.getKey(),
+        anchorOffset: atomicBlock.getLength(),
+        focusOffset: atomicBlock.getLength(),
       }),
     );
   }).toThrow(new Error('Block cannot be moved next to itself.'));
 
   // Move atomic block above itself
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
@@ -277,10 +294,9 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
     );
   }).toThrow(new Error('Block cannot be moved next to itself.'));
 
-  // Move atomic block below itself by moving it before following block by
-  // replacement
+  // Move atomic block below itself by moving it before following block by replacement
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
@@ -292,7 +308,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
 
   // Move atomic block below itself by moving it before following block
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
@@ -305,7 +321,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
 
   // Move atomic block below itself by replacement
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
@@ -319,7 +335,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
 
   // Move atomic block below itself
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
@@ -534,7 +550,7 @@ test("mustn't move atomic next to itself", () => {
   // Move atomic block above itself by moving it after preceding block by
   // replacement
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
@@ -549,7 +565,7 @@ test("mustn't move atomic next to itself", () => {
   // Move atomic block below itself by moving it before following block by
   // replacement
   expect(() => {
-    moveAtomicBlock(
+    AtomicBlockUtils.moveAtomicBlock(
       resultEditor,
       atomicBlock,
       new SelectionState({
@@ -560,4 +576,72 @@ test("mustn't move atomic next to itself", () => {
       }),
     );
   }).toThrow(new Error('Block cannot be moved next to itself.'));
+});
+
+test('must be able to insert atomic block when experimentalTreeDataSupport is enabled', () => {
+  // Insert atomic block at the first position
+  assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      EditorState.createWithContent(
+        contentState.set(
+          'blockMap',
+          BlockMapBuilder.createFromArray([
+            new ContentBlockNode({
+              text: 'first block',
+              key: 'A',
+            }),
+          ]),
+        ),
+      ),
+      SelectionState.createEmpty('A'),
+    ),
+    ENTITY_KEY,
+    CHARACTER,
+    true,
+  );
+});
+
+test('must be able to move atomic block when experimentalTreeDataSupport is enabled', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      EditorState.createWithContent(
+        contentState.set(
+          'blockMap',
+          BlockMapBuilder.createFromArray([
+            new ContentBlockNode({
+              text: 'first block',
+              key: 'A',
+            }),
+          ]),
+        ),
+      ),
+      SelectionState.createEmpty('A'),
+    ),
+    ENTITY_KEY,
+    CHARACTER,
+    true,
+  );
+
+  const resultContent = resultEditor.getCurrentContent();
+  const lastBlock = resultContent.getBlockMap().last();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+
+  // Move atomic block at end of the last block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: lastBlock.getKey(),
+      anchorOffset: lastBlock.getLength(),
+      focusKey: lastBlock.getKey(),
+      focusOffset: lastBlock.getLength(),
+      isBackward: false,
+      hasFocus: false,
+    }),
+    resultEditor,
+    'after',
+  );
 });

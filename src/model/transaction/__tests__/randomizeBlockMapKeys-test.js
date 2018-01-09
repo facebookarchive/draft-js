@@ -27,9 +27,9 @@ const {List} = Immutable;
 
 const assertRandomizeBlockMapKeys = blockMapArray => {
   expect(
-    randomizeBlockMapKeys(
-      BlockMapBuilder.createFromArray(blockMapArray),
-    ).toJS(),
+    randomizeBlockMapKeys(BlockMapBuilder.createFromArray(blockMapArray))
+      .toIndexedSeq()
+      .toJS(),
   ).toMatchSnapshot();
 };
 
@@ -82,6 +82,53 @@ test('must be able to randomize keys for ContentBlockNodes BlockMap and update r
       parent: 'A',
       prevSibling: 'B',
       text: 'Y',
+    }),
+  ]);
+});
+
+/**
+ * This could occur when extracting a fragment from a partial selection
+ * the bellow case could happen when selecting blocks D to G from blockMap like:
+ *
+ *
+ * A
+ *   B
+ *     C
+ *       D - Delta
+ *   E
+ *     F - Fire
+ *   g - gorilla
+ *
+ *
+ * Selected (D to G) - Expected outcome:
+ *
+ * => We should remove all parent links from the orphan blocks then they should be treated as root nodes
+ * making sure that next/pre links are amended accordingly
+ */
+test('must be able to randomize keys for ContentBlockNodes BlockMap and make orphan blocks become root blocks', () => {
+  assertRandomizeBlockMapKeys([
+    new ContentBlockNode({
+      key: 'D',
+      parent: 'C',
+      text: 'Delta',
+    }),
+    new ContentBlockNode({
+      key: 'E',
+      parent: 'A',
+      prevSibling: 'B',
+      nextSibling: 'G',
+      children: List(['F']),
+    }),
+    new ContentBlockNode({
+      key: 'F',
+      parent: 'E',
+      text: 'Fire',
+    }),
+    new ContentBlockNode({
+      key: 'G',
+      parent: 'A',
+      prevSibling: 'E',
+      text: 'Gorilla',
     }),
   ]);
 });
