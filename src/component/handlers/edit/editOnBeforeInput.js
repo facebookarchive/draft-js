@@ -117,15 +117,15 @@ function editOnBeforeInput(
   if (!selection.isCollapsed()) {
     e.preventDefault();
 
-    // If the character that the user is trying to replace with
-    // is the same as the current selection text the just update the
-    // `SelectionState`.  Else, update the ContentState with the new text
+    // If the currently selected text matches what the user is trying to
+    // replace it with, let's just update the `SelectionState`. If not, update
+    // the `ContentState` with the new text.
     var currentlySelectedChars = editorState
       .getCurrentContent()
       .getPlainText()
       .slice(selectionStart, selectionEnd);
     if (chars === currentlySelectedChars) {
-      this.update(
+      editor.update(
         EditorState.forceSelection(
           editorState,
           selection.merge({
