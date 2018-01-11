@@ -279,3 +279,33 @@ test('Should preserve entities for whitespace-only content', () => {
     experimentalTreeDataSupport: false,
   });
 });
+
+test('Should import recognised draft li depths', () => {
+  const html_string = `
+    <ul>
+      <li class="public-DraftStyleDefault-depth0">depth0</li>
+      <li class="public-DraftStyleDefault-depth1">depth1</li>
+      <li class="public-DraftStyleDefault-depth2">depth2</li>
+      <li class="public-DraftStyleDefault-depth3">depth3</li>
+      <li class="public-DraftStyleDefault-depth4">depth4</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should import recognised draft li depths when nesting enabled', () => {
+  const html_string = `
+    <ul>
+      <li class="public-DraftStyleDefault-depth0">depth0</li>
+      <li class="public-DraftStyleDefault-depth1">depth1</li>
+      <li class="public-DraftStyleDefault-depth2">depth2</li>
+      <li class="public-DraftStyleDefault-depth3">depth3</li>
+      <li class="public-DraftStyleDefault-depth4">depth4</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
