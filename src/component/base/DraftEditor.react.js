@@ -19,6 +19,7 @@ import type {DraftEditorModes} from 'DraftEditorModes';
 import type {DraftEditorDefaultProps, DraftEditorProps} from 'DraftEditorProps';
 import type {DraftScrollPosition} from 'DraftScrollPosition';
 
+const ContentBlock = require('ContentBlock');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
@@ -86,7 +87,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
   _renderNativeContent: boolean;
-  _updatedNativeInsertionBlock: boolean;
+  _updatedNativeInsertionBlock: ?ContentBlock;
   _latestCommittedEditorState: EditorState;
 
   /**
