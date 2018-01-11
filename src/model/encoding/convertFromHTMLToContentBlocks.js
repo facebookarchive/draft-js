@@ -466,7 +466,11 @@ const genFragment = (
     lastList = nodeName;
   }
 
-  if (nodeName === 'li' && node instanceof HTMLElement) {
+  if (
+    !experimentalTreeDataSupport &&
+    nodeName === 'li' &&
+    node instanceof HTMLElement
+  ) {
     depth = getListItemDepth(node, depth);
   }
 
