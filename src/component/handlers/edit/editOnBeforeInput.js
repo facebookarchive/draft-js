@@ -122,8 +122,7 @@ function editOnBeforeInput(
     // `SelectionState`.  Else, update the ContentState with the new text
     var currentlySelectedChars = editorState
       .getCurrentContent()
-      .getPlainText()
-      .slice(selectionStart, selectionEnd);
+      .getSelectedText(selection);
     if (chars === currentlySelectedChars) {
       this.update(
         EditorState.forceSelection(
