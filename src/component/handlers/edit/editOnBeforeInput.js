@@ -110,7 +110,7 @@ function editOnBeforeInput(
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
   var selection = editorState.getSelection();
-  var selectionStart = selection.getStartOffset();
+  //var selectionStart = selection.getStartOffset();
   var selectionEnd = selection.getEndOffset();
   var anchorKey = selection.getAnchorKey();
 

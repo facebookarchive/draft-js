@@ -170,36 +170,32 @@ class ContentState extends ContentStateRecord {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity.__get(key);
   }
-  
-  getSelectedText (selection: SelectionState, blocksJoinGlue: ?string): string {
-    if (!blocksJoinGlue)
-      blocksJoinGlue = "\n";
-    if (selection.isCollapsed())
-      return '';
+
+  getSelectedText(selection: SelectionState, blocksJoinGlue: ?string): string {
+    if (!blocksJoinGlue) blocksJoinGlue = '\n';
+    if (selection.isCollapsed()) return '';
     const selStart = selection.getStartOffset();
     const selEnd = selection.getEndOffset();
-    if (!(selStart >= 0 && selEnd >= 0))
-      return '';
+    if (!(selStart >= 0 && selEnd >= 0)) return '';
 
     const blockMap = this.getBlockMap();
     const blockKeys = Array.from(blockMap.keys());
     let blocksByKeys = {};
-    blockMap.map((blk) => {
+    blockMap.map(blk => {
       blocksByKeys[blk.key] = blk;
     });
     const startKeyInd = blockKeys.indexOf(selection.getStartKey());
     const endKeyInd = blockKeys.indexOf(selection.getEndKey());
 
     let textParts = [];
-    for (let ind = startKeyInd ; ind <= endKeyInd ; ind++) {
+    for (let ind = startKeyInd; ind <= endKeyInd; ind++) {
       const blockKey = blockKeys[ind];
       const block = blocksByKeys[blockKey];
       const blockText = block.getText();
-      let start = 0, end = blockText.length;
-      if (ind == startKeyInd)
-        start = selStart;
-      if (ind == endKeyInd)
-        end = selEnd;
+      let start = 0;
+      let end = blockText.length;
+      if (ind == startKeyInd) start = selStart;
+      if (ind == endKeyInd) end = selEnd;
       let textPart = blockText.slice(start, end);
       textParts.push(textPart);
     }
