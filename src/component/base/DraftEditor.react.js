@@ -264,7 +264,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             aria-autocomplete={readOnly ? null : this.props.ariaAutoComplete}
             aria-controls={readOnly ? null : this.props.ariaControls}
             aria-describedby={
-              this._showPlaceholder() ? this._placeholderAccessibilityID : null
+              this.props.ariaDescribedBy || this._placeholderAccessibilityID
             }
             aria-expanded={readOnly ? null : ariaExpanded}
             aria-label={this.props.ariaLabel}
