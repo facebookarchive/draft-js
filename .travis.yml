@@ -5,10 +5,6 @@ node_js:
 
 sudo: false
 
-cache:
-  directories:
-  - node_modules
-
 env:
   matrix:
     - TEST_TYPE=build
@@ -30,30 +26,25 @@ addons:
       - g++-4.8
 
 before_install:
-- npm install -g npm@latest-2
-- npm --version
-
-install:
-# Remove any unncessary packages. Probably unnecessary but potentially helpful
-- npm prune
-# Update runs install, but will also pull in the latest updates so the cache
-# doesn't get stale
-- npm update
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.3.2
+  - export PATH=$HOME/.yarn/bin:$PATH
+cache:
+  yarn: true
 
 before_script:
 # For additional debugging when Travis inevitably gets into a bad state.
-- npm ls --depth=0
+- yarn list --depth=0
 
 script:
 - |
   if [ "$TEST_TYPE" != build_website ]
   then
-    npm run $TEST_TYPE
+    yarn run $TEST_TYPE
   else
     set -e
     ./node_modules/.bin/gulp
     cd website
-    npm install
+    yarn install
     ./setup.sh
     if [ "$TRAVIS_PULL_REQUEST" = false ] && [ "$TRAVIS_BRANCH" = master ]; then
       # Automatically publish the website

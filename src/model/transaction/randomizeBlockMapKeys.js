@@ -23,7 +23,11 @@ const generateRandomKey = require('generateRandomKey');
 const {OrderedMap} = Immutable;
 
 const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
-  const newKeys = [];
+  const newKeysRef = {};
+
+  // we keep track of root blocks in order to update subsequent sibling links
+  let lastRootBlock: ContentBlockNode;
+
   return OrderedMap(
     blockMap
       .withMutations(blockMapState => {
@@ -38,97 +42,70 @@ const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
           const key = generateRandomKey();
 
           // we will add it here to re-use it later
-          newKeys.push(key);
+          newKeysRef[oldKey] = key;
 
           if (nextKey) {
             const nextBlock = blockMapState.get(nextKey);
             if (nextBlock) {
-              blockMapState.mergeIn(
-                nextKey,
-                nextBlock.merge({
-                  prevSibling: key,
-                }),
-              );
+              blockMapState.setIn([nextKey, 'prevSibling'], key);
             } else {
               // this can happen when generating random keys for fragments
-              blockMapState.mergeIn(
-                oldKey,
-                block.merge({
-                  nextSibling: null,
-                }),
-              );
+              blockMapState.setIn([oldKey, 'nextSibling'], null);
             }
           }
 
           if (prevKey) {
             const prevBlock = blockMapState.get(prevKey);
             if (prevBlock) {
-              blockMapState.mergeIn(
-                prevKey,
-                prevBlock.merge({
-                  nextSibling: key,
-                }),
-              );
+              blockMapState.setIn([prevKey, 'nextSibling'], key);
             } else {
               // this can happen when generating random keys for fragments
-              blockMapState.mergeIn(
-                oldKey,
-                block.merge({
-                  prevSibling: null,
-                }),
-              );
+              blockMapState.setIn([oldKey, 'prevSibling'], null);
             }
           }
 
-          if (parentKey) {
+          if (parentKey && blockMapState.get(parentKey)) {
             const parentBlock = blockMapState.get(parentKey);
-            if (parentBlock) {
-              const parentChildrenList = parentBlock.getChildKeys();
+            const parentChildrenList = parentBlock.getChildKeys();
+            blockMapState.setIn(
+              [parentKey, 'children'],
+              parentChildrenList.set(
+                parentChildrenList.indexOf(block.getKey()),
+                key,
+              ),
+            );
+          } else {
+            // blocks will then be treated as root block nodes
+            blockMapState.setIn([oldKey, 'parent'], null);
+
+            if (lastRootBlock) {
+              blockMapState.setIn([lastRootBlock.getKey(), 'nextSibling'], key);
               blockMapState.setIn(
-                parentKey,
-                parentBlock.merge({
-                  children: parentChildrenList.set(
-                    parentChildrenList.indexOf(block.getKey()),
-                    key,
-                  ),
-                }),
-              );
-            } else {
-              blockMapState.mergeIn(
-                oldKey,
-                block.merge({
-                  parent: null,
-                }),
+                [oldKey, 'prevSibling'],
+                newKeysRef[lastRootBlock.getKey()],
               );
             }
+
+            lastRootBlock = blockMapState.get(oldKey);
           }
 
           childrenKeys.forEach(childKey => {
             const childBlock = blockMapState.get(childKey);
             if (childBlock) {
-              blockMapState.mergeIn(
-                childKey,
-                childBlock.merge({
-                  parent: key,
-                }),
-              );
+              blockMapState.setIn([childKey, 'parent'], key);
             } else {
-              blockMapState.mergeIn(
-                oldKey,
-                block.merge({
-                  children: block
-                    .getChildKeys()
-                    .filter(child => child !== childKey),
-                }),
+              blockMapState.setIn(
+                [oldKey, 'children'],
+                block.getChildKeys().filter(child => child !== childKey),
               );
             }
           });
         });
       })
       .toArray()
-      .map((block, index) => [
-        newKeys[index],
-        block.set('key', newKeys[index]),
+      .map(block => [
+        newKeysRef[block.getKey()],
+        block.set('key', newKeysRef[block.getKey()]),
       ]),
   );
 };

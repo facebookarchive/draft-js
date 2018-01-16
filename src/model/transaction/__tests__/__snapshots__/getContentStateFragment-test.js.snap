@@ -261,7 +261,7 @@ Object {
     "data": Object {},
     "depth": 0,
     "key": "key10",
-    "nextSibling": "D",
+    "nextSibling": null,
     "parent": null,
     "prevSibling": null,
     "text": "",
