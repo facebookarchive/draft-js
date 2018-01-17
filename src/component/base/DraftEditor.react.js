@@ -172,14 +172,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    */
   _buildHandler(eventName: string): Function {
     return e => {
-      const flushSyncSupported = !!ReactDOM.flushSync;
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
-        if (flushSyncSupported) {
-          method && ReactDOM.flushSync(() => method(this, e));
-        } else {
-          method && method(this, e);
-        }
+        method && method(this, e);
       }
     };
   }
