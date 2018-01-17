@@ -393,12 +393,13 @@ const RichTextEditorUtil = {
   tryToReplaceBlockToSoftLine: function(
     editorState: EditorState,
   ): ?ContentState {
+    var content = editorState.getCurrentContent();
     var selection = editorState.getSelection();
     var offset = selection.getAnchorOffset();
-    if (selection.isCollapsed() && offset === 0) {
-      var key = selection.getAnchorKey();
-      var content = editorState.getCurrentContent();
-      var block = content.getBlockForKey(key);
+    var key = selection.getAnchorKey();
+    var block = content.getBlockForKey(key);
+
+    if (selection.isCollapsed() && offset === 0 && block.getText() === '') {
       var type = block.getType();
       var blockBefore = content.getBlockBefore(key);
 
