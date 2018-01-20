@@ -35,6 +35,11 @@ const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
 const Style = require('Style');
 
+const wrapBlockNodes = require('wrapBlockNodes');
+
+const getCustomRenderConfig = require('getCustomRenderConfig');
+const getDraftRenderConfig = require('getDraftRenderConfig');
+const getElementPropsConfig = require('getElementPropsConfig');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
@@ -45,8 +50,6 @@ const SCROLL_BUFFER = 10;
 const {List} = Immutable;
 
 // we should harden up the bellow flow types to make them more strict
-type CustomRenderConfig = Object;
-type DraftRenderConfig = Object;
 type BlockRenderFn = (block: BlockNodeRecord) => ?Object;
 type BlockStyleFn = (block: BlockNodeRecord) => string;
 
@@ -77,128 +80,6 @@ const isBlockOnSelectionEdge = (
   key: string,
 ): boolean => {
   return selection.getAnchorKey() === key || selection.getFocusKey() === key;
-};
-
-/**
- * We will use this helper to identify blocks that need to be wrapped but have siblings that
- * also share the same wrapper element, this way we can do the wrapping once the last sibling
- * is added.
- */
-const shouldNotAddWrapperElement = (
-  block: BlockNodeRecord,
-  contentState: ContentState,
-): boolean => {
-  const nextSiblingKey = block.getNextSiblingKey();
-
-  return nextSiblingKey
-    ? contentState.getBlockForKey(nextSiblingKey).getType() === block.getType()
-    : false;
-};
-
-const applyWrapperElementToSiblings = (
-  wrapperTemplate: *,
-  Element: string,
-  nodes: Array<React.Node>,
-): Array<React.Node> => {
-  const wrappedSiblings = [];
-
-  // we check back until we find a sibbling that does not have same wrapper
-  for (const sibling: any of nodes.reverse()) {
-    if (sibling.type !== Element) {
-      break;
-    }
-    wrappedSiblings.push(sibling);
-  }
-
-  // we now should remove from acc the wrappedSiblings and add them back under same wrap
-  nodes.splice(nodes.indexOf(wrappedSiblings[0]), wrappedSiblings.length + 1);
-
-  const childrenIs = wrappedSiblings.reverse();
-
-  const key = childrenIs[0].key;
-
-  nodes.push(
-    React.cloneElement(
-      wrapperTemplate,
-      {
-        key: `${key}-wrap`,
-        'data-offset-key': DraftOffsetKey.encode(key, 0, 0),
-      },
-      childrenIs,
-    ),
-  );
-
-  return nodes;
-};
-
-const getDraftRenderConfig = (
-  block: BlockNodeRecord,
-  blockRenderMap: DraftBlockRenderMap,
-): DraftRenderConfig => {
-  const configForType =
-    blockRenderMap.get(block.getType()) || blockRenderMap.get('unstyled');
-
-  const wrapperTemplate = configForType.wrapper;
-  const Element =
-    configForType.element || blockRenderMap.get('unstyled').element;
-
-  return {
-    Element,
-    wrapperTemplate,
-  };
-};
-
-const getCustomRenderConfig = (
-  block: BlockNodeRecord,
-  blockRendererFn: BlockRenderFn,
-): CustomRenderConfig => {
-  const customRenderer = blockRendererFn(block);
-
-  if (!customRenderer) {
-    return {};
-  }
-
-  const {
-    component: CustomComponent,
-    props: customProps,
-    editable: customEditable,
-  } = customRenderer;
-
-  return {
-    CustomComponent,
-    customProps,
-    customEditable,
-  };
-};
-
-const getElementPropsConfig = (
-  block: BlockNodeRecord,
-  editorKey: string,
-  offsetKey: string,
-  blockStyleFn: BlockStyleFn,
-  customConfig: *,
-): Object => {
-  let elementProps: Object = {
-    'data-block': true,
-    'data-editor': editorKey,
-    'data-offset-key': offsetKey,
-    key: block.getKey(),
-  };
-  const customClass = blockStyleFn(block);
-
-  if (customClass) {
-    elementProps.className = customClass;
-  }
-
-  if (customConfig.customEditable !== undefined) {
-    elementProps = {
-      ...elementProps,
-      contentEditable: customConfig.customEditable,
-      suppressContentEditableWarning: true,
-    };
-  }
-
-  return elementProps;
 };
 
 class DraftEditorBlockNode extends React.Component<Props> {
@@ -290,7 +171,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
     let children = null;
 
     if (block.children.size) {
-      children = block.children.reduce((acc, key) => {
+      children = block.children.map(key => {
         const offsetKey = DraftOffsetKey.encode(key, 0, 0);
         const child = contentState.getBlockForKey(key);
         const customConfig = getCustomRenderConfig(child, blockRendererFn);
@@ -299,6 +180,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
           child,
           blockRenderMap,
         );
+
         const elementProps = getElementPropsConfig(
           child,
           editorKey,
@@ -306,36 +188,27 @@ class DraftEditorBlockNode extends React.Component<Props> {
           blockStyleFn,
           customConfig,
         );
+
         const childProps = {
           ...this.props,
           tree: editorState.getBlockTree(key),
           blockProps: customConfig.customProps,
           offsetKey,
+          wrapperTemplate,
           block: child,
         };
 
-        acc.push(
-          React.createElement(
+        return {
+          wrapperTemplate,
+          block: child,
+          element: React.createElement(
             Element,
             elementProps,
             <Component {...childProps} />,
           ),
-        );
-
-        if (
-          !wrapperTemplate ||
-          shouldNotAddWrapperElement(child, contentState)
-        ) {
-          return acc;
-        }
-
-        // if we are here it means we are the last block
-        // that has a wrapperTemplate so we should wrap itself
-        // and all other previous siblings that share the same wrapper
-        applyWrapperElementToSiblings(wrapperTemplate, Element, acc);
-
-        return acc;
+        };
       }, []);
+      children = wrapBlockNodes(children, contentState);
     }
 
     const blockKey = block.getKey();
