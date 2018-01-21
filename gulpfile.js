@@ -16,11 +16,13 @@ var concatCSS = require('gulp-concat-css');
 var derequire = require('gulp-derequire');
 var flatten = require('gulp-flatten');
 var gulp = require('gulp');
+var gulpif = require('gulp-if');
 var gulpUtil = require('gulp-util');
 var header = require('gulp-header');
 var packageData = require('./package.json');
 var rename = require('gulp-rename');
 var runSequence = require('run-sequence');
+var StatsPlugin = require('stats-webpack-plugin');
 var through = require('through2');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var webpackStream = require('webpack-stream');
@@ -107,6 +109,12 @@ var buildDist = function(opts) {
       new webpackStream.webpack.LoaderOptionsPlugin({
         debug: true,
       }),
+      new StatsPlugin(
+        '../meta/bundle-size-stats/version-' + packageData.version + '.json',
+        {
+          chunkModules: true,
+        },
+      ),
     ],
   };
   if (!opts.debug) {
@@ -196,7 +204,9 @@ gulp.task('dist', ['modules', 'css'], function() {
     .src('./lib/Draft.js')
     .pipe(buildDist(opts))
     .pipe(derequire())
-    .pipe(header(COPYRIGHT_HEADER, {version: packageData.version}))
+    .pipe(
+      gulpif('*.js', header(COPYRIGHT_HEADER, {version: packageData.version})),
+    )
     .pipe(gulp.dest(paths.dist));
 });
 
@@ -208,7 +218,9 @@ gulp.task('dist:min', ['modules'], function() {
   return gulp
     .src('./lib/Draft.js')
     .pipe(buildDist(opts))
-    .pipe(header(COPYRIGHT_HEADER, {version: packageData.version}))
+    .pipe(
+      gulpif('*.js', header(COPYRIGHT_HEADER, {version: packageData.version})),
+    )
     .pipe(gulp.dest(paths.dist));
 });
 
