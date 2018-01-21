@@ -22,6 +22,7 @@ var packageData = require('./package.json');
 var rename = require('gulp-rename');
 var runSequence = require('run-sequence');
 var through = require('through2');
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var webpackStream = require('webpack-stream');
 
 var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
@@ -109,15 +110,7 @@ var buildDist = function(opts) {
     ],
   };
   if (!opts.debug) {
-    webpackOpts.plugins.push(
-      new webpackStream.webpack.optimize.UglifyJsPlugin({
-        compress: {
-          hoist_vars: true,
-          screw_ie8: true,
-          warnings: false,
-        },
-      }),
-    );
+    webpackOpts.plugins.push(new UglifyJsPlugin());
   }
   return webpackStream(webpackOpts, null, function(err, stats) {
     if (err) {
