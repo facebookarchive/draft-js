@@ -23,7 +23,7 @@ Changes to `src` are live in production on facebook.com at the time of release.
   typing same character into selection that starts with that character. ([@existentialism](https://github.com/existentialism) in
   [#1512](https://github.com/facebook/draft-js/pull/1512))
 * Fix `encodeRawBlocks` to handle non-contiguous entities. Entities should
-  always be contigious, and cover one sequential range of characters. However,
+  always be contiguous, and cover one sequential range of characters. However,
   in cases where entityState is corrupted to include non-contiguous entities,
   `encodeRawBlocks` would improperly process the entities in that case. (Frank
   Thompson in [0059dd46](https://github.com/facebook/draft-js/commit/0059dd46f4d23af7d9803316aa93d8deddb5e8ae))
