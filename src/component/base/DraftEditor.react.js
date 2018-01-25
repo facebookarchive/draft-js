@@ -26,6 +26,7 @@ const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
+const DraftFeatureFlags = require('DraftFeatureFlags');
 const EditorState = require('EditorState');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
@@ -171,10 +172,15 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * editor mode, if any has been specified.
    */
   _buildHandler(eventName: string): Function {
+    const flushSyncSupported = !!ReactDOM.flushSync;
     return e => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
-        method && method(this, e);
+        if (flushSyncSupported && DraftFeatureFlags.draft_js_flush_sync) {
+          method && ReactDOM.flushSync(() => method(this, e));
+        } else {
+          method && method(this, e);
+        }
       }
     };
   }

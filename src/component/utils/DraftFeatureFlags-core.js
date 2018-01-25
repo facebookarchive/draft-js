@@ -18,6 +18,7 @@ var DraftFeatureFlags = {
   draft_segmented_entities_behavior: false,
   draft_handlebeforeinput_composed_text: false,
   draft_tree_data_support: false,
+  draft_js_flush_sync: false,
 };
 
 module.exports = DraftFeatureFlags;
