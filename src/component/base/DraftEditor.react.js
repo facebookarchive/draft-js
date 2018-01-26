@@ -26,7 +26,7 @@ const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
-const DraftFeatureFlags = require('DraftFeatureFlags');
+const DraftODS = require('DraftODS');
 const EditorState = require('EditorState');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
@@ -39,6 +39,7 @@ const emptyFunction = require('emptyFunction');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getScrollPosition = require('getScrollPosition');
+const gkx = require('gkx');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 
@@ -61,6 +62,8 @@ const handlerMap = {
 type State = {
   contentsKey: number,
 };
+
+let didInitODS = false;
 
 /**
  * `DraftEditor` is the root editor component. It composes a `contentEditable`
@@ -176,7 +179,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     return e => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
-        if (flushSyncSupported && DraftFeatureFlags.draft_js_flush_sync) {
+        if (flushSyncSupported && gkx('draft_js_flush_sync')) {
           method && ReactDOM.flushSync(() => method(this, e));
         } else {
           method && method(this, e);
@@ -323,6 +326,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   }
 
   componentDidMount(): void {
+    if (!didInitODS && gkx('draft_ods_enabled')) {
+      didInitODS = true;
+      DraftODS.init();
+    }
     this.setMode('edit');
 
     /**
