@@ -1,3 +1,6 @@
+Draft.js uses Docusaurus to maintain our documentation website. Please see the
+[Docusaurus Documentation](https://docusaurus.io/) for more info.
+
 # Run the server
 
 The first time, get all the dependencies loaded via
