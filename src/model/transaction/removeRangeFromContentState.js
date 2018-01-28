@@ -232,6 +232,7 @@ const updateBlockMapLinks = (
 const removeRangeFromContentState = (
   contentState: ContentState,
   selectionState: SelectionState,
+  modifyStartBlock: ?boolean,
 ): ContentState => {
   if (selectionState.isCollapsed()) {
     return contentState;
@@ -289,11 +290,21 @@ const removeRangeFromContentState = (
       .concat(endBlock.getCharacterList().slice(endOffset));
   }
 
+  // modifiedStart is concatenated block of cropped block #startKey + cropped block #endKey
+  // By default its key will be startKey
+  // But you can force using endKey by specifying param modifyStartBlock = false
+  if (modifyStartBlock === undefined) {
+    modifyStartBlock = true; //default
+  }
+
+  let modifiedKey = modifyStartBlock ? startKey : endKey;
+
   const modifiedStart = startBlock.merge({
     text:
       startBlock.getText().slice(0, startOffset) +
       endBlock.getText().slice(endOffset),
     characterList,
+    key: modifiedKey,
   });
 
   const newBlocks = blockMap
@@ -303,7 +314,7 @@ const removeRangeFromContentState = (
     .filter((_, k) => parentAncestors.indexOf(k) === -1)
     .concat(Map([[endKey, null]]))
     .map((_, k) => {
-      return k === startKey ? modifiedStart : null;
+      return k === modifiedKey ? modifiedStart : null;
     });
 
   let updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);

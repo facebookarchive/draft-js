@@ -82,6 +82,11 @@ will be the same as the input object if no edit was actually performed.
       <pre>applyEntity(...): ContentState</pre>
     </a>
   </li>
+  <li>
+    <a href="#cutbyselection">
+      <pre>cutBySelection(...): ContentState</pre>
+    </a>
+  </li>
 </ul>
 
 ## Static Methods
@@ -237,3 +242,14 @@ applyEntity(
 ```
 Apply an entity to the entire selected range, or remove all entities from the
 range if `entityKey` is `null`.
+
+### cutBySelection
+
+```
+cutBySelection(
+  contentState: ContentState, 
+  selection: SelectionState
+): ContentState?
+```
+Extract part of content state by selection. Preserves original block keys.
+
