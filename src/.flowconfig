@@ -27,4 +27,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[
 module.name_mapper='ReactDOM' -> 'react-dom'
 
 [version]
-^0.59.0
+^0.64.0
