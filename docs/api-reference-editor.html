@@ -20,6 +20,11 @@ the entire contents, regardless of default text direction for input text.</p><p>
 within the editor, on a per-block basis.</p><h4><a class="anchor" name="blockrendererfn"></a>blockRendererFn <a class="hash-link" href="#blockrendererfn">#</a></h4><pre class="prism language-javascript">
 blockRendererFn<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>block<span class="token punctuation">:</span> ContentBlock<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token operator">?</span>Object</pre><p>Optionally set a function to define custom block rendering. See
 <a href="/docs/advanced-topics-block-components.html" target="">Advanced Topics: Block Components</a>
+for details on usage.</p><h4><a class="anchor" name="blockrenderermap"></a>blockRendererMap <a class="hash-link" href="#blockrenderermap">#</a></h4><pre class="prism language-javascript">
+blockRendererMap<span class="token operator">?</span><span class="token punctuation">:</span> DraftBlockRenderMap</pre><p>Provide a map of block rendering configurations. Each block type maps to
+element tag and an optional react element wrapper. This configuration
+is used for both rendering and paste processing. See
+<a href="https://draftjs.org/docs/advanced-topics-custom-block-render-map.html" target="_blank">Advanced Topics: Custom Block Rendering</a>
 for details on usage.</p><h4><a class="anchor" name="blockstylefn"></a>blockStyleFn <a class="hash-link" href="#blockstylefn">#</a></h4><pre class="prism language-javascript">
 blockStyleFn<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token punctuation">(</span>block<span class="token punctuation">:</span> ContentBlock<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> string</pre><p>Optionally set a function to define class names to apply to the given block
 when it is rendered. See
