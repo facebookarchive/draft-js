@@ -77,6 +77,16 @@ Optionally set a function to define custom block rendering. See
 [Advanced Topics: Block Components](/docs/advanced-topics-block-components.html)
 for details on usage.
 
+#### blockRendererMap
+```
+blockRendererMap?: DraftBlockRenderMap
+```
+Provide a map of block rendering configurations. Each block type maps to
+element tag and an optional react element wrapper. This configuration
+is used for both rendering and paste processing. See
+[Advanced Topics: Custom Block Rendering](https://draftjs.org/docs/advanced-topics-custom-block-render-map.html)
+for details on usage.
+
 #### blockStyleFn
 ```
 blockStyleFn?: (block: ContentBlock) => string
