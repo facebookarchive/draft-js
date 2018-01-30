@@ -42,7 +42,7 @@ greater detail below.
 a `'LINK'` entity might contain a `data` object that contains the `href` value
 for that link.
 
-All entities are stored in the ContentState record. The entites  are referenced
+All entities are stored in the ContentState record. The entities are referenced
 by key within `ContentState` and React components used to decorate annotated
 ranges. (We are currently deprecating a previous API for accessing Entities; see
 issue
