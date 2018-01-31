@@ -175,14 +175,19 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * editor mode, if any has been specified.
    */
   _buildHandler(eventName: string): Function {
-    const flushSyncSupported = !!ReactDOM.flushSync;
+    const flushControlled = ReactDOM.unstable_flushControlled;
+    // Wrap event handlers in `flushControlled`. In sync mode, this is
+    // effetively a no-op. In async mode, this ensures all updates scheduled
+    // inside the handler are flushed before React yields to the browser.
     return e => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
-        if (flushSyncSupported && gkx('draft_js_flush_sync')) {
-          method && ReactDOM.flushSync(() => method(this, e));
-        } else {
-          method && method(this, e);
+        if (method) {
+          if (flushControlled && gkx('draft_js_flush_sync')) {
+            flushControlled(() => method(this, e));
+          } else {
+            method(this, e);
+          }
         }
       }
     };
