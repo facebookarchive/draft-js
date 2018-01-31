@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-custom-block-render-map
 title: Custom Block Rendering
-layout: docs
-category: Advanced Topics
-next: advanced-topics-block-components
-permalink: docs/advanced-topics-custom-block-render-map.html
 ---
 
 This article discusses how to customize Draft default block rendering.

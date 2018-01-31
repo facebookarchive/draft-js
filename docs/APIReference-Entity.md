@@ -1,10 +1,6 @@
 ---
 id: api-reference-entity
 title: Entity
-layout: docs
-category: API Reference
-next: api-reference-selection-state
-permalink: docs/api-reference-entity.html
 ---
 
 `Entity` is a static module containing the API for creating, retrieving, and

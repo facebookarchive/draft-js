@@ -1,10 +1,6 @@
 ---
 id: api-reference-content-state
 title: ContentState
-layout: docs
-category: API Reference
-next: api-reference-content-block
-permalink: docs/api-reference-content-state.html
 ---
 
 `ContentState` is an Immutable

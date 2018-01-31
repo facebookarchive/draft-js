@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-text-direction
 title: Text Direction
-layout: docs
-category: Advanced Topics
-next: advanced-topics-editorstate-race-conditions
-permalink: docs/advanced-topics-text-direction.html
 ---
 
 Facebook supports dozens of languages, which means that our text inputs need
