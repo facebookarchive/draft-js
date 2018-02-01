@@ -87,7 +87,23 @@ function onKeyCommand(
 function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
   var keyCode = e.which;
   var editorState = editor._latestEditorState;
-
+  function callDeprecatedHandler(
+    handlerName:
+      | 'onDownArrow'
+      | 'onEscape'
+      | 'onLeftArrow'
+      | 'onRightArrow'
+      | 'onTab'
+      | 'onUpArrow',
+  ): boolean {
+    const deprecatedHandler = editor.props[handlerName];
+    if (deprecatedHandler) {
+      deprecatedHandler(e);
+      return true;
+    } else {
+      return false;
+    }
+  }
   switch (keyCode) {
     case Keys.RETURN:
       e.preventDefault();
@@ -102,23 +118,35 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
       break;
     case Keys.ESC:
       e.preventDefault();
-      editor.props.onEscape && editor.props.onEscape(e);
-      return;
+      if (callDeprecatedHandler('onEscape')) {
+        return;
+      }
+      break;
     case Keys.TAB:
-      editor.props.onTab && editor.props.onTab(e);
-      return;
+      if (callDeprecatedHandler('onTab')) {
+        return;
+      }
+      break;
     case Keys.UP:
-      editor.props.onUpArrow && editor.props.onUpArrow(e);
-      return;
+      if (callDeprecatedHandler('onUpArrow')) {
+        return;
+      }
+      break;
     case Keys.RIGHT:
-      editor.props.onRightArrow && editor.props.onRightArrow(e);
-      return;
+      if (callDeprecatedHandler('onRightArrow')) {
+        return;
+      }
+      break;
     case Keys.DOWN:
-      editor.props.onDownArrow && editor.props.onDownArrow(e);
-      return;
+      if (callDeprecatedHandler('onDownArrow')) {
+        return;
+      }
+      break;
     case Keys.LEFT:
-      editor.props.onLeftArrow && editor.props.onLeftArrow(e);
-      return;
+      if (callDeprecatedHandler('onLeftArrow')) {
+        return;
+      }
+      break;
     case Keys.SPACE:
       // Handling for OSX where option + space scrolls.
       if (isChrome && isOptionKeyCommand(e)) {

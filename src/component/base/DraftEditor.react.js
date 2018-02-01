@@ -165,6 +165,27 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     this.getEditorKey = () => this._editorKey;
 
+    if (__DEV__) {
+      [
+        'onDownArrow',
+        'onEscape',
+        'onLeftArrow',
+        'onRightArrow',
+        'onTab',
+        'onUpArrow',
+      ].forEach(propName => {
+        if (props.hasOwnProperty(propName)) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `Supplying an \`${propName}\` prop to \`DraftEditor\` has ` +
+              'been deprecated. If your handler needs access to the keyboard ' +
+              'event, supply a custom `keyBindingFn` prop that falls back to ' +
+              'the default one (eg. https://is.gd/RG31RJ).',
+          );
+        }
+      });
+    }
+
     // See `restoreEditorDOM()`.
     this.state = {contentsKey: 0};
   }
