@@ -74,9 +74,9 @@ function getRemovalRange(
   characters: List<CharacterMetadata>,
   entityKey: ?string,
   offset: number
-): ?{
-  start: ?,
-  end: ?,
+): {
+  start: number,
+  end: number,
   }{
   var removalRange;
 
@@ -91,7 +91,11 @@ function getRemovalRange(
     characters, // the list to iterate through
     (a, b) => a.getEntity() === b.getEntity(),    // 'isEqual' callback
     element => element.getEntity() === entityKey, // 'filter' callback
-    (start, end) => {                             // 'found' callback
+    (start: number, end: number) => {                             // 'found' callback
+      invariant(
+        typeof removalRange === 'object',
+        'Removal range must exist within character list.',
+      );
       if (start <= offset && end >= offset) {
         // this entity overlaps the offset index
         removalRange = {start, end};
