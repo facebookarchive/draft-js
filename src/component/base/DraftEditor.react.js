@@ -378,7 +378,11 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * of browser interaction, not re-renders and forced selections.
    */
   componentWillUpdate(nextProps: DraftEditorProps): void {
-    this._blockSelectEvents = true;
+    if (!gkx('draft_js_stop_blocking_select_events')) {
+      // We suspect this is not actually needed with modern React
+      // For people in the GK, we will skip setting this flag.
+      this._blockSelectEvents = true;
+    }
     this._latestEditorState = nextProps.editorState;
   }
 
@@ -414,6 +418,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       editorNode instanceof HTMLElement,
       'editorNode is not an HTMLElement',
     );
+
     editorNode.focus();
 
     // Restore scroll position
