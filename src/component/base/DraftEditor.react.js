@@ -383,11 +383,18 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       // For people in the GK, we will skip setting this flag.
       this._blockSelectEvents = true;
     }
-    this._latestEditorState = nextProps.editorState;
+    if (!gkx('draft_js_remove_componentwillupdate')) {
+      // we are using the GK to phase out setting this here
+      this._latestEditorState = nextProps.editorState;
+    }
   }
 
   componentDidUpdate(): void {
     this._blockSelectEvents = false;
+    if (gkx('draft_js_remove_componentwillupdate')) {
+      // moving this here, when it was previously set in componentWillUpdate
+      this._latestEditorState = this.props.editorState;
+    }
     this._latestCommittedEditorState = this.props.editorState;
   }
 
