@@ -153,7 +153,6 @@ class DraftJsPlaygroundContainer extends Component {
 
   render() {
     const {editorState, mode, codeMirrorValue} = this.state;
-    const lang = mode === 'html' ? mode : 'json';
 
     return (
       <PanelGroup borderColor="grey">
