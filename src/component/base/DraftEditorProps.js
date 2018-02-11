@@ -153,7 +153,7 @@ export type DraftEditorProps = {
   ) => DraftHandleValue,
 
   /**
-   * Non-cancelable event triggers.
+   * Deprecated event triggers.
    */
   onEscape?: (e: SyntheticKeyboardEvent<>) => void,
   onTab?: (e: SyntheticKeyboardEvent<>) => void,

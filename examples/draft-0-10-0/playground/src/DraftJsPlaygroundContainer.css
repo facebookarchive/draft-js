@@ -1,0 +1,78 @@
+/**
+ * Copyright 2004-present Facebook. All Rights Reserved.
+ */
+
+
+.DraftJsPlaygroundContainer-container {
+  background: white;
+  display: flex;
+  flex-flow: row wrap;
+  font-weight: bold;
+  height: 100%;
+}
+
+.DraftJsPlaygroundContainer-column {
+  border-bottom: 4px solid blue;
+  border-right: 4px solid blue;
+  flex: 1 1 0;
+  padding: 5px 10px;
+}
+
+.DraftJsPlaygroundContainer-column:first-child {
+  border-left: 4px solid blue;
+}
+
+.DraftJsPlaygroundContainer-controls {
+  display: flex;
+  justify-content: space-between;
+  background: #eee;
+  padding: .5em;
+}
+
+.DraftJsPlaygroundContainer-raw {
+  width: 100%;
+
+}
+
+.DraftJsPlaygroundContainer-container [data-block] {
+  border: 1px dashed #000;
+  margin-left: 30px;
+  padding: 10px;
+}
+
+.DraftJsPlaygroundContainer-container [data-contents] > [data-block] {
+  border-left: none;
+  border-right: none;
+  margin-left: 0;
+}
+
+.DraftJsPlaygroundContainer-container [data-contents] > [data-block]:first-child {
+  border-top: none;
+}
+
+.DraftJsPlaygroundContainer-container [data-contents] > [data-block]:last-child {
+  border-bottom: none;
+}
+
+.DraftJsPlaygroundContainer-button {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.DraftJsPlaygroundContainer-inputArea {
+  background: white;
+  display: block;
+  width: 100%;
+}
+
+.DraftJsPlaygroundContainer-editor {
+  background: white;
+  width: 100%;
+  padding: 1em;
+  height: 100%;
+}
+
+.DraftJsPlaygroundContainer-stateViewer {
+  padding: 0px 20px;
+  text-align: left;
+}

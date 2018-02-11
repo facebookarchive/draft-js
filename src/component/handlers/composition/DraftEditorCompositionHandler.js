@@ -15,12 +15,12 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const DraftFeatureFlags = require('DraftFeatureFlags');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Keys = require('Keys');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
+const gkx = require('gkx');
 const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 
@@ -163,7 +163,7 @@ var DraftEditorCompositionHandler = {
 
     if (composedChars) {
       if (
-        DraftFeatureFlags.draft_handlebeforeinput_composed_text &&
+        gkx('draft_handlebeforeinput_composed_text') &&
         editor.props.handleBeforeInput &&
         isEventHandled(
           editor.props.handleBeforeInput(composedChars, editorState),

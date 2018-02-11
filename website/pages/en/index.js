@@ -17,7 +17,7 @@ const siteConfig = require(process.cwd() + '/siteConfig.js');
 var richExample = `
 'use strict';
 
-const {Editor, EditorState, RichUtils} = Draft;
+const {Editor, EditorState, RichUtils, getDefaultKeyBinding} = Draft;
 
 class RichEditorExample extends React.Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class RichEditorExample extends React.Component {
     this.onChange = (editorState) => this.setState({editorState});
 
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
-    this.onTab = this._onTab.bind(this);
+    this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
     this.toggleBlockType = this._toggleBlockType.bind(this);
     this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
   }
@@ -42,9 +42,20 @@ class RichEditorExample extends React.Component {
     return false;
   }
 
-  _onTab(e) {
-    const maxDepth = 4;
-    this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
+  _mapKeyToEditorCommand(e) {
+    switch (e.keyCode) {
+      case 9: // TAB
+        const newEditorState = RichUtils.onTab(
+          e,
+          this.state.editorState,
+          4, /* maxDepth */
+        );
+        if (newEditorState !== this.state.editorState) {
+          this.onChange(newEditorState);
+        }
+        return;
+    }
+    return getDefaultKeyBinding(e);
   }
 
   _toggleBlockType(blockType) {
@@ -94,8 +105,8 @@ class RichEditorExample extends React.Component {
             customStyleMap={styleMap}
             editorState={editorState}
             handleKeyCommand={this.handleKeyCommand}
+            keyBindingFn={this.mapKeyToEditorCommand}
             onChange={this.onChange}
-            onTab={this.onTab}
             placeholder="Tell a story..."
             ref={(ref) => this.editor = ref}
             spellCheck={true}
