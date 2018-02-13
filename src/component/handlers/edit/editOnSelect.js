@@ -33,7 +33,7 @@ function editOnSelect(editor: DraftEditor): void {
       DraftJsDebugLogging.logBlockedSelectionEvent({
         // For now I don't think we need any other info
         anonymizedDom: 'N/A',
-        extraParams: '',
+        extraParams: JSON.stringify({stacktrace: new Error().stack}),
         selectionState: JSON.stringify(selectionState.toJS()),
       });
     }
