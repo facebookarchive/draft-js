@@ -217,10 +217,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       ];
 
       const InlineStyleControls = (props) => {
-        var currentStyle = props.editorState.getCurrentInlineStyle();
+        const currentStyle = props.editorState.getCurrentInlineStyle();
+        
         return (
           <div className="RichEditor-controls">
-            {INLINE_STYLES.map(type =>
+            {INLINE_STYLES.map((type) =>
               <StyleButton
                 key={type.label}
                 active={currentStyle.has(type.style)}
