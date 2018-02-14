@@ -6,13 +6,13 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftFeatureFlags
+ * @providesModule gkx
  * @format
  * @flow
  */
 
 'use strict';
 
-var DraftFeatureFlags = require('DraftFeatureFlags-core');
-
-module.exports = DraftFeatureFlags;
+module.exports = function(name: string) {
+  return false;
+};

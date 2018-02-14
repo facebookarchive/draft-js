@@ -20,7 +20,6 @@ var Keys = require('Keys');
 var UserAgent = require('UserAgent');
 
 var isOSX = UserAgent.isPlatform('Mac OS X');
-var isWindows = UserAgent.isPlatform('Windows');
 
 // Firefox on OSX had a bug resulting in navigation instead of cursor movement.
 // This bug was fixed in Firefox 29. Feature detection is virtually impossible
@@ -44,8 +43,8 @@ function getZCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
 }
 
 function getDeleteCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
-  // Allow default "cut" behavior for Windows on Shift + Delete.
-  if (isWindows && e.shiftKey) {
+  // Allow default "cut" behavior for PCs on Shift + Delete.
+  if (!isOSX && e.shiftKey) {
     return null;
   }
   return shouldRemoveWord(e) ? 'delete-word' : 'delete';
@@ -76,7 +75,7 @@ function getDefaultKeyBinding(
     case 74: // J
       return hasCommandModifier(e) ? 'code' : null;
     case 75: // K
-      return !isWindows && isCtrlKeyCommand(e) ? 'secondary-cut' : null;
+      return isOSX && isCtrlKeyCommand(e) ? 'secondary-cut' : null;
     case 77: // M
       return isCtrlKeyCommand(e) ? 'split-block' : null;
     case 79: // O
@@ -89,7 +88,7 @@ function getDefaultKeyBinding(
       return isOSX && isCtrlKeyCommand(e) ? 'backspace-word' : null;
     case 89: // Y
       if (isCtrlKeyCommand(e)) {
-        return isWindows ? 'redo' : 'secondary-paste';
+        return isOSX ? 'secondary-paste' : 'redo';
       }
       return null;
     case 90: // Z

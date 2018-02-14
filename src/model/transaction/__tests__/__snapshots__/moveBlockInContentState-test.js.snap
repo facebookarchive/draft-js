@@ -1,0 +1,381 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must be able to move block after other block 1`] = `
+Array [
+  Object {
+    "key": "B",
+  },
+  Object {
+    "key": "C",
+  },
+  Object {
+    "key": "A",
+  },
+]
+`;
+
+exports[`must be able to move block after other nested block 1`] = `
+Array [
+  Object {
+    "children": Array [
+      "C",
+      "A",
+    ],
+    "key": "B",
+    "nextSibling": "D",
+    "parent": null,
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "C",
+    "nextSibling": "A",
+    "parent": "B",
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "A",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": "C",
+  },
+  Object {
+    "children": Array [
+      "E",
+    ],
+    "key": "D",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+  },
+  Object {
+    "children": Array [],
+    "key": "E",
+    "nextSibling": null,
+    "parent": "D",
+    "prevSibling": null,
+  },
+]
+`;
+
+exports[`must be able to move block and its children after other block 1`] = `
+Array [
+  Object {
+    "children": Array [],
+    "key": "A",
+    "nextSibling": "D",
+    "parent": null,
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [
+      "E",
+    ],
+    "key": "D",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": "A",
+  },
+  Object {
+    "children": Array [],
+    "key": "E",
+    "nextSibling": null,
+    "parent": "D",
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [
+      "C",
+    ],
+    "key": "B",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "D",
+  },
+  Object {
+    "children": Array [],
+    "key": "C",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": null,
+  },
+]
+`;
+
+exports[`must be able to move block and its children after other nested block 1`] = `
+Array [
+  Object {
+    "children": Array [],
+    "key": "A",
+    "nextSibling": "D",
+    "parent": null,
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [
+      "E",
+      "B",
+    ],
+    "key": "D",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "A",
+  },
+  Object {
+    "children": Array [],
+    "key": "E",
+    "nextSibling": "B",
+    "parent": "D",
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [
+      "C",
+    ],
+    "key": "B",
+    "nextSibling": null,
+    "parent": "D",
+    "prevSibling": "E",
+  },
+  Object {
+    "children": Array [],
+    "key": "C",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": null,
+  },
+]
+`;
+
+exports[`must be able to move block and its children before other block 1`] = `
+Array [
+  Object {
+    "children": Array [
+      "C",
+    ],
+    "key": "B",
+    "nextSibling": "A",
+    "parent": null,
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "C",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "A",
+    "nextSibling": "D",
+    "parent": null,
+    "prevSibling": "B",
+  },
+  Object {
+    "children": Array [
+      "E",
+    ],
+    "key": "D",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "A",
+  },
+  Object {
+    "children": Array [],
+    "key": "E",
+    "nextSibling": null,
+    "parent": "D",
+    "prevSibling": null,
+  },
+]
+`;
+
+exports[`must be able to move block and its children before other nested block 1`] = `
+Array [
+  Object {
+    "children": Array [],
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [
+      "D",
+      "C",
+    ],
+    "key": "B",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "A",
+  },
+  Object {
+    "children": Array [
+      "E",
+    ],
+    "key": "D",
+    "nextSibling": "C",
+    "parent": "B",
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "E",
+    "nextSibling": null,
+    "parent": "D",
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "C",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": "D",
+  },
+]
+`;
+
+exports[`must be able to move block before other block 1`] = `
+Array [
+  Object {
+    "key": "C",
+  },
+  Object {
+    "key": "A",
+  },
+  Object {
+    "key": "B",
+  },
+]
+`;
+
+exports[`must be able to move block before other nested block 1`] = `
+Array [
+  Object {
+    "children": Array [
+      "A",
+      "C",
+    ],
+    "key": "B",
+    "nextSibling": "D",
+    "parent": null,
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "A",
+    "nextSibling": "C",
+    "parent": "B",
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "C",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": "A",
+  },
+  Object {
+    "children": Array [
+      "E",
+    ],
+    "key": "D",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+  },
+  Object {
+    "children": Array [],
+    "key": "E",
+    "nextSibling": null,
+    "parent": "D",
+    "prevSibling": null,
+  },
+]
+`;
+
+exports[`must be able to move nested block after other block 1`] = `
+Array [
+  Object {
+    "children": Array [],
+    "key": "A",
+    "nextSibling": "C",
+    "parent": null,
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "C",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": "A",
+  },
+  Object {
+    "children": Array [],
+    "key": "B",
+    "nextSibling": "D",
+    "parent": null,
+    "prevSibling": "C",
+  },
+  Object {
+    "children": Array [
+      "E",
+    ],
+    "key": "D",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+  },
+  Object {
+    "children": Array [],
+    "key": "E",
+    "nextSibling": null,
+    "parent": "D",
+    "prevSibling": null,
+  },
+]
+`;
+
+exports[`must be able to move nested block before other block 1`] = `
+Array [
+  Object {
+    "children": Array [],
+    "key": "C",
+    "nextSibling": "A",
+    "parent": null,
+    "prevSibling": null,
+  },
+  Object {
+    "children": Array [],
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": "C",
+  },
+  Object {
+    "children": Array [],
+    "key": "B",
+    "nextSibling": "D",
+    "parent": null,
+    "prevSibling": "A",
+  },
+  Object {
+    "children": Array [
+      "E",
+    ],
+    "key": "D",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+  },
+  Object {
+    "children": Array [],
+    "key": "E",
+    "nextSibling": null,
+    "parent": "D",
+    "prevSibling": null,
+  },
+]
+`;
