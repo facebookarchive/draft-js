@@ -109,12 +109,9 @@ var buildDist = function(opts) {
       new webpackStream.webpack.LoaderOptionsPlugin({
         debug: opts.debug,
       }),
-      new StatsPlugin(
-        '../meta/bundle-size-stats/version-' + packageData.version + '.json',
-        {
-          chunkModules: true,
-        },
-      ),
+      new StatsPlugin(`../meta/bundle-size-stats/${opts.output}.json`, {
+        chunkModules: true,
+      }),
     ],
   };
   if (!opts.debug) {
