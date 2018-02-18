@@ -114,7 +114,26 @@ const RichTextEditorUtil = {
       return null;
     }
 
-    // First, try to remove a preceding atomic block.
+    // Try to use behaviour of text processors for backspace
+    // on empty list item block - remove it and replace to soft newline
+    // at preceding list item block.
+    var replacedToSoftLine = RichTextEditorUtil.tryToReplaceBlockToSoftLine(
+      editorState,
+    );
+    if (replacedToSoftLine) {
+      let newState = EditorState.push(
+        editorState,
+        replacedToSoftLine,
+        'replace-block-to-softline',
+      );
+      newState = EditorState.forceSelection(
+        newState,
+        replacedToSoftLine.getSelectionAfter(),
+      );
+      return newState;
+    }
+
+    // Then, try to remove a preceding atomic block.
     var content = editorState.getCurrentContent();
     var startKey = selection.getStartKey();
     var blockBefore = content.getBlockBefore(startKey);
@@ -229,8 +248,6 @@ const RichTextEditorUtil = {
     if (!event.shiftKey && depth === maxDepth) {
       return editorState;
     }
-
-    maxDepth = Math.min(blockAbove.getDepth() + 1, maxDepth);
 
     var withAdjustment = adjustBlockDepthForContentState(
       content,
@@ -364,6 +381,59 @@ const RichTextEditorUtil = {
     );
 
     return EditorState.push(editorState, withoutLink, 'apply-entity');
+  },
+
+  /**
+   * When a collapsed cursor is at the start of non-first empty list
+   * item then remove current block and insert soft newline at
+   * preceding list item block.
+   * Returns null if block or selection does not meet that criteria.
+   */
+
+  tryToReplaceBlockToSoftLine: function(
+    editorState: EditorState,
+  ): ?ContentState {
+    var content = editorState.getCurrentContent();
+    var selection = editorState.getSelection();
+    var offset = selection.getAnchorOffset();
+    var key = selection.getAnchorKey();
+    var block = content.getBlockForKey(key);
+
+    if (selection.isCollapsed() && offset === 0 && block.getText() === '') {
+      var type = block.getType();
+      var blockBefore = content.getBlockBefore(key);
+
+      if (
+        (type == 'ordered-list-item' || type == 'unordered-list-item') &&
+        blockBefore &&
+        blockBefore.getType() === type
+      ) {
+        const blockMap = content.getBlockMap().delete(block.getKey());
+        let selectionAtEndOfBlockBefore = SelectionState.createEmpty(
+          blockBefore.getKey(),
+        ).merge({
+          anchorKey: blockBefore.getKey(),
+          anchorOffset: blockBefore.getLength(),
+          focusKey: blockBefore.getKey(),
+          focusOffset: blockBefore.getLength(),
+        });
+        var withoutBlock = content.merge({
+          blockMap,
+          selectionAfter: selectionAtEndOfBlockBefore,
+        });
+
+        var newContentState = DraftModifier.insertText(
+          withoutBlock,
+          selectionAtEndOfBlockBefore,
+          '\n',
+          editorState.getCurrentInlineStyle(),
+          null,
+        );
+
+        return newContentState;
+      }
+    }
+    return null;
   },
 
   /**
