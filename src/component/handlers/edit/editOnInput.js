@@ -92,17 +92,25 @@ function editOnInput(editor: DraftEditor): void {
 
   var blockTree = editorState.getBlockTree(blockKey);
   var {start, end} = blockTree.getIn([decoratorKey, 'leaves', leafKey]);
-  var isLastLeaf = leafKey === blockTree.size - 1;
+
+  // Note: this only works as long as decorator keys are indexes. I've seen
+  // talks in the DraftJS GitHub that they could be changed to unique keys
+  // in the future, pay attention if porting this change to a recent DraftJS
+  // version (double-check that decoratorKey is still an index).
+  var isLastChunk = decoratorKey === blockTree.size - 1;
 
   var content = editorState.getCurrentContent();
   var block = content.getBlockForKey(blockKey);
   var modelText = block.getText().slice(start, end);
 
   // Special-case soft newlines here. If the DOM text ends in a soft newline,
-  // and this is the last leaf, we will have manually inserted an extra soft
-  // newline in DraftEditorLeaf. We want to remove this extra newline for the
-  // purpose of our comparison of DOM and model text.
-  if (isLastLeaf && domText.endsWith(DOUBLE_NEWLINE)) {
+  // and this is the last chunk of text, we will have manually inserted an extra
+  // soft newline in DraftEditorLeaf. We want to remove this extra newline for
+  // the purpose of our comparison of DOM and model text.
+  // Gecko's spellchecker seems to add extra new lines when it kicks in, go
+  // through with the removal of double new lines when on Gecko and users are
+  // typing in the very last chunk of text in the block.
+  if (isGecko && isLastChunk && domText.endsWith(DOUBLE_NEWLINE)) {
     domText = domText.slice(0, -1);
   }
 
