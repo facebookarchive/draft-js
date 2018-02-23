@@ -59,17 +59,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
 
         _mapKeyToEditorCommand(e) {
-          switch (e.keyCode) {
-            case 9: // TAB
-              const newEditorState = RichUtils.onTab(
-                e,
-                this.state.editorState,
-                4, /* maxDepth */
-              );
-              if (newEditorState !== this.state.editorState) {
-                this.onChange(newEditorState);
-              }
-              return;
+          if (e.keyCode === 9 /* TAB */) {
+            const newEditorState = RichUtils.onTab(
+              e,
+              this.state.editorState,
+              4, /* maxDepth */
+            );
+            if (newEditorState !== this.state.editorState) {
+              this.onChange(newEditorState);
+            }
+            return;
           }
           return getDefaultKeyBinding(e);
         }
