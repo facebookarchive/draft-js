@@ -29,11 +29,15 @@ const DEFAULT_SELECTION = {
   isBackward: false,
 };
 
-//const collapsedSelection = new SelectionState(DEFAULT_SELECTION);
-
 const rangedSelection = new SelectionState({
   ...DEFAULT_SELECTION,
   focusOffset: 1,
+});
+
+const rangedSelectionBackwards = new SelectionState({
+  ...DEFAULT_SELECTION,
+  anchorOffset: 1,
+  isBackward: true,
 });
 
 const getEditorState = () => {
@@ -125,5 +129,25 @@ test('editor selectionstate is updated if new text matches current selection', (
   expect(editor.update).toHaveBeenCalledTimes(1);
 
   const newEditorState = editor.update.mock.calls[0][0];
-  expect(newEditorState.getCurrentContent()).toMatchSnapshot();
+  expect(newEditorState.getSelection()).toMatchSnapshot();
+});
+
+test('editor selectionstate is updated if new text matches current selection and user selected backwards', () => {
+  const editorState = EditorState.acceptSelection(
+    getEditorState(),
+    rangedSelectionBackwards,
+  );
+
+  const editor = {
+    _latestEditorState: editorState,
+    props: {},
+    update: jest.fn(),
+  };
+
+  onBeforeInput(editor, getInputEvent('A'));
+
+  expect(editor.update).toHaveBeenCalledTimes(1);
+
+  const newEditorState = editor.update.mock.calls[0][0];
+  expect(newEditorState.getSelection()).toMatchSnapshot();
 });
