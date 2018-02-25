@@ -14,8 +14,6 @@
 
 var React = require('React');
 var Site = require('Site');
-var Prism = require('Prism');
-var Marked = require('Marked');
 var unindent = require('unindent');
 
 var richExample = `

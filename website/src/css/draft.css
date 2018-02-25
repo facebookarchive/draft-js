@@ -1056,7 +1056,8 @@ p + .apiIndex {
   }
 }
 
-/* http://prismjs.com/download.html?themes=prism&languages=markup+clike+javascript+jsx */
+/* PrismJS 1.11.0
+http://prismjs.com/download.html?themes=prism&languages=markup+clike+javascript+jsx */
 /**
  * prism.js default theme for JavaScript, CSS and HTML
  * Based on dabblet (http://dabblet.com)
@@ -1064,36 +1065,38 @@ p + .apiIndex {
  */
 
 code[class*="language-"],
-pre[class*="language-"],
-.apiIndex pre {
-  color: #000;
-  direction: ltr;
+pre[class*="language-"] {
+  color: black;
+  background: none;
+  text-shadow: 0 1px white;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  -webkit-hyphens: none;
-  hyphens: none;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
   line-height: 1.5;
+
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
-  text-align: left;
-  text-shadow: 0 1px white;
-  white-space: pre;
-  word-break: normal;
-  word-spacing: normal;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
 }
 
 pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
 code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-  background: #b3d4fc;
   text-shadow: none;
+  background: #b3d4fc;
 }
 
 pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
 code[class*="language-"]::selection, code[class*="language-"] ::selection {
-  background: #b3d4fc;
   text-shadow: none;
+  background: #b3d4fc;
 }
 
 @media print {
@@ -1105,20 +1108,21 @@ code[class*="language-"]::selection, code[class*="language-"] ::selection {
 
 /* Code blocks */
 pre[class*="language-"] {
+  padding: 1em;
   margin: .5em 0;
   overflow: auto;
-  padding: 1em;
 }
 
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
-  background: #fff;
+  background: #f5f2f0;
 }
 
 /* Inline code */
 :not(pre) > code[class*="language-"] {
-  border-radius: .3em;
   padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
 }
 
 .token.comment,
@@ -1160,8 +1164,8 @@ pre[class*="language-"] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  background: hsla(0, 0%, 100%, .5);
   color: #a67f59;
+  background: hsla(0, 0%, 100%, .5);
 }
 
 .token.atrule,
