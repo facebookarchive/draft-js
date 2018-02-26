@@ -35,8 +35,7 @@
   "dependencies": {
     "fbjs": "^0.8.15",
     "immutable": "~3.7.4",
-    "object-assign": "^4.1.0",
-    "uglifyjs-webpack-plugin": "^1.1.6"
+    "object-assign": "^4.1.0"
   },
   "peerDependencies": {
     "react": "^0.14.0 || ^15.0.0-rc || ^16.0.0-rc || ^16.0.0",
@@ -81,6 +80,7 @@
     "run-sequence": "^1.1.2",
     "stats-webpack-plugin": "^0.6.2",
     "through2": "^2.0.1",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "vinyl-buffer": "^1.0.0",
     "webpack-stream": "^4.0.0"
   },
