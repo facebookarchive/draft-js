@@ -19,13 +19,20 @@ import type {DraftInsertionType} from 'DraftInsertionType';
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
+const ContentBlockNode = require('ContentBlockNode');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
+const gkx = require('gkx');
 const moveBlockInContentState = require('moveBlockInContentState');
+
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
+const ContentBlockRecord = experimentalTreeDataSupport
+  ? ContentBlockNode
+  : ContentBlock;
 
 const {List, Repeat} = Immutable;
 
@@ -56,19 +63,32 @@ const AtomicBlockUtils = {
 
     const charData = CharacterMetadata.create({entity: entityKey});
 
+    let atomicBlockConfig = {
+      key: generateRandomKey(),
+      type: 'atomic',
+      text: character,
+      characterList: List(Repeat(charData, character.length)),
+    };
+
+    let atomicDividerBlockConfig = {
+      key: generateRandomKey(),
+      type: 'unstyled',
+    };
+
+    if (experimentalTreeDataSupport) {
+      atomicBlockConfig = {
+        ...atomicBlockConfig,
+        nextSibling: atomicDividerBlockConfig.key,
+      };
+      atomicDividerBlockConfig = {
+        ...atomicDividerBlockConfig,
+        prevSibling: atomicBlockConfig.key,
+      };
+    }
+
     const fragmentArray = [
-      new ContentBlock({
-        key: generateRandomKey(),
-        type: 'atomic',
-        text: character,
-        characterList: List(Repeat(charData, character.length)),
-      }),
-      new ContentBlock({
-        key: generateRandomKey(),
-        type: 'unstyled',
-        text: '',
-        characterList: List(),
-      }),
+      new ContentBlockRecord(atomicBlockConfig),
+      new ContentBlockRecord(atomicDividerBlockConfig),
     ];
 
     const fragment = BlockMapBuilder.createFromArray(fragmentArray);

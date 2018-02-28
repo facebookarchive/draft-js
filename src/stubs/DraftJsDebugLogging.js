@@ -12,5 +12,6 @@
 'use strict';
 
 module.exports = {
+  logBlockedSelectionEvent: () => null,
   logSelectionStateFailure: () => null,
 };

@@ -149,3 +149,90 @@ Object {
   "entityMap": Object {},
 }
 `;
+
+exports[`must be able to convert from draft state with noncontiguous entities to raw 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [
+        Object {
+          "key": 0,
+          "length": 5,
+          "offset": 0,
+        },
+        Object {
+          "key": 0,
+          "length": 5,
+          "offset": 6,
+        },
+        Object {
+          "key": 1,
+          "length": 5,
+          "offset": 12,
+        },
+      ],
+      "inlineStyleRanges": Array [],
+      "key": "a",
+      "text": "link2 link2 link3",
+      "type": "unstyled",
+    },
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [
+        Object {
+          "key": 2,
+          "length": 5,
+          "offset": 0,
+        },
+        Object {
+          "key": 0,
+          "length": 5,
+          "offset": 6,
+        },
+        Object {
+          "key": 3,
+          "length": 5,
+          "offset": 12,
+        },
+      ],
+      "inlineStyleRanges": Array [],
+      "key": "b",
+      "text": "link4 link2 link5",
+      "type": "unstyled",
+    },
+  ],
+  "entityMap": Object {
+    "0": Object {
+      "data": Object {
+        "url": "www.2.com",
+      },
+      "mutability": "IMMUTABLE",
+      "type": "LINK",
+    },
+    "1": Object {
+      "data": Object {
+        "url": "www.3.com",
+      },
+      "mutability": "IMMUTABLE",
+      "type": "LINK",
+    },
+    "2": Object {
+      "data": Object {
+        "url": "www.4.com",
+      },
+      "mutability": "IMMUTABLE",
+      "type": "LINK",
+    },
+    "3": Object {
+      "data": Object {
+        "url": "www.5.com",
+      },
+      "mutability": "IMMUTABLE",
+      "type": "LINK",
+    },
+  },
+}
+`;

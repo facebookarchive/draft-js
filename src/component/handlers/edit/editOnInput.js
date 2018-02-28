@@ -15,13 +15,13 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const DraftFeatureFlags = require('DraftFeatureFlags');
 var DraftModifier = require('DraftModifier');
 var DraftOffsetKey = require('DraftOffsetKey');
 var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
 
 var findAncestorOffsetKey = require('findAncestorOffsetKey');
+const gkx = require('gkx');
 var nullthrows = require('nullthrows');
 
 var isGecko = UserAgent.isEngine('Gecko');
@@ -54,7 +54,7 @@ function editOnInput(editor: DraftEditor): void {
     anchorNode.nodeType !== Node.TEXT_NODE &&
     anchorNode.nodeType !== Node.ELEMENT_NODE;
 
-  if (DraftFeatureFlags.draft_killswitch_allow_nontextnodes) {
+  if (gkx('draft_killswitch_allow_nontextnodes')) {
     if (isNotTextNode) {
       return;
     }

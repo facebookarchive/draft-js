@@ -117,11 +117,11 @@ class DraftEditorLeaf extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const leafNode = ReactDOM.findDOMNode(this.leaf);
     invariant(leafNode, 'Missing leafNode');
-    return (
+    const shouldUpdate =
       leafNode.textContent !== nextProps.text ||
       nextProps.styleSet !== this.props.styleSet ||
-      nextProps.forceSelection
-    );
+      nextProps.forceSelection;
+    return shouldUpdate;
   }
 
   componentDidUpdate(): void {

@@ -15,6 +15,7 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
+const DraftJsDebugLogging = require('DraftJsDebugLogging');
 var EditorState = require('EditorState');
 var ReactDOM = require('ReactDOM');
 
@@ -26,6 +27,16 @@ function editOnSelect(editor: DraftEditor): void {
     editor._blockSelectEvents ||
     editor._latestEditorState !== editor.props.editorState
   ) {
+    if (editor._blockSelectEvents) {
+      const editorState = editor.props.editorState;
+      const selectionState = editorState.getSelection();
+      DraftJsDebugLogging.logBlockedSelectionEvent({
+        // For now I don't think we need any other info
+        anonymizedDom: 'N/A',
+        extraParams: JSON.stringify({stacktrace: new Error().stack}),
+        selectionState: JSON.stringify(selectionState.toJS()),
+      });
+    }
     return;
   }
 

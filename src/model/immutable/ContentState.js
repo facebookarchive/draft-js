@@ -22,14 +22,18 @@ import type {DraftEntityType} from 'DraftEntityType';
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
+const ContentBlockNode = require('ContentBlockNode');
 const DraftEntity = require('DraftEntity');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
+const gkx = require('gkx');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 const {List, Record, Repeat} = Immutable;
+
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 const defaultRecord: {
   entityMap: ?any,
@@ -42,6 +46,10 @@ const defaultRecord: {
   selectionBefore: null,
   selectionAfter: null,
 };
+
+const ContentBlockNodeRecord = experimentalTreeDataSupport
+  ? ContentBlockNode
+  : ContentBlock;
 
 const ContentStateRecord = Record(defaultRecord);
 
@@ -189,7 +197,7 @@ class ContentState extends ContentStateRecord {
     const strings = text.split(delimiter);
     const blocks = strings.map(block => {
       block = sanitizeDraftText(block);
-      return new ContentBlock({
+      return new ContentBlockNodeRecord({
         key: generateRandomKey(),
         text: block,
         type: 'unstyled',
