@@ -18,9 +18,6 @@ jest.disableAutomock();
 jest.useFakeTimers();
 
 var EditorState = require('EditorState');
-const DraftFeatureFlags = require('DraftFeatureFlags');
-const originalEnableCompositionFixesValue =
-  DraftFeatureFlags.draft_enable_composition_fixes;
 
 // The DraftEditorCompositionHandler contains some global state
 // (internally used to make the code simpler given that only one
@@ -41,11 +38,6 @@ beforeEach(() => {
     exitCurrentMode: jest.fn(),
     update: jest.fn(state => (editor._latestEditorState = state)),
   };
-  DraftFeatureFlags.draft_enable_composition_fixes = true;
-});
-
-afterEach(() => {
-  DraftFeatureFlags.draft_enable_composition_fixes = originalEnableCompositionFixesValue;
 });
 
 const editorTextContent = () => {
