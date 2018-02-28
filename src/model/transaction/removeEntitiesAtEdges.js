@@ -73,11 +73,11 @@ function removeEntitiesAtEdges(
 function getRemovalRange(
   characters: List<CharacterMetadata>,
   entityKey: ?string,
-  offset: number
+  offset: number,
 ): {
   start: number,
   end: number,
-  }{
+} {
   var removalRange;
 
   // Iterates through a list looking for ranges of matching items
@@ -89,9 +89,10 @@ function getRemovalRange(
   // Here we use it to find ranges of characters with the same entity key.
   findRangesImmutable(
     characters, // the list to iterate through
-    (a, b) => a.getEntity() === b.getEntity(),    // 'isEqual' callback
+    (a, b) => a.getEntity() === b.getEntity(), // 'isEqual' callback
     element => element.getEntity() === entityKey, // 'filter' callback
-    (start: number, end: number) => {                             // 'found' callback
+    (start: number, end: number) => {
+      // 'found' callback
       if (start <= offset && end >= offset) {
         // this entity overlaps the offset index
         removalRange = {start, end};
