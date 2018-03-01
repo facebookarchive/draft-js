@@ -65,7 +65,7 @@ type State = {
 
 let didInitODS = false;
 
-class UpdateEditorState extends React.Component<{
+class UpdateDraftEditorFlags extends React.Component<{
   editor: DraftEditor,
   editorState: EditorState,
 }> {
@@ -79,6 +79,7 @@ class UpdateEditorState extends React.Component<{
     this._update();
   }
   _update() {
+    const editor = this.props.editor;
     if (gkx('draft_js_remove_componentwillupdate')) {
       /**
        * Sometimes a render triggers a 'focus' or other event, and that will
@@ -113,8 +114,21 @@ class UpdateEditorState extends React.Component<{
        * Note that if we don't set latestEditorState in 'render' in the above
        * diagram, then STALE_STATE gets passed to render #2.
        */
-      const editor = this.props.editor;
       editor._latestEditorState = this.props.editorState;
+    }
+    if (gkx('draft_js_stop_blocking_select_events')) {
+      /**
+       * The reason we set this 'blockSelectEvents' flag is that  IE will fire a
+       * 'selectionChange' event when we programmatically change the selection,
+       * meaning it would trigger a new select event while we are in the middle
+       * of updating.
+       * We found that the 'selection.addRange' was what triggered the stray
+       * selectionchange event in IE.
+       * To be clear - we have not been able to reproduce specific bugs related
+       * to this stray selection event, but have recorded logs that some
+       * conditions do cause it to get bumped into during editOnSelect.
+       */
+      editor._blockSelectEvents = true;
     }
   }
 }
@@ -402,7 +416,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
               Needs to come earlier in the tree as a sibling (not ancestor) of
               all DraftEditorLeaf nodes so it's first in postorder traversal.
             */}
-            <UpdateEditorState editor={this} editorState={editorState} />
+            <UpdateDraftEditorFlags editor={this} editorState={editorState} />
             <DraftEditorContents {...editorContentsProps} />
           </div>
         </div>
@@ -438,8 +452,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    */
   componentWillUpdate(nextProps: DraftEditorProps): void {
     if (!gkx('draft_js_stop_blocking_select_events')) {
-      // We suspect this is not actually needed with modern React
-      // For people in the GK, we will skip setting this flag.
       this._blockSelectEvents = true;
     }
     if (!gkx('draft_js_remove_componentwillupdate')) {
