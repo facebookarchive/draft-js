@@ -35,6 +35,7 @@ const updateExistingBlock = (
   fragmentBlock: BlockNodeRecord,
   targetKey: string,
   targetOffset: number,
+  forceTypeOverride: ?boolean,
 ): ContentState => {
   const targetBlock = blockMap.get(targetKey);
   const text = targetBlock.getText();
@@ -53,6 +54,7 @@ const updateExistingBlock = (
       targetOffset,
     ),
     data: fragmentBlock.getData(),
+    type: forceTypeOverride ? fragmentBlock.getType() : targetBlock.getType(),
   });
 
   return contentState.merge({
@@ -315,7 +317,7 @@ const insertFragmentIntoContentState = (
 
   // When we insert a fragment with a single block we simply update the target block
   // with the contents of the inserted fragment block
-  if (fragment.size === 1 && !forceTypeOverride) {
+  if (fragment.size === 1) {
     return updateExistingBlock(
       contentState,
       selectionState,
@@ -323,6 +325,7 @@ const insertFragmentIntoContentState = (
       fragment.first(),
       targetKey,
       targetOffset,
+      forceTypeOverride,
     );
   }
 
