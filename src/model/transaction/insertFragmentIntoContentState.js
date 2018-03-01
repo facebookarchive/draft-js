@@ -292,6 +292,7 @@ const insertFragmentIntoContentState = (
   contentState: ContentState,
   selectionState: SelectionState,
   fragmentBlockMap: BlockMap,
+  forceTypeOverride: ?boolean,
 ): ContentState => {
   invariant(
     selectionState.isCollapsed(),
@@ -314,7 +315,7 @@ const insertFragmentIntoContentState = (
 
   // When we insert a fragment with a single block we simply update the target block
   // with the contents of the inserted fragment block
-  if (fragment.size === 1) {
+  if (fragment.size === 1 && !forceTypeOverride) {
     return updateExistingBlock(
       contentState,
       selectionState,
