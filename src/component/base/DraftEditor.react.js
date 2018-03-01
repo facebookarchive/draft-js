@@ -258,7 +258,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
         if (method) {
-          if (flushControlled && gkx('draft_js_flush_sync')) {
+          if (flushControlled) {
             flushControlled(() => method(this, e));
           } else {
             method(this, e);
