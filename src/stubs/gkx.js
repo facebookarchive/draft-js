@@ -14,7 +14,7 @@
 'use strict';
 
 module.exports = function(name: string) {
-  if (window && window.__DRAFT_GKX) {
+  if (typeof window !== 'undefined' && window.__DRAFT_GKX) {
     return window.__DRAFT_GKX[name];
   }
   return false;
