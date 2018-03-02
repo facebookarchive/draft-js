@@ -1,6 +1,22 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>EditorState | Draft.js | Rich Text Editor Framework for React</title><meta name="viewport" content="width=device-width"><meta property="og:title" content="EditorState | Draft.js | Rich Text Editor Framework for React"><meta property="og:type" content="website"><meta property="og:url" content="http://draftjs.org/index.html"><meta property="og:description" content="Rich Text Editor Framework for React"><link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png"><link rel="manifest" href="/img/manifest.json"><link rel="mask-icon" href="/img/safari-pinned-tab.svg"><link rel="shortcut icon" href="/img/favicon.ico"><meta name="msapplication-config" content="/img/browserconfig.xml"><meta name="theme-color" content="#852d2d"><link rel="stylesheet" href="/css/draft.css"><script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.34.4/es6-shim.min.js"></script></head><body><div class="container"><div class="nav-main"><div class="wrap"><a class="nav-home" href="/">Draft.js</a><ul class="nav-site"><li><a href="/docs/overview.html#content" class="active">docs</a></li><li><a href="http://github.com/facebook/draft-js" class="">github</a></li></ul></div></div><section class="content wrap documentationContent"><div class="nav-docs"><div class="nav-docs-section"><h3>Quick Start</h3><ul><li><a style="margin-left:0;" class="" href="/docs/overview.html#content">Overview</a></li><li><a style="margin-left:0;" class="" href="/docs/quickstart-api-basics.html#content">API Basics</a></li><li><a style="margin-left:0;" class="" href="/docs/quickstart-rich-styling.html#content">Rich Styling</a></li></ul></div><div class="nav-docs-section"><h3>Advanced Topics</h3><ul><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-entities.html#content">Entities</a></li><li><a style="margin-left:0;" class="" href="/docs/v0-10-api-migration.html#content">v0.10 API Migration</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-decorators.html#content">Decorators</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-key-bindings.html#content">Key Bindings</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-managing-focus.html#content">Managing Focus</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-block-styling.html#content">Block Styling</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-custom-block-render-map.html#content">Custom Block Rendering</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-block-components.html#content">Custom Block Components</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-inline-styles.html#content">Complex Inline Styles</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-nested-lists.html#content">Nested Lists</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-text-direction.html#content">Text Direction</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-editorstate-race-conditions.html#content">EditorState Race Conditions</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-issues-and-pitfalls.html#content">Issues and Pitfalls</a></li></ul></div><div class="nav-docs-section"><h3>API Reference</h3><ul><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor.html#content">Editor Component</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor-change-type.html#content">EditorChangeType</a></li><li><a style="margin-left:0;" class="active" href="/docs/api-reference-editor-state.html#content">EditorState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-content-state.html#content">ContentState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-content-block.html#content">ContentBlock</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-character-metadata.html#content">CharacterMetadata</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-entity.html#content">Entity</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-selection-state.html#content">SelectionState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-composite-decorator.html#content">CompositeDecorator</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-data-conversion.html#content">Data Conversion</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-rich-utils.html#content">RichUtils</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-atomic-block-utils.html#content">AtomicBlockUtils</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-key-binding-util.html#content">KeyBindingUtil</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-modifier.html#content">Modifier</a></li></ul></div></div><div class="inner-content"><a id="content"></a><h1>EditorState</h1><div><p><code>EditorState</code> is the top-level state object for the editor.</p><p>It is an Immutable <a href="http://facebook.github.io/immutable-js/docs/#/Record/Record" target="_blank">Record</a>
-that represents the entire state of a Draft editor, including:</p><ul><li>The current text content state</li><li>The current selection state</li><li>The fully decorated representation of the contents</li><li>Undo/redo stacks</li><li>The most recent type of change made to the contents</li></ul><blockquote><p>Note</p><p>You should not use the Immutable API when using EditorState objects.
-Instead, use the instance getters and static methods below.</p></blockquote><h2><a class="anchor" name="overview"></a>Overview <a class="hash-link" href="#overview">#</a></h2><p><em>Common instance methods</em></p><p>The list below includes the most commonly used instance methods for <code>EditorState</code> objects.</p><div><ul class="apiIndex">
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>EditorState | Draft.js | Rich Text Editor Framework for React</title><meta name="viewport" content="width=device-width"><meta property="og:title" content="EditorState | Draft.js | Rich Text Editor Framework for React"><meta property="og:type" content="website"><meta property="og:url" content="http://draftjs.org/index.html"><meta property="og:description" content="Rich Text Editor Framework for React"><link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png"><link rel="manifest" href="/img/manifest.json"><link rel="mask-icon" href="/img/safari-pinned-tab.svg"><link rel="shortcut icon" href="/img/favicon.ico"><meta name="msapplication-config" content="/img/browserconfig.xml"><meta name="theme-color" content="#852d2d"><link rel="stylesheet" href="/css/draft.css"><script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.34.4/es6-shim.min.js"></script></head><body><div class="container"><div class="nav-main"><div class="wrap"><a class="nav-home" href="/">Draft.js</a><ul class="nav-site"><li><a href="/docs/overview.html#content" class="active">docs</a></li><li><a href="http://github.com/facebook/draft-js" class="">github</a></li></ul></div></div><section class="content wrap documentationContent"><div class="nav-docs"><div class="nav-docs-section"><h3>Quick Start</h3><ul><li><a style="margin-left:0;" class="" href="/docs/overview.html#content">Overview</a></li><li><a style="margin-left:0;" class="" href="/docs/quickstart-api-basics.html#content">API Basics</a></li><li><a style="margin-left:0;" class="" href="/docs/quickstart-rich-styling.html#content">Rich Styling</a></li></ul></div><div class="nav-docs-section"><h3>Advanced Topics</h3><ul><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-entities.html#content">Entities</a></li><li><a style="margin-left:0;" class="" href="/docs/v0-10-api-migration.html#content">v0.10 API Migration</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-decorators.html#content">Decorators</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-key-bindings.html#content">Key Bindings</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-managing-focus.html#content">Managing Focus</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-block-styling.html#content">Block Styling</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-custom-block-render-map.html#content">Custom Block Rendering</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-block-components.html#content">Custom Block Components</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-inline-styles.html#content">Complex Inline Styles</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-nested-lists.html#content">Nested Lists</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-text-direction.html#content">Text Direction</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-editorstate-race-conditions.html#content">EditorState Race Conditions</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-issues-and-pitfalls.html#content">Issues and Pitfalls</a></li></ul></div><div class="nav-docs-section"><h3>API Reference</h3><ul><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor.html#content">Editor Component</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor-change-type.html#content">EditorChangeType</a></li><li><a style="margin-left:0;" class="active" href="/docs/api-reference-editor-state.html#content">EditorState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-content-state.html#content">ContentState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-content-block.html#content">ContentBlock</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-character-metadata.html#content">CharacterMetadata</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-entity.html#content">Entity</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-selection-state.html#content">SelectionState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-composite-decorator.html#content">CompositeDecorator</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-data-conversion.html#content">Data Conversion</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-rich-utils.html#content">RichUtils</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-atomic-block-utils.html#content">AtomicBlockUtils</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-key-binding-util.html#content">KeyBindingUtil</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-modifier.html#content">Modifier</a></li></ul></div></div><div class="inner-content"><a id="content"></a><h1>EditorState</h1><div><p><code>EditorState</code> is the top-level state object for the editor.</p>
+<p>It is an Immutable <a href="http://facebook.github.io/immutable-js/docs/#/Record/Record">Record</a>
+that represents the entire state of a Draft editor, including:</p>
+<ul>
+<li>The current text content state</li>
+<li>The current selection state</li>
+<li>The fully decorated representation of the contents</li>
+<li>Undo/redo stacks</li>
+<li>The most recent type of change made to the contents</li>
+</ul>
+<blockquote>
+<p>Note</p>
+<p>You should not use the Immutable API when using EditorState objects.
+Instead, use the instance getters and static methods below.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p><em>Common instance methods</em></p>
+<p>The list below includes the most commonly used instance methods for <code>EditorState</code> objects.</p>
+<ul class="apiIndex">
   <li>
     <a href="#getcurrentcontent">
       <pre>getCurrentContent(): ContentState</pre>
@@ -23,7 +39,8 @@ Instead, use the instance getters and static methods below.</p></blockquote><h2>
   </li>
 </ul>
 
-</div><p><em>Static Methods</em></p><div><ul class="apiIndex">
+<p><em>Static Methods</em></p>
+<ul class="apiIndex">
   <li>
     <a href="#createempty">
       <pre>static createEmpty(?decorator): EditorState</pre>
@@ -86,8 +103,13 @@ Instead, use the instance getters and static methods below.</p></blockquote><h2>
   </li>
 </ul>
 
-</div><p><em>Properties</em></p><blockquote><p>Note</p><p>Use the static <code>EditorState</code> methods to set properties, rather than using
-the Immutable API directly.</p></blockquote><div><ul class="apiIndex">
+<p><em>Properties</em></p>
+<blockquote>
+<p>Note</p>
+<p>Use the static <code>EditorState</code> methods to set properties, rather than using
+the Immutable API directly.</p>
+</blockquote>
+<ul class="apiIndex">
   <li>
     <a href="#allowundo">
       <pre>allowUndo</pre>
@@ -155,113 +177,175 @@ the Immutable API directly.</p></blockquote><div><ul class="apiIndex">
   </li>
 </ul>
 
-</div><h2><a class="anchor" name="common-instance-methods"></a>Common Instance Methods <a class="hash-link" href="#common-instance-methods">#</a></h2><h3><a class="anchor" name="getcurrentcontent"></a>getCurrentContent <a class="hash-link" href="#getcurrentcontent">#</a></h3><pre class="prism language-javascript">
-<span class="token function">getCurrentContent<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> ContentState</pre><p>Returns the current contents of the editor.</p><h3><a class="anchor" name="getselection"></a>getSelection <a class="hash-link" href="#getselection">#</a></h3><pre class="prism language-javascript">
-<span class="token function">getSelection<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> SelectionState</pre><p>Returns the current cursor/selection state of the editor.</p><h3><a class="anchor" name="getcurrentinlinestyle"></a>getCurrentInlineStyle <a class="hash-link" href="#getcurrentinlinestyle">#</a></h3><pre class="prism language-javascript">
-<span class="token function">getCurrentInlineStyle<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> DraftInlineStyle</pre><p>Returns an <code>OrderedSet&lt;string&gt;</code> that represents the &quot;current&quot; inline style
-for the editor.</p><p>This is the inline style value that would be used if a character were inserted
+<h2 id="common-instance-methods">Common Instance Methods</h2>
+<h3 id="getcurrentcontent">getCurrentContent</h3>
+<pre class="prism language-undefined"><span class="token function">getCurrentContent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> ContentState</pre><p>Returns the current contents of the editor.</p>
+<h3 id="getselection">getSelection</h3>
+<pre class="prism language-undefined"><span class="token function">getSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> SelectionState</pre><p>Returns the current cursor/selection state of the editor.</p>
+<h3 id="getcurrentinlinestyle">getCurrentInlineStyle</h3>
+<pre class="prism language-undefined"><span class="token function">getCurrentInlineStyle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> DraftInlineStyle</pre><p>Returns an <code>OrderedSet&lt;string&gt;</code> that represents the &quot;current&quot; inline style
+for the editor.</p>
+<p>This is the inline style value that would be used if a character were inserted
 for the current <code>ContentState</code> and <code>SelectionState</code>, and takes into account
-any inline style overrides that should be applied.</p><h3><a class="anchor" name="getblocktree"></a>getBlockTree <a class="hash-link" href="#getblocktree">#</a></h3><pre class="prism language-javascript">
-<span class="token function">getBlockTree<span class="token punctuation">(</span></span>blockKey<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> List<span class="token punctuation">;</span></pre><p>Returns an Immutable <code>List</code> of decorated and styled ranges. This is used for
+any inline style overrides that should be applied.</p>
+<h3 id="getblocktree">getBlockTree</h3>
+<pre class="prism language-undefined"><span class="token function">getBlockTree</span><span class="token punctuation">(</span>blockKey<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> List<span class="token punctuation">;</span></pre><p>Returns an Immutable <code>List</code> of decorated and styled ranges. This is used for
 rendering purposes, and is generated based on the <code>currentContent</code> and
-<code>decorator</code>.</p><p>At render time, this object is used to break the contents into the appropriate
-block, decorator, and styled range components.</p><h2><a class="anchor" name="static-methods"></a>Static Methods <a class="hash-link" href="#static-methods">#</a></h2><h3><a class="anchor" name="createempty"></a>createEmpty <a class="hash-link" href="#createempty">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">createEmpty<span class="token punctuation">(</span></span>decorator<span class="token operator">?</span><span class="token punctuation">:</span> DraftDecoratorType<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with an empty <code>ContentState</code> and default
-configuration.</p><h3><a class="anchor" name="createwithcontent"></a>createWithContent <a class="hash-link" href="#createwithcontent">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">createWithContent<span class="token punctuation">(</span></span>
+<code>decorator</code>.</p>
+<p>At render time, this object is used to break the contents into the appropriate
+block, decorator, and styled range components.</p>
+<h2 id="static-methods">Static Methods</h2>
+<h3 id="createempty">createEmpty</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">createEmpty</span><span class="token punctuation">(</span>decorator<span class="token operator">?</span><span class="token punctuation">:</span> DraftDecoratorType<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with an empty <code>ContentState</code> and default
+configuration.</p>
+<h3 id="createwithcontent">createWithContent</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">createWithContent</span><span class="token punctuation">(</span>
   contentState<span class="token punctuation">:</span> ContentState<span class="token punctuation">,</span>
   decorator<span class="token operator">?</span><span class="token punctuation">:</span> DraftDecoratorType
 <span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object based on the <code>ContentState</code> and decorator
-provided.</p><h3><a class="anchor" name="create"></a>create <a class="hash-link" href="#create">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">create<span class="token punctuation">(</span></span>config<span class="token punctuation">:</span> EditorStateCreationConfig<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object based on a configuration object. Use this
-if you need custom configuration not available via the methods above.</p><h3><a class="anchor" name="push"></a>push <a class="hash-link" href="#push">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">push<span class="token punctuation">(</span></span>
+provided.</p>
+<h3 id="create">create</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">create</span><span class="token punctuation">(</span>config<span class="token punctuation">:</span> EditorStateCreationConfig<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object based on a configuration object. Use this
+if you need custom configuration not available via the methods above.</p>
+<h3 id="push">push</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">push</span><span class="token punctuation">(</span>
   editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">,</span>
   contentState<span class="token punctuation">:</span> ContentState<span class="token punctuation">,</span>
   changeType<span class="token punctuation">:</span> EditorChangeType
 <span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the specified <code>ContentState</code> applied
 as the new <code>currentContent</code>. Based on the <code>changeType</code>, this <code>ContentState</code>
-may be regarded as a boundary state for undo/redo behavior.</p><p>All content changes must be applied to the EditorState with this method.</p><p><em>To be renamed.</em></p><h3><a class="anchor" name="undo"></a>undo <a class="hash-link" href="#undo">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">undo<span class="token punctuation">(</span></span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the top of the undo stack applied
-as the new <code>currentContent</code>.</p><p>The existing <code>currentContent</code> is pushed onto the <code>redo</code> stack.</p><h3><a class="anchor" name="redo"></a>redo <a class="hash-link" href="#redo">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">redo<span class="token punctuation">(</span></span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the top of the redo stack applied
-as the new <code>currentContent</code>.</p><p>The existing <code>currentContent</code> is pushed onto the <code>undo</code> stack.</p><h3><a class="anchor" name="acceptselection"></a>acceptSelection <a class="hash-link" href="#acceptselection">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">acceptSelection<span class="token punctuation">(</span></span>
+may be regarded as a boundary state for undo/redo behavior.</p>
+<p>All content changes must be applied to the EditorState with this method.</p>
+<p><em>To be renamed.</em></p>
+<h3 id="undo">undo</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">undo</span><span class="token punctuation">(</span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the top of the undo stack applied
+as the new <code>currentContent</code>.</p>
+<p>The existing <code>currentContent</code> is pushed onto the <code>redo</code> stack.</p>
+<h3 id="redo">redo</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">redo</span><span class="token punctuation">(</span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the top of the redo stack applied
+as the new <code>currentContent</code>.</p>
+<p>The existing <code>currentContent</code> is pushed onto the <code>undo</code> stack.</p>
+<h3 id="acceptselection">acceptSelection</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">acceptSelection</span><span class="token punctuation">(</span>
   editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">,</span>
   selectionState<span class="token punctuation">:</span> SelectionState
 <span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the specified <code>SelectionState</code> applied,
-but without requiring the selection to be rendered.</p><p>For example, this is useful when the DOM selection has changed outside of our
-control, and no re-renders are necessary.</p><h3><a class="anchor" name="forceselection"></a>forceSelection <a class="hash-link" href="#forceselection">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">forceSelection<span class="token punctuation">(</span></span>
+but without requiring the selection to be rendered.</p>
+<p>For example, this is useful when the DOM selection has changed outside of our
+control, and no re-renders are necessary.</p>
+<h3 id="forceselection">forceSelection</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">forceSelection</span><span class="token punctuation">(</span>
   editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">,</span>
   selectionState<span class="token punctuation">:</span> SelectionState
 <span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the specified <code>SelectionState</code> applied,
-forcing the selection to be rendered.</p><p>This is useful when the selection should be manually rendered in the correct
-location to maintain control of the rendered output.</p><h3><a class="anchor" name="moveselectiontoend"></a>moveSelectionToEnd <a class="hash-link" href="#moveselectiontoend">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">moveSelectionToEnd<span class="token punctuation">(</span></span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the selection at the end.</p><p>Moves selection to the end of the editor without forcing focus.</p><h3><a class="anchor" name="movefocustoend"></a>moveFocusToEnd <a class="hash-link" href="#movefocustoend">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">moveFocusToEnd<span class="token punctuation">(</span></span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with selection at the end and forces focus.</p><p>This is useful in scenarios where we want to programmatically focus the input
-and it makes sense to allow the user to continue working seamlessly.</p><h3><a class="anchor" name="setinlinestyleoverride"></a>setInlineStyleOverride <a class="hash-link" href="#setinlinestyleoverride">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">setInlineStyleOverride<span class="token punctuation">(</span></span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">,</span> inlineStyleOverride<span class="token punctuation">:</span> DraftInlineStyle<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the specified <code>DraftInlineStyle</code> applied
-as the set of inline styles to be applied to the next inserted characters.</p><h3><a class="anchor" name="set"></a>set <a class="hash-link" href="#set">#</a></h3><pre class="prism language-javascript">
-static <span class="token keyword">set</span><span class="token punctuation">(</span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">,</span> options<span class="token punctuation">:</span> EditorStateRecordType<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with new options passed in. &#x27;The method is
-inherited from the Immutable <code>record</code> API.</p><h2><a class="anchor" name="properties-and-getters"></a>Properties and Getters <a class="hash-link" href="#properties-and-getters">#</a></h2><p>In most cases, the instance and static methods above should be sufficient to
-manage the state of your Draft editor.</p><p>Below is the full list of properties tracked by an <code>EditorState</code>, as well as
+forcing the selection to be rendered.</p>
+<p>This is useful when the selection should be manually rendered in the correct
+location to maintain control of the rendered output.</p>
+<h3 id="moveselectiontoend">moveSelectionToEnd</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">moveSelectionToEnd</span><span class="token punctuation">(</span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the selection at the end.</p>
+<p>Moves selection to the end of the editor without forcing focus.</p>
+<h3 id="movefocustoend">moveFocusToEnd</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">moveFocusToEnd</span><span class="token punctuation">(</span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with selection at the end and forces focus.</p>
+<p>This is useful in scenarios where we want to programmatically focus the input
+and it makes sense to allow the user to continue working seamlessly.</p>
+<h3 id="setinlinestyleoverride">setInlineStyleOverride</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">setInlineStyleOverride</span><span class="token punctuation">(</span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">,</span> inlineStyleOverride<span class="token punctuation">:</span> DraftInlineStyle<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with the specified <code>DraftInlineStyle</code> applied
+as the set of inline styles to be applied to the next inserted characters.</p>
+<h3 id="set">set</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token keyword">set</span><span class="token punctuation">(</span>editorState<span class="token punctuation">:</span> EditorState<span class="token punctuation">,</span> options<span class="token punctuation">:</span> EditorStateRecordType<span class="token punctuation">)</span><span class="token punctuation">:</span> EditorState</pre><p>Returns a new <code>EditorState</code> object with new options passed in. &#39;The method is
+inherited from the Immutable <code>record</code> API.</p>
+<h2 id="properties-and-getters">Properties and Getters</h2>
+<p>In most cases, the instance and static methods above should be sufficient to
+manage the state of your Draft editor.</p>
+<p>Below is the full list of properties tracked by an <code>EditorState</code>, as well as
 their corresponding getter methods, to better provide detail on the scope of the
-state tracked in this object.</p><blockquote><p>Note</p><p>You should not use the Immutable API when using EditorState objects.
-Instead, use the instance getters and static methods above.</p></blockquote><h3><a class="anchor" name="allowundo"></a>allowUndo <a class="hash-link" href="#allowundo">#</a></h3><pre class="prism language-javascript">
-allowUndo<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
-<span class="token function">getAllowUndo<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>Whether to allow undo/redo behavior in this editor. Default is <code>true</code>.</p><p>Since the undo/redo stack is the major source of memory retention, if you have
+state tracked in this object.</p>
+<blockquote>
+<p>Note</p>
+<p>You should not use the Immutable API when using EditorState objects.
+Instead, use the instance getters and static methods above.</p>
+</blockquote>
+<h3 id="allowundo">allowUndo</h3>
+<pre class="prism language-undefined">allowUndo<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
+<span class="token function">getAllowUndo</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>Whether to allow undo/redo behavior in this editor. Default is <code>true</code>.</p>
+<p>Since the undo/redo stack is the major source of memory retention, if you have
 an editor UI that does not require undo/redo behavior, you might consider
-setting this to <code>false</code>.</p><h3><a class="anchor" name="currentcontent"></a>currentContent <a class="hash-link" href="#currentcontent">#</a></h3><pre class="prism language-javascript">
-currentContent<span class="token punctuation">:</span> ContentState<span class="token punctuation">;</span>
-<span class="token function">getCurrentContent<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>The currently rendered <code>ContentState</code>. See <a href="#getcurrentcontent" target="">getCurrentContent()</a>.</p><h3><a class="anchor" name="decorator"></a>decorator <a class="hash-link" href="#decorator">#</a></h3><pre class="prism language-javascript">
-decorator<span class="token punctuation">:</span> <span class="token operator">?</span>DraftDecoratorType<span class="token punctuation">;</span>
-<span class="token function">getDecorator<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>The current decorator object, if any.</p><p>Note that the <code>ContentState</code> is independent of your decorator. If a decorator
-is provided, it will be used to decorate ranges of text for rendering.</p><h3><a class="anchor" name="directionmap"></a>directionMap <a class="hash-link" href="#directionmap">#</a></h3><pre class="prism language-javascript">
-directionMap<span class="token punctuation">:</span> BlockMap<span class="token punctuation">;</span>
-<span class="token function">getDirectionMap<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>A map of each block and its text direction, as determined by UnicodeBidiService.</p><p>You should not manage this manually.</p><h3><a class="anchor" name="forceselection"></a>forceSelection <a class="hash-link" href="#forceselection">#</a></h3><pre class="prism language-javascript">
-forceSelection<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
-<span class="token function">mustForceSelection<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>Whether to force the current <code>SelectionState</code> to be rendered.</p><p>You should not set this property manually -- see
-<a href="#forceselection" target="">forceSelection()</a>.</p><h3><a class="anchor" name="incompositionmode"></a>inCompositionMode <a class="hash-link" href="#incompositionmode">#</a></h3><pre class="prism language-javascript">
-inCompositionMode<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
-<span class="token function">isInCompositionMode<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>Whether the user is in IME composition mode. This is useful for rendering the
+setting this to <code>false</code>.</p>
+<h3 id="currentcontent">currentContent</h3>
+<pre class="prism language-undefined">currentContent<span class="token punctuation">:</span> ContentState<span class="token punctuation">;</span>
+<span class="token function">getCurrentContent</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>The currently rendered <code>ContentState</code>. See <a href="#getcurrentcontent">getCurrentContent()</a>.</p>
+<h3 id="decorator">decorator</h3>
+<pre class="prism language-undefined">decorator<span class="token punctuation">:</span> <span class="token operator">?</span>DraftDecoratorType<span class="token punctuation">;</span>
+<span class="token function">getDecorator</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>The current decorator object, if any.</p>
+<p>Note that the <code>ContentState</code> is independent of your decorator. If a decorator
+is provided, it will be used to decorate ranges of text for rendering.</p>
+<h3 id="directionmap">directionMap</h3>
+<pre class="prism language-undefined">directionMap<span class="token punctuation">:</span> BlockMap<span class="token punctuation">;</span>
+<span class="token function">getDirectionMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>A map of each block and its text direction, as determined by UnicodeBidiService.</p>
+<p>You should not manage this manually.</p>
+<h3 id="forceselection">forceSelection</h3>
+<pre class="prism language-undefined">forceSelection<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
+<span class="token function">mustForceSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>Whether to force the current <code>SelectionState</code> to be rendered.</p>
+<p>You should not set this property manually -- see
+<a href="#forceselection">forceSelection()</a>.</p>
+<h3 id="incompositionmode">inCompositionMode</h3>
+<pre class="prism language-undefined">inCompositionMode<span class="token punctuation">:</span> boolean<span class="token punctuation">;</span>
+<span class="token function">isInCompositionMode</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>Whether the user is in IME composition mode. This is useful for rendering the
 appropriate UI for IME users, even when no content changes have been committed
-to the editor. You should not set this property manually.</p><h3><a class="anchor" name="inlinestyleoverride"></a>inlineStyleOverride <a class="hash-link" href="#inlinestyleoverride">#</a></h3><pre class="prism language-javascript">
-inlineStyleOverride<span class="token punctuation">:</span> DraftInlineStyle<span class="token punctuation">;</span>
-<span class="token function">getInlineStyleOverride<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>An inline style value to be applied to the next inserted characters. This is
+to the editor. You should not set this property manually.</p>
+<h3 id="inlinestyleoverride">inlineStyleOverride</h3>
+<pre class="prism language-undefined">inlineStyleOverride<span class="token punctuation">:</span> DraftInlineStyle<span class="token punctuation">;</span>
+<span class="token function">getInlineStyleOverride</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>An inline style value to be applied to the next inserted characters. This is
 used when keyboard commands or style buttons are used to apply an inline style
-for a collapsed selection range.</p><p><code>DraftInlineStyle</code> is a type alias for an immutable <code>OrderedSet</code> of strings,
-each of which corresponds to an inline style.</p><h3><a class="anchor" name="lastchangetype"></a>lastChangeType <a class="hash-link" href="#lastchangetype">#</a></h3><pre class="prism language-javascript">
-lastChangeType<span class="token punctuation">:</span> EditorChangeType<span class="token punctuation">;</span>
-<span class="token function">getLastChangeType<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>The type of content change that took place in order to bring us to our current
-<code>ContentState</code>. This is used when determining boundary states for undo/redo.</p><h3><a class="anchor" name="nativelyrenderedcontent"></a>nativelyRenderedContent <a class="hash-link" href="#nativelyrenderedcontent">#</a></h3><pre class="prism language-javascript">
-nativelyRenderedContent<span class="token punctuation">:</span> <span class="token operator">?</span>ContentState<span class="token punctuation">;</span>
-<span class="token function">getNativelyRenderedContent<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>During edit behavior, the editor may allow certain actions to render natively.
+for a collapsed selection range.</p>
+<p><code>DraftInlineStyle</code> is a type alias for an immutable <code>OrderedSet</code> of strings,
+each of which corresponds to an inline style.</p>
+<h3 id="lastchangetype">lastChangeType</h3>
+<pre class="prism language-undefined">lastChangeType<span class="token punctuation">:</span> EditorChangeType<span class="token punctuation">;</span>
+<span class="token function">getLastChangeType</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>The type of content change that took place in order to bring us to our current
+<code>ContentState</code>. This is used when determining boundary states for undo/redo.</p>
+<h3 id="nativelyrenderedcontent">nativelyRenderedContent</h3>
+<pre class="prism language-undefined">nativelyRenderedContent<span class="token punctuation">:</span> <span class="token operator">?</span>ContentState<span class="token punctuation">;</span>
+<span class="token function">getNativelyRenderedContent</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>During edit behavior, the editor may allow certain actions to render natively.
 For instance, during normal typing behavior in the contentEditable-based component,
 we can typically allow key events to fall through to print characters in the DOM.
-In doing so, we can avoid extra re-renders and preserve spellcheck highlighting.</p><p>When allowing native rendering behavior, it is appropriate to use the
+In doing so, we can avoid extra re-renders and preserve spellcheck highlighting.</p>
+<p>When allowing native rendering behavior, it is appropriate to use the
 <code>nativelyRenderedContent</code> property to indicate that no re-render is necessary
-for this <code>EditorState</code>.</p><h3><a class="anchor" name="redostack"></a>redoStack <a class="hash-link" href="#redostack">#</a></h3><pre class="prism language-javascript">
-redoStack<span class="token punctuation">:</span> Stack&lt;ContentState<span class="token operator">&gt;</span><span class="token punctuation">;</span>
-<span class="token function">getRedoStack<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>An immutable stack of <code>ContentState</code> objects that can be resurrected for redo
+for this <code>EditorState</code>.</p>
+<h3 id="redostack">redoStack</h3>
+<pre class="prism language-undefined">redoStack<span class="token punctuation">:</span> Stack<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ContentState</span><span class="token punctuation">></span></span><span class="token punctuation">;</span>
+<span class="token function">getRedoStack</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>An immutable stack of <code>ContentState</code> objects that can be resurrected for redo
 operations. When performing an undo operation, the current <code>ContentState</code> is
-pushed onto the <code>redoStack</code>.</p><p>You should not manage this property manually. If you would like to disable
-undo/redo behavior, use the <code>allowUndo</code> property.</p><p>See also <a href="#undostack" target="">undoStack</a>.</p><h3><a class="anchor" name="selection"></a>selection <a class="hash-link" href="#selection">#</a></h3><pre class="prism language-javascript">
-selection<span class="token punctuation">:</span> SelectionState<span class="token punctuation">;</span>
-<span class="token function">getSelection<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>The currently rendered <code>SelectionState</code>. See <a href="#acceptselection" target="">acceptSelection()</a>
-and <a href="#forceselection" target="">forceSelection()</a>.</p><p>You should not manage this property manually.</p><h3><a class="anchor" name="treemap"></a>treeMap <a class="hash-link" href="#treemap">#</a></h3><pre class="prism language-javascript">
-treeMap<span class="token punctuation">:</span> OrderedMap&lt;string<span class="token punctuation">,</span> List<span class="token operator">&gt;</span><span class="token punctuation">;</span></pre><p>The fully decorated and styled tree of ranges to be rendered in the editor
+pushed onto the <code>redoStack</code>.</p>
+<p>You should not manage this property manually. If you would like to disable
+undo/redo behavior, use the <code>allowUndo</code> property.</p>
+<p>See also <a href="#undostack">undoStack</a>.</p>
+<h3 id="selection">selection</h3>
+<pre class="prism language-undefined">selection<span class="token punctuation">:</span> SelectionState<span class="token punctuation">;</span>
+<span class="token function">getSelection</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>The currently rendered <code>SelectionState</code>. See <a href="#acceptselection">acceptSelection()</a>
+and <a href="#forceselection">forceSelection()</a>.</p>
+<p>You should not manage this property manually.</p>
+<h3 id="treemap">treeMap</h3>
+<pre class="prism language-undefined">treeMap<span class="token punctuation">:</span> OrderedMap<span class="token operator">&lt;</span>string<span class="token punctuation">,</span> List<span class="token operator">></span><span class="token punctuation">;</span></pre><p>The fully decorated and styled tree of ranges to be rendered in the editor
 component. The <code>treeMap</code> object is generated based on a <code>ContentState</code> and an
-optional decorator (<code>DraftDecoratorType</code>).</p><p>At render time, components should iterate through the <code>treeMap</code> object to
-render decorated ranges and styled ranges, using the <a href="#getblocktree" target="">getBlockTree()</a>
-method.</p><p>You should not manage this property manually.</p><h3><a class="anchor" name="undostack"></a>undoStack <a class="hash-link" href="#undostack">#</a></h3><pre class="prism language-javascript">
-undoStack<span class="token punctuation">:</span> Stack&lt;ContentState<span class="token operator">&gt;</span><span class="token punctuation">;</span>
-<span class="token function">getUndoStack<span class="token punctuation">(</span></span><span class="token punctuation">)</span></pre><p>An immutable stack of <code>ContentState</code> objects that can be restored for undo
-operations.</p><p>When performing operations that modify contents, we determine whether the
+optional decorator (<code>DraftDecoratorType</code>).</p>
+<p>At render time, components should iterate through the <code>treeMap</code> object to
+render decorated ranges and styled ranges, using the <a href="#getblocktree">getBlockTree()</a>
+method.</p>
+<p>You should not manage this property manually.</p>
+<h3 id="undostack">undoStack</h3>
+<pre class="prism language-undefined">undoStack<span class="token punctuation">:</span> Stack<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ContentState</span><span class="token punctuation">></span></span><span class="token punctuation">;</span>
+<span class="token function">getUndoStack</span><span class="token punctuation">(</span><span class="token punctuation">)</span></pre><p>An immutable stack of <code>ContentState</code> objects that can be restored for undo
+operations.</p>
+<p>When performing operations that modify contents, we determine whether the
 current <code>ContentState</code> should be regarded as a &quot;boundary&quot; state that the user
 can reach by performing an undo operation. If so, the <code>ContentState</code> is pushed
-onto the <code>undoStack</code>. If not, the outgoing <code>ContentState</code> is simply discarded.</p><p>You should not manage this property manually. If you would like to disable
-undo/redo behavior, use the <code>allowUndo</code> property.</p><p>See also <a href="#redostack" target="">redoStack</a>.</p></div><div class="docs-prevnext"><a class="docs-next" href="api-reference-content-state.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2018 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
+onto the <code>undoStack</code>. If not, the outgoing <code>ContentState</code> is simply discarded.</p>
+<p>You should not manage this property manually. If you would like to disable
+undo/redo behavior, use the <code>allowUndo</code> property.</p>
+<p>See also <a href="#redostack">redoStack</a>.</p>
+</div><div class="docs-prevnext"><a class="docs-next" href="api-reference-content-state.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2018 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
 
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

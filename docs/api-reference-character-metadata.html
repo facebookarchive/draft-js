@@ -1,15 +1,22 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>CharacterMetadata | Draft.js | Rich Text Editor Framework for React</title><meta name="viewport" content="width=device-width"><meta property="og:title" content="CharacterMetadata | Draft.js | Rich Text Editor Framework for React"><meta property="og:type" content="website"><meta property="og:url" content="http://draftjs.org/index.html"><meta property="og:description" content="Rich Text Editor Framework for React"><link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png"><link rel="manifest" href="/img/manifest.json"><link rel="mask-icon" href="/img/safari-pinned-tab.svg"><link rel="shortcut icon" href="/img/favicon.ico"><meta name="msapplication-config" content="/img/browserconfig.xml"><meta name="theme-color" content="#852d2d"><link rel="stylesheet" href="/css/draft.css"><script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.34.4/es6-shim.min.js"></script></head><body><div class="container"><div class="nav-main"><div class="wrap"><a class="nav-home" href="/">Draft.js</a><ul class="nav-site"><li><a href="/docs/overview.html#content" class="active">docs</a></li><li><a href="http://github.com/facebook/draft-js" class="">github</a></li></ul></div></div><section class="content wrap documentationContent"><div class="nav-docs"><div class="nav-docs-section"><h3>Quick Start</h3><ul><li><a style="margin-left:0;" class="" href="/docs/overview.html#content">Overview</a></li><li><a style="margin-left:0;" class="" href="/docs/quickstart-api-basics.html#content">API Basics</a></li><li><a style="margin-left:0;" class="" href="/docs/quickstart-rich-styling.html#content">Rich Styling</a></li></ul></div><div class="nav-docs-section"><h3>Advanced Topics</h3><ul><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-entities.html#content">Entities</a></li><li><a style="margin-left:0;" class="" href="/docs/v0-10-api-migration.html#content">v0.10 API Migration</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-decorators.html#content">Decorators</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-key-bindings.html#content">Key Bindings</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-managing-focus.html#content">Managing Focus</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-block-styling.html#content">Block Styling</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-custom-block-render-map.html#content">Custom Block Rendering</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-block-components.html#content">Custom Block Components</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-inline-styles.html#content">Complex Inline Styles</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-nested-lists.html#content">Nested Lists</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-text-direction.html#content">Text Direction</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-editorstate-race-conditions.html#content">EditorState Race Conditions</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-issues-and-pitfalls.html#content">Issues and Pitfalls</a></li></ul></div><div class="nav-docs-section"><h3>API Reference</h3><ul><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor.html#content">Editor Component</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor-change-type.html#content">EditorChangeType</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor-state.html#content">EditorState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-content-state.html#content">ContentState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-content-block.html#content">ContentBlock</a></li><li><a style="margin-left:0;" class="active" href="/docs/api-reference-character-metadata.html#content">CharacterMetadata</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-entity.html#content">Entity</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-selection-state.html#content">SelectionState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-composite-decorator.html#content">CompositeDecorator</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-data-conversion.html#content">Data Conversion</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-rich-utils.html#content">RichUtils</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-atomic-block-utils.html#content">AtomicBlockUtils</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-key-binding-util.html#content">KeyBindingUtil</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-modifier.html#content">Modifier</a></li></ul></div></div><div class="inner-content"><a id="content"></a><h1>CharacterMetadata</h1><div><p><code>CharacterMetadata</code> is an Immutable
-<a href="http://facebook.github.io/immutable-js/docs/#/Record/Record" target="_blank">Record</a> that
-represents inline style and entity information for a single character.</p><p><code>CharacterMetadata</code> objects are aggressively pooled and shared. If two characters
+<a href="http://facebook.github.io/immutable-js/docs/#/Record/Record">Record</a> that
+represents inline style and entity information for a single character.</p>
+<p><code>CharacterMetadata</code> objects are aggressively pooled and shared. If two characters
 have the same inline style and entity, they are represented with the same
 <code>CharacterMetadata</code> object. We therefore need only as many objects as combinations
 of utilized inline style sets with entity keys, keeping our memory footprint
-small even as the contents grow in size and complexity.</p><p>To that end, you should create or apply changes to <code>CharacterMetadata</code> objects
-via the provided set of static methods, which will ensure that pooling is utilized.</p><p>Most Draft use cases are unlikely to use these static methods, since most common edit
+small even as the contents grow in size and complexity.</p>
+<p>To that end, you should create or apply changes to <code>CharacterMetadata</code> objects
+via the provided set of static methods, which will ensure that pooling is utilized.</p>
+<p>Most Draft use cases are unlikely to use these static methods, since most common edit
 operations are already implemented and available via utility modules. The getter
-methods, however, may come in handy at render time.</p><p>See the API reference on
-<a href="/docs/api-reference-content-block.html#representing-styles-and-entities" target="">ContentBlock</a>
-for information on how <code>CharacterMetadata</code> is used within <code>ContentBlock</code>.</p><h2><a class="anchor" name="overview"></a>Overview <a class="hash-link" href="#overview">#</a></h2><p><em>Static Methods</em></p><div><ul class="apiIndex">
+methods, however, may come in handy at render time.</p>
+<p>See the API reference on
+<a href="/docs/api-reference-content-block.html#representing-styles-and-entities">ContentBlock</a>
+for information on how <code>CharacterMetadata</code> is used within <code>ContentBlock</code>.</p>
+<h2 id="overview">Overview</h2>
+<p><em>Static Methods</em></p>
+<ul class="apiIndex">
   <li>
     <a href="#create">
       <pre>static create(...): CharacterMetadata</pre>
@@ -32,7 +39,8 @@ for information on how <code>CharacterMetadata</code> is used within <code>Conte
   </li>
 </ul>
 
-</div><p><em>Methods</em></p><div><ul class="apiIndex">
+<p><em>Methods</em></p>
+<ul class="apiIndex">
   <li>
     <a href="#getstyle">
       <pre>getStyle(): DraftInlineStyle</pre>
@@ -50,33 +58,46 @@ for information on how <code>CharacterMetadata</code> is used within <code>Conte
   </li>
 </ul>
 
-</div><h2><a class="anchor" name="static-methods"></a>Static Methods <a class="hash-link" href="#static-methods">#</a></h2><p>Under the hood, these methods will utilize pooling to return a matching object,
-or return a new object if none exists.</p><h3><a class="anchor" name="create"></a>create <a class="hash-link" href="#create">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">create<span class="token punctuation">(</span></span>config<span class="token operator">?</span><span class="token punctuation">:</span> CharacterMetadataConfig<span class="token punctuation">)</span><span class="token punctuation">:</span> CharacterMetadata</pre><p>Generates a <code>CharacterMetadata</code> object from the provided configuration. This
-function should be used in lieu of a constructor.</p><p>The configuration will be used to check whether a pooled match for this
+<h2 id="static-methods">Static Methods</h2>
+<p>Under the hood, these methods will utilize pooling to return a matching object,
+or return a new object if none exists.</p>
+<h3 id="create">create</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">create</span><span class="token punctuation">(</span>config<span class="token operator">?</span><span class="token punctuation">:</span> CharacterMetadataConfig<span class="token punctuation">)</span><span class="token punctuation">:</span> CharacterMetadata</pre><p>Generates a <code>CharacterMetadata</code> object from the provided configuration. This
+function should be used in lieu of a constructor.</p>
+<p>The configuration will be used to check whether a pooled match for this
 configuration already exists. If so, the pooled object will be returned.
 Otherwise, a new <code>CharacterMetadata</code> will be pooled for this configuration,
-and returned.</p><h3><a class="anchor" name="applystyle"></a>applyStyle <a class="hash-link" href="#applystyle">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">applyStyle<span class="token punctuation">(</span></span>
+and returned.</p>
+<h3 id="applystyle">applyStyle</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">applyStyle</span><span class="token punctuation">(</span>
   record<span class="token punctuation">:</span> CharacterMetadata<span class="token punctuation">,</span>
   style<span class="token punctuation">:</span> string
-<span class="token punctuation">)</span><span class="token punctuation">:</span> CharacterMetadata</pre><p>Apply an inline style to this <code>CharacterMetadata</code>.</p><h3><a class="anchor" name="removestyle"></a>removeStyle <a class="hash-link" href="#removestyle">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">removeStyle<span class="token punctuation">(</span></span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span> CharacterMetadata</pre><p>Apply an inline style to this <code>CharacterMetadata</code>.</p>
+<h3 id="removestyle">removeStyle</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">removeStyle</span><span class="token punctuation">(</span>
   record<span class="token punctuation">:</span> CharacterMetadata<span class="token punctuation">,</span>
   style<span class="token punctuation">:</span> string
-<span class="token punctuation">)</span><span class="token punctuation">:</span> CharacterMetadata</pre><p>Remove an inline style from this <code>CharacterMetadata</code>.</p><h3><a class="anchor" name="applyentity"></a>applyEntity <a class="hash-link" href="#applyentity">#</a></h3><pre class="prism language-javascript">
-static <span class="token function">applyEntity<span class="token punctuation">(</span></span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span> CharacterMetadata</pre><p>Remove an inline style from this <code>CharacterMetadata</code>.</p>
+<h3 id="applyentity">applyEntity</h3>
+<pre class="prism language-undefined"><span class="token keyword">static</span> <span class="token function">applyEntity</span><span class="token punctuation">(</span>
   record<span class="token punctuation">:</span> CharacterMetadata<span class="token punctuation">,</span>
   entityKey<span class="token punctuation">:</span> <span class="token operator">?</span>string
 <span class="token punctuation">)</span><span class="token punctuation">:</span> CharacterMetadata</pre><p>Apply an entity key -- or provide <code>null</code> to remove an entity key -- on this
-<code>CharacterMetadata</code>.</p><h2><a class="anchor" name="methods"></a>Methods <a class="hash-link" href="#methods">#</a></h2><h3><a class="anchor" name="getstyle"></a>getStyle <a class="hash-link" href="#getstyle">#</a></h3><pre class="prism language-javascript">
-<span class="token function">getStyle<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> DraftInlineStyle</pre><p>Returns the <code>DraftInlineStyle</code> for this character, an <code>OrderedSet</code> of strings
-that represents the inline style to apply for the character at render time.</p><h3><a class="anchor" name="hasstyle"></a>hasStyle <a class="hash-link" href="#hasstyle">#</a></h3><pre class="prism language-javascript">
-<span class="token function">hasStyle<span class="token punctuation">(</span></span>style<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> boolean</pre><p>Returns whether this character has the specified style.</p><h3><a class="anchor" name="getentity"></a>getEntity <a class="hash-link" href="#getentity">#</a></h3><pre class="prism language-javascript">
-<span class="token function">getEntity<span class="token punctuation">(</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token operator">?</span>string</pre><p>Returns the entity key (if any) for this character, as mapped to the global set of
-entities tracked by the <a href="https://github.com/facebook/draft-js/blob/master/src/model/entity/DraftEntity.js" target="_blank"><code>Entity</code></a>
-module.</p><p>By tracking a string key here, we can keep the corresponding metadata separate
-from the character representation.</p><p>If null, no entity is applied for this character.</p></div><div class="docs-prevnext"><a class="docs-next" href="api-reference-entity.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2018 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
+<code>CharacterMetadata</code>.</p>
+<h2 id="methods">Methods</h2>
+<h3 id="getstyle">getStyle</h3>
+<pre class="prism language-undefined"><span class="token function">getStyle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> DraftInlineStyle</pre><p>Returns the <code>DraftInlineStyle</code> for this character, an <code>OrderedSet</code> of strings
+that represents the inline style to apply for the character at render time.</p>
+<h3 id="hasstyle">hasStyle</h3>
+<pre class="prism language-undefined"><span class="token function">hasStyle</span><span class="token punctuation">(</span>style<span class="token punctuation">:</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span> boolean</pre><p>Returns whether this character has the specified style.</p>
+<h3 id="getentity">getEntity</h3>
+<pre class="prism language-undefined"><span class="token function">getEntity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token operator">?</span>string</pre><p>Returns the entity key (if any) for this character, as mapped to the global set of
+entities tracked by the <a href="https://github.com/facebook/draft-js/blob/master/src/model/entity/DraftEntity.js"><code>Entity</code></a>
+module.</p>
+<p>By tracking a string key here, we can keep the corresponding metadata separate
+from the character representation.</p>
+<p>If null, no entity is applied for this character.</p>
+</div><div class="docs-prevnext"><a class="docs-next" href="api-reference-entity.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2018 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
 
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
