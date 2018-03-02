@@ -48,33 +48,28 @@ function getCharacterRemovalRange(
   }
   var newSelectionState = selectionState;
   if (startEntityKey && startEntityKey === endEntityKey) {
-    newSelectionState = getEntityRemovalRange(
+    newSelectionState = getEntityRemovalRangeAtStart(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
       startEntityKey,
-      true,
       true,
     );
   } else if (startEntityKey && endEntityKey) {
-    const startSelectionState = getEntityRemovalRange(
+    const startSelectionState = getEntityRemovalRangeAtStart(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
       startEntityKey,
-      false,
-      true,
     );
-    const endSelectionState = getEntityRemovalRange(
+    const endSelectionState = getEntityRemovalRangeAtEnd(
       entityMap,
       endBlock,
       newSelectionState,
       direction,
       endEntityKey,
-      false,
-      false,
     );
     newSelectionState = newSelectionState.merge({
       anchorOffset: startSelectionState.getAnchorOffset(),
@@ -82,28 +77,24 @@ function getCharacterRemovalRange(
       isBackward: false,
     });
   } else if (startEntityKey) {
-    const startSelectionState = getEntityRemovalRange(
+    const startSelectionState = getEntityRemovalRangeAtStart(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
       startEntityKey,
-      false,
-      true,
     );
     newSelectionState = newSelectionState.merge({
       anchorOffset: startSelectionState.getStartOffset(),
       isBackward: false,
     });
   } else if (endEntityKey) {
-    const endSelectionState = getEntityRemovalRange(
+    const endSelectionState = getEntityRemovalRangeAtEnd(
       entityMap,
       endBlock,
       newSelectionState,
       direction,
       endEntityKey,
-      false,
-      false,
     );
     newSelectionState = newSelectionState.merge({
       focusOffset: endSelectionState.getEndOffset(),
@@ -111,6 +102,43 @@ function getCharacterRemovalRange(
     });
   }
   return newSelectionState;
+}
+
+function getEntityRemovalRangeAtStart(
+  entityMap: EntityMap,
+  block: BlockNodeRecord,
+  selectionState: SelectionState,
+  direction: DraftRemovalDirection,
+  entityKey: string,
+  isEntireSelectionWithinEntity: boolean = false,
+): SelectionState {
+  return getEntityRemovalRange(
+    entityMap,
+    block,
+    selectionState,
+    direction,
+    entityKey,
+    isEntireSelectionWithinEntity,
+    true,
+  );
+}
+
+function getEntityRemovalRangeAtEnd(
+  entityMap: EntityMap,
+  block: BlockNodeRecord,
+  selectionState: SelectionState,
+  direction: DraftRemovalDirection,
+  entityKey: string,
+): SelectionState {
+  return getEntityRemovalRange(
+    entityMap,
+    block,
+    selectionState,
+    direction,
+    entityKey,
+    false,
+    false,
+  );
 }
 
 function getEntityRemovalRange(
@@ -126,6 +154,7 @@ function getEntityRemovalRange(
   var end = selectionState.getEndOffset();
   var entity = entityMap.__get(entityKey);
   var mutability = entity.getMutability();
+
   const sideToConsider = isEntityAtStart ? start : end;
 
   // `MUTABLE` entities can just have the specified range of text removed
