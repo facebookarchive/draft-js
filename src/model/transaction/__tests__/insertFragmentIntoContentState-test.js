@@ -36,6 +36,7 @@ const DEFAULT_BLOCK_CONFIG = {
 };
 
 const initialBlock = contentState.getBlockMap().first();
+const secondBlock = contentState.getBlockForKey('b');
 
 const createFragment = (fragment = {}, experimentalTreeDataSupport = false) => {
   const ContentBlockNodeRecord = experimentalTreeDataSupport
@@ -62,9 +63,15 @@ const assertInsertFragmentIntoContentState = (
   fragment,
   selection = selectionState,
   content = contentState,
+  forceTypeOverride,
 ) => {
   expect(
-    insertFragmentIntoContentState(content, selection, fragment)
+    insertFragmentIntoContentState(
+      content,
+      selection,
+      fragment,
+      forceTypeOverride,
+    )
       .getBlockMap()
       .toIndexedSeq()
       .toJS(),
@@ -388,5 +395,29 @@ test('must throw an error when trying to apply ContentBlockNode fragments when s
     new Error(
       '`insertFragment` should not be called when a container node is selected.',
     ),
+  );
+});
+
+test('must insert with the target block type by default', () => {
+  assertInsertFragmentIntoContentState(
+    createFragment(),
+    selectionState.merge({
+      focusKey: secondBlock.getKey(),
+      anchorKey: secondBlock.getKey(),
+      isBackward: false,
+    }),
+  );
+});
+
+test('must insert with the fragment block type if passed forceTypeOverride', () => {
+  assertInsertFragmentIntoContentState(
+    createFragment(),
+    selectionState.merge({
+      focusKey: secondBlock.getKey(),
+      anchorKey: secondBlock.getKey(),
+      isBackward: false,
+    }),
+    undefined,
+    true,
   );
 });
