@@ -137,6 +137,7 @@ replaceWithFragment(
   contentState: ContentState,
   targetRange: SelectionState,
   fragment: BlockMap
+  forceTypeOverride: ?boolean,
 ): ContentState
 ```
 A "fragment" is a section of a block map, effectively just an
@@ -144,6 +145,8 @@ A "fragment" is a section of a block map, effectively just an
 `ContentState` object.
 
 This method will replace the "target" range with the fragment.
+
+If the fragment to be inserted is a single block, by default it acquires the type of the target block. Passing `true` to `forceTypeOverride` will use the type of block to be inserted instead.
 
 Example: When pasting content, we convert the paste into a fragment to be inserted
 into the editor, then use this method to add it.
