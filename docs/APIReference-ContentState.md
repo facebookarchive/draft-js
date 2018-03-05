@@ -163,6 +163,11 @@ objects.
       <pre>selectionAfter</pre>
     </a>
   </li>
+  <li>
+    <a href="#data">
+      <pre>data</pre>
+    </a>
+  </li>
 </ul>
 
 ## Static Methods
@@ -400,3 +405,7 @@ See `getSelectionBefore()`.
 
 ### selectionAfter
 See `getSelectionAfter()`.
+
+## data
+Custom data property for applications that needs to store metadata with the rest
+of the content state. This can be set to any value.
