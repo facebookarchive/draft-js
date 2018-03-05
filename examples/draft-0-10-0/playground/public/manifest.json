@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Draft.js Playground",
+  "name": "Draft.js Playground example",
   "icons": [
     {
       "src": "favicon.ico",
