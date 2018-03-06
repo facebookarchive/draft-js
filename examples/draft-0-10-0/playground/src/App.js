@@ -20,7 +20,6 @@ import PanelGroup from 'react-panelgroup';
 
 import {
   ContentState,
-  //Editor,
   EditorState,
   convertFromHTML,
   convertToRaw,
