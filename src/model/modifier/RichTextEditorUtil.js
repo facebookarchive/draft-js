@@ -210,27 +210,10 @@ const RichTextEditorUtil = {
 
     event.preventDefault();
 
-    // Only allow indenting one level beyond the block above, and only if
-    // the block above is a list item as well.
-    var blockAbove = content.getBlockBefore(key);
-    if (!blockAbove) {
-      return editorState;
-    }
-
-    var typeAbove = blockAbove.getType();
-    if (
-      typeAbove !== 'unordered-list-item' &&
-      typeAbove !== 'ordered-list-item'
-    ) {
-      return editorState;
-    }
-
     var depth = block.getDepth();
     if (!event.shiftKey && depth === maxDepth) {
       return editorState;
     }
-
-    maxDepth = Math.min(blockAbove.getDepth() + 1, maxDepth);
 
     var withAdjustment = adjustBlockDepthForContentState(
       content,
