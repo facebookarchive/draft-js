@@ -17,6 +17,7 @@ import type DraftEditor from 'DraftEditor.react';
 var EditorState = require('EditorState');
 var UserAgent = require('UserAgent');
 
+var containsNode = require('containsNode');
 var getActiveElement = require('getActiveElement');
 
 var isWebKit = UserAgent.isEngine('WebKit');
@@ -29,7 +30,15 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent): void {
   // to force it when blurring occurs within the window (as opposed to
   // clicking to another tab or window).
   if (isWebKit && getActiveElement() === document.body) {
-    global.getSelection().removeAllRanges();
+    var selection = global.getSelection();
+    var editorNode = editor.refs.editor;
+    if (
+      selection.rangeCount === 1 &&
+      containsNode(editorNode, selection.anchorNode) &&
+      containsNode(editorNode, selection.focusNode)
+    ) {
+      selection.removeAllRanges();
+    }
   }
 
   var editorState = editor._latestEditorState;
