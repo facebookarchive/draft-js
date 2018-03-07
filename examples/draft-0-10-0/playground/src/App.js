@@ -12,23 +12,19 @@ import {Controlled as CodeMirror} from 'react-codemirror2';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 import 'draft-js/dist/Draft.css';
+import './App.css';
+import DraftJsRichEditorExample from './DraftJsRichEditorExample';
 import JSONTree from 'react-json-tree';
 import {convertToHTML} from 'draft-convert';
 import PanelGroup from 'react-panelgroup';
 
 import {
   ContentState,
-  Editor,
   EditorState,
   convertFromHTML,
   convertToRaw,
   convertFromRaw,
 } from 'draft-js';
-
-// const SomeCodeMirror = require('SomeCodeMirror.react');
-// const SomeButton = require('SomeButton.react');
-// const SomeSelector = require('SomeSelector.react');
-// const SomeSelectorOption = require('SomeSelectorOption.react');
 
 const theme = {
   scheme: 'monokai',
@@ -56,6 +52,7 @@ const baseRawContent = {
     {
       key: 'A',
       text: 'Hello world',
+      type: 'header-one',
     },
   ],
   entityMap: {},
@@ -165,48 +162,97 @@ class DraftJsPlaygroundContainer extends Component {
     const {editorState, mode, codeMirrorValue} = this.state;
 
     return (
-      <PanelGroup borderColor="grey">
-        <PanelGroup direction="column" borderColor="grey">
-          <div className="DraftJsPlaygroundContainer-raw">
-            <div className={'DraftJsPlaygroundContainer-controls'}>
-              <select onChange={this.onSelectChange} value={mode}>
-                <option value="rawContent">Raw Content</option>
-                <option value="html">HTML</option>
-              </select>
-              <button onClick={this.setContent}>Update draft content</button>
-              <button onClick={this.importEditorState}>
-                Import draft content
-              </button>
+      <div className="container">
+        <div className="nav-main">
+          <div className="wrap">
+            <a
+              className="nav-home"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://draftjs.org/">
+              Draft.js
+            </a>
+            <ul className="nav-site">
+              <li>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://draftjs.org/docs/overview.html#content">
+                  Docs
+                </a>
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://github.com/facebook/draft-js">
+                  GitHub
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="playground-main">
+          <PanelGroup borderColor="grey">
+            <PanelGroup direction="column" borderColor="grey">
+              <div className="DraftJsPlaygroundContainer-editor">
+                <DraftJsRichEditorExample
+                  className="DraftEditor-root"
+                  editorState={editorState}
+                  onChange={this.onChange}
+                  placeholder="Editor content is empty..."
+                />
+              </div>
+              <div className="DraftJsPlaygroundContainer-raw">
+                <div className="DraftJsPlaygroundContainer-controls">
+                  <section className="contentControls">
+                    <select
+                      title="Draft.js content type switch"
+                      onChange={this.onSelectChange}
+                      value={mode}>
+                      <option value="rawContent">Raw</option>
+                      <option value="html">HTML</option>
+                    </select>
+                  </section>
+                  <section className="contentControls">
+                    <button
+                      title="Import content type from the editor"
+                      onClick={this.importEditorState}>
+                      Import
+                    </button>
+                    <button
+                      title="Update the editor with content type"
+                      onClick={this.setContent}>
+                      Update
+                    </button>
+                  </section>
+                </div>
+                <CodeMirror
+                  onBeforeChange={this.updateCodeMirror}
+                  ref={input => {
+                    this.markupinput = input;
+                  }}
+                  options={{
+                    mode: 'application/ld+json',
+                    matchBrackets: true,
+                    lineNumbers: true,
+                    lineWrapping: true,
+                    autoCloseBrackets: true,
+                  }}
+                  value={codeMirrorValue}
+                />
+              </div>
+            </PanelGroup>
+            <div className="playground-raw-preview">
+              <JSONTree
+                shouldExpandNode={this.shouldExpandNode}
+                theme={theme}
+                data={editorState.getCurrentContent()}
+              />
             </div>
-            <CodeMirror
-              onBeforeChange={this.updateCodeMirror}
-              ref={input => {
-                this.markupinput = input;
-              }}
-              options={{
-                mode: 'application/ld+json',
-                matchBrackets: true,
-                lineWrapping: true,
-                autoCloseBrackets: true,
-              }}
-              value={codeMirrorValue}
-            />
-          </div>
-          <div className={'DraftJsPlaygroundContainer-editor'}>
-            <Editor
-              className={'DraftEditor-root'}
-              editorState={editorState}
-              onChange={this.onChange}
-              placeholder="Editor content is empty..."
-            />
-          </div>
-        </PanelGroup>
-        <JSONTree
-          shouldExpandNode={this.shouldExpandNode}
-          theme={theme}
-          data={editorState.getCurrentContent()}
-        />
-      </PanelGroup>
+          </PanelGroup>
+        </div>
+      </div>
     );
   }
 }
