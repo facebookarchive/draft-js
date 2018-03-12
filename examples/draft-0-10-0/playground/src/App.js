@@ -64,17 +64,18 @@ const baseRawContent = {
   entityMap: {},
 };
 
-const baseHtmlContent = `
-<ul>
+const baseHtmlContent = `<ol>
+  <li>one</li>
   <li>
-    <ol>
+    <ul>
       <li>
-        <h1>My list</h1>
+        <h1>2a</h1>
       </li>
-      <li>list item</li>
-    </ol>
+      <li>2b</li>
+    </ul>
    </li>
-</ul>
+   <li>three</li>
+</ol>
 `;
 
 const BASE_CONTENT = {
@@ -175,6 +176,12 @@ class DraftJsPlaygroundContainer extends Component {
     );
   };
 
+  onExperimentChange = ({target: {value: experimentFlags}}) => {
+    if (experimentFlags) {
+      window.location = window.location.origin + '?gk_enable=' + experimentFlags;
+    }
+  };
+
   render() {
     const {editorState, mode, codeMirrorValue} = this.state;
 
@@ -190,6 +197,22 @@ class DraftJsPlaygroundContainer extends Component {
               Draft.js
             </a>
             <ul className="nav-site">
+              <li>
+                <select
+                  className="nav-experiment-selector"
+                  name="experiment"
+                  onChange={this.onExperimentChange}>
+                  <option value="">
+                    Try an experiment..
+                  </option>
+                  <option value="draft_refactored_html_importer">
+                    Modern HTML importer
+                  </option>
+                  <option value="draft_tree_data_support,draft_refactored_html_importer">
+                    Tree data structure
+                  </option>
+                </select>
+              </li>
               <li>
                 <a
                   target="_blank"
