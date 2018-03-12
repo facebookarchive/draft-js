@@ -23,7 +23,8 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const Immutable = require('immutable');
 
-const convertFromHTMLtoContentBlocks = require('convertFromHTMLToContentBlocks');
+const convertFromHTMLtoContentBlocksClassic = require('convertFromHTMLToContentBlocks');
+const convertFromHTMLtoContentBlocksNew = require('convertFromHTMLToContentBlocks2');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
@@ -35,6 +36,11 @@ const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 const ContentBlockRecord = experimentalTreeDataSupport
   ? ContentBlockNode
   : ContentBlock;
+
+const refactoredHTMLImporter = gkx('draft_refactored_html_importer');
+const convertFromHTMLtoContentBlocks = refactoredHTMLImporter
+  ? convertFromHTMLtoContentBlocksNew
+  : convertFromHTMLtoContentBlocksClassic;
 
 const DraftPasteProcessor = {
   processHTML(
