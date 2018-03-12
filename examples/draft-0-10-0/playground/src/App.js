@@ -17,14 +17,20 @@ import DraftJsRichEditorExample from './DraftJsRichEditorExample';
 import JSONTree from 'react-json-tree';
 import {convertToHTML} from 'draft-convert';
 import PanelGroup from 'react-panelgroup';
+import gkx from 'draft-js/lib/gkx';
+import convertFromHTMLModern from 'draft-js/lib/convertFromHTMLToContentBlocks2';
 
 import {
   ContentState,
   EditorState,
-  convertFromHTML,
+  convertFromHTML as convertFromHTMLClassic,
   convertToRaw,
   convertFromRaw,
 } from 'draft-js';
+
+const fromHTML = gkx('draft_refactored_html_importer')
+  ? convertFromHTMLModern
+  : convertFromHTMLClassic;
 
 const theme = {
   scheme: 'monokai',
@@ -59,8 +65,16 @@ const baseRawContent = {
 };
 
 const baseHtmlContent = `
-<h1>heading inside blockquote</h1>
-<p>paragraph inside blockquote</p>
+<ul>
+  <li>
+    <ol>
+      <li>
+        <h1>My list</h1>
+      </li>
+      <li>list item</li>
+    </ol>
+   </li>
+</ul>
 `;
 
 const BASE_CONTENT = {
@@ -108,7 +122,7 @@ class DraftJsPlaygroundContainer extends Component {
   };
 
   _setHTMLContent(html) {
-    const parsedHtml = convertFromHTML(html);
+    const parsedHtml = fromHTML(html);
 
     if (!parsedHtml) {
       return;
@@ -145,10 +159,13 @@ class DraftJsPlaygroundContainer extends Component {
   };
 
   onSelectChange = ({target: {value: mode}}) => {
-    this.setState({mode});
+    this.setState({
+      mode,
+      codeMirrorValue: BASE_CONTENT[mode],
+    });
   };
 
-  updateCodeMirror = (editor, data, codeMirrorValue) => {
+  updateCodeMirror = codeMirrorValue => {
     this.setState({codeMirrorValue});
   };
 
@@ -228,7 +245,9 @@ class DraftJsPlaygroundContainer extends Component {
                   </section>
                 </div>
                 <CodeMirror
-                  onBeforeChange={this.updateCodeMirror}
+                  onBeforeChange={(editor, data, codeMirrorValue) =>
+                    this.updateCodeMirror(codeMirrorValue)
+                  }
                   ref={input => {
                     this.markupinput = input;
                   }}
