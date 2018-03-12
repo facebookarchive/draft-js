@@ -178,7 +178,7 @@ class DraftJsPlaygroundContainer extends Component {
 
   onExperimentChange = ({target: {value: experimentFlags}}) => {
     if (experimentFlags) {
-      window.location = window.location.origin + '?gk_enable=' + experimentFlags;
+      window.location.search = `gk_enable=${experimentFlags}`;
     }
   };
 
@@ -202,9 +202,7 @@ class DraftJsPlaygroundContainer extends Component {
                   className="nav-experiment-selector"
                   name="experiment"
                   onChange={this.onExperimentChange}>
-                  <option value="">
-                    Try an experiment..
-                  </option>
+                  <option value="">Try an experiment..</option>
                   <option value="draft_refactored_html_importer">
                     Modern HTML importer
                   </option>
