@@ -41,7 +41,7 @@ class KatexOutput extends React.Component {
     this._update();
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.content !== this.props.content) {
       this._update();
     }
