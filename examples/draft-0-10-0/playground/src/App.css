@@ -19,6 +19,7 @@
 }
 
 .playground-main select {
+  width: 100px;
   background: #843131;
 }
 
@@ -102,6 +103,21 @@
   color: #C15757;
 }
 
+.nav-main .nav-experiment-selector option,
+.nav-main .nav-experiment-selector {
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  text-align-last: right;
+}
+
+.nav-main .nav-experiment-selector option {
+  color: #000;
+  padding: 10px 0px;
+}
+
 .nav-home img {
   vertical-align: -17px;
   margin-right: 4px;
@@ -139,4 +155,15 @@
 .playground-raw-preview ul {
   /** sad :( but seems to not be a way to overwrite that by configuration */
   background: var(--main-background) !important;
+}
+
+.RichEditor-editor {
+  padding: 10px 20px;
+}
+
+/**
+ * basic style for handling nested lists
+ */
+.RichEditor-editor li[data-block] li[data-block] {
+  margin-left: 20px;
 }
