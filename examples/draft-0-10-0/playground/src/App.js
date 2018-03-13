@@ -17,14 +17,20 @@ import DraftJsRichEditorExample from './DraftJsRichEditorExample';
 import JSONTree from 'react-json-tree';
 import {convertToHTML} from 'draft-convert';
 import PanelGroup from 'react-panelgroup';
+import gkx from 'draft-js/lib/gkx';
+import convertFromHTMLModern from 'draft-js/lib/convertFromHTMLToContentBlocks2';
 
 import {
   ContentState,
   EditorState,
-  convertFromHTML,
+  convertFromHTML as convertFromHTMLClassic,
   convertToRaw,
   convertFromRaw,
 } from 'draft-js';
+
+const fromHTML = gkx('draft_refactored_html_importer')
+  ? convertFromHTMLModern
+  : convertFromHTMLClassic;
 
 const theme = {
   scheme: 'monokai',
@@ -58,9 +64,18 @@ const baseRawContent = {
   entityMap: {},
 };
 
-const baseHtmlContent = `
-<h1>heading inside blockquote</h1>
-<p>paragraph inside blockquote</p>
+const baseHtmlContent = `<ol>
+  <li>one</li>
+  <li>
+    <ul>
+      <li>
+        <h1>2a</h1>
+      </li>
+      <li>2b</li>
+    </ul>
+   </li>
+   <li>three</li>
+</ol>
 `;
 
 const BASE_CONTENT = {
@@ -108,7 +123,7 @@ class DraftJsPlaygroundContainer extends Component {
   };
 
   _setHTMLContent(html) {
-    const parsedHtml = convertFromHTML(html);
+    const parsedHtml = fromHTML(html);
 
     if (!parsedHtml) {
       return;
@@ -145,10 +160,13 @@ class DraftJsPlaygroundContainer extends Component {
   };
 
   onSelectChange = ({target: {value: mode}}) => {
-    this.setState({mode});
+    this.setState({
+      mode,
+      codeMirrorValue: BASE_CONTENT[mode],
+    });
   };
 
-  updateCodeMirror = (editor, data, codeMirrorValue) => {
+  updateCodeMirror = codeMirrorValue => {
     this.setState({codeMirrorValue});
   };
 
@@ -156,6 +174,12 @@ class DraftJsPlaygroundContainer extends Component {
     return ['blockMap', 'root'].some(
       defaultVisibleNode => keyName[0] === defaultVisibleNode,
     );
+  };
+
+  onExperimentChange = ({target: {value: experimentFlags}}) => {
+    if (experimentFlags) {
+      window.location.search = `gk_enable=${experimentFlags}`;
+    }
   };
 
   render() {
@@ -173,6 +197,20 @@ class DraftJsPlaygroundContainer extends Component {
               Draft.js
             </a>
             <ul className="nav-site">
+              <li>
+                <select
+                  className="nav-experiment-selector"
+                  name="experiment"
+                  onChange={this.onExperimentChange}>
+                  <option value="">Try an experiment..</option>
+                  <option value="draft_refactored_html_importer">
+                    Modern HTML importer
+                  </option>
+                  <option value="draft_tree_data_support,draft_refactored_html_importer">
+                    Tree data structure
+                  </option>
+                </select>
+              </li>
               <li>
                 <a
                   target="_blank"
@@ -228,7 +266,9 @@ class DraftJsPlaygroundContainer extends Component {
                   </section>
                 </div>
                 <CodeMirror
-                  onBeforeChange={this.updateCodeMirror}
+                  onBeforeChange={(editor, data, codeMirrorValue) =>
+                    this.updateCodeMirror(codeMirrorValue)
+                  }
                   ref={input => {
                     this.markupinput = input;
                   }}
