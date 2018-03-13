@@ -13,6 +13,10 @@
 
 'use strict';
 
-const DraftEditorContents = require('DraftEditorContents-core.react');
+const gkx = require('gkx');
 
-module.exports = DraftEditorContents;
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
+
+module.exports = experimentalTreeDataSupport
+  ? require('DraftEditorContentsExperimental.react')
+  : require('DraftEditorContents-core.react');
