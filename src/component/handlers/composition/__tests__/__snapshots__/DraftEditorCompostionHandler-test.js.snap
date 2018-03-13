@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Can handle Chinese (simplified) composition 1`] = `"推土机"`;
+
+exports[`Can handle Japanese composition 1`] = `"日本語"`;
+
+exports[`Can handle Korean composition 1`] = `"하"`;
+
+exports[`Can handle a cancellation compositionend event 1`] = `"testing"`;
+
+exports[`Can handle a delayed compositionstart after compositionend (e.g. CJK IMEs on Safari) 1`] = `""`;
+
+exports[`Can handle compositionend + beforeInput (e.g. Desktop Japanese IME) 1`] = `"私"`;
+
+exports[`Can handle compositionend 1`] = `"Testing"`;
+
+exports[`Can handle compositionend with IME processed keycode keydown events (e.g. Android Chrome + GBoard) 1`] = `"Testing"`;
+
+exports[`Can handle compositionstart after compositionend (e.g. CJK IMEs) 1`] = `""`;
+
+exports[`Can handle input case where beforeInput is never fired,but composition update is 1`] = `"foo bar"`;
+
+exports[`Can handle multiple composition resolutions 1`] = `"test string"`;
+
+exports[`Can handle multiple onBeforeInput events (e.g. Android firefox + GBoard) 1`] = `"testing"`;
+
+exports[`Can handle onKeyDown after compositionEnd (e.g. Android Firefox + GBoard, autocorrect one char) 1`] = `"testin"`;
+
+exports[`Properly handles duplicate compositionend event (e.g. Arabic Google Input Tools on Win 8.1) 1`] = `"私"`;
