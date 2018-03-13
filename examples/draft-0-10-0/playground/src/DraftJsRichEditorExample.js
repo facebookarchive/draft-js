@@ -10,7 +10,14 @@ import React, {Component} from 'react';
 
 import {Editor, RichUtils, getDefaultKeyBinding} from 'draft-js';
 
+import gkx from 'draft-js/lib/gkx';
+import NestedRichTextEditorUtil from 'draft-js/lib/NestedRichTextEditorUtil';
+
 import './DraftJsRichEditorExample.css';
+
+const RichTextUtils = gkx('draft_tree_data_support')
+  ? NestedRichTextEditorUtil
+  : RichUtils;
 
 class DraftJsRichEditorExample extends Component {
   constructor(props) {
@@ -24,7 +31,7 @@ class DraftJsRichEditorExample extends Component {
   }
 
   _handleKeyCommand(command, editorState) {
-    const newState = RichUtils.handleKeyCommand(editorState, command);
+    const newState = RichTextUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
       return true;
@@ -34,7 +41,7 @@ class DraftJsRichEditorExample extends Component {
 
   _mapKeyToEditorCommand(e) {
     if (e.keyCode === 9 /* TAB */) {
-      const newEditorState = RichUtils.onTab(
+      const newEditorState = RichTextUtils.onTab(
         e,
         this.props.editorState,
         4 /* maxDepth */,
@@ -48,12 +55,14 @@ class DraftJsRichEditorExample extends Component {
   }
 
   _toggleBlockType(blockType) {
-    this.onChange(RichUtils.toggleBlockType(this.props.editorState, blockType));
+    this.onChange(
+      RichTextUtils.toggleBlockType(this.props.editorState, blockType),
+    );
   }
 
   _toggleInlineStyle(inlineStyle) {
     this.onChange(
-      RichUtils.toggleInlineStyle(this.props.editorState, inlineStyle),
+      RichTextUtils.toggleInlineStyle(this.props.editorState, inlineStyle),
     );
   }
 

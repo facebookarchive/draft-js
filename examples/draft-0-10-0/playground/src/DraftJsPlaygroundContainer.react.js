@@ -51,7 +51,7 @@ class DraftJsPlaygroundContainer extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      mode: 'rawContent',
+      mode: 'html',
       editorState: EditorState.createEmpty(),
     };
   }
@@ -124,9 +124,7 @@ class DraftJsPlaygroundContainer extends Component<Props, State> {
       <div className={cx('DraftJsPlaygroundContainer/container')}>
         <div className={cx('DraftJsPlaygroundContainer/column')}>
           <div className={cx('DraftJsPlaygroundContainer/controls')}>
-            <SomeSelector
-              onChange={this.onSelectChange}
-              value={mode}>
+            <SomeSelector onChange={this.onSelectChange} value={mode}>
               <SomeSelectorOption value="rawContent">
                 Raw Content
               </SomeSelectorOption>

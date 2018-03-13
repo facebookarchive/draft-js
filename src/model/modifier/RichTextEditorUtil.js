@@ -17,6 +17,7 @@ import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type URI from 'URI';
+import type {RichTextUtils} from 'RichTextUtils';
 
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
@@ -25,7 +26,7 @@ const SelectionState = require('SelectionState');
 const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
 const nullthrows = require('nullthrows');
 
-const RichTextEditorUtil = {
+const RichTextEditorUtil: RichTextUtils = {
   currentBlockContainsLink: function(editorState: EditorState): boolean {
     var selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
