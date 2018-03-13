@@ -54,7 +54,7 @@ class DraftJsPlaygroundContainer extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      mode: 'rawContent',
+      mode: 'html',
       editorState: EditorState.createEmpty(),
     };
   }
