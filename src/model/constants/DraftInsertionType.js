@@ -8,7 +8,7 @@
  *
  * @providesModule DraftInsertionType
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

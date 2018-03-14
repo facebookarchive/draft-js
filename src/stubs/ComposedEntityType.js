@@ -8,7 +8,7 @@
  *
  * @providesModule ComposedEntityType
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

@@ -8,7 +8,7 @@
  *
  * @providesModule splitTextIntoTextBlocks
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

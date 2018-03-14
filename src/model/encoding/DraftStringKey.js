@@ -8,7 +8,7 @@
  *
  * @providesModule DraftStringKey
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

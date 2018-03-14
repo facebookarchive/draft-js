@@ -8,7 +8,7 @@
  *
  * @providesModule DraftRange
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

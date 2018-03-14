@@ -8,7 +8,7 @@
  *
  * @providesModule ComposedEntityMutability
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

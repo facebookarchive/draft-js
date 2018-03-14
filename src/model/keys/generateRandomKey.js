@@ -8,7 +8,7 @@
  *
  * @providesModule generateRandomKey
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

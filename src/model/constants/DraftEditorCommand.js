@@ -8,7 +8,7 @@
  *
  * @providesModule DraftEditorCommand
  * @format
- * @flow
+ * @flow strict
  */
 
 /*eslint-disable no-bitwise*/

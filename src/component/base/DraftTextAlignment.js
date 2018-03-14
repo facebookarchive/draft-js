@@ -8,7 +8,7 @@
  *
  * @providesModule DraftTextAlignment
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';
