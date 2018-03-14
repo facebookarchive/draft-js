@@ -8,7 +8,7 @@
  *
  * @providesModule DraftEditorModes
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

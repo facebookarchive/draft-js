@@ -8,7 +8,7 @@
  *
  * @providesModule DraftOffsetKeyPath
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

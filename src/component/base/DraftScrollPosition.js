@@ -8,7 +8,7 @@
  *
  * @providesModule DraftScrollPosition
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

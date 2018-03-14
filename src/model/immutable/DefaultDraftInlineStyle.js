@@ -8,7 +8,7 @@
  *
  * @providesModule DefaultDraftInlineStyle
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

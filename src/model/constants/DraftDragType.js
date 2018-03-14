@@ -8,7 +8,7 @@
  *
  * @providesModule DraftDragType
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';
