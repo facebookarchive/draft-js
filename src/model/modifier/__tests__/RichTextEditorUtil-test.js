@@ -21,7 +21,12 @@ const SelectionState = require('SelectionState');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 
 const {editorState, selectionState} = getSampleStateForTesting();
-const {onBackspace, onDelete, tryToRemoveBlockStyle} = RichTextEditorUtil;
+const {
+  onBackspace,
+  onDelete,
+  onTab,
+  tryToRemoveBlockStyle,
+} = RichTextEditorUtil;
 
 const insertAtomicBlock = targetEditorState => {
   const entityKey = targetEditorState
@@ -168,4 +173,29 @@ test('tryToRemoveBlockStyleonDelete breaks out of code block on enter two blank 
   const lastBlock = afterEnter.getLastBlock();
 
   expect(lastBlock.toJS()).toMatchSnapshot();
+});
+
+test('onTab on list increases depth', () => {
+  const contentState = editorState.getCurrentContent();
+
+  const setListItem = DraftModifier.setBlockType(
+    contentState,
+    selectionState,
+    'unordered-list-item',
+  );
+
+  const withListItem = EditorState.push(
+    editorState,
+    setListItem,
+    'change-block-type',
+  );
+
+  const afterFirstTab = onTab({preventDefault: () => {}}, withListItem, 2);
+  const afterSecondTab = onTab({preventDefault: () => {}}, afterFirstTab, 2);
+  const depthAfter = afterSecondTab
+    .getCurrentContent()
+    .getFirstBlock()
+    .getDepth();
+
+  expect(depthAfter).toBe(2);
 });
