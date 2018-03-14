@@ -1,24 +1,38 @@
-*Before* submitting a pull request, please make sure the following is done...
+**What is the content type?**
 
-1. Fork the repo and create your branch from `master`.
-2. If you've added code that should be tested, add tests!
-3. If you've changed APIs, update the documentation.
-4. Ensure that:
-  * The test suite passes (`npm test`)
-  * Your code lints (`npm run lint`) and passes Flow (`npm run flow`)
-  * You have followed the [testing guidelines](https://github.com/facebook/draft-js/wiki/Testing-for-Pull-Requests)
-5. If you haven't already, complete the [CLA](https://code.facebook.com/cla).
+  - Feature
+  - Bugfix
+  - Improvement
+  - Documentation
 
-Please use the simple form below as a guideline for describing your pull request.
+**Why is this change necessary?**
 
-Thanks for contributing to Draft.js!
+  ``` template
+  **REMOVE THIS TEMPLATE MESSAGE!!!**
+  This question tells reviewers of your pull request what to
+  expect in the commit, allowing them to more easily identify and
+  point out unrelated changes.
+  **REMOVE THIS TEMPLATE MESSAGE!!!**
+  ```
 
--
+  - Answer (Template)
 
-**Summary**
+**How does it address the issue?**
 
-[...]
+  ``` template
+  **REMOVE THIS TEMPLATE MESSAGE!!!**
+  Describe, at a high level, what was done to affect change. Ex:
+  - Introduce a red/black tree to increase search speed
+  - Remove <troublesome gem X>, which was causing <specific description of issue introduced by gem>
+  **REMOVE THIS TEMPLATE MESSAGE!!!**
+  ```
 
-**Test Plan**
+  - Answer (Template)
 
-[...]
+**What side effects does this change have?**
+
+  - Answer (Template)
+
+**Link to a Pipefy Card?**
+
+  - [CARD TITLE](https://app.pipefy.com/pipes/{PIPE_ID}#cards/{CARD_ID})

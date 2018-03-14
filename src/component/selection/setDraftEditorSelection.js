@@ -297,7 +297,9 @@ function addFocusToSelection(
       // better than continuing in a broken state
       throw e;
     }
-  } else {
+  } else if (selection && selection.rangeCount > 0) {
+    // Check if range is not empty to prevent getting IndexSizeError in IE11
+
     // IE doesn't support extend. This will mean no backward selection.
     // Extract the existing selection range and add focus to it.
     // Additionally, clone the selection range. IE11 throws an
