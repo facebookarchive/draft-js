@@ -21,7 +21,12 @@ const SelectionState = require('SelectionState');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 
 const {editorState, selectionState} = getSampleStateForTesting();
-const {onBackspace, onDelete, tryToRemoveBlockStyle} = RichTextEditorUtil;
+const {
+  onBackspace,
+  onDelete,
+  onTab,
+  tryToRemoveBlockStyle,
+} = RichTextEditorUtil;
 
 const insertAtomicBlock = targetEditorState => {
   const entityKey = targetEditorState
@@ -168,4 +173,50 @@ test('tryToRemoveBlockStyleonDelete breaks out of code block on enter two blank 
   const lastBlock = afterEnter.getLastBlock();
 
   expect(lastBlock.toJS()).toMatchSnapshot();
+});
+
+describe('onTab on list block', () => {
+  const setListBlock = (contentState, type) =>
+    DraftModifier.setBlockType(contentState, selectionState, type);
+  const changeBlockType = setListItem =>
+    EditorState.push(editorState, setListItem, 'change-block-type');
+  const getFirstBlockDepth = contentState =>
+    contentState
+      .getCurrentContent()
+      .getFirstBlock()
+      .getDepth();
+  const addTab = (contentState, maxDepth = 2) =>
+    onTab({preventDefault: () => {}}, contentState, maxDepth);
+
+  test('increases the depth of unordered-list-item', () => {
+    const contentState = editorState.getCurrentContent();
+    const setListItem = setListBlock(contentState, 'unordered-list-item');
+    const withListItem = changeBlockType(setListItem);
+
+    const afterFirstTab = addTab(withListItem);
+    const depthAfterFirstTab = getFirstBlockDepth(afterFirstTab);
+
+    expect(depthAfterFirstTab).toBe(1);
+
+    const afterSecondTab = addTab(afterFirstTab);
+    const depthAfterSecondTab = getFirstBlockDepth(afterSecondTab);
+
+    expect(depthAfterSecondTab).toBe(2);
+  });
+
+  test('increases the depth of unordered-list-item', () => {
+    const contentState = editorState.getCurrentContent();
+    const setListItem = setListBlock(contentState, 'ordered-list-item');
+    const withListItem = changeBlockType(setListItem);
+
+    const afterFirstTab = addTab(withListItem);
+    const depthAfterFirstTab = getFirstBlockDepth(afterFirstTab);
+
+    expect(depthAfterFirstTab).toBe(1);
+
+    const afterSecondTab = addTab(afterFirstTab);
+    const depthAfterSecondTab = getFirstBlockDepth(afterSecondTab);
+
+    expect(depthAfterSecondTab).toBe(2);
+  });
 });
