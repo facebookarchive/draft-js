@@ -175,27 +175,48 @@ test('tryToRemoveBlockStyleonDelete breaks out of code block on enter two blank 
   expect(lastBlock.toJS()).toMatchSnapshot();
 });
 
-test('onTab on list increases depth', () => {
-  const contentState = editorState.getCurrentContent();
+describe('onTab on list block', () => {
+  const setListBlock = (contentState, type) =>
+    DraftModifier.setBlockType(contentState, selectionState, type);
+  const changeBlockType = setListItem =>
+    EditorState.push(editorState, setListItem, 'change-block-type');
+  const getFirstBlockDepth = contentState =>
+    contentState
+      .getCurrentContent()
+      .getFirstBlock()
+      .getDepth();
+  const addTab = (contentState, maxDepth = 2) =>
+    onTab({preventDefault: () => {}}, contentState, maxDepth);
 
-  const setListItem = DraftModifier.setBlockType(
-    contentState,
-    selectionState,
-    'unordered-list-item',
-  );
+  test('increases the depth of unordered-list-item', () => {
+    const contentState = editorState.getCurrentContent();
+    const setListItem = setListBlock(contentState, 'unordered-list-item');
+    const withListItem = changeBlockType(setListItem);
 
-  const withListItem = EditorState.push(
-    editorState,
-    setListItem,
-    'change-block-type',
-  );
+    const afterFirstTab = addTab(withListItem);
+    const depthAfterFirstTab = getFirstBlockDepth(afterFirstTab);
 
-  const afterFirstTab = onTab({preventDefault: () => {}}, withListItem, 2);
-  const afterSecondTab = onTab({preventDefault: () => {}}, afterFirstTab, 2);
-  const depthAfter = afterSecondTab
-    .getCurrentContent()
-    .getFirstBlock()
-    .getDepth();
+    expect(depthAfterFirstTab).toBe(1);
 
-  expect(depthAfter).toBe(2);
+    const afterSecondTab = addTab(afterFirstTab);
+    const depthAfterSecondTab = getFirstBlockDepth(afterSecondTab);
+
+    expect(depthAfterSecondTab).toBe(2);
+  });
+
+  test('increases the depth of unordered-list-item', () => {
+    const contentState = editorState.getCurrentContent();
+    const setListItem = setListBlock(contentState, 'ordered-list-item');
+    const withListItem = changeBlockType(setListItem);
+
+    const afterFirstTab = addTab(withListItem);
+    const depthAfterFirstTab = getFirstBlockDepth(afterFirstTab);
+
+    expect(depthAfterFirstTab).toBe(1);
+
+    const afterSecondTab = addTab(afterFirstTab);
+    const depthAfterSecondTab = getFirstBlockDepth(afterSecondTab);
+
+    expect(depthAfterSecondTab).toBe(2);
+  });
 });
