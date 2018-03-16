@@ -335,6 +335,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     // The aria-expanded and aria-haspopup properties should only be rendered
     // for a combobox.
+    /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
+     * found when Flow v0.68 was deployed. To see the error delete this comment
+     * and run Flow. */
     const ariaRole = this.props.role || 'textbox';
     const ariaExpanded =
       ariaRole === 'combobox' ? !!this.props.ariaExpanded : null;
