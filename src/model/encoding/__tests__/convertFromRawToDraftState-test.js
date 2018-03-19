@@ -16,13 +16,25 @@ jest.disableAutomock();
 
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 
-const assertDraftState = (rawState, expected) => {
+const toggleExperimentalTreeDataSupport = enabled => {
+  jest.doMock('DraftFeatureFlags', () => {
+    return {
+      draft_tree_data_support: enabled,
+    };
+  });
+};
+
+const assertDraftState = rawState => {
   expect(
     convertFromRawToDraftState(rawState)
       .getBlockMap()
       .toJS(),
   ).toMatchSnapshot();
 };
+
+beforeEach(() => {
+  jest.resetModules();
+});
 
 test('must map falsey block types to default value of unstyled', () => {
   const rawState = {
@@ -102,7 +114,7 @@ test('must be able to convert from styled blocks and entities mapped raw state',
   assertDraftState(rawState);
 });
 
-test('convert from raw tree draft content state', () => {
+test('must convert from raw tree draft to raw content state when experimentalTreeDataSupport is disabled', () => {
   const rawState = {
     blocks: [
       {
@@ -124,6 +136,70 @@ test('convert from raw tree draft content state', () => {
             children: [],
           },
         ],
+      },
+    ],
+    entityMap: {},
+  };
+
+  assertDraftState(rawState);
+});
+
+test('convert from raw tree draft content state', () => {
+  toggleExperimentalTreeDataSupport(true);
+  const rawState = {
+    blocks: [
+      {
+        key: 'A',
+        text: '',
+        children: [
+          {
+            key: 'B',
+            text: '',
+            children: [
+              {key: 'C', text: 'left block', children: []},
+              {key: 'D', text: 'right block', children: []},
+            ],
+          },
+          {
+            key: 'E',
+            type: 'header-one',
+            text: 'This is a tree based document!',
+            children: [],
+          },
+        ],
+      },
+    ],
+    entityMap: {},
+  };
+
+  assertDraftState(rawState);
+});
+
+test('must be able to convert from raw state to tree state when experimentalTreeDataSupport is enabled', () => {
+  toggleExperimentalTreeDataSupport(true);
+  const rawState = {
+    blocks: [
+      {key: 'A', text: 'AAAA'},
+      {key: 'B', text: 'BBBB'},
+      {key: 'C', text: 'CCCC'},
+    ],
+    entityMap: {},
+  };
+
+  assertDraftState(rawState);
+});
+
+test('must be able to convert content blocks that have list with depth from raw state to tree state when experimentalTreeDataSupport is enabled', () => {
+  toggleExperimentalTreeDataSupport(true);
+  const rawState = {
+    blocks: [
+      {key: 'A', type: 'ordered-list-item', depth: 0, text: ''},
+      {key: 'B', type: 'ordered-list-item', depth: 1, text: ''},
+      {
+        key: 'C',
+        type: 'ordered-list-item',
+        depth: 2,
+        text: 'deeply nested list',
       },
     ],
     entityMap: {},

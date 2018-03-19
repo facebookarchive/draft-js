@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`begins at nested text node zero, ends at end of nested block 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "b",
+    "focusOffset": 4,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`begins at text node zero, ends at end of block 1`] = `
 Object {
   "needsRecovery": true,
@@ -8,6 +22,20 @@ Object {
     "anchorOffset": 0,
     "focusKey": "a",
     "focusOffset": 19,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`begins within nested text node, ends at end of nested block 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 2,
+    "focusKey": "b",
+    "focusOffset": 4,
     "hasFocus": false,
     "isBackward": false,
   },
@@ -42,6 +70,20 @@ Object {
 }
 `;
 
+exports[`contains an entire nested leaf 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "d",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`does the crazy stuff described above 1`] = `
 Object {
   "needsRecovery": true,
@@ -50,6 +92,34 @@ Object {
     "anchorOffset": 0,
     "focusKey": "c",
     "focusOffset": 12,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`does the crazy stuff described above with nested blocks 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`extends from head of one nested node to end of another nested node 1`] = `
+Object {
+  "needsRecovery": false,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 5,
     "hasFocus": false,
     "isBackward": false,
   },
@@ -98,6 +168,48 @@ Object {
 }
 `;
 
+exports[`from start of one nestd block to end of other nested block 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`from start of one nested block to start of another 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`goes from end of one nested block to end of other nested block 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 4,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`goes from end of one to end of other block 1`] = `
 Object {
   "needsRecovery": true,
@@ -140,6 +252,34 @@ Object {
 }
 `;
 
+exports[`goes from start of one nested block to end of other nested block 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`goes from start of one nested block to start of other 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`goes from within one block to within another block 1`] = `
 Object {
   "needsRecovery": true,
@@ -148,6 +288,48 @@ Object {
     "anchorOffset": 19,
     "focusKey": "c",
     "focusOffset": 7,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`goes from within one nested block to within another nested block 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 4,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`is a reversed nested text-to-leaf selection 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "d",
+    "anchorOffset": 0,
+    "focusKey": "b",
+    "focusOffset": 2,
+    "hasFocus": false,
+    "isBackward": true,
+  },
+}
+`;
+
+exports[`is a reversed selection across multiple nested text nodes 1`] = `
+Object {
+  "needsRecovery": false,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 2,
+    "focusKey": "d",
+    "focusOffset": 3,
     "hasFocus": false,
     "isBackward": false,
   },
@@ -196,6 +378,34 @@ Object {
 }
 `;
 
+exports[`is a reversed text-to-leaf-child selection of nested node 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "d",
+    "anchorOffset": 0,
+    "focusKey": "b",
+    "focusOffset": 4,
+    "hasFocus": false,
+    "isBackward": true,
+  },
+}
+`;
+
+exports[`is collapsed at end at nested single block 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 4,
+    "focusKey": "b",
+    "focusOffset": 4,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`is collapsed at end at single block 1`] = `
 Object {
   "needsRecovery": true,
@@ -204,6 +414,20 @@ Object {
     "anchorOffset": 19,
     "focusKey": "a",
     "focusOffset": 19,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`is collapsed at end of nested single span 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 4,
+    "focusKey": "b",
+    "focusOffset": 4,
     "hasFocus": false,
     "isBackward": false,
   },
@@ -238,6 +462,34 @@ Object {
 }
 `;
 
+exports[`is collapsed at end with full selection with nested blocks 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "d",
+    "anchorOffset": 5,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`is collapsed at start at nested single block 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "b",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`is collapsed at start at single block 1`] = `
 Object {
   "needsRecovery": true,
@@ -245,6 +497,20 @@ Object {
     "anchorKey": "a",
     "anchorOffset": 0,
     "focusKey": "a",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`is collapsed at start of nested single span 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "b",
     "focusOffset": 0,
     "hasFocus": false,
     "isBackward": false,
@@ -280,6 +546,20 @@ Object {
 }
 `;
 
+exports[`is collapsed at start with full selection with nested blocks 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "a",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`is collapsed at the end of a child 1`] = `
 Object {
   "needsRecovery": true,
@@ -294,7 +574,35 @@ Object {
 }
 `;
 
+exports[`is collapsed at the end of a nested child 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 4,
+    "focusKey": "b",
+    "focusOffset": 4,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`is collapsed at the start of the contents 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "a",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`is collapsed at the start of the contents with nesting blocks 1`] = `
 Object {
   "needsRecovery": true,
   "selectionState": Object {
@@ -322,6 +630,20 @@ Object {
 }
 `;
 
+exports[`is completely selected with nested blocks 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`is contains multiple children 1`] = `
 Object {
   "needsRecovery": true,
@@ -330,6 +652,20 @@ Object {
     "anchorOffset": 0,
     "focusKey": "c",
     "focusOffset": 12,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`is contains multiple nested children 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 5,
     "hasFocus": false,
     "isBackward": false,
   },
@@ -350,12 +686,40 @@ Object {
 }
 `;
 
+exports[`is entirely selected with nested blocks 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "b",
+    "focusOffset": 4,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`is reversed from above 1`] = `
 Object {
   "needsRecovery": true,
   "selectionState": Object {
     "anchorKey": "c",
     "anchorOffset": 12,
+    "focusKey": "a",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": true,
+  },
+}
+`;
+
+exports[`is reversed from above nested blocks 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "d",
+    "anchorOffset": 5,
     "focusKey": "a",
     "focusOffset": 0,
     "hasFocus": false,
@@ -378,6 +742,20 @@ Object {
 }
 `;
 
+exports[`is reversed from the first nested case 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 4,
+    "focusKey": "b",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": true,
+  },
+}
+`;
+
 exports[`is reversed on entire leaf 1`] = `
 Object {
   "needsRecovery": true,
@@ -386,6 +764,34 @@ Object {
     "anchorOffset": 7,
     "focusKey": "c",
     "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": true,
+  },
+}
+`;
+
+exports[`is reversed on nested entire leaf 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "d",
+    "anchorOffset": 5,
+    "focusKey": "d",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": true,
+  },
+}
+`;
+
+exports[`is the same as above but nested and reversed 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "d",
+    "anchorOffset": 5,
+    "focusKey": "b",
+    "focusOffset": 4,
     "hasFocus": false,
     "isBackward": true,
   },
@@ -420,6 +826,20 @@ Object {
 }
 `;
 
+exports[`must find offsets for non-collapsed selection of nested node 1`] = `
+Object {
+  "needsRecovery": false,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 1,
+    "focusKey": "b",
+    "focusOffset": 2,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`must find offsets for reversed selection 1`] = `
 Object {
   "needsRecovery": false,
@@ -427,6 +847,20 @@ Object {
     "anchorKey": "a",
     "anchorOffset": 6,
     "focusKey": "a",
+    "focusOffset": 1,
+    "hasFocus": false,
+    "isBackward": true,
+  },
+}
+`;
+
+exports[`must find offsets for reversed selection of nested node 1`] = `
+Object {
+  "needsRecovery": false,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 2,
+    "focusKey": "b",
     "focusOffset": 1,
     "hasFocus": false,
     "isBackward": true,
@@ -448,6 +882,20 @@ Object {
 }
 `;
 
+exports[`must find offsets for selection on entire text node of nested node 1`] = `
+Object {
+  "needsRecovery": false,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "b",
+    "focusOffset": 4,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`must find offsets when collapsed at end 1`] = `
 Object {
   "needsRecovery": false,
@@ -462,6 +910,20 @@ Object {
 }
 `;
 
+exports[`must find offsets when collapsed at end of nested node 1`] = `
+Object {
+  "needsRecovery": false,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 4,
+    "focusKey": "b",
+    "focusOffset": 4,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`must find offsets when collapsed at start 1`] = `
 Object {
   "needsRecovery": false,
@@ -469,6 +931,20 @@ Object {
     "anchorKey": "a",
     "anchorOffset": 0,
     "focusKey": "a",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`must find offsets when collapsed at start of nested node 1`] = `
+Object {
+  "needsRecovery": false,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "b",
     "focusOffset": 0,
     "hasFocus": false,
     "isBackward": false,
@@ -490,6 +966,20 @@ Object {
 }
 `;
 
+exports[`occupies a single child of the contents with nested blocks 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "b",
+    "focusOffset": 4,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
 exports[`reversed leaf to leaf 1`] = `
 Object {
   "needsRecovery": true,
@@ -500,6 +990,90 @@ Object {
     "focusOffset": 0,
     "hasFocus": false,
     "isBackward": true,
+  },
+}
+`;
+
+exports[`reversed leaf to nested leaf 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "d",
+    "anchorOffset": 5,
+    "focusKey": "b",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": true,
+  },
+}
+`;
+
+exports[`starts at head of a nested text node, ends at head of leaf child of another nested node 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`starts at head of nested text node, ends at end of nested leaf child 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`starts at head of nested text node, ends at end of nested leaf span 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`starts at head of nested text node, ends at head of nested leaf span 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`starts at head of one nested node and ends at head of another nested node 1`] = `
+Object {
+  "needsRecovery": false,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 0,
+    "focusKey": "d",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
   },
 }
 `;
@@ -568,6 +1142,76 @@ Object {
     "anchorOffset": 0,
     "focusKey": "c",
     "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`starts within nested text node, ends at end of nested leaf child 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 2,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`starts within nested text node, ends at end of nested leaf span 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 2,
+    "focusKey": "d",
+    "focusOffset": 5,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`starts within nested text node, ends at start of nested leaf child 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 2,
+    "focusKey": "d",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`starts within nested text node, ends at start of nested leaf span 1`] = `
+Object {
+  "needsRecovery": true,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 2,
+    "focusKey": "d",
+    "focusOffset": 0,
+    "hasFocus": false,
+    "isBackward": false,
+  },
+}
+`;
+
+exports[`starts within one nested text node and ends within another nested block 1`] = `
+Object {
+  "needsRecovery": false,
+  "selectionState": Object {
+    "anchorKey": "b",
+    "anchorOffset": 2,
+    "focusKey": "d",
+    "focusOffset": 3,
     "hasFocus": false,
     "isBackward": false,
   },
