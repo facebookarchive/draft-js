@@ -172,7 +172,7 @@ const getElementPropsConfig = (block: BlockNodeRecord, editorKey: string, offset
 class DraftEditorBlockNode extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const { block, direction, tree } = this.props;
-    const isContainerNode = !block.getChildKeys.isEmpty();
+    const isContainerNode = !block.getChildKeys().isEmpty();
     const blockHasChanged = block !== nextProps.block || tree !== nextProps.tree || direction !== nextProps.direction || isBlockOnSelectionEdge(nextProps.selection, nextProps.block.getKey()) && nextProps.forceSelection;
 
     // if we have children at this stage we always re-render container nodes

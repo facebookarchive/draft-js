@@ -1,0 +1,54 @@
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ * @providesModule getNextDelimiterBlockKey
+ * @format
+ * @flow
+ *
+ * This is unstable and not part of the public API and should not be used by
+ * production systems. This file may be update/removed without notice.
+ */
+
+import type { BlockMap } from './BlockMap';
+import type { BlockNodeRecord } from './BlockNodeRecord';
+
+const ContentBlockNode = require('./ContentBlockNode');
+
+const getNextDelimiterBlockKey = (block: BlockNodeRecord, blockMap: BlockMap): ?string => {
+  const isExperimentalTreeBlock = block instanceof ContentBlockNode;
+
+  if (!isExperimentalTreeBlock) {
+    return null;
+  }
+
+  const nextSiblingKey = block.getNextSiblingKey();
+
+  if (nextSiblingKey) {
+    return nextSiblingKey;
+  }
+
+  const parent = block.getParentKey();
+
+  if (!parent) {
+    return null;
+  }
+
+  let nextNonDescendantBlock = blockMap.get(parent);
+  while (nextNonDescendantBlock && !nextNonDescendantBlock.getNextSiblingKey()) {
+    const parentKey = nextNonDescendantBlock.getParentKey();
+    nextNonDescendantBlock = parentKey ? blockMap.get(parentKey) : null;
+  }
+
+  if (!nextNonDescendantBlock) {
+    return null;
+  }
+
+  return nextNonDescendantBlock.getNextSiblingKey();
+};
+
+module.exports = getNextDelimiterBlockKey;
