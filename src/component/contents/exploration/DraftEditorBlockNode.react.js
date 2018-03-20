@@ -204,7 +204,7 @@ const getElementPropsConfig = (
 class DraftEditorBlockNode extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const {block, direction, tree} = this.props;
-    const isContainerNode = !block.getChildKeys.isEmpty();
+    const isContainerNode = !block.getChildKeys().isEmpty();
     const blockHasChanged =
       block !== nextProps.block ||
       tree !== nextProps.tree ||

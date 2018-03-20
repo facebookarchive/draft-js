@@ -1,7 +1,7 @@
 {
   "name": "draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "keywords": [
     "draftjs",
     "editor",
@@ -71,7 +71,7 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "jest": "^21.2.1",
-    "prettier": "^1.7.4",
+    "prettier": "1.9.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
@@ -81,8 +81,8 @@
     "webpack-stream": "^3.0.0"
   },
   "devEngines": {
-    "node": "6.x",
-    "npm": "2.x || 3.x"
+    "node": "6.x || 8.x",
+    "npm": "2.x || 3.x || 5.x"
   },
   "jest": {
     "automock": true,
@@ -90,12 +90,22 @@
       "__DEV__": true
     },
     "rootDir": "./",
-    "roots": ["<rootDir>/src/"],
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "setupFiles": [
+      "<rootDir>/scripts/jest/shims.js"
+    ],
     "transform": {
       ".*": "<rootDir>/scripts/jest/preprocessor.js"
     },
-    "modulePathIgnorePatterns": ["<rootDir>/lib/", "<rootDir>/node_modules/"],
-    "transformIgnorePatterns": ["<rootDir>/node_modules/"],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib/",
+      "<rootDir>/node_modules/"
+    ],
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
     "unmockedModulePathPatterns": [
       "<rootDir>/node_modules/fbjs/node_modules/",
       "<rootDir>/node_modules/fbjs/lib/UserAgent.js",

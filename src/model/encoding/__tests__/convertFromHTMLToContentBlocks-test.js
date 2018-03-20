@@ -19,6 +19,7 @@ jest.mock('generateRandomKey');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
+const cx = require('cx');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 
 const DEFAULT_CONFIG = {
@@ -46,7 +47,30 @@ const SUPPORTED_TAGS = [
   'pre',
 ];
 
-const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
+const normalizeBlock = block => {
+  const {type, depth, text, characterList} = block;
+
+  return {
+    type,
+    depth,
+    text,
+    characterList,
+  };
+};
+
+const toggleExperimentalTreeDataSupport = enabled => {
+  jest.doMock('DraftFeatureFlags', () => {
+    return {
+      draft_tree_data_support: enabled,
+    };
+  });
+};
+
+beforeEach(() => {
+  jest.resetModules();
+});
+
+const convertFromHTML = (html_string, config) => {
   const options = {
     ...DEFAULT_CONFIG,
     ...config,
@@ -54,13 +78,34 @@ const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
 
   const {DOMBuilder, blockRenderMap, experimentalTreeDataSupport} = options;
 
+  jest.resetModules();
+  toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
+  return convertFromHTMLToContentBlocks(
+    html_string,
+    DOMBuilder,
+    blockRenderMap,
+  );
+};
+
+const AreTreeBlockNodesEquivalent = (html_string, config = {}) => {
+  const treeEnabled = convertFromHTML(html_string, {
+    ...config,
+    experimentalTreeDataSupport: true,
+  }).contentBlocks.map(block => normalizeBlock(block.toJS()));
+
+  const treeDisabled = convertFromHTML(html_string, {
+    ...config,
+    experimentalTreeDataSupport: false,
+  }).contentBlocks.map(block => normalizeBlock(block.toJS()));
+
+  return JSON.stringify(treeEnabled) === JSON.stringify(treeDisabled);
+};
+
+const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
   expect(
-    convertFromHTMLToContentBlocks(
-      html_string,
-      DOMBuilder,
-      blockRenderMap,
-      experimentalTreeDataSupport,
-    ).contentBlocks.map(block => block.toJS()),
+    convertFromHTML(html_string, config).contentBlocks.map(block =>
+      block.toJS(),
+    ),
   ).toMatchSnapshot();
 };
 
@@ -81,38 +126,13 @@ const testConvertingAdjacentHtmlElementsToContentBlocks = (
   });
 };
 
-const normalizeBlock = block => {
-  const {type, depth, textBlock, characterList} = block;
-
-  return {
-    type,
-    depth,
-    textBlock,
-    characterList,
-  };
-};
-
 const testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch = (
   tag: string,
 ) => {
   test(`must convert root ContentBlockNodes to matching ContentBlock nodes for <${tag} />`, () => {
-    const {DOMBuilder, blockRenderMap} = DEFAULT_CONFIG;
-    const html_string = `<${tag}>a</${tag}> `;
     expect(
-      convertFromHTMLToContentBlocks(
-        html_string,
-        DOMBuilder,
-        blockRenderMap,
-        false,
-      ).contentBlocks.map(block => normalizeBlock(block.toJS())),
-    ).toEqual(
-      convertFromHTMLToContentBlocks(
-        html_string,
-        DOMBuilder,
-        blockRenderMap,
-        true,
-      ).contentBlocks.map(block => normalizeBlock(block.toJS())),
-    );
+      AreTreeBlockNodesEquivalent(`<${tag}>a</${tag}> `),
+    ).toMatchSnapshot();
   });
 };
 
@@ -147,6 +167,19 @@ test('converts nested html blocks when experimentalTreeDataSupport is enabled', 
   });
 });
 
+test('converts text nodes to unstyled elements when leading nested blocks when experimentalTreeDataSupport is enabled', () => {
+  const html_string = `
+    <blockquote>
+      Hello World!
+      <h1>lorem ipsum</h1>
+    </blockquote>
+  `;
+
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
 test('converts deeply nested html blocks when experimentalTreeDataSupport is enabled', () => {
   const html_string = `
     <ol>
@@ -165,6 +198,25 @@ test('converts deeply nested html blocks when experimentalTreeDataSupport is ena
   });
 });
 
+test('does not convert deeply nested html blocks when experimentalTreeDataSupport is disabled', () => {
+  const html_string = `
+    <ol>
+      <li>Some quote</li>
+      <li>
+        <blockquote>
+          <h1>Hello World!</h1>
+          <p>lorem ipsum</p>
+        </blockquote>
+      </li>
+    </ol>
+  `;
+
+  expect(AreTreeBlockNodesEquivalent(html_string)).toMatchSnapshot();
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
 SUPPORTED_TAGS.forEach(tag =>
   testConvertingAdjacentHtmlElementsToContentBlocks(tag, true),
 );
@@ -173,3 +225,88 @@ SUPPORTED_TAGS.forEach(tag =>
 SUPPORTED_TAGS.forEach(tag =>
   testConvertingHtmlElementsToContentBlocksAndRootContentBlockNodesMatch(tag),
 );
+
+test('Should not create empty container blocks around ul and their list items', () => {
+  const html_string = `
+    <ul>
+      <li>something</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should not create empty container blocks around ul and their list items when nesting enabled', () => {
+  const html_string = `
+    <ul>
+      <li>something</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should not create empty container blocks around ol and their list items', () => {
+  const html_string = `
+    <ol>
+      <li>something</li>
+    </ol>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should not create empty container blocks around ol and their list items when nesting enabled', () => {
+  const html_string = `
+    <ol>
+      <li>something</li>
+    </ol>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should preserve entities for whitespace-only content', () => {
+  const html_string = `
+    <a href="http://www.facebook.com">
+      <b>before</b> <b>after</b>
+    </a>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should import recognised draft li depths', () => {
+  const html_string = `
+    <ul>
+      <li class="${cx('public/DraftStyleDefault/depth0')}">depth0</li>
+      <li class="${cx('public/DraftStyleDefault/depth1')}">depth1</li>
+      <li class="${cx('public/DraftStyleDefault/depth2')}">depth2</li>
+      <li class="${cx('public/DraftStyleDefault/depth3')}">depth3</li>
+      <li class="${cx('public/DraftStyleDefault/depth4')}">depth4</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should import recognised draft li depths when nesting enabled', () => {
+  const html_string = `
+    <ul>
+      <li class="${cx('public/DraftStyleDefault/depth0')}">depth0</li>
+      <li class="${cx('public/DraftStyleDefault/depth1')}">depth1</li>
+      <li class="${cx('public/DraftStyleDefault/depth2')}">depth2</li>
+      <li class="${cx('public/DraftStyleDefault/depth3')}">depth3</li>
+      <li class="${cx('public/DraftStyleDefault/depth4')}">depth4</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});

@@ -33,10 +33,10 @@ const nullthrows = require('nullthrows');
 type Props = {
   blockRenderMap: DraftBlockRenderMap,
   blockRendererFn: (block: BlockNodeRecord) => ?Object,
-  blockStyleFn: (block: BlockNodeRecord) => string,
-  customStyleFn: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
-  customStyleMap: Object,
-  editorKey: string,
+  blockStyleFn?: (block: BlockNodeRecord) => string,
+  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
+  customStyleMap?: Object,
+  editorKey?: string,
   editorState: EditorState,
   textDirectionality?: BidiDirection,
 };
