@@ -453,7 +453,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * programmatically. We only care about selection events that occur because
    * of browser interaction, not re-renders and forced selections.
    */
-  UNSAFE_componentWillUpdate(nextProps: DraftEditorProps): void {
+  componentWillUpdate(nextProps: DraftEditorProps): void {
     if (!gkx('draft_js_stop_blocking_select_events')) {
       this._blockSelectEvents = true;
     }
