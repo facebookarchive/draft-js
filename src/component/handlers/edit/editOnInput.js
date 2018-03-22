@@ -107,10 +107,7 @@ function editOnInput(editor: DraftEditor): void {
   // and this is the last chunk of text, we will have manually inserted an extra
   // soft newline in DraftEditorLeaf. We want to remove this extra newline for
   // the purpose of our comparison of DOM and model text.
-  // Gecko's spellchecker seems to add extra new lines when it kicks in, go
-  // through with the removal of double new lines when on Gecko and users are
-  // typing in the very last chunk of text in the block.
-  if (isGecko && isLastChunk && domText.endsWith(DOUBLE_NEWLINE)) {
+  if (isLastChunk && domText.endsWith(DOUBLE_NEWLINE)) {
     domText = domText.slice(0, -1);
   }
 
