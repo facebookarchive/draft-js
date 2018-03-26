@@ -32,31 +32,31 @@ export type BlockNodeConfig = {
 // https://github.com/facebook/draft-js/issues/1492
 // prettier-ignore
 export interface BlockNode {
-  findEntityRanges(
+  +findEntityRanges: (
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
-  ): void,
+  ) => void,
 
-  findStyleRanges(
+  +findStyleRanges: (
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
-  ): void,
+  ) => void,
 
-  getCharacterList(): List<CharacterMetadata>,
+  +getCharacterList: () => List<CharacterMetadata>,
 
-  getData(): Map<any, any>,
+  +getData: () => Map<any, any>,
 
-  getDepth(): number,
+  +getDepth: () => number,
 
-  getEntityAt(offset: number): ?string,
+  +getEntityAt: (offset: number) => ?string,
 
-  getInlineStyleAt(offset: number): DraftInlineStyle,
+  +getInlineStyleAt: (offset: number) => DraftInlineStyle,
 
-  getKey(): BlockNodeKey,
+  +getKey: () => BlockNodeKey,
 
-  getLength(): number,
+  +getLength: () => number,
 
-  getText(): string,
+  +getText: () => string,
 
-  getType(): DraftBlockType,
+  +getType: () => DraftBlockType,
 }
