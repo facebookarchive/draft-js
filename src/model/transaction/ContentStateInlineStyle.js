@@ -24,16 +24,18 @@ var ContentStateInlineStyle = {
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,
+    allowUndo: boolean
   ): ContentState {
-    return modifyInlineStyle(contentState, selectionState, inlineStyle, true);
+    return modifyInlineStyle(contentState, selectionState, inlineStyle, true, allowUndo);
   },
 
   remove: function(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,
+    allowUndo,
   ): ContentState {
-    return modifyInlineStyle(contentState, selectionState, inlineStyle, false);
+    return modifyInlineStyle(contentState, selectionState, inlineStyle, false, allowUndo);
   },
 };
 
@@ -42,6 +44,7 @@ function modifyInlineStyle(
   selectionState: SelectionState,
   inlineStyle: string,
   addOrRemove: boolean,
+  allowUndo: boolean
 ): ContentState {
   var blockMap = contentState.getBlockMap();
   var startKey = selectionState.getStartKey();
@@ -81,11 +84,17 @@ function modifyInlineStyle(
       return block.set('characterList', chars);
     });
 
-  return contentState.merge({
-    blockMap: blockMap.merge(newBlocks),
-    selectionBefore: selectionState,
-    selectionAfter: selectionState,
-  });
+  if (allowUndo) {
+    return contentState.merge({
+      blockMap: blockMap.merge(newBlocks),
+      selectionBefore: selectionState,
+      selectionAfter: selectionState,
+    });
+  } else {
+    return contentState.merge({
+      blockMap: blockMap.merge(newBlocks),
+    });
+  }
 }
 
 module.exports = ContentStateInlineStyle;
