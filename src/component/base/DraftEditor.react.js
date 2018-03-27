@@ -116,20 +116,18 @@ class UpdateDraftEditorFlags extends React.Component<{
        */
       editor._latestEditorState = this.props.editorState;
     }
-    if (gkx('draft_js_stop_blocking_select_events')) {
-      /**
-       * The reason we set this 'blockSelectEvents' flag is that  IE will fire a
-       * 'selectionChange' event when we programmatically change the selection,
-       * meaning it would trigger a new select event while we are in the middle
-       * of updating.
-       * We found that the 'selection.addRange' was what triggered the stray
-       * selectionchange event in IE.
-       * To be clear - we have not been able to reproduce specific bugs related
-       * to this stray selection event, but have recorded logs that some
-       * conditions do cause it to get bumped into during editOnSelect.
-       */
-      editor._blockSelectEvents = true;
-    }
+    /**
+     * The reason we set this 'blockSelectEvents' flag is that  IE will fire a
+     * 'selectionChange' event when we programmatically change the selection,
+     * meaning it would trigger a new select event while we are in the middle
+     * of updating.
+     * We found that the 'selection.addRange' was what triggered the stray
+     * selectionchange event in IE.
+     * To be clear - we have not been able to reproduce specific bugs related
+     * to this stray selection event, but have recorded logs that some
+     * conditions do cause it to get bumped into during editOnSelect.
+     */
+    editor._blockSelectEvents = true;
   }
 }
 
@@ -454,9 +452,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * of browser interaction, not re-renders and forced selections.
    */
   componentWillUpdate(nextProps: DraftEditorProps): void {
-    if (!gkx('draft_js_stop_blocking_select_events')) {
-      this._blockSelectEvents = true;
-    }
     if (!gkx('draft_js_remove_componentwillupdate')) {
       // we are using the GK to phase out setting this here
       this._latestEditorState = nextProps.editorState;
