@@ -310,6 +310,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       customStyleMap,
       editorState,
       readOnly,
+      style = {},
       textAlignment,
       textDirectionality,
     } = this.props;
@@ -328,6 +329,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       WebkitUserSelect: 'text',
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
+      ...style
     };
 
     // The aria-expanded and aria-haspopup properties should only be rendered
