@@ -144,6 +144,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     readOnly: false,
     spellCheck: false,
     stripPastedStyles: false,
+    style: {},
   };
 
   _blockSelectEvents: boolean;
@@ -294,6 +295,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         editorState: this.props.editorState,
         textAlignment: this.props.textAlignment,
         accessibilityID: this._placeholderAccessibilityID,
+        style: this.props.style,
       };
 
       return <DraftEditorPlaceholder {...placeHolderProps} />;
@@ -310,7 +312,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       customStyleMap,
       editorState,
       readOnly,
-      style = {},
+      style,
       textAlignment,
       textDirectionality,
     } = this.props;
