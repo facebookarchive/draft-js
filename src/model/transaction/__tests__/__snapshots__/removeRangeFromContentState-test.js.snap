@@ -1,5 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`must not remove links of retained parents 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  "B": Object {
+    "characterList": Array [],
+    "children": Array [
+      "D",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "blockquote",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": null,
+    "text": "Foo",
+    "type": "unordered-list-item",
+  },
+}
+`;
+
 exports[`must preserve B and C since E has not been removed 1`] = `
 Object {
   "A": Object {
