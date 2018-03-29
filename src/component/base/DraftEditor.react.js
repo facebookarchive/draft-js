@@ -491,7 +491,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     // cursor at the first character. This is something you don't expect when
     // you're clicking on an input element but not directly on a character.
     // Put the cursor back where it was before the blur.
-    if (!alreadyHasFocus) {
+    if (!alreadyHasFocus && !this.props.readOnly) {
       this.update(
         EditorState.forceSelection(editorState, editorState.getSelection()),
       );
