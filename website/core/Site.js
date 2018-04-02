@@ -29,6 +29,14 @@ var Site = React.createClass({
           <meta property="og:url" content="http://draftjs.org/index.html" />
           <meta property="og:description" content="Rich Text Editor Framework for React" />
 
+          <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
+          <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+          <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+          <link rel="manifest" href="/img/manifest.json" />
+          <link rel="mask-icon" href="/img/safari-pinned-tab.svg" color="#5bbad5" />
+          <link rel="shortcut icon" href="/img/favicon.ico" />
+          <meta name="msapplication-config" content="/img/browserconfig.xml" />
+          <meta name="theme-color" content="#852d2d" />
           <link rel="stylesheet" href="/css/draft.css" />
 
           <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script>
@@ -50,7 +58,7 @@ var Site = React.createClass({
             {this.props.children}
 
             <footer className="wrap">
-              <div className="right">&copy; 2017 Facebook Inc.</div>
+              <div className="right">&copy; 2018 Facebook Inc.</div>
             </footer>
           </div>
 

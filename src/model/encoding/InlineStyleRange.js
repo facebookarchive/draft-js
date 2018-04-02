@@ -8,7 +8,7 @@
  *
  * @providesModule InlineStyleRange
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

@@ -8,7 +8,7 @@
  *
  * @providesModule EditorChangeType
  * @format
- * @flow
+ * @flow strict
  */
 
 /*eslint-disable no-bitwise*/

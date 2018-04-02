@@ -23,12 +23,12 @@ import type {Map} from 'immutable';
 
 var CharacterMetadata = require('CharacterMetadata');
 var ContentStateInlineStyle = require('ContentStateInlineStyle');
-const DraftFeatureFlags = require('DraftFeatureFlags');
 var Immutable = require('immutable');
 
 var applyEntityToContentState = require('applyEntityToContentState');
 var getCharacterRemovalRange = require('getCharacterRemovalRange');
 var getContentStateFragment = require('getContentStateFragment');
+var gkx = require('gkx');
 var insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 var insertTextIntoContentState = require('insertTextIntoContentState');
 var invariant = require('invariant');
@@ -171,7 +171,7 @@ var DraftModifier = {
       }
     }
     let adjustedRemovalRange = rangeToRemove;
-    if (DraftFeatureFlags.draft_segmented_entities_behavior) {
+    if (gkx('draft_segmented_entities_behavior')) {
       // Adjust the selection to properly delete segemented and immutable
       // entities
       adjustedRemovalRange = getCharacterRemovalRange(

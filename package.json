@@ -29,8 +29,8 @@
     "lint": "eslint .",
     "format": "eslint . --fix",
     "flow": "flow src",
-    "test": "NODE_ENV=test jest",
-    "test-ci": "NODE_ENV=test npm run lint && npm run flow && npm run test"
+    "test": "cross-env NODE_ENV=test jest",
+    "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
     "fbjs": "^0.8.15",
@@ -45,6 +45,7 @@
     "babel-core": "^6.8.0",
     "babel-eslint": "^7.2.3",
     "babel-preset-fbjs": "^2.1.0",
+    "cross-env": "^5.1.3",
     "del": "^2.2.0",
     "envify": "^3.4.0",
     "es6-shim": "^0.34.4",
@@ -58,7 +59,7 @@
     "eslint-plugin-react": "^7.3.0",
     "eslint-plugin-relay": "^0.0.8",
     "fbjs-scripts": "^0.8.0",
-    "flow-bin": "^0.59.0",
+    "flow-bin": "^0.64.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.2",
     "gulp-browserify-thin": "^0.1.5",
@@ -67,6 +68,7 @@
     "gulp-derequire": "^2.1.0",
     "gulp-flatten": "^0.2.0",
     "gulp-header": "1.8.2",
+    "gulp-if": "^2.0.2",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
@@ -76,12 +78,14 @@
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
     "run-sequence": "^1.1.2",
+    "stats-webpack-plugin": "^0.6.2",
     "through2": "^2.0.1",
+    "uglifyjs-webpack-plugin": "^1.1.6",
     "vinyl-buffer": "^1.0.0",
-    "webpack-stream": "^3.0.0"
+    "webpack-stream": "^4.0.0"
   },
   "devEngines": {
-    "node": "6.x || 8.x",
+    "node": "8.x || 9.x",
     "npm": "2.x || 3.x || 5.x"
   },
   "jest": {

@@ -6,18 +6,16 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftFeatureFlags-core
+ * @providesModule gkx
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';
 
-var DraftFeatureFlags = {
-  draft_killswitch_allow_nontextnodes: false,
-  draft_segmented_entities_behavior: false,
-  draft_handlebeforeinput_composed_text: false,
-  draft_tree_data_support: false,
+module.exports = function(name: string) {
+  if (typeof window !== 'undefined' && window.__DRAFT_GKX) {
+    return !!window.__DRAFT_GKX[name];
+  }
+  return false;
 };
-
-module.exports = DraftFeatureFlags;

@@ -8,7 +8,7 @@
  *
  * @providesModule sanitizeDraftText
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

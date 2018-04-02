@@ -43,9 +43,9 @@ var DELIMITER = '.';
  * preserved and the new match is discarded.
  */
 class CompositeDraftDecorator {
-  _decorators: Array<DraftDecorator>;
+  _decorators: $ReadOnlyArray<DraftDecorator>;
 
-  constructor(decorators: Array<DraftDecorator>) {
+  constructor(decorators: $ReadOnlyArray<DraftDecorator>) {
     // Copy the decorator array, since we use this array order to determine
     // precedence of decoration matching. If the array is mutated externally,
     // we don't want to be affected here.

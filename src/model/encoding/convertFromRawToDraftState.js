@@ -23,7 +23,6 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const DraftEntityInstance = require('DraftEntityInstance');
-const DraftFeatureFlags = require('DraftFeatureFlags');
 const DraftTreeAdapter = require('DraftTreeAdapter');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
@@ -33,9 +32,10 @@ const createCharacterList = require('createCharacterList');
 const decodeEntityRanges = require('decodeEntityRanges');
 const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 const generateRandomKey = require('generateRandomKey');
+const gkx = require('gkx');
 const invariant = require('invariant');
 
-const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 const {List, Map, OrderedMap} = Immutable;
 

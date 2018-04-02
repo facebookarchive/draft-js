@@ -210,27 +210,10 @@ const RichTextEditorUtil = {
 
     event.preventDefault();
 
-    // Only allow indenting one level beyond the block above, and only if
-    // the block above is a list item as well.
-    var blockAbove = content.getBlockBefore(key);
-    if (!blockAbove) {
-      return editorState;
-    }
-
-    var typeAbove = blockAbove.getType();
-    if (
-      typeAbove !== 'unordered-list-item' &&
-      typeAbove !== 'ordered-list-item'
-    ) {
-      return editorState;
-    }
-
     var depth = block.getDepth();
     if (!event.shiftKey && depth === maxDepth) {
       return editorState;
     }
-
-    maxDepth = Math.min(blockAbove.getDepth() + 1, maxDepth);
 
     var withAdjustment = adjustBlockDepthForContentState(
       content,
@@ -367,9 +350,8 @@ const RichTextEditorUtil = {
   },
 
   /**
-   * When a collapsed cursor is at the start of the first styled block, or
-   * an empty styled block, changes block to 'unstyled'. Returns null if
-   * block or selection does not meet that criteria.
+   * When a collapsed cursor is at the start of a styled block, changes block
+   * type to 'unstyled'. Returns null if selection does not meet that criteria.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
     var selection = editorState.getSelection();
@@ -378,11 +360,6 @@ const RichTextEditorUtil = {
       var key = selection.getAnchorKey();
       var content = editorState.getCurrentContent();
       var block = content.getBlockForKey(key);
-
-      var firstBlock = content.getFirstBlock();
-      if (block.getLength() > 0 && block !== firstBlock) {
-        return null;
-      }
 
       var type = block.getType();
       var blockBefore = content.getBlockBefore(key);

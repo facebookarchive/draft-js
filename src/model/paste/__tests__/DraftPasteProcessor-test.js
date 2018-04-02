@@ -54,10 +54,8 @@ const CUSTOM_BLOCK_MAP = Map({
 const EMPTY_CHAR_METADATA = OrderedSet();
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('DraftFeatureFlags', () => {
-    return {
-      draft_tree_data_support: enabled,
-    };
+  jest.doMock('gkx', () => name => {
+    return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
 

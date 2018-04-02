@@ -8,6 +8,42 @@ Changes to `src` are live in production on facebook.com at the time of release.
 
 * Moved entities into content state
 
+## 0.10.5 (January 19th, 2018)
+
+### Added
+* Add support for `ariaDescribedBy` prop, for better a11y. (Suraj Karnati in
+  [a6af3e15](https://github.com/facebook/draft-js/commit/a6af3e15120e74c8797c5670f5bb63cb45c49a32))
+* Add support for `ariaLabelledBy` prop, for better a11y. ([@jackyho112](https://github.com/jackyho112)
+  in [#1519](https://github.com/facebook/draft-js/pull/1519))
+
+### Changed
+* Cause editor to break out of code block when user enters two blank lines. (Hanzhi Zhang
+  in [548fd5d1](https://github.com/facebook/draft-js/commit/548fd5d1b1c31b7b4c79cd70b101fae69d522b3f))
+
+### Fixed
+* Preserve list indentation when copying and pasting from one Draft.js editor
+  into another. ([@GordyD](https://github.com/GordyD) in [#1605](https://github.com/facebook/draft-js/pull/1605))
+* Fix `cannot read property 'update' of undefined` error that was thrown when
+  typing same character into selection that starts with that character. ([@existentialism](https://github.com/existentialism) in
+  [#1512](https://github.com/facebook/draft-js/pull/1512))
+* Fix `encodeRawBlocks` to handle non-contiguous entities. Entities should
+  always be contiguous, and cover one sequential range of characters. However,
+  in cases where entityState is corrupted to include non-contiguous entities,
+  `encodeRawBlocks` would improperly process the entities in that case. (Frank
+  Thompson in [0059dd46](https://github.com/facebook/draft-js/commit/0059dd46f4d23af7d9803316aa93d8deddb5e8ae))
+* Updated CSS for DraftEditorPlaceholder to support multiline placeholder (Gaurav Vaish in
+  [c38b0285](https://github.com/facebook/draft-js/commit/c38b028513214416d66a3fdf191745dfde04ed2b)
+* Fix issue where typing at the end of a link caused the link to continue. (Ian
+  Jones in
+  [d16833b3](https://github.com/facebook/draft-js/commit/d16833b3dae77ccf13e3af7f5e42c8131b0d1d2c))
+* Fix regression of bug where clicking a link caused the focus to move but the
+selection state was not cleared, leading to a 'node not found' error.
+  ([@flarnie](https://github.com/flarnie)
+  in [55316176](https://github.com/facebook/draft-js/commit/553161761903bed7fad971d73e1fe04bb0ff360e))
+* Loosen Flow type definition for DraftBlockType to allow user-defined custom
+  block types. ([@mitermayer](https://github.com/mitermayer)
+  in [#1480](https://github.com/facebook/draft-js/pull/1480))
+
 ## 0.10.4 (October 24th, 2017)
 
 ### Added

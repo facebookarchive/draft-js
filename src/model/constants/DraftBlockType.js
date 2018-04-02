@@ -8,7 +8,7 @@
  *
  * @providesModule DraftBlockType
  * @format
- * @flow
+ * @flow strict
  */
 
 'use strict';

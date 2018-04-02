@@ -8,7 +8,7 @@
  *
  * @providesModule DraftRemovalDirection
  * @format
- * @flow
+ * @flow strict
  */
 
 /*eslint-disable no-bitwise*/

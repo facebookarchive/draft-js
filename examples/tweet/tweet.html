@@ -83,8 +83,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
        * Super simple decorators for handles and hashtags, for demonstration
        * purposes only. Don't reuse these regexes.
        */
-      const HANDLE_REGEX = /\@[\w]+/g;
-      const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
+      const HANDLE_REGEX = /@[\w]+/g;
+      const HASHTAG_REGEX = /#[\w\u0590-\u05ff]+/g;
 
       function handleStrategy(contentState, contentBlock, callback) {
         findWithRegex(HANDLE_REGEX, contentBlock, callback);

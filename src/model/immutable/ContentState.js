@@ -25,7 +25,6 @@ const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DraftEntity = require('DraftEntity');
-const DraftFeatureFlags = require('DraftFeatureFlags');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
@@ -33,12 +32,13 @@ const addEntityToContentState = require('addEntityToContentState');
 const createEntityInContentState = require('createEntityInContentState');
 const invariant = require('invariant');
 const generateRandomKey = require('generateRandomKey');
+const gkx = require('gkx');
 const sanitizeDraftText = require('sanitizeDraftText');
 const updateEntityDataInContentState = require('updateEntityDataInContentState');
 
 const {List, Record, Repeat, OrderedMap} = Immutable;
 
-const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 const defaultRecord: {
   entityMap: ?EntityMap,
