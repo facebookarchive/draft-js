@@ -25,7 +25,16 @@ var getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isEventHandled = require('isEventHandled');
 var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 var nullthrows = require('nullthrows');
-var setImmediate = require('setImmediate');
+
+var setImmediate;
+if (global.setImmediate) {
+  // IE11 workaround. 'setImmediate' package doesn't work with IE10/11
+  setImmediate = window.setImmediate.bind(window);
+} else {
+  setImmediate = require('setImmediate');
+}
+
+
 
 // When nothing is focused, Firefox regards two characters, `'` and `/`, as
 // commands that should open and focus the "quickfind" search bar. This should
