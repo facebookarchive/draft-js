@@ -186,6 +186,20 @@ test('must NOT treat divs as Ps when we pave Ps', () => {
   `);
 });
 
+test('must treat DIVs as Ps when we have semantic markup NOT inside DIVs', () => {
+  assertDraftPasteProcessorProcessHTML(`
+    <div>p1</div>
+    <div>p2</div>
+    <h1>h1</h1>
+    <div>
+      <p>p3</p>
+      <p>p4</p>
+    </div>
+    <h2>h2</h2>
+    <div>p5</div>
+  `);
+});
+
 test('must replace br tags with soft newlines', () => {
   assertDraftPasteProcessorProcessHTML(`
     hi<br>hello

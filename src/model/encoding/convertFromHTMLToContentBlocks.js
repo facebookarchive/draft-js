@@ -557,6 +557,12 @@ const genFragment = (
     child = sibling;
   }
 
+  const isTopLevelNode = node.parentNode.nodeName.toLowerCase() === 'body';
+  const isUnstyledNode = node.nodeName.toLowerCase() === 'div';
+  if (isTopLevelNode && isUnstyledNode && !chunk.blocks.length) {
+    newBlock = true;
+  }
+
   if (newBlock) {
     chunk = joinChunks(
       chunk,
