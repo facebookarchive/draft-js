@@ -557,7 +557,9 @@ const genFragment = (
     child = sibling;
   }
 
-  const isTopLevelNode = node.parentNode.nodeName.toLowerCase() === 'body';
+  // Make sure divs become blocks if they're at the top level and don't contain semantic markup
+  const isTopLevelNode =
+    node.parentNode && node.parentNode.nodeName.toLowerCase() === 'body';
   const isUnstyledNode = node.nodeName.toLowerCase() === 'div';
   if (isTopLevelNode && isUnstyledNode && !chunk.blocks.length) {
     newBlock = true;
