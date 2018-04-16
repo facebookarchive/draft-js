@@ -6,15 +6,18 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftDecorator
  * @format
  * @flow
  */
 
 'use strict';
 
+import type {BlockNodeKey} from 'BlockNode';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
+import type {HTMLDir} from 'UnicodeBidiDirection';
+
+const React = require('React');
 
 export type DraftDecoratorStrategy = (
   block: BlockNodeRecord,
@@ -41,4 +44,22 @@ export type DraftDecorator = {
   strategy: DraftDecoratorStrategy,
   component: Function,
   props?: Object,
+};
+
+/**
+ * DraftDecoratorComponentProps are the core set of props that will be
+ * passed to all DraftDecoratorComponents if a Custom Block Component is not used.
+ * Note that a component may also accept additional props outside of this list.
+ */
+export type DraftDecoratorComponentProps = {
+  blockKey: BlockNodeKey,
+  children?: Array<React.Element<any>>,
+  contentState: ContentState,
+  decoratedText: string,
+  dir: ?HTMLDir,
+  end: number,
+  entityKey: string,
+  key: React.Key,
+  offsetKey: string,
+  start: number,
 };
