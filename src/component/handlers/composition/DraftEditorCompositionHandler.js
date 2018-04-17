@@ -45,10 +45,24 @@ const RESOLVE_DELAY = 20;
 let resolved = false;
 let stillComposing = false;
 let textInputData = '';
+let beforeInputData = null;
+let compositionUpdateData = null;
+let compositionEndData = null;
 
 var DraftEditorCompositionHandler = {
+  /**
+   * Some IMEs (Firefox Mobile, notably) fire multiple `beforeinput` events
+   * which include the text so far typed, in addition to (broken)
+   * `compositionend` events. In these cases, we construct beforeInputData from
+   * the `beforeinput` and cnsider that to be the definitive version of what
+   * was actually typed.
+   *
+   * Proper, compliant browsers will not do this and will instead include the
+   * entire resolved composition result in the `data` member of the
+   * `compositionend` events that they fire.
+   */
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
-    textInputData = (textInputData || '') + e.data;
+    beforeInputData = (beforeInputData || '') + e.data;
   },
 
   /**
@@ -57,6 +71,17 @@ var DraftEditorCompositionHandler = {
    */
   onCompositionStart: function(editor: DraftEditor): void {
     stillComposing = true;
+  },
+
+  /**
+   * A `compositionupdate` event has fired. Update the current composition
+   * session.
+   */
+  onCompositionUpdate: function(
+    editor: DraftEditor,
+    e: SyntheticInputEvent<>,
+  ): void {
+    compositionUpdateData = e.data;
   },
 
   /**
@@ -73,9 +98,14 @@ var DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(editor: DraftEditor): void {
+  onCompositionEnd: function(
+    editor: DraftEditor,
+    e: SyntheticCompositionEvent<>,
+  ): void {
     resolved = false;
     stillComposing = false;
+    // Use e.data from the first compositionend event seen
+    compositionEndData = compositionEndData || e.data;
     setTimeout(() => {
       if (!resolved) {
         DraftEditorCompositionHandler.resolveComposition(editor);
@@ -116,6 +146,34 @@ var DraftEditorCompositionHandler = {
   },
 
   /**
+   * Normalizes platform inconsistencies with input event data.
+   *
+   * When beforeInputData is present, it is only preferred if its length
+   * is greater than that of the last compositionUpdate event data. This is
+   * meant to resolve IME incosistencies where compositionUpdate may contain
+   * only the last character or the entire composition depending on language
+   * (e.g. Korean vs. Japanese).
+   *
+   * When beforeInputData is not present, compositionUpdate data is preferred.
+   * This resolves issues with some platforms where beforeInput is never fired
+   * (e.g. Android with certain keyboard and browser combinations).
+   *
+   * Lastly, if neither beforeInput nor compositionUpdate events are fired, use
+   * the data in the compositionEnd event
+   */
+  normalizeCompositionInput: function(): ?string {
+    const beforeInputDataLength = beforeInputData ? beforeInputData.length : 0;
+    const compositionUpdateDataLength = compositionUpdateData
+      ? compositionUpdateData.length
+      : 0;
+    const updateData =
+      beforeInputDataLength > compositionUpdateDataLength
+        ? beforeInputData
+        : compositionUpdateData;
+    return updateData || compositionEndData;
+  },
+
+  /**
    * Attempt to insert composed characters into the document.
    *
    * If we are still in a composition session, do nothing. Otherwise, insert
@@ -136,8 +194,12 @@ var DraftEditorCompositionHandler = {
     }
 
     resolved = true;
-    const composedChars = textInputData;
-    textInputData = '';
+
+    let composedChars;
+    composedChars = this.normalizeCompositionInput();
+    beforeInputData = null;
+    compositionUpdateData = null;
+    compositionEndData = null;
 
     const editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
