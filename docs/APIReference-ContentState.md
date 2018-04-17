@@ -140,6 +140,11 @@ objects.
       <pre>addEntity(...)</pre>
     </a>
   </li>
+  <li>
+    <a href="#getselectedtext">
+      <pre>getSelectedText (selection: SelectionState, blocksJoinGlue: ?string): string</pre>
+    </a>
+  </li>
 </ul>
 
 *Properties*
@@ -386,6 +391,13 @@ The add function is useful in cases where the instances have already been
 created, and now need to be added to the Entity store. This may occur in cases
 where a vanilla JavaScript representation of a ContentState is being revived for
 editing.
+
+### getselectedtext 
+``` 
+getSelectedText (selection: SelectionState, blocksJoinGlue: ?string): string 
+``` 
+Returns text of selection. 
+
 
 ## Properties
 
