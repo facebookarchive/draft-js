@@ -71,6 +71,7 @@ Immutable.Record {
     "isBackward": false,
     "hasFocus": false,
   },
+  "data": null,
 }
 `;
 

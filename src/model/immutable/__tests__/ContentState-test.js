@@ -137,3 +137,9 @@ test('must replace entities data', () => {
 
   expect(entityWithReplacedData.getData()).toMatchSnapshot();
 });
+
+test('must support data field', () => {
+  const data = '__some_test_data__';
+  const contentState = new ContentState({data});
+  expect(contentState.get('data')).toBe(data);
+});
