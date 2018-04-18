@@ -140,6 +140,16 @@ objects.
       <pre>addEntity(...)</pre>
     </a>
   </li>
+  <li>
+    <a href="#getcommoninlinestyleforSelection">
+      <pre>getCommonInlineStyleForSelection(selection: SelectionState): DraftInlineStyle</pre>
+    </a>
+  </li>
+  <li>
+    <a href="#getunioninlinestyleforSelection">
+      <pre>getUnionInlineStyleForSelection(selection: SelectionState): DraftInlineStyle</pre>
+    </a>
+  </li>
 </ul>
 
 *Properties*
@@ -386,6 +396,23 @@ The add function is useful in cases where the instances have already been
 created, and now need to be added to the Entity store. This may occur in cases
 where a vanilla JavaScript representation of a ContentState is being revived for
 editing.
+
+### getCommonInlineStyleForSelection
+
+```
+getCommonInlineStyleForSelection(selection: SelectionState): DraftInlineStyle
+```
+Returns an `OrderedSet<string>` that represents the common inline style of 
+contents in the selection (intersection).
+
+### getUnionInlineStyleForSelection
+
+```
+getUnionInlineStyleForSelection(selection: SelectionState): DraftInlineStyle
+```
+Returns an `OrderedSet<string>` that represents all inline styles found in 
+contents in the selection (union).
+
 
 ## Properties
 

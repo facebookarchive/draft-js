@@ -26,7 +26,7 @@ var EditorBidiService = require('EditorBidiService');
 var Immutable = require('immutable');
 var SelectionState = require('SelectionState');
 
-var {OrderedSet, Record, Stack} = Immutable;
+var {Record, Stack} = Immutable;
 
 type EditorStateRecordType = {
   allowUndo: boolean,
@@ -230,11 +230,43 @@ class EditorState {
     var content = this.getCurrentContent();
     var selection = this.getSelection();
 
+    return content.getInlineStyleForSelection(selection);
+  }
+
+  /**
+   * Similar to getCurrentInlineStyle(), but for non-collapsed selection
+   * common styles of whole selection (intersection) will be returned.
+   */
+  getCurrentCommonInlineStyle(): DraftInlineStyle {
+    var content = this.getCurrentContent();
+    var selection = this.getSelection();
+
     if (selection.isCollapsed()) {
-      return getInlineStyleForCollapsedSelection(content, selection);
+      var override = this.getInlineStyleOverride();
+      if (override != null) {
+        return override;
+      }
     }
 
-    return getInlineStyleForNonCollapsedSelection(content, selection);
+    return content.getCommonInlineStyleForSelection(selection);
+  }
+
+  /**
+   * Similar to getCurrentInlineStyle(), but for non-collapsed selection
+   * all styles found in whole selection (union) will be returned.
+   */
+  getCurrentUnionInlineStyle(): DraftInlineStyle {
+    var content = this.getCurrentContent();
+    var selection = this.getSelection();
+
+    if (selection.isCollapsed()) {
+      var override = this.getInlineStyleOverride();
+      if (override != null) {
+        return override;
+      }
+    }
+
+    return content.getUnionInlineStyleForSelection(selection);
   }
 
   getBlockTree(blockKey: string): List<any> {
@@ -595,70 +627,6 @@ function mustBecomeBoundary(
       changeType !== 'backspace-character' &&
       changeType !== 'delete-character')
   );
-}
-
-function getInlineStyleForCollapsedSelection(
-  content: ContentState,
-  selection: SelectionState,
-): DraftInlineStyle {
-  var startKey = selection.getStartKey();
-  var startOffset = selection.getStartOffset();
-  var startBlock = content.getBlockForKey(startKey);
-
-  // If the cursor is not at the start of the block, look backward to
-  // preserve the style of the preceding character.
-  if (startOffset > 0) {
-    return startBlock.getInlineStyleAt(startOffset - 1);
-  }
-
-  // The caret is at position zero in this block. If the block has any
-  // text at all, use the style of the first character.
-  if (startBlock.getLength()) {
-    return startBlock.getInlineStyleAt(0);
-  }
-
-  // Otherwise, look upward in the document to find the closest character.
-  return lookUpwardForInlineStyle(content, startKey);
-}
-
-function getInlineStyleForNonCollapsedSelection(
-  content: ContentState,
-  selection: SelectionState,
-): DraftInlineStyle {
-  var startKey = selection.getStartKey();
-  var startOffset = selection.getStartOffset();
-  var startBlock = content.getBlockForKey(startKey);
-
-  // If there is a character just inside the selection, use its style.
-  if (startOffset < startBlock.getLength()) {
-    return startBlock.getInlineStyleAt(startOffset);
-  }
-
-  // Check if the selection at the end of a non-empty block. Use the last
-  // style in the block.
-  if (startOffset > 0) {
-    return startBlock.getInlineStyleAt(startOffset - 1);
-  }
-
-  // Otherwise, look upward in the document to find the closest character.
-  return lookUpwardForInlineStyle(content, startKey);
-}
-
-function lookUpwardForInlineStyle(
-  content: ContentState,
-  fromKey: string,
-): DraftInlineStyle {
-  var lastNonEmpty = content
-    .getBlockMap()
-    .reverse()
-    .skipUntil((_, k) => k === fromKey)
-    .skip(1)
-    .skipUntil((block, _) => block.getLength())
-    .first();
-
-  if (lastNonEmpty)
-    return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
-  return OrderedSet();
 }
 
 module.exports = EditorState;
