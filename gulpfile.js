@@ -103,7 +103,7 @@ var buildDist = function(opts) {
     plugins: [
       new webpackStream.webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(
-          opts.debug ? 'development' : 'production',
+          opts.debug ? 'development' : 'production'
         ),
       }),
       new webpackStream.webpack.LoaderOptionsPlugin({
@@ -164,7 +164,7 @@ gulp.task('css', function() {
               } else {
                 return match;
               }
-            },
+            }
           );
           replaced = replaced.replace(
             // MakeHasteCssVariablesTransform
@@ -179,11 +179,11 @@ gulp.task('css', function() {
               } else {
                 throw new Error('Unknown CSS variable ' + name);
               }
-            },
+            }
           );
           file.contents = new Buffer(replaced);
           callback(null, file);
-        }),
+        })
       )
       .pipe(concatCSS('Draft.css'))
       // Avoid rewriting rules *just in case*, just compress
@@ -202,7 +202,7 @@ gulp.task('dist', ['modules', 'css'], function() {
     .pipe(buildDist(opts))
     .pipe(derequire())
     .pipe(
-      gulpif('*.js', header(COPYRIGHT_HEADER, {version: packageData.version})),
+      gulpif('*.js', header(COPYRIGHT_HEADER, {version: packageData.version}))
     )
     .pipe(gulp.dest(paths.dist));
 });
@@ -216,7 +216,7 @@ gulp.task('dist:min', ['modules'], function() {
     .src('./lib/Draft.js')
     .pipe(buildDist(opts))
     .pipe(
-      gulpif('*.js', header(COPYRIGHT_HEADER, {version: packageData.version})),
+      gulpif('*.js', header(COPYRIGHT_HEADER, {version: packageData.version}))
     )
     .pipe(gulp.dest(paths.dist));
 });
@@ -239,6 +239,6 @@ gulp.task('default', function(cb) {
     'clean',
     ['modules', 'flow'],
     ['dist', 'dist:min'],
-    cb,
+    cb
   );
 });
