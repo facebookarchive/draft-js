@@ -302,7 +302,17 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
       return <DraftEditorPlaceholder {...placeHolderProps} />;
     }
+    this._placeholderAccessibilityID = null;
     return null;
+  }
+
+  _getAriaDescribedByIDs(): ?string {
+    const ariaDescribedByIDs = [
+      this._placeholderAccessibilityID,
+      this.props.ariaDescribedBy
+    ].filter(Boolean).join(' ');
+
+    return ariaDescribedByIDs ? ariaDescribedByIDs : null;
   }
 
   render(): React.Node {
@@ -370,9 +380,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             }
             aria-autocomplete={readOnly ? null : this.props.ariaAutoComplete}
             aria-controls={readOnly ? null : this.props.ariaControls}
-            aria-describedby={
-              this.props.ariaDescribedBy || this._placeholderAccessibilityID
-            }
+            aria-describedby={this._getAriaDescribedByIDs()}
             aria-expanded={readOnly ? null : ariaExpanded}
             aria-label={this.props.ariaLabel}
             aria-labelledby={this.props.ariaLabelledBy}
