@@ -152,7 +152,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _dragCount: number;
   _internalDrag: boolean;
   _editorKey: string;
-  _placeholderAccessibilityID: string;
+  _placeholderAccessibilityID: ?string;
   _latestEditorState: EditorState;
   _latestCommittedEditorState: EditorState;
   _pendingStateFromBeforeInput: void | EditorState;
