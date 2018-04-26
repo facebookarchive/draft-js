@@ -71,7 +71,11 @@ stateless components:</p>
 
 <span class="token keyword">const</span> <span class="token function-variable function">HashtagSpan</span> <span class="token operator">=</span> <span class="token punctuation">(</span>props<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
   <span class="token keyword">return</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token spread"><span class="token punctuation">{</span><span class="token punctuation">...</span><span class="token attr-value">props</span><span class="token punctuation">}</span></span> <span class="token attr-name">style</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>styles<span class="token punctuation">.</span>hashtag<span class="token punctuation">}</span></span><span class="token punctuation">></span></span><span class="token punctuation">{</span>props<span class="token punctuation">.</span>children<span class="token punctuation">}</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span></pre><p>Note that <code>props.children</code> is passed through to the rendered output. This is
+<span class="token punctuation">}</span><span class="token punctuation">;</span></pre><p>The Decorator Component will receive various pieces of metadata in <code>props</code>,
+including a copy of the <code>contentState</code>, the <code>entityKey</code> if there is one, and the
+<code>blockKey</code>. For a full list of props supplied to a Decorator Component see the
+<a href="https://github.com/facebook/draft-js/blob/master/src/model/decorators/DraftDecorator.js">DraftDecoratorComponentProps type</a>.</p>
+<p>Note that <code>props.children</code> is passed through to the rendered output. This is
 done to ensure that the text is rendered within the decorated <code>span</code>.</p>
 <p>You can use the same approach for links, as demonstrated in our
 <a href="https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/link">link example</a>.</p>
