@@ -207,7 +207,6 @@ class DraftEditorBlock extends React.Component<Props> {
           start,
           end,
           blockKey,
-          // $FlowFixMe
           entityKey,
           offsetKey: decoratorOffsetKey,
         };
