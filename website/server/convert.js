@@ -101,7 +101,6 @@ function execute() {
     'core/metadata.js',
     '/**\n' +
     ' * @generated\n' +
-    ' * @providesModule Metadata\n' +
     ' */\n' +
     'module.exports = ' + JSON.stringify(metadatas, null, 2) + ';'
   );

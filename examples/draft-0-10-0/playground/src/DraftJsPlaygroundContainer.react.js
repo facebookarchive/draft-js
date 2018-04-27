@@ -1,7 +1,6 @@
 /**
  * Copyright 2004-present Facebook. All Rights Reserved.
  *
- * @providesModule DraftJsPlaygroundContainer.react
  * @flow
  * @format
  */

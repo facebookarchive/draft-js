@@ -103,6 +103,9 @@
     "transform": {
       ".*": "<rootDir>/scripts/jest/preprocessor.js"
     },
+    "haste": {
+      "hasteImplModulePath": "<rootDir>/scripts/jest/hasteImpl.js"
+    },
     "modulePathIgnorePatterns": [
       "<rootDir>/lib/",
       "<rootDir>/node_modules/"
