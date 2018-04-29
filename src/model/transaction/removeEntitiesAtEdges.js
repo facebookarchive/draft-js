@@ -18,37 +18,37 @@ import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
 import type {List} from 'immutable';
 
-var CharacterMetadata = require('CharacterMetadata');
+const CharacterMetadata = require('CharacterMetadata');
 
-var findRangesImmutable = require('findRangesImmutable');
-var invariant = require('invariant');
+const findRangesImmutable = require('findRangesImmutable');
+const invariant = require('invariant');
 
 function removeEntitiesAtEdges(
   contentState: ContentState,
   selectionState: SelectionState,
 ): ContentState {
-  var blockMap = contentState.getBlockMap();
-  var entityMap = contentState.getEntityMap();
+  const blockMap = contentState.getBlockMap();
+  const entityMap = contentState.getEntityMap();
 
-  var updatedBlocks = {};
+  const updatedBlocks = {};
 
-  var startKey = selectionState.getStartKey();
-  var startOffset = selectionState.getStartOffset();
-  var startBlock = blockMap.get(startKey);
-  var updatedStart = removeForBlock(entityMap, startBlock, startOffset);
+  const startKey = selectionState.getStartKey();
+  const startOffset = selectionState.getStartOffset();
+  const startBlock = blockMap.get(startKey);
+  const updatedStart = removeForBlock(entityMap, startBlock, startOffset);
 
   if (updatedStart !== startBlock) {
     updatedBlocks[startKey] = updatedStart;
   }
 
-  var endKey = selectionState.getEndKey();
-  var endOffset = selectionState.getEndOffset();
-  var endBlock = blockMap.get(endKey);
+  const endKey = selectionState.getEndKey();
+  const endOffset = selectionState.getEndOffset();
+  let endBlock = blockMap.get(endKey);
   if (startKey === endKey) {
     endBlock = updatedStart;
   }
 
-  var updatedEnd = removeForBlock(entityMap, endBlock, endOffset);
+  const updatedEnd = removeForBlock(entityMap, endBlock, endOffset);
 
   if (updatedEnd !== endBlock) {
     updatedBlocks[endKey] = updatedEnd;
@@ -77,7 +77,7 @@ function getRemovalRange(
   start: number,
   end: number,
 } {
-  var removalRange;
+  let removalRange;
 
   // Iterates through a list looking for ranges of matching items
   // based on the 'isEqual' callback.
@@ -110,17 +110,17 @@ function removeForBlock(
   block: BlockNodeRecord,
   offset: number,
 ): BlockNodeRecord {
-  var chars = block.getCharacterList();
-  var charBefore = offset > 0 ? chars.get(offset - 1) : undefined;
-  var charAfter = offset < chars.count() ? chars.get(offset) : undefined;
-  var entityBeforeCursor = charBefore ? charBefore.getEntity() : undefined;
-  var entityAfterCursor = charAfter ? charAfter.getEntity() : undefined;
+  let chars = block.getCharacterList();
+  const charBefore = offset > 0 ? chars.get(offset - 1) : undefined;
+  const charAfter = offset < chars.count() ? chars.get(offset) : undefined;
+  const entityBeforeCursor = charBefore ? charBefore.getEntity() : undefined;
+  const entityAfterCursor = charAfter ? charAfter.getEntity() : undefined;
 
   if (entityAfterCursor && entityAfterCursor === entityBeforeCursor) {
-    var entity = entityMap.__get(entityAfterCursor);
+    const entity = entityMap.__get(entityAfterCursor);
     if (entity.getMutability() !== 'MUTABLE') {
-      var {start, end} = getRemovalRange(chars, entityAfterCursor, offset);
-      var current;
+      let {start, end} = getRemovalRange(chars, entityAfterCursor, offset);
+      let current;
       while (start < end) {
         current = chars.get(start);
         chars = chars.set(start, CharacterMetadata.applyEntity(current, null));

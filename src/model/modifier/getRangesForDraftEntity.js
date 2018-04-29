@@ -15,7 +15,7 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftRange} from 'DraftRange';
 
-var invariant = require('invariant');
+const invariant = require('invariant');
 
 /**
  * Obtain the start and end positions of the range that has the
@@ -29,7 +29,7 @@ function getRangesForDraftEntity(
   block: BlockNodeRecord,
   key: string,
 ): Array<DraftRange> {
-  var ranges = [];
+  const ranges = [];
   block.findEntityRanges(
     c => c.getEntity() === key,
     (start, end) => {

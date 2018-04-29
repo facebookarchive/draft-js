@@ -15,16 +15,16 @@
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var BlockTree = require('BlockTree');
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
-var UserAgent = require('UserAgent');
+const BlockTree = require('BlockTree');
+const DraftModifier = require('DraftModifier');
+const EditorState = require('EditorState');
+const UserAgent = require('UserAgent');
 
-var getEntityKeyForSelection = require('getEntityKeyForSelection');
+const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isEventHandled = require('isEventHandled');
-var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-var nullthrows = require('nullthrows');
-var setImmediate = require('setImmediate');
+const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
+const nullthrows = require('nullthrows');
+const setImmediate = require('setImmediate');
 
 // When nothing is focused, Firefox regards two characters, `'` and `/`, as
 // commands that should open and focus the "quickfind" search bar. This should
@@ -33,9 +33,9 @@ var setImmediate = require('setImmediate');
 // This breaks the input. Special case these characters to ensure that when
 // they are typed, we prevent default on the event to make sure not to
 // trigger quickfind.
-var FF_QUICKFIND_CHAR = "'";
-var FF_QUICKFIND_LINK_CHAR = '/';
-var isFirefox = UserAgent.isBrowser('Firefox');
+const FF_QUICKFIND_CHAR = "'";
+const FF_QUICKFIND_LINK_CHAR = '/';
+const isFirefox = UserAgent.isBrowser('Firefox');
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
@@ -54,7 +54,7 @@ function replaceText(
   inlineStyle: DraftInlineStyle,
   entityKey: ?string,
 ): EditorState {
-  var contentState = DraftModifier.replaceText(
+  const contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),
     editorState.getSelection(),
     text,
@@ -84,7 +84,7 @@ function editOnBeforeInput(
 
   const editorState = editor._latestEditorState;
 
-  var chars = e.data;
+  const chars = e.data;
 
   // In some cases (ex: IE ideographic space insertion) no character data
   // is provided. There's nothing to do when this happens.
@@ -108,10 +108,10 @@ function editOnBeforeInput(
   // If selection is collapsed, conditionally allow native behavior. This
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
-  var selection = editorState.getSelection();
-  var selectionStart = selection.getStartOffset();
-  var selectionEnd = selection.getEndOffset();
-  var anchorKey = selection.getAnchorKey();
+  const selection = editorState.getSelection();
+  const selectionStart = selection.getStartOffset();
+  const selectionEnd = selection.getEndOffset();
+  const anchorKey = selection.getAnchorKey();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
@@ -119,7 +119,7 @@ function editOnBeforeInput(
     // If the currently selected text matches what the user is trying to
     // replace it with, let's just update the `SelectionState`. If not, update
     // the `ContentState` with the new text.
-    var currentlySelectedChars = editorState
+    const currentlySelectedChars = editorState
       .getCurrentContent()
       .getPlainText()
       .slice(selectionStart, selectionEnd);
@@ -149,7 +149,7 @@ function editOnBeforeInput(
     return;
   }
 
-  var newEditorState = replaceText(
+  let newEditorState = replaceText(
     editorState,
     chars,
     editorState.getCurrentInlineStyle(),
@@ -190,10 +190,10 @@ function editOnBeforeInput(
     // Check the old and new "fingerprints" of the current block to determine
     // whether this insertion requires any addition or removal of text nodes,
     // in which case we would prevent the native character insertion.
-    var originalFingerprint = BlockTree.getFingerprint(
+    const originalFingerprint = BlockTree.getFingerprint(
       editorState.getBlockTree(anchorKey),
     );
-    var newFingerprint = BlockTree.getFingerprint(
+    const newFingerprint = BlockTree.getFingerprint(
       newEditorState.getBlockTree(anchorKey),
     );
     mustPreventNative = originalFingerprint !== newFingerprint;

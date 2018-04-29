@@ -12,17 +12,17 @@
 
 'use strict';
 
-var EditorState = require('EditorState');
+const EditorState = require('EditorState');
 
-var expandRangeToStartOfLine = require('expandRangeToStartOfLine');
-var getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
-var moveSelectionBackward = require('moveSelectionBackward');
-var removeTextWithStrategy = require('removeTextWithStrategy');
+const expandRangeToStartOfLine = require('expandRangeToStartOfLine');
+const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
+const moveSelectionBackward = require('moveSelectionBackward');
+const removeTextWithStrategy = require('removeTextWithStrategy');
 
 function keyCommandBackspaceToStartOfLine(
   editorState: EditorState,
 ): EditorState {
-  var afterRemoval = removeTextWithStrategy(
+  const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
       const selection = strategyState.getSelection();
@@ -30,8 +30,8 @@ function keyCommandBackspaceToStartOfLine(
         return moveSelectionBackward(strategyState, 1);
       }
 
-      var domSelection = global.getSelection();
-      var range = domSelection.getRangeAt(0);
+      const domSelection = global.getSelection();
+      let range = domSelection.getRangeAt(0);
       range = expandRangeToStartOfLine(range);
 
       return getDraftEditorSelectionWithNodes(

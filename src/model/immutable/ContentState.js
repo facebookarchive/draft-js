@@ -71,7 +71,7 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlockForKey(key: string): BlockNodeRecord {
-    var block: BlockNodeRecord = this.getBlockMap().get(key);
+    const block: BlockNodeRecord = this.getBlockMap().get(key);
     return block;
   }
 
@@ -133,7 +133,7 @@ class ContentState extends ContentStateRecord {
   }
 
   hasText(): boolean {
-    var blockMap = this.getBlockMap();
+    const blockMap = this.getBlockMap();
     return blockMap.size > 1 || blockMap.first().getLength() > 0;
   }
 
@@ -177,8 +177,8 @@ class ContentState extends ContentStateRecord {
   ): ContentState {
     // TODO: remove this when we completely deprecate the old entity API
     const theBlocks = Array.isArray(blocks) ? blocks : blocks.contentBlocks;
-    var blockMap = BlockMapBuilder.createFromArray(theBlocks);
-    var selectionState = blockMap.isEmpty()
+    const blockMap = BlockMapBuilder.createFromArray(theBlocks);
+    const selectionState = blockMap.isEmpty()
       ? new SelectionState()
       : SelectionState.createEmpty(blockMap.first().getKey());
     return new ContentState({

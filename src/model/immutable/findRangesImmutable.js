@@ -31,7 +31,7 @@ function findRangesImmutable<T>(
     return;
   }
 
-  var cursor: number = 0;
+  let cursor: number = 0;
 
   haystack.reduce((value: T, nextValue, nextIndex) => {
     if (!areEqualFn(value, nextValue)) {

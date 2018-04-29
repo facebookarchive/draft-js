@@ -16,11 +16,11 @@
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
-var {Record} = Immutable;
+const {Record} = Immutable;
 
-var DraftEntityInstanceRecord = Record({
+const DraftEntityInstanceRecord = Record({
   type: 'TOKEN',
   mutability: 'IMMUTABLE',
   data: Object,

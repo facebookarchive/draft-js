@@ -12,7 +12,7 @@
 
 'use strict';
 
-var EditorState = require('EditorState');
+const EditorState = require('EditorState');
 
 /**
  * See comment for `moveSelectionToStartOfBlock`.
@@ -20,10 +20,10 @@ var EditorState = require('EditorState');
 function keyCommandMoveSelectionToEndOfBlock(
   editorState: EditorState,
 ): EditorState {
-  var selection = editorState.getSelection();
-  var endKey = selection.getEndKey();
-  var content = editorState.getCurrentContent();
-  var textLength = content.getBlockForKey(endKey).getLength();
+  const selection = editorState.getSelection();
+  const endKey = selection.getEndKey();
+  const content = editorState.getCurrentContent();
+  const textLength = content.getBlockForKey(endKey).getLength();
   return EditorState.set(editorState, {
     selection: selection.merge({
       anchorKey: endKey,

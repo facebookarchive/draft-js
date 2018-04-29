@@ -15,10 +15,10 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {EntityRange} from 'EntityRange';
 
-var DraftStringKey = require('DraftStringKey');
-var UnicodeUtils = require('UnicodeUtils');
+const DraftStringKey = require('DraftStringKey');
+const UnicodeUtils = require('UnicodeUtils');
 
-var {strlen} = UnicodeUtils;
+const {strlen} = UnicodeUtils;
 
 /**
  * Convert to UTF-8 character counts for storage.
@@ -27,12 +27,12 @@ function encodeEntityRanges(
   block: BlockNodeRecord,
   storageMap: Object,
 ): Array<EntityRange> {
-  var encoded = [];
+  const encoded = [];
   block.findEntityRanges(
     character => !!character.getEntity(),
     (/*number*/ start, /*number*/ end) => {
-      var text = block.getText();
-      var key = block.getEntityAt(start);
+      const text = block.getText();
+      const key = block.getEntityAt(start);
       encoded.push({
         offset: strlen(text.slice(0, start)),
         length: strlen(text.slice(start, end)),

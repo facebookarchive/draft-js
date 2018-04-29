@@ -14,16 +14,16 @@
 
 import type ContentState from 'ContentState';
 
-var Immutable = require('immutable');
-var UnicodeBidiService = require('UnicodeBidiService');
+const Immutable = require('immutable');
+const UnicodeBidiService = require('UnicodeBidiService');
 
-var nullthrows = require('nullthrows');
+const nullthrows = require('nullthrows');
 
-var {OrderedMap} = Immutable;
+const {OrderedMap} = Immutable;
 
-var bidiService;
+let bidiService;
 
-var EditorBidiService = {
+const EditorBidiService = {
   getDirectionMap: function(
     content: ContentState,
     prevBidiMap: ?OrderedMap<any, any>,
@@ -34,11 +34,11 @@ var EditorBidiService = {
       bidiService.reset();
     }
 
-    var blockMap = content.getBlockMap();
-    var nextBidi = blockMap
+    const blockMap = content.getBlockMap();
+    const nextBidi = blockMap
       .valueSeq()
       .map(block => nullthrows(bidiService).getDirection(block.getText()));
-    var bidiMap = OrderedMap(blockMap.keySeq().zip(nextBidi));
+    const bidiMap = OrderedMap(blockMap.keySeq().zip(nextBidi));
 
     if (prevBidiMap != null && Immutable.is(prevBidiMap, bidiMap)) {
       return prevBidiMap;

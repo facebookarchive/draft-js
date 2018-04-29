@@ -12,21 +12,21 @@
 
 'use strict';
 
-var EditorState = require('EditorState');
+const EditorState = require('EditorState');
 
 function keyCommandUndo(
   e: SyntheticKeyboardEvent<>,
   editorState: EditorState,
   updateFn: (editorState: EditorState) => void,
 ): void {
-  var undoneState = EditorState.undo(editorState);
+  const undoneState = EditorState.undo(editorState);
 
   // If the last change to occur was a spellcheck change, allow the undo
   // event to fall through to the browser. This allows the browser to record
   // the unwanted change, which should soon lead it to learn not to suggest
   // the correction again.
   if (editorState.getLastChangeType() === 'spellcheck-change') {
-    var nativelyRenderedContent = undoneState.getCurrentContent();
+    const nativelyRenderedContent = undoneState.getCurrentContent();
     updateFn(EditorState.set(undoneState, {nativelyRenderedContent}));
     return;
   }

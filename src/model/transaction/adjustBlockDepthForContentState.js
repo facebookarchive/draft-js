@@ -21,16 +21,16 @@ function adjustBlockDepthForContentState(
   adjustment: number,
   maxDepth: number,
 ): ContentState {
-  var startKey = selectionState.getStartKey();
-  var endKey = selectionState.getEndKey();
-  var blockMap = contentState.getBlockMap();
-  var blocks = blockMap
+  const startKey = selectionState.getStartKey();
+  const endKey = selectionState.getEndKey();
+  let blockMap = contentState.getBlockMap();
+  const blocks = blockMap
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
     .concat([[endKey, blockMap.get(endKey)]])
     .map(block => {
-      var depth = block.getDepth() + adjustment;
+      let depth = block.getDepth() + adjustment;
       depth = Math.max(0, Math.min(depth, maxDepth));
       return block.set('depth', depth);
     });

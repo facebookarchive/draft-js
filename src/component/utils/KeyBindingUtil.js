@@ -12,11 +12,11 @@
 
 'use strict';
 
-var UserAgent = require('UserAgent');
+const UserAgent = require('UserAgent');
 
-var isOSX = UserAgent.isPlatform('Mac OS X');
+const isOSX = UserAgent.isPlatform('Mac OS X');
 
-var KeyBindingUtil = {
+const KeyBindingUtil = {
   /**
    * Check whether the ctrlKey modifier is *not* being used in conjunction with
    * the altKey modifier. If they are combined, the result is an `altGraph`

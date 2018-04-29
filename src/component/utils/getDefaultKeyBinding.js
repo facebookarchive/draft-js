@@ -14,18 +14,18 @@
 
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 
-var KeyBindingUtil = require('KeyBindingUtil');
-var Keys = require('Keys');
-var UserAgent = require('UserAgent');
+const KeyBindingUtil = require('KeyBindingUtil');
+const Keys = require('Keys');
+const UserAgent = require('UserAgent');
 
-var isOSX = UserAgent.isPlatform('Mac OS X');
+const isOSX = UserAgent.isPlatform('Mac OS X');
 
 // Firefox on OSX had a bug resulting in navigation instead of cursor movement.
 // This bug was fixed in Firefox 29. Feature detection is virtually impossible
 // so we just check the version number. See #342765.
-var shouldFixFirefoxMovement = isOSX && UserAgent.isBrowser('Firefox < 29');
+const shouldFixFirefoxMovement = isOSX && UserAgent.isBrowser('Firefox < 29');
 
-var {hasCommandModifier, isCtrlKeyCommand} = KeyBindingUtil;
+const {hasCommandModifier, isCtrlKeyCommand} = KeyBindingUtil;
 
 function shouldRemoveWord(e: SyntheticKeyboardEvent<>): boolean {
   return (isOSX && e.altKey) || isCtrlKeyCommand(e);

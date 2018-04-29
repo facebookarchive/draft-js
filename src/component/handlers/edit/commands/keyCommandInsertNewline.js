@@ -12,11 +12,11 @@
 
 'use strict';
 
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
+const DraftModifier = require('DraftModifier');
+const EditorState = require('EditorState');
 
 function keyCommandInsertNewline(editorState: EditorState): EditorState {
-  var contentState = DraftModifier.splitBlock(
+  const contentState = DraftModifier.splitBlock(
     editorState.getCurrentContent(),
     editorState.getSelection(),
   );

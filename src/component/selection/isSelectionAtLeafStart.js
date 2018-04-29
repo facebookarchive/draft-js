@@ -15,12 +15,12 @@
 import type EditorState from 'EditorState';
 
 function isSelectionAtLeafStart(editorState: EditorState): boolean {
-  var selection = editorState.getSelection();
-  var anchorKey = selection.getAnchorKey();
-  var blockTree = editorState.getBlockTree(anchorKey);
-  var offset = selection.getStartOffset();
+  const selection = editorState.getSelection();
+  const anchorKey = selection.getAnchorKey();
+  const blockTree = editorState.getBlockTree(anchorKey);
+  const offset = selection.getStartOffset();
 
-  var isAtStart = false;
+  let isAtStart = false;
 
   blockTree.some(leafSet => {
     if (offset === leafSet.get('start')) {
@@ -30,7 +30,7 @@ function isSelectionAtLeafStart(editorState: EditorState): boolean {
 
     if (offset < leafSet.get('end')) {
       return leafSet.get('leaves').some(leaf => {
-        var leafStart = leaf.get('start');
+        const leafStart = leaf.get('start');
         if (offset === leafStart) {
           isAtStart = true;
           return true;

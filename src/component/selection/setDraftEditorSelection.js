@@ -28,7 +28,7 @@ function getAnonymizedDOM(
     return '[empty]';
   }
 
-  var anonymized = anonymizeTextWithin(node, getNodeLabels);
+  const anonymized = anonymizeTextWithin(node, getNodeLabels);
   if (anonymized.nodeType === Node.TEXT_NODE) {
     return anonymized.textContent;
   }
@@ -47,7 +47,7 @@ function anonymizeTextWithin(
   const labels = getNodeLabels !== undefined ? getNodeLabels(node) : [];
 
   if (node.nodeType === Node.TEXT_NODE) {
-    var length = node.textContent.length;
+    const length = node.textContent.length;
     return document.createTextNode(
       '[text ' +
         length +
@@ -56,12 +56,12 @@ function anonymizeTextWithin(
     );
   }
 
-  var clone = node.cloneNode();
+  const clone = node.cloneNode();
   if (clone.nodeType === 1 && labels.length) {
     ((clone: any): Element).setAttribute('data-labels', labels.join(', '));
   }
-  var childNodes = node.childNodes;
-  for (var ii = 0; ii < childNodes.length; ii++) {
+  const childNodes = node.childNodes;
+  for (let ii = 0; ii < childNodes.length; ii++) {
     clone.appendChild(anonymizeTextWithin(childNodes[ii], getNodeLabels));
   }
 
@@ -117,17 +117,17 @@ function setDraftEditorSelection(
     return;
   }
 
-  var selection = global.getSelection();
-  var anchorKey = selectionState.getAnchorKey();
-  var anchorOffset = selectionState.getAnchorOffset();
-  var focusKey = selectionState.getFocusKey();
-  var focusOffset = selectionState.getFocusOffset();
-  var isBackward = selectionState.getIsBackward();
+  const selection = global.getSelection();
+  let anchorKey = selectionState.getAnchorKey();
+  let anchorOffset = selectionState.getAnchorOffset();
+  let focusKey = selectionState.getFocusKey();
+  let focusOffset = selectionState.getFocusOffset();
+  let isBackward = selectionState.getIsBackward();
 
   // IE doesn't support backward selection. Swap key/offset pairs.
   if (!selection.extend && isBackward) {
-    var tempKey = anchorKey;
-    var tempOffset = anchorOffset;
+    const tempKey = anchorKey;
+    const tempOffset = anchorOffset;
     anchorKey = focusKey;
     anchorOffset = focusOffset;
     focusKey = tempKey;
@@ -135,12 +135,12 @@ function setDraftEditorSelection(
     isBackward = false;
   }
 
-  var hasAnchor =
+  const hasAnchor =
     anchorKey === blockKey &&
     nodeStart <= anchorOffset &&
     nodeEnd >= anchorOffset;
 
-  var hasFocus =
+  const hasFocus =
     focusKey === blockKey && nodeStart <= focusOffset && nodeEnd >= focusOffset;
 
   // If the selection is entirely bound within this node, set the selection
@@ -204,8 +204,8 @@ function setDraftEditorSelection(
     // We keep track of it, reset the selection range, and extend it
     // back to the focus point.
     if (hasAnchor) {
-      var storedFocusNode = selection.focusNode;
-      var storedFocusOffset = selection.focusOffset;
+      const storedFocusNode = selection.focusNode;
+      const storedFocusOffset = selection.focusOffset;
 
       selection.removeAllRanges();
       addPointToSelection(
@@ -302,7 +302,7 @@ function addFocusToSelection(
     // Additionally, clone the selection range. IE11 throws an
     // InvalidStateError when attempting to access selection properties
     // after the range is detached.
-    var range = selection.getRangeAt(0);
+    const range = selection.getRangeAt(0);
     range.setEnd(node, offset);
     selection.addRange(range.cloneRange());
   }
@@ -314,7 +314,7 @@ function addPointToSelection(
   offset: number,
   selectionState: SelectionState,
 ): void {
-  var range = document.createRange();
+  const range = document.createRange();
   // logging to catch bug that is being reported in t16250795
   if (offset > getNodeLength(node)) {
     // in this case we know that the call to 'range.setStart' is about to throw
