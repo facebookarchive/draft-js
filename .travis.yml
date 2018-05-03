@@ -43,7 +43,6 @@ script:
   else
     set -e
     ./node_modules/.bin/gulp
-    ./setup.sh
     if [ "$TRAVIS_PULL_REQUEST" = false ] && [ "$TRAVIS_BRANCH" = master ]; then
       # Automatically publish the website
       git config --global user.name "Travis CI"
