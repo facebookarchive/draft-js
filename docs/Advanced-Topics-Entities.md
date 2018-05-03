@@ -4,7 +4,7 @@ title: Entities
 layout: docs
 category: Advanced Topics
 next: v0-10-api-migration
-permalink: docs/advanced-topics-entities.html
+permalink: docs/Advanced-Topics-Entities.md
 ---
 
 This article discusses the Entity system, which Draft uses for annotating
@@ -19,13 +19,13 @@ and
 provide live code examples to help clarify how entities can be used, as well
 as their built-in behavior.
 
-The [Entity API Reference](/docs/api-reference-entity.html) provides
+The [Entity API Reference](/docs/APIReference-Entity.md) provides
 details on the static methods to be used when creating, retrieving, or updating
 entity objects.
 
 For information about recent changes to the Entity API, and examples of how to
 update your application,
-[see our v0.10 API Migration Guide](/docs/v0-10-api-migration.html#content).
+[see our v0.10 API Migration Guide](/docs/APIReference-APIMigration.md).
 
 ## Introduction
 
@@ -48,8 +48,8 @@ ranges. (We are currently deprecating a previous API for accessing Entities; see
 issue
 [#839](https://github.com/facebook/draft-js/issues/839).)
 
-Using [decorators](/docs/advanced-topics-decorators.html) or
-[custom block components](/docs/advanced-topics-block-components.html), you can
+Using [decorators](/docs/Advanced-Topics-Decorators.md) or
+[custom block components](/docs/Advanced-Topics-Block-Components.md), you can
 add rich rendering to your editor based on entity metadata.
 
 ## Creating and Retrieving Entities
