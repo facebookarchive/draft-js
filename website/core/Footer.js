@@ -19,18 +19,14 @@ class Footer extends React.Component {
             <a
               href={
                 config.baseUrl +
-                'docs/' +
-                this.props.language +
-                '/getting-started.html'
+                'docs/getting-started.html'
               }>
               Getting Started
             </a>
             <a
               href={
                 config.baseUrl +
-                'docs/' +
-                this.props.language +
-                '/api-reference-editor.html'
+                'docs/api-reference-editor.html'
               }>
               API Reference
             </a>
