@@ -9,11 +9,11 @@
     "rename-version": "docusaurus-rename-version"
   },
   "devDependencies": {
-    "docusaurus": "^1.0.4"
+    "docusaurus": "1.0.14"
   },
   "dependencies": {
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-react": "^6.24.1",
-    "react": "^15.5.4"
+    "babel-preset-env": "1.6.0",
+    "babel-preset-react": "6.24.1",
+    "react": "16.3.2"
   }
 }
