@@ -36,6 +36,9 @@ const siteConfig = {
   scripts: ['https://buttons.github.io/buttons.js'],
   // You may provide arbitrary config keys to be used as needed by your template.
   repoUrl: 'https://github.com/facebook/draft-js',
+
+  // Google analytics tracking id
+  gaTrackingId: 'UA-44373548-19',
 };
 
 module.exports = siteConfig;
