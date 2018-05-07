@@ -390,3 +390,15 @@ test('must throw an error when trying to apply ContentBlockNode fragments when s
     ),
   );
 });
+
+test('must keep the fragments block type when inserting a fragment of size 1', () => {
+  assertInsertFragmentIntoContentState(
+    createFragment([
+      {
+        key: 'A',
+        text: 'Aardvark',
+        type: 'atomic',
+      },
+    ]),
+  );
+});
