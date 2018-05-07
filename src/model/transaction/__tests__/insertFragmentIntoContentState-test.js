@@ -117,6 +117,18 @@ test('must apply multiblock fragments', () => {
   );
 });
 
+test('must keep the fragments block type', () => {
+  assertInsertFragmentIntoContentState(
+    createFragment([
+      {
+        key: 'k',
+        text: 'banana phone',
+        type: 'atomic',
+      },
+    ]),
+  );
+});
+
 test('must be able to insert a fragment with a single ContentBlockNode', () => {
   const initialSelection = SelectionState.createEmpty('A');
   const initialContent = contentState.set(

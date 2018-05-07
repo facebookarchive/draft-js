@@ -20,17 +20,9 @@ Array [
 
 exports[`falls back to no style if in empty block at document start 1`] = `Array []`;
 
-exports[`looks upward through empty blocks to find a character 1`] = `
-Array [
-  "BOLD",
-]
-`;
+exports[`looks upward through empty blocks to find a character 1`] = `Array []`;
 
-exports[`looks upward through empty blocks to find a character with collapsed selection 1`] = `
-Array [
-  "BOLD",
-]
-`;
+exports[`looks upward through empty blocks to find a character with collapsed selection 1`] = `Array []`;
 
 exports[`must call decorator with correct argument types and order 1`] = `2`;
 
@@ -62,11 +54,7 @@ Array [
 ]
 `;
 
-exports[`uses previous block at offset \`0\` within empty block 1`] = `
-Array [
-  "BOLD",
-]
-`;
+exports[`uses previous block at offset \`0\` within empty block 1`] = `Array []`;
 
 exports[`uses right of the caret at document start 1`] = `Array []`;
 

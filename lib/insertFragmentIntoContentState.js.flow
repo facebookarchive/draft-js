@@ -37,6 +37,7 @@ const updateExistingBlock = (contentState: ContentState, selectionState: Selecti
 
   const newBlock = targetBlock.merge({
     text: text.slice(0, targetOffset) + fragmentBlock.getText() + text.slice(targetOffset),
+    type: fragmentBlock.getType(),
     characterList: insertIntoList(chars, fragmentBlock.getCharacterList(), targetOffset),
     data: fragmentBlock.getData()
   });
