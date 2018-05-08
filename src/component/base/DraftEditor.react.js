@@ -286,7 +286,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     );
   }
 
-  _renderPlaceholder(): ?React.Element<any> {
+  _renderPlaceholder(): React.Node {
     if (this._showPlaceholder()) {
       const placeHolderProps = {
         text: nullthrows(this.props.placeholder),
