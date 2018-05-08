@@ -34,7 +34,7 @@ const isEventHandled = require('isEventHandled');
 function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   const editorState = editor._latestEditorState;
 
-  const result = editor.props.handleCut && editor.props.handleCut(editorState, e);
+  const result = editor.props.handleCut && editor.props.handleCut(e, editorState);
 
   if (isEventHandled(result)) {
     e.preventDefault();
