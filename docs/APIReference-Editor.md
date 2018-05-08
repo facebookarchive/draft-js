@@ -260,6 +260,18 @@ handleDrop?: (selection: SelectionState, dataTransfer: Object, isInternal: Draft
 ```
 Handle other drop operations.
 
+#### handleCut
+```
+handleCut?: (e: SyntheticClipboardEvent, editorState: EditorState) => DraftHandleValue
+```
+Handle a native cut event.
+
+#### handleCopy
+```
+handleCopy?: (e: SyntheticClipboardEvent, editorState: EditorState) => DraftHandleValue
+```
+Handle a native copy event.
+
 ### Key Handlers (Optional)
 
 Draft lets you supply a custom `keyDown` handler that wraps or overrides its
