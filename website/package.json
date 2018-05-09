@@ -9,7 +9,7 @@
     "rename-version": "docusaurus-rename-version"
   },
   "devDependencies": {
-    "docusaurus": "1.0.14"
+    "docusaurus": "1.0.15"
   },
   "dependencies": {
     "babel-preset-env": "1.6.0",
