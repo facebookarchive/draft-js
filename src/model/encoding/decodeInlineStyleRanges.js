@@ -6,17 +6,16 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule decodeInlineStyleRanges
  * @format
  * @flow
  */
 
 'use strict';
 
-var {OrderedSet} = require('immutable');
-var UnicodeUtils = require('UnicodeUtils');
+const {OrderedSet} = require('immutable');
+const UnicodeUtils = require('UnicodeUtils');
 
-var {substr} = UnicodeUtils;
+const {substr} = UnicodeUtils;
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
@@ -29,11 +28,11 @@ function decodeInlineStyleRanges(
   text: string,
   ranges?: Array<Object>,
 ): Array<DraftInlineStyle> {
-  var styles = Array(text.length).fill(EMPTY_SET);
+  const styles = Array(text.length).fill(EMPTY_SET);
   if (ranges) {
     ranges.forEach((/*object*/ range) => {
-      var cursor = substr(text, 0, range.offset).length;
-      var end = cursor + substr(text, range.offset, range.length).length;
+      let cursor = substr(text, 0, range.offset).length;
+      const end = cursor + substr(text, range.offset, range.length).length;
       while (cursor < end) {
         styles[cursor] = styles[cursor].add(range.style);
         cursor++;

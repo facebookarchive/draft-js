@@ -6,14 +6,13 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftStringKey
  * @format
  * @flow strict
  */
 
 'use strict';
 
-var DraftStringKey = {
+const DraftStringKey = {
   stringify: function(key: mixed): string {
     return '_' + String(key);
   },

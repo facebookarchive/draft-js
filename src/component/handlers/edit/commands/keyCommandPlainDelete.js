@@ -6,18 +6,17 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule keyCommandPlainDelete
  * @format
  * @flow
  */
 
 'use strict';
 
-var EditorState = require('EditorState');
-var UnicodeUtils = require('UnicodeUtils');
+const EditorState = require('EditorState');
+const UnicodeUtils = require('UnicodeUtils');
 
-var moveSelectionForward = require('moveSelectionForward');
-var removeTextWithStrategy = require('removeTextWithStrategy');
+const moveSelectionForward = require('moveSelectionForward');
+const removeTextWithStrategy = require('removeTextWithStrategy');
 
 /**
  * Remove the selected range. If the cursor is collapsed, remove the following
@@ -25,14 +24,14 @@ var removeTextWithStrategy = require('removeTextWithStrategy');
  * will remove a surrogate pair properly as well.
  */
 function keyCommandPlainDelete(editorState: EditorState): EditorState {
-  var afterRemoval = removeTextWithStrategy(
+  const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
-      var selection = strategyState.getSelection();
-      var content = strategyState.getCurrentContent();
-      var key = selection.getAnchorKey();
-      var offset = selection.getAnchorOffset();
-      var charAhead = content.getBlockForKey(key).getText()[offset];
+      const selection = strategyState.getSelection();
+      const content = strategyState.getCurrentContent();
+      const key = selection.getAnchorKey();
+      const offset = selection.getAnchorOffset();
+      const charAhead = content.getBlockForKey(key).getText()[offset];
       return moveSelectionForward(
         strategyState,
         charAhead ? UnicodeUtils.getUTF16Length(charAhead, 0) : 1,
@@ -45,7 +44,7 @@ function keyCommandPlainDelete(editorState: EditorState): EditorState {
     return editorState;
   }
 
-  var selection = editorState.getSelection();
+  const selection = editorState.getSelection();
 
   return EditorState.push(
     editorState,

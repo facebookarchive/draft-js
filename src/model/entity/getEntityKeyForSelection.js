@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule getEntityKeyForSelection
  * @format
  * @flow
  */
@@ -26,11 +25,11 @@ function getEntityKeyForSelection(
   contentState: ContentState,
   targetSelection: SelectionState,
 ): ?string {
-  var entityKey;
+  let entityKey;
 
   if (targetSelection.isCollapsed()) {
-    var key = targetSelection.getAnchorKey();
-    var offset = targetSelection.getAnchorOffset();
+    const key = targetSelection.getAnchorKey();
+    const offset = targetSelection.getAnchorOffset();
     if (offset > 0) {
       entityKey = contentState.getBlockForKey(key).getEntityAt(offset - 1);
       if (entityKey !== contentState.getBlockForKey(key).getEntityAt(offset)) {
@@ -41,9 +40,9 @@ function getEntityKeyForSelection(
     return null;
   }
 
-  var startKey = targetSelection.getStartKey();
-  var startOffset = targetSelection.getStartOffset();
-  var startBlock = contentState.getBlockForKey(startKey);
+  const startKey = targetSelection.getStartKey();
+  const startOffset = targetSelection.getStartOffset();
+  const startBlock = contentState.getBlockForKey(startKey);
 
   entityKey =
     startOffset === startBlock.getLength()
@@ -59,7 +58,7 @@ function getEntityKeyForSelection(
  */
 function filterKey(entityMap: EntityMap, entityKey: ?string): ?string {
   if (entityKey) {
-    var entity = entityMap.__get(entityKey);
+    const entity = entityMap.__get(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;
   }
   return null;
