@@ -14,11 +14,14 @@
 'use strict';
 
 jest.disableAutomock();
+jest.mock('gkx', () => name => name === 'draft_improved_decorator_fingerprint');
 
+const CompositeDraftDecorator = require('CompositeDraftDecorator');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
+
 const onBeforeInput = require('editOnBeforeInput');
 
 const DEFAULT_SELECTION = {
@@ -40,12 +43,12 @@ const rangedSelectionBackwards = new SelectionState({
   isBackward: true,
 });
 
-const getEditorState = () => {
+const getEditorState = (text: string = 'Arsenal') => {
   return EditorState.createWithContent(
     ContentState.createFromBlockArray([
       new ContentBlock({
         key: 'a',
-        text: 'Arsenal',
+        text,
       }),
     ]),
   );
@@ -53,7 +56,7 @@ const getEditorState = () => {
 
 const getInputEvent = data => ({
   data,
-  preventDefault: () => {},
+  preventDefault: jest.fn(),
 });
 
 test('editor is not updated if no character data is provided', () => {
@@ -150,4 +153,73 @@ test('editor selectionstate is updated if new text matches current selection and
 
   const newEditorState = editor.update.mock.calls[0][0];
   expect(newEditorState.getSelection()).toMatchSnapshot();
+});
+
+const HASHTAG_REGEX = /#[a-z]+/g;
+function hashtagStrategy(contentBlock, callback, contentState) {
+  findWithRegex(HASHTAG_REGEX, contentBlock, callback);
+}
+
+function findWithRegex(regex, contentBlock, callback) {
+  const text = contentBlock.getText();
+  let matchArr, start;
+  while ((matchArr = regex.exec(text)) !== null) {
+    start = matchArr.index;
+    callback(start, start + matchArr[0].length);
+  }
+}
+
+function testDecoratorFingerprint(
+  text,
+  selection,
+  charToInsert,
+  shouldPrevent,
+) {
+  const editorState = EditorState.acceptSelection(
+    EditorState.set(getEditorState(text), {
+      decorator: new CompositeDraftDecorator([
+        {
+          strategy: hashtagStrategy,
+          component: null,
+        },
+      ]),
+    }),
+    new SelectionState({
+      ...DEFAULT_SELECTION,
+      anchorOffset: selection,
+      focusOffset: selection,
+    }),
+  );
+
+  const editor = {
+    _latestEditorState: editorState,
+    _latestCommittedEditorState: editorState,
+    props: {},
+    update: jest.fn(),
+  };
+
+  const ev = getInputEvent(charToInsert);
+  onBeforeInput(editor, ev);
+
+  expect(ev.preventDefault.mock.calls.length).toBe(shouldPrevent ? 1 : 0);
+}
+
+test('decorator fingerprint logic bails out of native insertion', () => {
+  const oldGetSelection = global.getSelection;
+  try {
+    global.getSelection = () => ({});
+
+    // Make sure we prevent native insertion in the right cases
+    testDecoratorFingerprint('hi #', 4, 'f', true);
+    testDecoratorFingerprint('x #foo', 3, '#', true);
+    testDecoratorFingerprint('#foobar', 4, ' ', true);
+
+    // but these are OK to let through
+    testDecoratorFingerprint('#foo', 4, 'b', false);
+    testDecoratorFingerprint('#foo bar #baz', 2, 'o', false);
+    testDecoratorFingerprint('#foo bar #baz', 7, 'o', false);
+    testDecoratorFingerprint('#foo bar #baz', 12, 'a', false);
+  } finally {
+    global.getSelection = oldGetSelection;
+  }
 });

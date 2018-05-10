@@ -134,7 +134,7 @@ class DraftEditorBlock extends React.Component<Props> {
     }
   }
 
-  _renderChildren(): Array<React.Element<any>> {
+  _renderChildren(): Array<React.Node> {
     const block = this.props.block;
     const blockKey = block.getKey();
     const text = block.getText();
