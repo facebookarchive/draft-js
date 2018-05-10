@@ -313,6 +313,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       readOnly,
       textAlignment,
       textDirectionality,
+      contentWrapper,
+      blockWrapper,
     } = this.props;
 
     const rootClass = cx({
@@ -353,6 +355,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       editorState,
       key: 'contents' + this.state.contentsKey,
       textDirectionality,
+      contentWrapper,
+      blockWrapper,
     };
 
     return (
