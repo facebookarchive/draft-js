@@ -9,6 +9,7 @@ const siteConfig = {
   title: 'Draft.js' /* title for your website */,
   tagline: 'Rich Text Editor Framework for React',
   url: 'https://draftjs.org' /* your website url */,
+  cname: 'draftjs.org',
   baseUrl: '/' /* base url for your project */,
   organizationName: 'facebook',
   projectName: 'draft-js',
