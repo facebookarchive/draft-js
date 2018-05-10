@@ -12,6 +12,8 @@
 
 'use strict';
 
+const React = require('react');
+
 export type DraftBlockRenderConfig = {
   element: string,
   wrapper?: React.Node,
