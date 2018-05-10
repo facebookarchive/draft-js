@@ -46,6 +46,7 @@ const updateExistingBlock = (
       text.slice(0, targetOffset) +
       fragmentBlock.getText() +
       text.slice(targetOffset),
+    type: fragmentBlock.getType(),
     characterList: insertIntoList(
       chars,
       fragmentBlock.getCharacterList(),
