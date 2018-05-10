@@ -118,6 +118,7 @@ export type DraftEditorProps = {
   handleKeyCommand?: (
     command: DraftEditorCommand | string,
     editorState: EditorState,
+    eventTimeStamp: number,
   ) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be

@@ -54,6 +54,7 @@ const RichTextEditorUtil = {
   handleKeyCommand: function(
     editorState: EditorState,
     command: DraftEditorCommand | string,
+    eventTimeStamp: ?number,
   ): ?EditorState {
     switch (command) {
       case 'bold':
