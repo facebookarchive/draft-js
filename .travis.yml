@@ -51,7 +51,7 @@ script:
       cd website && yarn install && GIT_USER=reactjs-bot npm run publish-gh-pages
     else
       # Make sure the website builds without error
-      cd website && yarn install && yarn start
+      cd website && yarn install && yarn build
     fi
 
   fi
