@@ -225,7 +225,7 @@ for details on usage.
 
 #### handleBeforeInput
 ```
-handleBeforeInput?: (chars: string, editorState: EditorState) => DraftHandleValue
+handleBeforeInput?: (chars: string, editorState: EditorState, eventTimeStamp: number) => DraftHandleValue
 ```
 Handle the characters to be inserted from a `beforeInput` event. Returning `'handled'`
 causes the default behavior of the `beforeInput` event to be prevented (i.e. it is

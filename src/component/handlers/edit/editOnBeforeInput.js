@@ -100,7 +100,9 @@ function editOnBeforeInput(
   // start of the block.
   if (
     editor.props.handleBeforeInput &&
-    isEventHandled(editor.props.handleBeforeInput(chars, editorState))
+    isEventHandled(
+      editor.props.handleBeforeInput(chars, editorState, e.timeStamp),
+    )
   ) {
     e.preventDefault();
     return;

@@ -128,6 +128,7 @@ export type DraftEditorProps = {
   handleBeforeInput?: (
     chars: string,
     editorState: EditorState,
+    eventTimeStamp: number,
   ) => DraftHandleValue,
 
   handlePastedText?: (
