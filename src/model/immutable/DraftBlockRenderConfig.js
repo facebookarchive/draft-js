@@ -12,7 +12,7 @@
 
 'use strict';
 
-const React = require('react');
+const React = require('React');
 
 export type DraftBlockRenderConfig = {
   element: string,
