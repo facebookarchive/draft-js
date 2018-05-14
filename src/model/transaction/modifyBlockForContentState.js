@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule modifyBlockForContentState
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
@@ -26,10 +25,10 @@ function modifyBlockForContentState(
   selectionState: SelectionState,
   operation: (block: BlockNodeRecord) => BlockNodeRecord,
 ): ContentState {
-  var startKey = selectionState.getStartKey();
-  var endKey = selectionState.getEndKey();
-  var blockMap = contentState.getBlockMap();
-  var newBlocks = blockMap
+  const startKey = selectionState.getStartKey();
+  const endKey = selectionState.getEndKey();
+  const blockMap = contentState.getBlockMap();
+  const newBlocks = blockMap
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)

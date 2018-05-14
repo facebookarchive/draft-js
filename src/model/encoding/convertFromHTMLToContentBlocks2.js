@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule convertFromHTMLToContentBlocks2
  * @format
  * @flow
  */
@@ -21,14 +20,15 @@ import type {EntityMap} from 'EntityMap';
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
-const DraftEntity = require('DraftEntity');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
+const DraftEntity = require('DraftEntity');
+const {List, Map, OrderedSet} = require('immutable');
+const URI = require('URI');
+
 const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
-const {List, Map, OrderedSet} = require('immutable');
-const URI = require('URI');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
@@ -155,6 +155,12 @@ const isValidImage = (node: Node): boolean => {
 };
 
 /**
+ * Determine if a nodeName is a list type, 'ul' or 'ol'
+ */
+const isListNode = (nodeName: string): boolean =>
+  nodeName === 'ul' || nodeName === 'ol';
+
+/**
  *  ContentBlockConfig is a mutable data structure that holds all
  *  the information required to build a ContentBlock and an array of
  *  all the child nodes (childConfigs).
@@ -236,7 +242,7 @@ class ContentBlocksBuilder {
     this.characterList = List();
     this.blockConfigs = [];
     this.currentBlockType = 'unstyled';
-    this.currentDepth = 0;
+    this.currentDepth = -1;
     this.currentEntity = null;
     this.currentStyle = OrderedSet();
     this.currentText = '';
@@ -313,7 +319,7 @@ class ContentBlocksBuilder {
       type: this.currentBlockType,
       text: this.currentText,
       characterList: this.characterList,
-      depth: this.currentDepth,
+      depth: Math.max(0, this.currentDepth),
       parent: null,
       children: List(),
       prevSibling: null,
@@ -323,7 +329,7 @@ class ContentBlocksBuilder {
     };
     this.characterList = List();
     this.currentBlockType = 'unstyled';
-    this.currentDepth = 0;
+    this.currentDepth = -1;
     this.currentText = '';
     return block;
   }
@@ -335,12 +341,11 @@ class ContentBlocksBuilder {
    */
   _toBlockConfigs(nodes: Array<Node>): Array<ContentBlockConfig> {
     let blockConfigs = [];
-
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
       const nodeName = node.nodeName.toLowerCase();
 
-      if (nodeName === 'body' || nodeName === 'ol' || nodeName === 'ul') {
+      if (nodeName === 'body' || isListNode(nodeName)) {
         // body, ol and ul are 'block' type nodes so create a block config
         // with the text accumulated so far (if any)
         this._trimCurrentText();
@@ -350,11 +355,16 @@ class ContentBlocksBuilder {
 
         // body, ol and ul nodes are ignored, but their children are inlined in
         // the parent block config.
+        const wasCurrentDepth = this.currentDepth;
         const wasWrapper = this.wrapper;
-        if (nodeName === 'ol' || nodeName === 'ul') {
+        if (isListNode(nodeName)) {
           this.wrapper = nodeName;
+          if (isListNode(wasWrapper)) {
+            this.currentDepth++;
+          }
         }
         blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
+        this.currentDepth = wasCurrentDepth;
         this.wrapper = wasWrapper;
         continue;
       }
@@ -380,12 +390,12 @@ class ContentBlocksBuilder {
         }
 
         if (
-          experimentalTreeDataSupport &&
+          !experimentalTreeDataSupport &&
           node instanceof HTMLElement &&
           (blockType === 'unordered-list-item' ||
             blockType === 'ordered-list-item')
         ) {
-          this.currentDepth = getListItemDepth(node);
+          this.currentDepth = getListItemDepth(node, this.currentDepth);
         }
 
         const key = generateRandomKey();

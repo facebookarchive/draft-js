@@ -16,15 +16,24 @@
 
 [options]
 module.system=haste
+module.system.haste.use_name_reducers=true
+# keep the following in sync with server/haste/hasteImpl.js
+# get basename
+module.system.haste.name_reducers='^.*/\([a-zA-Z0-9$_.-]+\.js\(\.flow\)?\)$' -> '\1'
+# strip .js or .js.flow suffix
+module.system.haste.name_reducers='^\(.*\)\.js\(\.flow\)?$' -> '\1'
+module.system.haste.paths.whitelist=<PROJECT_ROOT>/.*
+module.system.haste.paths.whitelist=.*/node_modules/fbjs/lib/.*
 module.system.haste.paths.blacklist=.*/__tests__/.*
 module.system.haste.paths.blacklist=.*/react/node_modules/.*
 module.system.haste.paths.blacklist=.*/react-dom/node_modules/.*
 module.system.haste.paths.blacklist=.*/fbjs/node_modules/.*
 module.system.haste.paths.blacklist=.*/node_modules/invariant/.*
+
 esproposal.class_static_fields=enable
 suppress_type=$FlowIssue
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\).*\n
 module.name_mapper='ReactDOM' -> 'react-dom'
 
 [version]
-^0.64.0
+^0.70.0

@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEditorLeaf.react
  * @format
  * @flow
  */
@@ -18,11 +17,11 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
-var React = require('React');
-var ReactDOM = require('ReactDOM');
+const React = require('React');
+const ReactDOM = require('ReactDOM');
 
 const invariant = require('invariant');
-var setDraftEditorSelection = require('setDraftEditorSelection');
+const setDraftEditorSelection = require('setDraftEditorSelection');
 
 type Props = {
   // The block that contains this leaf.

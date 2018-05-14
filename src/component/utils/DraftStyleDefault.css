@@ -151,12 +151,12 @@
 }
 
 .public/DraftStyleDefault/orderedListItem.public/DraftStyleDefault/depth1:before {
-  content: counter(ol1) ". ";
+  content: counter(ol1,lower-alpha) ". ";
   counter-increment: ol1;
 }
 
 .public/DraftStyleDefault/orderedListItem.public/DraftStyleDefault/depth2:before {
-  content: counter(ol2) ". ";
+  content: counter(ol2,lower-roman) ". ";
   counter-increment: ol2;
 }
 
@@ -166,7 +166,7 @@
 }
 
 .public/DraftStyleDefault/orderedListItem.public/DraftStyleDefault/depth4:before {
-  content: counter(ol4) ". ";
+  content: counter(ol4,lower-alpha) ". ";
   counter-increment: ol4;
 }
 

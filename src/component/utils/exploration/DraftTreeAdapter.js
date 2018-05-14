@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftTreeAdapter
  * @format
- * @flow
+ * @flow strict-local
  *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.

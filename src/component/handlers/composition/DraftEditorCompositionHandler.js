@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEditorCompositionHandler
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
@@ -46,7 +45,7 @@ let resolved = false;
 let stillComposing = false;
 let textInputData = '';
 
-var DraftEditorCompositionHandler = {
+const DraftEditorCompositionHandler = {
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     textInputData = (textInputData || '') + e.data;
   },
@@ -73,12 +72,12 @@ var DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(editor: DraftEditor): void {
+  onCompositionEnd: function(editor: DraftEditor, e: SyntheticEvent<>): void {
     resolved = false;
     stillComposing = false;
     setTimeout(() => {
       if (!resolved) {
-        DraftEditorCompositionHandler.resolveComposition(editor);
+        DraftEditorCompositionHandler.resolveComposition(editor, e);
       }
     }, RESOLVE_DELAY);
   },
@@ -94,7 +93,7 @@ var DraftEditorCompositionHandler = {
       // 20ms timer expires (ex: type option-E then backspace, or type A then
       // backspace in 2-Set Korean), we should immediately resolve the
       // composition and reinterpret the key press in edit mode.
-      DraftEditorCompositionHandler.resolveComposition(editor);
+      DraftEditorCompositionHandler.resolveComposition(editor, e);
       editor._onKeyDown(e);
       return;
     }
@@ -130,7 +129,10 @@ var DraftEditorCompositionHandler = {
    * Resetting innerHTML will move focus to the beginning of the editor,
    * so we update to force it back to the correct place.
    */
-  resolveComposition: function(editor: DraftEditor): void {
+  resolveComposition: function(
+    editor: DraftEditor,
+    event: SyntheticEvent<>,
+  ): void {
     if (stillComposing) {
       return;
     }
@@ -166,7 +168,11 @@ var DraftEditorCompositionHandler = {
         gkx('draft_handlebeforeinput_composed_text') &&
         editor.props.handleBeforeInput &&
         isEventHandled(
-          editor.props.handleBeforeInput(composedChars, editorState),
+          editor.props.handleBeforeInput(
+            composedChars,
+            editorState,
+            event.timeStamp,
+          ),
         )
       ) {
         return;

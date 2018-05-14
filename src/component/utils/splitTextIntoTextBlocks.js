@@ -6,14 +6,13 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule splitTextIntoTextBlocks
  * @format
  * @flow strict
  */
 
 'use strict';
 
-var NEWLINE_REGEX = /\r\n?|\n/g;
+const NEWLINE_REGEX = /\r\n?|\n/g;
 
 function splitTextIntoTextBlocks(text: string): Array<string> {
   return text.split(NEWLINE_REGEX);

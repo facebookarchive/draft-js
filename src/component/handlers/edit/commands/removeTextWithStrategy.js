@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule removeTextWithStrategy
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
@@ -18,7 +17,7 @@ import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
-var DraftModifier = require('DraftModifier');
+const DraftModifier = require('DraftModifier');
 
 /**
  * For a collapsed selection state, remove text based on the specified strategy.
@@ -29,9 +28,9 @@ function removeTextWithStrategy(
   strategy: (editorState: EditorState) => SelectionState,
   direction: DraftRemovalDirection,
 ): ContentState {
-  var selection = editorState.getSelection();
-  var content = editorState.getCurrentContent();
-  var target = selection;
+  const selection = editorState.getSelection();
+  const content = editorState.getCurrentContent();
+  let target = selection;
   if (selection.isCollapsed()) {
     if (direction === 'forward') {
       if (editorState.isSelectionAtEndOfContent()) {

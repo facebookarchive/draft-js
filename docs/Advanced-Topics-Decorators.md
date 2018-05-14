@@ -105,6 +105,11 @@ const HashtagSpan = (props) => {
 };
 ```
 
+The Decorator Component will receive various pieces of metadata in `props`,
+including a copy of the `contentState`, the `entityKey` if there is one, and the
+`blockKey`. For a full list of props supplied to a Decorator Component see the
+[DraftDecoratorComponentProps type](https://github.com/facebook/draft-js/blob/master/src/model/decorators/DraftDecorator.js).
+
 Note that `props.children` is passed through to the rendered output. This is
 done to ensure that the text is rendered within the decorated `span`.
 

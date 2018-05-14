@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEditorBlock.react
  * @format
  * @flow
  */
@@ -15,6 +14,7 @@
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
+import type {DraftDecoratorComponentProps} from 'DraftDecorator';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
@@ -134,7 +134,7 @@ class DraftEditorBlock extends React.Component<Props> {
     }
   }
 
-  _renderChildren(): Array<React.Element<any>> {
+  _renderChildren(): Array<React.Node> {
     const block = this.props.block;
     const blockKey = block.getKey();
     const text = block.getText();
@@ -189,6 +189,7 @@ class DraftEditorBlock extends React.Component<Props> {
         const start = leavesForLeafSet.first().get('start');
         const end = leavesForLeafSet.last().get('end');
         const decoratedText = text.slice(start, end);
+        const entityKey = block.getEntityAt(leafSet.get('start'));
 
         // Resetting dir to the same value on a child node makes Chrome/Firefox
         // confused on cursor movement. See http://jsfiddle.net/d157kLck/3/
@@ -197,18 +198,20 @@ class DraftEditorBlock extends React.Component<Props> {
           this.props.direction,
         );
 
+        const commonProps: DraftDecoratorComponentProps = {
+          contentState: this.props.contentState,
+          decoratedText,
+          dir: dir,
+          key: decoratorOffsetKey,
+          start,
+          end,
+          blockKey,
+          entityKey,
+          offsetKey: decoratorOffsetKey,
+        };
+
         return (
-          <DecoratorComponent
-            {...decoratorProps}
-            contentState={this.props.contentState}
-            decoratedText={decoratedText}
-            dir={dir}
-            key={decoratorOffsetKey}
-            start={start}
-            end={end}
-            blockKey={blockKey}
-            entityKey={block.getEntityAt(leafSet.get('start'))}
-            offsetKey={decoratorOffsetKey}>
+          <DecoratorComponent {...decoratorProps} {...commonProps}>
             {leaves}
           </DecoratorComponent>
         );

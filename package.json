@@ -59,7 +59,7 @@
     "eslint-plugin-react": "^7.3.0",
     "eslint-plugin-relay": "^0.0.8",
     "fbjs-scripts": "^0.8.0",
-    "flow-bin": "^0.64.0",
+    "flow-bin": "^0.70.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.2",
     "gulp-browserify-thin": "^0.1.5",
@@ -102,6 +102,9 @@
     ],
     "transform": {
       ".*": "<rootDir>/scripts/jest/preprocessor.js"
+    },
+    "haste": {
+      "hasteImplModulePath": "<rootDir>/scripts/jest/hasteImpl.js"
     },
     "modulePathIgnorePatterns": [
       "<rootDir>/lib/",

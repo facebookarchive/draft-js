@@ -6,18 +6,17 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule keyCommandInsertNewline
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
 
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
+const DraftModifier = require('DraftModifier');
+const EditorState = require('EditorState');
 
 function keyCommandInsertNewline(editorState: EditorState): EditorState {
-  var contentState = DraftModifier.splitBlock(
+  const contentState = DraftModifier.splitBlock(
     editorState.getCurrentContent(),
     editorState.getSelection(),
   );
