@@ -93,24 +93,6 @@ const BlockTree = {
 
     return List(leafSets);
   },
-
-  /**
-   * Create a string representation of the given tree map. This allows us
-   * to rapidly determine whether a tree has undergone a significant
-   * structural change.
-   */
-  getFingerprint: function(tree: List<DecoratorRange>): string {
-    return tree
-      .map(leafSet => {
-        const decoratorKey = leafSet.get('decoratorKey');
-        const fingerprintString =
-          decoratorKey !== null
-            ? decoratorKey + '.' + (leafSet.get('end') - leafSet.get('start'))
-            : '';
-        return '' + fingerprintString + '.' + leafSet.get('leaves').size;
-      })
-      .join(FINGERPRINT_DELIMITER);
-  },
 };
 
 /**
