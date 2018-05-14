@@ -156,7 +156,7 @@ test('editor selectionstate is updated if new text matches current selection and
 });
 
 const HASHTAG_REGEX = /#[a-z]+/g;
-function hashtagStrategy(contentBlock, callback, contentState) {
+function hashtagStrategy(contentState, contentBlock, callback) {
   findWithRegex(HASHTAG_REGEX, contentBlock, callback);
 }
 
