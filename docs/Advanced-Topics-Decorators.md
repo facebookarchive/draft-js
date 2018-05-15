@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-decorators
 title: Decorators
-layout: docs
-category: Advanced Topics
-next: advanced-topics-key-bindings
-permalink: docs/advanced-topics-decorators.html
 ---
 
 Inline and block styles aren't the only kind of rich styling that we might
