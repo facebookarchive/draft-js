@@ -1,10 +1,6 @@
 ---
 id: quickstart-rich-styling
 title: Rich Styling
-layout: docs
-category: Quick Start
-next: advanced-topics-entities
-permalink: docs/quickstart-rich-styling.html
 ---
 
 Now that we have established the basics of the top-level API, we can go a step

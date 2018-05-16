@@ -1,10 +1,6 @@
 ---
 id: getting-started
 title: Overview
-layout: docs
-category: Quick Start
-next: quickstart-api-basics
-permalink: docs/overview.html
 ---
 
 Draft.js is a framework for building rich text editors in React, powered by an immutable model and abstracting over cross-browser differences.

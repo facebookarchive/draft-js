@@ -1,10 +1,6 @@
 ---
 id: api-reference-editor-state
 title: EditorState
-layout: docs
-category: API Reference
-next: api-reference-content-state
-permalink: docs/api-reference-editor-state.html
 ---
 
 `EditorState` is the top-level state object for the editor.
