@@ -1,49 +1,67 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Complex Inline Styles | Draft.js | Rich Text Editor Framework for React</title><meta name="viewport" content="width=device-width"><meta property="og:title" content="Complex Inline Styles | Draft.js | Rich Text Editor Framework for React"><meta property="og:type" content="website"><meta property="og:url" content="http://draftjs.org/index.html"><meta property="og:description" content="Rich Text Editor Framework for React"><link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png"><link rel="manifest" href="/img/manifest.json"><link rel="mask-icon" href="/img/safari-pinned-tab.svg"><link rel="shortcut icon" href="/img/favicon.ico"><meta name="msapplication-config" content="/img/browserconfig.xml"><meta name="theme-color" content="#852d2d"><link rel="stylesheet" href="/css/draft.css"><script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.34.4/es6-shim.min.js"></script></head><body><div class="container"><div class="nav-main"><div class="wrap"><a class="nav-home" href="/">Draft.js</a><ul class="nav-site"><li><a href="/docs/overview.html#content" class="active">docs</a></li><li><a href="http://github.com/facebook/draft-js" class="">github</a></li></ul></div></div><section class="content wrap documentationContent"><div class="nav-docs"><div class="nav-docs-section"><h3>Quick Start</h3><ul><li><a style="margin-left:0;" class="" href="/docs/overview.html#content">Overview</a></li><li><a style="margin-left:0;" class="" href="/docs/quickstart-api-basics.html#content">API Basics</a></li><li><a style="margin-left:0;" class="" href="/docs/quickstart-rich-styling.html#content">Rich Styling</a></li></ul></div><div class="nav-docs-section"><h3>Advanced Topics</h3><ul><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-entities.html#content">Entities</a></li><li><a style="margin-left:0;" class="" href="/docs/v0-10-api-migration.html#content">v0.10 API Migration</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-decorators.html#content">Decorators</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-key-bindings.html#content">Key Bindings</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-managing-focus.html#content">Managing Focus</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-block-styling.html#content">Block Styling</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-custom-block-render-map.html#content">Custom Block Rendering</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-block-components.html#content">Custom Block Components</a></li><li><a style="margin-left:0;" class="active" href="/docs/advanced-topics-inline-styles.html#content">Complex Inline Styles</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-nested-lists.html#content">Nested Lists</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-text-direction.html#content">Text Direction</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-editorstate-race-conditions.html#content">EditorState Race Conditions</a></li><li><a style="margin-left:0;" class="" href="/docs/advanced-topics-issues-and-pitfalls.html#content">Issues and Pitfalls</a></li></ul></div><div class="nav-docs-section"><h3>API Reference</h3><ul><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor.html#content">Editor Component</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor-change-type.html#content">EditorChangeType</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-editor-state.html#content">EditorState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-content-state.html#content">ContentState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-content-block.html#content">ContentBlock</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-character-metadata.html#content">CharacterMetadata</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-entity.html#content">Entity</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-selection-state.html#content">SelectionState</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-composite-decorator.html#content">CompositeDecorator</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-data-conversion.html#content">Data Conversion</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-rich-utils.html#content">RichUtils</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-atomic-block-utils.html#content">AtomicBlockUtils</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-key-binding-util.html#content">KeyBindingUtil</a></li><li><a style="margin-left:0;" class="" href="/docs/api-reference-modifier.html#content">Modifier</a></li></ul></div></div><div class="inner-content"><a id="content"></a><h1>Complex Inline Styles</h1><div><p>Within your editor, you may wish to provide a wide variety of inline style
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Complex Inline Styles · Draft.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Complex Inline Styles · Draft.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://draftjs.org/index.html"/><meta property="og:description" content="Within your editor, you may wish to provide a wide variety of inline style"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/undefined"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-forest-light.min.css"/><script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-44373548-19', 'auto');
+              ga('send', 'pageview');
+            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible doc"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><h2 class="headerTitle">Draft.js</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="https://github.com/facebook/draft-js" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Advanced Topics</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Quick Start</h3><ul><li class="navListItem"><a class="navItem" href="/docs/getting-started.html">Overview</a></li><li class="navListItem"><a class="navItem" href="/docs/quickstart-api-basics.html">API Basics</a></li><li class="navListItem"><a class="navItem" href="/docs/quickstart-rich-styling.html">Rich Styling</a></li></ul></div><div class="navGroup navGroupActive"><h3>Advanced Topics</h3><ul><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-entities.html">Entities</a></li><li class="navListItem"><a class="navItem" href="/docs/v0-10-api-migration.html">v0.10 API Migration</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-decorators.html">Decorators</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-key-bindings.html">Key Bindings</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-managing-focus.html">Managing Focus</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-block-styling.html">Block Styling</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-custom-block-render-map.html">Custom Block Rendering</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-block-components.html">Custom Block Components</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/docs/advanced-topics-inline-styles.html">Complex Inline Styles</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-nested-lists.html">Nested Lists</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-text-direction.html">Text Direction</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-editorstate-race-conditions.html">EditorState Race Conditions</a></li><li class="navListItem"><a class="navItem" href="/docs/advanced-topics-issues-and-pitfalls.html">Issues and Pitfalls</a></li></ul></div><div class="navGroup navGroupActive"><h3>API Reference</h3><ul><li class="navListItem"><a class="navItem" href="/docs/api-reference-editor.html">Editor Component</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-editor-change-type.html">EditorChangeType</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-editor-state.html">EditorState</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-content-state.html">ContentState</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-content-block.html">ContentBlock</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-character-metadata.html">CharacterMetadata</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-entity.html">Entity</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-selection-state.html">SelectionState</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-composite-decorator.html">CompositeDecorator</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-data-conversion.html">Data Conversion</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-rich-utils.html">RichUtils</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-atomic-block-utils.html">AtomicBlockUtils</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-key-binding-util.html">KeyBindingUtil</a></li><li class="navListItem"><a class="navItem" href="/docs/api-reference-modifier.html">Modifier</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Complex Inline Styles</h1></header><article><div><span><p>Within your editor, you may wish to provide a wide variety of inline style
 behavior that goes well beyond the bold/italic/underline basics. For instance,
 you may want to support variety with color, font families, font sizes, and more.
 Further, your desired styles may overlap or be mutually exclusive.</p>
 <p>The <a href="http://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/rich">Rich Editor</a> and
 <a href="http://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/color">Colorful Editor</a>
 examples demonstrate complex inline style behavior in action.</p>
-<h3 id="model">Model</h3>
+<h3><a class="anchor" aria-hidden="true" id="model"></a><a href="#model" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Model</h3>
 <p>Within the Draft model, inline styles are represented at the character level,
 using an immutable <code>OrderedSet</code> to define the list of styles to be applied to
 each character. These styles are identified by string. (See <a href="/docs/api-reference-character-metadata.html">CharacterMetadata</a>
 for details.)</p>
 <p>For example, consider the text &quot;Hello <strong>world</strong>&quot;. The first six characters of
 the string are represented by the empty set, <code>OrderedSet()</code>. The final five
-characters are represented by <code>OrderedSet.of(&#39;BOLD&#39;)</code>. For convenience, we can
+characters are represented by <code>OrderedSet.of('BOLD')</code>. For convenience, we can
 think of these <code>OrderedSet</code> objects as arrays, though in reality we aggressively
 reuse identical immutable objects.</p>
 <p>In essence, our styles are:</p>
-<pre class="prism language-js"><span class="token punctuation">[</span>
-  <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// H</span>
-  <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// e</span>
-  <span class="token operator">...</span>
-  <span class="token punctuation">[</span><span class="token string">'BOLD'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// w</span>
-  <span class="token punctuation">[</span><span class="token string">'BOLD'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// o</span>
-  <span class="token comment">// etc.</span>
-<span class="token punctuation">]</span></pre><h3 id="overlapping-styles">Overlapping Styles</h3>
-<p>Now let&#39;s say that we wish to make the middle range of characters italic as well:
+<pre><code class="hljs css js">[
+  [], <span class="hljs-comment">// H</span>
+  [], <span class="hljs-comment">// e</span>
+  ...
+  [<span class="hljs-string">'BOLD'</span>], <span class="hljs-comment">// w</span>
+  [<span class="hljs-string">'BOLD'</span>], <span class="hljs-comment">// o</span>
+  <span class="hljs-comment">// etc.</span>
+]
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="overlapping-styles"></a><a href="#overlapping-styles" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overlapping Styles</h3>
+<p>Now let's say that we wish to make the middle range of characters italic as well:
 &quot;He_llo <strong>wo</strong>_<strong>rld</strong>&quot;. This operation can be performed via the
 <a href="/docs/api-reference-modifier.html">Modifier</a> API.</p>
-<p>The end result will accommodate the overlap by including <code>&#39;ITALIC&#39;</code> in the
+<p>The end result will accommodate the overlap by including <code>'ITALIC'</code> in the
 relevant <code>OrderedSet</code> objects as well.</p>
-<pre class="prism language-js"><span class="token punctuation">[</span>
-  <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// H</span>
-  <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// e</span>
-  <span class="token punctuation">[</span><span class="token string">'ITALIC'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// l</span>
-  <span class="token operator">...</span>
-  <span class="token punctuation">[</span><span class="token string">'BOLD'</span><span class="token punctuation">,</span> <span class="token string">'ITALIC'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// w</span>
-  <span class="token punctuation">[</span><span class="token string">'BOLD'</span><span class="token punctuation">,</span> <span class="token string">'ITALIC'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// o</span>
-  <span class="token punctuation">[</span><span class="token string">'BOLD'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// r</span>
-  <span class="token comment">// etc.</span>
-<span class="token punctuation">]</span></pre><p>When determining how to render inline-styled text, Draft will identify
+<pre><code class="hljs css js">[
+  [], <span class="hljs-comment">// H</span>
+  [], <span class="hljs-comment">// e</span>
+  [<span class="hljs-string">'ITALIC'</span>], <span class="hljs-comment">// l</span>
+  ...
+  [<span class="hljs-string">'BOLD'</span>, <span class="hljs-string">'ITALIC'</span>], <span class="hljs-comment">// w</span>
+  [<span class="hljs-string">'BOLD'</span>, <span class="hljs-string">'ITALIC'</span>], <span class="hljs-comment">// o</span>
+  [<span class="hljs-string">'BOLD'</span>], <span class="hljs-comment">// r</span>
+  <span class="hljs-comment">// etc.</span>
+]
+</code></pre>
+<p>When determining how to render inline-styled text, Draft will identify
 contiguous ranges of identically styled characters and render those characters
 together in styled <code>span</code> nodes.</p>
-<h3 id="mapping-a-style-string-to-css">Mapping a style string to CSS</h3>
+<h3><a class="anchor" aria-hidden="true" id="mapping-a-style-string-to-css"></a><a href="#mapping-a-style-string-to-css" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Mapping a style string to CSS</h3>
 <p>By default, <code>Editor</code> provides support for a basic list of inline styles:
-<code>&#39;BOLD&#39;</code>, <code>&#39;ITALIC&#39;</code>, <code>&#39;UNDERLINE&#39;</code>, and <code>&#39;CODE&#39;</code>. These are mapped to simple CSS
+<code>'BOLD'</code>, <code>'ITALIC'</code>, <code>'UNDERLINE'</code>, and <code>'CODE'</code>. These are mapped to simple CSS
 style objects, which are used to apply styles to the relevant ranges.</p>
 <p>For your editor, you may define custom style strings to include with these
 defaults, or you may override the default style objects for the basic styles.</p>
@@ -51,40 +69,29 @@ defaults, or you may override the default style objects for the basic styles.</p
 to define your style objects. (See
 <a href="http://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/color">Colorful Editor</a>
 for a live example.)</p>
-<p>For example, you may want to add a <code>&#39;STRIKETHROUGH&#39;</code> style. To do so, define a
+<p>For example, you may want to add a <code>'STRIKETHROUGH'</code> style. To do so, define a
 custom style map:</p>
-<pre class="prism language-js"><span class="token keyword">import</span> <span class="token punctuation">{</span>Editor<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'draft-js'</span><span class="token punctuation">;</span>
+<pre><code class="hljs css js"><span class="hljs-keyword">import</span> {Editor} <span class="hljs-keyword">from</span> <span class="hljs-string">'draft-js'</span>;
 
-<span class="token keyword">const</span> styleMap <span class="token operator">=</span> <span class="token punctuation">{</span>
-  <span class="token string">'STRIKETHROUGH'</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    textDecoration<span class="token punctuation">:</span> <span class="token string">'line-through'</span><span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="hljs-keyword">const</span> styleMap = {
+  <span class="hljs-string">'STRIKETHROUGH'</span>: {
+    <span class="hljs-attr">textDecoration</span>: <span class="hljs-string">'line-through'</span>,
+  },
+};
 
-<span class="token keyword">class</span> <span class="token class-name">MyEditor</span> <span class="token keyword">extends</span> <span class="token class-name">React<span class="token punctuation">.</span>Component</span> <span class="token punctuation">{</span>
-  <span class="token comment">// ...</span>
-  <span class="token function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token punctuation">(</span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Editor</span>
-        <span class="token attr-name">customStyleMap</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span>styleMap<span class="token punctuation">}</span></span>
-        <span class="token attr-name">editorState</span><span class="token script language-javascript"><span class="token punctuation">=</span><span class="token punctuation">{</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>editorState<span class="token punctuation">}</span></span>
-        <span class="token attr-name">...</span>
-      <span class="token punctuation">/></span></span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span></pre><p>When rendered, the <code>textDecoration: line-through</code> style will be applied to all
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyEditor</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  <span class="hljs-comment">// ...</span>
+  render() {
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Editor</span>
+        <span class="hljs-attr">customStyleMap</span>=<span class="hljs-string">{styleMap}</span>
+        <span class="hljs-attr">editorState</span>=<span class="hljs-string">{this.state.editorState}</span>
+        <span class="hljs-attr">...</span>
+      /&gt;</span>
+    );
+  }
+}
+</span></code></pre>
+<p>When rendered, the <code>textDecoration: line-through</code> style will be applied to all
 character ranges with the <code>STRIKETHROUGH</code> style.</p>
-</div><div class="docs-prevnext"><a class="docs-next" href="advanced-topics-nested-lists.html#content">Next →</a></div></div></section><footer class="wrap"><div class="right">© 2018 Facebook Inc.</div></footer></div><div id="fb-root"></div><script>
-
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-            ga('create', 'UA-44373548-19', 'auto');
-            ga('send', 'pageview');
-
-            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)
-            ){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";
-            fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-          </script></body></html>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="advanced-topics-block-components.html">← Custom Block Components</a><a class="docs-next button" href="advanced-topics-nested-lists.html">Nested Lists →</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/getting-started.html">Getting Started</a><a href="/docs/api-reference-editor.html">API Reference</a></div><div><h5>Community</h5><a href="http://stackoverflow.com/questions/tagged/draftjs" target="_blank">Stack Overflow</a><a href="https://twitter.com/draft_js" target="_blank">Twitter</a></div><div><h5>More</h5><a href="https://github.com/facebook/draft-js">GitHub</a><a class="github-button" href="https://github.com/facebook/draft-js" data-icon="octicon-star" data-count-href="/facebook/draft-js/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 Facebook Inc.</section></footer></div></body></html>
