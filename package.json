@@ -1,7 +1,7 @@
 {
   "name": "draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.10.5-descript",
+  "version": "0.10.5-descript.2",
   "keywords": [
     "draftjs",
     "editor",
