@@ -138,6 +138,8 @@ export type DraftEditorProps = {
     editorState: EditorState,
   ) => DraftHandleValue,
 
+  handleKeyboardEvent?: (e: SyntheticKeyboardEvent<>) => DraftHandleValue,
+
   handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
 
   // Handle dropped files
