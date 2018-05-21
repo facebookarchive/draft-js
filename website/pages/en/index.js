@@ -254,11 +254,11 @@ class Index extends React.Component {
             <p>
               In Draft.js, everything is customizable &ndash; we provide the
               building blocks so that you have full control over the user
-              interface. Here's a simple example of a rich text editor built in
-              Draft.js:
+              interface. <span className="hide-in-mobile">Here's a simple example of a rich text editor built in
+              Draft.js:</span>
             </p>
 
-            <div id="rich-example"></div>
+            <div className="hide-in-mobile" id="rich-example"></div>
           </section>
 
           <section className="home-bottom-section">
@@ -268,10 +268,10 @@ class Index extends React.Component {
           </section>
         </section>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.6/immutable.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.3.2/umd/react.production.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.3.2/umd/react-dom.production.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.8.2/immutable.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
         <script src="lib/Draft.js"></script>
         <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script>
         <script type="text/javascript">{'try{Typekit.load();}catch(e){}'}</script>
