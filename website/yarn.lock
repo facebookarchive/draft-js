@@ -1408,9 +1408,9 @@ diacritics-map@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/diacritics-map/-/diacritics-map-0.1.0.tgz#6dfc0ff9d01000a2edf2865371cac316e94977af"
 
-docusaurus@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/docusaurus/-/docusaurus-1.1.0.tgz#4caa741200be005c72a5deb56ce01ec876ef28e4"
+docusaurus@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/docusaurus/-/docusaurus-1.1.2.tgz#b01a9c4d525893411beee05cfff0f36b42ad112d"
   dependencies:
     babel-plugin-transform-class-properties "^6.24.1"
     babel-plugin-transform-object-rest-spread "^6.26.0"
@@ -1440,6 +1440,7 @@ docusaurus@1.1.0:
     imagemin-svgo "^6.0.0"
     markdown-toc "^1.2.0"
     mkdirp "^0.5.1"
+    opn "^5.3.0"
     react "^16.3.2"
     react-dom "^16.3.2"
     remarkable "^1.7.1"
@@ -1448,7 +1449,7 @@ docusaurus@1.1.0:
     sitemap "^1.13.0"
     tcp-port-used "^0.1.2"
     tiny-lr "^1.1.1"
-    tree-node-cli "^1.1.1"
+    tree-node-cli "^1.2.0"
 
 dom-serializer@0:
   version "0.1.0"
@@ -3076,7 +3077,7 @@ onetime@^1.0.0:
   version "1.1.0"
   resolved "http://registry.npmjs.org/onetime/-/onetime-1.1.0.tgz#a1f7838f8314c516f05ecefcbc4ccfe04b4ed789"
 
-opn@5.3.0:
+opn@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/opn/-/opn-5.3.0.tgz#64871565c863875f052cfdf53d3e3cb5adb53b1c"
   dependencies:
@@ -4183,9 +4184,9 @@ tough-cookie@~2.3.3:
   dependencies:
     punycode "^1.4.1"
 
-tree-node-cli@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/tree-node-cli/-/tree-node-cli-1.1.1.tgz#ea11f7e6ceec670355c64d0cc9b7090dddaefc33"
+tree-node-cli@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tree-node-cli/-/tree-node-cli-1.2.0.tgz#22d67980b6acc4f5b98432253e9322dfd514b88d"
   dependencies:
     commander "^2.15.1"
 
