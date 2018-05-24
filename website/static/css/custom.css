@@ -154,7 +154,7 @@ pre code.hljs.css {
 }
 
 @media screen and (max-width: 767px) {
-  .hide-in-mobile {
+  .hide-on-mobile {
     display: none;
   }
   
