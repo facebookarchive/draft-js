@@ -152,3 +152,25 @@ pre code.hljs.css {
 .docMainWrapper .mainContainer .wrapper .post h6 {
   font-weight: bold;
 }
+
+@media screen and (max-width: 767px) {
+  .hide-on-mobile {
+    display: none;
+  }
+  
+  .home-getting-started {
+    width: 100%;
+  }
+
+  .buttons-unit {
+    margin: 30px 0 60px;
+  }
+
+  .hero .text,
+  .hero .minitext,
+  .buttons-unit,
+  .home-getting-started {
+    box-sizing: border-box;
+    padding: 0 15px;
+  }
+}
