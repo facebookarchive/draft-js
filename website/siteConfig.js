@@ -20,6 +20,7 @@ const siteConfig = {
       label: "GitHub"
     }
   ],
+  headerIcon: 'img/draftjs-logo.svg',
   /* colors for website */
   colors: {
     primaryColor: '#3B3738',
@@ -40,6 +41,9 @@ const siteConfig = {
 
   // Google analytics tracking id
   gaTrackingId: 'UA-44373548-19',
+
+  // Show page Table of Contents
+  onPageNav: 'separate',
 };
 
 module.exports = siteConfig;
