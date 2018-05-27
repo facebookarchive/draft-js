@@ -28,6 +28,12 @@ let compositionHandler = null;
 // Initialization of mock editor component that will be used for all tests
 let editor;
 
+const oldGetSelection = global.getSelection;
+
+afterAll(() => {
+  global.getSelection = oldGetSelection;
+});
+
 beforeEach(() => {
   jest.resetModules();
   compositionHandler = require('DraftEditorCompositionHandler');
@@ -38,6 +44,10 @@ beforeEach(() => {
     exitCurrentMode: jest.fn(),
     update: jest.fn(state => (editor._latestEditorState = state)),
   };
+  global.getSelection = () => ({
+    ...editor._latestEditorState.getSelection(),
+    anchorNode: { nodeType: Node.ELEMENT_NODE }
+  });
 });
 
 const editorTextContent = () => {

@@ -22,6 +22,7 @@ const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const gkx = require('gkx');
 const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
+const onInput = require('editOnInput');
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon
@@ -76,10 +77,7 @@ var DraftEditorCompositionHandler = {
    * A `compositionupdate` event has fired. Update the current composition
    * session.
    */
-  onCompositionUpdate: function(
-    editor: DraftEditor,
-    e: SyntheticInputEvent<>,
-  ): void {
+  onCompositionUpdate: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     compositionUpdateData = e.data;
   },
 
@@ -97,10 +95,7 @@ var DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(
-    editor: DraftEditor,
-    e: SyntheticCompositionEvent<>,
-  ): void {
+  onCompositionEnd: function(editor: DraftEditor, e: SyntheticCompositionEvent<>): void {
     resolved = false;
     stillComposing = false;
     // Use e.data from the first compositionend event seen
@@ -210,6 +205,7 @@ var DraftEditorCompositionHandler = {
       editorState.getSelection(),
     );
 
+    /*
     const mustReset =
       !composedChars ||
       isSelectionAtLeafStart(editorState) ||
@@ -219,6 +215,7 @@ var DraftEditorCompositionHandler = {
     if (mustReset) {
       editor.restoreEditorDOM();
     }
+    */
 
     editor.exitCurrentMode();
 
@@ -232,6 +229,7 @@ var DraftEditorCompositionHandler = {
       ) {
         return;
       }
+      /*
       // If characters have been composed, re-rendering with the update
       // is sufficient to reset the editor.
       const contentState = DraftModifier.replaceText(
@@ -245,8 +243,10 @@ var DraftEditorCompositionHandler = {
         EditorState.push(editorState, contentState, 'insert-characters'),
       );
       return;
+      */
     }
-
+    onInput(editor);
+    /*
     if (mustReset) {
       editor.update(
         EditorState.set(editorState, {
@@ -254,7 +254,7 @@ var DraftEditorCompositionHandler = {
           forceSelection: true,
         }),
       );
-    }
+    }*/
   },
 };
 
