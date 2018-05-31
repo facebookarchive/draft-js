@@ -59,10 +59,8 @@ const normalizeBlock = block => {
 };
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('DraftFeatureFlags', () => {
-    return {
-      draft_tree_data_support: enabled,
-    };
+  jest.doMock('gkx', () => name => {
+    return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
 
@@ -305,6 +303,15 @@ test('Should import recognised draft li depths when nesting enabled', () => {
       <li class="${cx('public/DraftStyleDefault/depth3')}">depth3</li>
       <li class="${cx('public/DraftStyleDefault/depth4')}">depth4</li>
     </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should preserve spacing around inline tags', () => {
+  const html_string = `
+    <span>Some<span> </span></span><i>stylised</i><span><span> </span></span><b>text</b>
   `;
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: true,

@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule getDraftEditorSelection
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
@@ -16,7 +15,7 @@
 import type {DOMDerivedSelection} from 'DOMDerivedSelection';
 import type EditorState from 'EditorState';
 
-var getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
+const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
 
 /**
  * Convert the current selection range to an anchor/focus pair of offset keys
@@ -26,7 +25,7 @@ function getDraftEditorSelection(
   editorState: EditorState,
   root: HTMLElement,
 ): DOMDerivedSelection {
-  var selection = global.getSelection();
+  const selection = global.getSelection();
 
   // No active selection.
   if (selection.rangeCount === 0) {

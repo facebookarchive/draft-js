@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule getDraftEditorSelectionWithNodes
  * @format
  * @flow
  */
@@ -16,11 +15,11 @@
 import type {DOMDerivedSelection} from 'DOMDerivedSelection';
 import type EditorState from 'EditorState';
 
-var findAncestorOffsetKey = require('findAncestorOffsetKey');
-var getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
-var getUpdatedSelectionState = require('getUpdatedSelectionState');
-var invariant = require('invariant');
-var nullthrows = require('nullthrows');
+const findAncestorOffsetKey = require('findAncestorOffsetKey');
+const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
+const getUpdatedSelectionState = require('getUpdatedSelectionState');
+const invariant = require('invariant');
+const nullthrows = require('nullthrows');
 
 type SelectionPoint = {
   key: string,
@@ -39,8 +38,8 @@ function getDraftEditorSelectionWithNodes(
   focusNode: Node,
   focusOffset: number,
 ): DOMDerivedSelection {
-  var anchorIsTextNode = anchorNode.nodeType === Node.TEXT_NODE;
-  var focusIsTextNode = focusNode.nodeType === Node.TEXT_NODE;
+  const anchorIsTextNode = anchorNode.nodeType === Node.TEXT_NODE;
+  const focusIsTextNode = focusNode.nodeType === Node.TEXT_NODE;
 
   // If the selection range lies only on text nodes, the task is simple.
   // Find the nearest offset-aware elements and use the
@@ -58,9 +57,9 @@ function getDraftEditorSelectionWithNodes(
     };
   }
 
-  var anchorPoint = null;
-  var focusPoint = null;
-  var needsRecovery = true;
+  let anchorPoint = null;
+  let focusPoint = null;
+  let needsRecovery = true;
 
   // An element is selected. Convert this selection range into leaf offset
   // keys and offset values for consumption at the component level. This
@@ -156,7 +155,7 @@ function getPointForNonTextNode(
   childOffset: number,
 ): SelectionPoint {
   let node = startNode;
-  var offsetKey: ?string = findAncestorOffsetKey(node);
+  const offsetKey: ?string = findAncestorOffsetKey(node);
 
   invariant(
     offsetKey != null ||
@@ -182,19 +181,19 @@ function getPointForNonTextNode(
   // find the leftmost ("first") leaf in the tree and use that as the offset
   // key.
   if (childOffset === 0) {
-    var key: ?string = null;
+    let key: ?string = null;
     if (offsetKey != null) {
       key = offsetKey;
     } else {
-      var firstLeaf = getFirstLeaf(node);
+      const firstLeaf = getFirstLeaf(node);
       key = nullthrows(getSelectionOffsetKeyForNode(firstLeaf));
     }
     return {key, offset: 0};
   }
 
-  var nodeBeforeCursor = node.childNodes[childOffset - 1];
-  var leafKey: ?string = null;
-  var textLength: ?number = null;
+  const nodeBeforeCursor = node.childNodes[childOffset - 1];
+  let leafKey: ?string = null;
+  let textLength: ?number = null;
 
   if (!getSelectionOffsetKeyForNode(nodeBeforeCursor)) {
     // Our target node may be a leaf or a text node, in which case we're
@@ -205,7 +204,7 @@ function getPointForNonTextNode(
   } else {
     // Otherwise, we'll look at the child to the left of the cursor and find
     // the last leaf node in its subtree.
-    var lastLeaf = getLastLeaf(nodeBeforeCursor);
+    const lastLeaf = getLastLeaf(nodeBeforeCursor);
     leafKey = nullthrows(getSelectionOffsetKeyForNode(lastLeaf));
     textLength = getTextContentLength(lastLeaf);
   }
@@ -223,7 +222,7 @@ function getPointForNonTextNode(
  * render newlines instead of break tags.
  */
 function getTextContentLength(node: Node): number {
-  var textContent = node.textContent;
+  const textContent = node.textContent;
   return textContent === '\n' ? 0 : textContent.length;
 }
 

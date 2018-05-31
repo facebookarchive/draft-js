@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-key-bindings
 title: Key Bindings
-layout: docs
-category: Advanced Topics
-next: advanced-topics-managing-focus
-permalink: docs/advanced-topics-key-bindings.html
 ---
 
 The `Editor` component offers flexibility to define custom key bindings
@@ -75,7 +71,7 @@ class MyEditor extends React.Component {
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
   }
   // ...
-  
+
   handleKeyCommand(command: string): DraftHandleValue {
     if (command === 'myeditor-save') {
       // Perform a request to save your contents, set

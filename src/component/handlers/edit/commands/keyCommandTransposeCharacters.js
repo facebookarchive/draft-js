@@ -6,17 +6,16 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule keyCommandTransposeCharacters
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
 
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
+const DraftModifier = require('DraftModifier');
+const EditorState = require('EditorState');
 
-var getContentStateFragment = require('getContentStateFragment');
+const getContentStateFragment = require('getContentStateFragment');
 
 /**
  * Transpose the characters on either side of a collapsed cursor, or
@@ -24,28 +23,28 @@ var getContentStateFragment = require('getContentStateFragment');
  * characters.
  */
 function keyCommandTransposeCharacters(editorState: EditorState): EditorState {
-  var selection = editorState.getSelection();
+  const selection = editorState.getSelection();
   if (!selection.isCollapsed()) {
     return editorState;
   }
 
-  var offset = selection.getAnchorOffset();
+  const offset = selection.getAnchorOffset();
   if (offset === 0) {
     return editorState;
   }
 
-  var blockKey = selection.getAnchorKey();
-  var content = editorState.getCurrentContent();
-  var block = content.getBlockForKey(blockKey);
-  var length = block.getLength();
+  const blockKey = selection.getAnchorKey();
+  const content = editorState.getCurrentContent();
+  const block = content.getBlockForKey(blockKey);
+  const length = block.getLength();
 
   // Nothing to transpose if there aren't two characters.
   if (length <= 1) {
     return editorState;
   }
 
-  var removalRange;
-  var finalSelection;
+  let removalRange;
+  let finalSelection;
 
   if (offset === length) {
     // The cursor is at the end of the block. Swap the last two characters.
@@ -58,28 +57,28 @@ function keyCommandTransposeCharacters(editorState: EditorState): EditorState {
 
   // Extract the character to move as a fragment. This preserves its
   // styling and entity, if any.
-  var movedFragment = getContentStateFragment(content, removalRange);
-  var afterRemoval = DraftModifier.removeRange(
+  const movedFragment = getContentStateFragment(content, removalRange);
+  const afterRemoval = DraftModifier.removeRange(
     content,
     removalRange,
     'backward',
   );
 
   // After the removal, the insertion target is one character back.
-  var selectionAfter = afterRemoval.getSelectionAfter();
-  var targetOffset = selectionAfter.getAnchorOffset() - 1;
-  var targetRange = selectionAfter.merge({
+  const selectionAfter = afterRemoval.getSelectionAfter();
+  const targetOffset = selectionAfter.getAnchorOffset() - 1;
+  const targetRange = selectionAfter.merge({
     anchorOffset: targetOffset,
     focusOffset: targetOffset,
   });
 
-  var afterInsert = DraftModifier.replaceWithFragment(
+  const afterInsert = DraftModifier.replaceWithFragment(
     afterRemoval,
     targetRange,
     movedFragment,
   );
 
-  var newEditorState = EditorState.push(
+  const newEditorState = EditorState.push(
     editorState,
     afterInsert,
     'insert-fragment',

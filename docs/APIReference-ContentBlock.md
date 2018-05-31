@@ -1,10 +1,6 @@
 ---
 id: api-reference-content-block
 title: ContentBlock
-layout: docs
-category: API Reference
-next: api-reference-character-metadata
-permalink: docs/api-reference-content-block.html
 ---
 
 `ContentBlock` is an Immutable

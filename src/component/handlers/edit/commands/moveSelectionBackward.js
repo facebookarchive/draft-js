@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule moveSelectionBackward
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
@@ -28,21 +27,21 @@ function moveSelectionBackward(
   editorState: EditorState,
   maxDistance: number,
 ): SelectionState {
-  var selection = editorState.getSelection();
-  var content = editorState.getCurrentContent();
-  var key = selection.getStartKey();
-  var offset = selection.getStartOffset();
+  const selection = editorState.getSelection();
+  const content = editorState.getCurrentContent();
+  const key = selection.getStartKey();
+  const offset = selection.getStartOffset();
 
-  var focusKey = key;
-  var focusOffset = 0;
+  let focusKey = key;
+  let focusOffset = 0;
 
   if (maxDistance > offset) {
-    var keyBefore = content.getKeyBefore(key);
+    const keyBefore = content.getKeyBefore(key);
     if (keyBefore == null) {
       focusKey = key;
     } else {
       focusKey = keyBefore;
-      var blockBefore = content.getBlockForKey(keyBefore);
+      const blockBefore = content.getBlockForKey(keyBefore);
       focusOffset = blockBefore.getText().length;
     }
   } else {

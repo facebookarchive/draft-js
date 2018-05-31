@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule editOnKeyDown
  * @format
  * @flow
  */
@@ -16,27 +15,27 @@
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
-var KeyBindingUtil = require('KeyBindingUtil');
-var Keys = require('Keys');
-var SecondaryClipboard = require('SecondaryClipboard');
-var UserAgent = require('UserAgent');
+const DraftModifier = require('DraftModifier');
+const EditorState = require('EditorState');
+const KeyBindingUtil = require('KeyBindingUtil');
+const Keys = require('Keys');
+const SecondaryClipboard = require('SecondaryClipboard');
+const UserAgent = require('UserAgent');
 
 const isEventHandled = require('isEventHandled');
-var keyCommandBackspaceToStartOfLine = require('keyCommandBackspaceToStartOfLine');
-var keyCommandBackspaceWord = require('keyCommandBackspaceWord');
-var keyCommandDeleteWord = require('keyCommandDeleteWord');
-var keyCommandInsertNewline = require('keyCommandInsertNewline');
-var keyCommandMoveSelectionToEndOfBlock = require('keyCommandMoveSelectionToEndOfBlock');
-var keyCommandMoveSelectionToStartOfBlock = require('keyCommandMoveSelectionToStartOfBlock');
-var keyCommandPlainBackspace = require('keyCommandPlainBackspace');
-var keyCommandPlainDelete = require('keyCommandPlainDelete');
-var keyCommandTransposeCharacters = require('keyCommandTransposeCharacters');
-var keyCommandUndo = require('keyCommandUndo');
+const keyCommandBackspaceToStartOfLine = require('keyCommandBackspaceToStartOfLine');
+const keyCommandBackspaceWord = require('keyCommandBackspaceWord');
+const keyCommandDeleteWord = require('keyCommandDeleteWord');
+const keyCommandInsertNewline = require('keyCommandInsertNewline');
+const keyCommandMoveSelectionToEndOfBlock = require('keyCommandMoveSelectionToEndOfBlock');
+const keyCommandMoveSelectionToStartOfBlock = require('keyCommandMoveSelectionToStartOfBlock');
+const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
+const keyCommandPlainDelete = require('keyCommandPlainDelete');
+const keyCommandTransposeCharacters = require('keyCommandTransposeCharacters');
+const keyCommandUndo = require('keyCommandUndo');
 
-var {isOptionKeyCommand} = KeyBindingUtil;
-var isChrome = UserAgent.isBrowser('Chrome');
+const {isOptionKeyCommand} = KeyBindingUtil;
+const isChrome = UserAgent.isBrowser('Chrome');
 
 /**
  * Map a `DraftEditorCommand` command value to a corresponding function.
@@ -85,9 +84,25 @@ function onKeyCommand(
  * component may provide a custom mapping via the `keyBindingFn` prop.
  */
 function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
-  var keyCode = e.which;
-  var editorState = editor._latestEditorState;
-
+  const keyCode = e.which;
+  const editorState = editor._latestEditorState;
+  function callDeprecatedHandler(
+    handlerName:
+      | 'onDownArrow'
+      | 'onEscape'
+      | 'onLeftArrow'
+      | 'onRightArrow'
+      | 'onTab'
+      | 'onUpArrow',
+  ): boolean {
+    const deprecatedHandler = editor.props[handlerName];
+    if (deprecatedHandler) {
+      deprecatedHandler(e);
+      return true;
+    } else {
+      return false;
+    }
+  }
   switch (keyCode) {
     case Keys.RETURN:
       e.preventDefault();
@@ -102,23 +117,35 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
       break;
     case Keys.ESC:
       e.preventDefault();
-      editor.props.onEscape && editor.props.onEscape(e);
-      return;
+      if (callDeprecatedHandler('onEscape')) {
+        return;
+      }
+      break;
     case Keys.TAB:
-      editor.props.onTab && editor.props.onTab(e);
-      return;
+      if (callDeprecatedHandler('onTab')) {
+        return;
+      }
+      break;
     case Keys.UP:
-      editor.props.onUpArrow && editor.props.onUpArrow(e);
-      return;
+      if (callDeprecatedHandler('onUpArrow')) {
+        return;
+      }
+      break;
     case Keys.RIGHT:
-      editor.props.onRightArrow && editor.props.onRightArrow(e);
-      return;
+      if (callDeprecatedHandler('onRightArrow')) {
+        return;
+      }
+      break;
     case Keys.DOWN:
-      editor.props.onDownArrow && editor.props.onDownArrow(e);
-      return;
+      if (callDeprecatedHandler('onDownArrow')) {
+        return;
+      }
+      break;
     case Keys.LEFT:
-      editor.props.onLeftArrow && editor.props.onLeftArrow(e);
-      return;
+      if (callDeprecatedHandler('onLeftArrow')) {
+        return;
+      }
+      break;
     case Keys.SPACE:
       // Handling for OSX where option + space scrolls.
       if (isChrome && isOptionKeyCommand(e)) {
@@ -136,7 +163,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
       }
   }
 
-  var command = editor.props.keyBindingFn(e);
+  const command = editor.props.keyBindingFn(e);
 
   // If no command is specified, allow keydown event to continue.
   if (!command) {
@@ -157,12 +184,14 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
   // Allow components higher up the tree to handle the command first.
   if (
     editor.props.handleKeyCommand &&
-    isEventHandled(editor.props.handleKeyCommand(command, editorState))
+    isEventHandled(
+      editor.props.handleKeyCommand(command, editorState, e.timeStamp),
+    )
   ) {
     return;
   }
 
-  var newState = onKeyCommand(command, editorState);
+  const newState = onKeyCommand(command, editorState);
   if (newState !== editorState) {
     editor.update(newState);
   }

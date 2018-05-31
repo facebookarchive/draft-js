@@ -8,7 +8,7 @@
  *
  * @emails oncall+ui_infra
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';

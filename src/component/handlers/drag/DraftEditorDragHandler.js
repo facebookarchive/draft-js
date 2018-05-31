@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEditorDragHandler
  * @format
  * @flow
  */
@@ -36,8 +35,11 @@ function getSelectionForEvent(
   let node: ?Node = null;
   let offset: ?number = null;
 
+  /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
+   * found when Flow v0.68 was deployed. To see the error delete this comment
+   * and run Flow. */
   if (typeof document.caretRangeFromPoint === 'function') {
-    var dropRange = document.caretRangeFromPoint(event.x, event.y);
+    const dropRange = document.caretRangeFromPoint(event.x, event.y);
     node = dropRange.startContainer;
     offset = dropRange.startOffset;
   } else if (event.rangeParent) {
@@ -60,7 +62,7 @@ function getSelectionForEvent(
   );
 }
 
-var DraftEditorDragHandler = {
+const DraftEditorDragHandler = {
   /**
    * Drag originating from input terminated.
    */

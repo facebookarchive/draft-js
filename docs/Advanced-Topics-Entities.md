@@ -1,15 +1,11 @@
 ---
 id: advanced-topics-entities
 title: Entities
-layout: docs
-category: Advanced Topics
-next: v0-10-api-migration
-permalink: docs/advanced-topics-entities.html
 ---
 
 This article discusses the Entity system, which Draft uses for annotating
 ranges of text with metadata. Entities introduce levels of richness beyond
-styled text. Links, mentions, and embedded content can all be implemented 
+styled text. Links, mentions, and embedded content can all be implemented
 using entities.
 
 In the Draft repository, the
@@ -42,7 +38,7 @@ greater detail below.
 a `'LINK'` entity might contain a `data` object that contains the `href` value
 for that link.
 
-All entities are stored in the ContentState record. The entites  are referenced
+All entities are stored in the ContentState record. The entities are referenced
 by key within `ContentState` and React components used to decorate annotated
 ranges. (We are currently deprecating a previous API for accessing Entities; see
 issue

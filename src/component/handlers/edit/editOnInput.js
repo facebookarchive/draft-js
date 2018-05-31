@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule editOnInput
  * @format
  * @flow
  */
@@ -15,18 +14,18 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const DraftFeatureFlags = require('DraftFeatureFlags');
-var DraftModifier = require('DraftModifier');
-var DraftOffsetKey = require('DraftOffsetKey');
-var EditorState = require('EditorState');
-var UserAgent = require('UserAgent');
+const DraftModifier = require('DraftModifier');
+const DraftOffsetKey = require('DraftOffsetKey');
+const EditorState = require('EditorState');
+const UserAgent = require('UserAgent');
 
-var findAncestorOffsetKey = require('findAncestorOffsetKey');
-var nullthrows = require('nullthrows');
+const findAncestorOffsetKey = require('findAncestorOffsetKey');
+const gkx = require('gkx');
+const nullthrows = require('nullthrows');
 
-var isGecko = UserAgent.isEngine('Gecko');
+const isGecko = UserAgent.isEngine('Gecko');
 
-var DOUBLE_NEWLINE = '\n\n';
+const DOUBLE_NEWLINE = '\n\n';
 
 /**
  * This function is intended to handle spellcheck and autocorrect changes,
@@ -46,15 +45,15 @@ function editOnInput(editor: DraftEditor): void {
     editor._pendingStateFromBeforeInput = undefined;
   }
 
-  var domSelection = global.getSelection();
+  const domSelection = global.getSelection();
 
-  var {anchorNode, isCollapsed} = domSelection;
+  const {anchorNode, isCollapsed} = domSelection;
   const isNotTextNode = anchorNode.nodeType !== Node.TEXT_NODE;
   const isNotTextOrElementNode =
     anchorNode.nodeType !== Node.TEXT_NODE &&
     anchorNode.nodeType !== Node.ELEMENT_NODE;
 
-  if (DraftFeatureFlags.draft_killswitch_allow_nontextnodes) {
+  if (gkx('draft_killswitch_allow_nontextnodes')) {
     if (isNotTextNode) {
       return;
     }
@@ -86,18 +85,18 @@ function editOnInput(editor: DraftEditor): void {
     }
   }
 
-  var domText = anchorNode.textContent;
-  var editorState = editor._latestEditorState;
-  var offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
-  var {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
+  let domText = anchorNode.textContent;
+  const editorState = editor._latestEditorState;
+  const offsetKey = nullthrows(findAncestorOffsetKey(anchorNode));
+  const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(offsetKey);
 
-  var {start, end} = editorState
+  const {start, end} = editorState
     .getBlockTree(blockKey)
     .getIn([decoratorKey, 'leaves', leafKey]);
 
-  var content = editorState.getCurrentContent();
-  var block = content.getBlockForKey(blockKey);
-  var modelText = block.getText().slice(start, end);
+  const content = editorState.getCurrentContent();
+  const block = content.getBlockForKey(blockKey);
+  const modelText = block.getText().slice(start, end);
 
   // Special-case soft newlines here. If the DOM text ends in a soft newline,
   // we will have manually inserted an extra soft newline in DraftEditorLeaf.
@@ -116,10 +115,10 @@ function editOnInput(editor: DraftEditor): void {
     return;
   }
 
-  var selection = editorState.getSelection();
+  const selection = editorState.getSelection();
 
   // We'll replace the entire leaf with the text content of the target.
-  var targetRange = selection.merge({
+  const targetRange = selection.merge({
     anchorOffset: start,
     focusOffset: end,
     isBackward: false,
@@ -144,7 +143,7 @@ function editOnInput(editor: DraftEditor): void {
     preserveEntity ? block.getEntityAt(start) : null,
   );
 
-  var anchorOffset, focusOffset, startOffset, endOffset;
+  let anchorOffset, focusOffset, startOffset, endOffset;
 
   if (isGecko) {
     // Firefox selection does not change while the context menu is open, so
@@ -161,7 +160,7 @@ function editOnInput(editor: DraftEditor): void {
     // DOM selection. Don't trust it. Instead, use our existing SelectionState
     // and adjust it based on the number of characters changed during the
     // mutation.
-    var charDelta = domText.length - modelText.length;
+    const charDelta = domText.length - modelText.length;
     startOffset = selection.getStartOffset();
     endOffset = selection.getEndOffset();
 
@@ -172,7 +171,7 @@ function editOnInput(editor: DraftEditor): void {
   // Segmented entities are completely or partially removed when their
   // text content changes. For this case we do not want any text to be selected
   // after the change, so we are not merging the selection.
-  var contentWithAdjustedDOMSelection = newContent.merge({
+  const contentWithAdjustedDOMSelection = newContent.merge({
     selectionBefore: content.getSelectionAfter(),
     selectionAfter: selection.merge({anchorOffset, focusOffset}),
   });

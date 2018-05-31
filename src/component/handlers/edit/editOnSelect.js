@@ -6,19 +6,19 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule editOnSelect
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
 
 import type DraftEditor from 'DraftEditor.react';
 
-var EditorState = require('EditorState');
-var ReactDOM = require('ReactDOM');
+const DraftJsDebugLogging = require('DraftJsDebugLogging');
+const EditorState = require('EditorState');
+const ReactDOM = require('ReactDOM');
 
-var getDraftEditorSelection = require('getDraftEditorSelection');
+const getDraftEditorSelection = require('getDraftEditorSelection');
 const invariant = require('invariant');
 
 function editOnSelect(editor: DraftEditor): void {
@@ -26,21 +26,31 @@ function editOnSelect(editor: DraftEditor): void {
     editor._blockSelectEvents ||
     editor._latestEditorState !== editor.props.editorState
   ) {
+    if (editor._blockSelectEvents) {
+      const editorState = editor.props.editorState;
+      const selectionState = editorState.getSelection();
+      DraftJsDebugLogging.logBlockedSelectionEvent({
+        // For now I don't think we need any other info
+        anonymizedDom: 'N/A',
+        extraParams: JSON.stringify({stacktrace: new Error().stack}),
+        selectionState: JSON.stringify(selectionState.toJS()),
+      });
+    }
     return;
   }
 
-  var editorState = editor.props.editorState;
+  let editorState = editor.props.editorState;
   const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
   invariant(editorNode, 'Missing editorNode');
   invariant(
     editorNode.firstChild instanceof HTMLElement,
     'editorNode.firstChild is not an HTMLElement',
   );
-  var documentSelection = getDraftEditorSelection(
+  const documentSelection = getDraftEditorSelection(
     editorState,
     editorNode.firstChild,
   );
-  var updatedSelectionState = documentSelection.selectionState;
+  const updatedSelectionState = documentSelection.selectionState;
 
   if (updatedSelectionState !== editorState.getSelection()) {
     if (documentSelection.needsRecovery) {

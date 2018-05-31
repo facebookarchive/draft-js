@@ -6,18 +6,17 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftOffsetKey
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
 
 import type {DraftOffsetKeyPath} from 'DraftOffsetKeyPath';
 
-var KEY_DELIMITER = '-';
+const KEY_DELIMITER = '-';
 
-var DraftOffsetKey = {
+const DraftOffsetKey = {
   encode: function(
     blockKey: string,
     decoratorKey: number,
@@ -27,7 +26,7 @@ var DraftOffsetKey = {
   },
 
   decode: function(offsetKey: string): DraftOffsetKeyPath {
-    var [blockKey, decoratorKey, leafKey] = offsetKey.split(KEY_DELIMITER);
+    const [blockKey, decoratorKey, leafKey] = offsetKey.split(KEY_DELIMITER);
     return {
       blockKey,
       decoratorKey: parseInt(decoratorKey, 10),

@@ -6,26 +6,25 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule createCharacterList
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var CharacterMetadata = require('CharacterMetadata');
-var Immutable = require('immutable');
+const CharacterMetadata = require('CharacterMetadata');
+const Immutable = require('immutable');
 
-var {List} = Immutable;
+const {List} = Immutable;
 
 function createCharacterList(
   inlineStyles: Array<DraftInlineStyle>,
   entities: Array<?string>,
 ): List<CharacterMetadata> {
-  var characterArray = inlineStyles.map((style, ii) => {
-    var entity = entities[ii];
+  const characterArray = inlineStyles.map((style, ii) => {
+    const entity = entities[ii];
     return CharacterMetadata.create({style, entity});
   });
   return List(characterArray);

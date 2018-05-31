@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule insertIntoList
  * @format
  * @flow
  */
@@ -32,8 +31,8 @@ function insertIntoList<T>(
       targetList = targetList.unshift(c);
     });
   } else {
-    var head = targetList.slice(0, offset);
-    var tail = targetList.slice(offset);
+    const head = targetList.slice(0, offset);
+    const tail = targetList.slice(offset);
     targetList = head.concat(toInsert, tail).toList();
   }
   return targetList;

@@ -6,16 +6,15 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule editOnCompositionStart
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
 
 import type DraftEditor from 'DraftEditor.react';
 
-var EditorState = require('EditorState');
+const EditorState = require('EditorState');
 
 /**
  * The user has begun using an IME input system. Switching to `composite` mode
