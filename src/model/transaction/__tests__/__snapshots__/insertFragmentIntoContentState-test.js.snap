@@ -1395,3 +1395,63 @@ Array [
   },
 ]
 `;
+
+exports[`must keep the block data when inserting fragment without block data 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "A",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "some texta",
+    "type": "atomic",
+  },
+]
+`;
