@@ -380,7 +380,7 @@ const genFragment = (
   // Base Case
   if (nodeName === '#text') {
     let text = node.textContent;
-    let nodeTextContent = text.trim();
+    const nodeTextContent = text.trim();
 
     // We should not create blocks for leading spaces that are
     // existing around ol/ul and their children list items

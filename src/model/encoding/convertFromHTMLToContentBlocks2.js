@@ -94,10 +94,10 @@ type BlockTypeMap = Map<string, string | Array<string>>;
 const buildBlockTypeMap = (
   blockRenderMap: DraftBlockRenderMap,
 ): BlockTypeMap => {
-  let blockTypeMap = {};
+  const blockTypeMap = {};
 
   blockRenderMap.mapKeys((blockType, desc) => {
-    let elements = [desc.element];
+    const elements = [desc.element];
     if (desc.aliasedElements !== undefined) {
       elements.push(...desc.aliasedElements);
     }
@@ -340,7 +340,7 @@ class ContentBlocksBuilder {
    * state to enable chaining sucessive calls.
    */
   _toBlockConfigs(nodes: Array<Node>): Array<ContentBlockConfig> {
-    let blockConfigs = [];
+    const blockConfigs = [];
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
       const nodeName = node.nodeName.toLowerCase();
@@ -493,7 +493,7 @@ class ContentBlocksBuilder {
    */
   _addTextNode(node: Node) {
     let text = node.textContent;
-    let trimmedText = text.trim();
+    const trimmedText = text.trim();
 
     // If we are not in a pre block and the trimmed content is empty,
     // normalize to a single space.
@@ -622,7 +622,7 @@ class ContentBlocksBuilder {
   ) {
     const l = blockConfigs.length - 1;
     for (let i = 0; i <= l; i++) {
-      let config = blockConfigs[i];
+      const config = blockConfigs[i];
       config.parent = parent;
       config.prevSibling = i > 0 ? blockConfigs[i - 1].key : null;
       config.nextSibling = i < l ? blockConfigs[i + 1].key : null;
@@ -643,8 +643,8 @@ class ContentBlocksBuilder {
   _toFlatContentBlocks(blockConfigs: Array<ContentBlockConfig>) {
     const l = blockConfigs.length - 1;
     for (let i = 0; i <= l; i++) {
-      let config = blockConfigs[i];
-      let {text, characterList} = this._extractTextFromBlockConfigs(
+      const config = blockConfigs[i];
+      const {text, characterList} = this._extractTextFromBlockConfigs(
         config.childConfigs,
       );
       this.contentBlocks.push(
@@ -671,7 +671,7 @@ class ContentBlocksBuilder {
     let text = '';
     let characterList = List();
     for (let i = 0; i <= l; i++) {
-      let config = blockConfigs[i];
+      const config = blockConfigs[i];
       text += config.text;
       characterList = characterList.concat(config.characterList);
       /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
@@ -681,7 +681,7 @@ class ContentBlocksBuilder {
         text += '\n';
         characterList = characterList.push(characterList.last());
       }
-      let children = this._extractTextFromBlockConfigs(config.childConfigs);
+      const children = this._extractTextFromBlockConfigs(config.childConfigs);
       text += children.text;
       characterList = characterList.concat(children.characterList);
     }
@@ -717,7 +717,7 @@ const convertFromHTMLtoContentBlocks = (
   }
 
   // Build a BlockTypeMap out of the BlockRenderMap
-  let blockTypeMap = buildBlockTypeMap(blockRenderMap);
+  const blockTypeMap = buildBlockTypeMap(blockRenderMap);
 
   // Select the proper block type for the cases where the blockRenderMap
   // uses multiple block types for the same html tag.

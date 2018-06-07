@@ -48,7 +48,7 @@ function getRangeBoundingClientRect(range: Range): FakeClientRect {
     }
 
     for (let ii = 1; ii < rects.length; ii++) {
-      let rect = rects[ii];
+      const rect = rects[ii];
       if (rect.height !== 0 && rect.width !== 0) {
         top = Math.min(top, rect.top);
         right = Math.max(right, rect.right);

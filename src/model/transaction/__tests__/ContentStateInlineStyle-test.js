@@ -58,7 +58,7 @@ const assertRemoveContentStateInlineStyle = (
 };
 
 test('must add styles', () => {
-  let modified = assertAddContentStateInlineStyle('BOLD', initialSelection);
+  const modified = assertAddContentStateInlineStyle('BOLD', initialSelection);
 
   assertAddContentStateInlineStyle(
     'ITALIC',

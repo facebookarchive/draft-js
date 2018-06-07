@@ -124,7 +124,7 @@ const getRootBlocks = (
 ): Array<string> => {
   const headKey = block.getKey();
   let rootBlock = block;
-  let rootBlocks = [];
+  const rootBlocks = [];
 
   // sometimes the fragment head block will not be part of the blockMap itself this can happen when
   // the fragment head is used to update the target block, however when this does not happen we need
