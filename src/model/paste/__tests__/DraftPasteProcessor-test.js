@@ -342,3 +342,37 @@ test('must create ContentBlocks when experimentalTreeDataSupport is disabled whi
 test('must create ContentBlockNodes when experimentalTreeDataSupport is enabled while processing text', () => {
   assertDraftPasteProcessorProcessText(['Alpha', 'Beta', 'Charlie'], true);
 });
+
+test('must use serialised Draft.js fragment when available', () => {
+  assertDraftPasteProcessorProcessHTML(`
+    <div data-editor-content='${JSON.stringify({
+      entityMap: {},
+      blocks: [
+        {
+          key: 'a',
+          text: 'line\nbreak',
+          type: 'unstyled',
+        },
+      ],
+    })}'>
+        <p>line\nbreak</p>
+    </div>
+  `);
+});
+
+test('must fallback to HTML if serialised Draft.js fragment is invalid JSON', () => {
+  assertDraftPasteProcessorProcessHTML(`
+      <div data-editor-content='${JSON.stringify({
+        entityMap: {},
+        blocks: [
+          {
+            key: 'a',
+            text: 'line\nbreak',
+            type: 'unstyled',
+          },
+        ],
+      }).substring(0, 20)}'>
+      <p>line\nbreak</p>
+      </div>
+    `);
+});
