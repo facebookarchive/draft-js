@@ -442,7 +442,7 @@ test('must split styled spans apart within decorator', () => {
   arePropsEqual(el.children[0], {offsetKey: 'a-0-0'});
   expect(el.children[0].type).toBe(DecoratorSpan);
 
-  var renderer = el.children[0].props;
+  const renderer = el.children[0].props;
   arePropsEqual(renderer.children[0], {offsetKey: 'a-0-0', styleSet: BOLD});
   expect(renderer.children[0].type).toBe(DraftEditorLeaf);
 
