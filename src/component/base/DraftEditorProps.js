@@ -139,6 +139,7 @@ export type DraftEditorProps = {
   ) => DraftHandleValue,
 
   handleKeyboardEvent?: (e: SyntheticKeyboardEvent<>) => DraftHandleValue,
+  enableIESupport?: boolean,
 
   handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
 

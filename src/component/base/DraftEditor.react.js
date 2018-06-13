@@ -125,7 +125,12 @@ class UpdateDraftEditorFlags extends React.Component<{
      * to this stray selection event, but have recorded logs that some
      * conditions do cause it to get bumped into during editOnSelect.
      */
-    editor._blockSelectEvents = true;
+    if (
+      editor.props.enableIESupport === undefined ||
+      editor.props.enableIESupport
+    ) {
+      editor._blockSelectEvents = true;
+    }
   }
 }
 
