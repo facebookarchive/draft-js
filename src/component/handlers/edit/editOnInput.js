@@ -48,7 +48,7 @@ function editOnInput(editor: DraftEditor): void {
   }
 
   editOnSelect(editor);
-  const editorState = editor._latestEditorState;
+  let editorState = editor._latestEditorState;
 
   if (editor._updatedNativeInsertionBlock) {
     const oldBlock = editor._updatedNativeInsertionBlock;
