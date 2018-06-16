@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-issues-and-pitfalls
 title: Issues and Pitfalls
-layout: docs
-category: Advanced Topics
-next: api-reference-editor
-permalink: docs/advanced-topics-issues-and-pitfalls.html
 ---
 
 This article addresses some known issues with the Draft editor framework, as

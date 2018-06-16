@@ -55,7 +55,7 @@ const assertGetDraftEditorSelection = getSelectionReturnValue => {
   document.selection = null;
   window.getSelection = jest.fn();
   window.getSelection.mockReturnValueOnce(getSelectionReturnValue);
-  let selection = getDraftEditorSelection(editorState, root);
+  const selection = getDraftEditorSelection(editorState, root);
   expect({
     ...selection,
     selectionState: selection.selectionState.toJS(),

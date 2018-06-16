@@ -1,36 +1,22 @@
+Draft.js uses Docusaurus to maintain our documentation website. Please see the
+[Docusaurus Documentation](https://docusaurus.io/) for more info.
+
 # Run the server
 
 The first time, get all the dependencies loaded via
 
+```bash
+yarn
 ```
-npm install
-```
+
+in the root directory.
 
 Then, run the server via
 
-```
+```bash
 npm start
-Open http://localhost:8080/index.html
+Open http://localhost:3000
 ```
 
-Anytime you change the contents, just refresh the page and it's going to be updated
-
-# Publish the website
-
-First setup your environment by having two folders, one `draft` and one `draft-gh-pages`. The publish script expects those exact names.
-
-```
-cd ../../
-git clone git@github.com:facebook/draft-js.git draft-gh-pages
-cd draft-gh-pages
-git checkout origin/gh-pages
-git checkout -b gh-pages
-git push --set-upstream origin gh-pages
-cd ../draft-js/website
-```
-
-Then, after you've done changes, just run the command and it'll automatically build the static version of the site and publish it to gh-pages.
-
-```
-./publish.sh
-```
+Anytime you change the contents, just refresh the page and it's going to be
+updated

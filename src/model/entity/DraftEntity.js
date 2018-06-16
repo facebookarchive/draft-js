@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEntity
  * @format
  * @flow
  */
@@ -14,15 +13,15 @@
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
 
-var DraftEntityInstance = require('DraftEntityInstance');
-var Immutable = require('immutable');
+const DraftEntityInstance = require('DraftEntityInstance');
+const Immutable = require('immutable');
 
-var invariant = require('invariant');
+const invariant = require('invariant');
 
-var {Map} = Immutable;
+const {Map} = Immutable;
 
-var instances: Map<string, DraftEntityInstance> = Map();
-var instanceKey = 0;
+let instances: Map<string, DraftEntityInstance> = Map();
+let instanceKey = 0;
 
 /**
  * Temporary utility for generating the warnings
@@ -96,7 +95,7 @@ export type DraftEntityMapObject = {
  * generated via DraftEntity.create() and used to obtain entity metadata
  * via DraftEntity.get().
  */
-var DraftEntity: DraftEntityMapObject = {
+const DraftEntity: DraftEntityMapObject = {
   /**
    * WARNING: This method will be deprecated soon!
    * Please use 'contentState.getLastCreatedEntityKey' instead.
@@ -220,7 +219,7 @@ var DraftEntity: DraftEntityMapObject = {
    * useful when restoring instances from the server.
    */
   __add: function(instance: DraftEntityInstance): string {
-    var key = '' + ++instanceKey;
+    const key = '' + ++instanceKey;
     instances = instances.set(key, instance);
     return key;
   },
@@ -229,7 +228,7 @@ var DraftEntity: DraftEntityMapObject = {
    * Retrieve the entity corresponding to the supplied key string.
    */
   __get: function(key: string): DraftEntityInstance {
-    var instance = instances.get(key);
+    const instance = instances.get(key);
     invariant(!!instance, 'Unknown DraftEntity key: %s.', key);
     return instance;
   },
@@ -243,9 +242,9 @@ var DraftEntity: DraftEntityMapObject = {
     key: string,
     toMerge: {[key: string]: any},
   ): DraftEntityInstance {
-    var instance = DraftEntity.__get(key);
-    var newData = {...instance.getData(), ...toMerge};
-    var newInstance = instance.set('data', newData);
+    const instance = DraftEntity.__get(key);
+    const newData = {...instance.getData(), ...toMerge};
+    const newInstance = instance.set('data', newData);
     instances = instances.set(key, newInstance);
     return newInstance;
   },

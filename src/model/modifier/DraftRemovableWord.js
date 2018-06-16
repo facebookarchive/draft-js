@@ -6,28 +6,27 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftRemovableWord
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
 
-var TokenizeUtil = require('TokenizeUtil');
+const TokenizeUtil = require('TokenizeUtil');
 
-var punctuation = TokenizeUtil.getPunctuation();
+const punctuation = TokenizeUtil.getPunctuation();
 
 // The apostrophe and curly single quotes behave in a curious way: when
 // surrounded on both sides by word characters, they behave as word chars; when
 // either neighbor is punctuation or an end of the string, they behave as
 // punctuation.
-var CHAMELEON_CHARS = "['\u2018\u2019]";
+const CHAMELEON_CHARS = "['\u2018\u2019]";
 
 // Remove the underscore, which should count as part of the removable word. The
 // "chameleon chars" also count as punctuation in this regex.
-var WHITESPACE_AND_PUNCTUATION = '\\s|(?![_])' + punctuation;
+const WHITESPACE_AND_PUNCTUATION = '\\s|(?![_])' + punctuation;
 
-var DELETE_STRING =
+const DELETE_STRING =
   '^' +
   '(?:' +
   WHITESPACE_AND_PUNCTUATION +
@@ -40,9 +39,9 @@ var DELETE_STRING =
   '(?:(?!' +
   WHITESPACE_AND_PUNCTUATION +
   ').)';
-var DELETE_REGEX = new RegExp(DELETE_STRING);
+const DELETE_REGEX = new RegExp(DELETE_STRING);
 
-var BACKSPACE_STRING =
+const BACKSPACE_STRING =
   '(?:(?!' +
   WHITESPACE_AND_PUNCTUATION +
   ').)' +
@@ -55,16 +54,16 @@ var BACKSPACE_STRING =
   WHITESPACE_AND_PUNCTUATION +
   ')*' +
   '$';
-var BACKSPACE_REGEX = new RegExp(BACKSPACE_STRING);
+const BACKSPACE_REGEX = new RegExp(BACKSPACE_STRING);
 
 function getRemovableWord(text: string, isBackward: boolean): string {
-  var matches = isBackward
+  const matches = isBackward
     ? BACKSPACE_REGEX.exec(text)
     : DELETE_REGEX.exec(text);
   return matches ? matches[0] : text;
 }
 
-var DraftRemovableWord = {
+const DraftRemovableWord = {
   getBackward: function(text: string): string {
     return getRemovableWord(text, true);
   },

@@ -6,13 +6,16 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEditorContents.react
  * @format
  * @flow
  */
 
 'use strict';
 
-const DraftEditorContents = require('DraftEditorContents-core.react');
+const gkx = require('gkx');
 
-module.exports = DraftEditorContents;
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
+
+module.exports = experimentalTreeDataSupport
+  ? require('DraftEditorContentsExperimental.react')
+  : require('DraftEditorContents-core.react');

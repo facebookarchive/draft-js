@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule ContentState
  * @format
  * @flow
  */
@@ -24,16 +23,16 @@ const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DraftEntity = require('DraftEntity');
-const DraftFeatureFlags = require('DraftFeatureFlags');
 const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
+const gkx = require('gkx');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 const {List, Record, Repeat} = Immutable;
 
-const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 const defaultRecord: {
   entityMap: ?any,
@@ -72,7 +71,7 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlockForKey(key: string): BlockNodeRecord {
-    var block: BlockNodeRecord = this.getBlockMap().get(key);
+    const block: BlockNodeRecord = this.getBlockMap().get(key);
     return block;
   }
 
@@ -134,7 +133,7 @@ class ContentState extends ContentStateRecord {
   }
 
   hasText(): boolean {
-    var blockMap = this.getBlockMap();
+    const blockMap = this.getBlockMap();
     return blockMap.size > 1 || blockMap.first().getLength() > 0;
   }
 
@@ -178,8 +177,8 @@ class ContentState extends ContentStateRecord {
   ): ContentState {
     // TODO: remove this when we completely deprecate the old entity API
     const theBlocks = Array.isArray(blocks) ? blocks : blocks.contentBlocks;
-    var blockMap = BlockMapBuilder.createFromArray(theBlocks);
-    var selectionState = blockMap.isEmpty()
+    const blockMap = BlockMapBuilder.createFromArray(theBlocks);
+    const selectionState = blockMap.isEmpty()
       ? new SelectionState()
       : SelectionState.createEmpty(blockMap.first().getKey());
     return new ContentState({

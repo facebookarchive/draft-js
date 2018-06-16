@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftPasteProcessor
  * @format
  * @flow
  */
@@ -21,20 +20,26 @@ import type {EntityMap} from 'EntityMap';
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
-const DraftFeatureFlags = require('DraftFeatureFlags');
 const Immutable = require('immutable');
 
-const convertFromHTMLtoContentBlocks = require('convertFromHTMLToContentBlocks');
+const convertFromHTMLtoContentBlocksClassic = require('convertFromHTMLToContentBlocks');
+const convertFromHTMLtoContentBlocksNew = require('convertFromHTMLToContentBlocks2');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
+const gkx = require('gkx');
 const sanitizeDraftText = require('sanitizeDraftText');
 
 const {List, Repeat} = Immutable;
 
-const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 const ContentBlockRecord = experimentalTreeDataSupport
   ? ContentBlockNode
   : ContentBlock;
+
+const refactoredHTMLImporter = gkx('draft_refactored_html_importer');
+const convertFromHTMLtoContentBlocks = refactoredHTMLImporter
+  ? convertFromHTMLtoContentBlocksNew
+  : convertFromHTMLtoContentBlocksClassic;
 
 const DraftPasteProcessor = {
   processHTML(

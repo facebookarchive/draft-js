@@ -6,9 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule BlockMapBuilder
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
@@ -16,11 +15,11 @@
 import type {BlockMap} from 'BlockMap';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
 
-var {OrderedMap} = Immutable;
+const {OrderedMap} = Immutable;
 
-var BlockMapBuilder = {
+const BlockMapBuilder = {
   createFromArray: function(blocks: Array<BlockNodeRecord>): BlockMap {
     return OrderedMap(blocks.map(block => [block.getKey(), block]));
   },

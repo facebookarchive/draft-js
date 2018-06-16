@@ -1,10 +1,6 @@
 ---
 id: api-reference-editor-state
 title: EditorState
-layout: docs
-category: API Reference
-next: api-reference-content-state
-permalink: docs/api-reference-editor-state.html
 ---
 
 `EditorState` is the top-level state object for the editor.
@@ -358,7 +354,7 @@ as the set of inline styles to be applied to the next inserted characters.
 ```
 static set(editorState: EditorState, options: EditorStateRecordType): EditorState
 ```
-Returns a new `EditorState` object with new options passed in. 'The method is
+Returns a new `EditorState` object with new options passed in. The method is
 inherited from the Immutable `record` API.
 
 ## Properties and Getters
