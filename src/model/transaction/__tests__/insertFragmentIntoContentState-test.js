@@ -24,6 +24,7 @@ const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
+const invariant = require('invariant');
 
 const {contentState, selectionState} = getSampleStateForTesting();
 const {List, Map} = Immutable;
@@ -36,6 +37,18 @@ const DEFAULT_BLOCK_CONFIG = {
 };
 
 const initialBlock = contentState.getBlockMap().first();
+
+const getInvariantViolation = msg => {
+  try {
+    /* eslint-disable fb-www/sprintf-like-args */
+    invariant(false, msg);
+    /* eslint-enable fb-www/sprintf-like-args */
+  } catch (e) {
+    return e;
+  }
+
+  throw new Error('We should never reach here!');
+};
 
 const createFragment = (fragment = {}, experimentalTreeDataSupport = false) => {
   const ContentBlockNodeRecord = experimentalTreeDataSupport
@@ -385,7 +398,7 @@ test('must throw an error when trying to apply ContentBlockNode fragments when s
       ]),
     ),
   ).toThrow(
-    new Error(
+    getInvariantViolation(
       '`insertFragment` should not be called when a container node is selected.',
     ),
   );

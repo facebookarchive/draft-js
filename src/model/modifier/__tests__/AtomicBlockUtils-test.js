@@ -24,12 +24,25 @@ const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
+const invariant = require('invariant');
 
 const {editorState, contentState, selectionState} = getSampleStateForTesting();
 
 const initialBlock = contentState.getBlockMap().first();
 const ENTITY_KEY = Entity.create('TOKEN', 'MUTABLE');
 const CHARACTER = ' ';
+
+const getInvariantViolation = msg => {
+  try {
+    /* eslint-disable fb-www/sprintf-like-args */
+    invariant(false, msg);
+    /* eslint-enable fb-www/sprintf-like-args */
+  } catch (e) {
+    return e;
+  }
+
+  throw new Error('We should never reach here!');
+};
 
 const toggleExperimentalTreeDataSupport = enabled => {
   jest.doMock('gkx', () => name => {
@@ -251,7 +264,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
         focusOffset: beforeAtomicBlock.getLength(),
       }),
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
   // Move atomic block above itself by moving it after preceding block
   expect(() => {
@@ -264,7 +277,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
       }),
       'after',
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
   // Move atomic block above itself by replacement
   expect(() => {
@@ -278,7 +291,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
         focusOffset: atomicBlock.getLength(),
       }),
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
   // Move atomic block above itself
   expect(() => {
@@ -290,7 +303,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
       }),
       'before',
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
   // Move atomic block below itself by moving it before following block by replacement
   expect(() => {
@@ -302,7 +315,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
         focusKey: afterAtomicBlock.getKey(),
       }),
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
   // Move atomic block below itself by moving it before following block
   expect(() => {
@@ -315,7 +328,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
       }),
       'before',
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
   // Move atomic block below itself by replacement
   expect(() => {
@@ -329,7 +342,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
         focusOffset: atomicBlock.getLength(),
       }),
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
   // Move atomic block below itself
   expect(() => {
@@ -341,7 +354,7 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
       }),
       'after',
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 });
 
 /**
@@ -558,7 +571,7 @@ test("mustn't move atomic next to itself", () => {
         focusOffset: beforeAtomicBlock.getLength(),
       }),
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
   // Move atomic block below itself by moving it before following block by
   // replacement
@@ -573,7 +586,7 @@ test("mustn't move atomic next to itself", () => {
         focusOffset: 2,
       }),
     );
-  }).toThrow(new Error('Block cannot be moved next to itself.'));
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 });
 
 test('must be able to insert atomic block when experimentalTreeDataSupport is enabled', () => {
