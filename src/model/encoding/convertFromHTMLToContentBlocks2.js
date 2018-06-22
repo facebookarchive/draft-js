@@ -600,15 +600,12 @@ class ContentBlocksBuilder {
       this.removeStyle('ITALIC');
     }
 
-    if (textDecoration === 'underline') {
-      this.addStyle('UNDERLINE');
-    }
-    if (textDecoration === 'line-through') {
-      this.addStyle('STRIKETHROUGH');
-    }
     if (textDecoration === 'none') {
       this.removeStyle('UNDERLINE');
       this.removeStyle('STRIKETHROUGH');
+    } else {
+      textDecoration.includes('underline') && this.addStyle('UNDERLINE');
+      textDecoration.includes('line-through') && this.addStyle('STRIKETHROUGH');
     }
   }
 
