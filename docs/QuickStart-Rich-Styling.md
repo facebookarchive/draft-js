@@ -69,7 +69,7 @@ class MyEditor extends React.Component {
 }
 ```
 
-> handleKeyCommand
+> `handleKeyCommand`
 >
 > The `command` argument supplied to `handleKeyCommand` is a string value, the
 > name of the command to be executed. This is mapped from a DOM key event. The
