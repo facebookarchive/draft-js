@@ -3775,6 +3775,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var blockBottom = blockNode.getBoundingClientRect().bottom;
 	      var scrollParentBottom = scrollParent.getBoundingClientRect().bottom;
 	      scrollDelta = blockBottom - scrollParentBottom;
+
+	      if (this.props.block === this.props.contentState.getLastBlock()) {
+	        // We're on the last block. If there's a footer, account for its height.
+	        var scrollPaddingElements = document.querySelectorAll('[data-draft-footer]');
+	        if (scrollPaddingElements.length > 0) {
+	          var scrollPaddingElement = scrollPaddingElements[0];
+	          scrollDelta += scrollPaddingElement.offsetHeight;
+	        }
+	      }
+
 	      if (scrollDelta > 0) {
 	        Scroll.setTop(scrollParent, Scroll.getTop(scrollParent) + scrollDelta + SCROLL_BUFFER);
 	      }
