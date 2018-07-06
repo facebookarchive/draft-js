@@ -134,6 +134,11 @@ describe('hasEdgeWithin', () => {
     expect(MULTI_BLOCK.hasEdgeWithin('b', 5, 20)).toBe(true);
     expect(MULTI_BLOCK.hasEdgeWithin('c', 5, 20)).toBe(true);
   });
+
+  test('is false if test range is entirely within selection range', () => {
+    expect(WITHIN_BLOCK.hasEdgeWithin('a', 12, 15)).toBe(false);
+    expect(MULTI_BLOCK.hasEdgeWithin('b', 12, 15)).toBe(false);
+  });
 });
 
 test('detects collapsed selection properly', () => {
