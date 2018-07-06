@@ -33,7 +33,7 @@ Object {
 }
 `;
 
-exports[`is true if selection range is entirely within test range 1`] = `
+exports[`hasEdgeWithin is true if selection range is entirely within test range 1`] = `
 Object {
   "anchorKey": "a",
   "anchorOffset": 5,
