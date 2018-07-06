@@ -76,7 +76,7 @@ const WITHIN_BLOCK = getSample('WITHIN_BLOCK');
 
 test('must create a new instance', () => {
   const state = COLLAPSED;
-  expect(state instanceof SelectionState).toMatchSnapshot();
+  expect(state instanceof SelectionState).toBe(true);
 });
 
 test('must retrieve properties correctly', () => {
@@ -98,23 +98,23 @@ test('must serialize properties correctly', () => {
 });
 
 test('is false for non-edge block keys', () => {
-  expect(COLLAPSED.hasEdgeWithin('b', 0, 0)).toMatchSnapshot();
-  expect(WITHIN_BLOCK.hasEdgeWithin('b', 0, 0)).toMatchSnapshot();
-  expect(MULTI_BLOCK.hasEdgeWithin('d', 0, 0)).toMatchSnapshot();
+  expect(COLLAPSED.hasEdgeWithin('b', 0, 0)).toBe(false);
+  expect(WITHIN_BLOCK.hasEdgeWithin('b', 0, 0)).toBe(false);
+  expect(MULTI_BLOCK.hasEdgeWithin('d', 0, 0)).toBe(false);
 });
 
 test('is false if offset is outside the selection range', () => {
-  expect(COLLAPSED.hasEdgeWithin('a', 1, 1)).toMatchSnapshot();
-  expect(WITHIN_BLOCK.hasEdgeWithin('a', 1, 1)).toMatchSnapshot();
-  expect(MULTI_BLOCK.hasEdgeWithin('b', 1, 1)).toMatchSnapshot();
+  expect(COLLAPSED.hasEdgeWithin('a', 1, 1)).toBe(false);
+  expect(WITHIN_BLOCK.hasEdgeWithin('a', 1, 1)).toBe(false);
+  expect(MULTI_BLOCK.hasEdgeWithin('b', 1, 1)).toBe(false);
 });
 
 test('is true if key match and offset equals selection edge', () => {
-  expect(COLLAPSED.hasEdgeWithin('a', 0, 1)).toMatchSnapshot();
-  expect(WITHIN_BLOCK.hasEdgeWithin('a', 10, 15)).toMatchSnapshot();
-  expect(WITHIN_BLOCK.hasEdgeWithin('a', 15, 20)).toMatchSnapshot();
-  expect(MULTI_BLOCK.hasEdgeWithin('b', 10, 20)).toMatchSnapshot();
-  expect(MULTI_BLOCK.hasEdgeWithin('c', 15, 20)).toMatchSnapshot();
+  expect(COLLAPSED.hasEdgeWithin('a', 0, 1)).toBe(true);
+  expect(WITHIN_BLOCK.hasEdgeWithin('a', 10, 15)).toBe(true);
+  expect(WITHIN_BLOCK.hasEdgeWithin('a', 15, 20)).toBe(true);
+  expect(MULTI_BLOCK.hasEdgeWithin('b', 10, 20)).toBe(true);
+  expect(MULTI_BLOCK.hasEdgeWithin('c', 15, 20)).toBe(true);
 });
 
 test('is true if selection range is entirely within test range', () => {
@@ -123,21 +123,21 @@ test('is true if selection range is entirely within test range', () => {
       anchorOffset: 5,
       focusOffset: 5,
     }).hasEdgeWithin('a', 0, 10),
-  ).toMatchSnapshot();
-  expect(WITHIN_BLOCK.hasEdgeWithin('a', 0, 40)).toMatchSnapshot();
+  ).toBe(true);
+  expect(WITHIN_BLOCK.hasEdgeWithin('a', 0, 40)).toBe(true);
 });
 
 test('is true if selection range edge overlaps test range', () => {
-  expect(WITHIN_BLOCK.hasEdgeWithin('a', 5, 15)).toMatchSnapshot();
-  expect(WITHIN_BLOCK.hasEdgeWithin('a', 15, 25)).toMatchSnapshot();
-  expect(MULTI_BLOCK.hasEdgeWithin('b', 5, 20)).toMatchSnapshot();
-  expect(MULTI_BLOCK.hasEdgeWithin('c', 5, 20)).toMatchSnapshot();
+  expect(WITHIN_BLOCK.hasEdgeWithin('a', 5, 15)).toBe(true);
+  expect(WITHIN_BLOCK.hasEdgeWithin('a', 15, 25)).toBe(true);
+  expect(MULTI_BLOCK.hasEdgeWithin('b', 5, 20)).toBe(true);
+  expect(MULTI_BLOCK.hasEdgeWithin('c', 5, 20)).toBe(true);
 });
 
 test('detects collapsed selection properly', () => {
-  expect(COLLAPSED.isCollapsed()).toMatchSnapshot();
-  expect(WITHIN_BLOCK.isCollapsed()).toMatchSnapshot();
-  expect(MULTI_BLOCK.isCollapsed()).toMatchSnapshot();
+  expect(COLLAPSED.isCollapsed()).toBe(true);
+  expect(WITHIN_BLOCK.isCollapsed()).toBe(false);
+  expect(MULTI_BLOCK.isCollapsed()).toBe(false);
 });
 
 test('properly identifies start and end keys', () => {
