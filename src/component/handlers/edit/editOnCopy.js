@@ -14,6 +14,8 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
+const ContentState = require('ContentState');
+const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const getFragmentFromSelection = require('getFragmentFromSelection');
 
 /**
@@ -31,7 +33,31 @@ function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     return;
   }
 
-  editor.setClipboard(getFragmentFromSelection(editor._latestEditorState));
+  const fragment = getFragmentFromSelection(editor._latestEditorState);
+
+  editor.setClipboard(fragment);
+
+  // IE11 does not support ClipboardEvent.clipboardData.
+  if (e.clipboardData && fragment) {
+    const content = ContentState.createFromBlockArray(fragment.toArray());
+    const serialisedContent = JSON.stringify(
+      convertFromDraftStateToRaw(content),
+    );
+
+    const fragmentElt = document.createElement('div');
+    const domSelection = window.getSelection();
+    fragmentElt.appendChild(domSelection.getRangeAt(0).cloneContents());
+    fragmentElt.setAttribute('data-editor-content', serialisedContent);
+    // We set the style property to replicate the browser's behavior of inline
+    // styles in rich text copy-paste. This is important for line breaks to be
+    // interpreted correctly when pasted into another word processor.
+    fragmentElt.setAttribute('style', 'white-space: pre-wrap;');
+
+    e.clipboardData.setData('text/plain', domSelection.toString());
+    e.clipboardData.setData('text/html', fragmentElt.outerHTML);
+
+    e.preventDefault();
+  }
 }
 
 module.exports = editOnCopy;
