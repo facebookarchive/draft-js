@@ -139,16 +139,16 @@ test('must skip updates if text already matches DOM, non-IE', function() {
     <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
   );
 
-  spyOn(stub, 'render').and.callThrough();
+  jest.spyOn(stub, 'render');
 
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-  expect(stub.render.calls.count()).toBe(0);
+  expect(stub.render.mock.calls.length).toBe(0);
 
   // Sanity check that updating is performed when appropriate.
   renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
-  expect(stub.render.calls.count()).toBe(1);
+  expect(stub.render.mock.calls.length).toBe(1);
 });
 
 test('must skip updates if text already matches DOM, IE', function() {
@@ -157,16 +157,16 @@ test('must skip updates if text already matches DOM, IE', function() {
     <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
   );
 
-  spyOn(stub, 'render').and.callThrough();
+  jest.spyOn(stub, 'render');
 
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-  expect(stub.render.calls.count()).toBe(0);
+  expect(stub.render.mock.calls.length).toBe(0);
 
   // Sanity check that updating is performed when appropriate.
   renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
-  expect(stub.render.calls.count()).toBe(1);
+  expect(stub.render.mock.calls.length).toBe(1);
 });
 
 test('must update from non-empty to empty, non-IE', function() {
