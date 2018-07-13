@@ -354,6 +354,18 @@ const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
   return depth;
 };
 
+/**
+ * Soft trim any whitespace characters similar to string.trim() \s = [\r\n\t\f\v ],
+ * but excluding \r
+ * (fix copy/paste from MS Outlook etc. with required newlines)
+ * (bug: convertChunkToContentBlocks chunk.text.split('\r') is required \r to create newline ContentBlock)
+ * (MS Outlook newline: <p><span></span><span><o:p></o:p></span></p>)
+ * (getSoftNewlineChunk is waiting for <br /> but uses '\n')
+ */
+const softTrim = (text: string): string => {
+  return text.replace(/^[\n\t\f\v ]+|[\n\t\f\v ]+$/g, "");
+};
+
 const genFragment = (
   entityMap: EntityMap,
   node: Node,
@@ -380,7 +392,7 @@ const genFragment = (
   // Base Case
   if (nodeName === '#text') {
     let text = node.textContent;
-    const nodeTextContent = text.trim();
+    const nodeTextContent = softTrim(text);
 
     // We should not create blocks for leading spaces that are
     // existing around ol/ul and their children list items
