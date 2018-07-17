@@ -424,6 +424,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   }
 
   componentDidMount(): void {
+    this._blockSelectEvents = false;
     if (!didInitODS && gkx('draft_ods_enabled')) {
       didInitODS = true;
       DraftODS.init();
