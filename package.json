@@ -1,7 +1,7 @@
 {
   "name": "@descript/draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.10.5-descript.4",
+  "version": "0.10.5-descript.5gi",
   "keywords": [
     "draftjs",
     "editor",
@@ -29,10 +29,11 @@
     "lint": "eslint .",
     "format": "eslint . --fix",
     "flow": "flow src",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-@descript/draft-jsenv NODE_ENV=test jest",
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
+    "@descript/fbjs": "^0.8.17-1",
     "fbjs": "^0.8.15",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.0"
