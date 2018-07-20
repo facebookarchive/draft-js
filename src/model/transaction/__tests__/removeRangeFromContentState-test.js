@@ -261,3 +261,56 @@ test('must retain B since F has not been removed', () => {
     treeContentState,
   );
 });
+
+/**
+ * Simulate a BACKSPACE action on <__CURSOR__>
+ *
+ * <h1>Alpha</h1>
+ * <blockquote>
+ *   <ul>
+ *     <li><__CURSOR__>Foo</li>
+ *     <li>Bar</li>
+ *   </ul>
+ * </blockquote>
+ */
+test('must not remove links of retained parents', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'B',
+      focusKey: 'C',
+      anchorOffset: 0,
+      focusOffset: contentBlockNodes[2].getLength(),
+    }),
+    treeContentState.set(
+      'blockMap',
+      BlockMapBuilder.createFromArray([
+        new ContentBlockNode({
+          key: 'A',
+          nextSibling: 'B',
+          text: 'Alpha',
+        }),
+        new ContentBlockNode({
+          key: 'B',
+          prevSibling: 'A',
+          text: '',
+          type: 'blockquote',
+          children: List(['C', 'D']),
+        }),
+        new ContentBlockNode({
+          key: 'C',
+          parent: 'B',
+          nextSibling: 'D',
+          text: 'Foo',
+          type: 'unordered-list-item',
+        }),
+        new ContentBlockNode({
+          key: 'D',
+          parent: 'B',
+          prevSibling: 'C',
+          text: 'Foo',
+          type: 'unordered-list-item',
+        }),
+      ]),
+    ),
+  );
+});

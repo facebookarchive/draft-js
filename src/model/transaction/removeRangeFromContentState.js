@@ -152,16 +152,16 @@ const updateBlockMapLinks = (
     // update start block if its retained
     transformBlock(startBlock.getKey(), blocks, block =>
       block.merge({
-        nextSibling: getNextValidSibling(startBlock, blocks, originalBlockMap),
-        prevSibling: getPrevValidSibling(startBlock, blocks, originalBlockMap),
+        nextSibling: getNextValidSibling(block, blocks, originalBlockMap),
+        prevSibling: getPrevValidSibling(block, blocks, originalBlockMap),
       }),
     );
 
     // update endblock if its retained
     transformBlock(endBlock.getKey(), blocks, block =>
       block.merge({
-        nextSibling: getNextValidSibling(endBlock, blocks, originalBlockMap),
-        prevSibling: getPrevValidSibling(endBlock, blocks, originalBlockMap),
+        nextSibling: getNextValidSibling(block, blocks, originalBlockMap),
+        prevSibling: getPrevValidSibling(block, blocks, originalBlockMap),
       }),
     );
 
@@ -186,14 +186,14 @@ const updateBlockMapLinks = (
     // update start block prev
     transformBlock(startBlock.getPrevSiblingKey(), blocks, block =>
       block.merge({
-        nextSibling: getNextValidSibling(startBlock, blocks, originalBlockMap),
+        nextSibling: getNextValidSibling(block, blocks, originalBlockMap),
       }),
     );
 
     // update end block next
     transformBlock(endBlock.getNextSiblingKey(), blocks, block =>
       block.merge({
-        prevSibling: getPrevValidSibling(endBlock, blocks, originalBlockMap),
+        prevSibling: getPrevValidSibling(block, blocks, originalBlockMap),
       }),
     );
 
