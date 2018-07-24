@@ -29,7 +29,7 @@
     "lint": "eslint .",
     "format": "eslint . --fix",
     "flow": "flow src",
-    "test": "cross-@descript/draft-jsenv NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest",
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
