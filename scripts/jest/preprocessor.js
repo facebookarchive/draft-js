@@ -38,6 +38,15 @@ module.exports = {
       '..',
       '..',
       'node_modules',
+      '@descript',
+      'fbjs',
+      'package.json'
+    ),
+    path.join(
+      __dirname,
+      '..',
+      '..',
+      'node_modules',
       'fbjs-scripts',
       'package.json'
     ),

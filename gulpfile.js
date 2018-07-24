@@ -31,6 +31,7 @@ var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
 var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
 
 var moduleMap = require('./scripts/module-map');
+moduleMap.Style = '@descript/' + moduleMap.Style;
 
 var paths = {
   dist: 'dist',
@@ -221,10 +222,6 @@ gulp.task('dist:min', ['modules'], function() {
     .pipe(gulp.dest(paths.dist));
 });
 
-gulp.task('check-dependencies', function() {
-  return gulp.src('package.json').pipe(gulpCheckDependencies());
-});
-
 gulp.task('watch', function() {
   gulp.watch(paths.src, ['modules']);
 });
@@ -235,7 +232,6 @@ gulp.task('dev', function() {
 
 gulp.task('default', function(cb) {
   runSequence(
-    'check-dependencies',
     'clean',
     ['modules', 'flow'],
     ['dist', 'dist:min'],
