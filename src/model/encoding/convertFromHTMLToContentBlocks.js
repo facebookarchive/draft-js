@@ -98,12 +98,12 @@ const imgAttr = ['alt', 'className', 'height', 'src', 'width'];
 
 let lastBlock;
 
-const EMPTY_CHUNK = {
+const EMPTY_CHUNK_FACTORY = () => ({
   text: '',
   inlines: [],
   entities: [],
   blocks: [],
-};
+});
 
 const EMPTY_BLOCK = {
   children: List(),
@@ -298,7 +298,7 @@ const getWhitespaceChunk = (inEntity: ?string): Chunk => {
     entities[0] = inEntity;
   }
   return {
-    ...EMPTY_CHUNK,
+    ...EMPTY_CHUNK_FACTORY(),
     text: SPACE,
     inlines: [OrderedSet()],
     entities,
@@ -307,7 +307,7 @@ const getWhitespaceChunk = (inEntity: ?string): Chunk => {
 
 const getSoftNewlineChunk = (): Chunk => {
   return {
-    ...EMPTY_CHUNK,
+    ...EMPTY_CHUNK_FACTORY(),
     text: '\n',
     inlines: [OrderedSet()],
     entities: new Array(1),
@@ -373,7 +373,7 @@ const genFragment = (
   let newBlock = false;
   const inBlockType =
     inBlock && getBlockTypeForTag(inBlock, lastList, blockRenderMap);
-  let chunk = {...EMPTY_CHUNK};
+  let chunk = {...EMPTY_CHUNK_FACTORY()};
   let newChunk: ?Chunk = null;
   let blockKey;
 
@@ -387,7 +387,7 @@ const genFragment = (
     if (lastList && nodeTextContent === '' && node.parentElement) {
       const parentNodeName = node.parentElement.nodeName.toLowerCase();
       if (parentNodeName === 'ol' || parentNodeName === 'ul') {
-        return {chunk: {...EMPTY_CHUNK}, entityMap};
+        return {chunk: {...EMPTY_CHUNK_FACTORY()}, entityMap};
       }
     }
 
@@ -631,7 +631,7 @@ const getChunkForHTML = (
   // If we saw no block tags, put an unstyled one in
   if (chunk.blocks.length === 0) {
     chunk.blocks.push({
-      ...EMPTY_CHUNK,
+      ...EMPTY_CHUNK_FACTORY(),
       type: 'unstyled',
       depth: 0,
     });
