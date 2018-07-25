@@ -82,6 +82,7 @@ const inlineTags = {
   strike: 'STRIKETHROUGH',
   strong: 'BOLD',
   u: 'UNDERLINE',
+  small: 'SMALL',
 };
 
 const knownListItemDepthClasses = {

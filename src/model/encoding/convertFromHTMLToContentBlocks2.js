@@ -67,6 +67,7 @@ const HTMLTagToInlineStyleMap: Map<string, string> = Map({
   strike: 'STRIKETHROUGH',
   strong: 'BOLD',
   u: 'UNDERLINE',
+  small: 'SMALL',
 });
 
 type BlockTypeMap = Map<string, string | Array<string>>;
