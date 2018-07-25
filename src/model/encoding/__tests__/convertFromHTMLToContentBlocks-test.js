@@ -321,7 +321,7 @@ test('Should preserve spacing around inline tags', () => {
 test('Should convert heading block after converting new line string', () => {
   convertFromHTML('a\n');
   const html_string = `<h1>heading</h1>`;
-  const { contentBlocks } = convertFromHTML(html_string);
+  const {contentBlocks} = convertFromHTML(html_string);
   expect(contentBlocks.length).toBe(1);
   expect(contentBlocks[0].getType()).toBe('header-one');
   expect(contentBlocks[0].getText()).toBe('heading');
