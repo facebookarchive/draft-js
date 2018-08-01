@@ -15,6 +15,8 @@
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
+const warning = require('warning');
+
 /**
  * Given a collapsed selection, move the focus `maxDistance` backward within
  * the selected block. If the selection will go beyond the start of the block,
@@ -28,6 +30,11 @@ function moveSelectionBackward(
   maxDistance: number,
 ): SelectionState {
   const selection = editorState.getSelection();
+  // Should eventually make this an invariant
+  warning(
+    !selection.isCollapsed(),
+    'moveSelectionBackward should only be called with a collapsed SelectionState',
+  );
   const content = editorState.getCurrentContent();
   const key = selection.getStartKey();
   const offset = selection.getStartOffset();
