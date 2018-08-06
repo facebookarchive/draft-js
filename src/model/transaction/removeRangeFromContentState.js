@@ -18,9 +18,9 @@ import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 
 const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
+const Immutable = require('immutable');
 
 const {List, Map} = Immutable;
 
@@ -225,6 +225,61 @@ const updateBlockMapLinks = (
           }),
         ),
     );
+
+    // if parent (startBlock) was deleted
+    if (
+      blockMap.get(startBlock.getKey()) == null &&
+      blockMap.get(endBlock.getKey()) != null &&
+      endBlock.getParentKey() === startBlock.getKey() &&
+      endBlock.getPrevSiblingKey() == null
+    ) {
+      const prevSiblingKey = startBlock.getPrevSiblingKey();
+      // endBlock becomes next sibling of parent's prevSibling
+      transformBlock(endBlock.getKey(), blocks, block =>
+        block.merge({
+          prevSibling: prevSiblingKey,
+        }),
+      );
+      transformBlock(prevSiblingKey, blocks, block =>
+        block.merge({
+          nextSibling: endBlock.getKey(),
+        }),
+      );
+
+      // Update parent for previous parent's children, and children for that parent
+      const prevSibling = prevSiblingKey ? blockMap.get(prevSiblingKey) : null;
+      const newParentKey = prevSibling ? prevSibling.getParentKey() : null;
+      startBlock.getChildKeys().forEach(childKey => {
+        transformBlock(childKey, blocks, block =>
+          block.merge({
+            parent: newParentKey, // set to null if there is no parent
+          }),
+        );
+      });
+      if (newParentKey != null) {
+        const newParent = blockMap.get(newParentKey);
+        transformBlock(newParentKey, blocks, block =>
+          block.merge({
+            children: newParent
+              .getChildKeys()
+              .concat(startBlock.getChildKeys()),
+          }),
+        );
+      }
+
+      // last child of deleted parent should point to next sibling
+      transformBlock(
+        startBlock.getChildKeys().find(key => {
+          const block = (blockMap.get(key): ContentBlockNode);
+          return block.getNextSiblingKey() === null;
+        }),
+        blocks,
+        block =>
+          block.merge({
+            nextSibling: startBlock.getNextSiblingKey(),
+          }),
+      );
+    }
   });
 };
 
@@ -255,7 +310,7 @@ const removeRangeFromContentState = (
     const endBlockchildrenKeys = endBlock.getChildKeys();
     const endBlockAncestors = getAncestorsKeys(endKey, blockMap);
 
-    // endBlock has unselected sibblings so we can not remove its ancestors parents
+    // endBlock has unselected siblings so we can not remove its ancestors parents
     if (endBlock.getNextSiblingKey()) {
       parentAncestors = parentAncestors.concat(endBlockAncestors);
     }
@@ -295,16 +350,25 @@ const removeRangeFromContentState = (
     characterList,
   });
 
-  const newBlocks = blockMap
-    .toSeq()
-    .skipUntil((_, k) => k === startKey)
-    .takeUntil((_, k) => k === endKey)
-    .filter((_, k) => parentAncestors.indexOf(k) === -1)
-    .concat(Map([[endKey, null]]))
-    .map((_, k) => {
-      return k === startKey ? modifiedStart : null;
-    });
-
+  // If cursor (collapsed) is at the start of the first child, delete parent
+  // instead of child
+  const shouldDeleteParent =
+    isExperimentalTreeBlock &&
+    startOffset === 0 &&
+    endOffset === 0 &&
+    endBlock.getParentKey() === startKey &&
+    endBlock.getPrevSiblingKey() == null;
+  const newBlocks = shouldDeleteParent
+    ? Map([[startKey, null]])
+    : blockMap
+        .toSeq()
+        .skipUntil((_, k) => k === startKey)
+        .takeUntil((_, k) => k === endKey)
+        .filter((_, k) => parentAncestors.indexOf(k) === -1)
+        .concat(Map([[endKey, null]]))
+        .map((_, k) => {
+          return k === startKey ? modifiedStart : null;
+        });
   let updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
 
   // Only update tree block pointers if the range is across blocks
