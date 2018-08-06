@@ -307,7 +307,8 @@ const removeRangeFromContentState = (
 
   let updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
 
-  if (isExperimentalTreeBlock) {
+  // Only update tree block pointers if the range is across blocks
+  if (isExperimentalTreeBlock && startBlock !== endBlock) {
     updatedBlockMap = updateBlockMapLinks(
       updatedBlockMap,
       startBlock,
