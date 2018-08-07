@@ -261,3 +261,17 @@ test('must retain B since F has not been removed', () => {
     treeContentState,
   );
 });
+
+// Simulates having collapsed selection at start of Elephant and hitting backspace
+// We expect Elephant will be merged with previous block, Delta
+test('must merge D and E when deleting range from end of D to start of E', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'D',
+      focusKey: 'E',
+      anchorOffset: contentBlockNodes[3].getLength(), // end of D
+      focusOffset: 0, // start of E
+    }),
+    treeContentState,
+  );
+});
