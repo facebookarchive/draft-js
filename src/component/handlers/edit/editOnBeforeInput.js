@@ -20,6 +20,7 @@ const EditorState = require('EditorState');
 const UserAgent = require('UserAgent');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
+const gkx = require('gkx');
 const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 const nullthrows = require('nullthrows');
@@ -35,6 +36,10 @@ const setImmediate = require('setImmediate');
 const FF_QUICKFIND_CHAR = "'";
 const FF_QUICKFIND_LINK_CHAR = '/';
 const isFirefox = UserAgent.isBrowser('Firefox');
+
+const nonNativeInsertionForcesSelection = gkx(
+  'draft_non_native_insertion_forces_selection',
+);
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
@@ -52,6 +57,7 @@ function replaceText(
   text: string,
   inlineStyle: DraftInlineStyle,
   entityKey: ?string,
+  forceSelection: boolean,
 ): EditorState {
   const contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),
@@ -60,7 +66,12 @@ function replaceText(
     inlineStyle,
     entityKey,
   );
-  return EditorState.push(editorState, contentState, 'insert-characters');
+  return EditorState.push(
+    editorState,
+    contentState,
+    'insert-characters',
+    forceSelection,
+  );
 }
 
 /**
@@ -124,7 +135,10 @@ function editOnBeforeInput(
       .getCurrentContent()
       .getPlainText()
       .slice(selectionStart, selectionEnd);
-    if (chars === currentlySelectedChars) {
+    if (
+      !nonNativeInsertionForcesSelection &&
+      chars === currentlySelectedChars
+    ) {
       editor.update(
         EditorState.forceSelection(
           editorState,
@@ -144,6 +158,7 @@ function editOnBeforeInput(
             editorState.getCurrentContent(),
             editorState.getSelection(),
           ),
+          true,
         ),
       );
     }
@@ -158,6 +173,7 @@ function editOnBeforeInput(
       editorState.getCurrentContent(),
       editorState.getSelection(),
     ),
+    false,
   );
 
   // Bunch of different cases follow where we need to prevent native insertion.
@@ -254,6 +270,11 @@ function editOnBeforeInput(
 
   if (mustPreventNative) {
     e.preventDefault();
+    if (nonNativeInsertionForcesSelection) {
+      newEditorState = EditorState.set(newEditorState, {
+        forceSelection: true,
+      });
+    }
     editor.update(newEditorState);
     return;
   }
