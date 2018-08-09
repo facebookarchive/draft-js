@@ -250,6 +250,7 @@ test('toggleBlockType does not handle nesting enabled blocks with same blockType
  * should become
  * unordered-list > h1
  */
+// TODO (T32099101)
 test('toggleBlockType should change parent block type when changing type for same tag element', () => {
   expect(true).toBe(true);
 });
@@ -264,6 +265,7 @@ test('toggleBlockType should change parent block type when changing type for sam
  *  should become
  *  blockquote > ordered-list-item > unstyled
  */
+// TODO (T32099101)
 test('toggleBlockType with ranged selection should retain parent type and create a new nested block with text from parent', () => {
   expect(true).toBe(true);
 });
@@ -299,22 +301,37 @@ test('onBackspace removes a preceding atomic block', () => {
   });
 });
 
+// TODO (T32099101)
 test('onBackspace on the start of a leaf unstyled block should remove block and merge text to previous leaf', () => {
   expect(true).toBe(true);
 });
 
-test('onDelete does not handle if it is the last block on the blockMap', () => {
-  expect(true).toBe(true);
+test('onDelete is a no-op if its at the end of the blockMap', () => {
+  const lastContentBlock = contentBlockNodes[contentBlockNodes.length - 1];
+  const lastContentBlockKey = lastContentBlock.getKey();
+  const endOfLastContentBlock = lastContentBlock.getLength();
+  assertNestedUtilOperation(editorState => onDelete(editorState), {
+    anchorKey: lastContentBlockKey,
+    anchorOffset: endOfLastContentBlock,
+    focusKey: lastContentBlockKey,
+    focusOffset: lastContentBlockKey,
+  });
 });
 
-test('onDelete does not handle if the next block has no children', () => {
-  expect(true).toBe(true);
+// NOTE: We may implement this in the future
+test('onDelete is a no-op the end of a leaf', () => {
+  const someLeafBlock = contentBlockNodes[3];
+  const someLeafBlockKey = someLeafBlock.getKey();
+  const endOfSomeLeafBlock = someLeafBlock.getLength();
+  assertNestedUtilOperation(editorState => onDelete(editorState), {
+    anchorKey: someLeafBlockKey,
+    anchorOffset: endOfSomeLeafBlock,
+    focusKey: someLeafBlockKey,
+    focusOffset: endOfSomeLeafBlock,
+  });
 });
 
-test('onDelete on the end of a leaf block should remove block and merge text to previous leaf', () => {
-  expect(true).toBe(true);
-});
-
+// TODO (T32099101)
 test('onSplitParent must split a nested block retaining parent', () => {
   expect(true).toBe(true);
 });

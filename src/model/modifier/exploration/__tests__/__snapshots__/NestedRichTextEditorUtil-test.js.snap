@@ -507,6 +507,10 @@ exports[`onDelete does not handle non-block-end or non-collapsed selections 1`] 
 
 exports[`onDelete does not handle non-block-end or non-collapsed selections 2`] = `true`;
 
+exports[`onDelete is a no-op if its at the end of the blockMap 1`] = `null`;
+
+exports[`onDelete is a no-op the end of a leaf 1`] = `null`;
+
 exports[`onDelete removes a following atomic block 1`] = `false`;
 
 exports[`onDelete removes a following atomic block 2`] = `true`;
