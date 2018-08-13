@@ -13,6 +13,8 @@
 
 'use strict';
 
+jest.disableAutomock();
+
 // missing parent -> child connection
 
 const ContentBlockNode = require('ContentBlockNode');
