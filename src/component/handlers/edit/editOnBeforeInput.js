@@ -20,7 +20,6 @@ const EditorState = require('EditorState');
 const UserAgent = require('UserAgent');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
-const gkx = require('gkx');
 const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
 const nullthrows = require('nullthrows');
@@ -36,10 +35,6 @@ const setImmediate = require('setImmediate');
 const FF_QUICKFIND_CHAR = "'";
 const FF_QUICKFIND_LINK_CHAR = '/';
 const isFirefox = UserAgent.isBrowser('Firefox');
-
-const nonNativeInsertionForcesSelection = gkx(
-  'draft_non_native_insertion_forces_selection',
-);
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
@@ -122,46 +117,22 @@ function editOnBeforeInput(
   // is not collapsed, we will re-render.
   const selection = editorState.getSelection();
   const selectionStart = selection.getStartOffset();
-  const selectionEnd = selection.getEndOffset();
   const anchorKey = selection.getAnchorKey();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
-
-    // If the currently selected text matches what the user is trying to
-    // replace it with, let's just update the `SelectionState`. If not, update
-    // the `ContentState` with the new text.
-    const currentlySelectedChars = editorState
-      .getCurrentContent()
-      .getPlainText()
-      .slice(selectionStart, selectionEnd);
-    if (
-      !nonNativeInsertionForcesSelection &&
-      chars === currentlySelectedChars
-    ) {
-      editor.update(
-        EditorState.forceSelection(
-          editorState,
-          selection.merge({
-            anchorOffset: selectionEnd,
-            focusOffset: selectionEnd,
-          }),
+    editor.update(
+      replaceText(
+        editorState,
+        chars,
+        editorState.getCurrentInlineStyle(),
+        getEntityKeyForSelection(
+          editorState.getCurrentContent(),
+          editorState.getSelection(),
         ),
-      );
-    } else {
-      editor.update(
-        replaceText(
-          editorState,
-          chars,
-          editorState.getCurrentInlineStyle(),
-          getEntityKeyForSelection(
-            editorState.getCurrentContent(),
-            editorState.getSelection(),
-          ),
-          true,
-        ),
-      );
-    }
+        true,
+      ),
+    );
     return;
   }
 
@@ -270,11 +241,9 @@ function editOnBeforeInput(
 
   if (mustPreventNative) {
     e.preventDefault();
-    if (nonNativeInsertionForcesSelection) {
-      newEditorState = EditorState.set(newEditorState, {
-        forceSelection: true,
-      });
-    }
+    newEditorState = EditorState.set(newEditorState, {
+      forceSelection: true,
+    });
     editor.update(newEditorState);
     return;
   }

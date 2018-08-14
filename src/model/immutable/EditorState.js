@@ -24,7 +24,6 @@ const ContentState = require('ContentState');
 const EditorBidiService = require('EditorBidiService');
 const SelectionState = require('SelectionState');
 
-const gkx = require('gkx');
 const Immutable = require('immutable');
 
 const {OrderedSet, Record, Stack} = Immutable;
@@ -348,9 +347,6 @@ class EditorState {
       return editorState;
     }
 
-    if (!gkx('draft_non_native_insertion_forces_selection')) {
-      forceSelection = changeType !== 'insert-characters';
-    }
     const directionMap = EditorBidiService.getDirectionMap(
       contentState,
       editorState.getDirectionMap(),

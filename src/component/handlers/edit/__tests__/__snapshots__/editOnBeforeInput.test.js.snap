@@ -81,7 +81,7 @@ Immutable.Record {
   "focusKey": "a",
   "focusOffset": 1,
   "isBackward": false,
-  "hasFocus": true,
+  "hasFocus": false,
 }
 `;
 
@@ -91,7 +91,7 @@ Immutable.Record {
   "anchorOffset": 1,
   "focusKey": "a",
   "focusOffset": 1,
-  "isBackward": true,
-  "hasFocus": true,
+  "isBackward": false,
+  "hasFocus": false,
 }
 `;
