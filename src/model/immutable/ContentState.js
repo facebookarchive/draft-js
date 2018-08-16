@@ -32,8 +32,6 @@ const sanitizeDraftText = require('sanitizeDraftText');
 
 const {List, Record, Repeat} = Immutable;
 
-const experimentalTreeDataSupport = gkx('draft_tree_data_support');
-
 const defaultRecord: {
   entityMap: ?any,
   blockMap: ?BlockMap,
@@ -45,10 +43,6 @@ const defaultRecord: {
   selectionBefore: null,
   selectionAfter: null,
 };
-
-const ContentBlockNodeRecord = experimentalTreeDataSupport
-  ? ContentBlockNode
-  : ContentBlock;
 
 const ContentStateRecord = Record(defaultRecord);
 
@@ -196,6 +190,9 @@ class ContentState extends ContentStateRecord {
     const strings = text.split(delimiter);
     const blocks = strings.map(block => {
       block = sanitizeDraftText(block);
+      const ContentBlockNodeRecord = gkx('draft_tree_data_support')
+        ? ContentBlockNode
+        : ContentBlock;
       return new ContentBlockNodeRecord({
         key: generateRandomKey(),
         text: block,
