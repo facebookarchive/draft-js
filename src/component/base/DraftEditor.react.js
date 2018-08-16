@@ -260,7 +260,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * editor mode, if any has been specified.
    */
   _buildHandler(eventName: string): Function {
-    const flushControlled = ReactDOM.unstable_flushControlled;
+    const flushControlled: (fn: Function) => void =
+      // $FlowFixMe flushControlled is an unstable feature, so not Flow typed
+      ReactDOM.unstable_flushControlled;
     // Wrap event handlers in `flushControlled`. In sync mode, this is
     // effetively a no-op. In async mode, this ensures all updates scheduled
     // inside the handler are flushed before React yields to the browser.
