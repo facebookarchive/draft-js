@@ -103,7 +103,9 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     if (child.nodeType === Node.TEXT_NODE) {
       targetNode = child;
-      // $FlowFixMe child may also be an Element, not just Node
+      /* $FlowFixMe(>=0.79.1 site=www) This comment suppresses an error found
+     * when Flow v0.79 was deployed. To see the error delete this comment and
+     * run Flow. */
     } else if (child.tagName === 'BR') {
       targetNode = node;
     } else {

@@ -261,7 +261,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    */
   _buildHandler(eventName: string): Function {
     const flushControlled: (fn: Function) => void =
-      // $FlowFixMe flushControlled is an unstable feature, so not Flow typed
+      /* $FlowFixMe(>=0.79.1 site=www) This comment suppresses an error found
+       * when Flow v0.79 was deployed. To see the error delete this comment and
+       * run Flow. */
       ReactDOM.unstable_flushControlled;
     // Wrap event handlers in `flushControlled`. In sync mode, this is
     // effetively a no-op. In async mode, this ensures all updates scheduled
