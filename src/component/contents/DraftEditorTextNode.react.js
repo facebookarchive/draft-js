@@ -18,9 +18,16 @@ const UserAgent = require('UserAgent');
 
 const invariant = require('invariant');
 
-// In IE, spans with <br> tags render as two newlines. By rendering a span
-// with only a newline character, we can be sure to render a single line.
-const useNewlineChar = UserAgent.isBrowser('IE <= 11');
+/**
+ * In IE, spans with <br> tags render as two newlines. By rendering a span
+ * with only a newline character, we can be sure to render a single line.
+ *
+ * In addition, Edge deletes the <br> when typing in a span with just <br> in it.
+ * However because <br> is only rendered on empty line (see `render()`), after typing React
+ * would tries to remove the <br> tag, which may already been removed by Edge.
+ * This causes the render to fail. Fall back to \n on Edge as well, for this reason.
+ */
+ const useNewlineChar = UserAgent.isBrowser('IE <= 11') || UserAgent.isBrowser('Edge');
 
 /**
  * Check whether the node should be considered a newline.
