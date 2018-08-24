@@ -25,7 +25,7 @@ const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
-const DraftODS = require('DraftODS');
+const DraftEffects = require('DraftEffects');
 const EditorState = require('EditorState');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
@@ -431,7 +431,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this._blockSelectEvents = false;
     if (!didInitODS && gkx('draft_ods_enabled')) {
       didInitODS = true;
-      DraftODS.init();
+      DraftEffects.initODS();
     }
     this.setMode('edit');
 

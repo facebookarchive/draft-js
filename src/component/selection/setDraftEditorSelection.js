@@ -14,6 +14,7 @@
 
 import type SelectionState from 'SelectionState';
 
+const DraftEffects = require('DraftEffects');
 const DraftJsDebugLogging = require('DraftJsDebugLogging');
 
 const containsNode = require('containsNode');
@@ -323,6 +324,7 @@ function addPointToSelection(
       extraParams: JSON.stringify({offset: offset}),
       selectionState: JSON.stringify(selectionState.toJS()),
     });
+    DraftEffects.handleExtensionCausedError();
   }
   range.setStart(node, offset);
   selection.addRange(range);

@@ -11,5 +11,6 @@
 'use strict';
 
 module.exports = {
-  init: function() {},
+  initODS: function() {},
+  handleExtensionCausedError: function() {},
 };
