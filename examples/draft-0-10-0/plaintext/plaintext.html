@@ -37,22 +37,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.state = {editorState: EditorState.createEmpty()};
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => console.log(this.state.editorState.toJS());
-          this.setDomEditorRef = ref => this.domEditor = ref;
         }
                 
         componentDidMount(){
-          this.domEditor.focus()
+          this.domEditor.focusEditor()
         }
         
         render() {
           return (
             <div style={styles.root}>
-              <div style={styles.editor} onClick={this.focus}>
+              <div style={styles.editor} onClick={() => this.domEditor.focusEditor()}>
                 <Editor
                   editorState={this.state.editorState}
                   onChange={this.onChange}
                   placeholder="Enter some text..."
-                  ref={this.setDomEditorRef}
+                  ref={ref => (this.domEditor = ref)}
                 />
               </div>
               <input
