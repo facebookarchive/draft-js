@@ -13,9 +13,9 @@ on components that wrap text inputs. This breaks the declarative paradigm,
 but it also simplifies the work needed for engineers to successfully manage
 focus behavior within their apps.
 
-The `Editor` component follows this pattern, so there is a public `focus()`
+The `Editor` component follows this pattern, so there is a public `focusEditor()`
 method available on the component. This allows you to use a ref within your
-higher-level component to call `focus()` directly on the component when needed.
+higher-level component to call `focusEditor()` directly on the component when needed.
 
 The event listeners within the component will observe focus changes and
 propagate them through `onChange` as expected, so state and DOM will remain
@@ -29,7 +29,7 @@ container of some kind, perhaps with padding to style it to match your app.
 By default, if a user clicks within this container but outside of the rendered
 `Editor` while attempting to focus the editor, the editor will have no awareness
 of the click event. It is therefore recommended that you use a click listener
-on your container component, and use the `focus()` method described above to
+on your container component, and use the `focusEditor()` method described above to
 apply focus to your editor.
 
 The [plaintext editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/plaintext),
