@@ -24,7 +24,7 @@ const invariant = require('invariant');
  *
  * In addition, Edge deletes the <br> when typing in a span with just <br> in it.
  * However because <br> is only rendered on empty line (see `render()`), after typing React
- * would tries to remove the <br> tag, which may already been removed by Edge.
+ * would try to remove the <br> tag, which may already been removed by Edge.
  * This causes the render to fail. Fall back to \n on Edge as well, for this reason.
  */
  const useNewlineChar = UserAgent.isBrowser('IE <= 11') || UserAgent.isBrowser('Edge');
