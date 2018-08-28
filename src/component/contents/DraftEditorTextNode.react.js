@@ -26,6 +26,7 @@ function isNewline(node: Element): boolean {
 
 /**
  * Placeholder elements for empty text content.
+ * Eslint is disabled to prevent whitespace being inserted
  *
  * What is this `data-text` attribute, anyway? It turns out that we need to
  * put an attribute on the lowest-level text node in order to preserve correct
