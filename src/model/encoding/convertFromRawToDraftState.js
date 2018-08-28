@@ -23,7 +23,7 @@ const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const DraftEntity = require('DraftEntity');
 const DraftTreeAdapter = require('DraftTreeAdapter');
-const Immutable = require('immutable');
+const DraftTreeInvariants = require('DraftTreeInvariants');
 const SelectionState = require('SelectionState');
 
 const createCharacterList = require('createCharacterList');
@@ -31,6 +31,7 @@ const decodeEntityRanges = require('decodeEntityRanges');
 const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 const generateRandomKey = require('generateRandomKey');
 const gkx = require('gkx');
+const Immutable = require('immutable');
 const invariant = require('invariant');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
@@ -228,7 +229,15 @@ const decodeRawBlocks = (
     );
   }
 
-  return decodeContentBlockNodes(rawBlocks, entityMap);
+  const blockMap = decodeContentBlockNodes(rawBlocks, entityMap);
+  // in dev mode, check that the tree invariants are met
+  if (__DEV__) {
+    invariant(
+      DraftTreeInvariants.isValidTree(blockMap),
+      'Should be a valid tree',
+    );
+  }
+  return blockMap;
 };
 
 const decodeRawEntityMap = (rawState: RawDraftContentState): * => {

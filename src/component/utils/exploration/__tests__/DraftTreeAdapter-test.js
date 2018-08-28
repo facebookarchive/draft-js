@@ -14,6 +14,8 @@
 
 jest.disableAutomock();
 
+jest.mock('generateRandomKey');
+
 const DraftTreeAdapter = require('DraftTreeAdapter');
 
 const assertFromRawTreeStateToRawState = rawState => {

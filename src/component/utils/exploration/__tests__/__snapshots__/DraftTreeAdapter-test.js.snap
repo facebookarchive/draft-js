@@ -27,43 +27,12 @@ exports[`must be able to convert from raw state to raw tree state with nested tr
 Object {
   "blocks": Array [
     Object {
-      "children": Array [
-        Object {
-          "children": Array [
-            Object {
-              "children": Array [],
-              "depth": 2,
-              "key": "C",
-              "text": "Charlie",
-              "type": "ordered-list-item",
-            },
-          ],
-          "depth": 1,
-          "key": "B",
-          "text": "Beta",
-          "type": "ordered-list-item",
-        },
-        Object {
-          "children": Array [],
-          "depth": 1,
-          "key": "D",
-          "text": "Delta",
-          "type": "ordered-list-item",
-        },
-      ],
+      "children": Array [],
       "depth": 0,
       "key": "A",
       "text": "Alpha",
       "type": "ordered-list-item",
     },
-  ],
-  "entityMap": Object {},
-}
-`;
-
-exports[`must be able to convert from raw state to raw tree state with nested trees based on lists depth and attach nested blocks to closest depth parent 1`] = `
-Object {
-  "blocks": Array [
     Object {
       "children": Array [
         Object {
@@ -78,20 +47,87 @@ Object {
             Object {
               "children": Array [],
               "depth": 2,
+              "key": "C",
+              "text": "Charlie",
+              "type": "ordered-list-item",
+            },
+          ],
+          "depth": 1,
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "key1",
+          "text": "",
+          "type": "ordered-list-item",
+        },
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "D",
+          "text": "Delta",
+          "type": "ordered-list-item",
+        },
+      ],
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "key0",
+      "text": "",
+      "type": "ordered-list-item",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
+exports[`must be able to convert from raw state to raw tree state with nested trees based on lists depth and attach nested blocks to closest depth parent 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "children": Array [],
+      "depth": 0,
+      "key": "A",
+      "text": "Alpha",
+      "type": "ordered-list-item",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "B",
+          "text": "Beta",
+          "type": "ordered-list-item",
+        },
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "C",
+          "text": "Charlie",
+          "type": "ordered-list-item",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "depth": 2,
               "key": "D",
               "text": "Delta",
               "type": "ordered-list-item",
             },
           ],
           "depth": 1,
-          "key": "C",
-          "text": "Charlie",
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "key3",
+          "text": "",
           "type": "ordered-list-item",
         },
       ],
       "depth": 0,
-      "key": "A",
-      "text": "Alpha",
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "key2",
+      "text": "",
       "type": "ordered-list-item",
     },
   ],

@@ -14,6 +14,8 @@
 
 jest.disableAutomock();
 
+jest.mock('generateRandomKey');
+
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 
 const toggleExperimentalTreeDataSupport = enabled => {

@@ -16,6 +16,8 @@
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
+const generateRandomKey = require('generateRandomKey');
+const idx = require('idx');
 const invariant = require('invariant');
 
 const traverseInDepthOrder = (
@@ -62,7 +64,7 @@ const addDepthToChildren = (block: RawDraftContentBlock) => {
  */
 const DraftTreeAdapter = {
   /**
-   * Converts from a tree raw state back to  draft raw state
+   * Converts from a tree raw state back to draft raw state
    */
   fromRawTreeStateToRawState(
     draftTreeState: RawDraftContentState,
@@ -123,12 +125,30 @@ const DraftTreeAdapter = {
         return;
       }
 
-      // update our depth cache reference path
-      lastListDepthCacheRef[depth] = treeBlock;
-
-      // if we are greater than zero we must have seen a parent already
+      // nesting
       if (depth > 0) {
-        const parent = lastListDepthCacheRef[depth - 1];
+        let parent = idx(lastListDepthCacheRef, _ => _[depth - 1]);
+        if (parent == null) {
+          parent = {
+            key: generateRandomKey(),
+            text: '',
+            depth: depth - 1,
+            type: block.type,
+            children: [],
+            entityRanges: [],
+            inlineStyleRanges: [],
+          };
+
+          lastListDepthCacheRef[depth - 1] = parent;
+          if (depth === 1) {
+            // add as a root-level block
+            transformedBlocks.push(parent);
+          } else {
+            // depth > 1 => also add as previous parent's child
+            const grandparent = lastListDepthCacheRef[depth - 2];
+            grandparent.children.push(parent);
+          }
+        }
 
         invariant(parent, 'Invalid depth for RawDraftContentBlock');
 
