@@ -14,23 +14,19 @@
 
 const React = require('React');
 const ReactDOM = require('ReactDOM');
-const UserAgent = require('UserAgent');
 
 const invariant = require('invariant');
-
-// In IE, spans with <br> tags render as two newlines. By rendering a span
-// with only a newline character, we can be sure to render a single line.
-const useNewlineChar = UserAgent.isBrowser('IE <= 11');
 
 /**
  * Check whether the node should be considered a newline.
  */
 function isNewline(node: Element): boolean {
-  return useNewlineChar ? node.textContent === '\n' : node.tagName === 'BR';
+  return node.textContent === '\n';
 }
 
 /**
  * Placeholder elements for empty text content.
+ * Eslint is disabled to prevent whitespace being inserted
  *
  * What is this `data-text` attribute, anyway? It turns out that we need to
  * put an attribute on the lowest-level text node in order to preserve correct
@@ -40,20 +36,16 @@ function isNewline(node: Element): boolean {
  * See http://jsfiddle.net/9khdavod/ for the failure case, and
  * http://jsfiddle.net/7pg143f7/ for the fixed case.
  */
-const NEWLINE_A = useNewlineChar ? (
+const NEWLINE_A = (
   <span key="A" data-text="true">
     {'\n'}
   </span>
-) : (
-  <br key="A" data-text="true" />
 );
 
-const NEWLINE_B = useNewlineChar ? (
+const NEWLINE_B = (
   <span key="B" data-text="true">
     {'\n'}
   </span>
-) : (
-  <br key="B" data-text="true" />
 );
 
 type Props = {
