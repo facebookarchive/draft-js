@@ -1,3 +1,7 @@
+a {
+  color: $secondaryColor;
+}
+
 .hero {
   background: #843131;
   padding: 50px 0;
@@ -15,10 +19,6 @@
   font-size: 16px;
   text-align: center;
   text-transform: uppercase;
-}
-
-.hero strong {
-  font-weight: 400;
 }
 
 .hero .button {
@@ -45,7 +45,7 @@
   background: #C15757;
 }
 
-p, .diagram {
+.diagram {
   margin: 16px 0;
 }
 
@@ -141,23 +141,11 @@ p, .diagram {
   background-color: rgba(75, 145, 80, 0.05);
 }
 
-pre code.hljs.css {
-  border-left-color: #C15757;
-}
-
-.docMainWrapper .mainContainer .wrapper .post h1,
-.docMainWrapper .mainContainer .wrapper .post h2,
-.docMainWrapper .mainContainer .wrapper .post h3,
-.docMainWrapper .mainContainer .wrapper .post h5,
-.docMainWrapper .mainContainer .wrapper .post h6 {
-  font-weight: bold;
-}
-
 @media screen and (max-width: 767px) {
   .hide-on-mobile {
     display: none;
   }
-  
+
   .home-getting-started {
     width: 100%;
   }

@@ -42,8 +42,11 @@ const siteConfig = {
   // Google analytics tracking id
   gaTrackingId: 'UA-44373548-19',
 
-  // Show page Table of Contents
+  // Show page's Table of Contents
   onPageNav: 'separate',
+
+  // No .html in the path.
+  cleanUrl: true,
 };
 
 module.exports = siteConfig;
