@@ -17,7 +17,6 @@ import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
 const generateRandomKey = require('generateRandomKey');
-const idx = require('idx');
 const invariant = require('invariant');
 
 const traverseInDepthOrder = (
@@ -127,7 +126,7 @@ const DraftTreeAdapter = {
 
       // nesting
       if (depth > 0) {
-        let parent = idx(lastListDepthCacheRef, _ => _[depth - 1]);
+        let parent = lastListDepthCacheRef[depth - 1];
         if (parent == null) {
           parent = {
             key: generateRandomKey(),
