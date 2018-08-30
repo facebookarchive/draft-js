@@ -51,6 +51,7 @@ test('must be able to convert from tree raw state with only root blocks to raw s
 });
 
 test('must be able to convert from tree raw state with nested blocks to raw state', () => {
+  // Right now, we ignore non-list nested blocks
   const rawState = {
     blocks: [
       {
@@ -80,17 +81,35 @@ test('must be able to convert from tree raw state with nested blocks to raw stat
 });
 
 test('must be able to convert from tree raw state with nested list blocks to raw state preserving lists depth', () => {
+  /**
+   * 1. Alpha
+   *   a. Beta
+   *     i. Charlie
+   *   b. Delta
+   */
   const rawState = {
     blocks: [
       {
         key: 'A',
         type: 'ordered-list-item',
         text: 'Alpha',
+        children: [],
+      },
+      {
+        key: 'X',
+        text: '',
+        type: 'ordered-list-item',
         children: [
           {
             key: 'B',
-            text: 'Beta',
             type: 'ordered-list-item',
+            text: 'Beta',
+            children: [],
+          },
+          {
+            key: 'Y',
+            type: 'ordered-list-item',
+            text: '',
             children: [
               {
                 key: 'C',
@@ -122,11 +141,23 @@ test('must be able to convert from tree raw state with nested list blocks to raw
         key: 'A',
         type: 'ordered-list-item',
         text: 'Alpha',
+        children: [],
+      },
+      {
+        key: 'X',
+        type: 'ordered-list-item',
+        text: '',
         children: [
           {
             key: 'B',
             text: 'Beta',
             type: 'ordered-list-item',
+            children: [],
+          },
+          {
+            key: 'Y',
+            type: 'ordered-list-item',
+            text: '',
             children: [
               {
                 key: 'C',

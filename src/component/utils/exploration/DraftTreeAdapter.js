@@ -85,6 +85,11 @@ const DraftTreeAdapter = {
       if (isListBlock(block)) {
         newBlock.depth = newBlock.depth || 0;
         addDepthToChildren(block);
+
+        // if it's a non-leaf node, we don't do anything else
+        if (block.children != null && block.children.length > 0) {
+          return;
+        }
       }
 
       delete newBlock.children;
