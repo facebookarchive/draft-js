@@ -195,15 +195,12 @@ var DraftEditorCompositionHandler = {
     compositionUpdateData = null;
     compositionEndData = null;
 
-    const editorState = EditorState.set(editor._latestEditorState, {
-      inCompositionMode: false,
-    });
 
-    const currentStyle = editorState.getCurrentInlineStyle();
-    const entityKey = getEntityKeyForSelection(
-      editorState.getCurrentContent(),
-      editorState.getSelection(),
-    );
+    // const currentStyle = editorState.getCurrentInlineStyle();
+    // const entityKey = getEntityKeyForSelection(
+    //   editorState.getCurrentContent(),
+    //   editorState.getSelection(),
+    // );
 
     /*
     const mustReset =
@@ -216,7 +213,6 @@ var DraftEditorCompositionHandler = {
       editor.restoreEditorDOM();
     }
     */
-
     editor.exitCurrentMode();
 
     if (composedChars) {
@@ -224,7 +220,7 @@ var DraftEditorCompositionHandler = {
         gkx('draft_handlebeforeinput_composed_text') &&
         editor.props.handleBeforeInput &&
         isEventHandled(
-          editor.props.handleBeforeInput(composedChars, editorState),
+          editor.props.handleBeforeInput(composedChars, editor._latestEditorState),
         )
       ) {
         return;
@@ -245,7 +241,21 @@ var DraftEditorCompositionHandler = {
       return;
       */
     }
+
+
     onInput(editor);
+    let editorState = editor._latestEditorState;
+    editor.restoreEditorDOM();
+    editor.update(
+      EditorState.set(editorState, {
+        nativelyRenderedContent: null,
+        inCompositionMode: false
+      }),
+    );
+
+
+
+
     /*
     if (mustReset) {
       editor.update(
