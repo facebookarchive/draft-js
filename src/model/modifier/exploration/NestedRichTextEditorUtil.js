@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @format
- * @flow strict-local
+ * @flow
  *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
