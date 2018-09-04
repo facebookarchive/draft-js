@@ -73,7 +73,7 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "jest": "^21.2.1",
-    "prettier": "1.9.1",
+    "prettier": "1.13.6",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
