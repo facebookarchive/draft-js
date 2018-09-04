@@ -18,9 +18,9 @@ import type ContentState from 'ContentState';
 import type {DraftInsertionType} from 'DraftInsertionType';
 
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 
 const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
+const Immutable = require('immutable');
 const invariant = require('invariant');
 
 const {OrderedMap, List} = Immutable;
@@ -115,7 +115,9 @@ const updateBlockMapLinks = (
 
       const insertionIndex = isInsertedAfterTarget
         ? targetBlockIndex + 1
-        : targetBlockIndex !== 0 ? targetBlockIndex - 1 : 0;
+        : targetBlockIndex !== 0
+          ? targetBlockIndex - 1
+          : 0;
 
       const newChildrenArray = newParentChildrenList.toArray();
       newChildrenArray.splice(insertionIndex, 0, originalBlockKey);

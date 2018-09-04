@@ -14,6 +14,7 @@
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftInsertionType} from 'DraftInsertionType';
+import type SelectionState from 'SelectionState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -21,11 +22,10 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
-const Immutable = require('immutable');
-const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
 const gkx = require('gkx');
+const Immutable = require('immutable');
 const moveBlockInContentState = require('moveBlockInContentState');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');

@@ -15,11 +15,11 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const EditorState = require('EditorState');
 const React = require('React');
 
 const cx = require('cx');
