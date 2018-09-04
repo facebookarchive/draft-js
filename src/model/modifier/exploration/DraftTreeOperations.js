@@ -8,6 +8,7 @@
  *
  * @format
  * @flow strict-local
+ * @emails oncall+draft_js
  *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.

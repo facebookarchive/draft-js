@@ -8,6 +8,7 @@
  *
  * @format
  * @flow
+ * @emails oncall+draft_js
  *
  * This file is a fork of DraftEditorBlock.react.js and DraftEditorContents.react.js
  *

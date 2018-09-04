@@ -8,6 +8,7 @@
  *
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 import type {DraftEntityMutability} from 'DraftEntityMutability';

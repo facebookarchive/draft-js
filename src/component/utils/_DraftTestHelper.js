@@ -8,6 +8,7 @@
  *
  * @flow
  * @format
+ * @emails oncall+draft_js
  */
 
 const BLACK_LIST_PROPS = ['data-reactroot'];

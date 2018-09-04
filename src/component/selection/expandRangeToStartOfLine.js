@@ -8,6 +8,7 @@
  *
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 const UnicodeUtils = require('UnicodeUtils');

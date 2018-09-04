@@ -9,6 +9,7 @@
  * @legacyServerCallableInstance
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';

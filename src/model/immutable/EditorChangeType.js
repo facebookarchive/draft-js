@@ -8,6 +8,7 @@
  *
  * @format
  * @flow strict
+ * @emails oncall+draft_js
  */
 
 /*eslint-disable no-bitwise*/
