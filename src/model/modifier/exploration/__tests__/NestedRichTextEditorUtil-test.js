@@ -27,7 +27,7 @@ const Immutable = require('immutable');
 const {List} = Immutable;
 
 const {editorState, contentState, selectionState} = getSampleStateForTesting();
-const {onBackspace, onDelete} = NestedRichTextEditorUtil;
+const {onBackspace, onDelete, onTab} = NestedRichTextEditorUtil;
 
 const contentBlockNodes = [
   new ContentBlockNode({
@@ -329,6 +329,141 @@ test('onDelete is a no-op the end of a leaf', () => {
     focusKey: someLeafBlockKey,
     focusOffset: endOfSomeLeafBlock,
   });
+});
+
+/**
+ * Tests for onTab
+ */
+const contentBlockNodes2 = [
+  new ContentBlockNode({
+    key: 'A',
+    nextSibling: 'B',
+    text: 'Item 1',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'B',
+    prevSibling: 'A',
+    nextSibling: 'C',
+    text: 'Item 2',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'C',
+    prevSibling: 'B',
+    nextSibling: 'J',
+    text: '',
+    type: 'ordered-list-item',
+    children: List(['D', 'E', 'F', 'I']),
+  }),
+  new ContentBlockNode({
+    key: 'D',
+    parent: 'C',
+    prevSibling: null,
+    nextSibling: 'E',
+    text: 'Item 2a',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'E',
+    parent: 'C',
+    prevSibling: 'D',
+    nextSibling: 'F',
+    text: 'Item 2b',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'F',
+    parent: 'C',
+    prevSibling: 'E',
+    nextSibling: 'I',
+    text: '',
+    type: 'ordered-list-item',
+    children: List(['G', 'H']),
+  }),
+  new ContentBlockNode({
+    key: 'G',
+    parent: 'F',
+    prevSibling: null,
+    nextSibling: 'H',
+    text: 'Item 2b i',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'H',
+    parent: 'F',
+    prevSibling: 'G',
+    nextSibling: null,
+    text: 'Item 2b ii',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'I',
+    parent: 'C',
+    prevSibling: 'F',
+    nextSibling: null,
+    text: 'Item 2c',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'J',
+    prevSibling: 'C',
+    nextSibling: null,
+    text: 'Item 3',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+];
+
+test('onTab with leaf as previous block & non-leaf as next block merges to the next block', () => {
+  assertNestedUtilOperation(
+    editorState => onTab({preventDefault: () => {}}, editorState, 2),
+    {
+      anchorKey: 'E',
+      focusKey: 'E',
+    },
+    contentBlockNodes2,
+  );
+});
+
+test('onTab with non-leaf as previous block merges to the previous block', () => {
+  assertNestedUtilOperation(
+    editorState => onTab({preventDefault: () => {}}, editorState, 2),
+    {
+      anchorKey: 'I',
+      focusKey: 'I',
+    },
+    contentBlockNodes2,
+  );
+});
+
+test('onTab with no previous block does nothing', () => {
+  assertNestedUtilOperation(
+    editorState => onTab({preventDefault: () => {}}, editorState, 1),
+    {
+      anchorKey: 'A',
+      focusKey: 'A',
+    },
+    contentBlockNodes2,
+  );
+});
+
+test('onTab when siblings are at the same depth creates a new parent', () => {
+  assertNestedUtilOperation(
+    editorState => onTab({preventDefault: () => {}}, editorState, 1),
+    {
+      anchorKey: 'H',
+      focusKey: 'H',
+    },
+    contentBlockNodes2,
+  );
 });
 
 // TODO (T32099101)

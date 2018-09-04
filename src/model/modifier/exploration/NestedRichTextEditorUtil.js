@@ -21,6 +21,7 @@ import type SelectionState from 'SelectionState';
 import type URI from 'URI';
 
 const DraftModifier = require('DraftModifier');
+const DraftTreeOperations = require('DraftTreeOperations');
 const EditorState = require('EditorState');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 
@@ -291,7 +292,7 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       return editorState;
     }
 
-    const content = editorState.getCurrentContent();
+    let content = editorState.getCurrentContent();
     const block = content.getBlockForKey(key);
     const type = block.getType();
     if (type !== 'unordered-list-item' && type !== 'ordered-list-item') {
@@ -303,6 +304,49 @@ const NestedRichTextEditorUtil: RichTextUtils = {
     const depth = block.getDepth();
     if (!event.shiftKey && depth === maxDepth) {
       return editorState;
+    }
+
+    // implement nested tree behaviour for onTab
+    if (!event.shiftKey) {
+      let blockMap = editorState.getCurrentContent().getBlockMap();
+      const prevSiblingKey = block.getPrevSiblingKey();
+      const nextSiblingKey = block.getNextSiblingKey();
+      // if there is no previous sibling, we do nothing
+      if (prevSiblingKey == null) {
+        return editorState;
+      }
+      // if previous sibling is a non-leaf move node as child of previous sibling
+      const prevSibling = blockMap.get(prevSiblingKey);
+      const nextSibling =
+        nextSiblingKey != null ? blockMap.get(nextSiblingKey) : null;
+      if (
+        prevSibling != null &&
+        prevSibling.getText() === '' &&
+        prevSibling.getChildKeys().count() > 0
+      ) {
+        blockMap = DraftTreeOperations.updateAsSiblingsChild(
+          blockMap,
+          key,
+          'previous',
+        );
+        // else, if next sibling is a non-leaf move node as child of next sibling
+      } else if (
+        nextSibling != null &&
+        nextSibling.getText() === '' &&
+        nextSibling.getChildKeys().count() > 0
+      ) {
+        blockMap = DraftTreeOperations.updateAsSiblingsChild(
+          blockMap,
+          key,
+          'next',
+        );
+        // if none of the siblings are non-leaf, we need to create a new parent
+      } else {
+        blockMap = DraftTreeOperations.createNewParent(blockMap, key);
+      }
+      content = editorState.getCurrentContent().merge({
+        blockMap: blockMap,
+      });
     }
 
     const withAdjustment = adjustBlockDepthForContentState(
