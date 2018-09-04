@@ -116,9 +116,7 @@ const updateBlockMapLinks = (
 
       const insertionIndex = isInsertedAfterTarget
         ? targetBlockIndex + 1
-        : targetBlockIndex !== 0
-          ? targetBlockIndex - 1
-          : 0;
+        : targetBlockIndex !== 0 ? targetBlockIndex - 1 : 0;
 
       const newChildrenArray = newParentChildrenList.toArray();
       newChildrenArray.splice(insertionIndex, 0, originalBlockKey);
