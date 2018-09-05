@@ -146,6 +146,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           <div style={styles.controls}>
             {COLORS.map(type =>
               <StyleButton
+                key={type.label}
                 active={currentStyle.has(type.style)}
                 label={type.label}
                 onToggle={props.onToggle}
