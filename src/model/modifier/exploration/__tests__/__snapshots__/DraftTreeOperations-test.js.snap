@@ -1,6 +1,163 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test adding a first child to parent 1`] = `
+exports[`test adding a child to parent at last position 1`] = `
+Immutable.OrderedMap {
+  "A": Immutable.Record {
+    "parent": null,
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "data": Immutable.Map {},
+    "depth": 0,
+    "key": "A",
+    "text": "alpha",
+    "type": "unstyled",
+    "children": Immutable.List [],
+    "prevSibling": null,
+    "nextSibling": "X",
+  },
+  "X": Immutable.Record {
+    "parent": null,
+    "characterList": Immutable.List [],
+    "data": Immutable.Map {},
+    "depth": 0,
+    "key": "X",
+    "text": "",
+    "type": "unstyled",
+    "children": Immutable.List [
+      "B",
+      "C",
+      "D",
+    ],
+    "prevSibling": "A",
+    "nextSibling": null,
+  },
+  "B": Immutable.Record {
+    "parent": "X",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "data": Immutable.Map {},
+    "depth": 0,
+    "key": "B",
+    "text": "beta",
+    "type": "unstyled",
+    "children": Immutable.List [],
+    "prevSibling": null,
+    "nextSibling": "C",
+  },
+  "C": Immutable.Record {
+    "parent": "X",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "data": Immutable.Map {},
+    "depth": 0,
+    "key": "C",
+    "text": "charlie",
+    "type": "unstyled",
+    "children": Immutable.List [],
+    "prevSibling": "B",
+    "nextSibling": "D",
+  },
+  "D": Immutable.Record {
+    "parent": "X",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "data": Immutable.Map {},
+    "depth": 0,
+    "key": "D",
+    "text": "delta",
+    "type": "unstyled",
+    "children": Immutable.List [],
+    "prevSibling": "C",
+    "nextSibling": null,
+  },
+}
+`;
+
+exports[`test adding a child to parent at position 0 (first) 1`] = `
 Immutable.OrderedMap {
   "A": Immutable.Record {
     "parent": null,
@@ -157,7 +314,7 @@ Immutable.OrderedMap {
 }
 `;
 
-exports[`test adding a last child to parent 1`] = `
+exports[`test adding a child to parent at position 1 1`] = `
 Immutable.OrderedMap {
   "A": Immutable.Record {
     "parent": null,
@@ -202,8 +359,8 @@ Immutable.OrderedMap {
     "type": "unstyled",
     "children": Immutable.List [
       "B",
-      "C",
       "D",
+      "C",
     ],
     "prevSibling": "A",
     "nextSibling": null,
@@ -235,7 +392,7 @@ Immutable.OrderedMap {
     "type": "unstyled",
     "children": Immutable.List [],
     "prevSibling": null,
-    "nextSibling": "C",
+    "nextSibling": "D",
   },
   "C": Immutable.Record {
     "parent": "X",
@@ -275,8 +432,8 @@ Immutable.OrderedMap {
     "text": "charlie",
     "type": "unstyled",
     "children": Immutable.List [],
-    "prevSibling": "B",
-    "nextSibling": "D",
+    "prevSibling": "D",
+    "nextSibling": null,
   },
   "D": Immutable.Record {
     "parent": "X",
@@ -308,8 +465,8 @@ Immutable.OrderedMap {
     "text": "delta",
     "type": "unstyled",
     "children": Immutable.List [],
-    "prevSibling": "C",
-    "nextSibling": null,
+    "prevSibling": "B",
+    "nextSibling": "C",
   },
 }
 `;

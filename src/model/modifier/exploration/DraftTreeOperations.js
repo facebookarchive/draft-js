@@ -23,7 +23,6 @@ const Immutable = require('immutable');
 const invariant = require('invariant');
 
 type SiblingInsertPosition = 'previous' | 'next';
-type ChildInsertPosition = 'first' | 'last';
 
 const verifyTree = (tree: BlockMap): void => {
   if (__DEV__) {
@@ -32,8 +31,10 @@ const verifyTree = (tree: BlockMap): void => {
 };
 
 /**
- * This is a utility method for setting B as a first/last child of A, ensuring
+ * This is a utility method for setting B as a child of A, ensuring
  * that parent <-> child operations are correctly mirrored
+ *
+ * The child is inserted at 'position' index in the list
  *
  * The block map returned by this method may not be a valid tree (siblings are
  * unaffected)
@@ -42,7 +43,7 @@ const updateParentChild = (
   blockMap: BlockMap,
   parentKey: string,
   childKey: string,
-  position: ChildInsertPosition,
+  position: number,
 ): BlockMap => {
   const parent = blockMap.get(parentKey);
   const child = blockMap.get(childKey);
@@ -50,49 +51,42 @@ const updateParentChild = (
     parent != null && child != null,
     'parent & child should exist in the block map',
   );
-  const existingChildren = parent.getChildKeys();
   const newBlocks = {};
+  const existingChildren = parent.getChildKeys();
+  invariant(
+    existingChildren != null &&
+      position >= 0 &&
+      position <= existingChildren.count(),
+    'position is not valid for the number of children',
+  );
+
   // add as parent's child
   newBlocks[parentKey] = parent.merge({
-    children:
-      position === 'first'
-        ? existingChildren.unshift(childKey)
-        : existingChildren.push(childKey),
+    children: existingChildren.splice(position, 0, childKey),
   });
-  // add as child's parent
-  if (existingChildren.count() !== 0) {
-    // link child as sibling to the existing children
-    switch (position) {
-      case 'first':
-        const nextSiblingKey = existingChildren.first();
-        newBlocks[childKey] = child.merge({
-          parent: parentKey,
-          nextSibling: nextSiblingKey,
-          prevSibling: null,
-        });
-        newBlocks[nextSiblingKey] = blockMap.get(nextSiblingKey).merge({
-          prevSibling: childKey,
-        });
-        break;
-      case 'last':
-        const prevSiblingKey = existingChildren.last();
-        newBlocks[childKey] = child.merge({
-          parent: parentKey,
-          prevSibling: prevSiblingKey,
-          nextSibling: null,
-        });
-        newBlocks[prevSiblingKey] = blockMap.get(prevSiblingKey).merge({
-          nextSibling: childKey,
-        });
-        break;
-    }
-  } else {
-    newBlocks[childKey] = child.merge({
-      parent: parentKey,
-      prevSibling: null,
-      nextSibling: null,
+
+  let nextSiblingKey = null;
+  let prevSiblingKey = null;
+  // link new child as next sibling to the correct existing child
+  if (position > 0) {
+    prevSiblingKey = existingChildren.get(position - 1);
+    newBlocks[prevSiblingKey] = blockMap.get(prevSiblingKey).merge({
+      nextSibling: childKey,
     });
   }
+  // link new child as previous sibling to the correct existing child
+  if (position < existingChildren.count()) {
+    nextSiblingKey = existingChildren.get(position);
+    newBlocks[nextSiblingKey] = blockMap.get(nextSiblingKey).merge({
+      prevSibling: childKey,
+    });
+  }
+  // add parent & siblings to the child
+  newBlocks[childKey] = child.merge({
+    parent: parentKey,
+    prevSibling: prevSiblingKey,
+    nextSibling: nextSiblingKey,
+  });
   return blockMap.merge(newBlocks);
 };
 
@@ -181,12 +175,7 @@ const createNewParent = (blockMap: BlockMap, key: string): BlockMap => {
     .concat(Immutable.OrderedMap([[newParent.getKey(), newParent]]))
     .concat(blockMap.skipUntil(block => block.getKey() === key));
   // set parent <-> child connection
-  newBlockMap = updateParentChild(
-    newBlockMap,
-    newParent.getKey(),
-    key,
-    'first',
-  );
+  newBlockMap = updateParentChild(newBlockMap, newParent.getKey(), key, 0);
   // set siblings & parent for the new parent key to child's siblings & parent
   const prevSibling = block.getPrevSiblingKey();
   const nextSibling = block.getNextSiblingKey();
@@ -239,7 +228,7 @@ const updateAsSiblingsChild = (
   let newBlockMap = blockMap;
   switch (position) {
     case 'next':
-      newBlockMap = updateParentChild(newBlockMap, newParentKey, key, 'first');
+      newBlockMap = updateParentChild(newBlockMap, newParentKey, key, 0);
       const prevSibling = block.getPrevSiblingKey();
       if (prevSibling != null) {
         newBlockMap = updateSibling(newBlockMap, prevSibling, newParentKey);
@@ -266,7 +255,12 @@ const updateAsSiblingsChild = (
         );
       break;
     case 'previous':
-      newBlockMap = updateParentChild(newBlockMap, newParentKey, key, 'last');
+      newBlockMap = updateParentChild(
+        newBlockMap,
+        newParentKey,
+        key,
+        newParent.getChildKeys().count(),
+      );
       const nextSibling = block.getNextSiblingKey();
       if (nextSibling != null) {
         newBlockMap = updateSibling(newBlockMap, newParentKey, nextSibling);

@@ -64,12 +64,12 @@ const blockMap1 = Immutable.OrderedMap({
   }),
 });
 
-test('test adding a last child to parent', () => {
+test('test adding a child to parent at position 0 (first)', () => {
   let newBlockMap = DraftTreeOperations.updateParentChild(
     blockMap1,
     'X',
     'D',
-    'last',
+    0,
   );
   newBlockMap = newBlockMap.merge({
     X: newBlockMap.get('X').merge({
@@ -79,12 +79,27 @@ test('test adding a last child to parent', () => {
   expect(newBlockMap).toMatchSnapshot();
 });
 
-test('test adding a first child to parent', () => {
+test('test adding a child to parent at position 1', () => {
   let newBlockMap = DraftTreeOperations.updateParentChild(
     blockMap1,
     'X',
     'D',
-    'first',
+    1,
+  );
+  newBlockMap = newBlockMap.merge({
+    X: newBlockMap.get('X').merge({
+      nextSibling: null,
+    }),
+  });
+  expect(newBlockMap).toMatchSnapshot();
+});
+
+test('test adding a child to parent at last position', () => {
+  let newBlockMap = DraftTreeOperations.updateParentChild(
+    blockMap1,
+    'X',
+    'D',
+    2,
   );
   newBlockMap = newBlockMap.merge({
     X: newBlockMap.get('X').merge({
@@ -162,7 +177,7 @@ test('test adding an only child to parent', () => {
     blockMap2,
     'X',
     'C',
-    'first',
+    0,
   );
   newBlockMap = newBlockMap.merge({
     B: newBlockMap.get('B').merge({
