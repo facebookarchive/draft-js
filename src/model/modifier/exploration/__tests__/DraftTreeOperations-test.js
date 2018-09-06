@@ -380,3 +380,167 @@ test("test creating a updating node to become previous sibling's child 2", () =>
     DraftTreeOperations.updateAsSiblingsChild(blockMap6, 'C', 'previous'),
   ).toMatchSnapshot();
 });
+
+test('test moving child up with no parent - no-op', () => {
+  expect(DraftTreeOperations.moveChildUp(blockMap3, 'B')).toMatchSnapshot();
+});
+
+test('test moving first child up 1', () => {
+  expect(DraftTreeOperations.moveChildUp(blockMap1, 'B')).toMatchSnapshot();
+});
+
+const blockMap7 = Immutable.OrderedMap({
+  X: new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['A', 'Y']),
+    prevSibling: null,
+    nextSibling: null,
+  }),
+  A: new ContentBlockNode({
+    key: 'A',
+    parent: 'X',
+    text: 'alpha',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'Y',
+  }),
+  Y: new ContentBlockNode({
+    key: 'Y',
+    parent: 'X',
+    text: '',
+    children: Immutable.List(['B', 'C']),
+    prevSibling: 'A',
+    nextSibling: null,
+  }),
+  B: new ContentBlockNode({
+    key: 'B',
+    parent: 'Y',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'C',
+  }),
+  C: new ContentBlockNode({
+    key: 'C',
+    parent: 'Y',
+    text: 'charlie',
+    children: Immutable.List([]),
+    prevSibling: 'B',
+    nextSibling: null,
+  }),
+});
+
+test('test moving first child up 2', () => {
+  expect(DraftTreeOperations.moveChildUp(blockMap7, 'B')).toMatchSnapshot();
+});
+
+test('test moving last child up 1', () => {
+  expect(DraftTreeOperations.moveChildUp(blockMap1, 'C')).toMatchSnapshot();
+});
+
+test('test moving last child up 2', () => {
+  expect(DraftTreeOperations.moveChildUp(blockMap7, 'C')).toMatchSnapshot();
+});
+
+const blockMap8 = Immutable.OrderedMap({
+  A: new ContentBlockNode({
+    key: 'A',
+    parent: null,
+    text: 'alpha',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'X',
+  }),
+  X: new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['B']),
+    prevSibling: 'A',
+    nextSibling: 'C',
+  }),
+  B: new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: null,
+  }),
+  C: new ContentBlockNode({
+    key: 'C',
+    parent: null,
+    text: 'charlie',
+    children: Immutable.List([]),
+    prevSibling: 'X',
+    nextSibling: null,
+  }),
+});
+
+test('test moving only child up deletes parent 1', () => {
+  expect(DraftTreeOperations.moveChildUp(blockMap8, 'B')).toMatchSnapshot();
+});
+
+const blockMap9 = Immutable.OrderedMap({
+  X: new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['B']),
+    prevSibling: null,
+    nextSibling: 'C',
+  }),
+  B: new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: null,
+  }),
+  C: new ContentBlockNode({
+    key: 'C',
+    parent: null,
+    text: 'charlie',
+    children: Immutable.List([]),
+    prevSibling: 'X',
+    nextSibling: null,
+  }),
+});
+
+test('test moving only child up deletes parent 2', () => {
+  expect(DraftTreeOperations.moveChildUp(blockMap9, 'B')).toMatchSnapshot();
+});
+
+const blockMap10 = Immutable.OrderedMap({
+  A: new ContentBlockNode({
+    key: 'A',
+    parent: null,
+    text: 'alpha',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'X',
+  }),
+  X: new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['B']),
+    prevSibling: 'A',
+    nextSibling: null,
+  }),
+  B: new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: null,
+  }),
+});
+
+test('test moving only child up deletes parent 3', () => {
+  expect(DraftTreeOperations.moveChildUp(blockMap10, 'B')).toMatchSnapshot();
+});

@@ -289,10 +289,155 @@ const updateAsSiblingsChild = (
   return newBlockMap;
 };
 
+/**
+ * This is a utility method that abstracts the operation of moving a node up to become
+ * a sibling of its parent. If the operation results in a parent with no children,
+ * also delete the parent node.
+ *
+ * Can only operate on the first or last child (this is an invariant)
+ *
+ * This operation respects the tree data invariants - it expects and returns a
+ * valid tree.
+ */
+const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
+  verifyTree(blockMap);
+  const block = blockMap.get(key);
+  invariant(block != null, 'block must exist in block map');
+
+  // if there is no parent, do nothing
+  const parentKey = block.getParentKey();
+  if (parentKey == null) {
+    return blockMap;
+  }
+
+  let parent = blockMap.get(parentKey);
+  invariant(parent !== null, 'parent must exist in block map');
+  let newBlockMap = blockMap;
+  const childIndex = parent.getChildKeys().indexOf(key);
+  invariant(
+    childIndex === 0 || childIndex === parent.getChildKeys().count() - 1,
+    'block is not first or last child of its parent',
+  );
+
+  // If it's the first child, move as previous sibling of parent
+  if (childIndex === 0) {
+    const parentPrevSibling = parent.getPrevSiblingKey();
+    newBlockMap = updateSibling(newBlockMap, key, parentKey);
+    // link to parent's previous sibling
+    if (parentPrevSibling != null) {
+      newBlockMap = updateSibling(newBlockMap, parentPrevSibling, key);
+    }
+    // remove as parent's child
+    parent = newBlockMap.get(parentKey);
+    newBlockMap = newBlockMap.set(
+      parentKey,
+      parent.merge({
+        children: parent.getChildKeys().slice(1),
+      }),
+    );
+    parent = newBlockMap.get(parentKey);
+    // remove as previous sibling of parent's children
+    if (parent.getChildKeys().count() > 0) {
+      const firstChildKey = parent.getChildKeys().first();
+      const firstChild = newBlockMap.get(firstChildKey);
+      newBlockMap = newBlockMap.set(
+        firstChildKey,
+        firstChild.merge({prevSibling: null}),
+      );
+    }
+    // add the node just before its former parent in the block map
+    newBlockMap = newBlockMap
+      .takeUntil(block => block.getKey() === parentKey)
+      .concat(
+        Immutable.OrderedMap([
+          [key, newBlockMap.get(key)],
+          [parentKey, newBlockMap.get(parentKey)],
+        ]),
+      )
+      .concat(newBlockMap.skipUntil(block => block.getKey() === key).slice(1));
+
+    // If it's the last child, move as next sibling of parent
+  } else if (childIndex === parent.getChildKeys().count() - 1) {
+    const parentNextSibling = parent.getNextSiblingKey();
+    newBlockMap = updateSibling(newBlockMap, parentKey, key);
+    // link to parent's next sibling
+    if (parentNextSibling != null) {
+      newBlockMap = updateSibling(newBlockMap, key, parentNextSibling);
+    }
+    // remove as parent's child
+    parent = newBlockMap.get(parentKey);
+    newBlockMap = newBlockMap.set(
+      parentKey,
+      parent.merge({
+        children: parent.getChildKeys().slice(0, -1),
+      }),
+    );
+    parent = newBlockMap.get(parentKey);
+    // remove as next sibling of parent's children
+    if (parent.getChildKeys().count() > 0) {
+      const lastChildKey = parent.getChildKeys().last();
+      const lastChild = newBlockMap.get(lastChildKey);
+      newBlockMap = newBlockMap.set(
+        lastChildKey,
+        lastChild.merge({nextSibling: null}),
+      );
+    }
+  }
+
+  // For both cases, also link to parent's parent
+  const grandparentKey = parent.getParentKey();
+  if (grandparentKey != null) {
+    const grandparentInsertPosition = newBlockMap
+      .get(grandparentKey)
+      .getChildKeys()
+      .findIndex(n => n === parentKey);
+    newBlockMap = updateParentChild(
+      newBlockMap,
+      grandparentKey,
+      key,
+      childIndex === 0
+        ? grandparentInsertPosition
+        : grandparentInsertPosition + 1,
+    );
+  } else {
+    newBlockMap = newBlockMap.set(
+      key,
+      newBlockMap.get(key).merge({parent: null}),
+    );
+  }
+
+  // Delete parent if it has no children
+  parent = newBlockMap.get(parentKey);
+  if (parent.getChildKeys().count() === 0) {
+    const prevSiblingKey = parent.getPrevSiblingKey();
+    const nextSiblingKey = parent.getNextSiblingKey();
+    if (prevSiblingKey != null && nextSiblingKey != null) {
+      newBlockMap = updateSibling(newBlockMap, prevSiblingKey, nextSiblingKey);
+    }
+    if (prevSiblingKey == null && nextSiblingKey != null) {
+      newBlockMap = newBlockMap.set(
+        nextSiblingKey,
+        newBlockMap.get(nextSiblingKey).merge({prevSibling: null}),
+      );
+    }
+    if (nextSiblingKey == null && prevSiblingKey != null) {
+      newBlockMap = newBlockMap.set(
+        prevSiblingKey,
+        newBlockMap.get(prevSiblingKey).merge({nextSibling: null}),
+      );
+    }
+    newBlockMap = newBlockMap.delete(parentKey);
+  }
+
+  verifyTree(newBlockMap);
+  return newBlockMap;
+};
+
 module.exports = {
   updateParentChild,
   replaceParentChild,
   updateSibling,
   createNewParent,
   updateAsSiblingsChild,
+  moveChildUp,
 };
