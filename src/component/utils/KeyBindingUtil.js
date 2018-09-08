@@ -31,6 +31,10 @@ const KeyBindingUtil = {
     return isOSX && e.altKey;
   },
 
+  usesMacOSHeuristics: function(): boolean {
+    return isOSX;
+  },
+
   hasCommandModifier: function(e: SyntheticKeyboardEvent<>): boolean {
     return isOSX
       ? !!e.metaKey && !e.altKey
