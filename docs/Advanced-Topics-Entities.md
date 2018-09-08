@@ -97,7 +97,7 @@ confusion around naming.)_
 This text cannot be altered without removing the entity annotation
 from the text. Entities with this mutability type are effectively atomic.
 
-For instance, in a Facebook input, add a mention for a Page (i.e. Barack Obama).
+For instance, in a Facebook input, add a mention for a Page (e.g. Barack Obama).
 Then, either add a character within the mentioned text, or try to delete a character.
 Note that when adding characters, the entity is removed, and when deleting character,
 the entire entity is removed.
