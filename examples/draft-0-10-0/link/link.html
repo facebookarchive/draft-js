@@ -191,16 +191,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       function findLinkEntities(contentBlock, callback, contentState) {
-        contentBlock.findEntityRanges(
-          (character) => {
-            const entityKey = character.getEntity();
-            return (
-              entityKey !== null &&
-              contentState.getEntity(entityKey).getType() === 'LINK'
-            );
-          },
-          callback
-        );
+        const linkEntityFilterFn = (characterMeta) => {
+          const entityKey = characterMeta.getEntity();
+          return (entityKey!==null && contentState.getEntity(entityKey).getType() === 'LINK');
+        }
+        contentBlock.findEntityRanges(linkEntityFilterFn, callback);
       }
 
       const Link = (props) => {
