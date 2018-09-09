@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
+ */
+
 import querystring from 'querystring';
 
 const QUERY_STRINGS = querystring.parse(window.location.search.substring(1));
