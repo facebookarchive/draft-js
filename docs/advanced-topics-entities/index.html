@@ -88,6 +88,7 @@ content. For instance, the <code>Modifier</code> module contains an <code>applyE
   selectionState,
   entityKey
 );
+<span class="hljs-keyword">const</span> newEditorState = EditorState.push(editorState, { <span class="hljs-attr">currentContent</span>: contentStateWithLink });
 </code></pre>
 <p>For a given range of text, then, you can extract its associated entity key by using
 the <code>getEntityAt()</code> method on a <code>ContentBlock</code> object, passing in the target
