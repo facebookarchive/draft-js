@@ -309,8 +309,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _getAriaDescribedByIDs(): ?string {
     const ariaDescribedByIDs = [
       this._placeholderAccessibilityID,
-      this.props.ariaDescribedBy
-    ].filter(Boolean).join(' ');
+      this.props.ariaDescribedBy,
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     return ariaDescribedByIDs ? ariaDescribedByIDs : null;
   }
