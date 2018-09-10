@@ -2486,6 +2486,8 @@ exports[`img with data protocol should be correctly parsed 1`] = `"📷"`;
 
 exports[`img with http protocol should have camera emoji content 1`] = `"📷"`;
 
+exports[`img with role presentation should not be rendered 1`] = `Array []`;
+
 exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <blockquote /> 1`] = `true`;
 
 exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <div /> 1`] = `true`;

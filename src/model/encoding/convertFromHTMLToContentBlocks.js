@@ -446,10 +446,16 @@ const genFragment = (
     });
     // Forcing this node to have children because otherwise no entity will be
     // created for this node.
-    // The child text node cannot just have a space or return as content -
-    // we strip those out.
+    // The child text node cannot just have a space or return as content (since
+    // we strip those out), unless the image is for presentation only.
     // See https://github.com/facebook/draft-js/issues/231 for some context.
-    node.textContent = '\ud83d\udcf7';
+    if (gkx('draftjs_fix_paste_for_img')) {
+      if (node.getAttribute('role') !== 'presentation') {
+        node.textContent = '\ud83d\udcf7';
+      }
+    } else {
+      node.textContent = '\ud83d\udcf7';
+    }
 
     // TODO: update this when we remove DraftEntity entirely
     inEntity = DraftEntity.__create('IMAGE', 'MUTABLE', entityConfig || {});
