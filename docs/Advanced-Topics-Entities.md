@@ -69,6 +69,7 @@ const contentStateWithLink = Modifier.applyEntity(
   selectionState,
   entityKey
 );
+const newEditorState = EditorState.push(editorState, { currentContent: contentStateWithLink });
 ```
 
 For a given range of text, then, you can extract its associated entity key by using
