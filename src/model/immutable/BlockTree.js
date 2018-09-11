@@ -27,8 +27,6 @@ const {List, Repeat, Record} = Immutable;
 
 const returnTrue = emptyFunction.thatReturnsTrue;
 
-const FINGERPRINT_DELIMITER = '-';
-
 const defaultLeafRange: {
   start: ?number,
   end: ?number,
