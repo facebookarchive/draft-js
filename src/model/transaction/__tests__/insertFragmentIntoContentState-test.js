@@ -136,6 +136,7 @@ test('must be able to insert a fragment with a single ContentBlockNode', () => {
     'blockMap',
     createContentBlockNodeFragment([
       {
+        type: 'unstyled',
         key: 'A',
         text: '',
         data: null,
@@ -146,6 +147,7 @@ test('must be able to insert a fragment with a single ContentBlockNode', () => {
   assertInsertFragmentIntoContentState(
     createContentBlockNodeFragment([
       {
+        type: 'heading-two',
         key: 'B',
         text: 'some text',
       },

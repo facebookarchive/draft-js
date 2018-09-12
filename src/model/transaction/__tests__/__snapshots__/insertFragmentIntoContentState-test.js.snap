@@ -1078,7 +1078,7 @@ Array [
     "parent": null,
     "prevSibling": null,
     "text": "some text",
-    "type": "unstyled",
+    "type": "heading-two",
   },
 ]
 `;

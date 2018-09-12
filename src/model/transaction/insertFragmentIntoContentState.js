@@ -38,11 +38,13 @@ const updateExistingBlock = (
 ): ContentState => {
   const targetBlock = blockMap.get(targetKey);
   const text = targetBlock.getText();
+  const type = fragmentBlock.getType();
   const chars = targetBlock.getCharacterList();
   const finalKey = targetKey;
   const finalOffset = targetOffset + fragmentBlock.getText().length;
 
   const newBlock = targetBlock.merge({
+    type,
     text:
       text.slice(0, targetOffset) +
       fragmentBlock.getText() +
