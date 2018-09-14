@@ -466,6 +466,125 @@ test('onTab when siblings are at the same depth creates a new parent', () => {
   );
 });
 
+test('onTab (untab) on a block with no parent does nothing', () => {
+  assertNestedUtilOperation(
+    editorState =>
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 1),
+    {
+      anchorKey: 'B',
+      focusKey: 'B',
+    },
+    contentBlockNodes2,
+  );
+});
+
+test('onTab (untab) on a first child moves block as previous sibling of parent', () => {
+  assertNestedUtilOperation(
+    editorState =>
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+    {
+      anchorKey: 'D',
+      focusKey: 'D',
+    },
+    contentBlockNodes2,
+  );
+});
+
+test('onTab (untab) on a last child moves block as next sibling of parent', () => {
+  assertNestedUtilOperation(
+    editorState =>
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+    {
+      anchorKey: 'H',
+      focusKey: 'H',
+    },
+    contentBlockNodes2,
+  );
+});
+
+const contentBlockNodes3 = [
+  new ContentBlockNode({
+    key: 'A',
+    nextSibling: 'X',
+    text: 'alpha',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'X',
+    prevSibling: 'A',
+    nextSibling: 'G',
+    text: '',
+    type: 'ordered-list-item',
+    children: List(['B', 'C', 'D', 'E', 'F']),
+  }),
+  new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    prevSibling: null,
+    nextSibling: 'C',
+    text: 'beta',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'C',
+    parent: 'X',
+    prevSibling: 'B',
+    nextSibling: 'D',
+    text: 'charlie',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'D',
+    parent: 'X',
+    prevSibling: 'C',
+    nextSibling: 'E',
+    text: 'delta',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'E',
+    parent: 'X',
+    prevSibling: 'D',
+    nextSibling: 'F',
+    text: 'epsilon',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'F',
+    parent: 'X',
+    prevSibling: 'E',
+    nextSibling: null,
+    text: 'foo',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+  new ContentBlockNode({
+    key: 'G',
+    prevSibling: 'X',
+    nextSibling: null,
+    text: 'gamma',
+    type: 'ordered-list-item',
+    children: List([]),
+  }),
+];
+
+test('onTab (untab) on a middle child splits the block at that child', () => {
+  assertNestedUtilOperation(
+    editorState =>
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+    {
+      anchorKey: 'E',
+      focusKey: 'E',
+    },
+    contentBlockNodes3,
+  );
+});
+
 // TODO (T32099101)
 test('onSplitParent must split a nested block retaining parent', () => {
   expect(true).toBe(true);

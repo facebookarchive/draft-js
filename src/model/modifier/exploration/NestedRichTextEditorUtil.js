@@ -20,12 +20,15 @@ import type {DataObjectForLink, RichTextUtils} from 'RichTextUtils';
 import type SelectionState from 'SelectionState';
 import type URI from 'URI';
 
+const ContentBlockNode = require('ContentBlockNode');
 const DraftModifier = require('DraftModifier');
 const DraftTreeOperations = require('DraftTreeOperations');
 const EditorState = require('EditorState');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 
 const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
+const generateRandomKey = require('generateRandomKey');
+const invariant = require('invariant');
 
 // Eventually we could allow to control this list by either allowing user configuration
 // and/or a schema in conjunction to DraftBlockRenderMap
@@ -307,10 +310,10 @@ const NestedRichTextEditorUtil: RichTextUtils = {
     }
 
     // implement nested tree behaviour for onTab
+    let blockMap = editorState.getCurrentContent().getBlockMap();
+    const prevSiblingKey = block.getPrevSiblingKey();
+    const nextSiblingKey = block.getNextSiblingKey();
     if (!event.shiftKey) {
-      let blockMap = editorState.getCurrentContent().getBlockMap();
-      const prevSiblingKey = block.getPrevSiblingKey();
-      const nextSiblingKey = block.getNextSiblingKey();
       // if there is no previous sibling, we do nothing
       if (prevSiblingKey == null) {
         return editorState;
@@ -344,10 +347,82 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       } else {
         blockMap = DraftTreeOperations.createNewParent(blockMap, key);
       }
-      content = editorState.getCurrentContent().merge({
-        blockMap: blockMap,
-      });
+      // on un-tab
+    } else {
+      // if the block isn't nested, do nothing
+      const parentKey = block.getParentKey();
+      if (parentKey == null) {
+        return editorState;
+      }
+      const parent = blockMap.get(parentKey);
+      const existingChildren = parent.getChildKeys();
+      const blockIndex = existingChildren.indexOf(key);
+      if (blockIndex === 0 || blockIndex === existingChildren.count() - 1) {
+        blockMap = DraftTreeOperations.moveChildUp(blockMap, key);
+      } else {
+        // split the block into [0, blockIndex] in parent & the rest in a new block
+        const prevChildren = existingChildren.slice(0, blockIndex + 1);
+        const nextChildren = existingChildren.slice(blockIndex + 1);
+        blockMap = blockMap.set(
+          parentKey,
+          parent.merge({children: prevChildren}),
+        );
+        const newBlock = new ContentBlockNode({
+          key: generateRandomKey(),
+          text: '',
+          depth: parent.getDepth(),
+          type: parent.getType(),
+          children: nextChildren,
+          parent: parent.getParentKey(),
+        });
+        // add new block just before its the original next sibling in the block map
+        // TODO(T33894878): Remove the map reordering code & fix converter after launch
+        invariant(
+          nextSiblingKey != null,
+          'block must have a next sibling here',
+        );
+        const blocks = blockMap.toSeq();
+        blockMap = blocks
+          .takeUntil(block => block.getKey() === nextSiblingKey)
+          .concat(
+            [[newBlock.getKey(), newBlock]],
+            blocks.skipUntil(block => block.getKey() === nextSiblingKey),
+          )
+          .toOrderedMap();
+
+        // set the nextChildren's parent to the new block
+        blockMap = blockMap.map(
+          block =>
+            nextChildren.includes(block.getKey())
+              ? block.merge({parent: newBlock.getKey()})
+              : block,
+        );
+        // update the next/previous pointers for the children at the split
+        blockMap = blockMap
+          .set(key, block.merge({nextSibling: null}))
+          .set(
+            nextSiblingKey,
+            blockMap.get(nextSiblingKey).merge({prevSibling: null}),
+          );
+        const parentNextSiblingKey = parent.getNextSiblingKey();
+        if (parentNextSiblingKey != null) {
+          blockMap = DraftTreeOperations.updateSibling(
+            blockMap,
+            newBlock.getKey(),
+            parentNextSiblingKey,
+          );
+        }
+        blockMap = DraftTreeOperations.updateSibling(
+          blockMap,
+          parentKey,
+          newBlock.getKey(),
+        );
+        blockMap = DraftTreeOperations.moveChildUp(blockMap, key);
+      }
     }
+    content = editorState.getCurrentContent().merge({
+      blockMap: blockMap,
+    });
 
     const withAdjustment = adjustBlockDepthForContentState(
       content,

@@ -515,6 +515,1394 @@ exports[`onDelete removes a following atomic block 1`] = `false`;
 
 exports[`onDelete removes a following atomic block 2`] = `true`;
 
+exports[`onTab (untab) on a block with no parent does nothing 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Item 1",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "C",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "Item 2",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [
+      "D",
+      "E",
+      "F",
+      "I",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "J",
+    "parent": null,
+    "prevSibling": "B",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": "E",
+    "parent": "C",
+    "prevSibling": null,
+    "text": "Item 2a",
+    "type": "ordered-list-item",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": "F",
+    "parent": "C",
+    "prevSibling": "D",
+    "text": "Item 2b",
+    "type": "ordered-list-item",
+  },
+  "F": Object {
+    "characterList": Array [],
+    "children": Array [
+      "G",
+      "H",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": "I",
+    "parent": "C",
+    "prevSibling": "E",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": "H",
+    "parent": "F",
+    "prevSibling": null,
+    "text": "Item 2b i",
+    "type": "ordered-list-item",
+  },
+  "H": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "H",
+    "nextSibling": null,
+    "parent": "F",
+    "prevSibling": "G",
+    "text": "Item 2b ii",
+    "type": "ordered-list-item",
+  },
+  "I": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "I",
+    "nextSibling": null,
+    "parent": "C",
+    "prevSibling": "F",
+    "text": "Item 2c",
+    "type": "ordered-list-item",
+  },
+  "J": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "J",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "C",
+    "text": "Item 3",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
+exports[`onTab (untab) on a first child moves block as previous sibling of parent 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Item 1",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "D",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "Item 2",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [
+      "E",
+      "F",
+      "I",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "J",
+    "parent": null,
+    "prevSibling": "D",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": "C",
+    "parent": null,
+    "prevSibling": "B",
+    "text": "Item 2a",
+    "type": "ordered-list-item",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": "F",
+    "parent": "C",
+    "prevSibling": null,
+    "text": "Item 2b",
+    "type": "ordered-list-item",
+  },
+  "F": Object {
+    "characterList": Array [],
+    "children": Array [
+      "G",
+      "H",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": "I",
+    "parent": "C",
+    "prevSibling": "E",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": "H",
+    "parent": "F",
+    "prevSibling": null,
+    "text": "Item 2b i",
+    "type": "ordered-list-item",
+  },
+  "H": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "H",
+    "nextSibling": null,
+    "parent": "F",
+    "prevSibling": "G",
+    "text": "Item 2b ii",
+    "type": "ordered-list-item",
+  },
+  "I": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "I",
+    "nextSibling": null,
+    "parent": "C",
+    "prevSibling": "F",
+    "text": "Item 2c",
+    "type": "ordered-list-item",
+  },
+  "J": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "J",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "C",
+    "text": "Item 3",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
+exports[`onTab (untab) on a last child moves block as next sibling of parent 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Item 1",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "C",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "Item 2",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [
+      "D",
+      "E",
+      "F",
+      "H",
+      "I",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "J",
+    "parent": null,
+    "prevSibling": "B",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": "E",
+    "parent": "C",
+    "prevSibling": null,
+    "text": "Item 2a",
+    "type": "ordered-list-item",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": "F",
+    "parent": "C",
+    "prevSibling": "D",
+    "text": "Item 2b",
+    "type": "ordered-list-item",
+  },
+  "F": Object {
+    "characterList": Array [],
+    "children": Array [
+      "G",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": "H",
+    "parent": "C",
+    "prevSibling": "E",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": null,
+    "parent": "F",
+    "prevSibling": null,
+    "text": "Item 2b i",
+    "type": "ordered-list-item",
+  },
+  "H": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "H",
+    "nextSibling": "I",
+    "parent": "C",
+    "prevSibling": "F",
+    "text": "Item 2b ii",
+    "type": "ordered-list-item",
+  },
+  "I": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "I",
+    "nextSibling": null,
+    "parent": "C",
+    "prevSibling": "H",
+    "text": "Item 2c",
+    "type": "ordered-list-item",
+  },
+  "J": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "J",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "C",
+    "text": "Item 3",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
+exports[`onTab (untab) on a middle child splits the block at that child 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "X",
+    "parent": null,
+    "prevSibling": null,
+    "text": "alpha",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "C",
+    "parent": "X",
+    "prevSibling": null,
+    "text": "beta",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "D",
+    "parent": "X",
+    "prevSibling": "B",
+    "text": "charlie",
+    "type": "ordered-list-item",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": null,
+    "parent": "X",
+    "prevSibling": "C",
+    "text": "delta",
+    "type": "ordered-list-item",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": "key1",
+    "parent": null,
+    "prevSibling": "X",
+    "text": "epsilon",
+    "type": "ordered-list-item",
+  },
+  "F": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": null,
+    "parent": "key1",
+    "prevSibling": null,
+    "text": "foo",
+    "type": "ordered-list-item",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key1",
+    "text": "gamma",
+    "type": "ordered-list-item",
+  },
+  "X": Object {
+    "characterList": Array [],
+    "children": Array [
+      "B",
+      "C",
+      "D",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "X",
+    "nextSibling": "E",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "key1": Object {
+    "characterList": Array [],
+    "children": Array [
+      "F",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "nextSibling": "G",
+    "parent": null,
+    "prevSibling": "E",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
 exports[`onTab when siblings are at the same depth creates a new parent 1`] = `
 Object {
   "A": Object {
