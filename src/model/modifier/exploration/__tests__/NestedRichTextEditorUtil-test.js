@@ -585,6 +585,66 @@ test('onTab (untab) on a middle child splits the block at that child', () => {
   );
 });
 
+const contentBlockNodes4 = [
+  new ContentBlockNode({
+    key: 'A',
+    parent: null,
+    text: 'alpha',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'X',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['B', 'Y']),
+    prevSibling: 'A',
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'Y',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'Y',
+    parent: 'X',
+    text: '',
+    children: Immutable.List(['C']),
+    prevSibling: 'B',
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'C',
+    parent: 'Y',
+    text: 'charlie',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+];
+
+test('onTab (untab) unnests non-leaf next sibling', () => {
+  assertNestedUtilOperation(
+    editorState =>
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+    {
+      anchorKey: 'B',
+      focusKey: 'B',
+    },
+    contentBlockNodes4,
+  );
+});
+
 // TODO (T32099101)
 test('onSplitParent must split a nested block retaining parent', () => {
   expect(true).toBe(true);

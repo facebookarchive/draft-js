@@ -419,6 +419,27 @@ const NestedRichTextEditorUtil: RichTextUtils = {
         );
         blockMap = DraftTreeOperations.moveChildUp(blockMap, key);
       }
+
+      // on untab, we also want to unnest any sibling blocks that become two levels deep
+      // ensure that block's old parent does not have a non-leaf as its first child.
+      if (parentKey != null) {
+        let parent = blockMap.get(parentKey);
+        while (parent != null) {
+          const children = parent.getChildKeys();
+          const firstChildKey = children.first();
+          invariant(
+            firstChildKey != null,
+            'parent must have at least one child',
+          );
+          const firstChild = blockMap.get(firstChildKey);
+          if (firstChild.getChildKeys().count() === 0) {
+            break;
+          } else {
+            blockMap = DraftTreeOperations.moveChildUp(blockMap, firstChildKey);
+            parent = blockMap.get(parentKey);
+          }
+        }
+      }
     }
     content = editorState.getCurrentContent().merge({
       blockMap: blockMap,

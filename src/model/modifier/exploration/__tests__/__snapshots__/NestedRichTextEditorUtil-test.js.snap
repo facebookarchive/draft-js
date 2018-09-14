@@ -1903,6 +1903,128 @@ Object {
 }
 `;
 
+exports[`onTab (untab) unnests non-leaf next sibling 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "alpha",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "Y",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "beta",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": null,
+    "parent": "Y",
+    "prevSibling": null,
+    "text": "charlie",
+    "type": "ordered-list-item",
+  },
+  "Y": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "Y",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
 exports[`onTab when siblings are at the same depth creates a new parent 1`] = `
 Object {
   "A": Object {
