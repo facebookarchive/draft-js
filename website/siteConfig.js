@@ -21,6 +21,7 @@ const siteConfig = {
     }
   ],
   headerIcon: 'img/draftjs-logo.svg',
+  favicon: 'img/draftjs-logo.ico',
   /* colors for website */
   colors: {
     primaryColor: '#3B3738',
