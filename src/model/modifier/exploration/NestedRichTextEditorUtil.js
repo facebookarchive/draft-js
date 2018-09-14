@@ -422,6 +422,7 @@ const NestedRichTextEditorUtil: RichTextUtils = {
 
       // on untab, we also want to unnest any sibling blocks that become two levels deep
       // ensure that block's old parent does not have a non-leaf as its first child.
+      let childWasUntabbed = false;
       if (parentKey != null) {
         let parent = blockMap.get(parentKey);
         while (parent != null) {
@@ -437,6 +438,26 @@ const NestedRichTextEditorUtil: RichTextUtils = {
           } else {
             blockMap = DraftTreeOperations.moveChildUp(blockMap, firstChildKey);
             parent = blockMap.get(parentKey);
+            childWasUntabbed = true;
+          }
+        }
+      }
+
+      // now, we may be in a state with two non-leaf blocks of the same type
+      // next to each other
+      if (childWasUntabbed && parentKey != null) {
+        const parent = blockMap.get(parentKey);
+        const prevSiblingKey =
+          parent != null // parent may have been deleted
+            ? parent.getPrevSiblingKey()
+            : null;
+        if (prevSiblingKey != null && parent.getChildKeys().count() > 0) {
+          const prevSibling = blockMap.get(prevSiblingKey);
+          if (prevSibling != null && prevSibling.getChildKeys().count() > 0) {
+            blockMap = DraftTreeOperations.mergeBlocks(
+              blockMap,
+              prevSiblingKey,
+            );
           }
         }
       }

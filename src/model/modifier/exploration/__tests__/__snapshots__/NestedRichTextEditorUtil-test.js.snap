@@ -515,6 +515,204 @@ exports[`onDelete removes a following atomic block 1`] = `false`;
 
 exports[`onDelete removes a following atomic block 2`] = `true`;
 
+exports[`onTab (untab) merges adjacent non-leaf blocks 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "alpha",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "Y",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "beta",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "D",
+    "parent": "Y",
+    "prevSibling": null,
+    "text": "charlie",
+    "type": "ordered-list-item",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": "E",
+    "parent": "Y",
+    "prevSibling": "C",
+    "text": "delta",
+    "type": "ordered-list-item",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": null,
+    "parent": "Y",
+    "prevSibling": "D",
+    "text": "epsilon",
+    "type": "ordered-list-item",
+  },
+  "Y": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+      "D",
+      "E",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "Y",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
 exports[`onTab (untab) on a block with no parent does nothing 1`] = `
 Object {
   "A": Object {

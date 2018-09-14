@@ -645,6 +645,84 @@ test('onTab (untab) unnests non-leaf next sibling', () => {
   );
 });
 
+const contentBlockNodes5 = [
+  new ContentBlockNode({
+    key: 'A',
+    parent: null,
+    text: 'alpha',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'X',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['B', 'Y', 'E']),
+    prevSibling: 'A',
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'Y',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'Y',
+    parent: 'X',
+    text: '',
+    children: Immutable.List(['C', 'D']),
+    prevSibling: 'B',
+    nextSibling: 'E',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'C',
+    parent: 'Y',
+    text: 'charlie',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'D',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'D',
+    parent: 'Y',
+    text: 'delta',
+    children: Immutable.List([]),
+    prevSibling: 'C',
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'E',
+    parent: 'X',
+    text: 'epsilon',
+    children: Immutable.List([]),
+    prevSibling: 'Y',
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+];
+
+test('onTab (untab) merges adjacent non-leaf blocks', () => {
+  assertNestedUtilOperation(
+    editorState =>
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+    {
+      anchorKey: 'B',
+      focusKey: 'B',
+    },
+    contentBlockNodes5,
+  );
+});
+
 // TODO (T32099101)
 test('onSplitParent must split a nested block retaining parent', () => {
   expect(true).toBe(true);

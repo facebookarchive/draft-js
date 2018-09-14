@@ -544,3 +544,66 @@ const blockMap10 = Immutable.OrderedMap({
 test('test moving only child up deletes parent 3', () => {
   expect(DraftTreeOperations.moveChildUp(blockMap10, 'B')).toMatchSnapshot();
 });
+
+const blockMap11 = Immutable.OrderedMap({
+  A: new ContentBlockNode({
+    key: 'A',
+    parent: null,
+    text: 'alpha',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'X',
+  }),
+  X: new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['B', 'C']),
+    prevSibling: 'A',
+    nextSibling: 'Y',
+  }),
+  B: new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'C',
+  }),
+  C: new ContentBlockNode({
+    key: 'C',
+    parent: 'X',
+    text: 'charlie',
+    children: Immutable.List([]),
+    prevSibling: 'B',
+    nextSibling: null,
+  }),
+  Y: new ContentBlockNode({
+    key: 'Y',
+    parent: null,
+    text: '',
+    children: Immutable.List(['D', 'E']),
+    prevSibling: 'X',
+    nextSibling: null,
+  }),
+  D: new ContentBlockNode({
+    key: 'D',
+    parent: 'Y',
+    text: 'delta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'E',
+  }),
+  E: new ContentBlockNode({
+    key: 'E',
+    parent: 'Y',
+    text: 'epsilon',
+    children: Immutable.List([]),
+    prevSibling: 'D',
+    nextSibling: null,
+  }),
+});
+
+test('test merging blocks', () => {
+  expect(DraftTreeOperations.mergeBlocks(blockMap11, 'X')).toMatchSnapshot();
+});

@@ -433,6 +433,64 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
   return newBlockMap;
 };
 
+/**
+ * This is a utility method to merge two non-leaf blocks into one. The next block's
+ * children are added to the provided block & the next block is deleted.
+ *
+ * This operation respects the tree data invariants - it expects and returns a
+ * valid tree.
+ */
+const mergeBlocks = (blockMap: BlockMap, key: string): BlockMap => {
+  verifyTree(blockMap);
+  // current block must be a non-leaf
+  let block = blockMap.get(key);
+  invariant(block !== null, 'block must exist in block map');
+  invariant(block.getChildKeys().count() > 0, 'block must be a non-leaf');
+  // next block must exist & be a non-leaf
+  const nextBlockKey = block.getNextSiblingKey();
+  invariant(nextBlockKey != null, 'block must have a next block');
+  const nextBlock = blockMap.get(nextBlockKey);
+  invariant(nextBlock != null, 'next block must exist in block map');
+  invariant(
+    nextBlock.getChildKeys().count() > 0,
+    'next block must be a non-leaf',
+  );
+
+  const childKeys = block.getChildKeys().concat(nextBlock.getChildKeys());
+  block = block.merge({
+    nextSibling: nextBlock.getNextSiblingKey(),
+    children: childKeys,
+  });
+  const nextChildren = childKeys.map((k, i) =>
+    blockMap.get(k).merge({
+      parent: key,
+      prevSibling: i - 1 < 0 ? null : childKeys.get(i - 1),
+      nextSibling: i + 1 === childKeys.count() ? null : childKeys.get(i + 1),
+    }),
+  );
+
+  const nextNextBlockKey = nextBlock.getNextSiblingKey();
+  const blocks = blockMap.toSeq();
+  const newBlockMap = blocks
+    .takeUntil(b => b.getKey() === key)
+    .concat(
+      [[block.getKey(), block]],
+      nextChildren.map(b => [b.getKey(), b]),
+      nextNextBlockKey != null
+        ? [
+            [
+              nextNextBlockKey,
+              blockMap.get(nextNextBlockKey).merge({prevSibling: key}),
+            ],
+          ]
+        : [],
+      blocks.skipUntil(b => b.getKey() === nextNextBlockKey).rest(),
+    )
+    .toOrderedMap();
+  verifyTree(newBlockMap);
+  return newBlockMap;
+};
+
 module.exports = {
   updateParentChild,
   replaceParentChild,
@@ -440,4 +498,5 @@ module.exports = {
   createNewParent,
   updateAsSiblingsChild,
   moveChildUp,
+  mergeBlocks,
 };
