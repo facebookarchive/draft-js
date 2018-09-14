@@ -322,22 +322,22 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       const prevSibling = blockMap.get(prevSiblingKey);
       const nextSibling =
         nextSiblingKey != null ? blockMap.get(nextSiblingKey) : null;
-      if (
-        prevSibling != null &&
-        prevSibling.getText() === '' &&
-        prevSibling.getChildKeys().count() > 0
-      ) {
+      const prevSiblingNonLeaf =
+        prevSibling != null && prevSibling.getChildKeys().count() > 0;
+      const nextSiblingNonLeaf =
+        nextSibling != null && nextSibling.getChildKeys().count() > 0;
+      if (prevSiblingNonLeaf) {
         blockMap = DraftTreeOperations.updateAsSiblingsChild(
           blockMap,
           key,
           'previous',
         );
-        // else, if next sibling is a non-leaf move node as child of next sibling
-      } else if (
-        nextSibling != null &&
-        nextSibling.getText() === '' &&
-        nextSibling.getChildKeys().count() > 0
-      ) {
+        // if next sibling is also non-leaf, merge the previous & next siblings
+        if (nextSiblingNonLeaf) {
+          blockMap = DraftTreeOperations.mergeBlocks(blockMap, prevSiblingKey);
+        }
+        // else, if only next sibling is non-leaf move node as child of next sibling
+      } else if (nextSiblingNonLeaf) {
         blockMap = DraftTreeOperations.updateAsSiblingsChild(
           blockMap,
           key,

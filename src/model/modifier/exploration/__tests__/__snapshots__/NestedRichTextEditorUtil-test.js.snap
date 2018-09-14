@@ -2223,6 +2223,205 @@ Object {
 }
 `;
 
+exports[`onTab when both siblings are non-leaf merges blocks 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "X",
+    "parent": null,
+    "prevSibling": null,
+    "text": "alpha",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "C",
+    "parent": "X",
+    "prevSibling": null,
+    "text": "beta",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "C",
+    "nextSibling": "D",
+    "parent": "X",
+    "prevSibling": "B",
+    "text": "charlie",
+    "type": "ordered-list-item",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": "E",
+    "parent": "X",
+    "prevSibling": "C",
+    "text": "delta",
+    "type": "ordered-list-item",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": null,
+    "parent": "X",
+    "prevSibling": "D",
+    "text": "epsilon",
+    "type": "ordered-list-item",
+  },
+  "X": Object {
+    "characterList": Array [],
+    "children": Array [
+      "B",
+      "C",
+      "D",
+      "E",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "X",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
 exports[`onTab when siblings are at the same depth creates a new parent 1`] = `
 Object {
   "A": Object {
