@@ -446,6 +446,13 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     if (isIE) {
       document.execCommand('AutoUrlDetect', false, false);
     }
+    const {iframeWindow, iframeDocument} = this.props;
+    if (iframeWindow) {
+      document._iframeWindow = iframeWindow;
+    }
+    if (iframeDocument) {
+      document._iframeDocument = iframeDocument;
+    }
   }
 
   componentDidUpdate(): void {
