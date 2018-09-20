@@ -161,7 +161,8 @@ function editOnBeforeInput(
     // Chrome will also split up a node into two pieces if it contains a Tab
     // char, for no explicable reason. Seemingly caused by this commit:
     // https://chromium.googlesource.com/chromium/src/+/013ac5eaf3%5E%21/
-    const nativeSelection = global.getSelection();
+    const {ownerDocument} = e.currentTarget;
+    const nativeSelection = ownerDocument.defaultView.getSelection();
     // Selection is necessarily collapsed at this point due to earlier check.
     if (
       nativeSelection.anchorNode &&

@@ -20,6 +20,7 @@ const DraftJsDebugLogging = require('DraftJsDebugLogging');
 
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
+const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
 const isElement = require('isElement');
 const invariant = require('invariant');
 
@@ -51,7 +52,9 @@ function anonymizeTextWithin(
 
   if (node.nodeType === Node.TEXT_NODE) {
     const length = node.textContent.length;
-    return document.createTextNode(
+    const documentObject = getCorrectDocumentFromNode(node);
+
+    return documentObject.createTextNode(
       '[text ' +
         length +
         (labels.length ? ' | ' + labels.join(', ') : '') +
@@ -113,11 +116,12 @@ function setDraftEditorSelection(
   // It's possible that the editor has been removed from the DOM but
   // our selection code doesn't know it yet. Forcing selection in
   // this case may lead to errors, so just bail now.
-  if (!containsNode(document.documentElement, node)) {
+  const documentObject = getCorrectDocumentFromNode(node);
+  if (!containsNode(documentObject.documentElement, node)) {
     return;
   }
 
-  const selection = global.getSelection();
+  const selection = documentObject.defaultView.getSelection();
   let anchorKey = selectionState.getAnchorKey();
   let anchorOffset = selectionState.getAnchorOffset();
   let focusKey = selectionState.getFocusKey();
@@ -314,7 +318,8 @@ function addPointToSelection(
   offset: number,
   selectionState: SelectionState,
 ): void {
-  const range = document.createRange();
+  const documentObject = getCorrectDocumentFromNode(node);
+  const range = documentObject.createRange();
   // logging to catch bug that is being reported in t16250795
   if (offset > getNodeLength(node)) {
     // in this case we know that the call to 'range.setStart' is about to throw
