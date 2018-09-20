@@ -341,21 +341,32 @@ class DraftEditorBlockNode extends React.Component<Props> {
     const blockKey = block.getKey();
     const offsetKey = DraftOffsetKey.encode(blockKey, 0, 0);
 
-    const blockNode = (
-      <DraftEditorNode
-        block={block}
-        children={children}
-        contentState={contentState}
-        customStyleFn={customStyleFn}
-        customStyleMap={customStyleMap}
-        decorator={decorator}
-        direction={direction}
-        forceSelection={forceSelection}
-        hasSelection={isBlockOnSelectionEdge(selection, blockKey)}
-        selection={selection}
-        tree={tree}
-      />
-    );
+    const customConfig = getCustomRenderConfig(block, blockRendererFn);
+    const Component = customConfig.CustomComponent;
+    const blockNode =
+      Component != null ? (
+        <Component
+          {...this.props}
+          tree={editorState.getBlockTree(blockKey)}
+          blockProps={customConfig.customProps}
+          offsetKey={offsetKey}
+          block={block}
+        />
+      ) : (
+        <DraftEditorNode
+          block={block}
+          children={children}
+          contentState={contentState}
+          customStyleFn={customStyleFn}
+          customStyleMap={customStyleMap}
+          decorator={decorator}
+          direction={direction}
+          forceSelection={forceSelection}
+          hasSelection={isBlockOnSelectionEdge(selection, blockKey)}
+          selection={selection}
+          tree={tree}
+        />
+      );
 
     if (block.getParentKey()) {
       return blockNode;
@@ -367,7 +378,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
       editorKey,
       offsetKey,
       blockStyleFn,
-      getCustomRenderConfig(block, blockRendererFn),
+      customConfig,
     );
 
     // root block nodes needs to be wrapped
