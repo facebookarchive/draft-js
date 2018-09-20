@@ -39,7 +39,7 @@ function getSelectionForEvent(
   /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
    * found when Flow v0.68 was deployed. To see the error delete this comment
    * and run Flow. */
-  const {ownerDocument} = event.target;
+  const {ownerDocument} = event.currentTarget;
 
   if (typeof ownerDocument.caretRangeFromPoint === 'function') {
     const dropRange = ownerDocument.caretRangeFromPoint(event.x, event.y);

@@ -33,6 +33,8 @@ const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const isHTMLElement = require('isHTMLElement');
+const isHTMLAnchorElement = require('isHTMLAnchorElement');
+const isHTMLImageElement = require('isHTMLImageElement');
 const gkx = require('gkx');
 const invariant = require('invariant');
 const sanitizeDraftText = require('sanitizeDraftText');
@@ -284,10 +286,7 @@ const containsSemanticBlockMarkup = (
 };
 
 const hasValidLinkText = (link: Node): boolean => {
-  invariant(
-    link instanceof HTMLAnchorElement,
-    'Link must be an HTMLAnchorElement.',
-  );
+  invariant(isHTMLAnchorElement(link), 'Link must be an HTMLAnchorElement.');
   const protocol = link.protocol;
   return (
     protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:'
@@ -432,7 +431,7 @@ const genFragment = (
   // IMG tags
   if (
     nodeName === 'img' &&
-    node instanceof HTMLImageElement &&
+    isHTMLImageElement(node) &&
     node.attributes.getNamedItem('src') &&
     node.attributes.getNamedItem('src').value
   ) {
@@ -510,11 +509,7 @@ const genFragment = (
   let entityId: ?string = null;
 
   while (child) {
-    if (
-      child instanceof HTMLAnchorElement &&
-      child.href &&
-      hasValidLinkText(child)
-    ) {
+    if (isHTMLAnchorElement(child) && child.href && hasValidLinkText(child)) {
       const anchor: HTMLAnchorElement = child;
       const entityConfig = {};
 

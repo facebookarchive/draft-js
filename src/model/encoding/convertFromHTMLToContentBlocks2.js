@@ -26,7 +26,8 @@ const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
 const {List, Map, OrderedSet} = require('immutable');
 const URI = require('URI');
-
+const isHTMLAnchorElement = require('isHTMLAnchorElement');
+const isHTMLImageElement = require('isHTMLImageElement');
 const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
@@ -136,7 +137,7 @@ const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
  */
 const isValidAnchor = (node: Node) => {
   return !!(
-    node instanceof HTMLAnchorElement &&
+    isHTMLAnchorElement(node) &&
     node.href &&
     (node.protocol === 'http:' ||
       node.protocol === 'https:' ||
@@ -150,7 +151,7 @@ const isValidAnchor = (node: Node) => {
  */
 const isValidImage = (node: Node): boolean => {
   return !!(
-    node instanceof HTMLImageElement &&
+    isHTMLImageElement(node) &&
     node.attributes.getNamedItem('src') &&
     node.attributes.getNamedItem('src').value
   );
@@ -515,7 +516,7 @@ class ContentBlocksBuilder {
    * Add the content of an HTML img node to the internal state
    */
   _addImgNode(node: Node) {
-    if (!(node instanceof HTMLImageElement)) {
+    if (!isHTMLImageElement(node)) {
       return;
     }
     const image: HTMLImageElement = node;
@@ -557,7 +558,7 @@ class ContentBlocksBuilder {
   _addAnchorNode(node: Node, blockConfigs: Array<ContentBlockConfig>) {
     // The check has already been made by isValidAnchor but
     // we have to do it again to keep flow happy.
-    if (!(node instanceof HTMLAnchorElement)) {
+    if (!isHTMLAnchorElement(node)) {
       return;
     }
     const anchor: HTMLAnchorElement = node;
