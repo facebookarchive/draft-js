@@ -32,6 +32,7 @@ const URI = require('URI');
 const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
+const isHTMLElement = require('isHTMLElement');
 const gkx = require('gkx');
 const invariant = require('invariant');
 const sanitizeDraftText = require('sanitizeDraftText');
@@ -198,7 +199,7 @@ const processInlineTag = (
   const styleToCheck = inlineTags[tag];
   if (styleToCheck) {
     currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
-  } else if (node instanceof HTMLElement) {
+  } else if (isHTMLElement(node)) {
     const htmlElement = node;
     currentStyle = currentStyle
       .withMutations(style => {
@@ -475,7 +476,7 @@ const genFragment = (
   if (
     !experimentalTreeDataSupport &&
     nodeName === 'li' &&
-    node instanceof HTMLElement
+    isHTMLElement(node)
   ) {
     depth = getListItemDepth(node, depth);
   }

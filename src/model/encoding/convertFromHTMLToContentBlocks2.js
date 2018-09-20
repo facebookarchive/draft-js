@@ -21,6 +21,7 @@ import type {EntityMap} from 'EntityMap';
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
+const isHTMLElement = require('isHTMLElement');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
 const {List, Map, OrderedSet} = require('immutable');
@@ -392,7 +393,7 @@ class ContentBlocksBuilder {
 
         if (
           !experimentalTreeDataSupport &&
-          node instanceof HTMLElement &&
+          isHTMLElement(node) &&
           (blockType === 'unordered-list-item' ||
             blockType === 'ordered-list-item')
         ) {
@@ -586,7 +587,7 @@ class ContentBlocksBuilder {
    * styles (font-weight, font-style and text-decoration).
    */
   _updateStyleFromNodeAttributes(node: Node) {
-    if (!(node instanceof HTMLElement)) {
+    if (!isHTMLElement(node)) {
       return;
     }
 

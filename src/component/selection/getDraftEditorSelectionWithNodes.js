@@ -19,6 +19,7 @@ import type EditorState from 'EditorState';
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 const getUpdatedSelectionState = require('getUpdatedSelectionState');
+const isElement = require('isElement');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 
@@ -125,7 +126,7 @@ function getFirstLeaf(node: any): Node {
   while (
     node.firstChild &&
     // data-blocks has no offset
-    ((node.firstChild instanceof Element &&
+    ((isElement(node.firstChild) &&
       node.firstChild.getAttribute('data-blocks') === 'true') ||
       getSelectionOffsetKeyForNode(node.firstChild))
   ) {
@@ -141,7 +142,7 @@ function getLastLeaf(node: any): Node {
   while (
     node.lastChild &&
     // data-blocks has no offset
-    ((node.lastChild instanceof Element &&
+    ((isElement(node.lastChild) &&
       node.lastChild.getAttribute('data-blocks') === 'true') ||
       getSelectionOffsetKeyForNode(node.lastChild))
   ) {
@@ -169,7 +170,7 @@ function getPointForNonTextNode(
   if (editorRoot === node) {
     node = node.firstChild;
     invariant(
-      node instanceof Element && node.getAttribute('data-contents') === 'true',
+      isElement(node) && node.getAttribute('data-contents') === 'true',
       'Invalid DraftEditorContents structure.',
     );
     if (childOffset > 0) {

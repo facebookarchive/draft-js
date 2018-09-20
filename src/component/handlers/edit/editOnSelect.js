@@ -21,6 +21,7 @@ const ReactDOM = require('ReactDOM');
 
 const getDraftEditorSelection = require('getDraftEditorSelection');
 const invariant = require('invariant');
+const isHTMLElement = require('isHTMLElement');
 
 function editOnSelect(editor: DraftEditor): void {
   if (
@@ -43,11 +44,8 @@ function editOnSelect(editor: DraftEditor): void {
   let editorState = editor.props.editorState;
   const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
   invariant(editorNode, 'Missing editorNode');
-  const windowHTMLElement = editor.props.iframeWindow
-    ? editor.props.iframeWindow.HTMLElement
-    : HTMLElement;
   invariant(
-    editorNode.firstChild instanceof windowHTMLElement,
+    isHTMLElement(editorNode.firstChild),
     'editorNode.firstChild is not an HTMLElement',
   );
   const documentSelection = getDraftEditorSelection(

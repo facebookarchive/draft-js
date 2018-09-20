@@ -28,6 +28,7 @@ const DraftEditorEditHandler = require('DraftEditorEditHandler');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
 const DraftEffects = require('DraftEffects');
 const EditorState = require('EditorState');
+const isHTMLElement = require('isHTMLElement');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
@@ -486,7 +487,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
 
     invariant(
-      editorNode instanceof HTMLElement,
+      isHTMLElement(editorNode),
       'editorNode is not an HTMLElement',
     );
 
@@ -513,7 +514,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   blur = (): void => {
     const editorNode = ReactDOM.findDOMNode(this.editor);
     invariant(
-      editorNode instanceof HTMLElement,
+      isHTMLElement(editorNode),
       'editorNode is not an HTMLElement',
     );
     editorNode.blur();

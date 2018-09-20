@@ -20,6 +20,7 @@ const DraftJsDebugLogging = require('DraftJsDebugLogging');
 
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
+const isElement = require('isElement');
 const invariant = require('invariant');
 
 function getAnonymizedDOM(
@@ -36,7 +37,7 @@ function getAnonymizedDOM(
   }
 
   invariant(
-    anonymized instanceof Element,
+    isElement(anonymized),
     'Node must be an Element if it is not a text node.',
   );
   return anonymized.outerHTML;
@@ -77,10 +78,7 @@ function getAnonymizedEditorDOM(
   // grabbing the DOM content of the Draft editor
   let currentNode = node;
   while (currentNode) {
-    if (
-      currentNode instanceof Element &&
-      currentNode.hasAttribute('contenteditable')
-    ) {
+    if (isElement(currentNode) && currentNode.hasAttribute('contenteditable')) {
       // found the Draft editor container
       return getAnonymizedDOM(currentNode, getNodeLabels);
     } else {

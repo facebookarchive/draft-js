@@ -35,6 +35,7 @@ const cx = require('cx');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
+const isHTMLElement = require('isHTMLElement');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 
@@ -119,10 +120,7 @@ class DraftEditorBlock extends React.Component<Props> {
         );
       }
     } else {
-      invariant(
-        blockNode instanceof HTMLElement,
-        'blockNode is not an HTMLElement',
-      );
+      invariant(isHTMLElement(blockNode), 'blockNode is not an HTMLElement');
       const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
       const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
