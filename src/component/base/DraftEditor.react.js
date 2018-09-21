@@ -449,7 +449,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       // https://stackoverflow.com/questions/44074747/componentdidmount-called-before-ref-callback
 
       const castedEditor: HTMLElement = (this.editor: any);
-      (castedEditor ? castedEditor.ownerDocument : global).execCommand(
+      (castedEditor ? castedEditor.editor.ownerDocument : global).execCommand(
         'AutoUrlDetect',
         false,
         false,
