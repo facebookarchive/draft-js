@@ -41,7 +41,8 @@ function getAnonymizedDOM(
     isElement(anonymized),
     'Node must be an Element if it is not a text node.',
   );
-  return anonymized.outerHTML;
+  const castedElement: Element = (anonymized: any);
+  return castedElement.outerHTML;
 }
 
 function anonymizeTextWithin(
@@ -80,8 +81,10 @@ function getAnonymizedEditorDOM(
 ): string {
   // grabbing the DOM content of the Draft editor
   let currentNode = node;
+  // this should only be used after checking with isElement
+  let castedNode: Element = (currentNode: any);
   while (currentNode) {
-    if (isElement(currentNode) && currentNode.hasAttribute('contenteditable')) {
+    if (isElement(currentNode) && castedNode.hasAttribute('contenteditable')) {
       // found the Draft editor container
       return getAnonymizedDOM(currentNode, getNodeLabels);
     } else {

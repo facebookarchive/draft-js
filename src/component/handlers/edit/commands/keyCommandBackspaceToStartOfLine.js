@@ -22,7 +22,7 @@ const removeTextWithStrategy = require('removeTextWithStrategy');
 
 function keyCommandBackspaceToStartOfLine(
   editorState: EditorState,
-  e: SyntheticKeyboardEvent<>,
+  e: SyntheticKeyboardEvent<HTMLElement>,
 ): EditorState {
   const afterRemoval = removeTextWithStrategy(
     editorState,

@@ -1,8 +1,14 @@
 function isHTMLAnchorElement(node) {
-  if (!node || !node.ownerDocument || !node.ownerDocument.defaultView) {
+  if (!node || !node.ownerDocument) {
     return false;
   }
-  return node instanceof node.ownerDocument.defaultView.HTMLAnchorElement;
+  if (!node.ownerDocument.defaultView) {
+    return node instanceof HTMLAnchorElement;
+  }
+  if (node instanceof node.ownerDocument.defaultView.HTMLAnchorElement) {
+    return true;
+  }
+  return false;
 }
 
 module.exports = isHTMLAnchorElement;

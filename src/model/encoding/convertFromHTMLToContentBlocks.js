@@ -202,7 +202,7 @@ const processInlineTag = (
   if (styleToCheck) {
     currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
   } else if (isHTMLElement(node)) {
-    const htmlElement = node;
+    const htmlElement: HTMLElement = (node: any);
     currentStyle = currentStyle
       .withMutations(style => {
         const fontWeight = htmlElement.style.fontWeight;
@@ -287,7 +287,8 @@ const containsSemanticBlockMarkup = (
 
 const hasValidLinkText = (link: Node): boolean => {
   invariant(isHTMLAnchorElement(link), 'Link must be an HTMLAnchorElement.');
-  const protocol = link.protocol;
+  const castedLink: HTMLAnchorElement = (link: any);
+  const protocol = castedLink.protocol;
   return (
     protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:'
   );
@@ -429,36 +430,36 @@ const genFragment = (
   }
 
   // IMG tags
-  if (
-    nodeName === 'img' &&
-    isHTMLImageElement(node) &&
-    node.attributes.getNamedItem('src') &&
-    node.attributes.getNamedItem('src').value
-  ) {
-    const image: HTMLImageElement = node;
-    const entityConfig = {};
+  if (nodeName === 'img' && isHTMLImageElement(node)) {
+    const image: HTMLImageElement = (node: any);
+    if (
+      image.attributes.getNamedItem('src') &&
+      image.attributes.getNamedItem('src').value
+    ) {
+      const entityConfig = {};
 
-    imgAttr.forEach(attr => {
-      const imageAttribute = image.getAttribute(attr);
-      if (imageAttribute) {
-        entityConfig[attr] = imageAttribute;
+      imgAttr.forEach(attr => {
+        const imageAttribute = image.getAttribute(attr);
+        if (imageAttribute) {
+          entityConfig[attr] = imageAttribute;
+        }
+      });
+      // Forcing this node to have children because otherwise no entity will be
+      // created for this node.
+      // The child text node cannot just have a space or return as content (since
+      // we strip those out), unless the image is for presentation only.
+      // See https://github.com/facebook/draft-js/issues/231 for some context.
+      if (gkx('draftjs_fix_paste_for_img')) {
+        if (image.getAttribute('role') !== 'presentation') {
+          image.textContent = '\ud83d\udcf7';
+        }
+      } else {
+        image.textContent = '\ud83d\udcf7';
       }
-    });
-    // Forcing this node to have children because otherwise no entity will be
-    // created for this node.
-    // The child text node cannot just have a space or return as content (since
-    // we strip those out), unless the image is for presentation only.
-    // See https://github.com/facebook/draft-js/issues/231 for some context.
-    if (gkx('draftjs_fix_paste_for_img')) {
-      if (node.getAttribute('role') !== 'presentation') {
-        node.textContent = '\ud83d\udcf7';
-      }
-    } else {
-      node.textContent = '\ud83d\udcf7';
+
+      // TODO: update this when we remove DraftEntity entirely
+      inEntity = DraftEntity.__create('IMAGE', 'MUTABLE', entityConfig || {});
     }
-
-    // TODO: update this when we remove DraftEntity entirely
-    inEntity = DraftEntity.__create('IMAGE', 'MUTABLE', entityConfig || {});
   }
 
   // Inline tags
@@ -477,7 +478,8 @@ const genFragment = (
     nodeName === 'li' &&
     isHTMLElement(node)
   ) {
-    depth = getListItemDepth(node, depth);
+    const castedNode: HTMLElement = (node: any);
+    depth = getListItemDepth(castedNode, depth);
   }
 
   const blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
@@ -509,20 +511,24 @@ const genFragment = (
   let entityId: ?string = null;
 
   while (child) {
-    if (isHTMLAnchorElement(child) && child.href && hasValidLinkText(child)) {
-      const anchor: HTMLAnchorElement = child;
-      const entityConfig = {};
+    if (isHTMLAnchorElement(child)) {
+      const anchor: HTMLAnchorElement = (child: any);
+      if (anchor.href && hasValidLinkText(anchor)) {
+        const entityConfig = {};
 
-      anchorAttr.forEach(attr => {
-        const anchorAttribute = anchor.getAttribute(attr);
-        if (anchorAttribute) {
-          entityConfig[attr] = anchorAttribute;
-        }
-      });
+        anchorAttr.forEach(attr => {
+          const anchorAttribute = anchor.getAttribute(attr);
+          if (anchorAttribute) {
+            entityConfig[attr] = anchorAttribute;
+          }
+        });
 
-      entityConfig.url = new URI(anchor.href).toString();
-      // TODO: update this when we remove DraftEntity completely
-      entityId = DraftEntity.__create('LINK', 'MUTABLE', entityConfig || {});
+        entityConfig.url = new URI(anchor.href).toString();
+        // TODO: update this when we remove DraftEntity completely
+        entityId = DraftEntity.__create('LINK', 'MUTABLE', entityConfig || {});
+      } else {
+        entityId = undefined;
+      }
     } else {
       entityId = undefined;
     }

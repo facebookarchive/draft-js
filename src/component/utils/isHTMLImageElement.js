@@ -1,8 +1,14 @@
 function isHTMLImageElement(node) {
-  if (!node || !node.ownerDocument || !node.ownerDocument.defaultView) {
+  if (!node || !node.ownerDocument) {
     return false;
   }
-  return node instanceof node.ownerDocument.defaultView.HTMLImageElement;
+  if (!node.ownerDocument.defaultView) {
+    return node instanceof HTMLImageElement;
+  }
+  if (node instanceof node.ownerDocument.defaultView.HTMLImageElement) {
+    return true;
+  }
+  return false;
 }
 
 module.exports = isHTMLImageElement;

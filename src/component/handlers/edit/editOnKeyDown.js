@@ -44,7 +44,7 @@ const isChrome = UserAgent.isBrowser('Chrome');
 function onKeyCommand(
   command: DraftEditorCommand | string,
   editorState: EditorState,
-  e: SyntheticKeyboardEvent<>,
+  e: SyntheticKeyboardEvent<HTMLElement>,
 ): EditorState {
   switch (command) {
     case 'redo':
@@ -85,7 +85,10 @@ function onKeyCommand(
  * See `getDefaultKeyBinding` for defaults. Alternatively, the top-level
  * component may provide a custom mapping via the `keyBindingFn` prop.
  */
-function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
+function editOnKeyDown(
+  editor: DraftEditor,
+  e: SyntheticKeyboardEvent<HTMLElement>,
+): void {
   const keyCode = e.which;
   const editorState = editor._latestEditorState;
   function callDeprecatedHandler(

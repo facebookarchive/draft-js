@@ -127,7 +127,7 @@ function getFirstLeaf(node: any): Node {
     node.firstChild &&
     // data-blocks has no offset
     ((isElement(node.firstChild) &&
-      node.firstChild.getAttribute('data-blocks') === 'true') ||
+      (node.firstChild: Element).getAttribute('data-blocks') === 'true') ||
       getSelectionOffsetKeyForNode(node.firstChild))
   ) {
     node = node.firstChild;
@@ -169,8 +169,14 @@ function getPointForNonTextNode(
   // wrapper.
   if (editorRoot === node) {
     node = node.firstChild;
+    invariant(isElement(node), 'Invalid DraftEditorContents node.');
+    const castedNode: Element = (node: any);
+
+    // assignment only added for flow :/
+    // otherwise it throws in line 200 saying that node can be null or undefined
+    node = castedNode;
     invariant(
-      isElement(node) && node.getAttribute('data-contents') === 'true',
+      node.getAttribute('data-contents') === 'true',
       'Invalid DraftEditorContents structure.',
     );
     if (childOffset > 0) {

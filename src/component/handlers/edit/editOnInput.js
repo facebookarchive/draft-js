@@ -45,8 +45,9 @@ function editOnInput(editor: DraftEditor): void {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
   }
-
-  const domSelection = editor.editor.ownerDocument.defaultView.getSelection();
+  // at this point editor is not null for sure (after input)
+  const castedEditorElement: HTMLElement = (editor: any);
+  const domSelection = castedEditorElement.ownerDocument.defaultView.getSelection();
 
   const {anchorNode, isCollapsed} = domSelection;
   const isNotTextNode = anchorNode.nodeType !== Node.TEXT_NODE;

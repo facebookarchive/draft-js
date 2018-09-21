@@ -21,12 +21,15 @@ const isElement = require('isElement');
 
 function getSelectionOffsetKeyForNode(node: Node): ?string {
   if (isElement(node)) {
-    const offsetKey = node.getAttribute('data-offset-key');
+    const castedNode: Element = (node: any);
+    const offsetKey = castedNode.getAttribute('data-offset-key');
     if (offsetKey) {
       return offsetKey;
     }
-    for (let ii = 0; ii < node.childNodes.length; ii++) {
-      const childOffsetKey = getSelectionOffsetKeyForNode(node.childNodes[ii]);
+    for (let ii = 0; ii < castedNode.childNodes.length; ii++) {
+      const childOffsetKey = getSelectionOffsetKeyForNode(
+        castedNode.childNodes[ii],
+      );
       if (childOffsetKey) {
         return childOffsetKey;
       }

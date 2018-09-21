@@ -445,7 +445,15 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
      * ie9-beta-minor-change-list.aspx
      */
     if (isIE) {
-      this.editor.ownerDocument.execCommand('AutoUrlDetect', false, false);
+      // editor can be null after mounting
+      // https://stackoverflow.com/questions/44074747/componentdidmount-called-before-ref-callback
+
+      const castedEditor: HTMLElement = (this.editor: any);
+      (castedEditor ? castedEditor.ownerDocument : global).execCommand(
+        'AutoUrlDetect',
+        false,
+        false,
+      );
     }
   }
 

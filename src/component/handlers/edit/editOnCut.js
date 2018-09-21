@@ -18,7 +18,7 @@ import type DraftEditor from 'DraftEditor.react';
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Style = require('Style');
-const isNode = require('isNode');
+const isNode = require('isInstanceOfNode');
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
 

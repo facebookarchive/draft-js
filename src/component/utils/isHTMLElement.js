@@ -1,9 +1,14 @@
 function isHTMLElement(node) {
-  // the third case happens when pasting content
-  if (!node || !node.ownerDocument || !node.ownerDocument.defaultView) {
+  if (!node || !node.ownerDocument) {
     return false;
   }
-  return node instanceof node.ownerDocument.defaultView.HTMLElement;
+  if (!node.ownerDocument.defaultView) {
+    return node instanceof HTMLElement;
+  }
+  if (node instanceof node.ownerDocument.defaultView.HTMLElement) {
+    return true;
+  }
+  return false;
 }
 
 module.exports = isHTMLElement;

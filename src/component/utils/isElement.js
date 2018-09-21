@@ -1,8 +1,14 @@
 function isElement(node) {
-  if (!node || !node.ownerDocument || !node.ownerDocument.defaultView) {
+  if (!node || !node.ownerDocument) {
     return false;
   }
-  return node instanceof node.ownerDocument.defaultView.Element;
+  if (!node.ownerDocument.defaultView) {
+    return node instanceof Element;
+  }
+  if (node instanceof node.ownerDocument.defaultView.Element) {
+    return true;
+  }
+  return false;
 }
 
 module.exports = isElement;
