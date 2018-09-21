@@ -426,6 +426,17 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
         newBlockMap.get(prevSiblingKey).merge({nextSibling: null}),
       );
     }
+    if (grandparentKey != null) {
+      const grandparent = newBlockMap.get(grandparentKey);
+      const oldChildren = grandparent.getChildKeys();
+      newBlockMap = newBlockMap.set(
+        grandparentKey,
+        grandparent.merge({
+          children: oldChildren.delete(oldChildren.indexOf(parentKey)),
+        }),
+      );
+    }
+
     newBlockMap = newBlockMap.delete(parentKey);
   }
 
