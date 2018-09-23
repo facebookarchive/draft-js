@@ -157,6 +157,33 @@ test('must be able to insert a fragment with a single ContentBlockNode', () => {
   );
 });
 
+test('must be able to insert a fragment with a single ContentBlockNode keeping the target block type when it has text', () => {
+  const initialSelection = SelectionState.createEmpty('A');
+  const initialContent = contentState.set(
+    'blockMap',
+    createContentBlockNodeFragment([
+      {
+        type: 'unordered-list-item',
+        key: 'A',
+        text: 'Item 1',
+        data: null,
+      },
+    ]),
+  );
+
+  assertInsertFragmentIntoContentState(
+    createContentBlockNodeFragment([
+      {
+        type: 'heading-two',
+        key: 'B',
+        text: 'some text',
+      },
+    ]),
+    initialSelection,
+    initialContent,
+  );
+});
+
 test('must be able to insert fragment of ContentBlockNodes', () => {
   const initialSelection = SelectionState.createEmpty('first');
   const initialContent = contentState.set(
