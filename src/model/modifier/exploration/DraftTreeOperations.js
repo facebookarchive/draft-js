@@ -454,7 +454,7 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
 const mergeBlocks = (blockMap: BlockMap, key: string): BlockMap => {
   verifyTree(blockMap);
   // current block must be a non-leaf
-  let block = blockMap.get(key);
+  const block = blockMap.get(key);
   invariant(block !== null, 'block must exist in block map');
   invariant(block.getChildKeys().count() > 0, 'block must be a non-leaf');
   // next block must exist & be a non-leaf
@@ -468,36 +468,35 @@ const mergeBlocks = (blockMap: BlockMap, key: string): BlockMap => {
   );
 
   const childKeys = block.getChildKeys().concat(nextBlock.getChildKeys());
-  block = block.merge({
-    nextSibling: nextBlock.getNextSiblingKey(),
-    children: childKeys,
-  });
-  const nextChildren = childKeys.map((k, i) =>
-    blockMap.get(k).merge({
-      parent: key,
-      prevSibling: i - 1 < 0 ? null : childKeys.get(i - 1),
-      nextSibling: i + 1 === childKeys.count() ? null : childKeys.get(i + 1),
+  let newBlockMap = blockMap.set(
+    key,
+    block.merge({
+      nextSibling: nextBlock.getNextSiblingKey(),
+      children: childKeys,
     }),
   );
+  newBlockMap = newBlockMap.merge(
+    Immutable.OrderedMap(
+      childKeys.map((k, i) => [
+        k,
+        blockMap.get(k).merge({
+          parent: key,
+          prevSibling: i - 1 < 0 ? null : childKeys.get(i - 1),
+          nextSibling:
+            i + 1 === childKeys.count() ? null : childKeys.get(i + 1),
+        }),
+      ]),
+    ),
+  );
+  newBlockMap = newBlockMap.delete(nextBlockKey);
 
   const nextNextBlockKey = nextBlock.getNextSiblingKey();
-  const blocks = blockMap.toSeq();
-  const newBlockMap = blocks
-    .takeUntil(b => b.getKey() === key)
-    .concat(
-      [[block.getKey(), block]],
-      nextChildren.map(b => [b.getKey(), b]),
-      nextNextBlockKey != null
-        ? [
-            [
-              nextNextBlockKey,
-              blockMap.get(nextNextBlockKey).merge({prevSibling: key}),
-            ],
-          ]
-        : [],
-      blocks.skipUntil(b => b.getKey() === nextNextBlockKey).rest(),
-    )
-    .toOrderedMap();
+  if (nextNextBlockKey != null) {
+    newBlockMap = newBlockMap.set(
+      nextNextBlockKey,
+      blockMap.get(nextNextBlockKey).merge({prevSibling: key}),
+    );
+  }
   verifyTree(newBlockMap);
   return newBlockMap;
 };

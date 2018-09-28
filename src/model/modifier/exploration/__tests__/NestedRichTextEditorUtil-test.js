@@ -532,7 +532,7 @@ const contentBlockNodes3 = [
   }),
 ];
 
-test('onTab when both siblings are non-leaf merges blocks', () => {
+test('onTab when both siblings are non-leaf merges blocks 1', () => {
   assertNestedUtilOperation(
     editorState => onTab({preventDefault: () => {}}, editorState, 1),
     {
@@ -540,6 +540,92 @@ test('onTab when both siblings are non-leaf merges blocks', () => {
       focusKey: 'C',
     },
     contentBlockNodes3,
+  );
+});
+
+const contentBlockNodes4 = [
+  new ContentBlockNode({
+    key: 'A',
+    parent: null,
+    text: 'alpha',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'X',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['B', 'Y']),
+    prevSibling: 'A',
+    nextSibling: 'D',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'Y',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'Y',
+    parent: 'X',
+    text: '',
+    children: Immutable.List(['C']),
+    prevSibling: 'B',
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'C',
+    parent: 'Y',
+    text: 'charlie',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'D',
+    parent: null,
+    text: 'delta',
+    children: Immutable.List([]),
+    prevSibling: 'X',
+    nextSibling: 'Z',
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'Z',
+    parent: null,
+    text: '',
+    children: Immutable.List(['E']),
+    prevSibling: 'D',
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'E',
+    parent: 'Z',
+    text: 'epsilon',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: null,
+    type: 'ordered-list-item',
+  }),
+];
+
+test('onTab when both siblings are non-leaf merges blocks 2', () => {
+  assertNestedUtilOperation(
+    editorState => onTab({preventDefault: () => {}}, editorState, 1),
+    {
+      anchorKey: 'D',
+      focusKey: 'D',
+    },
+    contentBlockNodes4,
   );
 });
 
@@ -579,7 +665,7 @@ test('onTab (untab) on a last child moves block as next sibling of parent', () =
   );
 });
 
-const contentBlockNodes4 = [
+const contentBlockNodes5 = [
   new ContentBlockNode({
     key: 'A',
     nextSibling: 'X',
@@ -658,11 +744,11 @@ test('onTab (untab) on a middle child splits the block at that child', () => {
       anchorKey: 'E',
       focusKey: 'E',
     },
-    contentBlockNodes4,
+    contentBlockNodes5,
   );
 });
 
-const contentBlockNodes5 = [
+const contentBlockNodes6 = [
   new ContentBlockNode({
     key: 'A',
     parent: null,
@@ -718,11 +804,11 @@ test('onTab (untab) unnests non-leaf next sibling', () => {
       anchorKey: 'B',
       focusKey: 'B',
     },
-    contentBlockNodes5,
+    contentBlockNodes6,
   );
 });
 
-const contentBlockNodes6 = [
+const contentBlockNodes7 = [
   new ContentBlockNode({
     key: 'A',
     parent: null,
@@ -796,7 +882,7 @@ test('onTab (untab) merges adjacent non-leaf blocks', () => {
       anchorKey: 'B',
       focusKey: 'B',
     },
-    contentBlockNodes6,
+    contentBlockNodes7,
   );
 });
 
