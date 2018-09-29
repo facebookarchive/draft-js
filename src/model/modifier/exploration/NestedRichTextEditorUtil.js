@@ -13,6 +13,7 @@
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
  */
+import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
@@ -172,7 +173,12 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       return EditorState.push(
         editorState,
         withoutBlockStyle,
-        'change-block-type',
+        withoutBlockStyle
+          .getBlockMap()
+          .get(currentBlock.getKey())
+          .getType() === 'unstyled'
+          ? 'change-block-type'
+          : 'adjust-depth',
       );
     }
 
@@ -350,117 +356,10 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       // on un-tab
     } else {
       // if the block isn't nested, do nothing
-      const parentKey = block.getParentKey();
-      if (parentKey == null) {
+      if (block.getParentKey() == null) {
         return editorState;
       }
-      const parent = blockMap.get(parentKey);
-      const existingChildren = parent.getChildKeys();
-      const blockIndex = existingChildren.indexOf(key);
-      if (blockIndex === 0 || blockIndex === existingChildren.count() - 1) {
-        blockMap = DraftTreeOperations.moveChildUp(blockMap, key);
-      } else {
-        // split the block into [0, blockIndex] in parent & the rest in a new block
-        const prevChildren = existingChildren.slice(0, blockIndex + 1);
-        const nextChildren = existingChildren.slice(blockIndex + 1);
-        blockMap = blockMap.set(
-          parentKey,
-          parent.merge({children: prevChildren}),
-        );
-        const newBlock = new ContentBlockNode({
-          key: generateRandomKey(),
-          text: '',
-          depth: parent.getDepth(),
-          type: parent.getType(),
-          children: nextChildren,
-          parent: parent.getParentKey(),
-        });
-        // add new block just before its the original next sibling in the block map
-        // TODO(T33894878): Remove the map reordering code & fix converter after launch
-        invariant(
-          nextSiblingKey != null,
-          'block must have a next sibling here',
-        );
-        const blocks = blockMap.toSeq();
-        blockMap = blocks
-          .takeUntil(block => block.getKey() === nextSiblingKey)
-          .concat(
-            [[newBlock.getKey(), newBlock]],
-            blocks.skipUntil(block => block.getKey() === nextSiblingKey),
-          )
-          .toOrderedMap();
-
-        // set the nextChildren's parent to the new block
-        blockMap = blockMap.map(
-          block =>
-            nextChildren.includes(block.getKey())
-              ? block.merge({parent: newBlock.getKey()})
-              : block,
-        );
-        // update the next/previous pointers for the children at the split
-        blockMap = blockMap
-          .set(key, block.merge({nextSibling: null}))
-          .set(
-            nextSiblingKey,
-            blockMap.get(nextSiblingKey).merge({prevSibling: null}),
-          );
-        const parentNextSiblingKey = parent.getNextSiblingKey();
-        if (parentNextSiblingKey != null) {
-          blockMap = DraftTreeOperations.updateSibling(
-            blockMap,
-            newBlock.getKey(),
-            parentNextSiblingKey,
-          );
-        }
-        blockMap = DraftTreeOperations.updateSibling(
-          blockMap,
-          parentKey,
-          newBlock.getKey(),
-        );
-        blockMap = DraftTreeOperations.moveChildUp(blockMap, key);
-      }
-
-      // on untab, we also want to unnest any sibling blocks that become two levels deep
-      // ensure that block's old parent does not have a non-leaf as its first child.
-      let childWasUntabbed = false;
-      if (parentKey != null) {
-        let parent = blockMap.get(parentKey);
-        while (parent != null) {
-          const children = parent.getChildKeys();
-          const firstChildKey = children.first();
-          invariant(
-            firstChildKey != null,
-            'parent must have at least one child',
-          );
-          const firstChild = blockMap.get(firstChildKey);
-          if (firstChild.getChildKeys().count() === 0) {
-            break;
-          } else {
-            blockMap = DraftTreeOperations.moveChildUp(blockMap, firstChildKey);
-            parent = blockMap.get(parentKey);
-            childWasUntabbed = true;
-          }
-        }
-      }
-
-      // now, we may be in a state with two non-leaf blocks of the same type
-      // next to each other
-      if (childWasUntabbed && parentKey != null) {
-        const parent = blockMap.get(parentKey);
-        const prevSiblingKey =
-          parent != null // parent may have been deleted
-            ? parent.getPrevSiblingKey()
-            : null;
-        if (prevSiblingKey != null && parent.getChildKeys().count() > 0) {
-          const prevSibling = blockMap.get(prevSiblingKey);
-          if (prevSibling != null && prevSibling.getChildKeys().count() > 0) {
-            blockMap = DraftTreeOperations.mergeBlocks(
-              blockMap,
-              prevSiblingKey,
-            );
-          }
-        }
-      }
+      blockMap = onUntab(blockMap, block);
     }
     content = editorState.getCurrentContent().merge({
       blockMap: blockMap,
@@ -574,12 +473,129 @@ const NestedRichTextEditorUtil: RichTextUtils = {
         return null;
       }
 
+      const depth = block.getDepth();
       if (type !== 'unstyled') {
+        if (
+          (type === 'unordered-list-item' || type === 'ordered-list-item') &&
+          depth > 0
+        ) {
+          let newBlockMap = onUntab(content.getBlockMap(), block);
+          newBlockMap = newBlockMap.set(
+            key,
+            newBlockMap.get(key).merge({depth: depth - 1}),
+          );
+          return content.merge({blockMap: newBlockMap});
+        }
         return DraftModifier.setBlockType(content, selection, 'unstyled');
       }
     }
     return null;
   },
+};
+
+const onUntab = (blockMap: BlockMap, block: ContentBlockNode): BlockMap => {
+  const key = block.getKey();
+  const parentKey = block.getParentKey();
+  const nextSiblingKey = block.getNextSiblingKey();
+  if (parentKey == null) {
+    return blockMap;
+  }
+  const parent = blockMap.get(parentKey);
+  const existingChildren = parent.getChildKeys();
+  const blockIndex = existingChildren.indexOf(key);
+  if (blockIndex === 0 || blockIndex === existingChildren.count() - 1) {
+    blockMap = DraftTreeOperations.moveChildUp(blockMap, key);
+  } else {
+    // split the block into [0, blockIndex] in parent & the rest in a new block
+    const prevChildren = existingChildren.slice(0, blockIndex + 1);
+    const nextChildren = existingChildren.slice(blockIndex + 1);
+    blockMap = blockMap.set(parentKey, parent.merge({children: prevChildren}));
+    const newBlock = new ContentBlockNode({
+      key: generateRandomKey(),
+      text: '',
+      depth: parent.getDepth(),
+      type: parent.getType(),
+      children: nextChildren,
+      parent: parent.getParentKey(),
+    });
+    // add new block just before its the original next sibling in the block map
+    // TODO(T33894878): Remove the map reordering code & fix converter after launch
+    invariant(nextSiblingKey != null, 'block must have a next sibling here');
+    const blocks = blockMap.toSeq();
+    blockMap = blocks
+      .takeUntil(block => block.getKey() === nextSiblingKey)
+      .concat(
+        [[newBlock.getKey(), newBlock]],
+        blocks.skipUntil(block => block.getKey() === nextSiblingKey),
+      )
+      .toOrderedMap();
+
+    // set the nextChildren's parent to the new block
+    blockMap = blockMap.map(
+      block =>
+        nextChildren.includes(block.getKey())
+          ? block.merge({parent: newBlock.getKey()})
+          : block,
+    );
+    // update the next/previous pointers for the children at the split
+    blockMap = blockMap
+      .set(key, block.merge({nextSibling: null}))
+      .set(
+        nextSiblingKey,
+        blockMap.get(nextSiblingKey).merge({prevSibling: null}),
+      );
+    const parentNextSiblingKey = parent.getNextSiblingKey();
+    if (parentNextSiblingKey != null) {
+      blockMap = DraftTreeOperations.updateSibling(
+        blockMap,
+        newBlock.getKey(),
+        parentNextSiblingKey,
+      );
+    }
+    blockMap = DraftTreeOperations.updateSibling(
+      blockMap,
+      parentKey,
+      newBlock.getKey(),
+    );
+    blockMap = DraftTreeOperations.moveChildUp(blockMap, key);
+  }
+
+  // on untab, we also want to unnest any sibling blocks that become two levels deep
+  // ensure that block's old parent does not have a non-leaf as its first child.
+  let childWasUntabbed = false;
+  if (parentKey != null) {
+    let parent = blockMap.get(parentKey);
+    while (parent != null) {
+      const children = parent.getChildKeys();
+      const firstChildKey = children.first();
+      invariant(firstChildKey != null, 'parent must have at least one child');
+      const firstChild = blockMap.get(firstChildKey);
+      if (firstChild.getChildKeys().count() === 0) {
+        break;
+      } else {
+        blockMap = DraftTreeOperations.moveChildUp(blockMap, firstChildKey);
+        parent = blockMap.get(parentKey);
+        childWasUntabbed = true;
+      }
+    }
+  }
+
+  // now, we may be in a state with two non-leaf blocks of the same type
+  // next to each other
+  if (childWasUntabbed && parentKey != null) {
+    const parent = blockMap.get(parentKey);
+    const prevSiblingKey =
+      parent != null // parent may have been deleted
+        ? parent.getPrevSiblingKey()
+        : null;
+    if (prevSiblingKey != null && parent.getChildKeys().count() > 0) {
+      const prevSibling = blockMap.get(prevSiblingKey);
+      if (prevSibling != null && prevSibling.getChildKeys().count() > 0) {
+        blockMap = DraftTreeOperations.mergeBlocks(blockMap, prevSiblingKey);
+      }
+    }
+  }
+  return blockMap;
 };
 
 module.exports = NestedRichTextEditorUtil;

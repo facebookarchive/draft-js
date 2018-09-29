@@ -1,5 +1,248 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`onBackspace at start of nested block unnests it 1 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "X",
+    "parent": null,
+    "prevSibling": null,
+    "text": "alpha",
+    "type": "unordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "B",
+    "nextSibling": null,
+    "parent": "X",
+    "prevSibling": null,
+    "text": "beta",
+    "type": "unordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "X",
+    "text": "",
+    "type": "unordered-list-item",
+  },
+  "X": Object {
+    "characterList": Array [],
+    "children": Array [
+      "B",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "X",
+    "nextSibling": "C",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "unordered-list-item",
+  },
+}
+`;
+
+exports[`onBackspace at start of nested block unnests it 2 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "X",
+    "parent": null,
+    "prevSibling": null,
+    "text": "alpha",
+    "type": "unordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "B",
+    "nextSibling": "Y",
+    "parent": "X",
+    "prevSibling": null,
+    "text": "beta",
+    "type": "unordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 2,
+    "key": "C",
+    "nextSibling": null,
+    "parent": "Y",
+    "prevSibling": null,
+    "text": "charlie",
+    "type": "unordered-list-item",
+  },
+  "D": Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "D",
+    "nextSibling": null,
+    "parent": "X",
+    "prevSibling": "Y",
+    "text": "",
+    "type": "unordered-list-item",
+  },
+  "X": Object {
+    "characterList": Array [],
+    "children": Array [
+      "B",
+      "Y",
+      "D",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "X",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "unordered-list-item",
+  },
+  "Y": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "Y",
+    "nextSibling": "D",
+    "parent": "X",
+    "prevSibling": "B",
+    "text": "",
+    "type": "unordered-list-item",
+  },
+}
+`;
+
 exports[`onBackspace does not handle non-collapsed selections 1`] = `null`;
 
 exports[`onBackspace does not handle non-zero-offset selections 1`] = `null`;

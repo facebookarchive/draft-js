@@ -886,6 +886,139 @@ test('onTab (untab) merges adjacent non-leaf blocks', () => {
   );
 });
 
+// Some backspace operations have similar behavior to untab
+const contentBlockNodes8 = [
+  new ContentBlockNode({
+    key: 'A',
+    parent: null,
+    text: 'alpha',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'X',
+    depth: 0,
+    type: 'unordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['B', 'C']),
+    prevSibling: 'A',
+    nextSibling: null,
+    depth: 0,
+    type: 'unordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'C',
+    depth: 1,
+    type: 'unordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'C',
+    parent: 'X',
+    text: '',
+    children: Immutable.List([]),
+    prevSibling: 'B',
+    nextSibling: null,
+    depth: 1,
+    type: 'unordered-list-item',
+  }),
+];
+
+test('onBackspace at start of nested block unnests it 1', () => {
+  assertNestedUtilOperation(
+    editorState => onBackspace(editorState),
+    {
+      anchorKey: 'C',
+      focusKey: 'C',
+      anchorOffset: 0,
+      focusOffset: 0,
+    },
+    contentBlockNodes8,
+  );
+});
+
+const contentBlockNodes9 = [
+  new ContentBlockNode({
+    key: 'A',
+    parent: null,
+    text: 'alpha',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'X',
+    depth: 0,
+    type: 'unordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'X',
+    parent: null,
+    text: '',
+    children: Immutable.List(['B', 'Y']),
+    prevSibling: 'A',
+    nextSibling: null,
+    depth: 0,
+    type: 'unordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'B',
+    parent: 'X',
+    text: 'beta',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'Y',
+    depth: 1,
+    type: 'unordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'Y',
+    parent: 'X',
+    text: '',
+    children: Immutable.List(['C', 'D']),
+    prevSibling: 'B',
+    nextSibling: null,
+    depth: 1,
+    type: 'unordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'C',
+    parent: 'Y',
+    text: 'charlie',
+    children: Immutable.List([]),
+    prevSibling: null,
+    nextSibling: 'D',
+    depth: 2,
+    type: 'unordered-list-item',
+  }),
+  new ContentBlockNode({
+    key: 'D',
+    parent: 'Y',
+    text: '',
+    children: Immutable.List([]),
+    prevSibling: 'C',
+    nextSibling: null,
+    depth: 2,
+    type: 'unordered-list-item',
+  }),
+];
+
+test('onBackspace at start of nested block unnests it 2', () => {
+  assertNestedUtilOperation(
+    editorState => onBackspace(editorState),
+    {
+      anchorKey: 'D',
+      focusKey: 'D',
+      anchorOffset: 0,
+      focusOffset: 0,
+    },
+    contentBlockNodes9,
+  );
+});
+
 // TODO (T32099101)
 test('onSplitParent must split a nested block retaining parent', () => {
   expect(true).toBe(true);
