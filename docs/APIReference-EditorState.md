@@ -118,7 +118,14 @@ The list below includes the most commonly used instance methods for `EditorState
 > Note
 >
 > Use the static `EditorState` methods to set properties, rather than using
-> the Immutable API directly.
+> the Immutable API directly. This means using `EditorState.set` to pass
+> new options to an EditorState instance.
+>
+> **Example**
+> ```
+> const editorState = EditorState.createEmpty();
+> const editorStateWithoutUndo = EditorState.set(editorState, {allowUndo: false});
+> ```
 
 <ul class="apiIndex">
   <li>
