@@ -12,7 +12,7 @@ The [Rich Editor](http://github.com/facebook/draft-js/tree/master/examples/draft
 [Colorful Editor](http://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/color)
 examples demonstrate complex inline style behavior in action.
 
-### Model
+## Model
 
 Within the Draft model, inline styles are represented at the character level,
 using an immutable `OrderedSet` to define the list of styles to be applied to
@@ -38,7 +38,7 @@ In essence, our styles are:
 ]
 ```
 
-### Overlapping Styles
+## Overlapping Styles
 
 Now let's say that we wish to make the middle range of characters italic as well:
 "He_llo **wo**_**rld**". This operation can be performed via the
@@ -64,7 +64,7 @@ When determining how to render inline-styled text, Draft will identify
 contiguous ranges of identically styled characters and render those characters
 together in styled `span` nodes.
 
-### Mapping a style string to CSS
+## Mapping a style string to CSS
 
 By default, `Editor` provides support for a basic list of inline styles:
 `'BOLD'`, `'ITALIC'`, `'UNDERLINE'`, and `'CODE'`. These are mapped to simple CSS
