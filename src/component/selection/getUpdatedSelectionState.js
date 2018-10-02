@@ -6,18 +6,19 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule getUpdatedSelectionState
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var DraftOffsetKey = require('DraftOffsetKey');
-
-var nullthrows = require('nullthrows');
-
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
+
+const DraftOffsetKey = require('DraftOffsetKey');
+
+const nullthrows = require('nullthrows');
 
 function getUpdatedSelectionState(
   editorState: EditorState,
@@ -26,72 +27,55 @@ function getUpdatedSelectionState(
   focusKey: string,
   focusOffset: number,
 ): SelectionState {
-  var selection: SelectionState = nullthrows(editorState.getSelection());
+  const selection: SelectionState = nullthrows(editorState.getSelection());
   if (__DEV__) {
     if (!anchorKey || !focusKey) {
       /*eslint-disable no-console */
-      console.warn(
-        'Invalid selection state.',
-        arguments,
-        editorState.toJS(),
-      );
+      console.warn('Invalid selection state.', arguments, editorState.toJS());
       /*eslint-enable no-console */
       return selection;
-
     }
   }
 
-  var anchorPath = DraftOffsetKey.decode(anchorKey);
-  var anchorBlockKey = anchorPath.blockKey;
-  var anchorLeaf = editorState
+  const anchorPath = DraftOffsetKey.decode(anchorKey);
+  const anchorBlockKey = anchorPath.blockKey;
+  const anchorLeaf = editorState
     .getBlockTree(anchorBlockKey)
-    .getIn([
-      anchorPath.decoratorKey,
-      'leaves',
-      anchorPath.leafKey,
-    ]);
+    .getIn([anchorPath.decoratorKey, 'leaves', anchorPath.leafKey]);
 
-  var focusPath = DraftOffsetKey.decode(focusKey);
-  var focusBlockKey = focusPath.blockKey;
-  var focusLeaf = editorState
+  const focusPath = DraftOffsetKey.decode(focusKey);
+  const focusBlockKey = focusPath.blockKey;
+  const focusLeaf = editorState
     .getBlockTree(focusBlockKey)
-    .getIn([
-      focusPath.decoratorKey,
-      'leaves',
-      focusPath.leafKey,
-    ]);
+    .getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
 
-  var anchorLeafStart: number = anchorLeaf.get('start');
-  var focusLeafStart: number = focusLeaf.get('start');
+  const anchorLeafStart: number = anchorLeaf.get('start');
+  const focusLeafStart: number = focusLeaf.get('start');
 
-  var anchorBlockOffset = anchorLeaf ? anchorLeafStart + anchorOffset : null;
-  var focusBlockOffset = focusLeaf ? focusLeafStart + focusOffset : null;
+  const anchorBlockOffset = anchorLeaf ? anchorLeafStart + anchorOffset : null;
+  const focusBlockOffset = focusLeaf ? focusLeafStart + focusOffset : null;
 
-  var areEqual = (
+  const areEqual =
     selection.getAnchorKey() === anchorBlockKey &&
     selection.getAnchorOffset() === anchorBlockOffset &&
     selection.getFocusKey() === focusBlockKey &&
-    selection.getFocusOffset() === focusBlockOffset
-  );
+    selection.getFocusOffset() === focusBlockOffset;
 
   if (areEqual) {
     return selection;
   }
 
-  var isBackward = false;
+  let isBackward = false;
   if (anchorBlockKey === focusBlockKey) {
-    var anchorLeafEnd: number = anchorLeaf.get('end');
-    var focusLeafEnd: number = focusLeaf.get('end');
-    if (
-      focusLeafStart === anchorLeafStart &&
-      focusLeafEnd === anchorLeafEnd
-    ) {
+    const anchorLeafEnd: number = anchorLeaf.get('end');
+    const focusLeafEnd: number = focusLeaf.get('end');
+    if (focusLeafStart === anchorLeafStart && focusLeafEnd === anchorLeafEnd) {
       isBackward = focusOffset < anchorOffset;
     } else {
       isBackward = focusLeafStart < anchorLeafStart;
     }
   } else {
-    var startKey = editorState
+    const startKey = editorState
       .getCurrentContent()
       .getBlockMap()
       .keySeq()

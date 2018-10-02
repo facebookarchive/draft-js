@@ -6,20 +6,22 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEntityInstance
+ * @legacyServerCallableInstance
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var Immutable = require('immutable');
-
-import type {DraftEntityType} from 'DraftEntityType';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
 
-var {Record} = Immutable;
+const Immutable = require('immutable');
 
-var DraftEntityInstanceRecord = Record({
+const {Record} = Immutable;
+
+const DraftEntityInstanceRecord = Record({
   type: 'TOKEN',
   mutability: 'IMMUTABLE',
   data: Object,

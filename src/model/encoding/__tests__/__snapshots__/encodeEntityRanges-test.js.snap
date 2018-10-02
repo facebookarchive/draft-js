@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must handle ranges that include surrogate pairs 1`] = `
+Array [
+  Object {
+    "key": 0,
+    "length": 5,
+    "offset": 6,
+  },
+  Object {
+    "key": 1,
+    "length": 2,
+    "offset": 13,
+  },
+]
+`;
+
+exports[`must return an empty array if no entities present 1`] = `Array []`;
+
+exports[`must return an empty array if no entities present 2`] = `Array []`;
+
+exports[`must return ranges with an entity present more than once 1`] = `
+Array [
+  Object {
+    "key": 0,
+    "length": 2,
+    "offset": 2,
+  },
+  Object {
+    "key": 0,
+    "length": 2,
+    "offset": 5,
+  },
+]
+`;
+
+exports[`must return ranges with multiple entities present 1`] = `
+Array [
+  Object {
+    "key": 0,
+    "length": 2,
+    "offset": 2,
+  },
+  Object {
+    "key": 1,
+    "length": 2,
+    "offset": 5,
+  },
+]
+`;
+
+exports[`must return ranges with the storage-mapped key 1`] = `
+Array [
+  Object {
+    "key": 0,
+    "length": 2,
+    "offset": 2,
+  },
+]
+`;

@@ -6,13 +6,14 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftDecoratorType
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {List} from 'immutable';
 
@@ -26,10 +27,10 @@ export type DraftDecoratorType = {
   /**
    * Given a `ContentBlock`, return an immutable List of decorator keys.
    */
-   getDecorations(
-     block: ContentBlock,
-     contentState: ContentState,
-   ): List<?string>,
+  getDecorations(
+    block: BlockNodeRecord,
+    contentState: ContentState,
+  ): List<?string>,
 
   /**
    * Given a decorator key, return the component to use when rendering

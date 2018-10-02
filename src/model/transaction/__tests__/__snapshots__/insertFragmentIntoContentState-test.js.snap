@@ -1,0 +1,1397 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must apply fragment at the end 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "a",
+    "text": "Alphaxx",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must apply fragment to the start 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "a",
+    "text": "xxAlpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must apply fragment to within block 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "a",
+    "text": "Alxxpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must apply multiblock fragments 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "a",
+    "text": "xx",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {
+      "b": 2,
+    },
+    "depth": 0,
+    "key": "key4",
+    "text": "yyAlpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must be able to insert a fragment of ContentBlockNodes while updating the target block with the first fragment block properties 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "first",
+    "nextSibling": "key15",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key16",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key15",
+    "nextSibling": "second",
+    "parent": null,
+    "prevSibling": "first",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key17",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key16",
+    "nextSibling": null,
+    "parent": "key15",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key17",
+    "nextSibling": null,
+    "parent": "key16",
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "second",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key15",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must be able to insert a fragment of ContentBlockNodes while updating the target block with the first fragment block properties after nested block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "firstChild",
+      "key19",
+      "key22",
+      "lastChild",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "root",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "firstChild",
+    "nextSibling": "key19",
+    "parent": "root",
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key20",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key19",
+    "nextSibling": "key22",
+    "parent": "root",
+    "prevSibling": "firstChild",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key21",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key20",
+    "nextSibling": null,
+    "parent": "key19",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key21",
+    "nextSibling": null,
+    "parent": "key20",
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key22",
+    "nextSibling": "lastChild",
+    "parent": "root",
+    "prevSibling": "key19",
+    "text": "Elephant",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "lastChild",
+    "nextSibling": null,
+    "parent": "root",
+    "prevSibling": "key22",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must be able to insert a fragment with a single ContentBlockNode 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "A",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "some text",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must be able to insert fragment of ContentBlockNodes 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "first",
+    "nextSibling": "key6",
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key7",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key6",
+    "nextSibling": "key9",
+    "parent": null,
+    "prevSibling": "first",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key8",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key7",
+    "nextSibling": null,
+    "parent": "key6",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key8",
+    "nextSibling": null,
+    "parent": "key7",
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key9",
+    "nextSibling": "second",
+    "parent": null,
+    "prevSibling": "key6",
+    "text": "Elephant",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "second",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key9",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must be able to insert fragment of ContentBlockNodes after nested block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "firstChild",
+      "key10",
+      "key13",
+      "lastChild",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "root",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "firstChild",
+    "nextSibling": "key10",
+    "parent": "root",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key11",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key10",
+    "nextSibling": "key13",
+    "parent": "root",
+    "prevSibling": "firstChild",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key12",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key11",
+    "nextSibling": null,
+    "parent": "key10",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key12",
+    "nextSibling": null,
+    "parent": "key11",
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key13",
+    "nextSibling": "lastChild",
+    "parent": "root",
+    "prevSibling": "key10",
+    "text": "Elephant",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "lastChild",
+    "nextSibling": null,
+    "parent": "root",
+    "prevSibling": "key13",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;

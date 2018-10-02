@@ -6,20 +6,20 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule createEntityInContentState
- * @typechecks
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-const DraftEntityInstance = require('DraftEntityInstance');
-
-const addEntityToContentState = require('addEntityToContentState');
-
 import type ContentState from 'ContentState';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
+
+const DraftEntityInstance = require('DraftEntityInstance');
+
+const addEntityToContentState = require('addEntityToContentState');
 
 function createEntityInContentState(
   contentState: ContentState,

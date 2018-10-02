@@ -6,8 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule RawDraftContentBlock
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -28,4 +29,5 @@ export type RawDraftContentBlock = {
   inlineStyleRanges: ?Array<InlineStyleRange>,
   entityRanges: ?Array<EntityRange>,
   data?: Object,
+  children?: Array<RawDraftContentBlock>,
 };

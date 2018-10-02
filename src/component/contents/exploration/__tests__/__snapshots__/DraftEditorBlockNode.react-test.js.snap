@@ -1,0 +1,609 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders block with child that have wrapperElement 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <ol
+      className="public__DraftStyleDefault__ol"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="B-0-0"
+        >
+          <span
+            data-offset-key="B-0-0"
+            style={Object {}}
+          >
+            <span
+              data-text="true"
+            >
+              fist list item
+            </span>
+          </span>
+        </div>
+      </li>
+    </ol>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with children 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <h3
+      data-block={true}
+      data-editor="editor"
+      data-offset-key="B-0-0"
+    >
+      <div
+        className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+        data-offset-key="B-0-0"
+      >
+        <span
+          data-offset-key="B-0-0"
+          style={Object {}}
+        >
+          <span
+            data-text="true"
+          >
+            Left
+          </span>
+        </span>
+      </div>
+    </h3>
+    <h1
+      data-block={true}
+      data-editor="editor"
+      data-offset-key="C-0-0"
+    >
+      <div
+        className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+        data-offset-key="C-0-0"
+      >
+        <span
+          data-offset-key="C-0-0"
+          style={Object {}}
+        >
+          <span
+            data-text="true"
+          >
+            Middle
+          </span>
+        </span>
+      </div>
+    </h1>
+    <h2
+      data-block={true}
+      data-editor="editor"
+      data-offset-key="D-0-0"
+    >
+      <div
+        className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+        data-offset-key="D-0-0"
+      >
+        <span
+          data-offset-key="D-0-0"
+          style={Object {}}
+        >
+          <span
+            data-text="true"
+          >
+            Right
+          </span>
+        </span>
+      </div>
+    </h2>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with children that have same wrapperElement 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <ol
+      className="public__DraftStyleDefault__ol"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="B-0-0"
+        >
+          <span
+            data-offset-key="B-0-0"
+            style={Object {}}
+          >
+            <span
+              data-text="true"
+            >
+              fist list item
+            </span>
+          </span>
+        </div>
+      </li>
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="C-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="C-0-0"
+        >
+          <span
+            data-offset-key="C-0-0"
+            style={Object {}}
+          >
+            <span
+              data-text="true"
+            >
+              second list item
+            </span>
+          </span>
+        </div>
+      </li>
+    </ol>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with nested child that have different wrapperElement 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <ul
+      className="public__DraftStyleDefault__ul"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="B-0-0"
+        >
+          <ol
+            className="public__DraftStyleDefault__ol"
+            data-offset-key="C-0-0"
+          >
+            <li
+              data-block={true}
+              data-editor="editor"
+              data-offset-key="C-0-0"
+            >
+              <div
+                className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+                data-offset-key="C-0-0"
+              >
+                <span
+                  data-offset-key="C-0-0"
+                  style={Object {}}
+                >
+                  <span
+                    data-text="true"
+                  >
+                    deeply nested list
+                  </span>
+                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </li>
+    </ul>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with nested child that have same wrapperElement 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <ul
+      className="public__DraftStyleDefault__ul"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="B-0-0"
+        >
+          <ul
+            className="public__DraftStyleDefault__ul"
+            data-offset-key="C-0-0"
+          >
+            <li
+              data-block={true}
+              data-editor="editor"
+              data-offset-key="C-0-0"
+            >
+              <div
+                className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+                data-offset-key="C-0-0"
+              >
+                <span
+                  data-offset-key="C-0-0"
+                  style={Object {}}
+                >
+                  <span
+                    data-text="true"
+                  >
+                    deeply nested list
+                  </span>
+                </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with nested child that is of different block type 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <ol
+      className="public__DraftStyleDefault__ol"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="B-0-0"
+        >
+          <h1
+            data-block={true}
+            data-editor="editor"
+            data-offset-key="C-0-0"
+          >
+            <div
+              className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+              data-offset-key="C-0-0"
+            >
+              <span
+                data-offset-key="C-0-0"
+                style={Object {}}
+              >
+                <span
+                  data-text="true"
+                >
+                  header inside list
+                </span>
+              </span>
+            </div>
+          </h1>
+        </div>
+      </li>
+    </ol>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with nested children with blockStyleFn 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <ol
+      className="public__DraftStyleDefault__ol"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="B-0-0"
+        >
+          <h1
+            className="My__fancy__custom__class"
+            data-block={true}
+            data-editor="editor"
+            data-offset-key="C-0-0"
+          >
+            <div
+              className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+              data-offset-key="C-0-0"
+            >
+              <span
+                data-offset-key="C-0-0"
+                style={Object {}}
+              >
+                <span
+                  data-text="true"
+                >
+                  header inside list
+                </span>
+              </span>
+            </div>
+          </h1>
+        </div>
+      </li>
+    </ol>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with nested children with custom component 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <ol
+      className="public__DraftStyleDefault__ol"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="B-0-0"
+        >
+          <h1
+            data-block={true}
+            data-editor="editor"
+            data-offset-key="C-0-0"
+          >
+            <div
+              className="custom__header__one"
+            >
+              Custom Component
+            </div>
+          </h1>
+        </div>
+      </li>
+    </ol>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with nested children with custom component and editable prop 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <ol
+      className="public__DraftStyleDefault__ol"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="B-0-0"
+        >
+          <h1
+            contentEditable={false}
+            data-block={true}
+            data-editor="editor"
+            data-offset-key="C-0-0"
+            suppressContentEditableWarning={true}
+          >
+            <div
+              className="custom__header__one"
+            >
+              Custom Component 
+              bar
+            </div>
+          </h1>
+        </div>
+      </li>
+    </ol>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with nested children with decorator 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <ol
+      className="public__DraftStyleDefault__ol"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+          data-offset-key="B-0-0"
+        >
+          <h1
+            data-block={true}
+            data-editor="editor"
+            data-offset-key="C-0-0"
+          >
+            <div
+              className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+              data-offset-key="C-0-0"
+            >
+              <span
+                className="custom__decorated__text"
+              >
+                <span
+                  data-offset-key="C-0-0"
+                  style={Object {}}
+                >
+                  <span
+                    data-text="true"
+                  >
+                    header inside list
+                  </span>
+                </span>
+              </span>
+            </div>
+          </h1>
+        </div>
+      </li>
+    </ol>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with nested children with different direction 1`] = `
+<blockquote
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__rtl"
+    data-offset-key="A-0-0"
+  >
+    <ol
+      className="public__DraftStyleDefault__ol"
+      data-offset-key="B-0-0"
+    >
+      <li
+        data-block={true}
+        data-editor="editor"
+        data-offset-key="B-0-0"
+      >
+        <div
+          className="public__DraftStyleDefault__block public__DraftStyleDefault__rtl"
+          data-offset-key="B-0-0"
+        >
+          <h1
+            data-block={true}
+            data-editor="editor"
+            data-offset-key="C-0-0"
+          >
+            <div
+              className="public__DraftStyleDefault__block public__DraftStyleDefault__rtl"
+              data-offset-key="C-0-0"
+            >
+              <span
+                data-offset-key="C-0-0"
+                style={Object {}}
+              >
+                <span
+                  data-text="true"
+                >
+                  header inside list
+                </span>
+              </span>
+            </div>
+          </h1>
+        </div>
+      </li>
+    </ol>
+  </div>
+</blockquote>
+`;
+
+exports[`renders block with no children 1`] = `
+<h1
+  data-block={true}
+  data-editor="editor"
+  data-offset-key="A-0-0"
+>
+  <div
+    className="public__DraftStyleDefault__block public__DraftStyleDefault__ltr"
+    data-offset-key="A-0-0"
+  >
+    <span
+      data-offset-key="A-0-0"
+      style={Object {}}
+    >
+      <span
+        data-text="true"
+      >
+        some text
+      </span>
+    </span>
+  </div>
+</h1>
+`;

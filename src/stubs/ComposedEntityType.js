@@ -6,17 +6,17 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule ComposedEntityType
- * @flow
+ * @format
+ * @flow strict
  */
 
 'use strict';
 
 var ComposedEntityType = {
-  'LINK': true,
-  'TOKEN': true,
-  'PHOTO': true,
-  'IMAGE': true,
+  LINK: true,
+  TOKEN: true,
+  PHOTO: true,
+  IMAGE: true,
 };
 
 module.exports = ComposedEntityType;

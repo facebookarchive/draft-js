@@ -6,22 +6,22 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule CompositeDraftDecorator
- * @typechecks
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var Immutable = require('immutable');
-
-import type ContentBlock from 'ContentBlock';
-import type {DraftDecorator} from 'DraftDecorator';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
+import type {DraftDecorator} from 'DraftDecorator';
 
-var {List} = Immutable;
+const Immutable = require('immutable');
 
-var DELIMITER = '.';
+const {List} = Immutable;
+
+const DELIMITER = '.';
 
 /**
  * A CompositeDraftDecorator traverses through a list of DraftDecorator
@@ -43,9 +43,9 @@ var DELIMITER = '.';
  * preserved and the new match is discarded.
  */
 class CompositeDraftDecorator {
-  _decorators: Array<DraftDecorator>;
+  _decorators: $ReadOnlyArray<DraftDecorator>;
 
-  constructor(decorators: Array<DraftDecorator>) {
+  constructor(decorators: $ReadOnlyArray<DraftDecorator>) {
     // Copy the decorator array, since we use this array order to determine
     // precedence of decoration matching. If the array is mutated externally,
     // we don't want to be affected here.
@@ -53,38 +53,36 @@ class CompositeDraftDecorator {
   }
 
   getDecorations(
-    block: ContentBlock,
+    block: BlockNodeRecord,
     contentState: ContentState,
   ): List<?string> {
-    var decorations = Array(block.getText().length).fill(null);
+    const decorations = Array(block.getText().length).fill(null);
 
-    this._decorators.forEach(
-      (/*object*/ decorator, /*number*/ ii) => {
-        var counter = 0;
-        var strategy = decorator.strategy;
-        var callback  = (/*number*/ start, /*number*/ end) => {
-          // Find out if any of our matching range is already occupied
-          // by another decorator. If so, discard the match. Otherwise, store
-          // the component key for rendering.
-          if (canOccupySlice(decorations, start, end)) {
-            occupySlice(decorations, start, end, ii + DELIMITER + counter);
-            counter++;
-          }
-        };
-        strategy(block, callback, contentState);
-      },
-    );
+    this._decorators.forEach((/*object*/ decorator, /*number*/ ii) => {
+      let counter = 0;
+      const strategy = decorator.strategy;
+      const callback = (/*number*/ start, /*number*/ end) => {
+        // Find out if any of our matching range is already occupied
+        // by another decorator. If so, discard the match. Otherwise, store
+        // the component key for rendering.
+        if (canOccupySlice(decorations, start, end)) {
+          occupySlice(decorations, start, end, ii + DELIMITER + counter);
+          counter++;
+        }
+      };
+      strategy(block, callback, contentState);
+    });
 
     return List(decorations);
   }
 
   getComponentForKey(key: string): Function {
-    var componentKey = parseInt(key.split(DELIMITER)[0], 10);
+    const componentKey = parseInt(key.split(DELIMITER)[0], 10);
     return this._decorators[componentKey].component;
   }
 
   getPropsForKey(key: string): ?Object {
-    var componentKey = parseInt(key.split(DELIMITER)[0], 10);
+    const componentKey = parseInt(key.split(DELIMITER)[0], 10);
     return this._decorators[componentKey].props;
   }
 }
@@ -98,7 +96,7 @@ function canOccupySlice(
   start: number,
   end: number,
 ): boolean {
-  for (var ii = start; ii < end; ii++) {
+  for (let ii = start; ii < end; ii++) {
     if (decorations[ii] != null) {
       return false;
     }
@@ -116,7 +114,7 @@ function occupySlice(
   end: number,
   componentKey: string,
 ): void {
-  for (var ii = start; ii < end; ii++) {
+  for (let ii = start; ii < end; ii++) {
     targetArr[ii] = componentKey;
   }
 }

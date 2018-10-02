@@ -6,8 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule findRangesImmutable
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -31,7 +32,7 @@ function findRangesImmutable<T>(
     return;
   }
 
-  var cursor: number = 0;
+  let cursor: number = 0;
 
   haystack.reduce((value: T, nextValue, nextIndex) => {
     if (!areEqualFn(value, nextValue)) {

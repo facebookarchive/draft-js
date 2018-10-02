@@ -6,30 +6,30 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule modifyBlockForContentState
- * @typechecks
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-const Immutable = require('immutable');
-
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
+
+const Immutable = require('immutable');
 
 const {Map} = Immutable;
 
 function modifyBlockForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-  operation: (block: ContentBlock) => ContentBlock,
+  operation: (block: BlockNodeRecord) => BlockNodeRecord,
 ): ContentState {
-  var startKey = selectionState.getStartKey();
-  var endKey = selectionState.getEndKey();
-  var blockMap = contentState.getBlockMap();
-  var newBlocks = blockMap
+  const startKey = selectionState.getStartKey();
+  const endKey = selectionState.getEndKey();
+  const blockMap = contentState.getBlockMap();
+  const newBlocks = blockMap
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)

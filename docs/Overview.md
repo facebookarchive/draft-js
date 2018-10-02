@@ -1,10 +1,6 @@
 ---
 id: getting-started
 title: Overview
-layout: docs
-category: Quick Start
-next: quickstart-api-basics
-permalink: docs/overview.html
 ---
 
 Draft.js is a framework for building rich text editors in React, powered by an immutable model and abstracting over cross-browser differences.
@@ -74,5 +70,7 @@ Because Draft.js supports unicode, you must have the following meta tag in the `
 ```html
 <meta charset="utf-8" />
 ```
+
+`Draft.css` should be included when rendering the editor. Learn more about [why](/docs/advanced-topics-issues-and-pitfalls.html#missing-draft-css).
 
 Next, let's go into the basics of the API and learn what else you can do with Draft.js.

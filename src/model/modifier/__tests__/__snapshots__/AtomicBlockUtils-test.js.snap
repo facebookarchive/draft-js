@@ -1,0 +1,5573 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must be able to insert atomic block when experimentalTreeDataSupport is enabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "key0",
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": "key4",
+    "parent": null,
+    "prevSibling": "A",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key0",
+    "text": "first block",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must be able to move atomic block when experimentalTreeDataSupport is enabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "key0",
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": "key4",
+    "parent": null,
+    "prevSibling": "A",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key0",
+    "text": "first block",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must be able to move atomic block when experimentalTreeDataSupport is enabled 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "key4",
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "nextSibling": "key0",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "first block",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key4",
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must insert atomic after a block with collapsed selection 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic at end of block 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "Alp",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic at start of block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic at start of block with collapsed seletion 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic for cross-block selection 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "Al",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "st",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic within a block 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "A",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must insert atomic within a block, via split with collapsed selection 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "Al",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic after block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic after block 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must move atomic after block with collapsed selection 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic after block with collapsed selection 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must move atomic at end of block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at end of block 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charl",
+    "type": "blockquote",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must move atomic at end of block with collapsed selection 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at end of block with collapsed selection 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
+exports[`must move atomic at start of block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at start of block 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "arlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at start of block with collapsed selection 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic at start of block with collapsed selection 2`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic before block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic before block 2`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic before block with collapsed selection 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic before block with collapsed selection 2`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic inbetween block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic inbetween block 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "A",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key5",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic inbetween block with collapsed selection 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must move atomic inbetween block with collapsed selection 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "Al",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key5",
+    "text": "pha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`mustn't move atomic next to itself 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`mustn't move atomic next to itself with collapsed selection 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "a",
+    "text": "Alpha",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "2",
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": "1",
+        "style": Array [
+          "BOLD",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "b",
+    "text": "Bravo",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "c",
+    "text": "Test",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "d",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "e",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "f",
+    "text": "Charlie",
+    "type": "blockquote",
+  },
+]
+`;

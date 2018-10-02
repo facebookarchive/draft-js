@@ -6,16 +6,16 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule ComposedEntityMutability
- * @flow
+ * @format
+ * @flow strict
  */
 
 'use strict';
 
 var ComposedEntityMutability = {
-  'MUTABLE': true,
-  'IMMUTABLE': true,
-  'SEGMENTED': true,
+  MUTABLE: true,
+  IMMUTABLE: true,
+  SEGMENTED: true,
 };
 
 module.exports = ComposedEntityMutability;

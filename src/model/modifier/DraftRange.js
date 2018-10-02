@@ -6,8 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftRange
- * @flow
+ * @format
+ * @flow strict
+ * @emails oncall+draft_js
  */
 
 'use strict';

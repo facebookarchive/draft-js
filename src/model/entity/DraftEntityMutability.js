@@ -6,13 +6,14 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEntityMutability
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var ComposedEntityMutability = require('ComposedEntityMutability');
+const ComposedEntityMutability = require('ComposedEntityMutability');
 
 /**
  * An enum representing the possible "mutability" options for an entity.
@@ -35,7 +36,7 @@ var ComposedEntityMutability = require('ComposedEntityMutability');
  *
  * `SEGMENTED`:
  *   Segmented entities allow the removal of partial ranges of text, as
- *   separated by a delimiter. Adding characters wihin the range will remove
+ *   separated by a delimiter. Adding characters within the range will remove
  *   the entity from the entire range. Deleting characters within a segmented
  *   entity will delete only the segments affected by the deletion. Example:
  *   Facebook User mentions.

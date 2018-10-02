@@ -6,22 +6,22 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule expandRangeToStartOfLine
- * @typechecks
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
-var UnicodeUtils = require('UnicodeUtils');
+const UnicodeUtils = require('UnicodeUtils');
 
-var getRangeClientRects = require('getRangeClientRects');
-var invariant = require('invariant');
+const getRangeClientRects = require('getRangeClientRects');
+const invariant = require('invariant');
 
 /**
  * Return the computed line height, in pixels, for the provided element.
  */
 function getLineHeightPx(element: Element): number {
-  var computed = getComputedStyle(element);
-  var div = document.createElement('div');
+  const computed = getComputedStyle(element);
+  const div = document.createElement('div');
   div.style.fontFamily = computed.fontFamily;
   div.style.fontSize = computed.fontSize;
   div.style.fontStyle = computed.fontStyle;
@@ -30,12 +30,12 @@ function getLineHeightPx(element: Element): number {
   div.style.position = 'absolute';
   div.textContent = 'M';
 
-  let documentBody = document.body;
+  const documentBody = document.body;
   invariant(documentBody, 'Missing document.body');
 
   // forced layout here
   documentBody.appendChild(div);
-  var rect = div.getBoundingClientRect();
+  const rect = div.getBoundingClientRect();
   documentBody.removeChild(div);
 
   return rect.height;
@@ -57,13 +57,13 @@ function areRectsOnOneLine(
   rects: Array<ClientRect>,
   lineHeight: number,
 ): boolean {
-  var minTop = Infinity;
-  var minBottom = Infinity;
-  var maxTop = -Infinity;
-  var maxBottom = -Infinity;
+  let minTop = Infinity;
+  let minBottom = Infinity;
+  let maxTop = -Infinity;
+  let maxBottom = -Infinity;
 
-  for (var ii = 0; ii < rects.length; ii++) {
-    var rect = rects[ii];
+  for (let ii = 0; ii < rects.length; ii++) {
+    const rect = rects[ii];
     if (rect.width === 0 || rect.width === 1) {
       // When a range starts or ends a soft wrap, many browsers (Chrome, IE,
       // Safari) include an empty rect on the previous or next line. When the
@@ -82,7 +82,8 @@ function areRectsOnOneLine(
 
   return (
     maxTop <= minBottom &&
-    maxTop - minTop < lineHeight && maxBottom - minBottom < lineHeight
+    maxTop - minTop < lineHeight &&
+    maxBottom - minBottom < lineHeight
   );
 }
 
@@ -114,11 +115,11 @@ function expandRangeToStartOfLine(range: Range): Range {
   );
   range = range.cloneRange();
 
-  var containingElement = range.startContainer;
+  let containingElement = range.startContainer;
   if (containingElement.nodeType !== 1) {
     containingElement = containingElement.parentNode;
   }
-  var lineHeight = getLineHeightPx((containingElement: any));
+  const lineHeight = getLineHeightPx((containingElement: any));
 
   // Imagine our text looks like:
   //   <div><span>once upon a time, there was a <em>boy
@@ -131,8 +132,8 @@ function expandRangeToStartOfLine(range: Range): Range {
   // the break point is inside the span, then inside the <em>, then in its text
   // node child, the actual break point before "who".
 
-  var bestContainer = range.endContainer;
-  var bestOffset = range.endOffset;
+  let bestContainer = range.endContainer;
+  let bestOffset = range.endOffset;
   range.setStart(range.startContainer, 0);
 
   while (areRectsOnOneLine(getRangeClientRects(range), lineHeight)) {
@@ -143,8 +144,10 @@ function expandRangeToStartOfLine(range: Range): Range {
       'Found unexpected detached subtree when traversing.',
     );
     range.setStartBefore(bestContainer);
-    if (bestContainer.nodeType === 1 &&
-        getComputedStyle((bestContainer: any)).display !== 'inline') {
+    if (
+      bestContainer.nodeType === 1 &&
+      getComputedStyle((bestContainer: any)).display !== 'inline'
+    ) {
       // The start of the line is never in a different block-level container.
       break;
     }
@@ -159,15 +162,19 @@ function expandRangeToStartOfLine(range: Range): Range {
 
   // At all times, (bestContainer, bestOffset) is the latest single-line start
   // point that we know of.
-  var currentContainer = bestContainer;
-  var maxIndexToConsider = bestOffset - 1;
+  let currentContainer = bestContainer;
+  let maxIndexToConsider = bestOffset - 1;
 
   do {
-    var nodeValue = currentContainer.nodeValue;
+    const nodeValue = currentContainer.nodeValue;
+    let ii = maxIndexToConsider;
 
-    for (var ii = maxIndexToConsider; ii >= 0; ii--) {
-      if (nodeValue != null && ii > 0 &&
-          UnicodeUtils.isSurrogatePair(nodeValue, ii - 1)) {
+    for (; ii >= 0; ii--) {
+      if (
+        nodeValue != null &&
+        ii > 0 &&
+        UnicodeUtils.isSurrogatePair(nodeValue, ii - 1)
+      ) {
         // We're in the middle of a surrogate pair -- skip over so we never
         // return a range with an endpoint in the middle of a code point.
         continue;

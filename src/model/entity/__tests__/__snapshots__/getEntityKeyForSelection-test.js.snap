@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must not return key if immutable 1`] = `null`;
+
+exports[`must not return key if immutable with collapsed selection 1`] = `null`;
+
+exports[`must not return key if mutable with collapsed selection at end of an entity 1`] = `null`;
+
+exports[`must not return key if segmented 1`] = `null`;
+
+exports[`must not return key if segmented with collapsed selection 1`] = `null`;
+
+exports[`must return key if mutable 1`] = `"1"`;
+
+exports[`must return key if mutable with collapsed selection 1`] = `"1"`;
+
+exports[`must return null at start of block with collapsed selection 1`] = `null`;
+
+exports[`must return null if start is at end of block 1`] = `null`;

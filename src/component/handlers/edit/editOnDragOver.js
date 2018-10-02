@@ -6,8 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule editOnDragOver
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -17,7 +18,7 @@ import type DraftEditor from 'DraftEditor.react';
 /**
  * Drag behavior has begun from outside the editor element.
  */
-function editOnDragOver(editor: DraftEditor, e: SyntheticDragEvent): void {
+function editOnDragOver(editor: DraftEditor, e: SyntheticDragEvent<>): void {
   editor._internalDrag = false;
   editor.setMode('drag');
   e.preventDefault();

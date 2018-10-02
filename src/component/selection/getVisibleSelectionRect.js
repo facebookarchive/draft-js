@@ -6,16 +6,16 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule getVisibleSelectionRect
- * @typechecks
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
-
 import type {FakeClientRect} from 'getRangeBoundingClientRect';
+
+const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
 
 /**
  * Return the bounding ClientRect for the visible DOM selection, if any.

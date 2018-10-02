@@ -6,30 +6,29 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule RichTextEditorUtil
- * @typechecks
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
+import type ContentState from 'ContentState';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type {DataObjectForLink, RichTextUtils} from 'RichTextUtils';
+import type SelectionState from 'SelectionState';
+import type URI from 'URI';
+
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
 
 const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
 const nullthrows = require('nullthrows');
 
-import type ContentState from 'ContentState';
-import type {DraftBlockType} from 'DraftBlockType';
-import type {DraftEditorCommand} from 'DraftEditorCommand';
-import type URI from 'URI';
-
-const RichTextEditorUtil = {
-  currentBlockContainsLink: function(
-    editorState: EditorState,
-  ): boolean {
-    var selection = editorState.getSelection();
+const RichTextEditorUtil: RichTextUtils = {
+  currentBlockContainsLink: function(editorState: EditorState): boolean {
+    const selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
     const entityMap = contentState.getEntityMap();
     return contentState
@@ -37,25 +36,27 @@ const RichTextEditorUtil = {
       .getCharacterList()
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
-        var entity = v.getEntity();
+        const entity = v.getEntity();
         return !!entity && entityMap.__get(entity).getType() === 'LINK';
       });
   },
 
   getCurrentBlockType: function(editorState: EditorState): DraftBlockType {
-    var selection = editorState.getSelection();
-    return editorState.getCurrentContent()
+    const selection = editorState.getSelection();
+    return editorState
+      .getCurrentContent()
       .getBlockForKey(selection.getStartKey())
       .getType();
   },
 
-  getDataObjectForLinkURL: function(uri: URI): Object {
+  getDataObjectForLinkURL: function(uri: URI): DataObjectForLink {
     return {url: uri.toString()};
   },
 
   handleKeyCommand: function(
     editorState: EditorState,
     command: DraftEditorCommand | string,
+    eventTimeStamp: ?number,
   ): ?EditorState {
     switch (command) {
       case 'bold':
@@ -74,13 +75,14 @@ const RichTextEditorUtil = {
       case 'delete-word':
       case 'delete-to-end-of-block':
         return RichTextEditorUtil.onDelete(editorState);
-      default: // they may have custom editor commands; ignore those
+      default:
+        // they may have custom editor commands; ignore those
         return null;
     }
   },
 
   insertSoftNewline: function(editorState: EditorState): EditorState {
-    var contentState = DraftModifier.insertText(
+    const contentState = DraftModifier.insertText(
       editorState.getCurrentContent(),
       editorState.getSelection(),
       '\n',
@@ -88,7 +90,7 @@ const RichTextEditorUtil = {
       null,
     );
 
-    var newEditorState = EditorState.push(
+    const newEditorState = EditorState.push(
       editorState,
       contentState,
       'insert-characters',
@@ -105,7 +107,7 @@ const RichTextEditorUtil = {
    * just remove the existing style.
    */
   onBackspace: function(editorState: EditorState): ?EditorState {
-    var selection = editorState.getSelection();
+    const selection = editorState.getSelection();
     if (
       !selection.isCollapsed() ||
       selection.getAnchorOffset() ||
@@ -115,15 +117,16 @@ const RichTextEditorUtil = {
     }
 
     // First, try to remove a preceding atomic block.
-    var content = editorState.getCurrentContent();
-    var startKey = selection.getStartKey();
-    var blockBefore = content.getBlockBefore(startKey);
+    const content = editorState.getCurrentContent();
+    const startKey = selection.getStartKey();
+    const blockBefore = content.getBlockBefore(startKey);
 
     if (blockBefore && blockBefore.getType() === 'atomic') {
       const blockMap = content.getBlockMap().delete(blockBefore.getKey());
-      var withoutAtomicBlock = content.merge(
-        {blockMap, selectionAfter: selection},
-      );
+      const withoutAtomicBlock = content.merge({
+        blockMap,
+        selectionAfter: selection,
+      });
       if (withoutAtomicBlock !== content) {
         return EditorState.push(
           editorState,
@@ -134,7 +137,7 @@ const RichTextEditorUtil = {
     }
 
     // If that doesn't succeed, try to remove the current block style.
-    var withoutBlockStyle = RichTextEditorUtil.tryToRemoveBlockStyle(
+    const withoutBlockStyle = RichTextEditorUtil.tryToRemoveBlockStyle(
       editorState,
     );
 
@@ -183,88 +186,63 @@ const RichTextEditorUtil = {
     );
 
     if (withoutAtomicBlock !== content) {
-      return EditorState.push(
-        editorState,
-        withoutAtomicBlock,
-        'remove-range',
-      );
+      return EditorState.push(editorState, withoutAtomicBlock, 'remove-range');
     }
 
     return null;
   },
 
   onTab: function(
-    event: SyntheticKeyboardEvent,
+    event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
     maxDepth: number,
   ): EditorState {
-    var selection = editorState.getSelection();
-    var key = selection.getAnchorKey();
+    const selection = editorState.getSelection();
+    const key = selection.getAnchorKey();
     if (key !== selection.getFocusKey()) {
       return editorState;
     }
 
-    var content = editorState.getCurrentContent();
-    var block = content.getBlockForKey(key);
-    var type = block.getType();
+    const content = editorState.getCurrentContent();
+    const block = content.getBlockForKey(key);
+    const type = block.getType();
     if (type !== 'unordered-list-item' && type !== 'ordered-list-item') {
       return editorState;
     }
 
     event.preventDefault();
 
-    // Only allow indenting one level beyond the block above, and only if
-    // the block above is a list item as well.
-    var blockAbove = content.getBlockBefore(key);
-    if (!blockAbove) {
-      return editorState;
-    }
-
-    var typeAbove = blockAbove.getType();
-    if (
-      typeAbove !== 'unordered-list-item' &&
-      typeAbove !== 'ordered-list-item'
-    ) {
-      return editorState;
-    }
-
-    var depth = block.getDepth();
+    const depth = block.getDepth();
     if (!event.shiftKey && depth === maxDepth) {
       return editorState;
     }
 
-    maxDepth = Math.min(blockAbove.getDepth() + 1, maxDepth);
-
-    var withAdjustment = adjustBlockDepthForContentState(
+    const withAdjustment = adjustBlockDepthForContentState(
       content,
       selection,
       event.shiftKey ? -1 : 1,
       maxDepth,
     );
 
-    return EditorState.push(
-      editorState,
-      withAdjustment,
-      'adjust-depth',
-    );
+    return EditorState.push(editorState, withAdjustment, 'adjust-depth');
   },
 
   toggleBlockType: function(
     editorState: EditorState,
     blockType: DraftBlockType,
   ): EditorState {
-    var selection = editorState.getSelection();
-    var startKey = selection.getStartKey();
-    var endKey = selection.getEndKey();
-    var content = editorState.getCurrentContent();
-    var target = selection;
+    const selection = editorState.getSelection();
+    const startKey = selection.getStartKey();
+    let endKey = selection.getEndKey();
+    const content = editorState.getCurrentContent();
+    let target = selection;
 
     // Triple-click can lead to a selection that includes offset 0 of the
     // following block. The `SelectionState` for this case is accurate, but
     // we should avoid toggling block type for the trailing block because it
     // is a confusing interaction.
     if (startKey !== endKey && selection.getEndOffset() === 0) {
-      var blockBefore = nullthrows(content.getBlockBefore(endKey));
+      const blockBefore = nullthrows(content.getBlockBefore(endKey));
       endKey = blockBefore.getKey();
       target = target.merge({
         anchorKey: startKey,
@@ -275,7 +253,8 @@ const RichTextEditorUtil = {
       });
     }
 
-    var hasAtomicBlock = content.getBlockMap()
+    const hasAtomicBlock = content
+      .getBlockMap()
       .skipWhile((_, k) => k !== startKey)
       .reverse()
       .skipWhile((_, k) => k !== endKey)
@@ -285,9 +264,10 @@ const RichTextEditorUtil = {
       return editorState;
     }
 
-    var typeToSet = content.getBlockForKey(startKey).getType() === blockType ?
-      'unstyled' :
-      blockType;
+    const typeToSet =
+      content.getBlockForKey(startKey).getType() === blockType
+        ? 'unstyled'
+        : blockType;
 
     return EditorState.push(
       editorState,
@@ -297,9 +277,9 @@ const RichTextEditorUtil = {
   },
 
   toggleCode: function(editorState: EditorState): EditorState {
-    var selection = editorState.getSelection();
-    var anchorKey = selection.getAnchorKey();
-    var focusKey = selection.getFocusKey();
+    const selection = editorState.getSelection();
+    const anchorKey = selection.getAnchorKey();
+    const focusKey = selection.getFocusKey();
 
     if (selection.isCollapsed() || anchorKey !== focusKey) {
       return RichTextEditorUtil.toggleBlockType(editorState, 'code-block');
@@ -318,8 +298,8 @@ const RichTextEditorUtil = {
     editorState: EditorState,
     inlineStyle: string,
   ): EditorState {
-    var selection = editorState.getSelection();
-    var currentStyle = editorState.getCurrentInlineStyle();
+    const selection = editorState.getSelection();
+    const currentStyle = editorState.getCurrentInlineStyle();
 
     // If the selection is collapsed, toggle the specified style on or off and
     // set the result as the new inline style override. This will then be
@@ -335,8 +315,8 @@ const RichTextEditorUtil = {
 
     // If characters are selected, immediately apply or remove the
     // inline style on the document state itself.
-    var content = editorState.getCurrentContent();
-    var newContent;
+    const content = editorState.getCurrentContent();
+    let newContent;
 
     // If the style is already present for the selection range, remove it.
     // Otherwise, apply it.
@@ -354,11 +334,7 @@ const RichTextEditorUtil = {
       );
     }
 
-    return EditorState.push(
-      editorState,
-      newContent,
-      'change-inline-style',
-    );
+    return EditorState.push(editorState, newContent, 'change-inline-style');
   },
 
   toggleLink: function(
@@ -366,41 +342,34 @@ const RichTextEditorUtil = {
     targetSelection: SelectionState,
     entityKey: ?string,
   ): EditorState {
-    var withoutLink = DraftModifier.applyEntity(
+    const withoutLink = DraftModifier.applyEntity(
       editorState.getCurrentContent(),
       targetSelection,
       entityKey,
     );
 
-    return EditorState.push(
-      editorState,
-      withoutLink,
-      'apply-entity',
-    );
+    return EditorState.push(editorState, withoutLink, 'apply-entity');
   },
 
   /**
-   * When a collapsed cursor is at the start of an empty styled block, allow
-   * certain key commands (newline, backspace) to simply change the
-   * style of the block instead of the default behavior.
+   * When a collapsed cursor is at the start of a styled block, changes block
+   * type to 'unstyled'. Returns null if selection does not meet that criteria.
    */
   tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
-    var selection = editorState.getSelection();
-    var offset = selection.getAnchorOffset();
+    const selection = editorState.getSelection();
+    const offset = selection.getAnchorOffset();
     if (selection.isCollapsed() && offset === 0) {
-      var key = selection.getAnchorKey();
-      var content = editorState.getCurrentContent();
-      var block = content.getBlockForKey(key);
-      if (block.getLength() > 0) {
-        return null;
-      }
+      const key = selection.getAnchorKey();
+      const content = editorState.getCurrentContent();
+      const block = content.getBlockForKey(key);
 
-      var type = block.getType();
-      var blockBefore = content.getBlockBefore(key);
+      const type = block.getType();
+      const blockBefore = content.getBlockBefore(key);
       if (
         type === 'code-block' &&
         blockBefore &&
-        blockBefore.getType() === 'code-block'
+        blockBefore.getType() === 'code-block' &&
+        blockBefore.getLength() !== 0
       ) {
         return null;
       }

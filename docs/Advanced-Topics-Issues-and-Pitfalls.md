@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-issues-and-pitfalls
 title: Issues and Pitfalls
-layout: docs
-category: Advanced Topics
-next: api-reference-editor
-permalink: docs/advanced-topics-issues-and-pitfalls.html
 ---
 
 This article addresses some known issues with the Draft editor framework, as
@@ -83,14 +79,15 @@ built, but it does not include polyfills for APIs now included in many modern
 browsers (for instance: `String.prototype.startsWith`). We expect your browser
 supports these APIs natively or with the assistance of a polyfill. One such
 polyfill is [es6-shim](https://github.com/es-shims/es6-shim), which we use in
-many examples but you are free to use [babel-
-polyfill](https://babeljs.io/docs/usage/polyfill/) if that's more your scene.
+many examples but you are free to use
+[babel-polyfill](https://babeljs.io/docs/usage/polyfill/) if that's more
+your scene.
 
 When using either polyfill/shim, you should include it as early as possibly in
 your application's entrypoint (at the very minimum, before you import Draft).
-For instance, using [create-react-app](https://github.com/facebookincubator
-/create-react-app) and targeting ie11, `src/index.js` is probably a good spot to
-import your polyfill:
+For instance, using
+[create-react-app](https://github.com/facebookincubator/create-react-app) and
+targeting ie11, `src/index.js` is probably a good spot to import your polyfill:
 
 **src/index.js**
 
@@ -109,3 +106,11 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+### Mobile Not Yet Supported
+
+Draft.js is moving towards full mobile support, but does not officially support
+mobile browsers at this point. There are some known issues affecting Android and
+iOS - see issues tagged
+['android'](https://github.com/facebook/draft-js/labels/android) or
+['ios'](https://github.com/facebook/draft-js/labels/ios) for the current status.
