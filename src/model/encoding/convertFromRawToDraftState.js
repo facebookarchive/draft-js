@@ -215,7 +215,9 @@ const decodeRawBlocks = (
   rawState: RawDraftContentState,
   entityMap: *,
 ): BlockMap => {
-  const isTreeRawBlock = Array.isArray(rawState.blocks[0].children);
+  const isTreeRawBlock = rawState.blocks.find(
+    block => Array.isArray(block.children) && block.children.length > 0,
+  );
   const rawBlocks =
     experimentalTreeDataSupport && !isTreeRawBlock
       ? DraftTreeAdapter.fromRawStateToRawTreeState(rawState).blocks
