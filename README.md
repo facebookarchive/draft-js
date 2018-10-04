@@ -49,13 +49,39 @@ class MyEditor extends React.Component {
     super(props);
     this.state = {editorState: EditorState.createEmpty()};
     this.onChange = (editorState) => this.setState({editorState});
+    this.setEditor = (editor) => {
+      this.editor = editor;
+    };
+    this.focusEditor = () => {
+      if (this.editor) {
+        this.editor.focus();
+      }
+    };
   }
+
+  componentDidMount() {
+    this.focusEditor();
+  }
+
   render() {
     return (
-      <Editor editorState={this.state.editorState} onChange={this.onChange} />
+      <div style={styles.editor} onClick={this.focusEditor}>
+        <Editor
+          ref={this.setEditor}
+          editorState={this.state.editorState}
+          onChange={this.onChange}
+        />
+      </div>
     );
   }
 }
+
+const styles = {
+  editor: {
+    border: '1px solid gray',
+    height: '6em'
+  }
+};
 
 ReactDOM.render(
   <MyEditor />,
