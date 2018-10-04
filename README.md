@@ -79,7 +79,7 @@ class MyEditor extends React.Component {
 const styles = {
   editor: {
     border: '1px solid gray',
-    height: '6em'
+    minHeight: '6em'
   }
 };
 
@@ -88,6 +88,8 @@ ReactDOM.render(
   document.getElementById('container')
 );
 ```
+
+Note that the editor itself is only as tall as its contents. In order to give users a visual cue, we recommend setting a border and a minimum height via the `.DraftEditor-root` CSS selector, or using a wrapper div like in the above example.
 
 Because Draft.js supports unicode, you must have the following meta tag in the `<head>` `</head>` block of your HTML file:
 
