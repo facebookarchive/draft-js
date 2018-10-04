@@ -165,6 +165,11 @@ objects.</p>
 <blockquote>
 <p>Use <a href="http://facebook.github.io/immutable-js/docs/#/Map">Immutable Map API</a> to
 set properties.</p>
+<p><strong>Example</strong></p>
+<pre><code class="hljs"><span class="hljs-attribute">const editorState</span> = EditorState.createEmpty();
+<span class="hljs-attribute">const contentState</span> = editorState.getCurrentContent();
+<span class="hljs-attribute">const contentStateWithSelectionBefore</span> = contentState.set(<span class="hljs-string">'selectionBefore'</span>, SelectionState.createEmpty(contentState.getBlockForKey(<span class="hljs-string">'1pu4d'</span>)));
+</code></pre>
 </blockquote>
 <ul class="apiIndex">
   <li>

@@ -153,6 +153,10 @@ and <em>end</em> values.</p>
 <blockquote>
 <p>Use <a href="http://facebook.github.io/immutable-js/docs/#/Record/Record">Immutable Map API</a> to
 set properties.</p>
+<p><strong>Example</strong></p>
+<pre><code class="hljs"><span class="hljs-attribute">const selectionState</span> = SelectionState.createEmpty();
+<span class="hljs-attribute">const selectionStateWithNewFocusOffset</span> = selection.set(<span class="hljs-string">'focusOffset'</span>, 1);
+</code></pre>
 </blockquote>
 <ul class="apiIndex">
   <li>

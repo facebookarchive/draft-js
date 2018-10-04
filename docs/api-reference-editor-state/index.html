@@ -140,7 +140,12 @@ Instead, use the instance getters and static methods below.</p>
 <blockquote>
 <p>Note</p>
 <p>Use the static <code>EditorState</code> methods to set properties, rather than using
-the Immutable API directly.</p>
+the Immutable API directly. This means using <code>EditorState.set</code> to pass
+new options to an EditorState instance.</p>
+<p><strong>Example</strong></p>
+<pre><code class="hljs"><span class="hljs-keyword">const</span> editorState = EditorState.createEmpty();
+<span class="hljs-keyword">const</span> editorStateWithoutUndo = EditorState.<span class="hljs-built_in">set</span>(editorState, {allowUndo: <span class="hljs-literal">false</span>});
+</code></pre>
 </blockquote>
 <ul class="apiIndex">
   <li>
