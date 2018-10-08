@@ -7,8 +7,8 @@
     "draft-js": "file:../../../",
     "express": "^4.14.0",
     "immutable": "^3.8.1",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react": "file:../../../node_modules/react",
+    "react-dom": "file:../../../node_modules/react-dom"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
