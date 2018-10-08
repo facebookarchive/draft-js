@@ -33,43 +33,7 @@ Object {
 }
 `;
 
-exports[`detects collapsed selection properly 1`] = `true`;
-
-exports[`detects collapsed selection properly 2`] = `false`;
-
-exports[`detects collapsed selection properly 3`] = `false`;
-
-exports[`is false for non-edge block keys 1`] = `false`;
-
-exports[`is false for non-edge block keys 2`] = `false`;
-
-exports[`is false for non-edge block keys 3`] = `false`;
-
-exports[`is false if offset is outside the selection range 1`] = `false`;
-
-exports[`is false if offset is outside the selection range 2`] = `false`;
-
-exports[`is false if offset is outside the selection range 3`] = `false`;
-
-exports[`is true if key match and offset equals selection edge 1`] = `true`;
-
-exports[`is true if key match and offset equals selection edge 2`] = `true`;
-
-exports[`is true if key match and offset equals selection edge 3`] = `true`;
-
-exports[`is true if key match and offset equals selection edge 4`] = `true`;
-
-exports[`is true if key match and offset equals selection edge 5`] = `true`;
-
-exports[`is true if selection range edge overlaps test range 1`] = `true`;
-
-exports[`is true if selection range edge overlaps test range 2`] = `true`;
-
-exports[`is true if selection range edge overlaps test range 3`] = `true`;
-
-exports[`is true if selection range edge overlaps test range 4`] = `true`;
-
-exports[`is true if selection range is entirely within test range 1`] = `
+exports[`hasEdgeWithin is true if selection range is entirely within test range 1`] = `
 Object {
   "anchorKey": "a",
   "anchorOffset": 5,
@@ -79,12 +43,6 @@ Object {
   "isBackward": false,
 }
 `;
-
-exports[`is true if selection range is entirely within test range 2`] = `true`;
-
-exports[`is true if selection range is entirely within test range 3`] = `true`;
-
-exports[`must create a new instance 1`] = `true`;
 
 exports[`must retrieve properties correctly 1`] = `
 Array [

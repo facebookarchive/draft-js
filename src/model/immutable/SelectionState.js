@@ -91,7 +91,10 @@ class SelectionState extends SelectionStateRecord {
     if (anchorKey === focusKey && anchorKey === blockKey) {
       const selectionStart = this.getStartOffset();
       const selectionEnd = this.getEndOffset();
-      return start <= selectionEnd && selectionStart <= end;
+      return (
+        (start <= selectionStart && selectionStart <= end) || // selectionStart is between start and end, or
+        (start <= selectionEnd && selectionEnd <= end) // selectionEnd is between start and end
+      );
     }
 
     if (blockKey !== anchorKey && blockKey !== focusKey) {
