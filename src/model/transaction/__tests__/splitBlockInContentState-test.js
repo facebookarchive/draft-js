@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
@@ -18,10 +19,10 @@ jest.mock('generateRandomKey');
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
+const Immutable = require('immutable');
 const splitBlockInContentState = require('splitBlockInContentState');
 
 const {List} = Immutable;

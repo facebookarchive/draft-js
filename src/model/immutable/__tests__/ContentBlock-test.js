@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
@@ -16,8 +17,9 @@ jest.disableAutomock();
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
-const Immutable = require('immutable');
 const {BOLD} = require('SampleDraftInlineStyle');
+
+const Immutable = require('immutable');
 
 const ENTITY_KEY = 'x';
 
@@ -53,7 +55,7 @@ test('must have appropriate default values', () => {
 });
 
 test('must provide default values', () => {
-  const block = new ContentBlock();
+  const block = new ContentBlock({});
   expect(block.getType()).toMatchSnapshot();
   expect(block.getText()).toMatchSnapshot();
   expect(

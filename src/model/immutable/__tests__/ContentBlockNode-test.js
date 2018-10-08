@@ -17,8 +17,9 @@ jest.disableAutomock();
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 const {BOLD, NONE} = require('SampleDraftInlineStyle');
+
+const Immutable = require('immutable');
 
 const entity_KEY = 'x';
 

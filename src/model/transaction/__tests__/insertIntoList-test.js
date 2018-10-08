@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
@@ -15,7 +16,6 @@
 jest.disableAutomock();
 
 const Immutable = require('immutable');
-
 const insertIntoList = require('insertIntoList');
 
 const SAMPLE_LIST = Immutable.List.of(0, 1, 2, 3, 4);

@@ -21,9 +21,9 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');
-const Immutable = require('immutable');
 
 const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
+const Immutable = require('immutable');
 
 const {List} = Immutable;
 

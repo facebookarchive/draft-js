@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
@@ -40,7 +41,6 @@ test('must retrieve an instance given a key', () => {
 test('must throw when retrieving for an invalid key', () => {
   createLink();
   expect(() => DraftEntity.__get('asdfzxcvqweriuop')).toThrow();
-  expect(() => DraftEntity.__get(null)).toThrow();
 });
 
 test('must merge data', () => {
