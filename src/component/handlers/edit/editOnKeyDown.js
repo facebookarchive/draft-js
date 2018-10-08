@@ -148,19 +148,9 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
       }
       break;
     case Keys.SPACE:
-      // Handling for OSX where option + space scrolls.
+      // Prevent Chrome on OSX behavior where option + space scrolls.
       if (isChrome && isOptionKeyCommand(e)) {
         e.preventDefault();
-        // Insert a nbsp into the editor.
-        const contentState = DraftModifier.replaceText(
-          editorState.getCurrentContent(),
-          editorState.getSelection(),
-          '\u00a0',
-        );
-        editor.update(
-          EditorState.push(editorState, contentState, 'insert-characters'),
-        );
-        return;
       }
   }
 
@@ -168,6 +158,19 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
 
   // If no command is specified, allow keydown event to continue.
   if (!command) {
+    if (keyCode === Keys.SPACE && isChrome && isOptionKeyCommand(e)) {
+      // The default keydown event has already been prevented in order to stop
+      // Chrome from scrolling. Insert a nbsp into the editor as OSX would for
+      // other browsers.
+      const contentState = DraftModifier.replaceText(
+        editorState.getCurrentContent(),
+        editorState.getSelection(),
+        '\u00a0',
+      );
+      editor.update(
+        EditorState.push(editorState, contentState, 'insert-characters'),
+      );
+    }
     return;
   }
 
