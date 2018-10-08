@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @format
+ * @flow
  * @emails oncall+draft_js
  */
 
@@ -16,8 +17,9 @@ const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');
-const Immutable = require('immutable');
 const {BOLD} = require('SampleDraftInlineStyle');
+
+const Immutable = require('immutable');
 const {EMPTY} = CharacterMetadata;
 
 const getSampleSelectionMocksForTesting = (): Object => {
