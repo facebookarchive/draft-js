@@ -102,7 +102,7 @@ const splitBlockInContentState = (
 
   if (!text) {
     const blockType = blockToSplit.getType();
-    if (blockType && blockType.endsWith('-list-item')) {
+    if (blockType === 'unordered-list-item' || blockType === 'ordered-list-item') {
       return modifyBlockForContentState(
         contentState,
         selectionState,
