@@ -102,11 +102,12 @@ const splitBlockInContentState = (
 
   if (!text) {
     const blockType = blockToSplit.getType();
-    if (blockType === 'unordered-list-item' || blockType === 'ordered-list-item') {
-      return modifyBlockForContentState(
-        contentState,
-        selectionState,
-        block => block.merge({type: 'unstyled', depth: 0})
+    if (
+      blockType === 'unordered-list-item' ||
+      blockType === 'ordered-list-item'
+    ) {
+      return modifyBlockForContentState(contentState, selectionState, block =>
+        block.merge({type: 'unstyled', depth: 0}),
       );
     }
   }
