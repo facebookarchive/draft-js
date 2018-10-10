@@ -19,6 +19,7 @@ import type SelectionState from 'SelectionState';
 const DataTransfer = require('DataTransfer');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
+const ReactDOM = require('ReactDOM');
 
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const getTextContentFromFiles = require('getTextContentFromFiles');
@@ -69,6 +70,7 @@ const DraftEditorDragHandler = {
    */
   onDragEnd: function(editor: DraftEditor): void {
     editor.exitCurrentMode();
+    endDrag(editor);
   },
 
   /**
@@ -114,19 +116,35 @@ const DraftEditorDragHandler = {
       editor.props.handleDrop &&
       isEventHandled(editor.props.handleDrop(dropSelection, data, dragType))
     ) {
-      return;
-    }
-
-    if (editor._internalDrag) {
+      // handled
+    } else if (editor._internalDrag) {
       editor.update(moveText(editorState, dropSelection));
-      return;
+    } else {
+      editor.update(
+        insertTextAtSelection(editorState, dropSelection, data.getText()),
+      );
     }
-
-    editor.update(
-      insertTextAtSelection(editorState, dropSelection, data.getText()),
-    );
+    endDrag(editor);
   },
 };
+
+function endDrag(editor) {
+  editor._internalDrag = false;
+
+  // Fix issue #1383
+  // Prior to React v16.5.0 onDrop breaks onSelect event:
+  // https://github.com/facebook/react/issues/11379.
+  // Dispatching a mouseup event on DOM node will make it go back to normal.
+  const editorNode = ReactDOM.findDOMNode(editor);
+  if (editorNode) {
+    const mouseUpEvent = new MouseEvent('mouseup', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    });
+    editorNode.dispatchEvent(mouseUpEvent);
+  }
+}
 
 function moveText(
   editorState: EditorState,
