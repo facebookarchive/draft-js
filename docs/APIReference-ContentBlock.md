@@ -161,7 +161,7 @@ supplied text.
 ```
 getKey(): string
 ```
-Returns the string key for this `ContentBlock`.
+Returns the string key for this `ContentBlock`. Block keys are alphanumeric string. It is recommended to use `generateRandomKey` to generate block keys.
 
 ### getType()
 
