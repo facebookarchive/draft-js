@@ -106,3 +106,30 @@ class MyEditor extends React.Component {
 
 When rendered, the `textDecoration: line-through` style will be applied to all
 character ranges with the `STRIKETHROUGH` style.
+
+## Adding custom styles
+
+You can add custom styles to the editor by using `customStyleFn` :
+
+```js
+import {Editor} from 'draft-js';
+
+const customStyle = {
+  fontSize: '18px',
+  color: 'cobalt'
+};
+
+class MyEditor extends React.Component {
+  // ...
+  render() {
+    return (
+      <Editor
+        customStyleFn={() => customStyle}
+        editorState={this.state.editorState}
+        ...
+      />
+    );
+  }
+}
+```
+
