@@ -70,6 +70,12 @@ const contentBlockNodes = [
     prevSibling: 'B',
     text: 'Gorila',
   }),
+  new ContentBlockNode({
+    key: 'H',
+    prevSibling: 'G',
+    text: '',
+    type: 'unordered-list-item',
+  }),
 ];
 const treeSelectionState = SelectionState.createEmpty('A');
 const treeContentState = contentState.set(
@@ -204,6 +210,18 @@ test('must split at the end of a nested ContentBlock', () => {
       focusOffset: SPLIT_OFFSET,
       anchorKey: 'D',
       focusKey: 'D',
+    }),
+    treeContentState,
+  );
+});
+
+test('must convert empty list item ContentBlock to unstyled rather than split', () => {
+  assertSplitBlockInContentState(
+    treeSelectionState.merge({
+      anchorOffset: 0,
+      focusOffset: 0,
+      anchorKey: 'H',
+      focusKey: 'H',
     }),
     treeContentState,
   );
