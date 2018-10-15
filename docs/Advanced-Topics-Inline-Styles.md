@@ -41,7 +41,7 @@ In essence, our styles are:
 ## Overlapping Styles
 
 Now let's say that we wish to make the middle range of characters italic as well:
-"He_llo **wo**_**rld**". This operation can be performed via the
+He*llo* ***wo*rld**. This operation can be performed via the
 [Modifier](/docs/api-reference-modifier.html) API.
 
 The end result will accommodate the overlap by including `'ITALIC'` in the
