@@ -2,7 +2,7 @@
 We want to make contributing to this project as easy and transparent as
 possible.
 
-## Code of Conduct 
+## Code of Conduct
 Facebook has adopted a Code of Conduct that we expect project
 participants to adhere to. Please [read the full text](https://code.facebook.com/codeofconduct)
 so that you can understand what actions will and will not be tolerated.
@@ -27,20 +27,37 @@ to do this once to work on any of Facebook's open source projects.
 
 Complete your CLA here: <https://code.facebook.com/cla>
 
+## Coding Style  
+* 2 spaces for indentation rather than tabs
+* 80 character line length
+* Run `npm run lint` to conform to our lint rules
+
 ## Issues
 We use GitHub issues to track public bugs. Please ensure your description is
-clear and has sufficient instructions to be able to reproduce the issue. 
-If possible please provide a minimal demo of the problem. You can use this 
+clear and has sufficient instructions to be able to reproduce the issue.
+If possible please provide a minimal demo of the problem. You can use this
 jsfiddle to get started: https://jsfiddle.net/stopachka/m6z0xn4r/.
 
 Facebook has a [bounty program](https://www.facebook.com/whitehat/) for the safe
 disclosure of security bugs. In those cases, please go through the process
 outlined on that page and do not file a public issue.
 
-## Coding Style  
-* 2 spaces for indentation rather than tabs
-* 80 character line length
-* Run `npm run lint` to conform to our lint rules
+## Issue Triage
+Here are some tags that we're using to better organize issues in this repo:
+
+* `good first issue` - Good candidates for someone new to the project to contribute.
+* `help wanted` - Issues that should be addressed and which we would welcome a
+PR for but may need significant investigation or work
+* `support` - Request for help with a concept or piece of code but this isn't an
+issue with the project.
+* `needs more info` - Missing repro steps or context for both project issues \&
+support questions.
+* `discussion` - Issues where folks are discussing various approaches \& ideas.
+* `question` - Something that is a question specifically for the maintainers such
+as [this issue about the license](https://github.com/facebook/draft-js/issues/1819).
+* `documentation` - Relating to improving documentation for the project.
+- Browser \& OS-specific tags for anything that is specific to a particular
+environment (e.g. `chrome`, `firefox`, `macos`, `android` and so forth).
 
 ## Stability
 Our philosophy regarding API changes is as follows:
