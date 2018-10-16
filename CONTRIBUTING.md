@@ -57,7 +57,7 @@ support questions.
 as [this issue about the license](https://github.com/facebook/draft-js/issues/1819).
 * `documentation` - Relating to improving documentation for the project.
 - Browser \& OS-specific tags for anything that is specific to a particular
-environment.
+environment (e.g. `chrome`, `firefox`, `macos`, `android` and so forth).
 
 ## Stability
 Our philosophy regarding API changes is as follows:
