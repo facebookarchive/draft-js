@@ -69,13 +69,13 @@ class UpdateDraftEditorFlags extends React.Component<{
   editor: DraftEditor,
   editorState: EditorState,
 }> {
-  render() {
+  render(): React.Node {
     return null;
   }
-  componentDidMount() {
+  componentDidMount(): mixed {
     this._update();
   }
-  componentDidUpdate() {
+  componentDidUpdate(): mixed {
     this._update();
   }
   _update() {
