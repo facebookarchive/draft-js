@@ -19,4 +19,4 @@
  * A type that allows us to avoid returning boolean values
  * to indicate whether an event was handled or not.
  */
-export type DraftHandleValue = 'handled' | 'not-handled';
+export type DraftHandleValue = 'handled' | 'not-handled' | boolean;
