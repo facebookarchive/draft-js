@@ -181,7 +181,7 @@ gulp.task('css', function() {
               }
             },
           );
-          file.contents = new Buffer(replaced);
+          file.contents = Buffer.from(replaced);
           callback(null, file);
         }),
       )
