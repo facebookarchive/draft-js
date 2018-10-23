@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule _DraftTestHelper
  * @flow
  * @format
+ * @emails oncall+draft_js
  */
 
 const BLACK_LIST_PROPS = ['data-reactroot'];

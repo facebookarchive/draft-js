@@ -6,13 +6,11 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEntityType
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-import typeof ComposedEntityType from 'ComposedEntityType';
-
-export type DraftEntityType = $Keys<ComposedEntityType>;
+export type DraftEntityType = string;

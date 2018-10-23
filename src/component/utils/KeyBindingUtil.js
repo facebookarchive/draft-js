@@ -6,18 +6,18 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule KeyBindingUtil
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var UserAgent = require('UserAgent');
+const UserAgent = require('UserAgent');
 
-var isOSX = UserAgent.isPlatform('Mac OS X');
+const isOSX = UserAgent.isPlatform('Mac OS X');
 
-var KeyBindingUtil = {
+const KeyBindingUtil = {
   /**
    * Check whether the ctrlKey modifier is *not* being used in conjunction with
    * the altKey modifier. If they are combined, the result is an `altGraph`
@@ -29,6 +29,10 @@ var KeyBindingUtil = {
 
   isOptionKeyCommand: function(e: SyntheticKeyboardEvent<>): boolean {
     return isOSX && e.altKey;
+  },
+
+  usesMacOSHeuristics: function(): boolean {
+    return isOSX;
   },
 
   hasCommandModifier: function(e: SyntheticKeyboardEvent<>): boolean {

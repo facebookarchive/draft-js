@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule editOnBlur
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -41,13 +41,13 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<>): void {
     }
   }
 
-  var editorState = editor._latestEditorState;
-  var currentSelection = editorState.getSelection();
+  const editorState = editor._latestEditorState;
+  const currentSelection = editorState.getSelection();
   if (!currentSelection.getHasFocus()) {
     return;
   }
 
-  var selection = currentSelection.set('hasFocus', false);
+  const selection = currentSelection.set('hasFocus', false);
   editor.props.onBlur && editor.props.onBlur(e);
   editor.update(EditorState.acceptSelection(editorState, selection));
 }

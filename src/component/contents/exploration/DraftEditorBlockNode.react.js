@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEditorBlockNode.react
  * @format
  * @flow
+ * @emails oncall+draft_js
  *
  * This file is a fork of DraftEditorBlock.react.js and DraftEditorContents.react.js
  *
@@ -23,13 +23,12 @@ import type ContentState from 'ContentState';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorNode = require('DraftEditorNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const EditorState = require('EditorState');
-const Immutable = require('immutable');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
@@ -38,6 +37,7 @@ const Style = require('Style');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
+const Immutable = require('immutable');
 const invariant = require('invariant');
 
 const SCROLL_BUFFER = 10;
@@ -341,21 +341,32 @@ class DraftEditorBlockNode extends React.Component<Props> {
     const blockKey = block.getKey();
     const offsetKey = DraftOffsetKey.encode(blockKey, 0, 0);
 
-    const blockNode = (
-      <DraftEditorNode
-        block={block}
-        children={children}
-        contentState={contentState}
-        customStyleFn={customStyleFn}
-        customStyleMap={customStyleMap}
-        decorator={decorator}
-        direction={direction}
-        forceSelection={forceSelection}
-        hasSelection={isBlockOnSelectionEdge(selection, blockKey)}
-        selection={selection}
-        tree={tree}
-      />
-    );
+    const customConfig = getCustomRenderConfig(block, blockRendererFn);
+    const Component = customConfig.CustomComponent;
+    const blockNode =
+      Component != null ? (
+        <Component
+          {...this.props}
+          tree={editorState.getBlockTree(blockKey)}
+          blockProps={customConfig.customProps}
+          offsetKey={offsetKey}
+          block={block}
+        />
+      ) : (
+        <DraftEditorNode
+          block={block}
+          children={children}
+          contentState={contentState}
+          customStyleFn={customStyleFn}
+          customStyleMap={customStyleMap}
+          decorator={decorator}
+          direction={direction}
+          forceSelection={forceSelection}
+          hasSelection={isBlockOnSelectionEdge(selection, blockKey)}
+          selection={selection}
+          tree={tree}
+        />
+      );
 
     if (block.getParentKey()) {
       return blockNode;
@@ -367,7 +378,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
       editorKey,
       offsetKey,
       blockStyleFn,
-      getCustomRenderConfig(block, blockRendererFn),
+      customConfig,
     );
 
     // root block nodes needs to be wrapped

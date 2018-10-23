@@ -15,7 +15,7 @@ with [immutable-js](https://facebook.github.io/immutable-js/), offering
 an API with functional state updates and aggressively leveraging data persistence
 for scalable memory usage.
 
-[Learn how to use Draft.js in your own project.](http://draftjs.org/docs/overview.html)
+[Learn how to use Draft.js in your own project.](https://draftjs.org/docs/getting-started.html)
 
 ## API Notice
 
@@ -49,19 +49,47 @@ class MyEditor extends React.Component {
     super(props);
     this.state = {editorState: EditorState.createEmpty()};
     this.onChange = (editorState) => this.setState({editorState});
+    this.setEditor = (editor) => {
+      this.editor = editor;
+    };
+    this.focusEditor = () => {
+      if (this.editor) {
+        this.editor.focus();
+      }
+    };
   }
+
+  componentDidMount() {
+    this.focusEditor();
+  }
+
   render() {
     return (
-      <Editor editorState={this.state.editorState} onChange={this.onChange} />
+      <div style={styles.editor} onClick={this.focusEditor}>
+        <Editor
+          ref={this.setEditor}
+          editorState={this.state.editorState}
+          onChange={this.onChange}
+        />
+      </div>
     );
   }
 }
+
+const styles = {
+  editor: {
+    border: '1px solid gray',
+    minHeight: '6em'
+  }
+};
 
 ReactDOM.render(
   <MyEditor />,
   document.getElementById('container')
 );
 ```
+
+Note that the editor itself is only as tall as its contents. In order to give users a visual cue, we recommend setting a border and a minimum height via the `.DraftEditor-root` CSS selector, or using a wrapper div like in the above example.
 
 Because Draft.js supports unicode, you must have the following meta tag in the `<head>` `</head>` block of your HTML file:
 
@@ -94,7 +122,7 @@ comment inputs, [Notes](https://www.facebook.com/notes/), and
 
 ## Browser Support
 
-| ![IE / Edge](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png) <br /> IE / Edge | ![Firefox](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png) <br /> Firefox | ![Chrome](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png) <br /> Chrome | ![Safari](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png ) <br /> Safari | ![iOS Safari](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari-ios.png) <br />iOS Safari | ![Chrome for Anroid](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome-android.png) <br/> Chrome for Android |
+| ![IE / Edge](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png) <br /> IE / Edge | ![Firefox](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png) <br /> Firefox | ![Chrome](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png) <br /> Chrome | ![Safari](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png ) <br /> Safari | ![iOS Safari](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari-ios.png) <br />iOS Safari | ![Chrome for Android](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome-android.png) <br/> Chrome for Android |
 | --------- | --------- | --------- | --------- | --------- | --------- |
 | IE11, Edge [1, 2]| last 2 versions| last 2 versions| last 2 versions| not fully supported [3] | not fully supported [3]
 

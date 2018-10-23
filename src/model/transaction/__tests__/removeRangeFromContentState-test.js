@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
@@ -16,10 +17,10 @@ jest.disableAutomock();
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
+const Immutable = require('immutable');
 const removeRangeFromContentState = require('removeRangeFromContentState');
 
 const {List} = Immutable;
@@ -257,6 +258,20 @@ test('must retain B since F has not been removed', () => {
       focusKey: 'E',
       anchorOffset: contentBlockNodes[0].getLength(),
       focusOffset: contentBlockNodes[4].getLength(),
+    }),
+    treeContentState,
+  );
+});
+
+// Simulates having collapsed selection at start of Elephant and hitting backspace
+// We expect Elephant will be merged with previous block, Delta
+test('must merge D and E when deleting range from end of D to start of E', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'D',
+      focusKey: 'E',
+      anchorOffset: contentBlockNodes[3].getLength(), // end of D
+      focusOffset: 0, // start of E
     }),
     treeContentState,
   );

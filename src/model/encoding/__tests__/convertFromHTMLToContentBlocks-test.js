@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
  */
 
@@ -59,10 +59,14 @@ const normalizeBlock = block => {
 };
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('DraftFeatureFlags', () => {
-    return {
-      draft_tree_data_support: enabled,
-    };
+  jest.doMock('gkx', () => name => {
+    if (name === 'draft_tree_data_support') {
+      return enabled;
+    }
+    if (name === 'draftjs_fix_paste_for_img') {
+      return true;
+    }
+    return false;
   });
 };
 
@@ -152,6 +156,13 @@ test('img with data protocol should be correctly parsed', () => {
     `<img src="${IMAGE_DATA_URL}">`,
   );
   expect(blocks.contentBlocks[0].text).toMatchSnapshot();
+});
+
+test('img with role presentation should not be rendered', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    `<img src="${IMAGE_DATA_URL}" role="presentation">`,
+  );
+  expect(blocks.contentBlocks).toMatchSnapshot();
 });
 
 test('converts nested html blocks when experimentalTreeDataSupport is enabled', () => {
@@ -305,6 +316,15 @@ test('Should import recognised draft li depths when nesting enabled', () => {
       <li class="${cx('public/DraftStyleDefault/depth3')}">depth3</li>
       <li class="${cx('public/DraftStyleDefault/depth4')}">depth4</li>
     </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should preserve spacing around inline tags', () => {
+  const html_string = `
+    <span>Some<span> </span></span><i>stylised</i><span><span> </span></span><b>text</b>
   `;
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: true,

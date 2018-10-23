@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftHandleValue
  * @format
- * @flow
+ * @flow strict
+ * @emails oncall+draft_js
  */
 
 /*eslint-disable no-bitwise*/
@@ -19,4 +19,4 @@
  * A type that allows us to avoid returning boolean values
  * to indicate whether an event was handled or not.
  */
-export type DraftHandleValue = 'handled' | 'not-handled';
+export type DraftHandleValue = 'handled' | 'not-handled' | boolean;

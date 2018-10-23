@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule convertFromHTMLToContentBlocks
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -25,7 +25,6 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
-const DraftFeatureFlags = require('DraftFeatureFlags');
 const Immutable = require('immutable');
 const {Set} = require('immutable');
 const URI = require('URI');
@@ -33,10 +32,11 @@ const URI = require('URI');
 const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
+const gkx = require('gkx');
 const invariant = require('invariant');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 type Block = {
   type: DraftBlockType,
@@ -381,7 +381,7 @@ const genFragment = (
   // Base Case
   if (nodeName === '#text') {
     let text = node.textContent;
-    let nodeTextContent = text.trim();
+    const nodeTextContent = text.trim();
 
     // We should not create blocks for leading spaces that are
     // existing around ol/ul and their children list items
@@ -446,10 +446,16 @@ const genFragment = (
     });
     // Forcing this node to have children because otherwise no entity will be
     // created for this node.
-    // The child text node cannot just have a space or return as content -
-    // we strip those out.
+    // The child text node cannot just have a space or return as content (since
+    // we strip those out), unless the image is for presentation only.
     // See https://github.com/facebook/draft-js/issues/231 for some context.
-    node.textContent = '\ud83d\udcf7';
+    if (gkx('draftjs_fix_paste_for_img')) {
+      if (node.getAttribute('role') !== 'presentation') {
+        node.textContent = '\ud83d\udcf7';
+      }
+    } else {
+      node.textContent = '\ud83d\udcf7';
+    }
 
     // TODO: update this when we remove DraftEntity entirely
     inEntity = DraftEntity.__create('IMAGE', 'MUTABLE', entityConfig || {});

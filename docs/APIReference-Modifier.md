@@ -1,9 +1,6 @@
 ---
 id: api-reference-modifier
 title: Modifier
-layout: docs
-category: API Reference
-permalink: docs/api-reference-modifier.html
 ---
 
 The `Modifier` module is a static set of utility functions that encapsulate common

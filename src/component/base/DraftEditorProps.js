@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEditorProps
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -47,6 +47,7 @@ export type DraftEditorProps = {
   // styling and formatting when re-applying styles.
   editorKey?: string,
 
+  // $FlowFixMe in practice people pass other renderable things here
   placeholder?: string,
 
   // Specify whether text alignment should be forced in a direction
@@ -119,6 +120,7 @@ export type DraftEditorProps = {
   handleKeyCommand?: (
     command: DraftEditorCommand | string,
     editorState: EditorState,
+    eventTimeStamp: number,
   ) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be
@@ -129,6 +131,7 @@ export type DraftEditorProps = {
   handleBeforeInput?: (
     chars: string,
     editorState: EditorState,
+    eventTimeStamp: number,
   ) => DraftHandleValue,
 
   handlePastedText?: (
@@ -153,7 +156,7 @@ export type DraftEditorProps = {
   ) => DraftHandleValue,
 
   /**
-   * Non-cancelable event triggers.
+   * Deprecated event triggers.
    */
   onEscape?: (e: SyntheticKeyboardEvent<>) => void,
   onTab?: (e: SyntheticKeyboardEvent<>) => void,

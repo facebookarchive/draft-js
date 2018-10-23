@@ -6,15 +6,17 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftBlockRenderConfig
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
+const React = require('React');
+
 export type DraftBlockRenderConfig = {
   element: string,
-  wrapper?: React$Element<any>,
+  wrapper?: React.Node,
   aliasedElements?: Array<string>,
 };

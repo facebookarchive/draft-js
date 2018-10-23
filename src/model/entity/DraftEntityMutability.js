@@ -6,14 +6,14 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEntityMutability
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var ComposedEntityMutability = require('ComposedEntityMutability');
+const ComposedEntityMutability = require('ComposedEntityMutability');
 
 /**
  * An enum representing the possible "mutability" options for an entity.

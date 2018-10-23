@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-block-components
 title: Custom Block Components
-layout: docs
-category: Advanced Topics
-next: advanced-topics-inline-styles
-permalink: docs/advanced-topics-block-components.html
 ---
 
 Draft is designed to solve problems for straightforward rich text interfaces

@@ -1,10 +1,6 @@
 ---
 id: api-reference-selection-state
 title: SelectionState
-layout: docs
-category: API Reference
-next: api-reference-composite-decorator
-permalink: docs/api-reference-selection-state.html
 ---
 
 `SelectionState` is an Immutable
@@ -145,6 +141,13 @@ _Start_ and _end_ values are derived.
 
 > Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record) to
 > set properties.
+> 
+> **Example**
+> ```
+> const selectionState = SelectionState.createEmpty();
+> const selectionStateWithNewFocusOffset = selection.set('focusOffset', 1);
+> ```
+
 
 <ul class="apiIndex">
   <li>

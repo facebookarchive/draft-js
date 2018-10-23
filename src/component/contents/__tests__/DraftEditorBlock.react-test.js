@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
  */
 
@@ -442,7 +442,7 @@ test('must split styled spans apart within decorator', () => {
   arePropsEqual(el.children[0], {offsetKey: 'a-0-0'});
   expect(el.children[0].type).toBe(DecoratorSpan);
 
-  var renderer = el.children[0].props;
+  const renderer = el.children[0].props;
   arePropsEqual(renderer.children[0], {offsetKey: 'a-0-0', styleSet: BOLD});
   expect(renderer.children[0].type).toBe(DraftEditorLeaf);
 

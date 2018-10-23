@@ -7,7 +7,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
  */
 
@@ -55,7 +55,7 @@ const assertGetDraftEditorSelection = getSelectionReturnValue => {
   document.selection = null;
   window.getSelection = jest.fn();
   window.getSelection.mockReturnValueOnce(getSelectionReturnValue);
-  let selection = getDraftEditorSelection(editorState, root);
+  const selection = getDraftEditorSelection(editorState, root);
   expect({
     ...selection,
     selectionState: selection.selectionState.toJS(),

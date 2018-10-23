@@ -6,7 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule getSampleSelectionMocksForTesting
+ * @format
+ * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -15,9 +17,9 @@ const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');
-const Immutable = require('immutable');
-
 const {BOLD} = require('SampleDraftInlineStyle');
+
+const Immutable = require('immutable');
 const {EMPTY} = CharacterMetadata;
 
 const getSampleSelectionMocksForTesting = (): Object => {

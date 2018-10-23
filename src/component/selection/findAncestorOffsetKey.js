@@ -6,14 +6,14 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule findAncestorOffsetKey
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
+const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 
 /**
  * Get the key from the node's nearest offset-aware ancestor.
@@ -21,7 +21,7 @@ var getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 function findAncestorOffsetKey(node: Node): ?string {
   let searchNode = node;
   while (searchNode && searchNode !== document.documentElement) {
-    var key = getSelectionOffsetKeyForNode(searchNode);
+    const key = getSelectionOffsetKeyForNode(searchNode);
     if (key != null) {
       return key;
     }

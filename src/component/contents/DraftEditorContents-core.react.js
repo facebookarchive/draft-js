@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule DraftEditorContents-core.react
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -16,11 +16,11 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const EditorState = require('EditorState');
 const React = require('React');
 
 const cx = require('cx');
@@ -59,7 +59,7 @@ const getListItemClasses = (
     'public/DraftStyleDefault/depth1': depth === 1,
     'public/DraftStyleDefault/depth2': depth === 2,
     'public/DraftStyleDefault/depth3': depth === 3,
-    'public/DraftStyleDefault/depth4': depth === 4,
+    'public/DraftStyleDefault/depth4': depth >= 4,
     'public/DraftStyleDefault/listLTR': direction === 'LTR',
     'public/DraftStyleDefault/listRTL': direction === 'RTL',
   });

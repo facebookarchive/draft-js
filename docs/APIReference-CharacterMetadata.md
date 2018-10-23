@@ -1,10 +1,6 @@
 ---
 id: api-reference-character-metadata
 title: CharacterMetadata
-layout: docs
-category: API Reference
-next: api-reference-entity
-permalink: docs/api-reference-character-metadata.html
 ---
 
 `CharacterMetadata` is an Immutable

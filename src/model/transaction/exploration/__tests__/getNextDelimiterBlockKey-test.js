@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
@@ -21,9 +21,9 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');
-const Immutable = require('immutable');
 
 const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
+const Immutable = require('immutable');
 
 const {List} = Immutable;
 

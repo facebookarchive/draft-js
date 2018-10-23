@@ -6,7 +6,8 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
@@ -19,8 +20,8 @@ jest.mock('generateRandomKey');
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 
+const Immutable = require('immutable');
 const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
 
 const {List} = Immutable;

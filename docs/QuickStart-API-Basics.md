@@ -1,10 +1,6 @@
 ---
 id: quickstart-api-basics
 title: API Basics
-layout: docs
-category: Quick Start
-next: quickstart-rich-styling
-permalink: docs/quickstart-api-basics.html
 ---
 
 This document provides an overview of the basics of the `Draft` API. A

@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
  */
 
@@ -14,13 +14,13 @@
 
 jest.disableAutomock();
 
+jest.mock('generateRandomKey');
+
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('DraftFeatureFlags', () => {
-    return {
-      draft_tree_data_support: enabled,
-    };
+  jest.doMock('gkx', () => name => {
+    return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
 
@@ -205,5 +205,61 @@ test('must be able to convert content blocks that have list with depth from raw 
     entityMap: {},
   };
 
+  assertDraftState(rawState);
+});
+
+test('ignore empty children array', () => {
+  const rawState = {
+    blocks: [
+      {key: 'A', type: 'ordered-list-item', depth: 0, text: 'A'},
+      {key: 'B', type: 'ordered-list-item', depth: 0, text: 'B'},
+      {
+        key: 'C',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'C',
+        children: [],
+      },
+    ],
+    entityMap: {},
+  };
+
+  assertDraftState(rawState);
+});
+
+test('ignore empty children array for tree conversion 1', () => {
+  const rawState = {
+    blocks: [
+      {key: 'A', type: 'ordered-list-item', depth: 0, text: 'A'},
+      {key: 'B', type: 'ordered-list-item', depth: 0, text: 'B'},
+      {
+        key: 'C',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'C',
+        children: [],
+      },
+    ],
+    entityMap: {},
+  };
+  assertDraftState(rawState);
+});
+
+test('ignore empty children array for tree conversion 2', () => {
+  toggleExperimentalTreeDataSupport(true);
+  const rawState = {
+    blocks: [
+      {key: 'A', type: 'ordered-list-item', depth: 0, text: 'A'},
+      {key: 'B', type: 'ordered-list-item', depth: 0, text: 'B'},
+      {
+        key: 'C',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'C',
+        children: [],
+      },
+    ],
+    entityMap: {},
+  };
   assertDraftState(rawState);
 });

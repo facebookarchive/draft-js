@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule getTextAfterNearestEntity
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -23,7 +23,7 @@ function getTextAfterNearestEntity(
   block: BlockNodeRecord,
   offset: number,
 ): string {
-  var start = offset;
+  let start = offset;
 
   // Get start based on where the last entity ended.
   while (start > 0 && block.getEntityAt(start - 1) === null) {

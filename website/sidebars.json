@@ -1,0 +1,40 @@
+{
+  "docs": {
+    "Quick Start": [
+      "getting-started",
+      "quickstart-api-basics",
+      "quickstart-rich-styling"
+    ],
+    "Advanced Topics": [
+      "advanced-topics-entities",
+      "v0-10-api-migration",
+      "advanced-topics-decorators",
+      "advanced-topics-key-bindings",
+      "advanced-topics-managing-focus",
+      "advanced-topics-block-styling",
+      "advanced-topics-custom-block-render-map",
+      "advanced-topics-block-components",
+      "advanced-topics-inline-styles",
+      "advanced-topics-nested-lists",
+      "advanced-topics-text-direction",
+      "advanced-topics-editorstate-race-conditions",
+      "advanced-topics-issues-and-pitfalls"
+    ],
+    "API Reference": [
+      "api-reference-editor",
+      "api-reference-editor-change-type",
+      "api-reference-editor-state",
+      "api-reference-content-state",
+      "api-reference-content-block",
+      "api-reference-character-metadata",
+      "api-reference-entity",
+      "api-reference-selection-state",
+      "api-reference-composite-decorator",
+      "api-reference-data-conversion",
+      "api-reference-rich-utils",
+      "api-reference-atomic-block-utils",
+      "api-reference-key-binding-util",
+      "api-reference-modifier"
+    ]
+  }
+}

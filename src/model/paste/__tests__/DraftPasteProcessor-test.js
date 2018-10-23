@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
  */
 
@@ -54,10 +54,8 @@ const CUSTOM_BLOCK_MAP = Map({
 const EMPTY_CHAR_METADATA = OrderedSet();
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('DraftFeatureFlags', () => {
-    return {
-      draft_tree_data_support: enabled,
-    };
+  jest.doMock('gkx', () => name => {
+    return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
 

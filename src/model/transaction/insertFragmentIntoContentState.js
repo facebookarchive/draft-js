@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule insertFragmentIntoContentState
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -125,7 +125,7 @@ const getRootBlocks = (
 ): Array<string> => {
   const headKey = block.getKey();
   let rootBlock = block;
-  let rootBlocks = [];
+  const rootBlocks = [];
 
   // sometimes the fragment head block will not be part of the blockMap itself this can happen when
   // the fragment head is used to update the target block, however when this does not happen we need

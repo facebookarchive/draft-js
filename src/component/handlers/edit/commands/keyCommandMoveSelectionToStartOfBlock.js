@@ -6,14 +6,14 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule keyCommandMoveSelectionToStartOfBlock
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var EditorState = require('EditorState');
+const EditorState = require('EditorState');
 
 /**
  * Collapse selection at the start of the first selected block. This is used
@@ -23,8 +23,8 @@ var EditorState = require('EditorState');
 function keyCommandMoveSelectionToStartOfBlock(
   editorState: EditorState,
 ): EditorState {
-  var selection = editorState.getSelection();
-  var startKey = selection.getStartKey();
+  const selection = editorState.getSelection();
+  const startKey = selection.getStartKey();
   return EditorState.set(editorState, {
     selection: selection.merge({
       anchorKey: startKey,
