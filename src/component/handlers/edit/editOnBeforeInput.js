@@ -174,16 +174,19 @@ function editOnBeforeInput(
         parentNode.firstChild.nodeType === Node.TEXT_NODE &&
         parentNode.firstChild.nodeValue.indexOf('\t') !== -1;
     }
-    // If selected block was empty, DraftEditorTextNode rendered it as <BR>.
-    // But now we typed some chars to it, so <BR> should be removed.
-    // We must let React render this properly.
-    if (
-      nativeSelection.anchorNode &&
-      nativeSelection.anchorNode.nodeName === 'SPAN' &&
-      nativeSelection.anchorNode.firstChild.nodeName == 'BR' &&
-      chars
-    ) {
-      mustPreventNative = true;
+    if (!mustPreventNative) {
+      // If selected block was empty, DraftEditorTextNode rendered it as <BR>.
+      // But now we typed some chars to it, so <BR> should be removed.
+      // We must let React render this properly.
+      const anchorNode = nativeSelection.anchorNode;
+      if (
+        anchorNode &&
+        anchorNode.nodeName === 'SPAN' &&
+        anchorNode.firstChild.nodeName == 'BR' &&
+        anchorNode.firstChild === anchorNode.lastChild
+      ) {
+        mustPreventNative = true;
+      }
     }
   }
   if (!mustPreventNative) {
