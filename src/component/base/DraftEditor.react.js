@@ -377,6 +377,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             aria-label={this.props.ariaLabel}
             aria-labelledby={this.props.ariaLabelledBy}
             aria-multiline={this.props.ariaMultiline}
+            aria-owns={readOnly ? null : this.props.ariaOwneeID}
             autoCapitalize={this.props.autoCapitalize}
             autoComplete={this.props.autoComplete}
             autoCorrect={this.props.autoCorrect}

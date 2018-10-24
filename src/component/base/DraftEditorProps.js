@@ -100,6 +100,7 @@ export type DraftEditorProps = {
   ariaLabel?: string,
   ariaLabelledBy?: string,
   ariaMultiline?: boolean,
+  ariaOwneeID?: string,
 
   webDriverTestID?: string,
 
