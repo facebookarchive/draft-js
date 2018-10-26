@@ -47,7 +47,6 @@ export type DraftEditorProps = {
   // styling and formatting when re-applying styles.
   editorKey?: string,
 
-  // $FlowFixMe in practice people pass other renderable things here
   placeholder?: string,
 
   // Specify whether text alignment should be forced in a direction
