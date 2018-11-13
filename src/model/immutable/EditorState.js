@@ -657,8 +657,9 @@ function lookUpwardForInlineStyle(
     .skipUntil((block, _) => block.getLength())
     .first();
 
-  if (lastNonEmpty)
+  if (lastNonEmpty) {
     return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
+  }
   return OrderedSet();
 }
 
