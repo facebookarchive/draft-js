@@ -45,7 +45,7 @@ const defaultRecord: {
   selectionAfter: null,
 };
 
-const ContentStateRecord = (Record(defaultRecord): any);
+const ContentStateRecord = Record(defaultRecord);
 
 class ContentState extends ContentStateRecord {
   getEntityMap(): any {
@@ -122,7 +122,7 @@ class ContentState extends ContentStateRecord {
       .join(delimiter || '\n');
   }
 
-  getLastCreatedEntityKey(): string {
+  getLastCreatedEntityKey() {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity.__getLastCreatedEntityKey();
   }

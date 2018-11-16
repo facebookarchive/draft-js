@@ -61,7 +61,7 @@ const defaultRecord: EditorStateRecordType = {
   undoStack: Stack(),
 };
 
-const EditorStateRecord = (Record(defaultRecord): any);
+const EditorStateRecord = Record(defaultRecord);
 
 class EditorState {
   _immutable: EditorStateRecord;

@@ -33,7 +33,7 @@ const defaultRecord: CharacterMetadataConfig = {
   entity: null,
 };
 
-const CharacterMetadataRecord = (Record(defaultRecord): any);
+const CharacterMetadataRecord = Record(defaultRecord);
 
 class CharacterMetadata extends CharacterMetadataRecord {
   getStyle(): DraftInlineStyle {
