@@ -33,7 +33,10 @@ const defaultRecord: {
   hasFocus: false,
 };
 
-const SelectionStateRecord = Record(defaultRecord);
+/* $FlowFixMe(>=0.86.0 site=www) This comment suppresses an error found when
+ * automatically adding a type annotation with the codemod Komodo/Annotate_
+ * exports. To see the error delete this comment and run Flow. */
+const SelectionStateRecord = (Record(defaultRecord): any);
 
 class SelectionState extends SelectionStateRecord {
   serialize(): string {

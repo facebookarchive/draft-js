@@ -49,7 +49,7 @@ const defaultDecoratorRange: {
   leaves: null,
 };
 
-const DecoratorRange = Record(defaultDecoratorRange);
+const DecoratorRange = (Record(defaultDecoratorRange): any);
 
 const BlockTree = {
   /**
