@@ -135,14 +135,14 @@ const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
  * Return true if the provided HTML Element can be used to build a
  * Draftjs-compatible link.
  */
-const isValidAnchor = (node: Node) => {
+const isValidAnchor = (node: Node): boolean => {
   if (isHTMLAnchorElement(node)) {
     const castedNode: HTMLAnchorElement = (node: any);
-    return (
+    return Boolean(
       castedNode.href &&
-      (castedNode.protocol === 'http:' ||
-        castedNode.protocol === 'https:' ||
-        castedNode.protocol === 'mailto:')
+        (castedNode.protocol === 'http:' ||
+          castedNode.protocol === 'https:' ||
+          castedNode.protocol === 'mailto:'),
     );
   }
   return false;

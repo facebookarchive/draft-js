@@ -53,9 +53,7 @@ function anonymizeTextWithin(
 
   if (node.nodeType === Node.TEXT_NODE) {
     const length = node.textContent.length;
-    const documentObject = getCorrectDocumentFromNode(node);
-
-    return documentObject.createTextNode(
+    return getCorrectDocumentFromNode(node).createTextNode(
       '[text ' +
         length +
         (labels.length ? ' | ' + labels.join(', ') : '') +
@@ -89,6 +87,7 @@ function getAnonymizedEditorDOM(
       return getAnonymizedDOM(currentNode, getNodeLabels);
     } else {
       currentNode = currentNode.parentNode;
+      castedNode = (currentNode: any);
     }
   }
   return 'Could not find contentEditable parent of node';
@@ -321,8 +320,7 @@ function addPointToSelection(
   offset: number,
   selectionState: SelectionState,
 ): void {
-  const documentObject = getCorrectDocumentFromNode(node);
-  const range = documentObject.createRange();
+  const range = getCorrectDocumentFromNode(node).createRange();
   // logging to catch bug that is being reported in t16250795
   if (offset > getNodeLength(node)) {
     // in this case we know that the call to 'range.setStart' is about to throw
