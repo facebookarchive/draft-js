@@ -39,15 +39,19 @@ const SecondaryClipboard = {
       const blockEnd = content.getBlockForKey(anchorKey).getLength();
 
       if (blockEnd === selection.getAnchorOffset()) {
-        return editorState;
+        targetRange = selection
+          .set('focusKey', content.getKeyAfter(anchorKey))
+          .set('focusOffset', 0);
+      } else {
+        targetRange = selection.set('focusOffset', blockEnd);
       }
-
-      targetRange = selection.set('focusOffset', blockEnd);
     } else {
       targetRange = selection;
     }
 
     targetRange = nullthrows(targetRange);
+    // TODO: This should actually append to the current state when doing
+    // successive ^K commands without any other cursor movement
     clipboard = getContentStateFragment(content, targetRange);
 
     const afterRemoval = DraftModifier.removeRange(
