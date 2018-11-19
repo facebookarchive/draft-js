@@ -7,7 +7,7 @@ The `Editor` component offers flexibility to define custom key bindings
 for your editor, via the `keyBindingFn` prop. This allows you to match key
 commands to behaviors in your editor component.
 
-### Defaults
+## Defaults
 
 The default key binding function is `getDefaultKeyBinding`.
 
@@ -21,7 +21,7 @@ strings, which then correspond to behaviors within component handlers.
 For instance, `Ctrl+Z` (Win) and `Cmd+Z` (OSX) map to the `'undo'` command,
 which then routes our handler to perform an `EditorState.undo()`.
 
-### Customization
+## Customization
 
 You may provide your own key binding function to supply custom command strings.
 
@@ -33,7 +33,7 @@ prop function, which allows you to map that command string to your desired
 behavior. If `handleKeyCommand` returns `'handled'`, the command is considered
 handled. If it returns `'not-handled'`, the command will fall through.
 
-### Example
+## Example
 
 Let's say we have an editor that should have a "Save" mechanism to periodically
 write your contents to the server as a draft copy.

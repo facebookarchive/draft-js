@@ -8,7 +8,7 @@
  *
  * @emails oncall+draft_js
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';

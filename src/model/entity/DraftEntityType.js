@@ -13,6 +13,4 @@
 
 'use strict';
 
-import typeof ComposedEntityType from 'ComposedEntityType';
-
-export type DraftEntityType = $Keys<ComposedEntityType>;
+export type DraftEntityType = string;

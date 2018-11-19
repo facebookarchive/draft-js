@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
@@ -17,7 +18,7 @@ jest.disableAutomock();
 const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 
 test('must decode for an unstyled block', () => {
-  const block = {text: 'Hello'};
+  const block = {text: 'Hello', inlineStyleRanges: []};
   expect(
     decodeInlineStyleRanges(block.text, block.inlineStyleRanges).map(r =>
       r.toJS(),

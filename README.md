@@ -49,19 +49,47 @@ class MyEditor extends React.Component {
     super(props);
     this.state = {editorState: EditorState.createEmpty()};
     this.onChange = (editorState) => this.setState({editorState});
+    this.setEditor = (editor) => {
+      this.editor = editor;
+    };
+    this.focusEditor = () => {
+      if (this.editor) {
+        this.editor.focus();
+      }
+    };
   }
+
+  componentDidMount() {
+    this.focusEditor();
+  }
+
   render() {
     return (
-      <Editor editorState={this.state.editorState} onChange={this.onChange} />
+      <div style={styles.editor} onClick={this.focusEditor}>
+        <Editor
+          ref={this.setEditor}
+          editorState={this.state.editorState}
+          onChange={this.onChange}
+        />
+      </div>
     );
   }
 }
+
+const styles = {
+  editor: {
+    border: '1px solid gray',
+    minHeight: '6em'
+  }
+};
 
 ReactDOM.render(
   <MyEditor />,
   document.getElementById('container')
 );
 ```
+
+Note that the editor itself is only as tall as its contents. In order to give users a visual cue, we recommend setting a border and a minimum height via the `.DraftEditor-root` CSS selector, or using a wrapper div like in the above example.
 
 Because Draft.js supports unicode, you must have the following meta tag in the `<head>` `</head>` block of your HTML file:
 

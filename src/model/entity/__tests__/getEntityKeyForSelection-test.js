@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 

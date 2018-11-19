@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @format
+ * @flow
  * @emails oncall+draft_js
  */
 
@@ -15,6 +16,7 @@
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');
+
 const Immutable = require('immutable');
 
 const getSampleSelectionMocksForTestingNestedBlocks = (): Object => {

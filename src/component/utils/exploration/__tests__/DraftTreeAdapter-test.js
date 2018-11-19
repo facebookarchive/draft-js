@@ -265,3 +265,67 @@ test('must be able to convert from raw state to raw tree state with nested trees
 
   assertFromRawStateToRawTreeState(rawState);
 });
+
+test('must be able to convert from raw state to raw tree state with nested trees of various depths', () => {
+  const rawState = {
+    blocks: [
+      {
+        key: 'A',
+        text: 'alpha',
+        type: 'unordered-list-item',
+        depth: 0,
+      },
+      {
+        key: 'B',
+        text: 'beta',
+        type: 'unordered-list-item',
+        depth: 1,
+      },
+      {
+        key: 'C',
+        text: 'charlie',
+        type: 'unordered-list-item',
+        depth: 1,
+      },
+      {
+        key: 'D',
+        text: 'delta',
+        type: 'unordered-list-item',
+        depth: 2,
+      },
+      {
+        key: 'E',
+        text: 'epsilon',
+        type: 'unordered-list-item',
+        depth: 1,
+      },
+      {
+        key: 'F',
+        text: 'foo',
+        type: 'unordered-list-item',
+        depth: 2,
+      },
+      {
+        key: 'G',
+        text: 'gamma',
+        type: 'unordered-list-item',
+        depth: 3,
+      },
+      {
+        key: 'H',
+        text: 'house',
+        type: 'unordered-list-item',
+        depth: 1,
+      },
+      {
+        key: 'I',
+        text: 'iota',
+        type: 'unordered-list-item',
+        depth: 0,
+      },
+    ],
+    entityMap: {},
+  };
+
+  assertFromRawStateToRawTreeState(rawState);
+});

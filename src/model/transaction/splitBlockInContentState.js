@@ -18,10 +18,11 @@ import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 
 const generateRandomKey = require('generateRandomKey');
+const Immutable = require('immutable');
 const invariant = require('invariant');
+const modifyBlockForContentState = require('modifyBlockForContentState');
 
 const {List, Map} = Immutable;
 
@@ -95,10 +96,23 @@ const splitBlockInContentState = (
   invariant(selectionState.isCollapsed(), 'Selection range must be collapsed.');
 
   const key = selectionState.getAnchorKey();
-  const offset = selectionState.getAnchorOffset();
   const blockMap = contentState.getBlockMap();
   const blockToSplit = blockMap.get(key);
   const text = blockToSplit.getText();
+
+  if (!text) {
+    const blockType = blockToSplit.getType();
+    if (
+      blockType === 'unordered-list-item' ||
+      blockType === 'ordered-list-item'
+    ) {
+      return modifyBlockForContentState(contentState, selectionState, block =>
+        block.merge({type: 'unstyled', depth: 0}),
+      );
+    }
+  }
+
+  const offset = selectionState.getAnchorOffset();
   const chars = blockToSplit.getCharacterList();
   const keyBelow = generateRandomKey();
   const isExperimentalTreeBlock = blockToSplit instanceof ContentBlockNode;

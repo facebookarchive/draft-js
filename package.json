@@ -84,8 +84,11 @@
     "vinyl-buffer": "^1.0.0",
     "webpack-stream": "^4.0.0"
   },
+  "resolutions": {
+    "gulp/**/natives": "1.1.3"
+  },
   "devEngines": {
-    "node": "8.x || 9.x",
+    "node": "8.x || 9.x || 10.x",
     "npm": "2.x || 3.x || 5.x || 6.x"
   },
   "jest": {

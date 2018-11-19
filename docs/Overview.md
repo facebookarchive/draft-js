@@ -1,6 +1,7 @@
 ---
 id: getting-started
 title: Overview
+onPageNav: 'none'
 ---
 
 Draft.js is a framework for building rich text editors in React, powered by an immutable model and abstracting over cross-browser differences.
@@ -11,7 +12,7 @@ Draft.js was introduced at [React.js Conf](http://conf.reactjs.com/) in February
 
 <iframe width="650" height="365" src="https://www.youtube.com/embed/feUYwoLhE_4" frameborder="0" allowfullscreen></iframe>
 
-### Installation
+## Installation
 
 Draft.js is distributed via npm. It depends on React and React DOM which must also be installed.
 
@@ -31,7 +32,7 @@ yarn add draft-js react react-dom es6-shim
 
 Learn more about [using a shim with Draft](/docs/advanced-topics-issues-and-pitfalls.html#polyfills).
 
-### API Changes Notice
+## API Changes Notice
 
 Before getting started, please be aware that we recently changed the API of
 Entity storage in Draft. The latest version, `v0.10.0`, supports both the old
@@ -39,7 +40,7 @@ and new API.  Following that up will be `v0.11.0` which will remove the old API.
 If you are interested in helping out, or tracking the progress, please follow
 [issue 839](https://github.com/facebook/draft-js/issues/839).
 
-### Usage
+## Usage
 
 ```js
 import React from 'react';

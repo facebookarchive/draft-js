@@ -21,10 +21,10 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const DraftEntityInstance = require('DraftEntityInstance');
-const Immutable = require('immutable');
 
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const getSampleStateForTesting = require('getSampleStateForTesting');
+const Immutable = require('immutable');
 
 const {contentState} = getSampleStateForTesting();
 

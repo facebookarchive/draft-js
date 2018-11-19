@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
@@ -40,8 +41,6 @@ const getInvariantViolation = msg => {
   } catch (e) {
     return e;
   }
-
-  throw new Error('We should never reach here!');
 };
 
 const toggleExperimentalTreeDataSupport = enabled => {
@@ -76,7 +75,7 @@ const assertMoveAtomicBlock = (
   atomicBlock,
   seletion,
   state = editorState,
-  insertionType = null,
+  insertionType,
 ) => {
   const newState = AtomicBlockUtils.moveAtomicBlock(
     state,
@@ -88,7 +87,9 @@ const assertMoveAtomicBlock = (
   return newState;
 };
 
-beforeEach(() => jest.resetModules());
+beforeEach(() => {
+  jest.resetModules();
+});
 
 test('must insert atomic at start of block with collapsed seletion', () => {
   assertInsertAtomicBlock();

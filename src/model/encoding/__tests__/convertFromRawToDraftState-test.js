@@ -207,3 +207,59 @@ test('must be able to convert content blocks that have list with depth from raw 
 
   assertDraftState(rawState);
 });
+
+test('ignore empty children array', () => {
+  const rawState = {
+    blocks: [
+      {key: 'A', type: 'ordered-list-item', depth: 0, text: 'A'},
+      {key: 'B', type: 'ordered-list-item', depth: 0, text: 'B'},
+      {
+        key: 'C',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'C',
+        children: [],
+      },
+    ],
+    entityMap: {},
+  };
+
+  assertDraftState(rawState);
+});
+
+test('ignore empty children array for tree conversion 1', () => {
+  const rawState = {
+    blocks: [
+      {key: 'A', type: 'ordered-list-item', depth: 0, text: 'A'},
+      {key: 'B', type: 'ordered-list-item', depth: 0, text: 'B'},
+      {
+        key: 'C',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'C',
+        children: [],
+      },
+    ],
+    entityMap: {},
+  };
+  assertDraftState(rawState);
+});
+
+test('ignore empty children array for tree conversion 2', () => {
+  toggleExperimentalTreeDataSupport(true);
+  const rawState = {
+    blocks: [
+      {key: 'A', type: 'ordered-list-item', depth: 0, text: 'A'},
+      {key: 'B', type: 'ordered-list-item', depth: 0, text: 'B'},
+      {
+        key: 'C',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'C',
+        children: [],
+      },
+    ],
+    entityMap: {},
+  };
+  assertDraftState(rawState);
+});

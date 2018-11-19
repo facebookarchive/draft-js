@@ -112,8 +112,8 @@ const DraftTreeAdapter = {
   fromRawStateToRawTreeState(
     draftState: RawDraftContentState,
   ): RawDraftContentState {
-    let lastListDepthCacheRef = {};
     const transformedBlocks = [];
+    const parentStack = [];
 
     draftState.blocks.forEach(block => {
       const isList = isListBlock(block);
@@ -124,46 +124,51 @@ const DraftTreeAdapter = {
       };
 
       if (!isList) {
-        // reset the cache path
-        lastListDepthCacheRef = {};
         transformedBlocks.push(treeBlock);
         return;
       }
 
-      // nesting
-      if (depth > 0) {
-        let parent = lastListDepthCacheRef[depth - 1];
-        if (parent == null) {
-          parent = {
-            key: generateRandomKey(),
-            text: '',
-            depth: depth - 1,
-            type: block.type,
-            children: [],
-            entityRanges: [],
-            inlineStyleRanges: [],
-          };
+      let lastParent = parentStack[0];
+      // block is non-nested & there are no nested blocks, directly push block
+      if (lastParent == null && depth === 0) {
+        transformedBlocks.push(treeBlock);
+        // block is first nested block or previous nested block is at a lower level
+      } else if (lastParent == null || lastParent.depth < depth - 1) {
+        // create new parent block
+        const newParent = {
+          key: generateRandomKey(),
+          text: '',
+          depth: depth - 1,
+          type: block.type,
+          children: [],
+          entityRanges: [],
+          inlineStyleRanges: [],
+        };
 
-          lastListDepthCacheRef[depth - 1] = parent;
-          if (depth === 1) {
-            // add as a root-level block
-            transformedBlocks.push(parent);
-          } else {
-            // depth > 1 => also add as previous parent's child
-            const grandparent = lastListDepthCacheRef[depth - 2];
-            grandparent.children.push(parent);
-          }
+        parentStack.unshift(newParent);
+        if (depth === 1) {
+          // add as a root-level block
+          transformedBlocks.push(newParent);
+        } else if (lastParent != null) {
+          // depth > 1 => also add as previous parent's child
+          lastParent.children.push(newParent);
         }
-
-        invariant(parent, 'Invalid depth for RawDraftContentBlock');
-
-        // push nested list blocks
-        parent.children.push(treeBlock);
-        return;
+        newParent.children.push(treeBlock);
+      } else if (lastParent.depth === depth - 1) {
+        // add as child of last parent
+        lastParent.children.push(treeBlock);
+      } else {
+        // pop out parents at levels above this one from the parent stack
+        while (lastParent != null && lastParent.depth >= depth) {
+          parentStack.shift();
+          lastParent = parentStack[0];
+        }
+        if (depth > 0) {
+          lastParent.children.push(treeBlock);
+        } else {
+          transformedBlocks.push(treeBlock);
+        }
       }
-
-      // push root list blocks
-      transformedBlocks.push(treeBlock);
     });
 
     return {
