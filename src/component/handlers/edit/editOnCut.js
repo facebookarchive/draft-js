@@ -18,9 +18,9 @@ import type DraftEditor from 'DraftEditor.react';
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Style = require('Style');
-const isNode = require('isInstanceOfNode');
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
+const isNode = require('isInstanceOfNode');
 
 /**
  * On `cut` events, native behavior is allowed to occur so that the system

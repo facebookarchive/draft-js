@@ -36,10 +36,10 @@ const Style = require('Style');
 
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
-const isHTMLElement = require('isHTMLElement');
 const getViewportDimensions = require('getViewportDimensions');
 const Immutable = require('immutable');
 const invariant = require('invariant');
+const isHTMLElement = require('isHTMLElement');
 
 const SCROLL_BUFFER = 10;
 

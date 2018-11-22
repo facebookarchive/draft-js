@@ -13,8 +13,8 @@
 
 const UnicodeUtils = require('UnicodeUtils');
 
-const getRangeClientRects = require('getRangeClientRects');
 const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
+const getRangeClientRects = require('getRangeClientRects');
 const invariant = require('invariant');
 /**
  * Return the computed line height, in pixels, for the provided element.

@@ -35,8 +35,8 @@ const cx = require('cx');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
-const isHTMLElement = require('isHTMLElement');
 const invariant = require('invariant');
+const isHTMLElement = require('isHTMLElement');
 const nullthrows = require('nullthrows');
 
 const SCROLL_BUFFER = 10;

@@ -19,8 +19,8 @@ import type EditorState from 'EditorState';
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 const getUpdatedSelectionState = require('getUpdatedSelectionState');
-const isElement = require('isElement');
 const invariant = require('invariant');
+const isElement = require('isElement');
 const nullthrows = require('nullthrows');
 
 type SelectionPoint = {

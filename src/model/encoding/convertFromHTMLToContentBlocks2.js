@@ -21,17 +21,18 @@ import type {EntityMap} from 'EntityMap';
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
-const isHTMLElement = require('isHTMLElement');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
-const {List, Map, OrderedSet} = require('immutable');
 const URI = require('URI');
-const isHTMLAnchorElement = require('isHTMLAnchorElement');
-const isHTMLImageElement = require('isHTMLImageElement');
+
 const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
+const {List, Map, OrderedSet} = require('immutable');
+const isHTMLAnchorElement = require('isHTMLAnchorElement');
+const isHTMLElement = require('isHTMLElement');
+const isHTMLImageElement = require('isHTMLImageElement');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 

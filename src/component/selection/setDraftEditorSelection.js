@@ -21,8 +21,8 @@ const DraftJsDebugLogging = require('DraftJsDebugLogging');
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
 const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
-const isElement = require('isElement');
 const invariant = require('invariant');
+const isElement = require('isElement');
 
 function getAnonymizedDOM(
   node: Node,

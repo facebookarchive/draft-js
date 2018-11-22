@@ -13,8 +13,8 @@
 
 'use strict';
 
-const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
+const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
 /**
  * Get the key from the node's nearest offset-aware ancestor.
  */
