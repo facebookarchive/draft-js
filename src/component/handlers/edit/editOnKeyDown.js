@@ -181,10 +181,6 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     return;
   }
 
-  // At this point, we know that we're handling a command of some kind, so
-  // we don't want to insert a character following the keydown.
-  e.preventDefault();
-
   // Allow components higher up the tree to handle the command first.
   if (
     editor.props.handleKeyCommand &&
@@ -192,11 +188,17 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
       editor.props.handleKeyCommand(command, editorState, e.timeStamp),
     )
   ) {
+    // At this point, we know that we have handled a command of some kind, so
+    // we don't want to insert a character following the keydown.
+    e.preventDefault();
     return;
   }
 
   const newState = onKeyCommand(command, editorState);
   if (newState !== editorState) {
+    // At this point, we know that we have handled a command of some kind, so
+    // we don't want to insert a character following the keydown.
+    e.preventDefault();
     editor.update(newState);
   }
 }
