@@ -201,6 +201,15 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     e.preventDefault();
     editor.update(newState);
   }
+  switch (keyCode) {
+    case Keys.UP:
+    case Keys.RIGHT:
+    case Keys.DOWN:
+    case Keys.LEFT:
+      return;
+    default:
+      e.preventDefault()
+  };
 }
 
 module.exports = editOnKeyDown;
