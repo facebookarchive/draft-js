@@ -33,7 +33,7 @@ const defaultRecord: {
   hasFocus: false,
 };
 
-const SelectionStateRecord = Record(defaultRecord);
+const SelectionStateRecord = (Record(defaultRecord): $FlowFixMe);
 
 class SelectionState extends SelectionStateRecord {
   serialize(): string {

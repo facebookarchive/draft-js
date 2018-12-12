@@ -465,7 +465,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * a specified scroll position (for cases like `cut` behavior where it should
    * be restored to a known position).
    */
-  focus = (scrollPosition?: DraftScrollPosition): void => {
+  focus: any = (scrollPosition?: DraftScrollPosition): void => {
     const {editorState} = this.props;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
     const editorNode = ReactDOM.findDOMNode(this.editor);
@@ -504,7 +504,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     }
   };
 
-  blur = (): void => {
+  blur: any = (): void => {
     const editorNode = ReactDOM.findDOMNode(this.editor);
     invariant(
       editorNode instanceof HTMLElement,
@@ -520,11 +520,11 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * handler module to ensure that DOM events are managed appropriately for
    * the active mode.
    */
-  setMode = (mode: DraftEditorModes): void => {
+  setMode: any = (mode: DraftEditorModes): void => {
     this._handler = handlerMap[mode];
   };
 
-  exitCurrentMode = (): void => {
+  exitCurrentMode: any = (): void => {
     this.setMode('edit');
   };
 
@@ -537,7 +537,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * reconciliation occurs on a version of the DOM that is synchronized with
    * our EditorState.
    */
-  restoreEditorDOM = (scrollPosition?: DraftScrollPosition): void => {
+  restoreEditorDOM: any = (scrollPosition?: DraftScrollPosition): void => {
     this.setState({contentsKey: this.state.contentsKey + 1}, () => {
       this.focus(scrollPosition);
     });
@@ -548,7 +548,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * Set the clipboard state for a cut/copy event.
    */
-  setClipboard = (clipboard: ?BlockMap): void => {
+  setClipboard: any = (clipboard: ?BlockMap): void => {
     this._clipboard = clipboard;
   };
 
@@ -557,7 +557,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * Retrieve the clipboard state for a cut/copy event.
    */
-  getClipboard = (): ?BlockMap => {
+  getClipboard: any = (): ?BlockMap => {
     return this._clipboard;
   };
 
@@ -570,7 +570,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * an `onChange` prop to receive state updates passed along from this
    * function.
    */
-  update = (editorState: EditorState): void => {
+  update: any = (editorState: EditorState): void => {
     this._latestEditorState = editorState;
     this.props.onChange(editorState);
   };
@@ -580,14 +580,14 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * a dragged element enters and leaves the editor (or any of its children),
    * to determine when the dragged element absolutely leaves the editor.
    */
-  onDragEnter = (): void => {
+  onDragEnter: any = (): void => {
     this._dragCount++;
   };
 
   /**
    * See `onDragEnter()`.
    */
-  onDragLeave = (): void => {
+  onDragLeave: any = (): void => {
     this._dragCount--;
     if (this._dragCount === 0) {
       this.exitCurrentMode();
