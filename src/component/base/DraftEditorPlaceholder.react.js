@@ -21,7 +21,7 @@ const React = require('React');
 const cx = require('cx');
 
 type Props = {
-  accessibilityID: string,
+  accessibilityID: ?string,
   editorState: EditorState,
   text: string,
   textAlignment: DraftTextAlignment,
