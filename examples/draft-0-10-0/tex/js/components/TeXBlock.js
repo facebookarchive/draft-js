@@ -30,7 +30,7 @@ class KatexOutput extends React.Component {
     this._update();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.content !== this.props.content) {
       this._update();
     }
