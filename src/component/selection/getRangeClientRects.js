@@ -61,10 +61,10 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
 /**
  * Like range.getClientRects() but normalizes for browser bugs.
  */
-const getRangeClientRects = isChrome
+const getRangeClientRects = ((isChrome
   ? getRangeClientRectsChrome
   : function(range: Range): Array<ClientRect> {
       return Array.from(range.getClientRects());
-    };
+    }): (range: Range) => Array<ClientRect>);
 
 module.exports = getRangeClientRects;

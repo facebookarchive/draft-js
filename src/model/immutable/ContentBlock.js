@@ -35,7 +35,7 @@ const defaultRecord: BlockNodeConfig = {
   data: Map(),
 };
 
-const ContentBlockRecord = Record(defaultRecord);
+const ContentBlockRecord = (Record(defaultRecord): any);
 
 const decorateCharacterList = (config: BlockNodeConfig): BlockNodeConfig => {
   if (!config) {
