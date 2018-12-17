@@ -93,6 +93,9 @@ class DraftEditorBlock extends React.Component<Props> {
    * on mount, force the scroll position. Check the scroll state of the scroll
    * parent, and adjust it to align the entire block to the bottom of the
    * scroll parent.
+   *
+   * Note from Descript: We are taking care of the scrolling behavior on our side,
+   * hence disabling this functionality for blocks that are mounted in a scrollable div
    */
   componentDidMount(): void {
     const selection = this.props.selection;
@@ -115,20 +118,6 @@ class DraftEditorBlock extends React.Component<Props> {
         window.scrollTo(
           scrollPosition.x,
           scrollPosition.y + scrollDelta + SCROLL_BUFFER,
-        );
-      }
-    } else {
-      invariant(
-        blockNode instanceof HTMLElement,
-        'blockNode is not an HTMLElement',
-      );
-      const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
-      const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
-      scrollDelta = blockBottom - scrollBottom;
-      if (scrollDelta > 0) {
-        Scroll.setTop(
-          scrollParent,
-          Scroll.getTop(scrollParent) + scrollDelta + SCROLL_BUFFER,
         );
       }
     }
