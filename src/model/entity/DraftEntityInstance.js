@@ -21,11 +21,11 @@ const Immutable = require('immutable');
 
 const {Record} = Immutable;
 
-const DraftEntityInstanceRecord = Record({
+const DraftEntityInstanceRecord = (Record({
   type: 'TOKEN',
   mutability: 'IMMUTABLE',
   data: Object,
-});
+}): any);
 
 /**
  * An instance of a document entity, consisting of a `type` and relevant

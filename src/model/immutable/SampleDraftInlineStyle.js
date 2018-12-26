@@ -16,44 +16,20 @@
 const {OrderedSet} = require('immutable');
 
 module.exports = {
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  BOLD: OrderedSet.of('BOLD'),
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  BOLD_ITALIC: OrderedSet.of('BOLD', 'ITALIC'),
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  BOLD_ITALIC_UNDERLINE: OrderedSet.of('BOLD', 'ITALIC', 'UNDERLINE'),
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  BOLD_UNDERLINE: OrderedSet.of('BOLD', 'UNDERLINE'),
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  CODE: OrderedSet.of('CODE'),
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  ITALIC: OrderedSet.of('ITALIC'),
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  ITALIC_UNDERLINE: OrderedSet.of('ITALIC', 'UNDERLINE'),
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  NONE: OrderedSet(),
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  STRIKETHROUGH: OrderedSet.of('STRIKETHROUGH'),
-  /* $FlowFixMe(>=0.85.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.85 was deployed. To see the error, delete this comment
-   * and run Flow. */
-  UNDERLINE: OrderedSet.of('UNDERLINE'),
+  BOLD: (OrderedSet.of('BOLD'): OrderedSet<$FlowFixMe>),
+  BOLD_ITALIC: (OrderedSet.of('BOLD', 'ITALIC'): OrderedSet<$FlowFixMe>),
+  BOLD_ITALIC_UNDERLINE: (OrderedSet.of(
+    'BOLD',
+    'ITALIC',
+    'UNDERLINE',
+  ): OrderedSet<$FlowFixMe>),
+  BOLD_UNDERLINE: (OrderedSet.of('BOLD', 'UNDERLINE'): OrderedSet<$FlowFixMe>),
+  CODE: (OrderedSet.of('CODE'): OrderedSet<$FlowFixMe>),
+  ITALIC: (OrderedSet.of('ITALIC'): OrderedSet<$FlowFixMe>),
+  ITALIC_UNDERLINE: (OrderedSet.of('ITALIC', 'UNDERLINE'): OrderedSet<
+    $FlowFixMe,
+  >),
+  NONE: (OrderedSet(): OrderedSet<$FlowFixMe>),
+  STRIKETHROUGH: (OrderedSet.of('STRIKETHROUGH'): OrderedSet<$FlowFixMe>),
+  UNDERLINE: (OrderedSet.of('UNDERLINE'): OrderedSet<$FlowFixMe>),
 };
