@@ -33,8 +33,8 @@ const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
 const {List, OrderedSet, Set} = require('immutable');
 const invariant = require('invariant');
-const isHTMLElement = require('isHTMLElement');
 const isHTMLAnchorElement = require('isHTMLAnchorElement');
+const isHTMLElement = require('isHTMLElement');
 const isHTMLImageElement = require('isHTMLImageElement');
 const sanitizeDraftText = require('sanitizeDraftText');
 
