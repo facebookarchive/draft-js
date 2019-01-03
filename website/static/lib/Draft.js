@@ -1,11 +1,10 @@
 /**
  * Draft v0.10.5
  *
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -94,11 +93,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -154,11 +152,10 @@ module.exports = invariant;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -816,11 +813,10 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -935,11 +931,10 @@ module.exports = CharacterMetadata;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -1099,11 +1094,10 @@ module.exports = DraftModifier;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -1258,12 +1252,10 @@ module.exports = ContentBlockNode;
 
 "use strict";
 /**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  *  strict
@@ -1286,11 +1278,10 @@ module.exports = function (name) {
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * 
  */
@@ -1316,11 +1307,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  *  strict
@@ -1348,11 +1338,10 @@ module.exports = generateRandomKey;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -1621,11 +1610,10 @@ module.exports = g;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -1766,11 +1754,10 @@ module.exports = ContentBlock;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -1810,11 +1797,10 @@ module.exports = cx;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -1851,11 +1837,10 @@ module.exports = DraftOffsetKey;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -2070,11 +2055,10 @@ module.exports = UnicodeUtils;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -2214,11 +2198,10 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_18__;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -2247,11 +2230,10 @@ module.exports = BlockMapBuilder;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -2300,11 +2282,10 @@ var _assign = __webpack_require__(3);
 var _extends = _assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -2492,11 +2473,10 @@ module.exports = DraftEntity;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -2520,11 +2500,10 @@ module.exports = isEventHandled;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -2567,11 +2546,10 @@ module.exports = removeTextWithStrategy;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -2635,11 +2613,10 @@ module.exports = getContentStateFragment;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  * 
@@ -2748,11 +2725,10 @@ module.exports = UnicodeBidiDirection;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -2824,11 +2800,10 @@ module.exports = DefaultDraftBlockRenderMap;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -2891,11 +2866,10 @@ module.exports = Style;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -2945,11 +2919,10 @@ module.exports = getScrollPosition;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * 
  */
@@ -2986,11 +2959,10 @@ module.exports = emptyFunction;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -3188,11 +3160,10 @@ module.exports = ContentState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  *  strict
@@ -3214,11 +3185,10 @@ module.exports = sanitizeDraftText;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  * 
@@ -3377,11 +3347,10 @@ module.exports = UnicodeBidi;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -3416,11 +3385,10 @@ module.exports = {
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -3480,11 +3448,10 @@ module.exports = getEntityKeyForSelection;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * 
  */
@@ -3524,11 +3491,10 @@ module.exports = containsNode;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -3612,11 +3578,10 @@ module.exports = Scroll;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -3649,11 +3614,10 @@ module.exports = findAncestorOffsetKey;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -3692,11 +3656,10 @@ module.exports = KeyBindingUtil;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -3749,11 +3712,10 @@ module.exports = moveSelectionBackward;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -3792,11 +3754,10 @@ module.exports = getSafeBodyFromHTML;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -3909,11 +3870,10 @@ module.exports = randomizeBlockMapKeys;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -4032,11 +3992,10 @@ module.exports = removeEntitiesAtEdges;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -4074,11 +4033,10 @@ module.exports = insertIntoList;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -4129,11 +4087,10 @@ module.exports = getNextDelimiterBlockKey;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -4246,11 +4203,10 @@ module.exports = BlockTree;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @legacyServerCallableInstance
  * @format
@@ -4320,11 +4276,10 @@ module.exports = DraftEntityInstance;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  *  strict
@@ -4361,11 +4316,10 @@ module.exports = {
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -4413,11 +4367,10 @@ module.exports = isSelectionAtLeafStart;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -4588,11 +4541,10 @@ module.exports = DraftEditorLeaf;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -4615,11 +4567,10 @@ module.exports = {
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -4658,11 +4609,10 @@ module.exports = getActiveElement;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -4757,11 +4707,10 @@ module.exports = getViewportDimensions;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -4980,11 +4929,10 @@ module.exports = DraftEditorBlock;
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -5202,11 +5150,10 @@ module.exports = DataTransfer;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -5243,11 +5190,10 @@ module.exports = getSelectionOffsetKeyForNode;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -5328,11 +5274,10 @@ module.exports = getTextContentFromFiles;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -5408,11 +5353,10 @@ module.exports = getUpdatedSelectionState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -5440,11 +5384,10 @@ module.exports = getFragmentFromSelection;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -5507,11 +5450,10 @@ module.exports = getRangeClientRects;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -5694,11 +5636,10 @@ module.exports = getDraftEditorSelectionWithNodes;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -5749,11 +5690,10 @@ module.exports = DraftRemovableWord;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -5798,11 +5738,10 @@ module.exports = moveSelectionForward;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -6454,11 +6393,10 @@ module.exports = convertFromHTMLtoContentBlocks;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * 
  */
@@ -6489,11 +6427,10 @@ module.exports = URI;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -7204,11 +7141,10 @@ module.exports = convertFromHTMLtoContentBlocks;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -7498,11 +7434,10 @@ module.exports = RichTextEditorUtil;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -7625,11 +7560,10 @@ module.exports = getDefaultKeyBinding;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  *  strict
@@ -7655,11 +7589,10 @@ module.exports = DraftStringKey;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -7733,11 +7666,10 @@ module.exports = DraftPublic;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -7866,11 +7798,10 @@ module.exports = AtomicBlockUtils;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -7942,11 +7873,10 @@ module.exports = ContentStateInlineStyle;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -7990,11 +7920,10 @@ module.exports = applyEntityToContentState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -8021,11 +7950,10 @@ module.exports = applyEntityToContentBlock;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -8140,11 +8068,10 @@ module.exports = getCharacterRemovalRange;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -8243,11 +8170,10 @@ module.exports = DraftEntitySegments;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -8286,11 +8212,10 @@ module.exports = getRangesForDraftEntity;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -8541,11 +8466,10 @@ module.exports = insertFragmentIntoContentState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -8599,11 +8523,10 @@ module.exports = insertTextIntoContentState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -8641,11 +8564,10 @@ module.exports = modifyBlockForContentState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -8951,11 +8873,10 @@ module.exports = removeRangeFromContentState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -9086,11 +9007,10 @@ module.exports = splitBlockInContentState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -9138,11 +9058,10 @@ module.exports = EditorBidiService;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  * 
@@ -9243,11 +9162,10 @@ module.exports = UnicodeBidiService;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -9440,11 +9358,10 @@ module.exports = moveBlockInContentState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -9558,11 +9475,10 @@ module.exports = CompositeDraftDecorator;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -10133,11 +10049,10 @@ module.exports = DraftEditor;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -10312,12 +10227,10 @@ module.exports = DraftEditorCompositionHandler;
 
 "use strict";
 /**
- * Copyright 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -10337,11 +10250,10 @@ module.exports = experimentalTreeDataSupport ? __webpack_require__(90) : __webpa
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -10521,11 +10433,10 @@ module.exports = DraftEditorContentsExperimental;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -10853,11 +10764,10 @@ module.exports = DraftEditorBlockNode;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -10975,11 +10885,10 @@ module.exports = DraftEditorNode;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -11062,11 +10971,10 @@ module.exports = DraftEditorDecoratedLeaves;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -11181,11 +11089,10 @@ module.exports = DraftEditorTextNode;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -12356,11 +12263,10 @@ module.exports = __webpack_amd_options__;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -12743,11 +12649,10 @@ module.exports = VersionRange;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -12798,11 +12703,10 @@ module.exports = mapObject;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * 
  * @typechecks static-only
@@ -12832,11 +12736,10 @@ module.exports = memoizeStringOnly;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -13084,11 +12987,10 @@ module.exports = setDraftEditorSelection;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -13113,11 +13015,10 @@ module.exports = isTextNode;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -13142,11 +13043,10 @@ module.exports = isNode;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -13200,11 +13100,10 @@ module.exports = getStyleProperty;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -13236,11 +13135,10 @@ module.exports = camelize;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -13273,11 +13171,10 @@ module.exports = hyphenate;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -13326,11 +13223,10 @@ module.exports = getElementRect;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -13364,11 +13260,10 @@ module.exports = getDocumentScrollElement;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -13407,11 +13302,10 @@ module.exports = getUnboundedScrollPosition;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -13661,11 +13555,10 @@ module.exports = DraftEditorContents;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks static-only
  */
@@ -13705,11 +13598,10 @@ module.exports = joinClasses;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -13828,11 +13720,10 @@ module.exports = DraftEditorDragHandler;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 var PhotosMimeType = {
@@ -13861,11 +13752,10 @@ module.exports = PhotosMimeType;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  */
@@ -13990,11 +13880,10 @@ module.exports = createArrayFromMixed;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -14038,11 +13927,10 @@ module.exports = DraftEditorEditHandler;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -14214,11 +14102,10 @@ module.exports = editOnBeforeInput;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -14620,11 +14507,10 @@ process.umask = function() { return 0; };
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -14674,11 +14560,10 @@ module.exports = editOnBlur;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -14707,11 +14592,10 @@ module.exports = editOnCompositionStart;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -14747,11 +14631,10 @@ module.exports = editOnCopy;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -14820,11 +14703,10 @@ module.exports = editOnCut;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -14849,11 +14731,10 @@ module.exports = editOnDragOver;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -14877,11 +14758,10 @@ module.exports = editOnDragStart;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -14927,11 +14807,10 @@ module.exports = editOnFocus;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15107,11 +14986,10 @@ module.exports = editOnInput;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15285,11 +15163,10 @@ module.exports = editOnKeyDown;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15359,11 +15236,10 @@ module.exports = SecondaryClipboard;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15410,11 +15286,10 @@ module.exports = keyCommandBackspaceToStartOfLine;
 
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15605,11 +15480,10 @@ module.exports = expandRangeToStartOfLine;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15657,11 +15531,10 @@ module.exports = keyCommandBackspaceWord;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
  * @stub
@@ -15699,11 +15572,10 @@ module.exports = {
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15749,11 +15621,10 @@ module.exports = keyCommandDeleteWord;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15777,11 +15648,10 @@ module.exports = keyCommandInsertNewline;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15819,11 +15689,10 @@ module.exports = keyCommandMoveSelectionToEndOfBlock;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15861,11 +15730,10 @@ module.exports = keyCommandMoveSelectionToStartOfBlock;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15910,11 +15778,10 @@ module.exports = keyCommandPlainBackspace;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -15960,11 +15827,10 @@ module.exports = keyCommandPlainDelete;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16043,11 +15909,10 @@ module.exports = keyCommandTransposeCharacters;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16096,11 +15961,10 @@ module.exports = keyCommandUndo;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16265,11 +16129,10 @@ module.exports = editOnPaste;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16346,11 +16209,10 @@ module.exports = DraftPasteProcessor;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16389,11 +16251,10 @@ module.exports = adjustBlockDepthForContentState;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  *  strict
@@ -16415,11 +16276,10 @@ module.exports = splitTextIntoTextBlocks;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16474,11 +16334,10 @@ module.exports = editOnSelect;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16515,11 +16374,10 @@ module.exports = getDraftEditorSelection;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16593,11 +16451,10 @@ module.exports = DraftEditorPlaceholder;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  */
 
@@ -16613,11 +16470,10 @@ module.exports = {
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16757,11 +16613,10 @@ module.exports = convertFromDraftStateToRaw;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16803,11 +16658,10 @@ module.exports = encodeEntityRanges;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -16876,11 +16730,10 @@ module.exports = encodeInlineStyleRanges;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -17114,11 +16967,10 @@ var _assign = __webpack_require__(3);
 var _extends = _assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -17255,11 +17107,10 @@ module.exports = DraftTreeAdapter;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -17289,11 +17140,10 @@ module.exports = createCharacterList;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -17333,11 +17183,10 @@ module.exports = decodeEntityRanges;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -17381,11 +17230,10 @@ module.exports = decodeInlineStyleRanges;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 
@@ -17432,11 +17280,10 @@ module.exports = getVisibleSelectionRect;
 
 "use strict";
 /**
- * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * 

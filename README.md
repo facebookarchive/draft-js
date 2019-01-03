@@ -147,8 +147,7 @@ We actively welcome pull requests. Learn how to
 
 ## License
 
-Draft.js is [BSD Licensed](https://github.com/facebook/draft-js/blob/master/LICENSE).
-We also provide an additional [patent grant](https://github.com/facebook/draft-js/blob/master/PATENTS).
+Draft.js is [MIT licensed](https://github.com/facebook/draft-js/blob/master/LICENSE).
 
 Examples provided in this repository and in the documentation are separately
 licensed.
