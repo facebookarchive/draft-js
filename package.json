@@ -13,13 +13,12 @@
   "files": [
     "dist/",
     "lib/",
-    "LICENSE",
-    "PATENTS"
+    "LICENSE"
   ],
   "main": "lib/Draft.js",
   "style": "dist/Draft.css",
   "repository": "facebook/draft-js",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "scripts": {
     "prepublish": "npm run build",
     "pretest": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
