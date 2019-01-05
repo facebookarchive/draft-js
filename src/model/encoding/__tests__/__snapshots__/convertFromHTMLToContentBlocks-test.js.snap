@@ -1535,6 +1535,44 @@ Array [
 ]
 `;
 
+exports[`highlighted text should be recognized and considered styled characters 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key0",
+    "type": "unstyled",
+    "text": "test",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "HIGHLIGHT",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "HIGHLIGHT",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "HIGHLIGHT",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "HIGHLIGHT",
+        ],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
 exports[`img with data protocol should be correctly parsed 1`] = `"📷"`;
 
 exports[`img with http protocol should have camera emoji content 1`] = `"📷"`;

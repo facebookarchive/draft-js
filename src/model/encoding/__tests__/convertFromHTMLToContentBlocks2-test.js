@@ -163,6 +163,11 @@ test('img with role presentation should not be rendered', () => {
   expect(blocks.contentBlocks).toMatchSnapshot();
 });
 
+test('highlighted text should be recognized and considered styled characters', () => {
+  const blocks = convertFromHTMLToContentBlocks(`<mark>test</mark>`);
+  expect(blocks.contentBlocks).toMatchSnapshot();
+});
+
 test('converts nested html blocks when experimentalTreeDataSupport is enabled', () => {
   const html_string = `
     <blockquote>
