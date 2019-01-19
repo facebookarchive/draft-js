@@ -1,5 +1,7 @@
 # [Draft.js](http://draftjs.org/) [![Build Status](https://img.shields.io/travis/facebook/draft-js/master.svg?style=flat)](https://travis-ci.org/facebook/draft-js) [![npm version](https://img.shields.io/npm/v/draft-js.svg?style=flat)](https://yarn.pm/draft-js)
 
+![Live Demo](https://media.giphy.com/media/XHUjaxELpc11SiRSqN/giphy.gif)
+
 Draft.js is a JavaScript rich text editor framework, built for React and
 backed by an immutable model.
 
