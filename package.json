@@ -85,7 +85,7 @@
     "webpack-stream": "^4.0.0"
   },
   "resolutions": {
-    "gulp/**/natives": "1.1.6"
+    "gulp/**/natives": "1.1.3"
   },
   "devEngines": {
     "node": "8.x || 9.x || 10.x",
