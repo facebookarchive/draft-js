@@ -449,7 +449,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
   componentDidUpdate(): void {
     this._blockSelectEvents = false;
-    // moving this here, when it was previously set in componentWillUpdate
     this._latestEditorState = this.props.editorState;
     this._latestCommittedEditorState = this.props.editorState;
   }

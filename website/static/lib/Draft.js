@@ -9954,7 +9954,6 @@ var DraftEditor = function (_React$Component2) {
 
   DraftEditor.prototype.componentDidUpdate = function componentDidUpdate() {
     this._blockSelectEvents = false;
-    // moving this here, when it was previously set in componentWillUpdate
     this._latestEditorState = this.props.editorState;
     this._latestCommittedEditorState = this.props.editorState;
   };
