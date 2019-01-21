@@ -23,18 +23,19 @@ const APP_PORT = 3000;
 var compiler = webpack({
   entry: path.resolve(__dirname, 'js', 'app.js'),
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
+        loader: 'babel-loader',
+        options: {
           presets: ['es2015', 'react'],
         },
       },
     ],
   },
   output: {filename: 'app.js', path: '/'},
+  mode: 'development',
 });
 var app = new WebpackDevServer(compiler, {
   contentBase: '/public/',

@@ -14,7 +14,6 @@
 
 'use strict';
 
-import 'babel/polyfill';
 import TeXEditorExample from './components/TeXEditorExample';
 import React from 'react';
 import ReactDOM from 'react-dom';
