@@ -21,13 +21,13 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
-const {List, Map, OrderedSet} = require('immutable');
 const URI = require('URI');
 
 const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
+const {List, Map, OrderedSet} = require('immutable');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
@@ -205,22 +205,22 @@ class ContentBlocksBuilder {
 
   // The following attributes are used to accumulate text and styles
   // as we are walking the HTML node tree.
-  characterList: List<CharacterMetadata>;
-  currentBlockType: string;
-  currentDepth: number;
-  currentEntity: ?string;
-  currentStyle: DraftInlineStyle;
-  currentText: string;
-  wrapper: string;
+  characterList: List<CharacterMetadata> = List();
+  currentBlockType: string = 'unstyled';
+  currentDepth: number = -1;
+  currentEntity: ?string = null;
+  currentStyle: DraftInlineStyle = OrderedSet();
+  currentText: string = '';
+  wrapper: string = 'ul';
 
   // Describes the future ContentState as a tree of content blocks
-  blockConfigs: Array<ContentBlockConfig>;
+  blockConfigs: Array<ContentBlockConfig> = [];
 
   // The content blocks generated from the blockConfigs
-  contentBlocks: Array<BlockNodeRecord>;
+  contentBlocks: Array<BlockNodeRecord> = [];
 
   // Entity map use to store links and images found in the HTML nodes
-  entityMap: EntityMap;
+  entityMap: EntityMap = DraftEntity;
 
   // Map HTML tags to draftjs block types and disambiguation function
   blockTypeMap: BlockTypeMap;
