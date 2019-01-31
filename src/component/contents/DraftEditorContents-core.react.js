@@ -197,11 +197,6 @@ class DraftEditorContents extends React.Component<Props> {
           lastWrapperTemplate !== wrapperTemplate ||
           currentDepth === null ||
           depth > currentDepth;
-        /* $FlowFixMe(>=0.70.0 site=www) This comment suppresses an error found
-        * when Upgradng to FBJS 1.0.0 as the flow type for joinClasses is incorrect
-        * as it's joinClasses(className: mixed): string and it needs to be
-        * the correct type joinClasses(...className: Array<string>)
-        * run Flow. */
         className = joinClasses(
           className,
           getListItemClasses(blockType, depth, shouldResetCount, direction),
