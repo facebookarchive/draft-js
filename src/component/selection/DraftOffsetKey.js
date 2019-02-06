@@ -25,17 +25,14 @@ const DraftOffsetKey = {
   },
 
   decode: function(offsetKey: string): DraftOffsetKeyPath {
-    const keyComponents = offsetKey.split(KEY_DELIMITER);
-    const blockKey = keyComponents
-      .slice(0, keyComponents.length - 2)
-      .join(KEY_DELIMITER);
-
-    const [decoratorKey, leafKey] = keyComponents.slice(
-      keyComponents.length - 2,
-    );
+    // Extracts the last two parts of offsetKey and captures the rest in blockKeyParts
+    const [leafKey, decoratorKey, ...blockKeyParts] = offsetKey
+      .split(KEY_DELIMITER)
+      .reverse();
 
     return {
-      blockKey,
+      // Recomposes the parts of blockKey after reversing them
+      blockKey: blockKeyParts.reverse().join(KEY_DELIMITER),
       decoratorKey: parseInt(decoratorKey, 10),
       leafKey: parseInt(leafKey, 10),
     };
