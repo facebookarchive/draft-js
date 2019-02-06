@@ -25,7 +25,15 @@ const DraftOffsetKey = {
   },
 
   decode: function(offsetKey: string): DraftOffsetKeyPath {
-    const [blockKey, decoratorKey, leafKey] = offsetKey.split(KEY_DELIMITER);
+    const keyComponents = offsetKey.split(KEY_DELIMITER);
+    const blockKey = keyComponents
+      .slice(0, keyComponents.length - 2)
+      .join(KEY_DELIMITER);
+
+    const [decoratorKey, leafKey] = keyComponents.slice(
+      keyComponents.length - 2,
+    );
+
     return {
       blockKey,
       decoratorKey: parseInt(decoratorKey, 10),
