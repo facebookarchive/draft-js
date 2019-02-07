@@ -24,7 +24,7 @@ Object {
 }
 `;
 
-exports[`decodes offset key with no delimeter 1`] = `
+exports[`decodes offset key with no delimiter 1`] = `
 Object {
   "blockKey": "key",
   "decoratorKey": 0,
