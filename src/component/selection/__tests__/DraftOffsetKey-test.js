@@ -6,6 +6,7 @@
  *
  * @emails oncall+draft_js
  * @format
+ * @flow strict-local
  */
 
 jest.disableAutomock();
