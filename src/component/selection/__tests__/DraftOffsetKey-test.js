@@ -12,7 +12,7 @@ jest.disableAutomock();
 
 const DraftOffsetKey = require('DraftOffsetKey');
 
-test('decodes offset key with no delimeter', () => {
+test('decodes offset key with no delimiter', () => {
   expect(DraftOffsetKey.decode('key-0-1')).toMatchSnapshot();
 });
 
