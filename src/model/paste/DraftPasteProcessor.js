@@ -20,8 +20,8 @@ import type {EntityMap} from 'EntityMap';
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 
-const convertFromHTMLtoContentBlocksClassic = require('convertFromHTMLToContentBlocks');
-const convertFromHTMLtoContentBlocksNew = require('convertFromHTMLToContentBlocks2');
+const convertFromHTMLToContentBlocksClassic = require('convertFromHTMLToContentBlocks');
+const convertFromHTMLToContentBlocksNew = require('convertFromHTMLToContentBlocks2');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
@@ -36,16 +36,16 @@ const ContentBlockRecord = experimentalTreeDataSupport
   : ContentBlock;
 
 const refactoredHTMLImporter = gkx('draft_refactored_html_importer');
-const convertFromHTMLtoContentBlocks = refactoredHTMLImporter
-  ? convertFromHTMLtoContentBlocksNew
-  : convertFromHTMLtoContentBlocksClassic;
+const convertFromHTMLToContentBlocks = refactoredHTMLImporter
+  ? convertFromHTMLToContentBlocksNew
+  : convertFromHTMLToContentBlocksClassic;
 
 const DraftPasteProcessor = {
   processHTML(
     html: string,
     blockRenderMap?: DraftBlockRenderMap,
   ): ?{contentBlocks: ?Array<BlockNodeRecord>, entityMap: EntityMap} {
-    return convertFromHTMLtoContentBlocks(
+    return convertFromHTMLToContentBlocks(
       html,
       getSafeBodyFromHTML,
       blockRenderMap,

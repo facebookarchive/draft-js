@@ -699,7 +699,7 @@ class ContentBlocksBuilder {
  * Converts an HTML string to an array of ContentBlocks and an EntityMap
  * suitable to initialize the internal state of a Draftjs component.
  */
-const convertFromHTMLtoContentBlocks = (
+const convertFromHTMLToContentBlocks = (
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
@@ -739,4 +739,4 @@ const convertFromHTMLtoContentBlocks = (
     .getContentBlocks();
 };
 
-module.exports = convertFromHTMLtoContentBlocks;
+module.exports = convertFromHTMLToContentBlocks;

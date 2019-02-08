@@ -758,7 +758,7 @@ const convertChunkToContentBlocks = (chunk: Chunk): ?Array<BlockNodeRecord> => {
   }, initialState).contentBlocks;
 };
 
-const convertFromHTMLtoContentBlocks = (
+const convertFromHTMLToContentBlocks = (
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
@@ -788,4 +788,4 @@ const convertFromHTMLtoContentBlocks = (
   };
 };
 
-module.exports = convertFromHTMLtoContentBlocks;
+module.exports = convertFromHTMLToContentBlocks;
