@@ -1,7 +1,7 @@
 {
-  "name": "draft-js",
+  "name": "draft-js-skk2142",
   "description": "A React framework for building text editors.",
-  "version": "0.10.5",
+  "version": "0.10.52",
   "keywords": [
     "draftjs",
     "editor",
@@ -9,7 +9,7 @@
     "richtext"
   ],
   "homepage": "http://draftjs.org/",
-  "bugs": "https://github.com/facebook/draft-js/issues",
+  "bugs": "https://github.com/skk2142/draft-js/issues",
   "files": [
     "dist/",
     "lib/",
@@ -18,7 +18,7 @@
   ],
   "main": "lib/Draft.js",
   "style": "dist/Draft.css",
-  "repository": "facebook/draft-js",
+  "repository": "skk2142/draft-js",
   "license": "BSD-3-Clause",
   "scripts": {
     "prepublish": "npm run build",
