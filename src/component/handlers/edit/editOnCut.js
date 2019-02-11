@@ -63,7 +63,6 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     editor.exitCurrentMode();
     editor.update(removeFragment(editorState));
   }, 0);
-  console.log(e.clipboardData, fragment)
   if (e.clipboardData && fragment) {
     const content = ContentState.createFromBlockArray(fragment.toArray());
     const serialisedContent = JSON.stringify(
