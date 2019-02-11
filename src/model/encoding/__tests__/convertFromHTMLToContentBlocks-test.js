@@ -16,7 +16,7 @@ jest.mock('generateRandomKey');
 
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
-const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks2');
+const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 const cx = require('cx');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 
