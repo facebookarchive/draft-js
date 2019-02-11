@@ -79,7 +79,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     fragmentElt.setAttribute('style', 'white-space: pre-wrap;');
 
     e.clipboardData.setData('text/plain', domSelection.toString());
-    const el = fragmentElt.cloneNode();
+    const el = fragmentElt.cloneNode(true);
     Array
     .from(
       // contenteditable=false does nothing special here,
