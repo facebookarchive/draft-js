@@ -59,7 +59,7 @@ function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     .from(
       // contenteditable=false does nothing special here,
       // it's just whatever elements we want to remove have it set to false
-      el.querySelectorAll(['contenteditable=false'])
+      el.querySelectorAll('[contenteditable=false]')
     )
     .forEach(e => e.remove())
     e.clipboardData.setData('text/html', el.outerHTML);
