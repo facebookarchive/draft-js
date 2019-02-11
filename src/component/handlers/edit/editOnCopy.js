@@ -54,7 +54,15 @@ function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     fragmentElt.setAttribute('style', 'white-space: pre-wrap;');
 
     e.clipboardData.setData('text/plain', domSelection.toString());
-    e.clipboardData.setData('text/html', fragmentElt.outerHTML);
+    const el = fragmentElt.cloneNode();
+    Array
+    .from(
+      // contenteditable=false does nothing special here,
+      // it's just whatever elements we want to remove have it set to false
+      el.querySelectorAll(['contenteditable=false'])
+    )
+    .forEach(e => e.remove())
+    e.clipboardData.setData('text/html', el.outerHTML);
 
     e.preventDefault();
   }
