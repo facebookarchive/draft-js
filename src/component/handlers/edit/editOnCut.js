@@ -14,6 +14,9 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
+const ContentState = require('ContentState');
+const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
+
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Style = require('Style');
@@ -60,6 +63,27 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     editor.exitCurrentMode();
     editor.update(removeFragment(editorState));
   }, 0);
+  console.log(e.clipboardData, fragment)
+  if (e.clipboardData && fragment) {
+    const content = ContentState.createFromBlockArray(fragment.toArray());
+    const serialisedContent = JSON.stringify(
+      convertFromDraftStateToRaw(content),
+    );
+
+    const fragmentElt = document.createElement('div');
+    const domSelection = window.getSelection();
+    fragmentElt.appendChild(domSelection.getRangeAt(0).cloneContents());
+    fragmentElt.setAttribute('data-editor-content', serialisedContent);
+    // We set the style property to replicate the browser's behavior of inline
+    // styles in rich text copy-paste. This is important for line breaks to be
+    // interpreted correctly when pasted into another word processor.
+    fragmentElt.setAttribute('style', 'white-space: pre-wrap;');
+
+    e.clipboardData.setData('text/plain', domSelection.toString());
+    e.clipboardData.setData('text/html', fragmentElt.outerHTML);
+
+    e.preventDefault();
+  }
 }
 
 function removeFragment(editorState: EditorState): EditorState {
