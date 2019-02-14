@@ -157,7 +157,7 @@ const isValidImage = (node: Node): boolean => {
 /**
  * Determine if a nodeName is a list type, 'ul' or 'ol'
  */
-const isListNode = (nodeName: string): boolean =>
+const isListNode = (nodeName: ?string): boolean =>
   nodeName === 'ul' || nodeName === 'ol';
 
 /**
@@ -211,7 +211,7 @@ class ContentBlocksBuilder {
   currentEntity: ?string = null;
   currentStyle: DraftInlineStyle = OrderedSet();
   currentText: string = '';
-  wrapper: string = 'ul';
+  wrapper: ?string = null;
 
   // Describes the future ContentState as a tree of content blocks
   blockConfigs: Array<ContentBlockConfig> = [];
@@ -224,11 +224,11 @@ class ContentBlocksBuilder {
 
   // Map HTML tags to draftjs block types and disambiguation function
   blockTypeMap: BlockTypeMap;
-  disambiguate: (string, string) => ?string;
+  disambiguate: (string, ?string) => ?string;
 
   constructor(
     blockTypeMap: BlockTypeMap,
-    disambiguate: (string, string) => ?string,
+    disambiguate: (string, ?string) => ?string,
   ): void {
     this.clear();
     this.blockTypeMap = blockTypeMap;
@@ -247,7 +247,7 @@ class ContentBlocksBuilder {
     this.currentStyle = OrderedSet();
     this.currentText = '';
     this.entityMap = DraftEntity;
-    this.wrapper = 'ul';
+    this.wrapper = null;
     this.contentBlocks = [];
   }
 
@@ -419,6 +419,11 @@ class ContentBlocksBuilder {
         continue;
       }
 
+      if (nodeName === 'br') {
+        this._addBreakNode(node);
+        continue;
+      }
+
       if (isValidImage(node)) {
         this._addImgNode(node);
         continue;
@@ -507,6 +512,13 @@ class ContentBlocksBuilder {
     }
 
     this._appendText(text);
+  }
+
+  _addBreakNode(node: Node) {
+    if (!(node instanceof HTMLBRElement)) {
+      return;
+    }
+    this._appendText('\n');
   }
 
   /**
@@ -727,7 +739,7 @@ const convertFromHTMLToContentBlocks = (
 
   // Select the proper block type for the cases where the blockRenderMap
   // uses multiple block types for the same html tag.
-  const disambiguate = (tag, wrapper) => {
+  const disambiguate = (tag: string, wrapper: ?string): ?string => {
     if (tag === 'li') {
       return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
     }

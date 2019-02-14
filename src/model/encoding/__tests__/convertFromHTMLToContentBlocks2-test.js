@@ -163,6 +163,29 @@ test('img with role presentation should not be rendered', () => {
   expect(blocks.contentBlocks).toMatchSnapshot();
 });
 
+test('line break should be correctly parsed - single <br>', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    `<div>
+      <b>Hello World!</b>
+      <br />
+      lorem ipsum
+    </div>`,
+  );
+  expect(blocks.contentBlocks).toMatchSnapshot();
+});
+
+test('line break should be correctly parsed - multiple <br> in a content block', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    `<div>
+      <b>Hello World!</b>
+      <br />
+      <br />
+      lorem ipsum
+    </div>`,
+  );
+  expect(blocks.contentBlocks).toMatchSnapshot();
+});
+
 test('highlighted text should be recognized and considered styled characters', () => {
   const blocks = convertFromHTMLToContentBlocks(`<mark>test</mark>`);
   expect(blocks.contentBlocks).toMatchSnapshot();
