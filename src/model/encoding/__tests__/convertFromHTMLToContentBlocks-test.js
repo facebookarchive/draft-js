@@ -163,6 +163,29 @@ test('img with role presentation should not be rendered', () => {
   expect(blocks.contentBlocks).toMatchSnapshot();
 });
 
+test('line break should be correctly parsed - single <br>', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    `<div>
+      <b>Hello World!</b>
+      <br />
+      lorem ipsum
+    </div>`,
+  );
+  expect(blocks.contentBlocks).toMatchSnapshot();
+});
+
+test('line break should be correctly parsed - multiple <br> in a content block', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    `<div>
+      <b>Hello World!</b>
+      <br />
+      <br />
+      lorem ipsum
+    </div>`,
+  );
+  expect(blocks.contentBlocks).toMatchSnapshot();
+});
+
 test('highlighted text should be recognized and considered styled characters', () => {
   const blocks = convertFromHTMLToContentBlocks(`<mark>test</mark>`);
   expect(blocks.contentBlocks).toMatchSnapshot();
@@ -415,5 +438,16 @@ test('Should recognized and *not* override html structure when having known draf
   `;
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should import line breaks without creating a leading space', () => {
+  const html_string = `
+    Line 1<br/>
+    Line 2<br/>
+    Line 3
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
   });
 });

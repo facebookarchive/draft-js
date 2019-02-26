@@ -1048,17 +1048,11 @@ Array [
           "ITALIC",
         ],
       },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "he       hi",
+    "text": "he      hi",
     "type": "unstyled",
   },
 ]
