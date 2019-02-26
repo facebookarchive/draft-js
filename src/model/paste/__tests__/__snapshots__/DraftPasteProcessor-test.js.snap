@@ -72,12 +72,6 @@ Array [
       },
       Object {
         "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
         "style": Array [],
       },
       Object {
@@ -104,7 +98,7 @@ Array [
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "       hellothere ",
+    "text": "      hellothere ",
     "type": "unstyled",
   },
 ]
@@ -114,12 +108,6 @@ exports[`Should detect when somthing is un-styled in a child 2`] = `
 Array [
   Object {
     "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
       Object {
         "entity": null,
         "style": Array [
@@ -214,7 +202,7 @@ Array [
     "data": Object {},
     "depth": 0,
     "key": "key1",
-    "text": "       hellothere ",
+    "text": "      hellothere ",
     "type": "unstyled",
   },
 ]
@@ -1253,17 +1241,11 @@ Array [
           "ITALIC",
         ],
       },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": " he       hi     ",
+    "text": " he      hi     ",
     "type": "unstyled",
   },
 ]
@@ -1689,12 +1671,6 @@ Array [
         "entity": null,
         "style": Array [
           "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
           "ITALIC",
         ],
       },
@@ -1752,7 +1728,7 @@ Array [
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "       Bold Italic  .",
+    "text": "      Bold Italic  .",
     "type": "unstyled",
   },
 ]
@@ -1912,15 +1888,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key2",
-    "text": "        what         ",
+    "text": "       what         ",
     "type": "unordered-list-item",
   },
   Object {
@@ -2650,15 +2622,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "      hello there     ",
+    "text": "     hello there     ",
     "type": "unstyled",
   },
 ]

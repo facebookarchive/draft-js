@@ -61,6 +61,7 @@ const MAX_DEPTH = 4;
 // used for replacing characters in HTML
 const REGEX_CR = new RegExp('\r', 'g');
 const REGEX_LF = new RegExp('\n', 'g');
+const REGEX_LEADING_LF = new RegExp('^\n', 'g');
 const REGEX_NBSP = new RegExp(NBSP, 'g');
 const REGEX_CARRIAGE = new RegExp('&#13;?', 'g');
 const REGEX_ZWS = new RegExp('&#8203;?', 'g');
@@ -395,6 +396,9 @@ const genFragment = (
       return {chunk: getWhitespaceChunk(inEntity), entityMap};
     }
     if (inBlock !== 'pre') {
+      // Trim leading line feed, which is invisible in HTML
+      text = text.replace(REGEX_LEADING_LF, '');
+
       // Can't use empty string because MSWord
       text = text.replace(REGEX_LF, SPACE);
     }

@@ -440,3 +440,14 @@ test('Should recognized and *not* override html structure when having known draf
     experimentalTreeDataSupport: true,
   });
 });
+
+test('Should import line breaks without creating a leading space', () => {
+  const html_string = `
+    Line 1<br/>
+    Line 2<br/>
+    Line 3
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
