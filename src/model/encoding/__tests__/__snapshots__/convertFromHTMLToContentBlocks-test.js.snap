@@ -1,6 +1,354 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should import recognised draft li depths 1`] = `
+exports[`Should *not* import recognised draft li depths when nesting enabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": "key1",
+    "parent": null,
+    "prevSibling": null,
+    "text": "depth0-0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "nextSibling": "key2",
+    "parent": null,
+    "prevSibling": "key0",
+    "text": "depth0-1",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key2",
+    "nextSibling": "key3",
+    "parent": null,
+    "prevSibling": "key1",
+    "text": "depth0-2",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key3",
+    "nextSibling": "key4",
+    "parent": null,
+    "prevSibling": "key2",
+    "text": "depth0-3",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key4",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key3",
+    "text": "depth0-4",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`Should import line breaks without creating a leading space 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "Line 1    Line 2    Line 3",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`Should import recognised draft li depths when nesting disabled 1`] = `
 Array [
   Object {
     "characterList": Array [
@@ -64,7 +412,7 @@ Array [
     ],
     "data": Object {},
     "depth": 1,
-    "key": "key2",
+    "key": "key1",
     "text": "depth1",
     "type": "unordered-list-item",
   },
@@ -97,7 +445,7 @@ Array [
     ],
     "data": Object {},
     "depth": 2,
-    "key": "key4",
+    "key": "key2",
     "text": "depth2",
     "type": "unordered-list-item",
   },
@@ -130,7 +478,7 @@ Array [
     ],
     "data": Object {},
     "depth": 3,
-    "key": "key6",
+    "key": "key3",
     "text": "depth3",
     "type": "unordered-list-item",
   },
@@ -163,197 +511,7 @@ Array [
     ],
     "data": Object {},
     "depth": 4,
-    "key": "key8",
-    "text": "depth4",
-    "type": "unordered-list-item",
-  },
-]
-`;
-
-exports[`Should import recognised draft li depths when nesting enabled 1`] = `
-Array [
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "key0",
-    "nextSibling": "key1",
-    "parent": null,
-    "prevSibling": null,
-    "text": "depth0",
-    "type": "unordered-list-item",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "key1",
-    "nextSibling": "key2",
-    "parent": null,
-    "prevSibling": "key0",
-    "text": "depth1",
-    "type": "unordered-list-item",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "key2",
-    "nextSibling": "key3",
-    "parent": null,
-    "prevSibling": "key1",
-    "text": "depth2",
-    "type": "unordered-list-item",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "key3",
-    "nextSibling": "key4",
-    "parent": null,
-    "prevSibling": "key2",
-    "text": "depth3",
-    "type": "unordered-list-item",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
     "key": "key4",
-    "nextSibling": null,
-    "parent": null,
-    "prevSibling": "key3",
     "text": "depth4",
     "type": "unordered-list-item",
   },
@@ -766,10 +924,1030 @@ Array [
     "depth": 0,
     "key": "key0",
     "nextSibling": null,
-    "parent": undefined,
+    "parent": null,
     "prevSibling": null,
     "text": "Some stylised text",
     "type": "unstyled",
+  },
+]
+`;
+
+exports[`Should recognized and *not* override html structure when having known draft-js classname with nesting enabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": "key1",
+    "parent": null,
+    "prevSibling": null,
+    "text": "depth0-0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "key1",
+    "nextSibling": "key2",
+    "parent": null,
+    "prevSibling": "key0",
+    "text": "depth1-0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "key2",
+    "nextSibling": "key3",
+    "parent": null,
+    "prevSibling": "key1",
+    "text": "depth1-1",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key3",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key2",
+    "text": "depth0-1",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`Should recognized and override html structure when having known draft-js classname with nesting disabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "depth0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "key1",
+    "text": "depth1",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 2,
+    "key": "key2",
+    "text": "depth2",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 3,
+    "key": "key3",
+    "text": "depth3",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`Should recognized list deep nesting 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "depth0-0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "text": "depth0-1",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "key2",
+    "text": "depth1-0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "key3",
+    "text": "depth1-1",
+    "type": "ordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 2,
+    "key": "key4",
+    "text": "depth2-0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 2,
+    "key": "key5",
+    "text": "depth2-1",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key6",
+    "text": "depth0-2",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key7",
+    "text": "depth0-3",
+    "type": "ordered-list-item",
+  },
+]
+`;
+
+exports[`Should recognized list deep nesting when nesting enabled 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": "key1",
+    "parent": null,
+    "prevSibling": null,
+    "text": "depth0-0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "nextSibling": "key2",
+    "parent": null,
+    "prevSibling": "key0",
+    "text": "depth0-1",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "key2",
+    "nextSibling": "key3",
+    "parent": null,
+    "prevSibling": "key1",
+    "text": "depth1-0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "key3",
+    "nextSibling": "key4",
+    "parent": null,
+    "prevSibling": "key2",
+    "text": "depth1-1",
+    "type": "ordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 2,
+    "key": "key4",
+    "nextSibling": "key5",
+    "parent": null,
+    "prevSibling": "key3",
+    "text": "depth2-0",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 2,
+    "key": "key5",
+    "nextSibling": "key6",
+    "parent": null,
+    "prevSibling": "key4",
+    "text": "depth2-1",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key6",
+    "nextSibling": "key7",
+    "parent": null,
+    "prevSibling": "key5",
+    "text": "depth0-2",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key7",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key6",
+    "text": "depth0-3",
+    "type": "ordered-list-item",
   },
 ]
 `;
@@ -908,10 +2086,6 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "children": Array [],
     "data": Object {},
@@ -920,23 +2094,11 @@ Array [
     "nextSibling": "key4",
     "parent": "key2",
     "prevSibling": null,
-    "text": "Hello World! ",
+    "text": "Hello World!",
     "type": "header-one",
   },
   Object {
     "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
       Object {
         "entity": null,
         "style": Array [],
@@ -989,8 +2151,7 @@ Array [
     "nextSibling": null,
     "parent": "key2",
     "prevSibling": "key3",
-    "text": "lorem ipsum 
- ",
+    "text": "lorem ipsum",
     "type": "unstyled",
   },
 ]
@@ -1063,14 +2224,6 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "children": Array [],
     "data": Object {},
@@ -1079,20 +2232,11 @@ Array [
     "nextSibling": "key2",
     "parent": "key0",
     "prevSibling": null,
-    "text": "Hello World!
- ",
+    "text": "Hello World!",
     "type": "header-one",
   },
   Object {
     "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
       Object {
         "entity": null,
         "style": Array [],
@@ -1145,8 +2289,7 @@ Array [
     "nextSibling": null,
     "parent": "key0",
     "prevSibling": "key1",
-    "text": "lorem ipsum
- ",
+    "text": "lorem ipsum",
     "type": "unstyled",
   },
 ]
@@ -1157,8 +2300,8 @@ Array [
   Object {
     "characterList": Array [],
     "children": Array [
-      "key2",
       "key1",
+      "key2",
     ],
     "data": Object {},
     "depth": 0,
@@ -1219,14 +2362,19 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "nextSibling": "key2",
+    "parent": "key0",
+    "prevSibling": null,
+    "text": "Hello World!",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
       Object {
         "entity": null,
         "style": Array [],
@@ -1276,76 +2424,10 @@ Array [
     "data": Object {},
     "depth": 0,
     "key": "key2",
-    "nextSibling": "key1",
-    "parent": "key0",
-    "prevSibling": null,
-    "text": "      Hello World!       ",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "key1",
     "nextSibling": null,
     "parent": "key0",
-    "prevSibling": "key2",
-    "text": "lorem ipsum
- ",
+    "prevSibling": "key1",
+    "text": "lorem ipsum",
     "type": "header-one",
   },
 ]
@@ -1506,30 +2588,13 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "Hello World!
- lorem ipsum
- 
- ",
+lorem ipsum
+",
     "type": "ordered-list-item",
   },
 ]
@@ -1577,7 +2642,327 @@ exports[`img with data protocol should be correctly parsed 1`] = `"📷"`;
 
 exports[`img with http protocol should have camera emoji content 1`] = `"📷"`;
 
-exports[`img with role presentation should not be rendered 1`] = `null`;
+exports[`img with role presentation should not be rendered 1`] = `Array []`;
+
+exports[`line break should be correctly parsed - multiple <br> in a content block 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key0",
+    "type": "unstyled",
+    "text": "Hello World!        lorem ipsum",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
+
+exports[`line break should be correctly parsed - single <br> 1`] = `
+Array [
+  Immutable.Record {
+    "key": "key0",
+    "type": "unstyled",
+    "text": "Hello World!       lorem ipsum",
+    "characterList": Immutable.List [
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [
+          "BOLD",
+        ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+    ],
+    "depth": 0,
+    "data": Immutable.Map {},
+  },
+]
+`;
 
 exports[`must convert root ContentBlockNodes to matching ContentBlock nodes for <blockquote /> 1`] = `true`;
 
@@ -1627,7 +3012,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "blockquote",
   },
@@ -1658,7 +3043,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "blockquote",
   },
@@ -1689,7 +3074,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "unstyled",
   },
@@ -1720,7 +3105,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "unstyled",
   },
@@ -1751,7 +3136,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "atomic",
   },
@@ -1782,7 +3167,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "atomic",
   },
@@ -1813,7 +3198,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-one",
   },
@@ -1844,7 +3229,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-one",
   },
@@ -1875,7 +3260,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-two",
   },
@@ -1906,7 +3291,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-two",
   },
@@ -1937,7 +3322,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-three",
   },
@@ -1968,7 +3353,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-three",
   },
@@ -1999,7 +3384,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-four",
   },
@@ -2030,7 +3415,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-four",
   },
@@ -2061,7 +3446,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-five",
   },
@@ -2092,7 +3477,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-five",
   },
@@ -2123,7 +3508,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-six",
   },
@@ -2154,7 +3539,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "header-six",
   },
@@ -2185,7 +3570,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "unordered-list-item",
   },
@@ -2216,7 +3601,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "unordered-list-item",
   },
@@ -2247,7 +3632,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "unstyled",
   },
@@ -2278,7 +3663,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "unstyled",
   },
@@ -2309,7 +3694,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "code-block",
   },
@@ -2340,7 +3725,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "b",
     "type": "code-block",
   },

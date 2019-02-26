@@ -64,47 +64,11 @@ Array [
           "BOLD",
         ],
       },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "       hellothere ",
+    "text": "hellothere",
     "type": "unstyled",
   },
 ]
@@ -174,47 +138,11 @@ Array [
           "ITALIC",
         ],
       },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key1",
-    "text": "       hellothere ",
+    "text": "hellothere",
     "type": "unstyled",
   },
 ]
@@ -326,7 +254,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "what",
     "type": "paragraph",
   },
@@ -353,20 +281,6 @@ Array [
         "entity": null,
         "style": Array [],
       },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "key1",
-    "text": "hi
- ",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
       Object {
         "entity": null,
         "style": Array [],
@@ -387,7 +301,7 @@ Array [
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "hello",
+    "text": "hi hello",
     "type": "unstyled",
   },
 ]
@@ -425,62 +339,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "     hi
-
-hello
-    ",
+    "text": "hihello",
     "type": "code-block",
   },
 ]
@@ -494,15 +357,30 @@ Array [
         "entity": null,
         "style": Array [],
       },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "key4",
-    "text": " ",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
       Object {
         "entity": null,
         "style": Array [],
@@ -515,37 +393,10 @@ Array [
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "hi",
-    "type": "paragraph",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "key2",
-    "text": "hello",
-    "type": "paragraph",
+    "text": "hi
+hello
+",
+    "type": "unstyled",
   },
 ]
 `;
@@ -574,16 +425,12 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
     "text": "what
- ",
+",
     "type": "unordered-list-item",
   },
 ]
@@ -816,14 +663,6 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "children": Array [],
     "data": Object {},
@@ -832,8 +671,7 @@ Array [
     "nextSibling": "key2",
     "parent": "key0",
     "prevSibling": null,
-    "text": "Heading inside blockquote
- ",
+    "text": "Heading inside blockquote",
     "type": "header-two",
   },
   Object {
@@ -890,14 +728,6 @@ Array [
           "BOLD",
         ],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "children": Array [],
     "data": Object {},
@@ -906,8 +736,7 @@ Array [
     "nextSibling": null,
     "parent": "key0",
     "prevSibling": "key1",
-    "text": "some text
- ",
+    "text": "some text",
     "type": "paragraph",
   },
 ]
@@ -1039,7 +868,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "hi",
     "type": "header-two",
   },
@@ -1090,7 +919,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "there",
     "type": "ordered-list-item",
   },
@@ -1159,10 +988,6 @@ Array [
     "characterList": Array [
       Object {
         "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
         "style": Array [
           "ITALIC",
           "BOLD",
@@ -1173,42 +998,6 @@ Array [
         "style": Array [
           "ITALIC",
           "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "ITALIC",
         ],
       },
       Object {
@@ -1263,7 +1052,7 @@ Array [
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": " he       hi     ",
+    "text": "he      hi",
     "type": "unstyled",
   },
 ]
@@ -1469,15 +1258,19 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "hi ",
+    "text": "hi",
+    "type": "header-one",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key1",
+    "text": "",
     "type": "header-one",
   },
   Object {
@@ -1514,19 +1307,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key3",
-    "text": "whatever  ",
+    "key": "key2",
+    "text": "whatever",
     "type": "unstyled",
   },
   Object {
@@ -1539,15 +1324,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key4",
-    "text": "hi ",
+    "key": "key3",
+    "text": "hi",
     "type": "header-two",
   },
 ]
@@ -1593,23 +1374,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": " Word    ,  ",
+    "text": "Word    ,",
     "type": "paragraph",
   },
 ]
@@ -1621,124 +1390,11 @@ Array [
     "characterList": Array [
       Object {
         "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
+        "style": Array [],
       },
       Object {
         "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-          "ITALIC",
-        ],
-      },
-      Object {
-        "entity": null,
-        "style": Array [
-          "BOLD",
-          "ITALIC",
-        ],
+        "style": Array [],
       },
       Object {
         "entity": null,
@@ -1747,12 +1403,57 @@ Array [
       Object {
         "entity": null,
         "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+          "BOLD",
+        ],
       },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "       Bold Italic  .",
+    "text": "Bold Italic  .",
     "type": "unstyled",
   },
 ]
@@ -1778,31 +1479,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key10",
-    "text": "what     ",
+    "key": "key0",
+    "text": "what",
     "type": "unstyled",
   },
   Object {
@@ -1826,7 +1507,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key0",
+    "key": "key1",
     "text": "what",
     "type": "unordered-list-item",
   },
@@ -1884,43 +1565,14 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key2",
-    "text": "        what         ",
+    "text": "what
+one
+two
+",
     "type": "unordered-list-item",
   },
   Object {
@@ -1937,48 +1589,6 @@ Array [
         "entity": null,
         "style": Array [],
       },
-    ],
-    "data": Object {},
-    "depth": 1,
-    "key": "key3",
-    "text": "one",
-    "type": "ordered-list-item",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "data": Object {},
-    "depth": 1,
-    "key": "key5",
-    "text": "two",
-    "type": "ordered-list-item",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
       Object {
         "entity": null,
         "style": Array [],
@@ -1986,7 +1596,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key8",
+    "key": "key6",
     "text": "what",
     "type": "unordered-list-item",
   },
@@ -2135,53 +1745,12 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "     hello
-there
-    ",
+    "text": "hello
+there",
     "type": "code-block",
   },
 ]
@@ -2235,53 +1804,12 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "     hello
-there
-    ",
+    "text": "hello
+there",
     "type": "code-block",
   },
 ]
@@ -2547,16 +2075,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "hi
-hello",
+    "text": "hihello",
     "type": "unstyled",
   },
 ]
@@ -2610,55 +2133,11 @@ Array [
         "entity": null,
         "style": Array [],
       },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "      hello there     ",
+    "text": "hello there",
     "type": "unstyled",
   },
 ]
@@ -2680,20 +2159,6 @@ Array [
         "entity": null,
         "style": Array [],
       },
-    ],
-    "data": Object {},
-    "depth": 0,
-    "key": "key1",
-    "text": "hi
-",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
       Object {
         "entity": null,
         "style": Array [],
@@ -2714,7 +2179,7 @@ Array [
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "hello",
+    "text": "hihello",
     "type": "unstyled",
   },
 ]
@@ -2806,7 +2271,7 @@ Array [
     ],
     "data": Object {},
     "depth": 0,
-    "key": "key2",
+    "key": "key1",
     "text": "hello",
     "type": "unstyled",
   },

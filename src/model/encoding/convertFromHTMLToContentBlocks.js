@@ -12,9 +12,7 @@
 'use strict';
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
-import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
-import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {EntityMap} from 'EntityMap';
 
@@ -23,44 +21,23 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
-const Immutable = require('immutable');
-const {Set} = require('immutable');
 const URI = require('URI');
 
 const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
-const invariant = require('invariant');
-const sanitizeDraftText = require('sanitizeDraftText');
+const {List, Map, OrderedSet} = require('immutable');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
-
-type Block = {
-  type: DraftBlockType,
-  depth: number,
-  key?: string,
-  parent?: string,
-};
-
-type Chunk = {
-  text: string,
-  inlines: Array<DraftInlineStyle>,
-  entities: Array<string>,
-  blocks: Array<Block>,
-};
-
-const {List, OrderedSet} = Immutable;
 
 const NBSP = '&nbsp;';
 const SPACE = ' ';
 
-// Arbitrary max indent
-const MAX_DEPTH = 4;
-
 // used for replacing characters in HTML
 const REGEX_CR = new RegExp('\r', 'g');
 const REGEX_LF = new RegExp('\n', 'g');
+const REGEX_LEADING_LF = new RegExp('^\n', 'g');
 const REGEX_NBSP = new RegExp(NBSP, 'g');
 const REGEX_CARRIAGE = new RegExp('&#13;?', 'g');
 const REGEX_ZWS = new RegExp('&#8203;?', 'g');
@@ -69,9 +46,18 @@ const REGEX_ZWS = new RegExp('&#8203;?', 'g');
 const boldValues = ['bold', 'bolder', '500', '600', '700', '800', '900'];
 const notBoldValues = ['light', 'lighter', '100', '200', '300', '400'];
 
-// Block tag flow is different because LIs do not have
-// a deterministic style ;_;
-const inlineTags = {
+const anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
+const imgAttr = ['alt', 'className', 'height', 'src', 'width'];
+
+const knownListItemDepthClasses = {
+  [cx('public/DraftStyleDefault/depth0')]: 0,
+  [cx('public/DraftStyleDefault/depth1')]: 1,
+  [cx('public/DraftStyleDefault/depth2')]: 2,
+  [cx('public/DraftStyleDefault/depth3')]: 3,
+  [cx('public/DraftStyleDefault/depth4')]: 4,
+};
+
+const HTMLTagToInlineStyleMap: Map<string, string> = Map({
   b: 'BOLD',
   code: 'CODE',
   del: 'STRIKETHROUGH',
@@ -82,268 +68,57 @@ const inlineTags = {
   strong: 'BOLD',
   u: 'UNDERLINE',
   mark: 'HIGHLIGHT',
-};
+});
 
-const knownListItemDepthClasses = {
-  [cx('public/DraftStyleDefault/depth0')]: 0,
-  [cx('public/DraftStyleDefault/depth1')]: 1,
-  [cx('public/DraftStyleDefault/depth2')]: 2,
-  [cx('public/DraftStyleDefault/depth3')]: 3,
-  [cx('public/DraftStyleDefault/depth4')]: 4,
-};
+type BlockTypeMap = Map<string, string | Array<string>>;
 
-const anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
-
-const imgAttr = ['alt', 'className', 'height', 'src', 'width'];
-
-let lastBlock;
-
-const EMPTY_CHUNK = {
-  text: '',
-  inlines: [],
-  entities: [],
-  blocks: [],
-};
-
-const EMPTY_BLOCK = {
-  children: List(),
-  depth: 0,
-  key: '',
-  type: '',
-};
-
-const getListBlockType = (tag: string, lastList: ?string): ?DraftBlockType => {
-  if (tag === 'li') {
-    return lastList === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
-  }
-  return null;
-};
-
-const getBlockMapSupportedTags = (
+/**
+ * Build a mapping from HTML tags to draftjs block types
+ * out of a BlockRenderMap.
+ *
+ * The BlockTypeMap for the default BlockRenderMap looks like this:
+ *   Map({
+ *     h1: 'header-one',
+ *     h2: 'header-two',
+ *     h3: 'header-three',
+ *     h4: 'header-four',
+ *     h5: 'header-five',
+ *     h6: 'header-six',
+ *     blockquote: 'blockquote',
+ *     figure: 'atomic',
+ *     pre: ['code-block'],
+ *     div: 'unstyled',
+ *     p: 'unstyled',
+ *     li: ['ordered-list-item', 'unordered-list-item'],
+ *   })
+ */
+const buildBlockTypeMap = (
   blockRenderMap: DraftBlockRenderMap,
-): Array<string> => {
-  const unstyledElement = blockRenderMap.get('unstyled').element;
-  let tags = Set([]);
+): BlockTypeMap => {
+  const blockTypeMap = {};
 
-  blockRenderMap.forEach((draftBlock: DraftBlockRenderConfig) => {
-    if (draftBlock.aliasedElements) {
-      draftBlock.aliasedElements.forEach(tag => {
-        tags = tags.add(tag);
-      });
+  blockRenderMap.mapKeys((blockType, desc) => {
+    const elements = [desc.element];
+    if (desc.aliasedElements !== undefined) {
+      elements.push(...desc.aliasedElements);
     }
-
-    tags = tags.add(draftBlock.element);
+    elements.forEach(element => {
+      if (blockTypeMap[element] === undefined) {
+        blockTypeMap[element] = blockType;
+      } else if (typeof blockTypeMap[element] === 'string') {
+        blockTypeMap[element] = [blockTypeMap[element], blockType];
+      } else {
+        blockTypeMap[element].push(blockType);
+      }
+    });
   });
 
-  return tags
-    .filter(tag => tag && tag !== unstyledElement)
-    .toArray()
-    .sort();
-};
-
-// custom element conversions
-const getMultiMatchedType = (
-  tag: string,
-  lastList: ?string,
-  multiMatchExtractor: Array<Function>,
-): ?DraftBlockType => {
-  for (let ii = 0; ii < multiMatchExtractor.length; ii++) {
-    const matchType = multiMatchExtractor[ii](tag, lastList);
-    if (matchType) {
-      return matchType;
-    }
-  }
-  return null;
-};
-
-const getBlockTypeForTag = (
-  tag: string,
-  lastList: ?string,
-  blockRenderMap: DraftBlockRenderMap,
-): DraftBlockType => {
-  const matchedTypes = blockRenderMap
-    .filter(
-      (draftBlock: DraftBlockRenderConfig) =>
-        draftBlock.element === tag ||
-        draftBlock.wrapper === tag ||
-        (draftBlock.aliasedElements &&
-          draftBlock.aliasedElements.some(alias => alias === tag)),
-    )
-    .keySeq()
-    .toSet()
-    .toArray()
-    .sort();
-
-  // if we dont have any matched type, return unstyled
-  // if we have one matched type return it
-  // if we have multi matched types use the multi-match function to gather type
-  switch (matchedTypes.length) {
-    case 0:
-      return 'unstyled';
-    case 1:
-      return matchedTypes[0];
-    default:
-      return (
-        getMultiMatchedType(tag, lastList, [getListBlockType]) || 'unstyled'
-      );
-  }
-};
-
-const processInlineTag = (
-  tag: string,
-  node: Node,
-  currentStyle: DraftInlineStyle,
-): DraftInlineStyle => {
-  const styleToCheck = inlineTags[tag];
-  if (styleToCheck) {
-    currentStyle = currentStyle.add(styleToCheck).toOrderedSet();
-  } else if (node instanceof HTMLElement) {
-    const htmlElement = node;
-    currentStyle = currentStyle
-      .withMutations(style => {
-        const fontWeight = htmlElement.style.fontWeight;
-        const fontStyle = htmlElement.style.fontStyle;
-        const textDecoration = htmlElement.style.textDecoration;
-
-        if (boldValues.indexOf(fontWeight) >= 0) {
-          style.add('BOLD');
-        } else if (notBoldValues.indexOf(fontWeight) >= 0) {
-          style.remove('BOLD');
-        }
-
-        if (fontStyle === 'italic') {
-          style.add('ITALIC');
-        } else if (fontStyle === 'normal') {
-          style.remove('ITALIC');
-        }
-
-        if (textDecoration === 'underline') {
-          style.add('UNDERLINE');
-        }
-        if (textDecoration === 'line-through') {
-          style.add('STRIKETHROUGH');
-        }
-        if (textDecoration === 'none') {
-          style.remove('UNDERLINE');
-          style.remove('STRIKETHROUGH');
-        }
-      })
-      .toOrderedSet();
-  }
-  return currentStyle;
-};
-
-const joinChunks = (
-  A: Chunk,
-  B: Chunk,
-  experimentalHasNestedBlocks?: boolean,
-): Chunk => {
-  // Sometimes two blocks will touch in the DOM and we need to strip the
-  // extra delimiter to preserve niceness.
-  const lastInA = A.text.slice(-1);
-  const firstInB = B.text.slice(0, 1);
-
-  if (lastInA === '\r' && firstInB === '\r' && !experimentalHasNestedBlocks) {
-    A.text = A.text.slice(0, -1);
-    A.inlines.pop();
-    A.entities.pop();
-    A.blocks.pop();
-  }
-
-  // Kill whitespace after blocks
-  if (lastInA === '\r') {
-    if (B.text === SPACE || B.text === '\n') {
-      return A;
-    } else if (firstInB === SPACE || firstInB === '\n') {
-      B.text = B.text.slice(1);
-      B.inlines.shift();
-      B.entities.shift();
-    }
-  }
-
-  return {
-    text: A.text + B.text,
-    inlines: A.inlines.concat(B.inlines),
-    entities: A.entities.concat(B.entities),
-    blocks: A.blocks.concat(B.blocks),
-  };
+  return Map(blockTypeMap);
 };
 
 /**
- * Check to see if we have anything like <p> <blockquote> <h1>... to create
- * block tags from. If we do, we can use those and ignore <div> tags. If we
- * don't, we can treat <div> tags as meaningful (unstyled) blocks.
- */
-const containsSemanticBlockMarkup = (
-  html: string,
-  blockTags: Array<string>,
-): boolean => {
-  return blockTags.some(tag => html.indexOf('<' + tag) !== -1);
-};
-
-const hasValidLinkText = (link: Node): boolean => {
-  invariant(
-    link instanceof HTMLAnchorElement,
-    'Link must be an HTMLAnchorElement.',
-  );
-  const protocol = link.protocol;
-  return (
-    protocol === 'http:' || protocol === 'https:' || protocol === 'mailto:'
-  );
-};
-
-const getWhitespaceChunk = (inEntity: ?string): Chunk => {
-  const entities = new Array(1);
-  if (inEntity) {
-    entities[0] = inEntity;
-  }
-  return {
-    ...EMPTY_CHUNK,
-    text: SPACE,
-    inlines: [OrderedSet()],
-    entities,
-  };
-};
-
-const getSoftNewlineChunk = (): Chunk => {
-  return {
-    ...EMPTY_CHUNK,
-    text: '\n',
-    inlines: [OrderedSet()],
-    entities: new Array(1),
-  };
-};
-
-const getChunkedBlock = (props: Object = {}): Block => {
-  return {
-    ...EMPTY_BLOCK,
-    ...props,
-  };
-};
-
-const getBlockDividerChunk = (
-  block: DraftBlockType,
-  depth: number,
-  parentKey: ?string = null,
-): Chunk => {
-  return {
-    text: '\r',
-    inlines: [OrderedSet()],
-    entities: new Array(1),
-    blocks: [
-      getChunkedBlock({
-        parent: parentKey,
-        key: generateRandomKey(),
-        type: block,
-        depth: Math.max(0, Math.min(MAX_DEPTH, depth)),
-      }),
-    ],
-  };
-};
-
-/**
- *  If we're pasting from one DraftEditor to another we can check to see if
- *  existing list item depth classes are being used and preserve this style
+ * If we're pasting from one DraftEditor to another we can check to see if
+ * existing list item depth classes are being used and preserve this style
  */
 const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
   Object.keys(knownListItemDepthClasses).some(depthClass => {
@@ -354,86 +129,397 @@ const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
   return depth;
 };
 
-const genFragment = (
-  entityMap: EntityMap,
-  node: Node,
-  inlineStyle: DraftInlineStyle,
-  lastList: string,
-  inBlock: ?string,
-  blockTags: Array<string>,
-  depth: number,
-  blockRenderMap: DraftBlockRenderMap,
-  inEntity?: ?string,
-  parentKey?: ?string,
-): {chunk: Chunk, entityMap: EntityMap} => {
-  const lastLastBlock = lastBlock;
-  let nodeName = node.nodeName.toLowerCase();
-  let newEntityMap = entityMap;
-  let nextBlockType = 'unstyled';
-  let newBlock = false;
-  const inBlockType =
-    inBlock && getBlockTypeForTag(inBlock, lastList, blockRenderMap);
-  let chunk = {...EMPTY_CHUNK};
-  let newChunk: ?Chunk = null;
-  let blockKey;
+/**
+ * Return true if the provided HTML Element can be used to build a
+ * Draftjs-compatible link.
+ */
+const isValidAnchor = (node: Node) => {
+  return !!(
+    node instanceof HTMLAnchorElement &&
+    node.href &&
+    (node.protocol === 'http:' ||
+      node.protocol === 'https:' ||
+      node.protocol === 'mailto:')
+  );
+};
 
-  // Base Case
-  if (nodeName === '#text') {
-    let text = node.textContent;
-    const nodeTextContent = text.trim();
+/**
+ * Return true if the provided HTML Element can be used to build a
+ * Draftjs-compatible image.
+ */
+const isValidImage = (node: Node): boolean => {
+  return !!(
+    node instanceof HTMLImageElement &&
+    node.attributes.getNamedItem('src') &&
+    node.attributes.getNamedItem('src').value
+  );
+};
 
-    // We should not create blocks for leading spaces that are
-    // existing around ol/ul and their children list items
-    if (lastList && nodeTextContent === '' && node.parentElement) {
-      const parentNodeName = node.parentElement.nodeName.toLowerCase();
-      if (parentNodeName === 'ol' || parentNodeName === 'ul') {
-        return {chunk: {...EMPTY_CHUNK}, entityMap};
+/**
+ * Determine if a nodeName is a list type, 'ul' or 'ol'
+ */
+const isListNode = (nodeName: string): boolean =>
+  nodeName === 'ul' || nodeName === 'ol';
+
+/**
+ *  ContentBlockConfig is a mutable data structure that holds all
+ *  the information required to build a ContentBlock and an array of
+ *  all the child nodes (childConfigs).
+ *  It is being used a temporary data structure by the
+ *  ContentBlocksBuilder class.
+ */
+type ContentBlockConfig = {
+  characterList: List<CharacterMetadata>,
+  data?: Map<any, any>,
+  depth?: number,
+  key: string,
+  text: string,
+  type: string,
+  children: List<string>,
+  parent: ?string,
+  prevSibling: ?string,
+  nextSibling: ?string,
+  childConfigs: Array<ContentBlockConfig>,
+};
+
+/**
+ * ContentBlocksBuilder builds a list of ContentBlocks and an Entity Map
+ * out of one (or several) HTMLElement(s).
+ *
+ * The algorithm has two passes: first it builds a tree of ContentBlockConfigs
+ * by walking through the HTML nodes and their children, then it walks the
+ * ContentBlockConfigs tree to compute parents/siblings and create
+ * the actual ContentBlocks.
+ *
+ * Typical usage is:
+ *     new ContentBlocksBuilder()
+ *        .addDOMNode(someHTMLNode)
+ *        .addDOMNode(someOtherHTMLNode)
+ *       .getContentBlocks();
+ *
+ */
+class ContentBlocksBuilder {
+  // Most of the method in the class depend on the state of the content builder
+  // (i.e. currentBlockType, currentDepth, currentEntity etc.). Though it may
+  // be confusing at first, it made the code simpler than the alternative which
+  // is to pass those values around in every call.
+
+  // The following attributes are used to accumulate text and styles
+  // as we are walking the HTML node tree.
+  characterList: List<CharacterMetadata> = List();
+  currentBlockType: string = 'unstyled';
+  currentDepth: number = -1;
+  currentEntity: ?string = null;
+  currentStyle: DraftInlineStyle = OrderedSet();
+  currentText: string = '';
+  wrapper: string = 'ul';
+
+  // Describes the future ContentState as a tree of content blocks
+  blockConfigs: Array<ContentBlockConfig> = [];
+
+  // The content blocks generated from the blockConfigs
+  contentBlocks: Array<BlockNodeRecord> = [];
+
+  // Entity map use to store links and images found in the HTML nodes
+  entityMap: EntityMap = DraftEntity;
+
+  // Map HTML tags to draftjs block types and disambiguation function
+  blockTypeMap: BlockTypeMap;
+  disambiguate: (string, string) => ?string;
+
+  constructor(
+    blockTypeMap: BlockTypeMap,
+    disambiguate: (string, string) => ?string,
+  ): void {
+    this.clear();
+    this.blockTypeMap = blockTypeMap;
+    this.disambiguate = disambiguate;
+  }
+
+  /**
+   * Clear the internal state of the ContentBlocksBuilder
+   */
+  clear(): void {
+    this.characterList = List();
+    this.blockConfigs = [];
+    this.currentBlockType = 'unstyled';
+    this.currentDepth = -1;
+    this.currentEntity = null;
+    this.currentStyle = OrderedSet();
+    this.currentText = '';
+    this.entityMap = DraftEntity;
+    this.wrapper = 'ul';
+    this.contentBlocks = [];
+  }
+
+  /**
+   * Add an HTMLElement to the ContentBlocksBuilder
+   */
+  addDOMNode(node: Node): ContentBlocksBuilder {
+    this.contentBlocks = [];
+    // Converts the HTML node to block config
+    this.blockConfigs.push(...this._toBlockConfigs([node]));
+
+    // There might be some left over text in the builder's
+    // internal state, if so make a ContentBlock out of it.
+    this._trimCurrentText();
+    if (this.currentText !== '') {
+      this.blockConfigs.push(this._makeBlockConfig());
+    }
+
+    // for chaining
+    return this;
+  }
+
+  /**
+   * Return the ContentBlocks and the EntityMap that corresponds
+   * to the previously added HTML nodes.
+   */
+  getContentBlocks(): {
+    contentBlocks: ?Array<BlockNodeRecord>,
+    entityMap: EntityMap,
+  } {
+    if (this.contentBlocks.length === 0) {
+      if (experimentalTreeDataSupport) {
+        this._toContentBlocks(this.blockConfigs);
+      } else {
+        this._toFlatContentBlocks(this.blockConfigs);
       }
     }
+    return {
+      contentBlocks: this.contentBlocks,
+      entityMap: this.entityMap,
+    };
+  }
 
-    if (nodeTextContent === '' && inBlock !== 'pre') {
-      return {chunk: getWhitespaceChunk(inEntity), entityMap};
+  /**
+   * Add a new inline style to the upcoming nodes.
+   */
+  addStyle(inlineStyle: string): void {
+    this.currentStyle = this.currentStyle.add(inlineStyle);
+  }
+
+  /**
+   * Remove a currently applied inline style.
+   */
+  removeStyle(inlineStyle: string): void {
+    this.currentStyle = this.currentStyle.remove(inlineStyle);
+  }
+
+  // ***********************************WARNING******************************
+  // The methods below this line are private - don't call them directly.
+
+  /**
+   * Generate a new ContentBlockConfig out of the current internal state
+   * of the builder, then clears the internal state.
+   */
+  _makeBlockConfig(config: Object = {}): ContentBlockConfig {
+    const key = config.key || generateRandomKey();
+    const block = {
+      key,
+      type: this.currentBlockType,
+      text: this.currentText,
+      characterList: this.characterList,
+      depth: Math.max(0, this.currentDepth),
+      parent: null,
+      children: List(),
+      prevSibling: null,
+      nextSibling: null,
+      childConfigs: [],
+      ...config,
+    };
+    this.characterList = List();
+    this.currentBlockType = 'unstyled';
+    this.currentDepth = -1;
+    this.currentText = '';
+    return block;
+  }
+
+  /**
+   * Converts an array of HTML elements to a multi-root tree of content
+   * block configs. Some text content may be left in the builders internal
+   * state to enable chaining sucessive calls.
+   */
+  _toBlockConfigs(nodes: Array<Node>): Array<ContentBlockConfig> {
+    const blockConfigs = [];
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      const nodeName = node.nodeName.toLowerCase();
+
+      if (nodeName === 'body' || isListNode(nodeName)) {
+        // body, ol and ul are 'block' type nodes so create a block config
+        // with the text accumulated so far (if any)
+        this._trimCurrentText();
+        if (this.currentText !== '') {
+          blockConfigs.push(this._makeBlockConfig());
+        }
+
+        // body, ol and ul nodes are ignored, but their children are inlined in
+        // the parent block config.
+        const wasCurrentDepth = this.currentDepth;
+        const wasWrapper = this.wrapper;
+        if (isListNode(nodeName)) {
+          this.wrapper = nodeName;
+          if (isListNode(wasWrapper)) {
+            this.currentDepth++;
+          }
+        }
+        blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
+        this.currentDepth = wasCurrentDepth;
+        this.wrapper = wasWrapper;
+        continue;
+      }
+
+      let blockType = this.blockTypeMap.get(nodeName);
+      if (blockType !== undefined) {
+        // 'block' type node means we need to create a block config
+        // with the text accumulated so far (if any)
+        this._trimCurrentText();
+        if (this.currentText !== '') {
+          blockConfigs.push(this._makeBlockConfig());
+        }
+
+        const wasCurrentDepth = this.currentDepth;
+        const wasWrapper = this.wrapper;
+        this.wrapper = nodeName === 'pre' ? 'pre' : this.wrapper;
+
+        if (typeof blockType !== 'string') {
+          blockType =
+            this.disambiguate(nodeName, this.wrapper) ||
+            blockType[0] ||
+            'unstyled';
+        }
+
+        if (
+          !experimentalTreeDataSupport &&
+          node instanceof HTMLElement &&
+          (blockType === 'unordered-list-item' ||
+            blockType === 'ordered-list-item')
+        ) {
+          this.currentDepth = getListItemDepth(node, this.currentDepth);
+        }
+
+        const key = generateRandomKey();
+        const childConfigs = this._toBlockConfigs(Array.from(node.childNodes));
+        this._trimCurrentText();
+        blockConfigs.push(
+          this._makeBlockConfig({
+            key,
+            childConfigs,
+            type: blockType,
+          }),
+        );
+
+        this.currentDepth = wasCurrentDepth;
+        this.wrapper = wasWrapper;
+        continue;
+      }
+
+      if (nodeName === '#text') {
+        this._addTextNode(node);
+        continue;
+      }
+
+      if (isValidImage(node)) {
+        this._addImgNode(node);
+        continue;
+      }
+
+      if (isValidAnchor(node)) {
+        this._addAnchorNode(node, blockConfigs);
+        continue;
+      }
+
+      const inlineStyle = HTMLTagToInlineStyleMap.get(nodeName);
+      if (inlineStyle !== undefined) {
+        this.addStyle(inlineStyle);
+      }
+
+      blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
+
+      if (inlineStyle !== undefined) {
+        this.removeStyle(inlineStyle);
+      }
+
+      this._updateStyleFromNodeAttributes(node);
     }
-    if (inBlock !== 'pre') {
+
+    return blockConfigs;
+  }
+
+  /**
+   * Append a string of text to the internal buffer.
+   */
+  _appendText(text: string) {
+    this.currentText += text;
+    const characterMetadata = CharacterMetadata.create({
+      style: this.currentStyle,
+      entity: this.currentEntity,
+    });
+    this.characterList = this.characterList.push(
+      ...Array(text.length).fill(characterMetadata),
+    );
+  }
+
+  /**
+   * Trim the text in the internal buffer.
+   */
+  _trimCurrentText() {
+    const l = this.currentText.length;
+    let begin = l - this.currentText.trimLeft().length;
+    let end = this.currentText.trimRight().length;
+
+    // We should not trim whitespaces for which an entity is defined.
+    let entity = this.characterList.findEntry(
+      characterMetadata => characterMetadata.getEntity() !== null,
+    );
+    begin = entity !== undefined ? Math.min(begin, entity[0]) : begin;
+
+    entity = this.characterList
+      .reverse()
+      .findEntry(characterMetadata => characterMetadata.getEntity() !== null);
+    end = entity !== undefined ? Math.max(end, l - entity[0]) : end;
+
+    if (begin > end) {
+      this.currentText = '';
+      this.characterList = List();
+    } else {
+      this.currentText = this.currentText.slice(begin, end);
+      this.characterList = this.characterList.slice(begin, end);
+    }
+  }
+
+  /**
+   * Add the content of an HTML text node to the internal state
+   */
+  _addTextNode(node: Node) {
+    let text = node.textContent;
+    const trimmedText = text.trim();
+
+    // If we are not in a pre block and the trimmed content is empty,
+    // normalize to a single space.
+    if (trimmedText === '' && this.wrapper !== 'pre') {
+      text = ' ';
+    }
+
+    if (this.wrapper !== 'pre') {
+      // Trim leading line feed, which is invisible in HTML
+      text = text.replace(REGEX_LEADING_LF, '');
+
       // Can't use empty string because MSWord
       text = text.replace(REGEX_LF, SPACE);
     }
 
-    // save the last block so we can use it later
-    lastBlock = nodeName;
-
-    return {
-      chunk: {
-        text,
-        inlines: Array(text.length).fill(inlineStyle),
-        entities: Array(text.length).fill(inEntity),
-        blocks: [],
-      },
-      entityMap,
-    };
+    this._appendText(text);
   }
 
-  // save the last block so we can use it later
-  lastBlock = nodeName;
-
-  // BR tags
-  if (nodeName === 'br') {
-    if (lastLastBlock === 'br' && (!inBlock || inBlockType === 'unstyled')) {
-      return {
-        chunk: getBlockDividerChunk('unstyled', depth, parentKey),
-        entityMap,
-      };
+  /**
+   * Add the content of an HTML img node to the internal state
+   */
+  _addImgNode(node: Node) {
+    if (!(node instanceof HTMLImageElement)) {
+      return;
     }
-    return {chunk: getSoftNewlineChunk(), entityMap};
-  }
-
-  // IMG tags
-  if (
-    nodeName === 'img' &&
-    node instanceof HTMLImageElement &&
-    node.attributes.getNamedItem('src') &&
-    node.attributes.getNamedItem('src').value
-  ) {
     const image: HTMLImageElement = node;
     const entityConfig = {};
 
@@ -443,321 +529,180 @@ const genFragment = (
         entityConfig[attr] = imageAttribute;
       }
     });
-    // Forcing this node to have children because otherwise no entity will be
-    // created for this node.
+
+    // TODO: T15530363 update this when we remove DraftEntity entirely
+    this.currentEntity = this.entityMap.__create(
+      'IMAGE',
+      'MUTABLE',
+      entityConfig,
+    );
+
     // The child text node cannot just have a space or return as content (since
     // we strip those out), unless the image is for presentation only.
     // See https://github.com/facebook/draft-js/issues/231 for some context.
     if (gkx('draftjs_fix_paste_for_img')) {
       if (node.getAttribute('role') !== 'presentation') {
-        node.textContent = '\ud83d\udcf7';
+        this._appendText('\ud83d\udcf7');
       }
     } else {
-      node.textContent = '\ud83d\udcf7';
+      this._appendText('\ud83d\udcf7');
     }
 
-    // TODO: update this when we remove DraftEntity entirely
-    inEntity = DraftEntity.__create('IMAGE', 'MUTABLE', entityConfig || {});
+    this.currentEntity = null;
   }
 
-  // Inline tags
-  inlineStyle = processInlineTag(nodeName, node, inlineStyle);
-
-  // Handle lists
-  if (nodeName === 'ul' || nodeName === 'ol') {
-    if (lastList) {
-      depth += 1;
+  /**
+   * Add the content of an HTML 'a' node to the internal state. Child nodes
+   * (if any) are converted to Block Configs and appended to the provided
+   * blockConfig array.
+   */
+  _addAnchorNode(node: Node, blockConfigs: Array<ContentBlockConfig>) {
+    // The check has already been made by isValidAnchor but
+    // we have to do it again to keep flow happy.
+    if (!(node instanceof HTMLAnchorElement)) {
+      return;
     }
-    lastList = nodeName;
-  }
+    const anchor: HTMLAnchorElement = node;
+    const entityConfig = {};
 
-  if (
-    !experimentalTreeDataSupport &&
-    nodeName === 'li' &&
-    node instanceof HTMLElement
-  ) {
-    depth = getListItemDepth(node, depth);
-  }
-
-  const blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
-  const inListBlock = lastList && inBlock === 'li' && nodeName === 'li';
-  const inBlockOrHasNestedBlocks =
-    (!inBlock || experimentalTreeDataSupport) &&
-    blockTags.indexOf(nodeName) !== -1;
-
-  // Block Tags
-  if (inListBlock || inBlockOrHasNestedBlocks) {
-    chunk = getBlockDividerChunk(blockType, depth, parentKey);
-    blockKey = chunk.blocks[0].key;
-    inBlock = nodeName;
-    newBlock = !experimentalTreeDataSupport;
-  }
-
-  // this is required so that we can handle 'ul' and 'ol'
-  if (inListBlock) {
-    nextBlockType =
-      lastList === 'ul' ? 'unordered-list-item' : 'ordered-list-item';
-  }
-
-  // Recurse through children
-  let child: ?Node = node.firstChild;
-  if (child != null) {
-    nodeName = child.nodeName.toLowerCase();
-  }
-
-  let entityId: ?string = null;
-
-  while (child) {
-    if (
-      child instanceof HTMLAnchorElement &&
-      child.href &&
-      hasValidLinkText(child)
-    ) {
-      const anchor: HTMLAnchorElement = child;
-      const entityConfig = {};
-
-      anchorAttr.forEach(attr => {
-        const anchorAttribute = anchor.getAttribute(attr);
-        if (anchorAttribute) {
-          entityConfig[attr] = anchorAttribute;
-        }
-      });
-
-      entityConfig.url = new URI(anchor.href).toString();
-      // TODO: update this when we remove DraftEntity completely
-      entityId = DraftEntity.__create('LINK', 'MUTABLE', entityConfig || {});
-    } else {
-      entityId = undefined;
-    }
-
-    const {
-      chunk: generatedChunk,
-      entityMap: maybeUpdatedEntityMap,
-    } = genFragment(
-      newEntityMap,
-      child,
-      inlineStyle,
-      lastList,
-      inBlock,
-      blockTags,
-      depth,
-      blockRenderMap,
-      entityId || inEntity,
-      experimentalTreeDataSupport ? blockKey : null,
-    );
-
-    newChunk = generatedChunk;
-    newEntityMap = maybeUpdatedEntityMap;
-
-    chunk = joinChunks(chunk, newChunk, experimentalTreeDataSupport);
-    const sibling: ?Node = child.nextSibling;
-
-    // Put in a newline to break up blocks inside blocks
-    if (!parentKey && sibling && blockTags.indexOf(nodeName) >= 0 && inBlock) {
-      chunk = joinChunks(chunk, getSoftNewlineChunk());
-    }
-    if (sibling) {
-      nodeName = sibling.nodeName.toLowerCase();
-    }
-    child = sibling;
-  }
-
-  if (newBlock) {
-    chunk = joinChunks(
-      chunk,
-      getBlockDividerChunk(nextBlockType, depth, parentKey),
-    );
-  }
-
-  return {chunk, entityMap: newEntityMap};
-};
-
-const getChunkForHTML = (
-  html: string,
-  DOMBuilder: Function,
-  blockRenderMap: DraftBlockRenderMap,
-  entityMap: EntityMap,
-): ?{chunk: Chunk, entityMap: EntityMap} => {
-  html = html
-    .trim()
-    .replace(REGEX_CR, '')
-    .replace(REGEX_NBSP, SPACE)
-    .replace(REGEX_CARRIAGE, '')
-    .replace(REGEX_ZWS, '');
-
-  const supportedBlockTags = getBlockMapSupportedTags(blockRenderMap);
-
-  const safeBody = DOMBuilder(html);
-  if (!safeBody) {
-    return null;
-  }
-  lastBlock = null;
-
-  // Sometimes we aren't dealing with content that contains nice semantic
-  // tags. In this case, use divs to separate everything out into paragraphs
-  // and hope for the best.
-  const workingBlocks = containsSemanticBlockMarkup(html, supportedBlockTags)
-    ? supportedBlockTags
-    : ['div'];
-
-  // Start with -1 block depth to offset the fact that we are passing in a fake
-  // UL block to start with.
-  const fragment = genFragment(
-    entityMap,
-    safeBody,
-    OrderedSet(),
-    'ul',
-    null,
-    workingBlocks,
-    -1,
-    blockRenderMap,
-  );
-
-  let chunk = fragment.chunk;
-  const newEntityMap = fragment.entityMap;
-
-  // join with previous block to prevent weirdness on paste
-  if (chunk.text.indexOf('\r') === 0) {
-    chunk = {
-      text: chunk.text.slice(1),
-      inlines: chunk.inlines.slice(1),
-      entities: chunk.entities.slice(1),
-      blocks: chunk.blocks,
-    };
-  }
-
-  // Kill block delimiter at the end
-  if (chunk.text.slice(-1) === '\r') {
-    chunk.text = chunk.text.slice(0, -1);
-    chunk.inlines = chunk.inlines.slice(0, -1);
-    chunk.entities = chunk.entities.slice(0, -1);
-    chunk.blocks.pop();
-  }
-
-  // If we saw no block tags, put an unstyled one in
-  if (chunk.blocks.length === 0) {
-    chunk.blocks.push({
-      ...EMPTY_CHUNK,
-      type: 'unstyled',
-      depth: 0,
+    anchorAttr.forEach(attr => {
+      const anchorAttribute = anchor.getAttribute(attr);
+      if (anchorAttribute) {
+        entityConfig[attr] = anchorAttribute;
+      }
     });
-  }
 
-  // Sometimes we start with text that isn't in a block, which is then
-  // followed by blocks. Need to fix up the blocks to add in
-  // an unstyled block for this content
-  if (chunk.text.split('\r').length === chunk.blocks.length + 1) {
-    chunk.blocks.unshift({type: 'unstyled', depth: 0});
-  }
-
-  return {chunk, entityMap: newEntityMap};
-};
-
-const convertChunkToContentBlocks = (chunk: Chunk): ?Array<BlockNodeRecord> => {
-  if (!chunk || !chunk.text || !Array.isArray(chunk.blocks)) {
-    return null;
-  }
-
-  const initialState = {
-    cacheRef: {},
-    contentBlocks: [],
-  };
-
-  let start = 0;
-
-  const {blocks: rawBlocks, inlines: rawInlines, entities: rawEntities} = chunk;
-
-  const BlockNodeRecord = experimentalTreeDataSupport
-    ? ContentBlockNode
-    : ContentBlock;
-
-  return chunk.text.split('\r').reduce((acc, textBlock, index) => {
-    // Make absolutely certain that our text is acceptable.
-    textBlock = sanitizeDraftText(textBlock);
-
-    const block = rawBlocks[index];
-    const end = start + textBlock.length;
-    const inlines = rawInlines.slice(start, end);
-    const entities = rawEntities.slice(start, end);
-    const characterList = List(
-      inlines.map((style, index) => {
-        const data = {style, entity: (null: ?string)};
-        if (entities[index]) {
-          data.entity = entities[index];
-        }
-        return CharacterMetadata.create(data);
-      }),
+    entityConfig.url = new URI(anchor.href).toString();
+    // TODO: T15530363 update this when we remove DraftEntity completely
+    this.currentEntity = this.entityMap.__create(
+      'LINK',
+      'MUTABLE',
+      entityConfig || {},
     );
-    start = end + 1;
 
-    const {depth, type, parent} = block;
+    blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
+    this.currentEntity = null;
+  }
 
-    const key = block.key || generateRandomKey();
-    let parentTextNodeKey = null; // will be used to store container text nodes
+  /**
+   * Try to guess the inline style of an HTML element based on its css
+   * styles (font-weight, font-style and text-decoration).
+   */
+  _updateStyleFromNodeAttributes(node: Node) {
+    if (!(node instanceof HTMLElement)) {
+      return;
+    }
 
-    // childrens add themselves to their parents since we are iterating in order
-    if (parent) {
-      const parentIndex = acc.cacheRef[parent];
-      let parentRecord = acc.contentBlocks[parentIndex];
+    const htmlElement = node;
+    const fontWeight = htmlElement.style.fontWeight;
+    const fontStyle = htmlElement.style.fontStyle;
+    const textDecoration = htmlElement.style.textDecoration;
 
-      // if parent has text we need to split it into a separate unstyled element
-      if (parentRecord.getChildKeys().isEmpty() && parentRecord.getText()) {
-        const parentCharacterList = parentRecord.getCharacterList();
-        const parentText = parentRecord.getText();
-        parentTextNodeKey = generateRandomKey();
+    if (boldValues.indexOf(fontWeight) >= 0) {
+      this.addStyle('BOLD');
+    } else if (notBoldValues.indexOf(fontWeight) >= 0) {
+      this.removeStyle('BOLD');
+    }
 
-        const textNode = new ContentBlockNode({
-          key: parentTextNodeKey,
-          text: parentText,
-          characterList: parentCharacterList,
-          parent: parent,
-          nextSibling: key,
-        });
+    if (fontStyle === 'italic') {
+      this.addStyle('ITALIC');
+    } else if (fontStyle === 'normal') {
+      this.removeStyle('ITALIC');
+    }
 
-        acc.contentBlocks.push(textNode);
+    if (textDecoration === 'underline') {
+      this.addStyle('UNDERLINE');
+    }
+    if (textDecoration === 'line-through') {
+      this.addStyle('STRIKETHROUGH');
+    }
+    if (textDecoration === 'none') {
+      this.removeStyle('UNDERLINE');
+      this.removeStyle('STRIKETHROUGH');
+    }
+  }
 
-        parentRecord = parentRecord.withMutations(block => {
-          block
-            .set('characterList', List())
-            .set('text', '')
-            .set('children', parentRecord.children.push(textNode.getKey()));
-        });
-      }
+  /**
+   * Walk the BlockConfig tree, compute parent/children/siblings,
+   * and generate the corresponding ContentBlockNode
+   */
+  _toContentBlocks(
+    blockConfigs: Array<ContentBlockConfig>,
+    parent: ?string = null,
+  ) {
+    const l = blockConfigs.length - 1;
+    for (let i = 0; i <= l; i++) {
+      const config = blockConfigs[i];
+      config.parent = parent;
+      config.prevSibling = i > 0 ? blockConfigs[i - 1].key : null;
+      config.nextSibling = i < l ? blockConfigs[i + 1].key : null;
+      config.children = List(config.childConfigs.map(child => child.key));
+      this.contentBlocks.push(new ContentBlockNode({...config}));
+      this._toContentBlocks(config.childConfigs, config.key);
+    }
+  }
 
-      acc.contentBlocks[parentIndex] = parentRecord.set(
-        'children',
-        parentRecord.children.push(key),
+  // ***********************************************************************
+  // The two methods below are used for backward compatibility when
+  // experimentalTreeDataSupport is disabled.
+
+  /**
+   * Same as _toContentBlocks but replaces nested blocks by their
+   * text content.
+   */
+  _toFlatContentBlocks(blockConfigs: Array<ContentBlockConfig>) {
+    const l = blockConfigs.length - 1;
+    for (let i = 0; i <= l; i++) {
+      const config = blockConfigs[i];
+      const {text, characterList} = this._extractTextFromBlockConfigs(
+        config.childConfigs,
+      );
+      this.contentBlocks.push(
+        new ContentBlock({
+          ...config,
+          text: config.text + text,
+          characterList: config.characterList.concat(characterList),
+        }),
       );
     }
+  }
 
-    const blockNode = new BlockNodeRecord({
-      key,
-      parent,
-      type,
-      depth,
-      text: textBlock,
-      characterList,
-      prevSibling:
-        parentTextNodeKey ||
-        (index === 0 || rawBlocks[index - 1].parent !== parent
-          ? null
-          : rawBlocks[index - 1].key),
-      nextSibling:
-        index === rawBlocks.length - 1 || rawBlocks[index + 1].parent !== parent
-          ? null
-          : rawBlocks[index + 1].key,
-    });
+  /**
+   * Extract the text and the associated inline styles form an
+   * array of content block configs.
+   */
+  _extractTextFromBlockConfigs(
+    blockConfigs: Array<ContentBlockConfig>,
+  ): {
+    text: string,
+    characterList: List<CharacterMetadata>,
+  } {
+    const l = blockConfigs.length - 1;
+    let text = '';
+    let characterList = List();
+    for (let i = 0; i <= l; i++) {
+      const config = blockConfigs[i];
+      text += config.text;
+      characterList = characterList.concat(config.characterList);
+      /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
+       * found when Flow v0.68 was deployed. To see the error delete this
+       * comment and run Flow. */
+      if (text !== '' && config.blockType !== 'unstyled') {
+        text += '\n';
+        characterList = characterList.push(characterList.last());
+      }
+      const children = this._extractTextFromBlockConfigs(config.childConfigs);
+      text += children.text;
+      characterList = characterList.concat(children.characterList);
+    }
+    return {text, characterList};
+  }
+}
 
-    // insert node
-    acc.contentBlocks.push(blockNode);
-
-    // cache ref for building links
-    acc.cacheRef[blockNode.key] = index;
-
-    return acc;
-  }, initialState).contentBlocks;
-};
-
+/**
+ * Converts an HTML string to an array of ContentBlocks and an EntityMap
+ * suitable to initialize the internal state of a Draftjs component.
+ */
 const convertFromHTMLToContentBlocks = (
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
@@ -767,25 +712,35 @@ const convertFromHTMLToContentBlocks = (
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
 
-  // TODO: replace DraftEntity with an OrderedMap here
-  const chunkData = getChunkForHTML(
-    html,
-    DOMBuilder,
-    blockRenderMap,
-    DraftEntity,
-  );
+  // Remove funky characters from the HTML string
+  html = html
+    .trim()
+    .replace(REGEX_CR, '')
+    .replace(REGEX_NBSP, SPACE)
+    .replace(REGEX_CARRIAGE, '')
+    .replace(REGEX_ZWS, '');
 
-  if (chunkData == null) {
+  // Build a DOM tree out of the HTML string
+  const safeBody = DOMBuilder(html);
+  if (!safeBody) {
     return null;
   }
 
-  const {chunk, entityMap} = chunkData;
-  const contentBlocks = convertChunkToContentBlocks(chunk);
+  // Build a BlockTypeMap out of the BlockRenderMap
+  const blockTypeMap = buildBlockTypeMap(blockRenderMap);
 
-  return {
-    contentBlocks,
-    entityMap,
+  // Select the proper block type for the cases where the blockRenderMap
+  // uses multiple block types for the same html tag.
+  const disambiguate = (tag, wrapper) => {
+    if (tag === 'li') {
+      return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
+    }
+    return null;
   };
+
+  return new ContentBlocksBuilder(blockTypeMap, disambiguate)
+    .addDOMNode(safeBody)
+    .getContentBlocks();
 };
 
 module.exports = convertFromHTMLToContentBlocks;
