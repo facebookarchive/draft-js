@@ -97,7 +97,8 @@ function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     const inner = content.getBlocksAsArray().reduce((acc, item) => {
       const hasChild = getHasChild(content, item);
       const isLastChild = getIsLastChild(content, item);
-      let { level, html } = acc;
+      const indent = item.getIn(['data', 'indent'], 0);
+      let { lastIndentation, html } = acc;
       const itemElement = blockKeyToElementMap[item.getKey()];
       if (["todo", "agenda"].includes(item.getType())) {
         const checkbox = document.createElement("input")
@@ -108,24 +109,25 @@ function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
         itemElement.prepend(checkbox)
       }
       let currentItemHtml = itemElement.outerHTML
-      if (hasChild) {
-        currentItemHtml = currentItemHtml + '<ul>'
+
+      if (indent) {
+       currentItemHtml = `<li>${currentItemHtml}</li>`
       }
-      if (level) {
-        currentItemHtml = `<li>${currentItemHtml}</li>`
+
+      let sunkDepth;
+      if ((sunkDepth = (indent - lastIndentation)) > 0) {
+        currentItemHtml = '<ul>'.repeat(sunkDepth) + currentItemHtml
       }
-      if (hasChild) {
-        level = level + 1
+
+      if (sunkDepth < 0) {
+        currentItemHtml =  '</ul>'.repeat(-sunkDepth) + currentItemHtml
       }
-      if (isLastChild) {
-        currentItemHtml = `${currentItemHtml}</ul>`
-        level = level - 1
-      }
+
       return {
-        level,
+        lastIndentation: indent,
         html: html + currentItemHtml,
       }
-    }, {level: 0, html: ''})
+    }, {lastIndentation: 0, html: ''})
     outputElement.innerHTML = inner.html;
     e.clipboardData.setData('text/html', outputElement.outerHTML);
     e.preventDefault();
