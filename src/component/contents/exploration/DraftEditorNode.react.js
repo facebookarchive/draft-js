@@ -76,9 +76,10 @@ class DraftEditorNode extends React.Component<Props> {
               const offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
               const start = leaf.get('start');
               const end = leaf.get('end');
+              const key = `${blockKey}-${start}-${end}`;
               return (
                 <DraftEditorLeaf
-                  key={offsetKey}
+                  key={key}
                   offsetKey={offsetKey}
                   block={block}
                   start={start}
