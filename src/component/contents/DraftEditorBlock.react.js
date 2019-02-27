@@ -139,9 +139,10 @@ class DraftEditorBlock extends React.Component<Props> {
             const offsetKey = DraftOffsetKey.encode(blockKey, ii, jj);
             const start = leaf.get('start');
             const end = leaf.get('end');
+            const key = `${blockKey}-${start}-${end}`;
             return (
               <DraftEditorLeaf
-                key={offsetKey}
+                key={key}
                 offsetKey={offsetKey}
                 block={block}
                 start={start}
@@ -179,6 +180,7 @@ class DraftEditorBlock extends React.Component<Props> {
         const end = leavesForLeafSet.last().get('end');
         const decoratedText = text.slice(start, end);
         const entityKey = block.getEntityAt(leafSet.get('start'));
+        const key = `${blockKey}-${start}-${end}`;
 
         // Resetting dir to the same value on a child node makes Chrome/Firefox
         // confused on cursor movement. See http://jsfiddle.net/d157kLck/3/
@@ -191,7 +193,7 @@ class DraftEditorBlock extends React.Component<Props> {
           contentState: this.props.contentState,
           decoratedText,
           dir: dir,
-          key: decoratorOffsetKey,
+          key,
           start,
           end,
           blockKey,
