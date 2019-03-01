@@ -197,7 +197,6 @@ class DraftEditorContents extends React.Component<Props> {
           lastWrapperTemplate !== wrapperTemplate ||
           currentDepth === null ||
           depth > currentDepth;
-        // $FlowExpectedError joinClasses args in fbjs@1.0.0 are incorrect
         className = joinClasses(
           className,
           getListItemClasses(blockType, depth, shouldResetCount, direction),
