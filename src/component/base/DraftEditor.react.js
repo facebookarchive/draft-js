@@ -128,6 +128,8 @@ class UpdateDraftEditorFlags extends React.Component<{
   }
 }
 
+console.log('DRAFT INIT');
+
 /**
  * `DraftEditor` is the root editor component. It composes a `contentEditable`
  * div, and provides a wide variety of useful function props for managing the
@@ -162,6 +164,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _onBlur: Function;
   _onCharacterData: Function;
   _onCompositionEnd: Function;
+  _onCompositionUpdate: Function;
   _onCompositionStart: Function;
   _onCopy: Function;
   _onCut: Function;
@@ -209,6 +212,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this._onBlur = this._buildHandler('onBlur');
     this._onCharacterData = this._buildHandler('onCharacterData');
     this._onCompositionEnd = this._buildHandler('onCompositionEnd');
+    this._onCompositionUpdate = this._buildHandler('onCompositionUpdate');
     this._onCompositionStart = this._buildHandler('onCompositionStart');
     this._onCopy = this._buildHandler('onCopy');
     this._onCut = this._buildHandler('onCut');
@@ -272,8 +276,22 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         const method = this._handler && this._handler[eventName];
         if (method) {
           if (flushControlled) {
-            flushControlled(() => method(this, e));
+            flushControlled(() => {
+              console.groupCollapsed(
+                `${e.type} - "${e.data || ''}" - ${e.nativeEvent.key ||
+                  null} - "${this.props.editorState
+                  .getCurrentContent()
+                  .getPlainText()}"`,
+              );
+              e.persist();
+              console.log(this.props.editorState.toJS());
+              console.log(e.nativeEvent);
+              console.log(e);
+              console.groupEnd();
+              return method(this, e);
+            });
           } else {
+            console.log('NOT flushControlled', eventName, e.nativeEvent);
             method(this, e);
           }
         }
@@ -392,6 +410,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onBeforeInput={this._onBeforeInput}
             onBlur={this._onBlur}
             onCompositionEnd={this._onCompositionEnd}
+            onCompositionUpdate={this._onCompositionUpdate}
             onCompositionStart={this._onCompositionStart}
             onCopy={this._onCopy}
             onCut={this._onCut}
@@ -520,6 +539,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * the active mode.
    */
   setMode: DraftEditorModes => void = (mode: DraftEditorModes): void => {
+    console.log('CHANGED_MODE', mode);
     this._handler = handlerMap[mode];
   };
 

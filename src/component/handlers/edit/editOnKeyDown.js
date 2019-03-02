@@ -183,6 +183,8 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
   // we don't want to insert a character following the keydown.
   e.preventDefault();
 
+  console.log('HANDLING KEYDOWN', command);
+
   // Allow components higher up the tree to handle the command first.
   if (
     editor.props.handleKeyCommand &&

@@ -1,12 +1,13 @@
 /**
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) 2013-present, Facebook, Inc.
+ * All rights reserved.
  *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @format
- * @flow strict-local
- * @emails oncall+draft_js
+ * @flow
  */
 
 'use strict';
@@ -16,11 +17,16 @@ import type DraftEditor from 'DraftEditor.react';
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Keys = require('Keys');
+const invariant = require('invariant');
+const ReactDOM = require('ReactDOM');
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const gkx = require('gkx');
 const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
+// const onInput = require('editOnInput');
+const editOnSelect = require('editOnSelect');
+const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon
@@ -42,11 +48,25 @@ const RESOLVE_DELAY = 20;
  */
 let resolved = false;
 let stillComposing = false;
-let textInputData = '';
+let beforeInputData = null;
+let compositionEndData = null;
+let compositionUpdateData = null;
+let selectionStart = null;
 
-const DraftEditorCompositionHandler = {
+var DraftEditorCompositionHandler = {
+  /**
+   * Some IMEs (Firefox Mobile, notably) fire multiple `beforeinput` events
+   * which include the text so far typed, in addition to (broken)
+   * `compositionend` events. In these cases, we construct beforeInputData from
+   * the `beforeinput` and consider that to be the definitive version of what
+   * was actually typed.
+   *
+   * Proper, compliant browsers will not do this and will instead include the
+   * entire resolved composition result in the `data` member of the
+   * `compositionend` events that they fire.
+   */
   onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
-    textInputData = (textInputData || '') + e.data;
+    beforeInputData = (beforeInputData || '') + e.data;
   },
 
   /**
@@ -54,7 +74,24 @@ const DraftEditorCompositionHandler = {
    * mode. Continue the current composition session to prevent a re-render.
    */
   onCompositionStart: function(editor: DraftEditor): void {
+    const selection = global.getSelection();
+    selectionStart = {
+      anchorOffset: selection.anchorOffset,
+      anchorNode: selection.anchorNode,
+      focusOffset: selection.focusOffset,
+    };
     stillComposing = true;
+  },
+
+  /**
+   * A `compositionupdate` event has fired. Update the current composition
+   * session.
+   */
+  onCompositionUpdate: function(
+    editor: DraftEditor,
+    e: SyntheticInputEvent<>,
+  ): void {
+    compositionUpdateData = e.data;
   },
 
   /**
@@ -71,9 +108,14 @@ const DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(editor: DraftEditor, e: SyntheticEvent<>): void {
+  onCompositionEnd: function(
+    editor: DraftEditor,
+    e: SyntheticCompositionEvent<>,
+  ): void {
     resolved = false;
     stillComposing = false;
+    // Use e.data from the first compositionend event seen
+    compositionEndData = compositionEndData || e.data;
     setTimeout(() => {
       if (!resolved) {
         DraftEditorCompositionHandler.resolveComposition(editor, e);
@@ -114,6 +156,34 @@ const DraftEditorCompositionHandler = {
   },
 
   /**
+   * Normalizes platform inconsistencies with input event data.
+   *
+   * When beforeInputData is present, it is only preferred if its length
+   * is greater than that of the last compositionUpdate event data. This is
+   * meant to resolve IME incosistencies where compositionUpdate may contain
+   * only the last character or the entire composition depending on language
+   * (e.g. Korean vs. Japanese).
+   *
+   * When beforeInputData is not present, compositionUpdate data is preferred.
+   * This resolves issues with some platforms where beforeInput is never fired
+   * (e.g. Android with certain keyboard and browser combinations).
+   *
+   * Lastly, if neither beforeInput nor compositionUpdate events are fired, use
+   * the data in the compositionEnd event
+   */
+  normalizeCompositionInput: function(): ?string {
+    const beforeInputDataLength = beforeInputData ? beforeInputData.length : 0;
+    const compositionUpdateDataLength = compositionUpdateData
+      ? compositionUpdateData.length
+      : 0;
+    const updateData =
+      beforeInputDataLength > compositionUpdateDataLength
+        ? beforeInputData
+        : compositionUpdateData;
+    return updateData || compositionEndData;
+  },
+
+  /**
    * Attempt to insert composed characters into the document.
    *
    * If we are still in a composition session, do nothing. Otherwise, insert
@@ -137,8 +207,11 @@ const DraftEditorCompositionHandler = {
     }
 
     resolved = true;
-    const composedChars = textInputData;
-    textInputData = '';
+
+    const composedChars = this.normalizeCompositionInput();
+    beforeInputData = null;
+    compositionUpdateData = null;
+    compositionEndData = null;
 
     const editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
@@ -151,7 +224,6 @@ const DraftEditorCompositionHandler = {
     );
 
     const mustReset =
-      !composedChars ||
       isSelectionAtLeafStart(editorState) ||
       currentStyle.size > 0 ||
       entityKey !== null;
@@ -162,43 +234,46 @@ const DraftEditorCompositionHandler = {
 
     editor.exitCurrentMode();
 
-    if (composedChars) {
-      if (
-        gkx('draft_handlebeforeinput_composed_text') &&
-        editor.props.handleBeforeInput &&
-        isEventHandled(
-          editor.props.handleBeforeInput(
-            composedChars,
-            editorState,
-            event.timeStamp,
-          ),
-        )
-      ) {
-        return;
-      }
-      // If characters have been composed, re-rendering with the update
-      // is sufficient to reset the editor.
-      const contentState = DraftModifier.replaceText(
-        editorState.getCurrentContent(),
-        editorState.getSelection(),
-        composedChars,
-        currentStyle,
-        entityKey,
-      );
-      editor.update(
-        EditorState.push(editorState, contentState, 'insert-characters'),
-      );
+    const currentSelection = global.getSelection();
+    console.log(
+      selectionStart.anchorOffset,
+      selectionStart.focusOffset,
+      currentSelection.anchorOffset,
+      currentSelection.focusOffset,
+      composedChars,
+    );
+
+    if (selectionStart.anchorOffset >= currentSelection.focusOffset) {
       return;
     }
 
-    if (mustReset) {
-      editor.update(
-        EditorState.set(editorState, {
-          nativelyRenderedContent: null,
-          forceSelection: true,
-        }),
-      );
-    }
+    const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
+    invariant(editorNode, 'Missing editorNode');
+    invariant(
+      editorNode.firstChild instanceof HTMLElement,
+      'editorNode.firstChild is not an HTMLElement',
+    );
+    const selection = getDraftEditorSelectionWithNodes(
+      editorState,
+      editorNode.firstChild,
+      selectionStart.anchorNode,
+      selectionStart.anchorOffset,
+      currentSelection.focusNode,
+      currentSelection.focusOffset,
+    );
+
+    // If characters have been composed, re-rendering with the update
+    // is sufficient to reset the editor.
+    const contentState = DraftModifier.replaceText(
+      editorState.getCurrentContent(),
+      selection.selectionState,
+      composedChars,
+      currentStyle,
+      entityKey,
+    );
+    editor.update(
+      EditorState.push(editorState, contentState, 'insert-characters'),
+    );
   },
 };
 
