@@ -505,7 +505,7 @@ function updateSelection(
   forceSelection: boolean,
 ): EditorState {
   // Only unset the nativelyRenderedContent and inlineStyleOverride if the
-  // position is different
+  // position is different, not on blur/focus.
   const editorSelection = editorState.getSelection();
   if (
     editorSelection.getAnchorKey() === selection.getAnchorKey() &&

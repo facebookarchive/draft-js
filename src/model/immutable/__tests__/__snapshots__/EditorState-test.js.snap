@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`does discard style override when selection has changed 1`] = `Array []`;
+
 exports[`does not discard style override when adjusting depth 1`] = `
 Array [
   "BOLD",
@@ -8,6 +10,13 @@ Array [
 
 exports[`does not discard style override when changing block type 1`] = `
 Array [
+  "BOLD",
+]
+`;
+
+exports[`does not discard style override when gaining/losing focus 1`] = `
+Array [
+  "ITALIC",
   "BOLD",
 ]
 `;
