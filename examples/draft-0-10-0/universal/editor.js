@@ -1,12 +1,15 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This file provided by Facebook is for non-commercial testing and evaluation
+ * purposes only. Facebook reserves all rights not expressly granted.
  *
- * @providesModule Draft
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 'use strict';
@@ -27,12 +30,14 @@ class SimpleEditor extends React.Component {
     const Editor = Draft.Editor;
     const editorState = this.state.editorState;
     return (
-      <Editor
-        placeholder="heyyyyy"
-        editorKey="foobaz"
-        editorState={editorState}
-        onChange={this.onChange}
-      />
+      <div style={{border: '1px solid black', padding: 10}}>
+        <Editor
+          placeholder="Write something!"
+          editorKey="foobaz"
+          editorState={editorState}
+          onChange={this.onChange}
+        />
+      </div>
     );
   }
 }

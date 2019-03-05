@@ -1,24 +1,22 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule applyEntityToContentState
- * @typechecks
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var Immutable = require('immutable');
-
-var applyEntityToContentBlock = require('applyEntityToContentBlock');
-
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
+
+const Immutable = require('immutable');
+
+const applyEntityToContentBlock = require('applyEntityToContentBlock');
 
 function applyEntityToContentState(
   contentState: ContentState,
@@ -39,12 +37,7 @@ function applyEntityToContentState(
     .map((block, blockKey) => {
       const sliceStart = blockKey === startKey ? startOffset : 0;
       const sliceEnd = blockKey === endKey ? endOffset : block.getLength();
-      return applyEntityToContentBlock(
-        block,
-        sliceStart,
-        sliceEnd,
-        entityKey,
-      );
+      return applyEntityToContentBlock(block, sliceStart, sliceEnd, entityKey);
     });
 
   return contentState.merge({

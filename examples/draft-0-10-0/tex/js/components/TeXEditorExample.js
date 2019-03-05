@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
  *
  * This file provided by Facebook is for non-commercial testing and evaluation
  * purposes only. Facebook reserves all rights not expressly granted.
@@ -60,8 +60,7 @@ export default class TeXEditorExample extends React.Component {
     this._focus = () => this.refs.editor.focus();
     this._onChange = (editorState) => this.setState({editorState});
 
-    this._handleKeyCommand = command => {
-      var {editorState} = this.state;
+    this._handleKeyCommand = (command, editorState) => {
       var newState = RichUtils.handleKeyCommand(editorState, command);
       if (newState) {
         this._onChange(newState);

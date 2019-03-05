@@ -1,33 +1,26 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule BlockMapBuilder
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var Immutable = require('immutable');
-
 import type {BlockMap} from 'BlockMap';
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 
-var {OrderedMap} = Immutable;
+const Immutable = require('immutable');
 
-var BlockMapBuilder = {
-  createFromArray: function(
-    blocks: Array<ContentBlock>,
-  ): BlockMap {
-    return OrderedMap(
-      blocks.map(
-        block => [block.getKey(), block],
-      ),
-    );
+const {OrderedMap} = Immutable;
+
+const BlockMapBuilder = {
+  createFromArray: function(blocks: Array<BlockNodeRecord>): BlockMap {
+    return OrderedMap(blocks.map(block => [block.getKey(), block]));
   },
 };
 

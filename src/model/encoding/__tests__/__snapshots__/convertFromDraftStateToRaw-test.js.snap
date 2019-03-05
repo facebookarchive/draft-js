@@ -1,0 +1,238 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must be able to convert from draft state with ContentBlock to raw 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "a",
+      "text": "Alpha",
+      "type": "unstyled",
+    },
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [
+        Object {
+          "key": 0,
+          "length": 5,
+          "offset": 0,
+        },
+      ],
+      "inlineStyleRanges": Array [
+        Object {
+          "length": 5,
+          "offset": 0,
+          "style": "BOLD",
+        },
+      ],
+      "key": "b",
+      "text": "Bravo",
+      "type": "unordered-list-item",
+    },
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "c",
+      "text": "Test",
+      "type": "code-block",
+    },
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "d",
+      "text": "",
+      "type": "code-block",
+    },
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "e",
+      "text": "",
+      "type": "code-block",
+    },
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [
+        Object {
+          "length": 7,
+          "offset": 0,
+          "style": "ITALIC",
+        },
+      ],
+      "key": "f",
+      "text": "Charlie",
+      "type": "blockquote",
+    },
+  ],
+  "entityMap": Object {
+    "0": Object {
+      "data": Object {},
+      "mutability": undefined,
+      "type": Object {
+        "data": null,
+        "mutability": "IMMUTABLE",
+        "type": "IMAGE",
+      },
+    },
+  },
+}
+`;
+
+exports[`must be able to convert from draft state with ContentBlockNode to raw 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "data": Object {},
+              "depth": 0,
+              "entityRanges": Array [],
+              "inlineStyleRanges": Array [],
+              "key": "C",
+              "text": "left block",
+              "type": "unstyled",
+            },
+            Object {
+              "children": Array [],
+              "data": Object {},
+              "depth": 0,
+              "entityRanges": Array [],
+              "inlineStyleRanges": Array [],
+              "key": "D",
+              "text": "right block",
+              "type": "unstyled",
+            },
+          ],
+          "data": Object {},
+          "depth": 0,
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "B",
+          "text": "",
+          "type": "unstyled",
+        },
+        Object {
+          "children": Array [],
+          "data": Object {},
+          "depth": 0,
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "E",
+          "text": "This is a tree based document!",
+          "type": "header-one",
+        },
+      ],
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "A",
+      "text": "",
+      "type": "unstyled",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
+exports[`must be able to convert from draft state with noncontiguous entities to raw 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [
+        Object {
+          "key": 0,
+          "length": 5,
+          "offset": 0,
+        },
+        Object {
+          "key": 0,
+          "length": 5,
+          "offset": 6,
+        },
+        Object {
+          "key": 1,
+          "length": 5,
+          "offset": 12,
+        },
+      ],
+      "inlineStyleRanges": Array [],
+      "key": "a",
+      "text": "link2 link2 link3",
+      "type": "unstyled",
+    },
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [
+        Object {
+          "key": 2,
+          "length": 5,
+          "offset": 0,
+        },
+        Object {
+          "key": 0,
+          "length": 5,
+          "offset": 6,
+        },
+        Object {
+          "key": 3,
+          "length": 5,
+          "offset": 12,
+        },
+      ],
+      "inlineStyleRanges": Array [],
+      "key": "b",
+      "text": "link4 link2 link5",
+      "type": "unstyled",
+    },
+  ],
+  "entityMap": Object {
+    "0": Object {
+      "data": Object {
+        "url": "www.2.com",
+      },
+      "mutability": "IMMUTABLE",
+      "type": "LINK",
+    },
+    "1": Object {
+      "data": Object {
+        "url": "www.3.com",
+      },
+      "mutability": "IMMUTABLE",
+      "type": "LINK",
+    },
+    "2": Object {
+      "data": Object {
+        "url": "www.4.com",
+      },
+      "mutability": "IMMUTABLE",
+      "type": "LINK",
+    },
+    "3": Object {
+      "data": Object {
+        "url": "www.5.com",
+      },
+      "mutability": "IMMUTABLE",
+      "type": "LINK",
+    },
+  },
+}
+`;

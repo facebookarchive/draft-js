@@ -1,31 +1,29 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule createCharacterList
- * @typechecks
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var CharacterMetadata = require('CharacterMetadata');
-var Immutable = require('immutable');
-
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var {List} = Immutable;
+const CharacterMetadata = require('CharacterMetadata');
+const Immutable = require('immutable');
+
+const {List} = Immutable;
 
 function createCharacterList(
   inlineStyles: Array<DraftInlineStyle>,
   entities: Array<?string>,
 ): List<CharacterMetadata> {
-  var characterArray = inlineStyles.map((style, ii) => {
-    var entity = entities[ii];
+  const characterArray = inlineStyles.map((style, ii) => {
+    const entity = entities[ii];
     return CharacterMetadata.create({style, entity});
   });
   return List(characterArray);

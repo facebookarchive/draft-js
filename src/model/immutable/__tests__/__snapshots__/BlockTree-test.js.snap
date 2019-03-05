@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must generate for styled block with empty decorator 1`] = `
+Array [
+  Object {
+    "decoratorKey": null,
+    "end": 10,
+    "leaves": Array [
+      Object {
+        "end": 4,
+        "start": 0,
+      },
+      Object {
+        "end": 8,
+        "start": 4,
+      },
+      Object {
+        "end": 10,
+        "start": 8,
+      },
+    ],
+    "start": 0,
+  },
+]
+`;
+
+exports[`must generate for styled block with multiple decorators 1`] = `
+Array [
+  Object {
+    "decoratorKey": "y",
+    "end": 3,
+    "leaves": Array [
+      Object {
+        "end": 3,
+        "start": 0,
+      },
+    ],
+    "start": 0,
+  },
+  Object {
+    "decoratorKey": null,
+    "end": 6,
+    "leaves": Array [
+      Object {
+        "end": 4,
+        "start": 3,
+      },
+      Object {
+        "end": 6,
+        "start": 4,
+      },
+    ],
+    "start": 3,
+  },
+  Object {
+    "decoratorKey": "z",
+    "end": 10,
+    "leaves": Array [
+      Object {
+        "end": 8,
+        "start": 6,
+      },
+      Object {
+        "end": 10,
+        "start": 8,
+      },
+    ],
+    "start": 6,
+  },
+]
+`;
+
+exports[`must generate for styled block with single decorator 1`] = `
+Array [
+  Object {
+    "decoratorKey": null,
+    "end": 3,
+    "leaves": Array [
+      Object {
+        "end": 3,
+        "start": 0,
+      },
+    ],
+    "start": 0,
+  },
+  Object {
+    "decoratorKey": "x",
+    "end": 6,
+    "leaves": Array [
+      Object {
+        "end": 4,
+        "start": 3,
+      },
+      Object {
+        "end": 6,
+        "start": 4,
+      },
+    ],
+    "start": 3,
+  },
+  Object {
+    "decoratorKey": null,
+    "end": 10,
+    "leaves": Array [
+      Object {
+        "end": 8,
+        "start": 6,
+      },
+      Object {
+        "end": 10,
+        "start": 8,
+      },
+    ],
+    "start": 6,
+  },
+]
+`;
+
+exports[`must generate for unstyled block with empty decorator 1`] = `
+Array [
+  Object {
+    "decoratorKey": null,
+    "end": 7,
+    "leaves": Array [
+      Object {
+        "end": 7,
+        "start": 0,
+      },
+    ],
+    "start": 0,
+  },
+]
+`;
+
+exports[`must generate for unstyled block with multiple decorators 1`] = `
+Array [
+  Object {
+    "decoratorKey": "y",
+    "end": 3,
+    "leaves": Array [
+      Object {
+        "end": 3,
+        "start": 0,
+      },
+    ],
+    "start": 0,
+  },
+  Object {
+    "decoratorKey": null,
+    "end": 6,
+    "leaves": Array [
+      Object {
+        "end": 6,
+        "start": 3,
+      },
+    ],
+    "start": 3,
+  },
+  Object {
+    "decoratorKey": "z",
+    "end": 7,
+    "leaves": Array [
+      Object {
+        "end": 7,
+        "start": 6,
+      },
+    ],
+    "start": 6,
+  },
+]
+`;
+
+exports[`must generate for unstyled block with single decorator 1`] = `
+Array [
+  Object {
+    "decoratorKey": null,
+    "end": 3,
+    "leaves": Array [
+      Object {
+        "end": 3,
+        "start": 0,
+      },
+    ],
+    "start": 0,
+  },
+  Object {
+    "decoratorKey": "x",
+    "end": 6,
+    "leaves": Array [
+      Object {
+        "end": 6,
+        "start": 3,
+      },
+    ],
+    "start": 3,
+  },
+  Object {
+    "decoratorKey": null,
+    "end": 7,
+    "leaves": Array [
+      Object {
+        "end": 7,
+        "start": 6,
+      },
+    ],
+    "start": 6,
+  },
+]
+`;

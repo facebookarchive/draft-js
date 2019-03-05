@@ -1,43 +1,42 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule encodeInlineStyleRanges
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var UnicodeUtils = require('UnicodeUtils');
-
-var findRangesImmutable = require('findRangesImmutable');
-
-import type ContentBlock from 'ContentBlock';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {InlineStyleRange} from 'InlineStyleRange';
 import type {List} from 'immutable';
 
-var areEqual = (a, b) => a === b;
-var isTruthy = a => !!a;
-var EMPTY_ARRAY = [];
+const UnicodeUtils = require('UnicodeUtils');
+
+const findRangesImmutable = require('findRangesImmutable');
+
+const areEqual = (a, b) => a === b;
+const isTruthy = a => !!a;
+const EMPTY_ARRAY = [];
 
 /**
  * Helper function for getting encoded styles for each inline style. Convert
  * to UTF-8 character counts for storage.
  */
 function getEncodedInlinesForType(
-  block: ContentBlock,
+  block: BlockNodeRecord,
   styleList: List<DraftInlineStyle>,
   styleToEncode: string,
 ): Array<InlineStyleRange> {
-  var ranges = [];
+  const ranges = [];
 
   // Obtain an array with ranges for only the specified style.
-  var filteredInlines = styleList
+  const filteredInlines = styleList
     .map(style => style.has(styleToEncode))
     .toList();
 
@@ -47,7 +46,7 @@ function getEncodedInlinesForType(
     // We only want to keep ranges with nonzero style values.
     isTruthy,
     (start, end) => {
-      var text = block.getText();
+      const text = block.getText();
       ranges.push({
         offset: UnicodeUtils.strlen(text.slice(0, start)),
         length: UnicodeUtils.strlen(text.slice(start, end)),
@@ -64,10 +63,13 @@ function getEncodedInlinesForType(
  * treated separately.
  */
 function encodeInlineStyleRanges(
-  block: ContentBlock,
+  block: BlockNodeRecord,
 ): Array<InlineStyleRange> {
-  var styleList = block.getCharacterList().map(c => c.getStyle()).toList();
-  var ranges = styleList
+  const styleList = block
+    .getCharacterList()
+    .map(c => c.getStyle())
+    .toList();
+  const ranges = styleList
     .flatten()
     .toSet()
     .map(style => getEncodedInlinesForType(block, styleList, style));

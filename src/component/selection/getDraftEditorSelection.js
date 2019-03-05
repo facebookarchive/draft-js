@@ -1,22 +1,20 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule getDraftEditorSelection
- * @typechecks
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
-
 import type {DOMDerivedSelection} from 'DOMDerivedSelection';
 import type EditorState from 'EditorState';
+
+const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
 
 /**
  * Convert the current selection range to an anchor/focus pair of offset keys
@@ -26,7 +24,7 @@ function getDraftEditorSelection(
   editorState: EditorState,
   root: HTMLElement,
 ): DOMDerivedSelection {
-  var selection = global.getSelection();
+  const selection = global.getSelection();
 
   // No active selection.
   if (selection.rangeCount === 0) {

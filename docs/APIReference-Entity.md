@@ -1,10 +1,6 @@
 ---
 id: api-reference-entity
 title: Entity
-layout: docs
-category: API Reference
-next: api-reference-selection-state
-permalink: docs/api-reference-entity.html
 ---
 
 `Entity` is a static module containing the API for creating, retrieving, and
@@ -57,7 +53,7 @@ be used only for retrieval.
 
 ## Methods
 
-### create
+### create _(Deprecated in favour of [contentState.createEntity](/docs/api-reference-content-state.html#createentity))_
 
 ```
 create(
@@ -74,7 +70,7 @@ are referenced by their string key in `ContentState`. The string value should
 be used within `CharacterMetadata` objects to track the entity for annotated
 characters.
 
-### add
+### add _(Deprecated in favour of [contentState.addEntity](/docs/api-reference-content-state.html#addentity))_
 
 ```
 add(instance: DraftEntityInstance): string
@@ -87,7 +83,7 @@ created, and now need to be added to the `Entity` store. This may occur in cases
 where a vanilla JavaScript representation of a `ContentState` is being revived
 for editing.
 
-### get
+### get _(Deprecated in favour of [contentState.getEntity](/docs/api-reference-content-state.html#getentity))_
 
 ```
 get(key: string): DraftEntityInstance
@@ -95,7 +91,7 @@ get(key: string): DraftEntityInstance
 Returns the `DraftEntityInstance` for the specified key. Throws if no instance
 exists for that key.
 
-### mergeData
+### mergeData _(Deprecated in favour of [contentState.mergeEntityData](/docs/api-reference-content-state.html#mergeentitydata))_
 
 ```
 mergeData(
@@ -108,7 +104,7 @@ metadata through typical mutative means.
 
 The `mergeData` method allows you to apply updates to the specified entity.
 
-### replaceData
+### replaceData _(Deprecated in favour of [contentState.replaceEntityData](/docs/api-reference-content-state.html#replaceentitydata))_
 
 ```
 replaceData(
