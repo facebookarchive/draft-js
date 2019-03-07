@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-var babel = require('babel-core');
+var babel = require('@babel/core');
 var createCacheKeyFunction = require('fbjs-scripts/jest/createCacheKeyFunction');
 var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
 var moduleMap = require('../module-map');
