@@ -24,8 +24,6 @@ const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const gkx = require('gkx');
 const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-// const onInput = require('editOnInput');
-const editOnSelect = require('editOnSelect');
 const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
 
 /**
