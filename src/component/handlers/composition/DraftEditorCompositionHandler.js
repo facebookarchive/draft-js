@@ -225,6 +225,7 @@ var DraftEditorCompositionHandler = {
     );
 
     const mustReset =
+      composedChars != null ||
       isSelectionAtLeafStart(editorState) ||
       currentStyle.size > 0 ||
       entityKey !== null;
@@ -234,6 +235,21 @@ var DraftEditorCompositionHandler = {
     }
 
     editor.exitCurrentMode();
+
+    if (
+      gkx('draft_handlebeforeinput_composed_text') &&
+      composedChars != null &&
+      editor.props.handleBeforeInput &&
+      isEventHandled(
+        editor.props.handleBeforeInput(
+          composedChars,
+          editorState,
+          event.timeStamp,
+        ),
+      )
+    ) {
+      return;
+    }
 
     const currentSelection = global.getSelection();
 
