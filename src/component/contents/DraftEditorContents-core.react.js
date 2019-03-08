@@ -22,7 +22,10 @@ const DraftOffsetKey = require('DraftOffsetKey');
 const React = require('React');
 
 const cx = require('cx');
-const joinClasses = require('joinClasses');
+const joinClasses: (
+  className?: ?string,
+  ...classes: Array<?string>
+) => string = require('joinClasses');
 const nullthrows = require('nullthrows');
 
 type Props = {
