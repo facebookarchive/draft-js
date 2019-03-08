@@ -225,7 +225,6 @@ var DraftEditorCompositionHandler = {
     );
 
     const mustReset =
-      composedChars != null ||
       isSelectionAtLeafStart(editorState) ||
       currentStyle.size > 0 ||
       entityKey !== null;
