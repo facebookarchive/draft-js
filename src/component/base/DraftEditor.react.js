@@ -278,7 +278,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
           if (flushControlled) {
             flushControlled(() => {
               console.groupCollapsed(
-                `${e.type} - "${e.data || ''}" - ${e.nativeEvent.key ||
+                `${eventName} - "${e.data || ''}" - ${e.nativeEvent.key ||
                   null} - "${this.props.editorState
                   .getCurrentContent()
                   .getPlainText()}"`,

@@ -235,17 +235,6 @@ var DraftEditorCompositionHandler = {
     editor.exitCurrentMode();
 
     const currentSelection = global.getSelection();
-    console.log(
-      selectionStart.anchorOffset,
-      selectionStart.focusOffset,
-      currentSelection.anchorOffset,
-      currentSelection.focusOffset,
-      composedChars,
-    );
-
-    if (selectionStart.anchorOffset >= currentSelection.focusOffset) {
-      return;
-    }
 
     const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
     invariant(editorNode, 'Missing editorNode');
@@ -253,7 +242,7 @@ var DraftEditorCompositionHandler = {
       editorNode.firstChild instanceof HTMLElement,
       'editorNode.firstChild is not an HTMLElement',
     );
-    const selection = getDraftEditorSelectionWithNodes(
+    const {selectionState} = getDraftEditorSelectionWithNodes(
       editorState,
       editorNode.firstChild,
       selectionStart.anchorNode,
@@ -262,11 +251,17 @@ var DraftEditorCompositionHandler = {
       currentSelection.focusOffset,
     );
 
+    // TODO, test this on RTL
+    // TODO, add comment giving more context on this check
+    if (selectionState.isCollapsed() || selectionState.getIsBackward()) {
+      return;
+    }
+
     // If characters have been composed, re-rendering with the update
     // is sufficient to reset the editor.
     const contentState = DraftModifier.replaceText(
       editorState.getCurrentContent(),
-      selection.selectionState,
+      selectionState,
       composedChars,
       currentStyle,
       entityKey,
