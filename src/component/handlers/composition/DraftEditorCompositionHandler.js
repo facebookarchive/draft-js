@@ -49,7 +49,12 @@ let stillComposing = false;
 let beforeInputData = null;
 let compositionEndData = null;
 let compositionUpdateData = null;
-let selectionStart = null;
+
+type AnchorSelectionData = {
+  anchorOffset: number,
+  anchorNode: Node | null,
+};
+let compositionSelectionStart: ?AnchorSelectionData = null;
 
 var DraftEditorCompositionHandler = {
   /**
@@ -73,10 +78,9 @@ var DraftEditorCompositionHandler = {
    */
   onCompositionStart: function(editor: DraftEditor): void {
     const selection = global.getSelection();
-    selectionStart = {
+    compositionSelectionStart = {
       anchorOffset: selection.anchorOffset,
       anchorNode: selection.anchorNode,
-      focusOffset: selection.focusOffset,
     };
     stillComposing = true;
   },
@@ -240,18 +244,27 @@ var DraftEditorCompositionHandler = {
       editorNode.firstChild instanceof HTMLElement,
       'editorNode.firstChild is not an HTMLElement',
     );
+    invariant(compositionSelectionStart, 'compositionSelectionStart is null');
+    invariant(
+      compositionSelectionStart.anchorNode,
+      'compositionSelectionStart.anchorNode is not a Node',
+    );
     const {selectionState} = getDraftEditorSelectionWithNodes(
       editorState,
       editorNode.firstChild,
-      selectionStart.anchorNode,
-      selectionStart.anchorOffset,
+      compositionSelectionStart.anchorNode,
+      compositionSelectionStart.anchorOffset,
       currentSelection.focusNode,
       currentSelection.focusOffset,
     );
 
     // TODO, test this on RTL
     // TODO, add comment giving more context on this check
-    if (selectionState.isCollapsed() || selectionState.getIsBackward()) {
+    if (
+      composedChars == null ||
+      selectionState.isCollapsed() ||
+      selectionState.getIsBackward()
+    ) {
       return;
     }
 
