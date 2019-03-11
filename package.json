@@ -61,7 +61,6 @@
     "flow-bin": "^0.92.0",
     "gulp": "^4.0.0",
     "gulp-babel": "^8.0.0",
-    "gulp-browserify-thin": "^0.1.5",
     "gulp-clean-css": "^2.0.3",
     "gulp-concat-css": "^2.2.0",
     "gulp-derequire": "^2.1.0",
