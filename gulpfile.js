@@ -278,7 +278,7 @@ gulp.task(
 gulp.task(
   'dev',
   gulp.series(function() {
-    gulp.watch(paths.src, gulp.parallel('modules', 'dist'));
+    gulp.watch(paths.src, gulp.parallel('dist'));
   }),
 );
 
