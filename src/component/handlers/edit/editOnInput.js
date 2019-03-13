@@ -21,10 +21,20 @@ const UserAgent = require('UserAgent');
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const gkx = require('gkx');
 const nullthrows = require('nullthrows');
+const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
 
 const isGecko = UserAgent.isEngine('Gecko');
 
 const DOUBLE_NEWLINE = '\n\n';
+
+function onInputType(inputType: string, editorState: EditorState): EditorState {
+  console.log(inputType);
+  switch (inputType) {
+    case 'deleteContentBackward':
+      return keyCommandPlainBackspace(editorState);
+  }
+  return editorState;
+}
 
 /**
  * This function is intended to handle spellcheck and autocorrect changes,
@@ -38,7 +48,7 @@ const DOUBLE_NEWLINE = '\n\n';
  * when an `input` change leads to a DOM/model mismatch, the change should be
  * due to a spellcheck change, and we can incorporate it into our model.
  */
-function editOnInput(editor: DraftEditor): void {
+function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
@@ -111,6 +121,19 @@ function editOnInput(editor: DraftEditor): void {
     // standard onkeydown/pressed events and only fired editOnInput
     // so domText is already changed by the browser and ends up being equal
     // to modelText unexpectedly
+
+    /* $FlowFixMe inputType is only defined on a draft of a standard. 
+    * https://w3c.github.io/input-events/#dom-inputevent-inputtype */
+    const {inputType} = e.nativeEvent;
+    // TODO add check for "input events level 2" https://w3c.github.io/input-events/#dom-inputevent-inputtype
+    if (inputType) {
+      let newEditorState = onInputType(inputType, editorState);
+      if (newEditorState !== editorState) {
+        console.log('UPDATE ON INPUT', inputType);
+        editor.restoreEditorDOM();
+        return void editor.update(newEditorState);
+      }
+    }
     return;
   }
 

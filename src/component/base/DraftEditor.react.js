@@ -128,8 +128,6 @@ class UpdateDraftEditorFlags extends React.Component<{
   }
 }
 
-console.log('DRAFT INIT');
-
 /**
  * `DraftEditor` is the root editor component. It composes a `contentEditable`
  * div, and provides a wide variety of useful function props for managing the
@@ -255,6 +253,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     // See `restoreEditorDOM()`.
     this.state = {contentsKey: 0};
+    window.editor = this;
   }
 
   /**
@@ -277,21 +276,20 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         if (method) {
           if (flushControlled) {
             flushControlled(() => {
+              e.persist();
               console.groupCollapsed(
                 `${eventName} - "${e.data || ''}" - ${e.nativeEvent.key ||
-                  null} - "${this.props.editorState
+                  null} - "${this._latestEditorState
                   .getCurrentContent()
                   .getPlainText()}"`,
               );
-              e.persist();
-              console.log(this.props.editorState.toJS());
+              console.log(this._latestEditorState.toJS());
               console.log(e.nativeEvent);
               console.log(e);
               console.groupEnd();
               return method(this, e);
             });
           } else {
-            console.log('NOT flushControlled', eventName, e.nativeEvent);
             method(this, e);
           }
         }
@@ -592,6 +590,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * function.
    */
   update: EditorState => void = (editorState: EditorState): void => {
+    console.error('UPDATE STATE');
     this._latestEditorState = editorState;
     this.props.onChange(editorState);
   };

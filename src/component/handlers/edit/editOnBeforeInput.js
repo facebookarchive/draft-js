@@ -81,6 +81,9 @@ function editOnBeforeInput(
   editor: DraftEditor,
   e: SyntheticInputEvent<>,
 ): void {
+  // if (e.data === 'Fabio') {
+  //   eval('debugger');
+  // }
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
@@ -239,12 +242,13 @@ function editOnBeforeInput(
   }
 
   if (mustPreventNative) {
-    e.preventDefault();
-    newEditorState = EditorState.set(newEditorState, {
-      forceSelection: true,
-    });
-    editor.update(newEditorState);
-    return;
+    console.log('WOULD PREVENT DEFAULT');
+    // e.preventDefault();
+    // newEditorState = EditorState.set(newEditorState, {
+    //   forceSelection: true,
+    // });
+    // editor.update(newEditorState);
+    // return;
   }
 
   // We made it all the way! Let the browser do its thing and insert the char.

@@ -230,14 +230,18 @@ var DraftEditorCompositionHandler = {
       entityKey !== null;
 
     if (mustReset) {
+      console.log('RESET DOM');
       editor.restoreEditorDOM();
     }
 
     editor.exitCurrentMode();
 
+    if (composedChars == null) {
+      return;
+    }
+
     if (
       gkx('draft_handlebeforeinput_composed_text') &&
-      composedChars != null &&
       editor.props.handleBeforeInput &&
       isEventHandled(
         editor.props.handleBeforeInput(
@@ -259,34 +263,40 @@ var DraftEditorCompositionHandler = {
       'editorNode.firstChild is not an HTMLElement',
     );
     invariant(compositionSelectionStart, 'compositionSelectionStart is null');
+    const startAnchorNode = compositionSelectionStart.anchorNode;
     invariant(
-      compositionSelectionStart.anchorNode,
+      startAnchorNode,
       'compositionSelectionStart.anchorNode is not a Node',
     );
+    // If compositionSelectionStart.anchorNode is detached from the document
+    // an exception ends up happening inside getDraftEditorSelectionWithNodes.
+    if (
+      startAnchorNode.nodeType === Node.TEXT_NODE &&
+      !startAnchorNode.ownerDocument.contains(startAnchorNode)
+    ) {
+      return;
+    }
     const {selectionState} = getDraftEditorSelectionWithNodes(
       editorState,
       editorNode.firstChild,
-      compositionSelectionStart.anchorNode,
+      startAnchorNode,
       compositionSelectionStart.anchorOffset,
       currentSelection.focusNode,
       currentSelection.focusOffset,
     );
 
-    // TODO, test this on RTL
     // TODO, add comment giving more context on this check
-    if (
-      composedChars == null ||
-      selectionState.isCollapsed() ||
-      selectionState.getIsBackward()
-    ) {
+    if (selectionState.isCollapsed() || selectionState.getIsBackward()) {
       return;
     }
+
+    console.log('COMPOSE UPDATE', composedChars);
 
     // If characters have been composed, re-rendering with the update
     // is sufficient to reset the editor.
     const contentState = DraftModifier.replaceText(
       editorState.getCurrentContent(),
-      selectionState,
+      editorState.getSelection(),
       composedChars,
       currentStyle,
       entityKey,
