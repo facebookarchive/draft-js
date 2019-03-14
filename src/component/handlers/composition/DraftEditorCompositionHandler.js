@@ -16,14 +16,13 @@ import type DraftEditor from 'DraftEditor.react';
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Keys = require('Keys');
-const invariant = require('invariant');
-const ReactDOM = require('ReactDOM');
+const DraftOffsetKey = require('DraftOffsetKey');
+const DOMObserver = require('DOMObserver');
 
+const nullthrows = require('nullthrows');
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
-const gkx = require('gkx');
-const isEventHandled = require('isEventHandled');
-const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
+const getDraftEditorSelection = require('getDraftEditorSelection');
+const getContentEditableContainer = require('getContentEditableContainer');
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon
@@ -45,54 +44,31 @@ const RESOLVE_DELAY = 20;
  */
 let resolved = false;
 let stillComposing = false;
-let beforeInputData = null;
-let compositionEndData = null;
-let compositionUpdateData = null;
+let domObserver = null;
 
-type AnchorSelectionData = {
-  anchorOffset: number,
-  anchorNode: Node | null,
-};
-let compositionSelectionStart: ?AnchorSelectionData = null;
+function startDOMObserver(editor: DraftEditor) {
+  if (!domObserver) {
+    domObserver = new DOMObserver(getContentEditableContainer(editor));
+    domObserver.start();
+  }
+}
 
 var DraftEditorCompositionHandler = {
-  /**
-   * Some IMEs (Firefox Mobile, notably) fire multiple `beforeinput` events
-   * which include the text so far typed, in addition to (broken)
-   * `compositionend` events. In these cases, we construct beforeInputData from
-   * the `beforeinput` and consider that to be the definitive version of what
-   * was actually typed.
-   *
-   * Proper, compliant browsers will not do this and will instead include the
-   * entire resolved composition result in the `data` member of the
-   * `compositionend` events that they fire.
-   */
-  onBeforeInput: function(editor: DraftEditor, e: SyntheticInputEvent<>): void {
-    beforeInputData = (beforeInputData || '') + e.data;
-  },
-
   /**
    * A `compositionstart` event has fired while we're still in composition
    * mode. Continue the current composition session to prevent a re-render.
    */
   onCompositionStart: function(editor: DraftEditor): void {
-    const selection = global.getSelection();
-    compositionSelectionStart = {
-      anchorOffset: selection.anchorOffset,
-      anchorNode: selection.anchorNode,
-    };
     stillComposing = true;
+    startDOMObserver(editor);
   },
 
   /**
    * A `compositionupdate` event has fired. Update the current composition
    * session.
    */
-  onCompositionUpdate: function(
-    editor: DraftEditor,
-    e: SyntheticInputEvent<>,
-  ): void {
-    compositionUpdateData = e.data;
+  onCompositionUpdate: function(editor: DraftEditor): void {
+    startDOMObserver(editor);
   },
 
   /**
@@ -115,8 +91,6 @@ var DraftEditorCompositionHandler = {
   ): void {
     resolved = false;
     stillComposing = false;
-    // Use e.data from the first compositionend event seen
-    compositionEndData = compositionEndData || e.data;
     setTimeout(() => {
       if (!resolved) {
         DraftEditorCompositionHandler.resolveComposition(editor, e);
@@ -157,34 +131,6 @@ var DraftEditorCompositionHandler = {
   },
 
   /**
-   * Normalizes platform inconsistencies with input event data.
-   *
-   * When beforeInputData is present, it is only preferred if its length
-   * is greater than that of the last compositionUpdate event data. This is
-   * meant to resolve IME incosistencies where compositionUpdate may contain
-   * only the last character or the entire composition depending on language
-   * (e.g. Korean vs. Japanese).
-   *
-   * When beforeInputData is not present, compositionUpdate data is preferred.
-   * This resolves issues with some platforms where beforeInput is never fired
-   * (e.g. Android with certain keyboard and browser combinations).
-   *
-   * Lastly, if neither beforeInput nor compositionUpdate events are fired, use
-   * the data in the compositionEnd event
-   */
-  normalizeCompositionInput: function(): ?string {
-    const beforeInputDataLength = beforeInputData ? beforeInputData.length : 0;
-    const compositionUpdateDataLength = compositionUpdateData
-      ? compositionUpdateData.length
-      : 0;
-    const updateData =
-      beforeInputDataLength > compositionUpdateDataLength
-        ? beforeInputData
-        : compositionUpdateData;
-    return updateData || compositionEndData;
-  },
-
-  /**
    * Attempt to insert composed characters into the document.
    *
    * If we are still in a composition session, do nothing. Otherwise, insert
@@ -207,102 +153,97 @@ var DraftEditorCompositionHandler = {
       return;
     }
 
+    const mutations = nullthrows(domObserver).stopAndFlushMutations();
+    domObserver = null;
     resolved = true;
 
-    const composedChars = this.normalizeCompositionInput();
-    beforeInputData = null;
-    compositionUpdateData = null;
-    compositionEndData = null;
-
-    const editorState = EditorState.set(editor._latestEditorState, {
+    let editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
     });
 
-    const currentStyle = editorState.getCurrentInlineStyle();
-    const entityKey = getEntityKeyForSelection(
-      editorState.getCurrentContent(),
-      editorState.getSelection(),
-    );
-
-    const mustReset =
-      isSelectionAtLeafStart(editorState) ||
-      currentStyle.size > 0 ||
-      entityKey !== null;
-
-    if (mustReset) {
-      console.log('RESET DOM');
-      editor.restoreEditorDOM();
-    }
-
     editor.exitCurrentMode();
 
-    if (composedChars == null) {
+    if (!mutations.size) {
       return;
     }
 
-    if (
-      gkx('draft_handlebeforeinput_composed_text') &&
-      editor.props.handleBeforeInput &&
-      isEventHandled(
-        editor.props.handleBeforeInput(
-          composedChars,
-          editorState,
-          event.timeStamp,
-        ),
-      )
-    ) {
-      return;
-    }
-
-    const currentSelection = global.getSelection();
-
-    const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
-    invariant(editorNode, 'Missing editorNode');
-    invariant(
-      editorNode.firstChild instanceof HTMLElement,
-      'editorNode.firstChild is not an HTMLElement',
-    );
-    invariant(compositionSelectionStart, 'compositionSelectionStart is null');
-    const startAnchorNode = compositionSelectionStart.anchorNode;
-    invariant(
-      startAnchorNode,
-      'compositionSelectionStart.anchorNode is not a Node',
-    );
-    // If compositionSelectionStart.anchorNode is detached from the document
-    // an exception ends up happening inside getDraftEditorSelectionWithNodes.
-    if (
-      startAnchorNode.nodeType === Node.TEXT_NODE &&
-      !startAnchorNode.ownerDocument.contains(startAnchorNode)
-    ) {
-      return;
-    }
-    const {selectionState} = getDraftEditorSelectionWithNodes(
+    // Save current selection before restoring the DOM, so we can, so
+    // we can re-apply on compositionEnd.
+    const documentSelection = getDraftEditorSelection(
       editorState,
-      editorNode.firstChild,
-      startAnchorNode,
-      compositionSelectionStart.anchorOffset,
-      currentSelection.focusNode,
-      currentSelection.focusOffset,
+      getContentEditableContainer(editor),
     );
+    const initialSelectionState = documentSelection.selectionState;
 
-    // TODO, add comment giving more context on this check
-    if (selectionState.isCollapsed() || selectionState.getIsBackward()) {
-      return;
-    }
+    editor.restoreEditorDOM();
 
-    console.log('COMPOSE UPDATE', composedChars);
+    // TODO, check if Facebook still needs this flag or if it could be removed.
+    // Since there can be multiple mutations providing a `composedChars` doesn't
+    // apply well on this new model.
+    // if (
+    //   gkx('draft_handlebeforeinput_composed_text') &&
+    //   editor.props.handleBeforeInput &&
+    //   isEventHandled(
+    //     editor.props.handleBeforeInput(
+    //       composedChars,
+    //       editorState,
+    //       event.timeStamp,
+    //     ),
+    //   )
+    // ) {
+    //   return;
+    // }
 
-    // If characters have been composed, re-rendering with the update
-    // is sufficient to reset the editor.
-    const contentState = DraftModifier.replaceText(
+    const contentState = mutations.reduce(
+      (contentState, composedChars, offsetKey) => {
+        const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
+          offsetKey,
+        );
+
+        const {start, end} = editorState
+          .getBlockTree(blockKey)
+          .getIn([decoratorKey, 'leaves', leafKey]);
+
+        const replacementRange = editorState.getSelection().merge({
+          anchorKey: blockKey,
+          focusKey: blockKey,
+          anchorOffset: start,
+          focusOffset: end,
+          isBackward: false,
+        });
+
+        const entityKey = getEntityKeyForSelection(
+          contentState,
+          replacementRange,
+        );
+        const currentStyle = contentState
+          .getBlockForKey(blockKey)
+          .getInlineStyleAt(start);
+
+        // If characters have been composed, re-rendering with the update
+        // is sufficient to reset the editor.
+        return DraftModifier.replaceText(
+          contentState,
+          replacementRange,
+          composedChars,
+          currentStyle,
+          entityKey,
+        );
+      },
       editorState.getCurrentContent(),
-      editorState.getSelection(),
-      composedChars,
-      currentStyle,
-      entityKey,
     );
+
+    const contentWithAdjustedSelection = contentState.merge({
+      selectionBefore: contentState.getSelectionAfter(),
+      selectionAfter: initialSelectionState,
+    });
+
     editor.update(
-      EditorState.push(editorState, contentState, 'insert-characters'),
+      EditorState.push(
+        editorState,
+        contentWithAdjustedSelection,
+        'insert-characters',
+      ),
     );
   },
 };

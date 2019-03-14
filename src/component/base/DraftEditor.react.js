@@ -253,7 +253,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     // See `restoreEditorDOM()`.
     this.state = {contentsKey: 0};
-    window.editor = this;
   }
 
   /**
