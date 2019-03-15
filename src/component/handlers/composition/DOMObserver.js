@@ -86,7 +86,6 @@ class DOMObserver {
 
   registerMutations(mutations: Array<MutationRecord>) {
     for (let i = 0; i < mutations.length; i++) {
-      console.log(mutations[i]);
       this.registerMutation(mutations[i]);
     }
   }

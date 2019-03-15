@@ -28,7 +28,6 @@ const isGecko = UserAgent.isEngine('Gecko');
 const DOUBLE_NEWLINE = '\n\n';
 
 function onInputType(inputType: string, editorState: EditorState): EditorState {
-  console.log(inputType);
   switch (inputType) {
     case 'deleteContentBackward':
       return keyCommandPlainBackspace(editorState);
@@ -129,7 +128,6 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     if (inputType) {
       let newEditorState = onInputType(inputType, editorState);
       if (newEditorState !== editorState) {
-        console.log('UPDATE ON INPUT', inputType);
         editor.restoreEditorDOM();
         return void editor.update(newEditorState);
       }

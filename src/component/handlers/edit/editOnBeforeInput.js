@@ -86,8 +86,6 @@ function editOnBeforeInput(
     editor._pendingStateFromBeforeInput = undefined;
   }
 
-  const {anchorNode} = global.getSelection();
-
   const editorState = editor._latestEditorState;
 
   const chars = e.data;

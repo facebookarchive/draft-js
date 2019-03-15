@@ -64,14 +64,6 @@ var DraftEditorCompositionHandler = {
   },
 
   /**
-   * A `compositionupdate` event has fired. Update the current composition
-   * session.
-   */
-  onCompositionUpdate: function(editor: DraftEditor): void {
-    startDOMObserver(editor);
-  },
-
-  /**
    * Attempt to end the current composition session.
    *
    * Defer handling because browser will still insert the chars into active

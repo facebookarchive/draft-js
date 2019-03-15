@@ -162,7 +162,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _onBlur: Function;
   _onCharacterData: Function;
   _onCompositionEnd: Function;
-  _onCompositionUpdate: Function;
   _onCompositionStart: Function;
   _onCopy: Function;
   _onCut: Function;
@@ -210,7 +209,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this._onBlur = this._buildHandler('onBlur');
     this._onCharacterData = this._buildHandler('onCharacterData');
     this._onCompositionEnd = this._buildHandler('onCompositionEnd');
-    this._onCompositionUpdate = this._buildHandler('onCompositionUpdate');
     this._onCompositionStart = this._buildHandler('onCompositionStart');
     this._onCopy = this._buildHandler('onCopy');
     this._onCut = this._buildHandler('onCut');
@@ -274,20 +272,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         const method = this._handler && this._handler[eventName];
         if (method) {
           if (flushControlled) {
-            flushControlled(() => {
-              e.persist();
-              console.groupCollapsed(
-                `${eventName} - "${e.data || ''}" - ${e.nativeEvent.key ||
-                  null} - "${this._latestEditorState
-                  .getCurrentContent()
-                  .getPlainText()}"`,
-              );
-              console.log(this._latestEditorState.toJS());
-              console.log(e.nativeEvent);
-              console.log(e);
-              console.groupEnd();
-              return method(this, e);
-            });
+            flushControlled(() => method(this, e));
           } else {
             method(this, e);
           }
@@ -407,7 +392,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onBeforeInput={this._onBeforeInput}
             onBlur={this._onBlur}
             onCompositionEnd={this._onCompositionEnd}
-            onCompositionUpdate={this._onCompositionUpdate}
             onCompositionStart={this._onCompositionStart}
             onCopy={this._onCopy}
             onCut={this._onCut}
@@ -536,7 +520,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * the active mode.
    */
   setMode: DraftEditorModes => void = (mode: DraftEditorModes): void => {
-    console.log('CHANGED_MODE', mode);
     this._handler = handlerMap[mode];
   };
 
@@ -589,7 +572,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * function.
    */
   update: EditorState => void = (editorState: EditorState): void => {
-    console.error('UPDATE STATE');
     this._latestEditorState = editorState;
     this.props.onChange(editorState);
   };
