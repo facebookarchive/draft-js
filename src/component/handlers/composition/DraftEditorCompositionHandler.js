@@ -149,7 +149,7 @@ var DraftEditorCompositionHandler = {
     domObserver = null;
     resolved = true;
 
-    let editorState = EditorState.set(editor._latestEditorState, {
+    const editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
     });
 
