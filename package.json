@@ -1,7 +1,7 @@
 {
-  "name": "draft-js",
+  "name": "draft-js-android-fix",
   "description": "A React framework for building text editors.",
-  "version": "0.10.5",
+  "version": "0.10.6-beta.0",
   "keywords": [
     "draftjs",
     "editor",
