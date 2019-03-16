@@ -159,13 +159,14 @@ var DraftEditorCompositionHandler = {
       return;
     }
 
-    // Save current selection before restoring the DOM, so we can, so
-    // we can re-apply on compositionEnd.
+    // When we apply the text changes to the ContentState, the selection always
+    // goes to the end of the field, but it should just sway where it is
+    // after compositionEnd.
     const documentSelection = getDraftEditorSelection(
       editorState,
       getContentEditableContainer(editor),
     );
-    const initialSelectionState = documentSelection.selectionState;
+    const compositionEndSelectionState = documentSelection.selectionState;
 
     editor.restoreEditorDOM();
 
@@ -227,7 +228,7 @@ var DraftEditorCompositionHandler = {
 
     const contentWithAdjustedSelection = contentState.merge({
       selectionBefore: contentState.getSelectionAfter(),
-      selectionAfter: initialSelectionState,
+      selectionAfter: compositionEndSelectionState,
     });
 
     editor.update(
