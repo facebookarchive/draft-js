@@ -20,15 +20,17 @@ const nullthrows = require('nullthrows');
 
 const {OrderedMap} = Immutable;
 
-type MutationRecordT = MutationRecord | {|type: 'characterData', target: Node|};
+type MutationRecordT =
+  | MutationRecord
+  | {|type: 'characterData', target: Node, removedNodes?: void|};
 
 // Heavily based on Prosemirror's DOMObserver https://github.com/ProseMirror/prosemirror-view/blob/master/src/domobserver.js
 
 const DOM_OBSERVER_OPTIONS = {
   subtree: true,
   characterData: true,
-  characterDataOldValue: true,
   childList: true,
+  characterDataOldValue: false,
   attributes: false,
 };
 // IE11 has very broken mutation observers, so we also listen to DOMCharacterDataModified
@@ -90,7 +92,8 @@ class DOMObserver {
     }
   }
 
-  getMutationTextContent({target, type, removedNodes}: MutationRecord) {
+  getMutationTextContent(mutation: MutationRecordT) {
+    const {type, target, removedNodes} = mutation;
     if (type === 'characterData') {
       return target.textContent;
     }
@@ -99,7 +102,7 @@ class DOMObserver {
     // `childList` event with a `removedNodes` array. For this case
     // the textContent should be '' and `DraftModifier.replaceText`
     // will make sure the content is updated properly.
-    if (type === 'childList' && removedNodes.length) {
+    if (type === 'childList' && removedNodes && removedNodes.length) {
       return '';
     }
     return null;

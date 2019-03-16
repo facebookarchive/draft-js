@@ -131,7 +131,8 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
       let newEditorState = onInputType(inputType, editorState);
       if (newEditorState !== editorState) {
         editor.restoreEditorDOM();
-        return void editor.update(newEditorState);
+        editor.update(newEditorState);
+        return;
       }
     }
     return;
