@@ -95,13 +95,19 @@ class DOMObserver {
   getMutationTextContent(mutation: MutationRecordT) {
     const {type, target, removedNodes} = mutation;
     if (type === 'characterData') {
-      return target.textContent;
+      const {textContent} = target;
+      // When `textContent` is '', there is a race condition that makes
+      // getting the offsetKey from the target not possible.
+      // These events are also followed by a `childList`, which is the one
+      // we are able to retrieve the offsetKey and apply the '' text.
+      return textContent === '' ? null : textContent;
     }
-    // `characterData` events won't happen when removing the last
-    // character of a leaf node, what happens instead is a
-    // `childList` event with a `removedNodes` array. For this case
-    // the textContent should be '' and `DraftModifier.replaceText`
-    // will make sure the content is updated properly.
+    // `characterData` events won't happen or are ignored when
+    // removing the last character of a leaf node, what happens
+    // instead is a `childList` event with a `removedNodes` array.
+    // For this case the textContent should be '' and
+    // `DraftModifier.replaceText` will make sure the content is
+    // updated properly.
     if (type === 'childList' && removedNodes && removedNodes.length) {
       return '';
     }
