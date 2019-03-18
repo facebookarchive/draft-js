@@ -149,7 +149,7 @@ var DraftEditorCompositionHandler = {
     domObserver = null;
     resolved = true;
 
-    const editorState = EditorState.set(editor._latestEditorState, {
+    let editorState = EditorState.set(editor._latestEditorState, {
       inCompositionMode: false,
     });
 
@@ -158,17 +158,6 @@ var DraftEditorCompositionHandler = {
     if (!mutations.size) {
       return;
     }
-
-    // When we apply the text changes to the ContentState, the selection always
-    // goes to the end of the field, but it should just sway where it is
-    // after compositionEnd.
-    const documentSelection = getDraftEditorSelection(
-      editorState,
-      getContentEditableContainer(editor),
-    );
-    const compositionEndSelectionState = documentSelection.selectionState;
-
-    editor.restoreEditorDOM();
 
     // TODO, check if Facebook still needs this flag or if it could be removed.
     // Since there can be multiple mutations providing a `composedChars` doesn't
@@ -187,54 +176,68 @@ var DraftEditorCompositionHandler = {
     //   return;
     // }
 
-    const contentState = mutations.reduce(
-      (contentState, composedChars, offsetKey) => {
-        const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
-          offsetKey,
-        );
+    let contentState = editorState.getCurrentContent();
+    mutations.forEach((composedChars, offsetKey) => {
+      const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
+        offsetKey,
+      );
 
-        const {start, end} = editorState
-          .getBlockTree(blockKey)
-          .getIn([decoratorKey, 'leaves', leafKey]);
+      const {start, end} = editorState
+        .getBlockTree(blockKey)
+        .getIn([decoratorKey, 'leaves', leafKey]);
 
-        const replacementRange = editorState.getSelection().merge({
-          anchorKey: blockKey,
-          focusKey: blockKey,
-          anchorOffset: start,
-          focusOffset: end,
-          isBackward: false,
-        });
+      const replacementRange = editorState.getSelection().merge({
+        anchorKey: blockKey,
+        focusKey: blockKey,
+        anchorOffset: start,
+        focusOffset: end,
+        isBackward: false,
+      });
 
-        const entityKey = getEntityKeyForSelection(
-          contentState,
-          replacementRange,
-        );
-        const currentStyle = contentState
-          .getBlockForKey(blockKey)
-          .getInlineStyleAt(start);
+      const entityKey = getEntityKeyForSelection(
+        contentState,
+        replacementRange,
+      );
+      const currentStyle = contentState
+        .getBlockForKey(blockKey)
+        .getInlineStyleAt(start);
 
-        // If characters have been composed, re-rendering with the update
-        // is sufficient to reset the editor.
-        return DraftModifier.replaceText(
-          contentState,
-          replacementRange,
-          composedChars,
-          currentStyle,
-          entityKey,
-        );
-      },
-      editorState.getCurrentContent(),
-    );
-
-    const contentWithAdjustedSelection = contentState.merge({
-      selectionBefore: contentState.getSelectionAfter(),
-      selectionAfter: compositionEndSelectionState,
+      // If characters have been composed, re-rendering with the update
+      // is sufficient to reset the editor.
+      contentState = DraftModifier.replaceText(
+        contentState,
+        replacementRange,
+        composedChars,
+        currentStyle,
+        entityKey,
+      );
+      // We need to update the editorState so the leaf node ranges are properly
+      // updated and multiple mutations are correctly applied.
+      editorState = EditorState.set(editorState, {
+        currentContent: contentState,
+      });
     });
+
+    // When we apply the text changes to the ContentState, the selection always
+    // goes to the end of the field, but it should just sway where it is
+    // after compositionEnd.
+    const documentSelection = getDraftEditorSelection(
+      editorState,
+      getContentEditableContainer(editor),
+    );
+    const compositionEndSelectionState = documentSelection.selectionState;
+
+    editor.restoreEditorDOM();
+
+    const editorStateWithUpdatedSelection = EditorState.acceptSelection(
+      editorState,
+      compositionEndSelectionState,
+    );
 
     editor.update(
       EditorState.push(
-        editorState,
-        contentWithAdjustedSelection,
+        editorStateWithUpdatedSelection,
+        contentState,
         'insert-characters',
       ),
     );
