@@ -20,7 +20,6 @@ const SelectionState = require('SelectionState');
 const EditorState = require('EditorState');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
-const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 const editOnCompositionStart = require('editOnCompositionStart');
 const {Map} = require('immutable');
