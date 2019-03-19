@@ -77,15 +77,12 @@ var DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(
-    editor: DraftEditor,
-    e: SyntheticCompositionEvent<>,
-  ): void {
+  onCompositionEnd: function(editor: DraftEditor): void {
     resolved = false;
     stillComposing = false;
     setTimeout(() => {
       if (!resolved) {
-        DraftEditorCompositionHandler.resolveComposition(editor, e);
+        DraftEditorCompositionHandler.resolveComposition(editor);
       }
     }, RESOLVE_DELAY);
   },
@@ -101,7 +98,7 @@ var DraftEditorCompositionHandler = {
       // 20ms timer expires (ex: type option-E then backspace, or type A then
       // backspace in 2-Set Korean), we should immediately resolve the
       // composition and reinterpret the key press in edit mode.
-      DraftEditorCompositionHandler.resolveComposition(editor, e);
+      DraftEditorCompositionHandler.resolveComposition(editor);
       editor._onKeyDown(e);
       return;
     }
@@ -137,10 +134,7 @@ var DraftEditorCompositionHandler = {
    * Resetting innerHTML will move focus to the beginning of the editor,
    * so we update to force it back to the correct place.
    */
-  resolveComposition: function(
-    editor: DraftEditor,
-    event: SyntheticEvent<>,
-  ): void {
+  resolveComposition: function(editor: DraftEditor): void {
     if (stillComposing) {
       return;
     }
@@ -156,6 +150,7 @@ var DraftEditorCompositionHandler = {
     editor.exitCurrentMode();
 
     if (!mutations.size) {
+      editor.update(editorState);
       return;
     }
 
@@ -202,8 +197,6 @@ var DraftEditorCompositionHandler = {
         .getBlockForKey(blockKey)
         .getInlineStyleAt(start);
 
-      // If characters have been composed, re-rendering with the update
-      // is sufficient to reset the editor.
       contentState = DraftModifier.replaceText(
         contentState,
         replacementRange,
@@ -219,7 +212,7 @@ var DraftEditorCompositionHandler = {
     });
 
     // When we apply the text changes to the ContentState, the selection always
-    // goes to the end of the field, but it should just sway where it is
+    // goes to the end of the field, but it should just stay where it is
     // after compositionEnd.
     const documentSelection = getDraftEditorSelection(
       editorState,

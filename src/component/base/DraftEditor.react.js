@@ -40,6 +40,8 @@ const getScrollPosition = require('getScrollPosition');
 const gkx = require('gkx');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
+const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
+const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 
 const isIE = UserAgent.isBrowser('IE');
 
@@ -251,6 +253,13 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     // See `restoreEditorDOM()`.
     this.state = {contentsKey: 0};
+    window.printRaw = () => {
+      console.log(
+        convertFromDraftStateToRaw(this._latestEditorState.getCurrentContent()),
+      );
+    };
+    window.convertFromHTML = convertFromHTMLToContentBlocks;
+    window.editor = this;
   }
 
   /**

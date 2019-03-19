@@ -18,7 +18,7 @@ const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 
-const {OrderedMap} = Immutable;
+const {Map} = Immutable;
 
 type MutationRecordT =
   | MutationRecord
@@ -39,12 +39,12 @@ const USE_CHAR_DATA = UserAgent.isBrowser('IE <= 11');
 class DOMObserver {
   observer: MutationObserver;
   container: HTMLElement;
-  mutations: OrderedMap<string, string>;
+  mutations: Map<string, string>;
   onCharData: ({target: EventTarget, type: string}) => void;
 
   constructor(container: HTMLElement) {
     this.container = container;
-    this.mutations = new OrderedMap();
+    this.mutations = Map();
     if (window.MutationObserver && !USE_CHAR_DATA) {
       this.observer = new window.MutationObserver(mutations =>
         this.registerMutations(mutations),
@@ -82,7 +82,7 @@ class DOMObserver {
       );
     }
     const mutations = this.mutations;
-    this.mutations = new OrderedMap();
+    this.mutations = Map();
     return mutations;
   }
 
@@ -95,21 +95,23 @@ class DOMObserver {
   getMutationTextContent(mutation: MutationRecordT) {
     const {type, target, removedNodes} = mutation;
     if (type === 'characterData') {
-      const {textContent} = target;
       // When `textContent` is '', there is a race condition that makes
       // getting the offsetKey from the target not possible.
       // These events are also followed by a `childList`, which is the one
       // we are able to retrieve the offsetKey and apply the '' text.
-      return textContent === '' ? null : textContent;
-    }
-    // `characterData` events won't happen or are ignored when
-    // removing the last character of a leaf node, what happens
-    // instead is a `childList` event with a `removedNodes` array.
-    // For this case the textContent should be '' and
-    // `DraftModifier.replaceText` will make sure the content is
-    // updated properly.
-    if (type === 'childList' && removedNodes && removedNodes.length) {
-      return '';
+      if (target.textContent !== '') {
+        return target.textContent;
+      }
+    } else if (type === 'childList') {
+      // `characterData` events won't happen or are ignored when
+      // removing the last character of a leaf node, what happens
+      // instead is a `childList` event with a `removedNodes` array.
+      // For this case the textContent should be '' and
+      // `DraftModifier.replaceText` will make sure the content is
+      // updated properly.
+      if (removedNodes && removedNodes.length) {
+        return '';
+      }
     }
     return null;
   }
