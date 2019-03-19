@@ -15,31 +15,11 @@ jest.disableAutomock();
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
 
 const onInput = require('editOnInput');
 
 jest.mock('findAncestorOffsetKey', () => jest.fn(() => 'blockkey-0-0'));
-jest.mock('keyCommandPlainBackspace');
-
-const DEFAULT_SELECTION = {
-  anchorKey: 'a',
-  anchorOffset: 0,
-  focusKey: 'a',
-  focusOffset: 0,
-  isBackward: false,
-};
-
-const rangedSelection = new SelectionState({
-  ...DEFAULT_SELECTION,
-  focusOffset: 1,
-});
-
-const rangedSelectionBackwards = new SelectionState({
-  ...DEFAULT_SELECTION,
-  anchorOffset: 1,
-  isBackward: true,
-});
+jest.mock('keyCommandPlainBackspace', () => jest.fn(() => ({})));
 
 const getEditorState = (text: string = '') => {
   return EditorState.createWithContent(
@@ -71,10 +51,7 @@ test('restoreEditorDOM and keyCommandPlainBackspace are NOT called when the `inp
     anchorNode: document.createTextNode(anchorNodeText),
   };
   withGlobalGetSelectionAs(globalSelection, () => {
-    const editorState = EditorState.acceptSelection(
-      getEditorState(anchorNodeText),
-      rangedSelection,
-    );
+    const editorState = getEditorState(anchorNodeText);
 
     const editor = {
       _latestEditorState: editorState,
@@ -85,8 +62,9 @@ test('restoreEditorDOM and keyCommandPlainBackspace are NOT called when the `inp
 
     onInput(editor, inputEvent);
 
-    expect(editor.restoreEditorDOM).toHaveBeenCalledTimes(0);
     expect(require('keyCommandPlainBackspace')).toHaveBeenCalledTimes(0);
+    expect(editor.restoreEditorDOM).toHaveBeenCalledTimes(0);
+    expect(editor.update).toHaveBeenCalledTimes(0);
   });
 });
 
@@ -101,10 +79,7 @@ test('restoreEditorDOM and keyCommandPlainBackspace are called when backspace is
     anchorNode: document.createTextNode(anchorNodeText),
   };
   withGlobalGetSelectionAs(globalSelection, () => {
-    const editorState = EditorState.acceptSelection(
-      getEditorState(anchorNodeText),
-      rangedSelection,
-    );
+    const editorState = getEditorState(anchorNodeText);
 
     const editor = {
       _latestEditorState: editorState,
@@ -115,9 +90,12 @@ test('restoreEditorDOM and keyCommandPlainBackspace are called when backspace is
 
     onInput(editor, inputEvent);
 
-    expect(editor.restoreEditorDOM).toHaveBeenCalledTimes(1);
+    const newEditorState = require('keyCommandPlainBackspace').mock.results[0]
+      .value;
     expect(require('keyCommandPlainBackspace')).toHaveBeenCalledWith(
       editorState,
     );
+    expect(editor.restoreEditorDOM).toHaveBeenCalledTimes(1);
+    expect(editor.update).toHaveBeenCalledWith(newEditorState);
   });
 });
