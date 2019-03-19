@@ -123,10 +123,9 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     // Newest versions of Android support the dom-inputevent-inputtype
     // and we can use the `inputType` to properly apply the state changes.
 
-    /* $FlowFixMe inputType is only defined on a standard sadraft of a standard.
+    /* $FlowFixMe inputType is only defined on a draft of a standard.
      * https://w3c.github.io/input-events/#dom-inputevent-inputtype */
     const {inputType} = e.nativeEvent;
-    // TODO add check for "input events level 2" https://w3c.github.io/input-events/#dom-inputevent-inputtype
     if (inputType) {
       let newEditorState = onInputType(inputType, editorState);
       if (newEditorState !== editorState) {
