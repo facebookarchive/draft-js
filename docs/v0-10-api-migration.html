@@ -94,17 +94,17 @@ to the <code>ContentState</code> record.</p>
 </code></pre>
 <p>Note that ExampleTokenComponent will receive contentState as a prop.</p>
 <p>Why does the 'contentState' get passed into the decorator strategy now? Because we may need it if our strategy is to  find certain entities in the contentBlock:</p>
-<pre><code class="hljs"><span class="hljs-keyword">const</span> mutableEntityStrategy = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">contentBlock, callback, contentState</span>) </span>{
+<pre><code class="hljs">const mutableEntityStrategy = <span class="hljs-keyword">function</span>(contentBlock, callback, contentState) {
   contentBlock.findEntityRanges(
-    <span class="hljs-function">(<span class="hljs-params">character</span>) =&gt;</span> {
-      <span class="hljs-keyword">const</span> entityKey = character.getEntity();
-      <span class="hljs-keyword">if</span> (entityKey === <span class="hljs-literal">null</span>) {
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    (<span class="hljs-type">character</span>) =&gt; {
+      const entityKey = <span class="hljs-type">character</span>.getEntity();
+      <span class="hljs-keyword">if</span> (entityKey === <span class="hljs-keyword">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
       }
-      <span class="hljs-comment">// To look for certain types of entities,</span>
-      <span class="hljs-comment">// or entities with a certain mutability,</span>
-      <span class="hljs-comment">// you may need to get the entity from contentState.</span>
-      <span class="hljs-comment">// In this example we get only mutable entities.</span>
+      // <span class="hljs-keyword">To</span> look <span class="hljs-keyword">for</span> certain <span class="hljs-keyword">types</span> <span class="hljs-keyword">of</span> entities,
+      // <span class="hljs-keyword">or</span> entities <span class="hljs-keyword">with</span> a certain mutability,
+      // you may need <span class="hljs-keyword">to</span> <span class="hljs-keyword">get</span> the entity <span class="hljs-keyword">from</span> contentState.
+      // <span class="hljs-keyword">In</span> this example we <span class="hljs-keyword">get</span> <span class="hljs-keyword">only</span> mutable entities.
       <span class="hljs-keyword">return</span> contentState.getEntity(entityKey).getMutability() === <span class="hljs-string">'MUTABLE'</span>;
     },
     callback,

@@ -143,8 +143,8 @@ Instead, use the instance getters and static methods below.</p>
 the Immutable API directly. This means using <code>EditorState.set</code> to pass
 new options to an EditorState instance.</p>
 <p><strong>Example</strong></p>
-<pre><code class="hljs"><span class="hljs-keyword">const</span> editorState = EditorState.createEmpty();
-<span class="hljs-keyword">const</span> editorStateWithoutUndo = EditorState.<span class="hljs-built_in">set</span>(editorState, {allowUndo: <span class="hljs-literal">false</span>});
+<pre><code class="hljs">const editorState = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">EditorState</span>.</span></span>create<span class="hljs-constructor">Empty()</span>;
+const editorStateWithoutUndo = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">EditorState</span>.</span></span>set(editorState, {allowUndo: <span class="hljs-literal">false</span>});
 </code></pre>
 </blockquote>
 <ul class="apiIndex">
@@ -232,7 +232,7 @@ for the editor.</p>
 for the current <code>ContentState</code> and <code>SelectionState</code>, and takes into account
 any inline style overrides that should be applied.</p>
 <h3><a class="anchor" aria-hidden="true" id="getblocktree"></a><a href="#getblocktree" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getBlockTree</h3>
-<pre><code class="hljs"><span class="hljs-symbol">getBlockTree</span>(<span class="hljs-keyword">blockKey: </span><span class="hljs-keyword">string): </span>List<span class="hljs-comment">;</span>
+<pre><code class="hljs">get<span class="hljs-constructor">BlockTree(<span class="hljs-params">blockKey</span>: <span class="hljs-params">string</span>)</span>: List;
 </code></pre>
 <p>Returns an Immutable <code>List</code> of decorated and styled ranges. This is used for
 rendering purposes, and is generated based on the <code>currentContent</code> and
@@ -418,7 +418,7 @@ undo/redo behavior, use the <code>allowUndo</code> property.</p>
 and <a href="#forceselection">forceSelection()</a>.</p>
 <p>You should not manage this property manually.</p>
 <h3><a class="anchor" aria-hidden="true" id="treemap"></a><a href="#treemap" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>treeMap</h3>
-<pre><code class="hljs"><span class="hljs-symbol">treeMap:</span> OrderedMap<span class="hljs-params">&lt;string, List&gt;</span>;
+<pre><code class="hljs">treeMap: OrderedMap&lt;<span class="hljs-keyword">string</span>, <span class="hljs-keyword">List</span>&gt;;
 </code></pre>
 <p>The fully decorated and styled tree of ranges to be rendered in the editor
 component. The <code>treeMap</code> object is generated based on a <code>ContentState</code> and an

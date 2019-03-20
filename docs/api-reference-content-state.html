@@ -166,9 +166,9 @@ objects.</p>
 <p>Use <a href="http://facebook.github.io/immutable-js/docs/#/Map">Immutable Map API</a> to
 set properties.</p>
 <p><strong>Example</strong></p>
-<pre><code class="hljs"><span class="hljs-attribute">const editorState</span> = EditorState.createEmpty();
-<span class="hljs-attribute">const contentState</span> = editorState.getCurrentContent();
-<span class="hljs-attribute">const contentStateWithSelectionBefore</span> = contentState.set(<span class="hljs-string">'selectionBefore'</span>, SelectionState.createEmpty(contentState.getBlockForKey(<span class="hljs-string">'1pu4d'</span>)));
+<pre><code class="hljs">const editorState = <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">EditorState</span>.</span></span>create<span class="hljs-constructor">Empty()</span>;
+const contentState = editorState.get<span class="hljs-constructor">CurrentContent()</span>;
+const contentStateWithSelectionBefore = contentState.set('selectionBefore', <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">SelectionState</span>.</span></span>create<span class="hljs-constructor">Empty(<span class="hljs-params">contentState</span>.<span class="hljs-params">getBlockForKey</span>('1pu4d')</span>));
 </code></pre>
 </blockquote>
 <ul class="apiIndex">
@@ -236,32 +236,32 @@ specific <code>ContentBlock</code> objects or obtain information about the state
 <p>When performing any action in the editor that leads to this <code>blockMap</code> being rendered,
 the selection range will be placed in the <code>selectionAfter</code> position.</p>
 <h3><a class="anchor" aria-hidden="true" id="getblockforkey"></a><a href="#getblockforkey" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getBlockForKey</h3>
-<pre><code class="hljs"><span class="hljs-function"><span class="hljs-title">getBlockForKey</span><span class="hljs-params">(key: string)</span></span>: ContentBlock
+<pre><code class="hljs">get<span class="hljs-constructor">BlockForKey(<span class="hljs-params">key</span>: <span class="hljs-params">string</span>)</span>: ContentBlock
 </code></pre>
 <p>Returns the <code>ContentBlock</code> corresponding to the given block key.</p>
 <h4><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h4>
-<pre><code class="hljs"><span class="hljs-keyword">var</span> {editorState} = <span class="hljs-keyword">this</span>.state;
-<span class="hljs-keyword">var</span> startKey = editorState.getSelection().getStartKey();
-<span class="hljs-keyword">var</span> selectedBlockType = editorState
-  .getCurrentContent()
-  .getBlockForKey(startKey)
-  .getType();
+<pre><code class="hljs">var {editorState} = this.state;
+var startKey = editorState.get<span class="hljs-constructor">Selection()</span>.get<span class="hljs-constructor">StartKey()</span>;
+var selectedBlockType = editorState
+  .get<span class="hljs-constructor">CurrentContent()</span>
+  .get<span class="hljs-constructor">BlockForKey(<span class="hljs-params">startKey</span>)</span>
+  .get<span class="hljs-constructor">Type()</span>;
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="getkeybefore"></a><a href="#getkeybefore" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getKeyBefore</h3>
-<pre><code class="hljs">getKeyBefore(<span class="hljs-built_in">key</span>: <span class="hljs-keyword">string</span>): ?<span class="hljs-keyword">string</span>
+<pre><code class="hljs">get<span class="hljs-constructor">KeyBefore(<span class="hljs-params">key</span>: <span class="hljs-params">string</span>)</span>: ?<span class="hljs-built_in">string</span>
 </code></pre>
 <p>Returns the key before the specified key in <code>blockMap</code>, or null if this is the first key.</p>
 <h3><a class="anchor" aria-hidden="true" id="getkeyafter"></a><a href="#getkeyafter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getKeyAfter</h3>
-<pre><code class="hljs">getKeyAfter(<span class="hljs-built_in">key</span>: <span class="hljs-keyword">string</span>): ?<span class="hljs-keyword">string</span>
+<pre><code class="hljs">get<span class="hljs-constructor">KeyAfter(<span class="hljs-params">key</span>: <span class="hljs-params">string</span>)</span>: ?<span class="hljs-built_in">string</span>
 </code></pre>
 <p>Returns the key after the specified key in <code>blockMap</code>, or null if this is the last key.</p>
 <h3><a class="anchor" aria-hidden="true" id="getblockbefore"></a><a href="#getblockbefore" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getBlockBefore</h3>
-<pre><code class="hljs">getBlockBefore(<span class="hljs-built_in">key</span>: <span class="hljs-keyword">string</span>): ?ContentBlock
+<pre><code class="hljs">get<span class="hljs-constructor">BlockBefore(<span class="hljs-params">key</span>: <span class="hljs-params">string</span>)</span>: ?ContentBlock
 </code></pre>
 <p>Returns the <code>ContentBlock</code> before the specified key in <code>blockMap</code>, or null if this is
 the first key.</p>
 <h3><a class="anchor" aria-hidden="true" id="getblockafter"></a><a href="#getblockafter" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getBlockAfter</h3>
-<pre><code class="hljs">getBlockAfter(<span class="hljs-built_in">key</span>: <span class="hljs-keyword">string</span>): ?ContentBlock
+<pre><code class="hljs">get<span class="hljs-constructor">BlockAfter(<span class="hljs-params">key</span>: <span class="hljs-params">string</span>)</span>: ?ContentBlock
 </code></pre>
 <p>Returns the <code>ContentBlock</code> after the specified key in <code>blockMap</code>, or null if this is the last key.</p>
 <h3><a class="anchor" aria-hidden="true" id="getblocksasarray"></a><a href="#getblocksasarray" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getBlocksAsArray</h3>
@@ -278,7 +278,7 @@ the first key.</p>
 </code></pre>
 <p>Returns the last <code>ContentBlock</code>.</p>
 <h3><a class="anchor" aria-hidden="true" id="getplaintext"></a><a href="#getplaintext" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getPlainText</h3>
-<pre><code class="hljs"><span class="hljs-function"><span class="hljs-title">getPlainText</span><span class="hljs-params">(delimiter?: string)</span></span>: string
+<pre><code class="hljs">get<span class="hljs-constructor">PlainText(<span class="hljs-params">delimiter</span>?: <span class="hljs-params">string</span>)</span>: <span class="hljs-built_in">string</span>
 </code></pre>
 <p>Returns the full plaintext value of the contents, joined with a delimiter. If no
 delimiter is specified, the line feed character (<code>\u000A</code>) is used.</p>
@@ -304,7 +304,7 @@ objects to track the entity for annotated characters.</p>
 DraftEntity record in it's <code>EntityMap</code>. Call <code>getLastCreatedEntityKey</code> to get
 the key of the newly created <code>DraftEntity</code> record.</p>
 <h3><a class="anchor" aria-hidden="true" id="getentity"></a><a href="#getentity" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>getEntity</h3>
-<pre><code class="hljs"><span class="hljs-function"><span class="hljs-title">getEntity</span><span class="hljs-params">(key: string)</span></span>: DraftEntityInstance
+<pre><code class="hljs">get<span class="hljs-constructor">Entity(<span class="hljs-params">key</span>: <span class="hljs-params">string</span>)</span>: DraftEntityInstance
 </code></pre>
 <p>Returns the DraftEntityInstance for the specified key. Throws if no instance exists for that key.</p>
 <h3><a class="anchor" aria-hidden="true" id="mergeentitydata"></a><a href="#mergeentitydata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>mergeEntityData</h3>
