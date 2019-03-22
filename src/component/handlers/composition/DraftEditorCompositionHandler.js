@@ -23,6 +23,7 @@ const nullthrows = require('nullthrows');
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const getDraftEditorSelection = require('getDraftEditorSelection');
 const getContentEditableContainer = require('getContentEditableContainer');
+const editOnSelect = require('editOnSelect');
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon
@@ -87,12 +88,23 @@ var DraftEditorCompositionHandler = {
     }, RESOLVE_DELAY);
   },
 
+  onSelect: editOnSelect,
+
   /**
    * In Safari, keydown events may fire when committing compositions. If
    * the arrow keys are used to commit, prevent default so that the cursor
    * doesn't move, otherwise it will jump back noticeably on re-render.
    */
   onKeyDown: function(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
+    if (!stillComposing) {
+      // If a keydown event is received after compositionend but before the
+      // 20ms timer expires (ex: type option-E then backspace, or type A then
+      // backspace in 2-Set Korean), we should immediately resolve the
+      // composition and reinterpret the key press in edit mode.
+      DraftEditorCompositionHandler.resolveComposition(editor);
+      editor._onKeyDown(e);
+      return;
+    }
     if (e.which === Keys.RIGHT || e.which === Keys.LEFT) {
       e.preventDefault();
     }

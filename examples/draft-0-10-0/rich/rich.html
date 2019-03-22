@@ -83,6 +83,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
 
         _toggleInlineStyle(inlineStyle) {
+          const state = RichUtils.toggleInlineStyle(
+            this.state.editorState,
+            inlineStyle
+          );
           this.onChange(
             RichUtils.toggleInlineStyle(
               this.state.editorState,

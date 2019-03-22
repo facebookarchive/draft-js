@@ -15,11 +15,9 @@ import type DraftEditor from 'DraftEditor.react';
 
 const DraftJsDebugLogging = require('DraftJsDebugLogging');
 const EditorState = require('EditorState');
-const ReactDOM = require('ReactDOM');
 
 const getDraftEditorSelection = require('getDraftEditorSelection');
 const getContentEditableContainer = require('getContentEditableContainer');
-const invariant = require('invariant');
 
 function editOnSelect(editor: DraftEditor): void {
   if (
