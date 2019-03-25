@@ -73,7 +73,11 @@ function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
       }, {})
     const blockKeyToElementMap = fragment.keySeq().toJS().reduce((acc, item) => {
         const selector = `[data-block="true"][data-offset-key="${keyMap[item]}-0-0"]`
-        const element = el.querySelector(selector) || document.createElement('div');
+        let element = el.querySelector(selector);
+        if (!element) {
+          element = document.createElement('div');
+          element.innerHTML = fragment.getIn([item, 'text'], '');
+        }
         return {...acc, [item]: element}
     }, {})
     const outputElement = document.createElement('div');
