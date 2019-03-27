@@ -13,9 +13,9 @@
 
 const UserAgent = require('UserAgent');
 
-const isOSX = UserAgent.isPlatform('Mac OS X');
+const isSoftNewlineEvent = require('isSoftNewlineEvent');
 
-const isSoftNewlineEvent = require('./isSoftNewlineEvent');
+const isOSX = UserAgent.isPlatform('Mac OS X');
 
 const KeyBindingUtil = {
   /**
