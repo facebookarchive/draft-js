@@ -15,6 +15,8 @@ const UserAgent = require('UserAgent');
 
 const isOSX = UserAgent.isPlatform('Mac OS X');
 
+const isSoftNewlineEvent = require('./isSoftNewlineEvent');
+
 const KeyBindingUtil = {
   /**
    * Check whether the ctrlKey modifier is *not* being used in conjunction with
@@ -38,6 +40,8 @@ const KeyBindingUtil = {
       ? !!e.metaKey && !e.altKey
       : KeyBindingUtil.isCtrlKeyCommand(e);
   },
+
+  isSoftNewlineEvent,
 };
 
 module.exports = KeyBindingUtil;
