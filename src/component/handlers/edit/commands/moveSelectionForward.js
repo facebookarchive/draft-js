@@ -31,7 +31,7 @@ function moveSelectionForward(
   const selection = editorState.getSelection();
   // Should eventually make this an invariant
   warning(
-    !selection.isCollapsed(),
+    selection.isCollapsed(),
     'moveSelectionForward should only be called with a collapsed SelectionState',
   );
   const key = selection.getStartKey();
