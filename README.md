@@ -103,7 +103,7 @@ function MyEditor() {
   const editor = React.useRef(null)
 
   function focusEditor() {
-    editor.focus();
+    editor.current.focus();
   }
 
   React.useEffect(() => {
