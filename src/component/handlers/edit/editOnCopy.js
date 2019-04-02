@@ -104,14 +104,14 @@ function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
       const indent = item.getIn(['data', 'indent'], 0);
       let { lastIndentation, html } = acc;
       const itemElement = blockKeyToElementMap[item.getKey()];
-      if (["todo", "agenda"].includes(item.getType())) {
-        const checkbox = document.createElement("input")
-        checkbox.setAttribute("type", "checkbox")
-        if (item.getIn(['data', 'done'])) {
-          checkbox.setAttribute('checked', '')
-        }
-        itemElement.prepend(checkbox)
-      }
+      // if (["todo", "agenda"].includes(item.getType())) {
+      //   const checkbox = document.createElement("input")
+      //   checkbox.setAttribute("type", "checkbox")
+      //   if (item.getIn(['data', 'done'])) {
+      //     checkbox.setAttribute('checked', '')
+      //   }
+      //   itemElement.prepend(checkbox)
+      // }
       let currentItemHtml = itemElement.outerHTML
 
       if (indent) {
