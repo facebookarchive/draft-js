@@ -13,6 +13,8 @@
 
 const UserAgent = require('UserAgent');
 
+const isSoftNewlineEvent = require('isSoftNewlineEvent');
+
 const isOSX = UserAgent.isPlatform('Mac OS X');
 
 const KeyBindingUtil = {
@@ -38,6 +40,8 @@ const KeyBindingUtil = {
       ? !!e.metaKey && !e.altKey
       : KeyBindingUtil.isCtrlKeyCommand(e);
   },
+
+  isSoftNewlineEvent,
 };
 
 module.exports = KeyBindingUtil;

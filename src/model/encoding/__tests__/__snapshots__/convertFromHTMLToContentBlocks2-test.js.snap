@@ -230,6 +230,134 @@ Array [
 ]
 `;
 
+exports[`Should import line breaks without creating a leading space 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "Line 1
+    Line 2
+    Line 3",
+    "type": "unstyled",
+  },
+]
+`;
+
 exports[`Should import recognised draft li depths when nesting disabled 1`] = `
 Array [
   Object {
@@ -2533,7 +2661,7 @@ Array [
     "type": "unstyled",
     "text": "Hello World! 
  
-       lorem ipsum",
+      lorem ipsum",
     "characterList": Immutable.List [
       Immutable.Record {
         "style": Immutable.OrderedSet [
@@ -2605,10 +2733,6 @@ Array [
         "style": Immutable.OrderedSet [
           "BOLD",
         ],
-        "entity": null,
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
         "entity": null,
       },
       Immutable.Record {
@@ -2708,7 +2832,7 @@ Array [
     "key": "key0",
     "type": "unstyled",
     "text": "Hello World! 
-       lorem ipsum",
+      lorem ipsum",
     "characterList": Immutable.List [
       Immutable.Record {
         "style": Immutable.OrderedSet [
@@ -2780,10 +2904,6 @@ Array [
         "style": Immutable.OrderedSet [
           "BOLD",
         ],
-        "entity": null,
-      },
-      Immutable.Record {
-        "style": Immutable.OrderedSet [],
         "entity": null,
       },
       Immutable.Record {

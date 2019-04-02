@@ -356,3 +356,14 @@ test('Should preserve spacing around inline tags', () => {
     experimentalTreeDataSupport: true,
   });
 });
+
+test('Should import line breaks without creating a leading space', () => {
+  const html_string = `
+    Line 1<br/>
+    Line 2<br/>
+    Line 3
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
