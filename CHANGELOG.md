@@ -14,7 +14,6 @@ Changes to `src` are live in production on facebook.com at the time of release.
 * Ctrl-K at end of line should delete newline (Sophie Alpert in 6455493)
 * Add type annotations to `React.Component` classes in html/shared (Paco Estevez Garcia in 2e3a181)
 * Add return type annotation to `addEmojiInput` (Sam Goldman in 280d242)
-* Add issue triage guidelines to CONTRIBUTING.md (#1896) (Nivedita Chopra in 7df9eb9)
 * Unstyle empty list item on Enter key (#769) (Eric Biewener in a0267a9)
 * Allow Option+Space to be handled on OSX Chrome (#1254) (Colin Jeanne in 022bcf7)
 * Added information about nature of block keys (#1892) (Prateek Nayak in 8ad59c4)
@@ -135,9 +134,9 @@ Changes to `src` are live in production on facebook.com at the time of release.
 * Making a more sane .gitignore (mitermayer in f4bc3a7)
 * Examples cleanup (Ken Hibino in 67f3586)
 * Ensure selection collapses if user tries to replace with matching text (Brian Ng in 084bdb6)
-* Move _latestEditorState assignment back to commit phase (Sophie Alpert in 04c2b9c)
+* Move `_latestEditorState` assignment back to commit phase (Sophie Alpert in 04c2b9c)
 * Remove Node 6 from engines list in package.json (Thibaud Colas in 584d849)
-* Update 'latestEditorState' in render too (Flarnie Marchan in 90a8f22)
+* Update `_latestEditorState` in render too (Flarnie Marchan in 90a8f22)
 * Widen logging and add stack trace for IE selection bug (Flarnie Marchan in a6317e6)
 * Match block and inline examples for consistency. (cbeninati in e65a8e6)
 * Bundle size stats + Misc changes (Alan Norbauer in 0a1f981)
@@ -219,6 +218,7 @@ Changes to `src` are live in production on facebook.com at the time of release.
 * fix typo in changelog (Flarnie Marchan in 93bc209)
 
 ### Meta
+* Add issue triage guidelines to CONTRIBUTING.md (#1896) (Nivedita Chopra in 7df9eb9)
 * Add meeting notes for 10/12 (#1901) (Nivedita Chopra in 9a96ab0)
 * Add meeting notes from 9/7 (#1862) (Nivedita Chopra in b8ea228)
 * Change oncall to draft_js (Nivedita Chopra in fbc8a0c)
