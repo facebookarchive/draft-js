@@ -17,7 +17,6 @@ import type SelectionState from 'SelectionState';
 
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
 const React = require('React');
-const ReactDOM = require('ReactDOM');
 
 const invariant = require('invariant');
 const setDraftEditorSelection = require('setDraftEditorSelection');
@@ -94,7 +93,7 @@ class DraftEditorLeaf extends React.Component<Props> {
     // Determine the appropriate target node for selection. If the child
     // is not a text node, it is a <br /> spacer. In this case, use the
     // <span> itself as the selection target.
-    const node = ReactDOM.findDOMNode(this);
+    const node = this.leaf;
     invariant(node, 'Missing node');
     const child = node.firstChild;
     invariant(child, 'Missing child');
@@ -102,10 +101,7 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     if (child.nodeType === Node.TEXT_NODE) {
       targetNode = child;
-      /* $FlowFixMe(>=0.79.1 site=www) This comment suppresses an error found
-     * when Flow v0.79 was deployed. To see the error delete this comment and
-     * run Flow. */
-    } else if (child.tagName === 'BR') {
+    } else if (child instanceof Element && child.tagName === 'BR') {
       targetNode = node;
     } else {
       targetNode = child.firstChild;
@@ -116,7 +112,7 @@ class DraftEditorLeaf extends React.Component<Props> {
   }
 
   shouldComponentUpdate(nextProps: Props): boolean {
-    const leafNode = ReactDOM.findDOMNode(this.leaf);
+    const leafNode = this.leaf;
     invariant(leafNode, 'Missing leafNode');
     const shouldUpdate =
       leafNode.textContent !== nextProps.text ||

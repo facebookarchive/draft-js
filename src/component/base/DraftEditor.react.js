@@ -467,7 +467,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   ): void => {
     const {editorState} = this.props;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
-    const editorNode = ReactDOM.findDOMNode(this.editor);
+    const editorNode = this.editor;
 
     if (!editorNode) {
       // once in a while people call 'focus' in a setTimeout, and the node has
@@ -504,7 +504,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   };
 
   blur: () => void = (): void => {
-    const editorNode = ReactDOM.findDOMNode(this.editor);
+    const editorNode = this.editor;
     invariant(
       editorNode instanceof HTMLElement,
       'editorNode is not an HTMLElement',

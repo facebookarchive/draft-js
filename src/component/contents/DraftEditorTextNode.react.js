@@ -12,7 +12,6 @@
 'use strict';
 
 const React = require('React');
-const ReactDOM = require('ReactDOM');
 const UserAgent = require('UserAgent');
 
 const invariant = require('invariant');
@@ -39,21 +38,23 @@ function isNewline(node: Element): boolean {
  * See http://jsfiddle.net/9khdavod/ for the failure case, and
  * http://jsfiddle.net/7pg143f7/ for the fixed case.
  */
-const NEWLINE_A = useNewlineChar ? (
-  <span key="A" data-text="true">
-    {'\n'}
-  </span>
-) : (
-  <br key="A" data-text="true" />
-);
+const NEWLINE_A = ref =>
+  useNewlineChar ? (
+    <span key="A" data-text="true" ref={ref}>
+      {'\n'}
+    </span>
+  ) : (
+    <br key="A" data-text="true" ref={ref} />
+  );
 
-const NEWLINE_B = useNewlineChar ? (
-  <span key="B" data-text="true">
-    {'\n'}
-  </span>
-) : (
-  <br key="B" data-text="true" />
-);
+const NEWLINE_B = ref =>
+  useNewlineChar ? (
+    <span key="B" data-text="true" ref={ref}>
+      {'\n'}
+    </span>
+  ) : (
+    <br key="B" data-text="true" ref={ref} />
+  );
 
 type Props = {
   children: string,
@@ -68,6 +69,7 @@ type Props = {
  */
 class DraftEditorTextNode extends React.Component<Props> {
   _forceFlag: boolean;
+  _node: ?(HTMLSpanElement | HTMLBRElement);
 
   constructor(props: Props) {
     super(props);
@@ -77,7 +79,7 @@ class DraftEditorTextNode extends React.Component<Props> {
   }
 
   shouldComponentUpdate(nextProps: Props): boolean {
-    const node = ReactDOM.findDOMNode(this);
+    const node = this._node;
     const shouldBeNewline = nextProps.children === '';
     invariant(node instanceof Element, 'node is not an Element');
     if (shouldBeNewline) {
@@ -96,10 +98,15 @@ class DraftEditorTextNode extends React.Component<Props> {
 
   render(): React.Node {
     if (this.props.children === '') {
-      return this._forceFlag ? NEWLINE_A : NEWLINE_B;
+      return this._forceFlag
+        ? NEWLINE_A(ref => (this._node = ref))
+        : NEWLINE_B(ref => (this._node = ref));
     }
     return (
-      <span key={this._forceFlag ? 'A' : 'B'} data-text="true">
+      <span
+        key={this._forceFlag ? 'A' : 'B'}
+        data-text="true"
+        ref={ref => (this._node = ref)}>
         {this.props.children}
       </span>
     );
