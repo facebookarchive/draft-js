@@ -100,7 +100,7 @@ function MyEditor() {
     EditorState.createEmpty()
   );
 
-  const editor = React.useRef(null)
+  const editor = React.useRef(null);
 
   function focusEditor() {
     editor.current.focus();
@@ -108,7 +108,7 @@ function MyEditor() {
 
   React.useEffect(() => {
     focusEditor()
-  }, [])
+  }, []);
 
   return (
     <div onClick={focusEditor}>
