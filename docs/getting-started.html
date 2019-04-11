@@ -78,6 +78,29 @@ ReactDOM.render(
   document.getElementById('container')
 );
 </span></code></pre>
+<p>Since the release of React 16.8, use can use <a href="https://reactjs.org/docs/hooks-intro.html">Hooks</a> as a way to work with <code>EditorState</code> without using a class.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> React <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;
+<span class="hljs-keyword">import</span> ReactDOM <span class="hljs-keyword">from</span> <span class="hljs-string">'react-dom'</span>;
+<span class="hljs-keyword">import</span> {Editor, EditorState} <span class="hljs-keyword">from</span> <span class="hljs-string">'draft-js'</span>;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">MyEditor</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> [editorState, setEditorState] = React.useState(
+    EditorState.createEmpty()
+  );
+
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Editor</span>
+      <span class="hljs-attr">editorState</span>=<span class="hljs-string">{editorState}</span>
+      <span class="hljs-attr">onChange</span>=<span class="hljs-string">{editorState</span> =&gt;</span> setEditorState(editorState)}
+    /&gt;
+  );
+}
+
+ReactDOM.render(
+  <span class="hljs-tag">&lt;<span class="hljs-name">MyEditor</span> /&gt;</span>,
+  document.getElementById('container')
+);
+</span></code></pre>
 <p>Because Draft.js supports unicode, you must have the following meta tag in the <code>&lt;head&gt;&lt;/head&gt;</code> block of your HTML file:</p>
 <pre><code class="hljs css language-html"><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span> /&gt;</span>
 </code></pre>
