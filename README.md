@@ -91,6 +91,38 @@ ReactDOM.render(
 );
 ```
 
+Since the release of React 16.8, use can use [Hooks](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.
+
+
+```js
+function MyEditor() {
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createEmpty()
+  );
+
+  const editor = React.useRef(null);
+
+  function focusEditor() {
+    editor.current.focus();
+  }
+
+  React.useEffect(() => {
+    focusEditor()
+  }, []);
+
+  return (
+    <div onClick={focusEditor}>
+      <Editor
+        ref={editor}
+        editorState={editorState}
+        onChange={editorState => setEditorState(editorState)}
+      />
+    </div>
+  );
+}
+
+```
+
 Note that the editor itself is only as tall as its contents. In order to give users a visual cue, we recommend setting a border and a minimum height via the `.DraftEditor-root` CSS selector, or using a wrapper div like in the above example.
 
 Because Draft.js supports unicode, you must have the following meta tag in the `<head>` `</head>` block of your HTML file:

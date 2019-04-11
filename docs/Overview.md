@@ -66,6 +66,32 @@ ReactDOM.render(
 );
 ```
 
+Since the release of React 16.8, use can use [Hooks](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Editor, EditorState} from 'draft-js';
+
+function MyEditor() {
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createEmpty()
+  );
+
+  return (
+    <Editor
+      editorState={editorState}
+      onChange={editorState => setEditorState(editorState)}
+    />
+  );
+}
+
+ReactDOM.render(
+  <MyEditor />,
+  document.getElementById('container')
+);
+```
+
 Because Draft.js supports unicode, you must have the following meta tag in the `<head></head>` block of your HTML file:
 
 ```html
