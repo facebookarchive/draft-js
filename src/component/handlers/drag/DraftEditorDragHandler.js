@@ -118,9 +118,12 @@ const DraftEditorDragHandler = {
     } else if (editor._internalDrag) {
       editor.update(moveText(editorState, dropSelection));
     } else {
-      editor.update(
-        insertTextAtSelection(editorState, dropSelection, data.getText()),
-      );
+      const droppedText = data.getText();
+      if (droppedText) {
+        editor.update(
+          insertTextAtSelection(editorState, dropSelection, droppedText),
+        );
+      }
     }
     endDrag(editor);
   },
