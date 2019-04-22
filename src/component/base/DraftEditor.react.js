@@ -520,7 +520,26 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * the active mode.
    */
   setMode: DraftEditorModes => void = (mode: DraftEditorModes): void => {
-    this._handler = handlerMap[mode];
+    const {onPaste, onCut, onCopy} = this.props;
+    const editHandler = {...handlerMap.edit};
+
+    if (onPaste) {
+      editHandler.onPaste = onPaste;
+    }
+
+    if (onCut) {
+      editHandler.onCut = onCut;
+    }
+
+    if (onCopy) {
+      editHandler.onCopy = onCopy;
+    }
+
+    const handler = {
+      ...handlerMap,
+      edit: editHandler,
+    };
+    this._handler = handler[mode];
   };
 
   exitCurrentMode: () => void = (): void => {
