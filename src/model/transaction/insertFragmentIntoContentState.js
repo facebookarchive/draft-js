@@ -18,8 +18,8 @@ import type SelectionState from 'SelectionState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 
+const Immutable = require('immutable');
 const insertIntoList = require('insertIntoList');
 const invariant = require('invariant');
 const randomizeBlockMapKeys = require('randomizeBlockMapKeys');

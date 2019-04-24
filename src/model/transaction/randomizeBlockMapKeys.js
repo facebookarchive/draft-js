@@ -14,9 +14,9 @@
 import type {BlockMap} from 'BlockMap';
 
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 
 const generateRandomKey = require('generateRandomKey');
+const Immutable = require('immutable');
 
 const {OrderedMap} = Immutable;
 
