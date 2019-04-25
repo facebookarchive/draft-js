@@ -12,7 +12,7 @@
 'use strict';
 
 const DraftStringKey = {
-  stringify: function(key: mixed): string {
+  stringify: function(key: ?string): string {
     return '_' + String(key);
   },
 
