@@ -17,11 +17,11 @@ const ContentState = require('ContentState');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEditorContents = require('DraftEditorContentsExperimental.react');
 const EditorState = require('EditorState');
-const Immutable = require('immutable');
 const React = require('React');
 const SelectionState = require('SelectionState');
 
 const TestHelper = require('_DraftTestHelper');
+const Immutable = require('immutable');
 const ReactTestRenderer = require('react-test-renderer');
 
 const {List} = Immutable;
