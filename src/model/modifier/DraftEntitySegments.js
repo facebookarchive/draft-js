@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftEntitySegments
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -39,7 +37,7 @@ import type {DraftRemovalDirection} from 'DraftRemovalDirection';
  *       'John F. Kennedy' -> 'F. Kennedy'
  *            ^
  */
-var DraftEntitySegments = {
+const DraftEntitySegments = {
   getRemovalRange: function(
     selectionStart: number,
     selectionEnd: number,
@@ -47,7 +45,7 @@ var DraftEntitySegments = {
     entityStart: number,
     direction: DraftRemovalDirection,
   ): DraftRange {
-    var segments = text.split(' ');
+    let segments = text.split(' ');
     segments = segments.map((/*string*/ segment, /*number*/ ii) => {
       if (direction === 'forward') {
         if (ii > 0) {
@@ -59,13 +57,13 @@ var DraftEntitySegments = {
       return segment;
     });
 
-    var segmentStart = entityStart;
-    var segmentEnd;
-    var segment;
-    var removalStart: any = null;
-    var removalEnd: any = null;
+    let segmentStart = entityStart;
+    let segmentEnd;
+    let segment;
+    let removalStart: any = null;
+    let removalEnd: any = null;
 
-    for (var jj = 0; jj < segments.length; jj++) {
+    for (let jj = 0; jj < segments.length; jj++) {
       segment = segments[jj];
       segmentEnd = segmentStart + segment.length;
 
@@ -84,9 +82,9 @@ var DraftEntitySegments = {
       segmentStart = segmentEnd;
     }
 
-    var entityEnd = entityStart + text.length;
-    var atStart = removalStart === entityStart;
-    var atEnd = removalEnd === entityEnd;
+    const entityEnd = entityStart + text.length;
+    const atStart = removalStart === entityStart;
+    const atEnd = removalEnd === entityEnd;
 
     if ((!atStart && atEnd) || (atStart && !atEnd)) {
       if (direction === 'forward') {

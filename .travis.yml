@@ -2,6 +2,7 @@ language: node_js
 
 node_js:
 - 8
+- 10
 
 sudo: false
 
@@ -43,21 +44,24 @@ script:
   else
     set -e
     ./node_modules/.bin/gulp
-    cd website
-    yarn install
-    ./setup.sh
     if [ "$TRAVIS_PULL_REQUEST" = false ] && [ "$TRAVIS_BRANCH" = master ]; then
       # Automatically publish the website
       git config --global user.name "Travis CI"
       git config --global user.email "travis@reactjs.org"
-      echo "machine github.com login reactjs-bot password $GITHUB_TOKEN" >~/.netrc
-      ./publish.sh
+      echo "machine github.com login reactjs-bot password $GITHUB_TOKEN" > ~/.netrc
+      cd website && yarn install && GIT_USER=reactjs-bot npm run publish-gh-pages
     else
       # Make sure the website builds without error
-      node server/generate.js
+      cd website && yarn install && yarn build
     fi
 
   fi
 
 notifications:
+  email:
+    recipients:
+      - claudio.procida@gmail.com
+      - niveditc@gmail.com
+    on_success: change # send a notification when the build status changes
+    on_failure: always # always send a notification
   webhooks: https://code.facebook.com/travis/webhook/

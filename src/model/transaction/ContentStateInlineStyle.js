@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule ContentStateInlineStyle
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -16,10 +14,10 @@
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-var CharacterMetadata = require('CharacterMetadata');
-var {Map} = require('immutable');
+const CharacterMetadata = require('CharacterMetadata');
+const {Map} = require('immutable');
 
-var ContentStateInlineStyle = {
+const ContentStateInlineStyle = {
   add: function(
     contentState: ContentState,
     selectionState: SelectionState,
@@ -43,19 +41,19 @@ function modifyInlineStyle(
   inlineStyle: string,
   addOrRemove: boolean,
 ): ContentState {
-  var blockMap = contentState.getBlockMap();
-  var startKey = selectionState.getStartKey();
-  var startOffset = selectionState.getStartOffset();
-  var endKey = selectionState.getEndKey();
-  var endOffset = selectionState.getEndOffset();
+  const blockMap = contentState.getBlockMap();
+  const startKey = selectionState.getStartKey();
+  const startOffset = selectionState.getStartOffset();
+  const endKey = selectionState.getEndKey();
+  const endOffset = selectionState.getEndOffset();
 
-  var newBlocks = blockMap
+  const newBlocks = blockMap
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
     .concat(Map([[endKey, blockMap.get(endKey)]]))
     .map((block, blockKey) => {
-      var sliceStart;
-      var sliceEnd;
+      let sliceStart;
+      let sliceEnd;
 
       if (startKey === endKey) {
         sliceStart = startOffset;
@@ -65,8 +63,8 @@ function modifyInlineStyle(
         sliceEnd = blockKey === endKey ? endOffset : block.getLength();
       }
 
-      var chars = block.getCharacterList();
-      var current;
+      let chars = block.getCharacterList();
+      let current;
       while (sliceStart < sliceEnd) {
         current = chars.get(sliceStart);
         chars = chars.set(

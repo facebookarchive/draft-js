@@ -1,10 +1,6 @@
 ---
 id: api-reference-editor-change-type
 title: EditorChangeType
-layout: docs
-category: API Reference
-next: api-reference-editor-state
-permalink: docs/api-reference-editor-change-type.html
 ---
 
 [EditorChangeType](https://github.com/facebook/draft-js/blob/master/src/model/immutable/EditorChangeType.js)

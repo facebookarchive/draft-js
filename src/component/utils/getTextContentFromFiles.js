@@ -1,30 +1,28 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule getTextContentFromFiles
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
 const invariant = require('invariant');
 
-var TEXT_CLIPPING_REGEX = /\.textClipping$/;
+const TEXT_CLIPPING_REGEX = /\.textClipping$/;
 
-var TEXT_TYPES = {
+const TEXT_TYPES = {
   'text/plain': true,
   'text/html': true,
   'text/rtf': true,
 };
 
 // Somewhat arbitrary upper bound on text size. Let's not lock up the browser.
-var TEXT_SIZE_UPPER_BOUND = 5000;
+const TEXT_SIZE_UPPER_BOUND = 5000;
 
 /**
  * Extract the text content from a file list.
@@ -33,8 +31,8 @@ function getTextContentFromFiles(
   files: Array<File>,
   callback: (contents: string) => void,
 ): void {
-  var readCount = 0;
-  var results = [];
+  let readCount = 0;
+  const results = [];
   files.forEach(function(/*blob*/ file) {
     readFile(file, function(/*string*/ text) {
       readCount++;
@@ -56,7 +54,7 @@ function readFile(file: File, callback: (contents: string) => void): void {
   }
 
   if (file.type === '') {
-    var contents = '';
+    let contents = '';
     // Special-case text clippings, which have an empty type but include
     // `.textClipping` in the file name. `readAsText` results in an empty
     // string for text clippings, so we force the file name to serve
@@ -68,7 +66,7 @@ function readFile(file: File, callback: (contents: string) => void): void {
     return;
   }
 
-  var reader = new FileReader();
+  const reader = new FileReader();
   reader.onload = function() {
     const result = reader.result;
     invariant(

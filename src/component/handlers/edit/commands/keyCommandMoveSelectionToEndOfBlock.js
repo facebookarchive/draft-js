@@ -1,19 +1,17 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule keyCommandMoveSelectionToEndOfBlock
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var EditorState = require('EditorState');
+const EditorState = require('EditorState');
 
 /**
  * See comment for `moveSelectionToStartOfBlock`.
@@ -21,10 +19,10 @@ var EditorState = require('EditorState');
 function keyCommandMoveSelectionToEndOfBlock(
   editorState: EditorState,
 ): EditorState {
-  var selection = editorState.getSelection();
-  var endKey = selection.getEndKey();
-  var content = editorState.getCurrentContent();
-  var textLength = content.getBlockForKey(endKey).getLength();
+  const selection = editorState.getSelection();
+  const endKey = selection.getEndKey();
+  const content = editorState.getCurrentContent();
+  const textLength = content.getBlockForKey(endKey).getLength();
   return EditorState.set(editorState, {
     selection: selection.merge({
       anchorKey: endKey,

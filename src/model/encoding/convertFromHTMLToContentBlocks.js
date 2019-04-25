@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule convertFromHTMLToContentBlocks
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -25,17 +23,18 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
-const DraftFeatureFlags = require('DraftFeatureFlags');
-const Immutable = require('immutable');
-const {Set} = require('immutable');
 const URI = require('URI');
 
+const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
+const gkx = require('gkx');
+const Immutable = require('immutable');
+const {Set} = require('immutable');
 const invariant = require('invariant');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-const experimentalTreeDataSupport = DraftFeatureFlags.draft_tree_data_support;
+const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 type Block = {
   type: DraftBlockType,
@@ -62,6 +61,7 @@ const MAX_DEPTH = 4;
 // used for replacing characters in HTML
 const REGEX_CR = new RegExp('\r', 'g');
 const REGEX_LF = new RegExp('\n', 'g');
+const REGEX_LEADING_LF = new RegExp('^\n', 'g');
 const REGEX_NBSP = new RegExp(NBSP, 'g');
 const REGEX_CARRIAGE = new RegExp('&#13;?', 'g');
 const REGEX_ZWS = new RegExp('&#8203;?', 'g');
@@ -82,6 +82,15 @@ const inlineTags = {
   strike: 'STRIKETHROUGH',
   strong: 'BOLD',
   u: 'UNDERLINE',
+  mark: 'HIGHLIGHT',
+};
+
+const knownListItemDepthClasses = {
+  [cx('public/DraftStyleDefault/depth0')]: 0,
+  [cx('public/DraftStyleDefault/depth1')]: 1,
+  [cx('public/DraftStyleDefault/depth2')]: 2,
+  [cx('public/DraftStyleDefault/depth3')]: 3,
+  [cx('public/DraftStyleDefault/depth4')]: 4,
 };
 
 const anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
@@ -333,6 +342,19 @@ const getBlockDividerChunk = (
   };
 };
 
+/**
+ *  If we're pasting from one DraftEditor to another we can check to see if
+ *  existing list item depth classes are being used and preserve this style
+ */
+const getListItemDepth = (node: HTMLElement, depth: number = 0): number => {
+  Object.keys(knownListItemDepthClasses).some(depthClass => {
+    if (node.classList.contains(depthClass)) {
+      depth = knownListItemDepthClasses[depthClass];
+    }
+  });
+  return depth;
+};
+
 const genFragment = (
   entityMap: EntityMap,
   node: Node,
@@ -359,7 +381,7 @@ const genFragment = (
   // Base Case
   if (nodeName === '#text') {
     let text = node.textContent;
-    let nodeTextContent = text.trim();
+    const nodeTextContent = text.trim();
 
     // We should not create blocks for leading spaces that are
     // existing around ol/ul and their children list items
@@ -374,6 +396,9 @@ const genFragment = (
       return {chunk: getWhitespaceChunk(inEntity), entityMap};
     }
     if (inBlock !== 'pre') {
+      // Trim leading line feed, which is invisible in HTML
+      text = text.replace(REGEX_LEADING_LF, '');
+
       // Can't use empty string because MSWord
       text = text.replace(REGEX_LF, SPACE);
     }
@@ -424,10 +449,16 @@ const genFragment = (
     });
     // Forcing this node to have children because otherwise no entity will be
     // created for this node.
-    // The child text node cannot just have a space or return as content -
-    // we strip those out.
+    // The child text node cannot just have a space or return as content (since
+    // we strip those out), unless the image is for presentation only.
     // See https://github.com/facebook/draft-js/issues/231 for some context.
-    node.textContent = '\ud83d\udcf7';
+    if (gkx('draftjs_fix_paste_for_img')) {
+      if (node.getAttribute('role') !== 'presentation') {
+        node.textContent = '\ud83d\udcf7';
+      }
+    } else {
+      node.textContent = '\ud83d\udcf7';
+    }
 
     // TODO: update this when we remove DraftEntity entirely
     inEntity = DraftEntity.__create('IMAGE', 'MUTABLE', entityConfig || {});
@@ -442,6 +473,14 @@ const genFragment = (
       depth += 1;
     }
     lastList = nodeName;
+  }
+
+  if (
+    !experimentalTreeDataSupport &&
+    nodeName === 'li' &&
+    node instanceof HTMLElement
+  ) {
+    depth = getListItemDepth(node, depth);
   }
 
   const blockType = getBlockTypeForTag(nodeName, lastList, blockRenderMap);
@@ -723,7 +762,7 @@ const convertChunkToContentBlocks = (chunk: Chunk): ?Array<BlockNodeRecord> => {
   }, initialState).contentBlocks;
 };
 
-const convertFromHTMLtoContentBlocks = (
+const convertFromHTMLToContentBlocks = (
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
@@ -753,4 +792,4 @@ const convertFromHTMLtoContentBlocks = (
   };
 };
 
-module.exports = convertFromHTMLtoContentBlocks;
+module.exports = convertFromHTMLToContentBlocks;

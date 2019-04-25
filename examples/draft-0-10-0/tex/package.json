@@ -1,21 +1,24 @@
 {
   "private": true,
   "scripts": {
-    "start": "babel-node ./server.js",
-    "postinstall": "npm install ../../.."
+    "start": "babel-node ./server.js"
   },
   "dependencies": {
-    "babel": "5.8.23",
+    "babel": "6.0.0",
     "babel-core": "^6.8.0",
-    "babel-loader": "^6.2.4",
+    "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
+    "draft-js": "file:../../../",
     "express": "^4.13.1",
     "immutable": "^3.7.4",
     "katex": "^0.5.1",
-    "react": "^15.0.0",
-    "react-dom": "^15.0.0",
-    "webpack": "^1.10.5",
-    "webpack-dev-server": "^1.10.1"
+    "react": "file:../../../node_modules/react",
+    "react-dom": "file:../../../node_modules/react-dom",
+    "webpack": "^4.0.0",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0"
   }
 }

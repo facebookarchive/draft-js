@@ -1,0 +1,1019 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`across blocks with forward delete is a no-op 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "blockquote",
+  },
+  "B": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+      "F",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "G",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [
+      "D",
+      "E",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "F",
+    "parent": "B",
+    "prevSibling": null,
+    "text": "",
+    "type": "blockquote",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": "E",
+    "parent": "C",
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "header-two",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": null,
+    "parent": "C",
+    "prevSibling": "D",
+    "text": "Elephant",
+    "type": "unstyled",
+  },
+  "F": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": "C",
+    "text": "Fire",
+    "type": "code-block",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": "H",
+    "parent": null,
+    "prevSibling": "B",
+    "text": "Gorila",
+    "type": "ordered-list-item",
+  },
+  "H": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "H",
+    "nextSibling": "I",
+    "parent": null,
+    "prevSibling": "G",
+    "text": " ",
+    "type": "atomic",
+  },
+  "I": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "I",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "H",
+    "text": "last",
+    "type": "unstyled",
+  },
+}
+`;
+
+exports[`at end of a leaf block and sibling is another leaf block forward delete concatenates 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "blockquote",
+  },
+  "B": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+      "F",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "G",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [
+      "D",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "F",
+    "parent": "B",
+    "prevSibling": null,
+    "text": "",
+    "type": "blockquote",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": null,
+    "parent": "C",
+    "prevSibling": null,
+    "text": "DeltaElephant",
+    "type": "header-two",
+  },
+  "F": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": "C",
+    "text": "Fire",
+    "type": "code-block",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": "H",
+    "parent": null,
+    "prevSibling": "B",
+    "text": "Gorila",
+    "type": "ordered-list-item",
+  },
+  "H": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "H",
+    "nextSibling": "I",
+    "parent": null,
+    "prevSibling": "G",
+    "text": " ",
+    "type": "atomic",
+  },
+  "I": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "I",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "H",
+    "text": "last",
+    "type": "unstyled",
+  },
+}
+`;
+
+exports[`at end of a leaf block and sibling is not another leaf block forward delete is no-op 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "blockquote",
+  },
+  "B": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+      "F",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "G",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [
+      "D",
+      "E",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "F",
+    "parent": "B",
+    "prevSibling": null,
+    "text": "",
+    "type": "blockquote",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": "E",
+    "parent": "C",
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "header-two",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": null,
+    "parent": "C",
+    "prevSibling": "D",
+    "text": "Elephant",
+    "type": "unstyled",
+  },
+  "F": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": "C",
+    "text": "Fire",
+    "type": "code-block",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": "H",
+    "parent": null,
+    "prevSibling": "B",
+    "text": "Gorila",
+    "type": "ordered-list-item",
+  },
+  "H": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "H",
+    "nextSibling": "I",
+    "parent": null,
+    "prevSibling": "G",
+    "text": " ",
+    "type": "atomic",
+  },
+  "I": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "I",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "H",
+    "text": "last",
+    "type": "unstyled",
+  },
+}
+`;
+
+exports[`at end of a leaf block and sibling is not another leaf block forward delete is no-op 2`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "Alpha",
+    "type": "blockquote",
+  },
+  "B": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+      "F",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "G",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [],
+    "children": Array [
+      "D",
+      "E",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": "F",
+    "parent": "B",
+    "prevSibling": null,
+    "text": "",
+    "type": "blockquote",
+  },
+  "D": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": "E",
+    "parent": "C",
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "header-two",
+  },
+  "E": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "E",
+    "nextSibling": null,
+    "parent": "C",
+    "prevSibling": "D",
+    "text": "Elephant",
+    "type": "unstyled",
+  },
+  "F": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "F",
+    "nextSibling": null,
+    "parent": "B",
+    "prevSibling": "C",
+    "text": "Fire",
+    "type": "code-block",
+  },
+  "G": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "G",
+    "nextSibling": "H",
+    "parent": null,
+    "prevSibling": "B",
+    "text": "Gorila",
+    "type": "ordered-list-item",
+  },
+  "H": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "H",
+    "nextSibling": "I",
+    "parent": null,
+    "prevSibling": "G",
+    "text": " ",
+    "type": "atomic",
+  },
+  "I": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "I",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "H",
+    "text": "last",
+    "type": "unstyled",
+  },
+}
+`;

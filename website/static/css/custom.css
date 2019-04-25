@@ -1,0 +1,171 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+a {
+  color: $secondaryColor;
+}
+
+.hero {
+  background: #843131;
+  padding: 50px 0;
+  color: #FDF3E7;
+  font-weight: 300;
+  line-height: 1.28;
+}
+
+.hero .text {
+  font-size: 64px;
+  text-align: center;
+}
+
+.hero .minitext {
+  font-size: 16px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.hero .button {
+  box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.3);
+}
+
+.buttons-unit {
+  margin: 60px 60px;
+  text-align: center;
+}
+
+.buttons-unit a {
+  color: #FA6900;
+}
+
+.buttons-unit .button {
+  background: #843131;
+  color: #fff;
+  font-size: 24px;
+  text-transform: none;
+}
+
+.buttons-unit .button:active {
+  background: #C15757;
+}
+
+.diagram {
+  margin: 16px 0;
+}
+
+.home-getting-started {
+  width: 500px;
+  margin: 20px auto 40px auto;
+}
+
+.home-getting-started h3 {
+  text-align: center;
+}
+
+#rich-example em {
+  font-style: italic;
+}
+
+#rich-example h1, #rich-example h2, #rich-example h3, #rich-example h4, #rich-example h5, #rich-example h6 {
+  margin: 10px 0;
+  font-family: inherit;
+  font-weight: bold;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizelegibility;
+}
+
+#rich-example h1 small, #rich-example h2 small, #rich-example h3 small, #rich-example h4 small, #rich-example h5 small, #rich-example h6 small {
+  font-weight: normal;
+  color: #7b7b7b;
+}
+
+#rich-example h1, #rich-example h2, #rich-example h3 {
+  line-height: 40px;
+}
+
+#rich-example h1 {
+  font-size: 39px;
+}
+
+#rich-example h2 {
+  font-size: 31px;
+}
+
+#rich-example h3 {
+  font-size: 23px;
+}
+
+#rich-example h4 {
+  font-size: 17px;
+}
+
+#rich-example h5 {
+  font-size: 14px;
+}
+
+#rich-example h6 {
+  font-size: 11px;
+}
+
+#rich-example h1 small {
+  font-size: 24px;
+}
+
+#rich-example h2 small {
+  font-size: 18px;
+}
+
+#rich-example h3 small {
+  font-size: 16px;
+}
+
+#rich-example h4 small {
+  font-size: 14px;
+}
+
+#rich-example ul, #rich-example ol {
+  margin: 0 0 10px 25px;
+  padding: 0;
+}
+
+#rich-example ul ul, #rich-example ul ol, #rich-example ol ol, #rich-example ol ul {
+  margin-bottom: 0;
+}
+
+#rich-example li {
+  line-height: 20px;
+}
+
+#rich-example blockquote {
+  background-color: inherit;
+}
+
+.hljs.css {
+  background-color: rgba(75, 145, 80, 0.05);
+}
+
+@media screen and (max-width: 767px) {
+  .hide-on-mobile {
+    display: none;
+  }
+
+  .home-getting-started {
+    width: 100%;
+  }
+
+  .buttons-unit {
+    margin: 30px 0 60px;
+  }
+
+  .hero .text,
+  .hero .minitext,
+  .buttons-unit,
+  .home-getting-started {
+    box-sizing: border-box;
+    padding: 0 15px;
+  }
+}

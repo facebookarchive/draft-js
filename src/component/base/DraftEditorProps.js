@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftEditorProps
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -16,6 +14,7 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDragType} from 'DraftDragType';
+import type DraftEditor from 'DraftEditor.react';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type {DraftHandleValue} from 'DraftHandleValue';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -99,6 +98,7 @@ export type DraftEditorProps = {
   ariaLabel?: string,
   ariaLabelledBy?: string,
   ariaMultiline?: boolean,
+  ariaOwneeID?: string,
 
   webDriverTestID?: string,
 
@@ -119,6 +119,7 @@ export type DraftEditorProps = {
   handleKeyCommand?: (
     command: DraftEditorCommand | string,
     editorState: EditorState,
+    eventTimeStamp: number,
   ) => DraftHandleValue,
 
   // Handle intended text insertion before the insertion occurs. This may be
@@ -129,6 +130,7 @@ export type DraftEditorProps = {
   handleBeforeInput?: (
     chars: string,
     editorState: EditorState,
+    eventTimeStamp: number,
   ) => DraftHandleValue,
 
   handlePastedText?: (
@@ -153,7 +155,7 @@ export type DraftEditorProps = {
   ) => DraftHandleValue,
 
   /**
-   * Non-cancelable event triggers.
+   * Deprecated event triggers.
    */
   onEscape?: (e: SyntheticKeyboardEvent<>) => void,
   onTab?: (e: SyntheticKeyboardEvent<>) => void,
@@ -177,6 +179,12 @@ export type DraftEditorProps = {
   // an element tag and an optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
   blockRenderMap: DraftBlockRenderMap,
+
+  // Overrides for cut, copy & paste, which can be used to implement custom
+  // behavior like entity cut/copy/paste (see PR #1784)."
+  onPaste?: (DraftEditor, SyntheticClipboardEvent<>) => void,
+  onCut?: (DraftEditor, SyntheticClipboardEvent<>) => void,
+  onCopy?: (DraftEditor, SyntheticClipboardEvent<>) => void,
 };
 
 export type DraftEditorDefaultProps = {

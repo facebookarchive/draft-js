@@ -1,12 +1,11 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
@@ -18,10 +17,10 @@ jest.mock('generateRandomKey');
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
+const Immutable = require('immutable');
 const splitBlockInContentState = require('splitBlockInContentState');
 
 const {List} = Immutable;
@@ -68,6 +67,12 @@ const contentBlockNodes = [
     key: 'G',
     prevSibling: 'B',
     text: 'Gorila',
+  }),
+  new ContentBlockNode({
+    key: 'H',
+    prevSibling: 'G',
+    text: '',
+    type: 'unordered-list-item',
   }),
 ];
 const treeSelectionState = SelectionState.createEmpty('A');
@@ -203,6 +208,18 @@ test('must split at the end of a nested ContentBlock', () => {
       focusOffset: SPLIT_OFFSET,
       anchorKey: 'D',
       focusKey: 'D',
+    }),
+    treeContentState,
+  );
+});
+
+test('must convert empty list item ContentBlock to unstyled rather than split', () => {
+  assertSplitBlockInContentState(
+    treeSelectionState.merge({
+      anchorOffset: 0,
+      focusOffset: 0,
+      anchorKey: 'H',
+      focusKey: 'H',
     }),
     treeContentState,
   );

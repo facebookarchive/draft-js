@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
 
 This file provided by Facebook is for non-commercial testing and evaluation
 purposes only. Facebook reserves all rights not expressly granted.
@@ -81,8 +81,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
        * Super simple decorators for handles and hashtags, for demonstration
        * purposes only. Don't reuse these regexes.
        */
-      const HANDLE_REGEX = /\@[\w]+/g;
-      const HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
+      const HANDLE_REGEX = /@[\w]+/g;
+      const HASHTAG_REGEX = /#[\w\u0590-\u05ff]+/g;
 
       function handleStrategy(contentBlock, callback, contentState) {
         findWithRegex(HANDLE_REGEX, contentBlock, callback);

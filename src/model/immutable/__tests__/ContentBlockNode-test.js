@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An addtestional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
- * @flow
+ * @flow strict-local
  */
 
 'use strict';
@@ -17,8 +15,9 @@ jest.disableAutomock();
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlockNode = require('ContentBlockNode');
+const {BOLD, NONE} = require('SampleDraftInlineStyle');
+
 const Immutable = require('immutable');
-const {NONE, BOLD} = require('SampleDraftInlineStyle');
 
 const entity_KEY = 'x';
 

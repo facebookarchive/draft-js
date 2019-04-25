@@ -1,0 +1,23 @@
+{
+  "name": "playground",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "codemirror": "^5.32.0",
+    "draft-convert": "^2.0.1",
+    "draft-js": "file:../../..",
+    "immutable": "^3.8.2",
+    "react": "^16.2.0",
+    "react-codemirror2": "^3.0.7",
+    "react-dom": "^16.2.0",
+    "react-json-tree": "^0.11.0",
+    "react-panelgroup": "^1.0.5",
+    "react-scripts": "^1.1.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

@@ -1,24 +1,21 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule insertTextIntoContentState
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var Immutable = require('immutable');
+const Immutable = require('immutable');
+const insertIntoList = require('insertIntoList');
+const invariant = require('invariant');
 
-var insertIntoList = require('insertIntoList');
-var invariant = require('invariant');
-
-var {Repeat} = Immutable;
+const {Repeat} = Immutable;
 
 import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
@@ -35,18 +32,18 @@ function insertTextIntoContentState(
     '`insertText` should only be called with a collapsed range.',
   );
 
-  var len = text.length;
+  const len = text.length;
   if (!len) {
     return contentState;
   }
 
-  var blockMap = contentState.getBlockMap();
-  var key = selectionState.getStartKey();
-  var offset = selectionState.getStartOffset();
-  var block = blockMap.get(key);
-  var blockText = block.getText();
+  const blockMap = contentState.getBlockMap();
+  const key = selectionState.getStartKey();
+  const offset = selectionState.getStartOffset();
+  const block = blockMap.get(key);
+  const blockText = block.getText();
 
-  var newBlock = block.merge({
+  const newBlock = block.merge({
     text:
       blockText.slice(0, offset) +
       text +
@@ -58,7 +55,7 @@ function insertTextIntoContentState(
     ),
   });
 
-  var newOffset = offset + len;
+  const newOffset = offset + len;
 
   return contentState.merge({
     blockMap: blockMap.set(key, newBlock),

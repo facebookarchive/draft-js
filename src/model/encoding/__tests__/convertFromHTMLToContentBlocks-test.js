@@ -1,12 +1,10 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
  */
 
@@ -19,6 +17,7 @@ jest.mock('generateRandomKey');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
+const cx = require('cx');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 
 const DEFAULT_CONFIG = {
@@ -58,10 +57,14 @@ const normalizeBlock = block => {
 };
 
 const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('DraftFeatureFlags', () => {
-    return {
-      draft_tree_data_support: enabled,
-    };
+  jest.doMock('gkx', () => name => {
+    if (name === 'draft_tree_data_support') {
+      return enabled;
+    }
+    if (name === 'draftjs_fix_paste_for_img') {
+      return true;
+    }
+    return false;
   });
 };
 
@@ -151,6 +154,41 @@ test('img with data protocol should be correctly parsed', () => {
     `<img src="${IMAGE_DATA_URL}">`,
   );
   expect(blocks.contentBlocks[0].text).toMatchSnapshot();
+});
+
+test('img with role presentation should not be rendered', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    `<img src="${IMAGE_DATA_URL}" role="presentation">`,
+  );
+  expect(blocks.contentBlocks).toMatchSnapshot();
+});
+
+test('line break should be correctly parsed - single <br>', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    `<div>
+      <b>Hello World!</b>
+      <br />
+      lorem ipsum
+    </div>`,
+  );
+  expect(blocks.contentBlocks).toMatchSnapshot();
+});
+
+test('line break should be correctly parsed - multiple <br> in a content block', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    `<div>
+      <b>Hello World!</b>
+      <br />
+      <br />
+      lorem ipsum
+    </div>`,
+  );
+  expect(blocks.contentBlocks).toMatchSnapshot();
+});
+
+test('highlighted text should be recognized and considered styled characters', () => {
+  const blocks = convertFromHTMLToContentBlocks(`<mark>test</mark>`);
+  expect(blocks.contentBlocks).toMatchSnapshot();
 });
 
 test('converts nested html blocks when experimentalTreeDataSupport is enabled', () => {
@@ -274,6 +312,56 @@ test('Should preserve entities for whitespace-only content', () => {
     <a href="http://www.facebook.com">
       <b>before</b> <b>after</b>
     </a>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should import recognised draft li depths', () => {
+  const html_string = `
+    <ul>
+      <li class="${cx('public/DraftStyleDefault/depth0')}">depth0</li>
+      <li class="${cx('public/DraftStyleDefault/depth1')}">depth1</li>
+      <li class="${cx('public/DraftStyleDefault/depth2')}">depth2</li>
+      <li class="${cx('public/DraftStyleDefault/depth3')}">depth3</li>
+      <li class="${cx('public/DraftStyleDefault/depth4')}">depth4</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should import recognised draft li depths when nesting enabled', () => {
+  const html_string = `
+    <ul>
+      <li class="${cx('public/DraftStyleDefault/depth0')}">depth0</li>
+      <li class="${cx('public/DraftStyleDefault/depth1')}">depth1</li>
+      <li class="${cx('public/DraftStyleDefault/depth2')}">depth2</li>
+      <li class="${cx('public/DraftStyleDefault/depth3')}">depth3</li>
+      <li class="${cx('public/DraftStyleDefault/depth4')}">depth4</li>
+    </ul>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should preserve spacing around inline tags', () => {
+  const html_string = `
+    <span>Some<span> </span></span><i>stylised</i><span><span> </span></span><b>text</b>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should import line breaks without creating a leading space', () => {
+  const html_string = `
+    Line 1<br/>
+    Line 2<br/>
+    Line 3
   `;
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: false,
