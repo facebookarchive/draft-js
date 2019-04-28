@@ -97,9 +97,13 @@ const splitBlockInContentState = (
   const blockMap = contentState.getBlockMap();
   const blockToSplit = blockMap.get(key);
   const text = blockToSplit.getText();
+  const blockType = blockToSplit.getType();
+
+  if (blockType === 'atomic') {
+    return contentState;
+  }
 
   if (!text) {
-    const blockType = blockToSplit.getType();
     if (
       blockType === 'unordered-list-item' ||
       blockType === 'ordered-list-item'
