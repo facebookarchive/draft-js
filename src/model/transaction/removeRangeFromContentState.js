@@ -342,7 +342,9 @@ const removeRangeFromContentState = (
       .concat(endBlock.getCharacterList().slice(endOffset));
   }
 
+  const startBlockType = startBlock.getType();
   const modifiedStart = startBlock.merge({
+    type: startBlockType === 'atomic' ? 'unstyled' : startBlockType,
     text:
       startBlock.getText().slice(0, startOffset) +
       endBlock.getText().slice(endOffset),

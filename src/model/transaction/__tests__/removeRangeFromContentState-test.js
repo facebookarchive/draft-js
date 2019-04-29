@@ -16,6 +16,7 @@ jest.disableAutomock();
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
 const SelectionState = require('SelectionState');
+const CharacterMetadata = require('CharacterMetadata');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const Immutable = require('immutable');
@@ -272,5 +273,48 @@ test('must merge D and E when deleting range from end of D to start of E', () =>
       focusOffset: 0, // start of E
     }),
     treeContentState,
+  );
+});
+
+test('should not keep start atomic block after remove', () => {
+  const charData = CharacterMetadata.create({entity: '1'});
+  const contentStateWithAtomicBlock = contentState.set(
+    'blockMap',
+    BlockMapBuilder.createFromArray([
+      new ContentBlockNode({
+        key: 'A',
+        text: ' ',
+        type: 'atomic',
+        characterList: List([charData]),
+        nextSibling: 'B',
+      }),
+      new ContentBlockNode({
+        key: 'B',
+        prevSibling: 'A',
+        text: 'Hello World',
+      }),
+    ]),
+  );
+  assertRemoveRangeFromContentState(
+    selectionState.merge({
+      anchorOffset: 0,
+      anchorKey: 'A',
+      focusOffset: 6,
+      focusKey: 'B',
+      isBackward: false,
+      hasFocus: true,
+    }),
+    contentStateWithAtomicBlock,
+  );
+  assertRemoveRangeFromContentState(
+    selectionState.merge({
+      anchorOffset: 6,
+      anchorKey: 'B',
+      focusOffset: 0,
+      focusKey: 'A',
+      isBackward: true,
+      hasFocus: true,
+    }),
+    contentStateWithAtomicBlock,
   );
 });
