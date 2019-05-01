@@ -14,6 +14,7 @@
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 const CharacterMetadata = require('CharacterMetadata');
+
 const Immutable = require('immutable');
 
 const {List} = Immutable;

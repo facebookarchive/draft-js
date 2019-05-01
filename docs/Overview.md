@@ -8,7 +8,7 @@ Draft.js is a framework for building rich text editors in React, powered by an i
 
 Draft.js makes it easy to build any type of rich text input, whether you're just looking to support a few inline text styles or building a complex text editor for composing long-form articles.
 
-Draft.js was introduced at [React.js Conf](http://conf.reactjs.com/) in February 2016.
+Draft.js was introduced at [React.js Conf](https://conf2016.reactjs.org/schedule.html#rich-text-editing-with-react) in February 2016.
 
 <iframe width="650" height="365" src="https://www.youtube.com/embed/feUYwoLhE_4" frameborder="0" allowfullscreen></iframe>
 
@@ -58,6 +58,32 @@ class MyEditor extends React.Component {
         <Editor editorState={this.state.editorState} onChange={this.onChange} />
     );
   }
+}
+
+ReactDOM.render(
+  <MyEditor />,
+  document.getElementById('container')
+);
+```
+
+Since the release of React 16.8, use can use [Hooks](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Editor, EditorState} from 'draft-js';
+
+function MyEditor() {
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createEmpty()
+  );
+
+  return (
+    <Editor
+      editorState={editorState}
+      onChange={editorState => setEditorState(editorState)}
+    />
+  );
 }
 
 ReactDOM.render(

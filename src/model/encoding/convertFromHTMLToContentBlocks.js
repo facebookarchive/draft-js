@@ -23,14 +23,14 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEntity = require('DraftEntity');
-const Immutable = require('immutable');
-const {Set} = require('immutable');
 const URI = require('URI');
 
 const cx = require('cx');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
+const Immutable = require('immutable');
+const {Set} = require('immutable');
 const invariant = require('invariant');
 const sanitizeDraftText = require('sanitizeDraftText');
 

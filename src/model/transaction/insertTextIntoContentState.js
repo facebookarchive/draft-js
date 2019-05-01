@@ -12,7 +12,6 @@
 'use strict';
 
 const Immutable = require('immutable');
-
 const insertIntoList = require('insertIntoList');
 const invariant = require('invariant');
 

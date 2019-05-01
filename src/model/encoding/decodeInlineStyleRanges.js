@@ -11,8 +11,9 @@
 
 'use strict';
 
-const {OrderedSet} = require('immutable');
 const UnicodeUtils = require('UnicodeUtils');
+
+const {OrderedSet} = require('immutable');
 
 const {substr} = UnicodeUtils;
 

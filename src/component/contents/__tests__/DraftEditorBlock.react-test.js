@@ -22,7 +22,6 @@ const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const DraftEditorBlock = require('DraftEditorBlock.react');
-const Immutable = require('immutable');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
@@ -33,6 +32,7 @@ const UnicodeBidiDirection = require('UnicodeBidiDirection');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
+const Immutable = require('immutable');
 const ReactTestRenderer = require('react-test-renderer');
 
 const {BOLD, NONE, ITALIC} = SampleDraftInlineStyle;

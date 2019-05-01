@@ -12,9 +12,9 @@
 
 jest.disableAutomock();
 
+const getDraftEditorSelection = require('getDraftEditorSelection');
 const getSampleSelectionMocksForTesting = require('getSampleSelectionMocksForTesting');
 const getSampleSelectionMocksForTestingNestedBlocks = require('getSampleSelectionMocksForTestingNestedBlocks');
-const getDraftEditorSelection = require('getDraftEditorSelection');
 
 let editorState = null;
 let root = null;

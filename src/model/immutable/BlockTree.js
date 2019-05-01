@@ -16,10 +16,9 @@ import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 
-const Immutable = require('immutable');
-
 const emptyFunction = require('emptyFunction');
 const findRangesImmutable = require('findRangesImmutable');
+const Immutable = require('immutable');
 
 const {List, Repeat, Record} = Immutable;
 
