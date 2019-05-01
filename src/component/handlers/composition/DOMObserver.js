@@ -51,7 +51,10 @@ class DOMObserver {
       );
     } else {
       this.onCharData = e => {
-        invariant(e.target instanceof Node);
+        invariant(
+          e.target instanceof Node,
+          'Expected target to be an instance of Node',
+        );
         this.registerMutation({
           type: 'characterData',
           target: e.target,
