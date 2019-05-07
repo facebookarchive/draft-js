@@ -37,10 +37,10 @@ const DOM_OBSERVER_OPTIONS = {
 const USE_CHAR_DATA = UserAgent.isBrowser('IE <= 11');
 
 class DOMObserver {
-  observer: MutationObserver;
+  observer: ?MutationObserver;
   container: HTMLElement;
   mutations: Map<string, string>;
-  onCharData: ({target: EventTarget, type: string}) => void;
+  onCharData: ?({target: EventTarget, type: string}) => void;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -67,6 +67,8 @@ class DOMObserver {
     if (this.observer) {
       this.observer.observe(this.container, DOM_OBSERVER_OPTIONS);
     } else {
+      /* $FlowFixMe(>=0.68.0 site=www,mobile) This event type is not defined 
+       * by Flow's standard library */
       this.container.addEventListener(
         'DOMCharacterDataModified',
         this.onCharData,
@@ -75,10 +77,13 @@ class DOMObserver {
   }
 
   stopAndFlushMutations() {
-    if (this.observer) {
-      this.registerMutations(this.observer.takeRecords());
-      this.observer.disconnect();
+    const {observer} = this;
+    if (observer) {
+      this.registerMutations(observer.takeRecords());
+      observer.disconnect();
     } else {
+      /* $FlowFixMe(>=0.68.0 site=www,mobile) This event type is not defined 
+       * by Flow's standard library */
       this.container.removeEventListener(
         'DOMCharacterDataModified',
         this.onCharData,

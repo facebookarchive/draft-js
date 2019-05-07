@@ -127,7 +127,7 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
      * https://w3c.github.io/input-events/#dom-inputevent-inputtype */
     const {inputType} = e.nativeEvent;
     if (inputType) {
-      let newEditorState = onInputType(inputType, editorState);
+      const newEditorState = onInputType(inputType, editorState);
       if (newEditorState !== editorState) {
         editor.restoreEditorDOM();
         editor.update(newEditorState);

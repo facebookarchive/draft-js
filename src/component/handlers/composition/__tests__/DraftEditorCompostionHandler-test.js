@@ -112,7 +112,7 @@ test('isInCompositionMode is properly updated on composition events', () => {
 test('Can handle a single mutation', () => {
   withGlobalGetSelectionAs({}, () => {
     editor._latestEditorState = getEditorState({blockkey0: ''});
-    const mutations = Map({'blockkey0-0-0': '私'});
+    const mutations = Map({'blockkey0-0-0': '\u79c1'});
     require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
       mutations,
     );
@@ -120,7 +120,7 @@ test('Can handle a single mutation', () => {
     compositionHandler.onCompositionEnd(editor);
     jest.runAllTimers();
 
-    expect(editorTextContent()).toBe('私');
+    expect(editorTextContent()).toBe('\u79c1');
   });
 });
 
