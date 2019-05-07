@@ -76,7 +76,8 @@ const decorateCharacterList = (
   return config;
 };
 
-class ContentBlockNode extends Record(defaultRecord) implements BlockNode {
+class ContentBlockNode extends (Record(defaultRecord): any)
+  implements BlockNode {
   constructor(props: ContentBlockNodeConfig = defaultRecord) {
     super(decorateCharacterList(props));
   }
