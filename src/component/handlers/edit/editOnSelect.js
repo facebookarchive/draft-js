@@ -15,10 +15,9 @@ import type DraftEditor from 'DraftEditor.react';
 
 const DraftJsDebugLogging = require('DraftJsDebugLogging');
 const EditorState = require('EditorState');
-const ReactDOM = require('ReactDOM');
 
+const getContentEditableContainer = require('getContentEditableContainer');
 const getDraftEditorSelection = require('getDraftEditorSelection');
-const invariant = require('invariant');
 
 function editOnSelect(editor: DraftEditor): void {
   if (
@@ -39,15 +38,9 @@ function editOnSelect(editor: DraftEditor): void {
   }
 
   let editorState = editor.props.editorState;
-  const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
-  invariant(editorNode, 'Missing editorNode');
-  invariant(
-    editorNode.firstChild instanceof HTMLElement,
-    'editorNode.firstChild is not an HTMLElement',
-  );
   const documentSelection = getDraftEditorSelection(
     editorState,
-    editorNode.firstChild,
+    getContentEditableContainer(editor),
   );
   const updatedSelectionState = documentSelection.selectionState;
 
