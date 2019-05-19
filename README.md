@@ -95,6 +95,10 @@ Since the release of React 16.8, you can use [Hooks](https://reactjs.org/docs/ho
 
 
 ```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Editor, EditorState} from 'draft-js';
+
 function MyEditor() {
   const [editorState, setEditorState] = React.useState(
     EditorState.createEmpty()
