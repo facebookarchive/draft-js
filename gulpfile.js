@@ -48,6 +48,7 @@ var babelOptsJS = {
       rewriteModules: {map: moduleMap},
     }),
   ],
+  plugins: [require('@babel/plugin-proposal-nullish-coalescing-operator')],
 };
 
 var babelOptsFlow = {
@@ -57,6 +58,7 @@ var babelOptsFlow = {
       rewriteModules: {map: moduleMap},
     }),
   ],
+  plugins: [require('@babel/plugin-proposal-nullish-coalescing-operator')],
 };
 
 var COPYRIGHT_HEADER = `/**
