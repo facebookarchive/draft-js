@@ -37,4 +37,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 module.name_mapper='ReactDOM' -> 'react-dom'
 
 [version]
-^0.92.0
+^0.98.1
