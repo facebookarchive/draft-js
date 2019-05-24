@@ -67,7 +67,7 @@ function getEditorStateFromHTML(html: string) {
   const state =
     blocksFromHTML != null
       ? ContentState.createFromBlockArray(
-          blocksFromHTML.contentBlocks ?? [],
+          blocksFromHTML.contentBlocks || [],
           blocksFromHTML.entityMap,
         )
       : ContentState.createEmpty();
