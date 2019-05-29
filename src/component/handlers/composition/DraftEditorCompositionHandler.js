@@ -225,7 +225,7 @@ const DraftEditorCompositionHandler = {
 
     editor.restoreEditorDOM();
 
-    const editorStateWithUpdatedSelection = EditorState.acceptSelection(
+    const editorStateWithUpdatedSelection = EditorState.forceSelection(
       editorState,
       compositionEndSelectionState,
     );
