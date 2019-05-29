@@ -18,6 +18,9 @@ jest.mock('ReactDOM');
 const getContentEditableContainer = require('getContentEditableContainer');
 
 test('fails if no Node is found for the editorContainer', () => {
+  /* $FlowFixMe(>=0.99.0 site=www) This comment suppresses an error found when
+   * Flow v0.99 was deployed. To see the error delete this comment and run
+   * Flow. */
   require('ReactDOM').findDOMNode.mockImplementation(() => null);
   // $FlowExpectedError
   expect(() => getContentEditableContainer({})).toThrow('Missing editorNode');
@@ -27,6 +30,9 @@ test('fails if the firstChild of editorConainer is not an HTMLElement', () => {
   const editor = {editorContainer: {}};
   const editableContainer = document.createTextNode('text');
   const editorContainerNode = {firstChild: editableContainer};
+  /* $FlowFixMe(>=0.99.0 site=www) This comment suppresses an error found when
+   * Flow v0.99 was deployed. To see the error delete this comment and run
+   * Flow. */
   require('ReactDOM').findDOMNode.mockImplementation(() => editorContainerNode);
   // $FlowExpectedError
   expect(() => getContentEditableContainer(editor)).toThrow(
@@ -38,6 +44,9 @@ test(`returns the firstChild of editor.editorContainer's DOM node`, () => {
   const editor = {editorContainer: {}};
   const editableContainer = document.createElement('div');
   const editorContainerNode = {firstChild: editableContainer};
+  /* $FlowFixMe(>=0.99.0 site=www) This comment suppresses an error found when
+   * Flow v0.99 was deployed. To see the error delete this comment and run
+   * Flow. */
   require('ReactDOM').findDOMNode.mockImplementation(() => editorContainerNode);
 
   // $FlowExpectedError
