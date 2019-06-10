@@ -40,7 +40,7 @@ const SCROLL_BUFFER = 10;
 type Props = {
   block: BlockNodeRecord,
   blockProps?: Object,
-  blockStyleFn: (block: BlockNodeRecord) => string,
+  blockStyleFn: (block: BlockNodeRecord) => ?Object,
   contentState: ContentState,
   customStyleFn: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
   customStyleMap: Object,

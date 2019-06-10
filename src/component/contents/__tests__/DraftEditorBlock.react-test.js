@@ -110,7 +110,7 @@ const getProps = (block, decorator) => {
     decorator: decorator || null,
     forceSelection: false,
     direction: UnicodeBidiDirection.LTR,
-    blockStyleFn: returnEmptyString,
+    blockStyleFn: () => ({className: '', style: null}),
     styleSet: NONE,
   };
 };

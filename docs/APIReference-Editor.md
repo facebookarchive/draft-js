@@ -85,7 +85,7 @@ for details on usage.
 
 #### blockStyleFn
 ```
-blockStyleFn?: (block: ContentBlock) => string
+blockStyleFn?: (block: ContentBlock) => ?Object
 ```
 Optionally set a function to define class names to apply to the given block
 when it is rendered. See
