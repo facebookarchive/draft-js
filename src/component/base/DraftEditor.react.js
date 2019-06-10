@@ -137,7 +137,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   static defaultProps: DraftEditorDefaultProps = {
     blockRenderMap: DefaultDraftBlockRenderMap,
     blockRendererFn: emptyFunction.thatReturnsNull,
-    blockStyleFn: emptyFunction.thatReturns(''),
+    blockStyleFn: emptyFunction.thatReturns({style: null, className: ''}),
     keyBindingFn: getDefaultKeyBinding,
     readOnly: false,
     spellCheck: false,

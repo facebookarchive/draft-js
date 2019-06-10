@@ -31,7 +31,7 @@ const nullthrows = require('nullthrows');
 type Props = {
   blockRenderMap: DraftBlockRenderMap,
   blockRendererFn: (block: BlockNodeRecord) => ?Object,
-  blockStyleFn?: (block: BlockNodeRecord) => string,
+  blockStyleFn?: (block: BlockNodeRecord) => ?Object,
   customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
   customStyleMap?: Object,
   editorKey?: string,
@@ -188,9 +188,13 @@ class DraftEditorContents extends React.Component<Props> {
         configForType.element || blockRenderMap.get('unstyled').element;
 
       const depth = block.getDepth();
+
       let className = '';
+      let customStyle = null;
       if (blockStyleFn) {
-        className = blockStyleFn(block);
+        let blockStyle = blockStyleFn(block);
+        className = blockStyle.className;
+        customStyle = blockStyle.style;
       }
 
       // List items are special snowflakes, since we handle nesting and
@@ -209,6 +213,7 @@ class DraftEditorContents extends React.Component<Props> {
       const Component = CustomComponent || DraftEditorBlock;
       let childProps = {
         className,
+        style: customStyle,
         'data-block': true,
         'data-editor': editorKey,
         'data-offset-key': offsetKey,

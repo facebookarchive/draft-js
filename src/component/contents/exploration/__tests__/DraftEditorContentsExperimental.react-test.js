@@ -47,7 +47,7 @@ const contentState = ContentState.createFromBlockArray([
 const PROPS = {
   blockRenderMap: DefaultDraftBlockRenderMap,
   blockRendererFn: block => null,
-  blockStyleFn: block => '',
+  blockStyleFn: block => ({className: '', style: null}),
   contentState,
   customStyleFn: (style, block) => null,
   editorKey: 'editor',

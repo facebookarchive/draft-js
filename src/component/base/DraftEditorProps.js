@@ -62,7 +62,7 @@ export type DraftEditorProps = {
   blockRendererFn: (block: BlockNodeRecord) => ?Object,
 
   // Function that returns a cx map corresponding to block-level styles.
-  blockStyleFn: (block: BlockNodeRecord) => string,
+  blockStyleFn: (block: BlockNodeRecord) => ?Object,
 
   // A function that accepts a synthetic key event and returns
   // the matching DraftEditorCommand constant, or a custom string,
@@ -190,7 +190,7 @@ export type DraftEditorProps = {
 export type DraftEditorDefaultProps = {
   blockRenderMap: DraftBlockRenderMap,
   blockRendererFn: (block: BlockNodeRecord) => ?Object,
-  blockStyleFn: (block: BlockNodeRecord) => string,
+  blockStyleFn: (block: BlockNodeRecord) => ?Object,
   keyBindingFn: (e: SyntheticKeyboardEvent<>) => ?string,
   readOnly: boolean,
   spellCheck: boolean,

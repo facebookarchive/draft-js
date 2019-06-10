@@ -46,7 +46,7 @@ const {List} = Immutable;
 type CustomRenderConfig = Object;
 type DraftRenderConfig = Object;
 type BlockRenderFn = (block: BlockNodeRecord) => ?Object;
-type BlockStyleFn = (block: BlockNodeRecord) => string;
+type BlockStyleFn = (block: BlockNodeRecord) => ?Object;
 
 type Props = {
   block: BlockNodeRecord,
@@ -182,10 +182,15 @@ const getElementPropsConfig = (
     'data-offset-key': offsetKey,
     key: block.getKey(),
   };
-  const customClass = blockStyleFn(block);
 
-  if (customClass) {
-    elementProps.className = customClass;
+  let {className, style} = blockStyleFn(block);
+
+  if (className) {
+    elementProps.className = className;
+  }
+
+  if (style) {
+    elementProps.style = style;
   }
 
   if (customConfig.customEditable !== undefined) {
