@@ -37,9 +37,11 @@ const SecondaryClipboard = {
       const blockEnd = content.getBlockForKey(anchorKey).getLength();
 
       if (blockEnd === selection.getAnchorOffset()) {
-        targetRange = selection
-          .set('focusKey', content.getKeyAfter(anchorKey))
-          .set('focusOffset', 0);
+        const keyAfter = content.getKeyAfter(anchorKey);
+        if (keyAfter == null) {
+          return editorState;
+        }
+        targetRange = selection.set('focusKey', keyAfter).set('focusOffset', 0);
       } else {
         targetRange = selection.set('focusOffset', blockEnd);
       }
