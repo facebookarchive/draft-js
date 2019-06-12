@@ -49,7 +49,7 @@
     "del": "^2.2.0",
     "envify": "^3.4.0",
     "es6-shim": "^0.34.4",
-    "eslint": "^4.2.0",
+    "eslint": "^5.16.0",
     "eslint-config-fbjs": "^2.0.0",
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-babel": "^4.1.1",
