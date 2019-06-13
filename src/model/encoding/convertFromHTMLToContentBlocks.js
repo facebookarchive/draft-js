@@ -218,15 +218,12 @@ const processInlineTag = (
           style.remove('ITALIC');
         }
 
-        if (textDecoration === 'underline') {
-          style.add('UNDERLINE');
-        }
-        if (textDecoration === 'line-through') {
-          style.add('STRIKETHROUGH');
-        }
         if (textDecoration === 'none') {
           style.remove('UNDERLINE');
           style.remove('STRIKETHROUGH');
+        } else {
+          textDecoration.includes('underline') && style.add('UNDERLINE');
+          textDecoration.includes('line-through') && style.add('STRIKETHROUGH');
         }
       })
       .toOrderedSet();
