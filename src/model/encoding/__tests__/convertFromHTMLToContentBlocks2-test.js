@@ -357,6 +357,25 @@ test('Should preserve spacing around inline tags', () => {
   });
 });
 
+test('Should scope attribute styles', () => {
+  const html_string = `
+    <span style="font-weight: 700">these</span>
+    <span style="font-style: italic">won't</span>
+    <span style="text-decoration: underline">accumulate styles</span>
+    <span style="font-weight: 700">
+      <span style="font-style: italic">
+        <span style="text-decoration: underline">
+          <span>but this span will</span>
+        </span>
+      </span>
+    </span>
+  `;
+
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: true,
+  });
+});
+
 test('Should recognized list deep nesting', () => {
   const html_string = `
     <ul>

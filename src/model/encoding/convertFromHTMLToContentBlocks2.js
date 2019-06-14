@@ -57,7 +57,7 @@ const knownListItemDepthClasses = {
   [cx('public/DraftStyleDefault/depth4')]: 4,
 };
 
-const HTMLTagToInlineStyleMap: Map<string, string> = Map({
+const HTMLTagToRawInlineStyleMap: Map<string, string> = Map({
   b: 'BOLD',
   code: 'CODE',
   del: 'STRIKETHROUGH',
@@ -153,6 +153,48 @@ const isValidImage = (node: Node): boolean => {
     node.attributes.getNamedItem('src') &&
     node.attributes.getNamedItem('src').value
   );
+};
+
+/**
+ * Try to guess the inline style of an HTML element based on its css
+ * styles (font-weight, font-style and text-decoration).
+ */
+const styleFromNodeAttributes = (node: Node): DraftInlineStyle => {
+  const style = OrderedSet();
+
+  if (!(node instanceof HTMLElement)) {
+    return style;
+  }
+
+  const htmlElement = node;
+  const fontWeight = htmlElement.style.fontWeight;
+  const fontStyle = htmlElement.style.fontStyle;
+  const textDecoration = htmlElement.style.textDecoration;
+
+  return style.withMutations(style => {
+    if (boldValues.indexOf(fontWeight) >= 0) {
+      style.add('BOLD');
+    } else if (notBoldValues.indexOf(fontWeight) >= 0) {
+      style.remove('BOLD');
+    }
+
+    if (fontStyle === 'italic') {
+      style.add('ITALIC');
+    } else if (fontStyle === 'normal') {
+      style.remove('ITALIC');
+    }
+
+    if (textDecoration === 'underline') {
+      style.add('UNDERLINE');
+    }
+    if (textDecoration === 'line-through') {
+      style.add('STRIKETHROUGH');
+    }
+    if (textDecoration === 'none') {
+      style.remove('UNDERLINE');
+      style.remove('STRIKETHROUGH');
+    }
+  });
 };
 
 /**
@@ -295,15 +337,15 @@ class ContentBlocksBuilder {
   /**
    * Add a new inline style to the upcoming nodes.
    */
-  addStyle(inlineStyle: string): void {
-    this.currentStyle = this.currentStyle.add(inlineStyle);
+  addStyle(inlineStyle: DraftInlineStyle): void {
+    this.currentStyle = this.currentStyle.union(inlineStyle);
   }
 
   /**
    * Remove a currently applied inline style.
    */
-  removeStyle(inlineStyle: string): void {
-    this.currentStyle = this.currentStyle.remove(inlineStyle);
+  removeStyle(inlineStyle: DraftInlineStyle): void {
+    this.currentStyle = this.currentStyle.subtract(inlineStyle);
   }
 
   // ***********************************WARNING******************************
@@ -435,18 +477,18 @@ class ContentBlocksBuilder {
         continue;
       }
 
-      const inlineStyle = HTMLTagToInlineStyleMap.get(nodeName);
-      if (inlineStyle !== undefined) {
-        this.addStyle(inlineStyle);
-      }
+      const inlineStyle = HTMLTagToRawInlineStyleMap.has(nodeName)
+        ? OrderedSet.of(HTMLTagToRawInlineStyleMap.get(nodeName))
+        : OrderedSet();
+      const attributesStyle = styleFromNodeAttributes(node);
+
+      this.addStyle(inlineStyle);
+      this.addStyle(attributesStyle);
 
       blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
 
-      if (inlineStyle !== undefined) {
-        this.removeStyle(inlineStyle);
-      }
-
-      this._updateStyleFromNodeAttributes(node);
+      this.removeStyle(attributesStyle);
+      this.removeStyle(inlineStyle);
     }
 
     return blockConfigs;
@@ -594,44 +636,6 @@ class ContentBlocksBuilder {
 
     blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
     this.currentEntity = null;
-  }
-
-  /**
-   * Try to guess the inline style of an HTML element based on its css
-   * styles (font-weight, font-style and text-decoration).
-   */
-  _updateStyleFromNodeAttributes(node: Node) {
-    if (!(node instanceof HTMLElement)) {
-      return;
-    }
-
-    const htmlElement = node;
-    const fontWeight = htmlElement.style.fontWeight;
-    const fontStyle = htmlElement.style.fontStyle;
-    const textDecoration = htmlElement.style.textDecoration;
-
-    if (boldValues.indexOf(fontWeight) >= 0) {
-      this.addStyle('BOLD');
-    } else if (notBoldValues.indexOf(fontWeight) >= 0) {
-      this.removeStyle('BOLD');
-    }
-
-    if (fontStyle === 'italic') {
-      this.addStyle('ITALIC');
-    } else if (fontStyle === 'normal') {
-      this.removeStyle('ITALIC');
-    }
-
-    if (textDecoration === 'underline') {
-      this.addStyle('UNDERLINE');
-    }
-    if (textDecoration === 'line-through') {
-      this.addStyle('STRIKETHROUGH');
-    }
-    if (textDecoration === 'none') {
-      this.removeStyle('UNDERLINE');
-      this.removeStyle('STRIKETHROUGH');
-    }
   }
 
   /**
