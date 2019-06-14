@@ -32,7 +32,6 @@
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
     "fbjs": "^1.0.0",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.0"
