@@ -66,7 +66,7 @@ ReactDOM.render(
 );
 ```
 
-Since the release of React 16.8, use can use [Hooks](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.
+Since the release of React 16.8, you can use [Hooks](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.
 
 ```js
 import React from 'react';
