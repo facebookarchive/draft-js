@@ -250,7 +250,7 @@ class ContentBlocksBuilder {
   // as we are walking the HTML node tree.
   characterList: List<CharacterMetadata> = List();
   currentBlockType: string = 'unstyled';
-  currentDepth: number = -1;
+  currentDepth: number = 0;
   currentEntity: ?string = null;
   currentStyle: DraftInlineStyle = OrderedSet();
   currentText: string = '';
@@ -285,7 +285,7 @@ class ContentBlocksBuilder {
     this.characterList = List();
     this.blockConfigs = [];
     this.currentBlockType = 'unstyled';
-    this.currentDepth = -1;
+    this.currentDepth = 0;
     this.currentEntity = null;
     this.currentStyle = OrderedSet();
     this.currentText = '';
@@ -299,6 +299,7 @@ class ContentBlocksBuilder {
    */
   addDOMNode(node: Node): ContentBlocksBuilder {
     this.contentBlocks = [];
+    this.currentDepth = 0;
     // Converts the HTML node to block config
     this.blockConfigs.push(...this._toBlockConfigs([node]));
 
@@ -362,7 +363,7 @@ class ContentBlocksBuilder {
       type: this.currentBlockType,
       text: this.currentText,
       characterList: this.characterList,
-      depth: Math.max(0, this.currentDepth),
+      depth: this.currentDepth,
       parent: null,
       children: List(),
       prevSibling: null,
@@ -372,7 +373,6 @@ class ContentBlocksBuilder {
     };
     this.characterList = List();
     this.currentBlockType = 'unstyled';
-    this.currentDepth = -1;
     this.currentText = '';
     return block;
   }
