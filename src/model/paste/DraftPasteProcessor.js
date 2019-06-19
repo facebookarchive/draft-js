@@ -20,7 +20,7 @@ import type {EntityMap} from 'EntityMap';
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 
-const convertFromHTMLToContentBlocksClassic = require('convertFromHTMLToContentBlocks');
+const convertFromHTMLToContentBlocksClassic = require('convertFromHTMLToContentBlocks_DEPRECATED');
 const convertFromHTMLToContentBlocksNew = require('convertFromHTMLToContentBlocks2');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');

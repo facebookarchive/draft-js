@@ -38,7 +38,7 @@ const gkx = require('gkx');
 
 const convertFromHTML = gkx('draft_refactored_html_importer')
   ? require('convertFromHTMLToContentBlocks2')
-  : require('convertFromHTMLToContentBlocks');
+  : require('convertFromHTMLToContentBlocks_DEPRECATED');
 
 const DraftPublic = {
   Editor: DraftEditor,
