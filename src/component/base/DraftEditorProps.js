@@ -14,6 +14,7 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDragType} from 'DraftDragType';
+import type DraftEditor from 'DraftEditor.react';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 import type {DraftHandleValue} from 'DraftHandleValue';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -178,6 +179,12 @@ export type DraftEditorProps = {
   // an element tag and an optional react element wrapper. This configuration
   // is used for both rendering and paste processing.
   blockRenderMap: DraftBlockRenderMap,
+
+  // Overrides for cut, copy & paste, which can be used to implement custom
+  // behavior like entity cut/copy/paste (see PR #1784)."
+  onPaste?: (DraftEditor, SyntheticClipboardEvent<>) => void,
+  onCut?: (DraftEditor, SyntheticClipboardEvent<>) => void,
+  onCopy?: (DraftEditor, SyntheticClipboardEvent<>) => void,
 };
 
 export type DraftEditorDefaultProps = {

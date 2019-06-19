@@ -21,12 +21,12 @@ import type {Map} from 'immutable';
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentStateInlineStyle = require('ContentStateInlineStyle');
-const Immutable = require('immutable');
 
 const applyEntityToContentState = require('applyEntityToContentState');
 const getCharacterRemovalRange = require('getCharacterRemovalRange');
 const getContentStateFragment = require('getContentStateFragment');
 const gkx = require('gkx');
+const Immutable = require('immutable');
 const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 const insertTextIntoContentState = require('insertTextIntoContentState');
 const invariant = require('invariant');

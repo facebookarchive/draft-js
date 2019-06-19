@@ -31,7 +31,7 @@ function moveSelectionBackward(
   const selection = editorState.getSelection();
   // Should eventually make this an invariant
   warning(
-    !selection.isCollapsed(),
+    selection.isCollapsed(),
     'moveSelectionBackward should only be called with a collapsed SelectionState',
   );
   const content = editorState.getCurrentContent();

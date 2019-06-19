@@ -16,9 +16,10 @@ const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');
-const Immutable = require('immutable');
 const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
 const SelectionState = require('SelectionState');
+
+const Immutable = require('immutable');
 
 const {BOLD, ITALIC} = SampleDraftInlineStyle;
 const ENTITY_KEY = '1';

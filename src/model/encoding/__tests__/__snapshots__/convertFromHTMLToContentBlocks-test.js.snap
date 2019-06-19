@@ -338,11 +338,21 @@ Array [
         "entity": null,
         "style": Array [],
       },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
     ],
     "data": Object {},
     "depth": 0,
     "key": "key0",
-    "text": "Line 1    Line 2    Line 3",
+    "text": "Line 1
+    Line 2
+    Line 3",
     "type": "unstyled",
   },
 ]
@@ -1952,6 +1962,363 @@ Array [
 ]
 `;
 
+exports[`Should scope attribute styles 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "ITALIC",
+          "UNDERLINE",
+        ],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "these won't accumulate styles    but this span will",
+    "type": "unstyled",
+  },
+]
+`;
+
 exports[`converts deeply nested html blocks when experimentalTreeDataSupport is enabled 1`] = `
 Array [
   Object {
@@ -2649,7 +3016,9 @@ Array [
   Immutable.Record {
     "key": "key0",
     "type": "unstyled",
-    "text": "Hello World!        lorem ipsum",
+    "text": "Hello World! 
+ 
+      lorem ipsum",
     "characterList": Immutable.List [
       Immutable.Record {
         "style": Immutable.OrderedSet [
@@ -2721,6 +3090,14 @@ Array [
         "style": Immutable.OrderedSet [
           "BOLD",
         ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
         "entity": null,
       },
       Immutable.Record {
@@ -2811,7 +3188,8 @@ Array [
   Immutable.Record {
     "key": "key0",
     "type": "unstyled",
-    "text": "Hello World!       lorem ipsum",
+    "text": "Hello World! 
+      lorem ipsum",
     "characterList": Immutable.List [
       Immutable.Record {
         "style": Immutable.OrderedSet [
@@ -2883,6 +3261,10 @@ Array [
         "style": Immutable.OrderedSet [
           "BOLD",
         ],
+        "entity": null,
+      },
+      Immutable.Record {
+        "style": Immutable.OrderedSet [],
         "entity": null,
       },
       Immutable.Record {

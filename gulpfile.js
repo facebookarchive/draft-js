@@ -48,6 +48,7 @@ var babelOptsJS = {
       rewriteModules: {map: moduleMap},
     }),
   ],
+  plugins: [require('@babel/plugin-proposal-nullish-coalescing-operator')],
 };
 
 var babelOptsFlow = {
@@ -57,6 +58,7 @@ var babelOptsFlow = {
       rewriteModules: {map: moduleMap},
     }),
   ],
+  plugins: [require('@babel/plugin-proposal-nullish-coalescing-operator')],
 };
 
 var COPYRIGHT_HEADER = `/**
@@ -245,7 +247,9 @@ gulp.task(
 
 gulp.task(
   'website:static',
-  gulp.series('dist:min', 'css',
+  gulp.series(
+    'dist:min',
+    'css',
     gulp.parallel(function() {
       return gulp
         .src(paths.dist + '/Draft.min.js')
@@ -256,7 +260,7 @@ gulp.task(
         .src(paths.dist + '/Draft.css')
         .pipe(gulp.dest(paths.static + '/css'));
     }),
-  )
+  ),
 );
 
 gulp.task(
@@ -269,14 +273,14 @@ gulp.task(
 gulp.task(
   'watch',
   gulp.series(function() {
-    gulp.watch(paths.src, ['modules']);
+    gulp.watch(paths.src, gulp.parallel('modules'));
   }),
 );
 
 gulp.task(
   'dev',
   gulp.series(function() {
-    gulp.watch(paths.src, ['modules', 'dist']);
+    gulp.watch(paths.src, gulp.parallel('dist'));
   }),
 );
 

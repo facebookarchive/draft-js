@@ -13,9 +13,9 @@
 
 import type ContentState from 'ContentState';
 
-const Immutable = require('immutable');
 const UnicodeBidiService = require('UnicodeBidiService');
 
+const Immutable = require('immutable');
 const nullthrows = require('nullthrows');
 
 const {OrderedMap} = Immutable;

@@ -13,8 +13,8 @@ import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
 
 const DraftEntityInstance = require('DraftEntityInstance');
-const Immutable = require('immutable');
 
+const Immutable = require('immutable');
 const invariant = require('invariant');
 
 const {Map} = Immutable;

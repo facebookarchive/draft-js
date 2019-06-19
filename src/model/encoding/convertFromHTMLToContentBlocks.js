@@ -57,7 +57,7 @@ const knownListItemDepthClasses = {
   [cx('public/DraftStyleDefault/depth4')]: 4,
 };
 
-const HTMLTagToInlineStyleMap: Map<string, string> = Map({
+const HTMLTagToRawInlineStyleMap: Map<string, string> = Map({
   b: 'BOLD',
   code: 'CODE',
   del: 'STRIKETHROUGH',
@@ -156,9 +156,51 @@ const isValidImage = (node: Node): boolean => {
 };
 
 /**
+ * Try to guess the inline style of an HTML element based on its css
+ * styles (font-weight, font-style and text-decoration).
+ */
+const styleFromNodeAttributes = (node: Node): DraftInlineStyle => {
+  const style = OrderedSet();
+
+  if (!(node instanceof HTMLElement)) {
+    return style;
+  }
+
+  const htmlElement = node;
+  const fontWeight = htmlElement.style.fontWeight;
+  const fontStyle = htmlElement.style.fontStyle;
+  const textDecoration = htmlElement.style.textDecoration;
+
+  return style.withMutations(style => {
+    if (boldValues.indexOf(fontWeight) >= 0) {
+      style.add('BOLD');
+    } else if (notBoldValues.indexOf(fontWeight) >= 0) {
+      style.remove('BOLD');
+    }
+
+    if (fontStyle === 'italic') {
+      style.add('ITALIC');
+    } else if (fontStyle === 'normal') {
+      style.remove('ITALIC');
+    }
+
+    if (textDecoration === 'underline') {
+      style.add('UNDERLINE');
+    }
+    if (textDecoration === 'line-through') {
+      style.add('STRIKETHROUGH');
+    }
+    if (textDecoration === 'none') {
+      style.remove('UNDERLINE');
+      style.remove('STRIKETHROUGH');
+    }
+  });
+};
+
+/**
  * Determine if a nodeName is a list type, 'ul' or 'ol'
  */
-const isListNode = (nodeName: string): boolean =>
+const isListNode = (nodeName: ?string): boolean =>
   nodeName === 'ul' || nodeName === 'ol';
 
 /**
@@ -208,11 +250,11 @@ class ContentBlocksBuilder {
   // as we are walking the HTML node tree.
   characterList: List<CharacterMetadata> = List();
   currentBlockType: string = 'unstyled';
-  currentDepth: number = -1;
+  currentDepth: number = 0;
   currentEntity: ?string = null;
   currentStyle: DraftInlineStyle = OrderedSet();
   currentText: string = '';
-  wrapper: string = 'ul';
+  wrapper: ?string = null;
 
   // Describes the future ContentState as a tree of content blocks
   blockConfigs: Array<ContentBlockConfig> = [];
@@ -225,11 +267,11 @@ class ContentBlocksBuilder {
 
   // Map HTML tags to draftjs block types and disambiguation function
   blockTypeMap: BlockTypeMap;
-  disambiguate: (string, string) => ?string;
+  disambiguate: (string, ?string) => ?string;
 
   constructor(
     blockTypeMap: BlockTypeMap,
-    disambiguate: (string, string) => ?string,
+    disambiguate: (string, ?string) => ?string,
   ): void {
     this.clear();
     this.blockTypeMap = blockTypeMap;
@@ -243,12 +285,12 @@ class ContentBlocksBuilder {
     this.characterList = List();
     this.blockConfigs = [];
     this.currentBlockType = 'unstyled';
-    this.currentDepth = -1;
+    this.currentDepth = 0;
     this.currentEntity = null;
     this.currentStyle = OrderedSet();
     this.currentText = '';
     this.entityMap = DraftEntity;
-    this.wrapper = 'ul';
+    this.wrapper = null;
     this.contentBlocks = [];
   }
 
@@ -257,6 +299,7 @@ class ContentBlocksBuilder {
    */
   addDOMNode(node: Node): ContentBlocksBuilder {
     this.contentBlocks = [];
+    this.currentDepth = 0;
     // Converts the HTML node to block config
     this.blockConfigs.push(...this._toBlockConfigs([node]));
 
@@ -295,15 +338,15 @@ class ContentBlocksBuilder {
   /**
    * Add a new inline style to the upcoming nodes.
    */
-  addStyle(inlineStyle: string): void {
-    this.currentStyle = this.currentStyle.add(inlineStyle);
+  addStyle(inlineStyle: DraftInlineStyle): void {
+    this.currentStyle = this.currentStyle.union(inlineStyle);
   }
 
   /**
    * Remove a currently applied inline style.
    */
-  removeStyle(inlineStyle: string): void {
-    this.currentStyle = this.currentStyle.remove(inlineStyle);
+  removeStyle(inlineStyle: DraftInlineStyle): void {
+    this.currentStyle = this.currentStyle.subtract(inlineStyle);
   }
 
   // ***********************************WARNING******************************
@@ -320,7 +363,7 @@ class ContentBlocksBuilder {
       type: this.currentBlockType,
       text: this.currentText,
       characterList: this.characterList,
-      depth: Math.max(0, this.currentDepth),
+      depth: this.currentDepth,
       parent: null,
       children: List(),
       prevSibling: null,
@@ -330,7 +373,6 @@ class ContentBlocksBuilder {
     };
     this.characterList = List();
     this.currentBlockType = 'unstyled';
-    this.currentDepth = -1;
     this.currentText = '';
     return block;
   }
@@ -420,6 +462,11 @@ class ContentBlocksBuilder {
         continue;
       }
 
+      if (nodeName === 'br') {
+        this._addBreakNode(node);
+        continue;
+      }
+
       if (isValidImage(node)) {
         this._addImgNode(node);
         continue;
@@ -430,18 +477,18 @@ class ContentBlocksBuilder {
         continue;
       }
 
-      const inlineStyle = HTMLTagToInlineStyleMap.get(nodeName);
-      if (inlineStyle !== undefined) {
-        this.addStyle(inlineStyle);
-      }
+      const inlineStyle = HTMLTagToRawInlineStyleMap.has(nodeName)
+        ? OrderedSet.of(HTMLTagToRawInlineStyleMap.get(nodeName))
+        : OrderedSet();
+      const attributesStyle = styleFromNodeAttributes(node);
+
+      this.addStyle(inlineStyle);
+      this.addStyle(attributesStyle);
 
       blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
 
-      if (inlineStyle !== undefined) {
-        this.removeStyle(inlineStyle);
-      }
-
-      this._updateStyleFromNodeAttributes(node);
+      this.removeStyle(attributesStyle);
+      this.removeStyle(inlineStyle);
     }
 
     return blockConfigs;
@@ -513,6 +560,13 @@ class ContentBlocksBuilder {
     this._appendText(text);
   }
 
+  _addBreakNode(node: Node) {
+    if (!(node instanceof HTMLBRElement)) {
+      return;
+    }
+    this._appendText('\n');
+  }
+
   /**
    * Add the content of an HTML img node to the internal state
    */
@@ -582,44 +636,6 @@ class ContentBlocksBuilder {
 
     blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
     this.currentEntity = null;
-  }
-
-  /**
-   * Try to guess the inline style of an HTML element based on its css
-   * styles (font-weight, font-style and text-decoration).
-   */
-  _updateStyleFromNodeAttributes(node: Node) {
-    if (!(node instanceof HTMLElement)) {
-      return;
-    }
-
-    const htmlElement = node;
-    const fontWeight = htmlElement.style.fontWeight;
-    const fontStyle = htmlElement.style.fontStyle;
-    const textDecoration = htmlElement.style.textDecoration;
-
-    if (boldValues.indexOf(fontWeight) >= 0) {
-      this.addStyle('BOLD');
-    } else if (notBoldValues.indexOf(fontWeight) >= 0) {
-      this.removeStyle('BOLD');
-    }
-
-    if (fontStyle === 'italic') {
-      this.addStyle('ITALIC');
-    } else if (fontStyle === 'normal') {
-      this.removeStyle('ITALIC');
-    }
-
-    if (textDecoration === 'underline') {
-      this.addStyle('UNDERLINE');
-    }
-    if (textDecoration === 'line-through') {
-      this.addStyle('STRIKETHROUGH');
-    }
-    if (textDecoration === 'none') {
-      this.removeStyle('UNDERLINE');
-      this.removeStyle('STRIKETHROUGH');
-    }
   }
 
   /**
@@ -731,7 +747,7 @@ const convertFromHTMLToContentBlocks = (
 
   // Select the proper block type for the cases where the blockRenderMap
   // uses multiple block types for the same html tag.
-  const disambiguate = (tag, wrapper) => {
+  const disambiguate = (tag: string, wrapper: ?string): ?string => {
     if (tag === 'li') {
       return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
     }

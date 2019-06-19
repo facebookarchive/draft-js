@@ -20,11 +20,20 @@ const UserAgent = require('UserAgent');
 
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const gkx = require('gkx');
+const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
 const nullthrows = require('nullthrows');
 
 const isGecko = UserAgent.isEngine('Gecko');
 
 const DOUBLE_NEWLINE = '\n\n';
+
+function onInputType(inputType: string, editorState: EditorState): EditorState {
+  switch (inputType) {
+    case 'deleteContentBackward':
+      return keyCommandPlainBackspace(editorState);
+  }
+  return editorState;
+}
 
 /**
  * This function is intended to handle spellcheck and autocorrect changes,
@@ -38,7 +47,7 @@ const DOUBLE_NEWLINE = '\n\n';
  * when an `input` change leads to a DOM/model mismatch, the change should be
  * due to a spellcheck change, and we can incorporate it into our model.
  */
-function editOnInput(editor: DraftEditor): void {
+function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
@@ -110,7 +119,21 @@ function editOnInput(editor: DraftEditor): void {
     // This can be buggy for some Android keyboards because they don't fire
     // standard onkeydown/pressed events and only fired editOnInput
     // so domText is already changed by the browser and ends up being equal
-    // to modelText unexpectedly
+    // to modelText unexpectedly.
+    // Newest versions of Android support the dom-inputevent-inputtype
+    // and we can use the `inputType` to properly apply the state changes.
+
+    /* $FlowFixMe inputType is only defined on a draft of a standard.
+     * https://w3c.github.io/input-events/#dom-inputevent-inputtype */
+    const {inputType} = e.nativeEvent;
+    if (inputType) {
+      const newEditorState = onInputType(inputType, editorState);
+      if (newEditorState !== editorState) {
+        editor.restoreEditorDOM();
+        editor.update(newEditorState);
+        return;
+      }
+    }
     return;
   }
 
