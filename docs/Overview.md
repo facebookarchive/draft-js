@@ -81,7 +81,7 @@ function MyEditor() {
   return (
     <Editor
       editorState={editorState}
-      onChange={editorState => setEditorState(editorState)}
+      onChange={setEditorState}
     />
   );
 }
