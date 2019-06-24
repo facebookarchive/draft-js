@@ -254,6 +254,22 @@ test('does not convert deeply nested html blocks when experimentalTreeDataSuppor
   });
 });
 
+test('eliminates useless blocks when experimentalTreeDataSupport is disabled', () => {
+  const html_string = `
+    <div>
+      <div>
+        <div>Hello</div>
+      </div>
+      <div>World</div>
+    </div>
+  `;
+
+  expect(AreTreeBlockNodesEquivalent(html_string)).toMatchSnapshot();
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
 SUPPORTED_TAGS.forEach(tag =>
   testConvertingAdjacentHtmlElementsToContentBlocks(tag, true),
 );

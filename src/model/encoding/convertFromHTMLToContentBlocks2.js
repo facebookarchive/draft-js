@@ -658,6 +658,26 @@ class ContentBlocksBuilder {
     }
   }
 
+  /**
+   * Remove 'useless' container nodes from the block config hierarchy, by
+   * replacing them with their children.
+   */
+
+  _hoistContainersInBlockConfigs(
+    blockConfigs: Array<ContentBlockConfig>,
+  ): List<ContentBlockConfig> {
+    const hoisted = List(blockConfigs).flatMap(blockConfig => {
+      // Don't mess with useful blocks
+      if (blockConfig.type !== 'unstyled' || blockConfig.text !== '') {
+        return [blockConfig];
+      }
+
+      return this._hoistContainersInBlockConfigs(blockConfig.childConfigs);
+    });
+
+    return hoisted;
+  }
+
   // ***********************************************************************
   // The two methods below are used for backward compatibility when
   // experimentalTreeDataSupport is disabled.
@@ -667,9 +687,8 @@ class ContentBlocksBuilder {
    * text content.
    */
   _toFlatContentBlocks(blockConfigs: Array<ContentBlockConfig>) {
-    const l = blockConfigs.length - 1;
-    for (let i = 0; i <= l; i++) {
-      const config = blockConfigs[i];
+    const cleanConfigs = this._hoistContainersInBlockConfigs(blockConfigs);
+    cleanConfigs.forEach(config => {
       const {text, characterList} = this._extractTextFromBlockConfigs(
         config.childConfigs,
       );
@@ -680,7 +699,7 @@ class ContentBlocksBuilder {
           characterList: config.characterList.concat(characterList),
         }),
       );
-    }
+    });
   }
 
   /**

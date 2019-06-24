@@ -2967,6 +2967,71 @@ lorem ipsum
 ]
 `;
 
+exports[`eliminates useless blocks when experimentalTreeDataSupport is disabled 1`] = `false`;
+
+exports[`eliminates useless blocks when experimentalTreeDataSupport is disabled 2`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key2",
+    "text": "Hello",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key3",
+    "text": "World",
+    "type": "unstyled",
+  },
+]
+`;
+
 exports[`highlighted text should be recognized and considered styled characters 1`] = `
 Array [
   Immutable.Record {
