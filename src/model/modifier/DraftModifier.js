@@ -118,6 +118,7 @@ const DraftModifier = {
     contentState: ContentState,
     targetRange: SelectionState,
     fragment: BlockMap,
+    forceTypeOverride: ?boolean,
   ): ContentState {
     const withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
     const withoutText = removeRangeFromContentState(
@@ -129,6 +130,7 @@ const DraftModifier = {
       withoutText,
       withoutText.getSelectionAfter(),
       fragment,
+      forceTypeOverride,
     );
   },
 

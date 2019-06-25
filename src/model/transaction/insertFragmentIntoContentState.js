@@ -33,6 +33,7 @@ const updateExistingBlock = (
   fragmentBlock: BlockNodeRecord,
   targetKey: string,
   targetOffset: number,
+  forceTypeOverride: ?boolean,
 ): ContentState => {
   const targetBlock = blockMap.get(targetKey);
   const text = targetBlock.getText();
@@ -51,6 +52,7 @@ const updateExistingBlock = (
       targetOffset,
     ),
     data: fragmentBlock.getData(),
+    type: forceTypeOverride ? fragmentBlock.getType() : targetBlock.getType(),
   });
 
   return contentState.merge({
@@ -290,6 +292,7 @@ const insertFragmentIntoContentState = (
   contentState: ContentState,
   selectionState: SelectionState,
   fragmentBlockMap: BlockMap,
+  forceTypeOverride: ?boolean,
 ): ContentState => {
   invariant(
     selectionState.isCollapsed(),
@@ -320,6 +323,7 @@ const insertFragmentIntoContentState = (
       fragment.first(),
       targetKey,
       targetOffset,
+      forceTypeOverride,
     );
   }
 
