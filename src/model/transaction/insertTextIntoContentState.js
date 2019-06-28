@@ -32,7 +32,11 @@ function insertTextIntoContentState(
     '`insertText` should only be called with a collapsed range.',
   );
 
-  const len = text.length;
+  let len;
+  if (text) {
+    len = text.length;
+  }
+
   if (!len) {
     return contentState;
   }
