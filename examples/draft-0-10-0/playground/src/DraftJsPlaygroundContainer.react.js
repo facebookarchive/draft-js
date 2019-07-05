@@ -29,11 +29,7 @@ const SomeButton = require('SomeButton.react');
 const SomeSelector = require('SomeSelector.react');
 const SomeSelectorOption = require('SomeSelectorOption.react');
 const convertFromRaw = require('convertFromRawToDraftState');
-const gkx = require('gkx');
-
-const convertFromHTML = gkx('draft_refactored_html_importer')
-  ? require('convertFromHTMLToContentBlocks2')
-  : require('convertFromHTMLToContentBlocks_DEPRECATED');
+const convertFromHTML = require('convertFromHTMLToContentBlocks2');
 
 type Props = any;
 type State = any;
