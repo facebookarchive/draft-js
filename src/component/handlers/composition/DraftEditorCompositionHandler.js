@@ -21,7 +21,6 @@ const Keys = require('Keys');
 
 const editOnSelect = require('editOnSelect');
 const getContentEditableContainer = require('getContentEditableContainer');
-const getDraftEditorSelection = require('getDraftEditorSelection');
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const nullthrows = require('nullthrows');
 
@@ -157,24 +156,9 @@ const DraftEditorCompositionHandler = {
       return;
     }
 
-    // TODO, check if Facebook still needs this flag or if it could be removed.
-    // Since there can be multiple mutations providing a `composedChars` doesn't
-    // apply well on this new model.
-    // if (
-    //   gkx('draft_handlebeforeinput_composed_text') &&
-    //   editor.props.handleBeforeInput &&
-    //   isEventHandled(
-    //     editor.props.handleBeforeInput(
-    //       composedChars,
-    //       editorState,
-    //       event.timeStamp,
-    //     ),
-    //   )
-    // ) {
-    //   return;
-    // }
-
+    const compositionEndSelectionState = editorState.getSelection();
     let contentState = editorState.getCurrentContent();
+
     mutations.forEach((composedChars, offsetKey) => {
       const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
         offsetKey,
@@ -214,17 +198,10 @@ const DraftEditorCompositionHandler = {
       });
     });
 
-    // When we apply the text changes to the ContentState, the selection always
-    // goes to the end of the field, but it should just stay where it is
-    // after compositionEnd.
-    const documentSelection = getDraftEditorSelection(
-      editorState,
-      getContentEditableContainer(editor),
-    );
-    const compositionEndSelectionState = documentSelection.selectionState;
-
     editor.restoreEditorDOM();
 
+    // When we apply the text changes to the ContentState, the selection always
+    // goes to the end, but it should just stay where it is after compositionEnd.
     const editorStateWithUpdatedSelection = EditorState.acceptSelection(
       editorState,
       compositionEndSelectionState,
