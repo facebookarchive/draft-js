@@ -7,6 +7,10 @@ Changes to `src` are live in production on facebook.com at the time of release.
 ## 0.11.0 (July 9th, 2019)
 
 ### Added
+* Adds support for nullish coalescing operator (#2076) (Claudio Procida in 96c7221)
+* Add import statements for hooks-example in README (#2075) (Bennett in 943f6dc)
+* Unit tests for DraftStringKey (Claudio Procida in 978ad6b)
+* Adding Hooks in docs (#2004) (Charles ⚡ in f9f5fd6)
 * Exports `isSoftNewlineEvent` as static method of `KeyBindingUtil` (Kevin Hawkinson in aede823)
 * Add live demo to README.md (#1907) (PLa in 6db3726)
 * added highlighting (`<mark>` tag) to draft js html to content block converter (Isaiah Solomon in 37f2f2a)
@@ -61,6 +65,14 @@ Changes to `src` are live in production on facebook.com at the time of release.
 
 
 ### Changed
+* Moves test for legacy convertFromHTMLToContentBlocks out of OSS repo (Claudio Procida in 5eb49b1)
+* Removes legacy convertFromHTMLToContentBlocks from OSS repo (Claudio Procida in a7d955e)
+* Renames convertFromHTMLToContentBlocks2 to convertFromHTMLToContentBlocks (Claudio Procida in d08399b)
+* Removes all resolved uses of convertFromHTMLToContentBlocks_DEPRECATED (Claudio Procida in ec43403)
+* draft-js: clean up useless divs from HTML when pasting content (Daniel Quadros de Miranda in 0f5427a)
+* docs: remove --save flag (#2008) (Mounish Sai in f92d4b1)
+* Rename DraftEditorBlock to EditorBlock (#2002) (Umang Galaiya in 8514b57)
+* Removes unnecessary eslint disable rules (Claudio Procida in 1ba0764)
 * Upgrades react-scripts to ^1.1.5 (#2042) (Claudio Procida in 71ef373)
 * Upgrades docusaurus (#2039) (Claudio Procida in 21753fa)
 * Removes unused gulp-browserify-thin (#2032) (Claudio Procida in fc3549a)
@@ -152,7 +164,21 @@ Changes to `src` are live in production on facebook.com at the time of release.
 * Add `flushSync` to Draft.js for *only* GK folks (Flarnie Marchan in 26040e5)
 
 ### Fixed
-* Fixed drag and drop .length error (#2117) (job in 2487e7)
+* Fixed drag and drop `.length` error (#2117) (job in 2487e7d)
+* Fix broken id anchor (#2095) (Sajad Torkamani in eddcc55)
+* Typo corrected - Overview.md (#2089) (Jonathan Erlich in 87a812d)
+* fix: set to nested list items to right depth (Kevin Li in 12c4480)
+* fix(styles): avoid permanently accumulating attribute styles (Kevin Li in 7cfb055)
+* Fixes runtime error when cutting empty selection at the end of the content (Claudio Procida in 23fc70f)
+* Fixing major Android editing issues (#2035) (Fabio M. Costa in 634bd29)
+* Fix broken link in Overview.md (#2062) (seojeee in e8e0bcf)
+* Fix failing `DraftStringKey` test (#2064) (Claudio Procida in fe4e266)
+* Fixes require order lint issues /2 (Claudio Procida in 76e121e)
+* Fixes require order lint issues (Claudio Procida in e2c5357)
+* Fix the issue of draft JS does not do copy and paste correctly with custom entities. (Tee Xie in d09ef3e)
+* fix typo in README.md (#2055) (Tanner Eustice in 75a89ff)
+* rename `*.test.js` to `*-test.js` to match naming convention (Aaron Abramov in dc58df8)
+* Convert some of draftjs' `ReactDOM.findDOMNode` to refs (#2051) (Dennis Wilkins in 1fae34f)
 * Correct warning condition (#2049) (Ben Gardner in ffd8f59)
 * Fix npm run dev (#2030) (Fabio M. Costa in 3c01ef6)
 * Specify correct type of `joinClasses` (George Zahariev in 7b9a7e1)
