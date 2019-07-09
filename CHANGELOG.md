@@ -4,7 +4,7 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
-## 0.11.0 (April TBD, 2019)
+## 0.11.0 (July 9th, 2019)
 
 ### Added
 * Exports `isSoftNewlineEvent` as static method of `KeyBindingUtil` (Kevin Hawkinson in aede823)
@@ -152,6 +152,7 @@ Changes to `src` are live in production on facebook.com at the time of release.
 * Add `flushSync` to Draft.js for *only* GK folks (Flarnie Marchan in 26040e5)
 
 ### Fixed
+* Fixed drag and drop .length error (#2117) (job in 2487e7)
 * Correct warning condition (#2049) (Ben Gardner in ffd8f59)
 * Fix npm run dev (#2030) (Fabio M. Costa in 3c01ef6)
 * Specify correct type of `joinClasses` (George Zahariev in 7b9a7e1)
