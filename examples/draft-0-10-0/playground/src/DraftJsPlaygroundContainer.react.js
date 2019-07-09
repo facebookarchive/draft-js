@@ -29,7 +29,7 @@ const SomeButton = require('SomeButton.react');
 const SomeSelector = require('SomeSelector.react');
 const SomeSelectorOption = require('SomeSelectorOption.react');
 const convertFromRaw = require('convertFromRawToDraftState');
-const convertFromHTML = require('convertFromHTMLToContentBlocks2');
+const convertFromHTML = require('convertFromHTMLToContentBlocks');
 
 type Props = any;
 type State = any;

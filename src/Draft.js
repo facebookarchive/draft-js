@@ -35,7 +35,7 @@ const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getVisibleSelectionRect = require('getVisibleSelectionRect');
 
-const convertFromHTML = require('convertFromHTMLToContentBlocks2');
+const convertFromHTML = require('convertFromHTMLToContentBlocks');
 
 const DraftPublic = {
   Editor: DraftEditor,
