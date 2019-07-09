@@ -16,9 +16,9 @@ import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 const CharacterMetadata = require('CharacterMetadata');
-const Immutable = require('immutable');
 
 const findRangesImmutable = require('findRangesImmutable');
+const Immutable = require('immutable');
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 

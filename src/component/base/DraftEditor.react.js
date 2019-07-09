@@ -467,7 +467,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   ): void => {
     const {editorState} = this.props;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
-    const editorNode = ReactDOM.findDOMNode(this.editor);
+    const editorNode = this.editor;
 
     if (!editorNode) {
       // once in a while people call 'focus' in a setTimeout, and the node has
@@ -504,7 +504,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   };
 
   blur: () => void = (): void => {
-    const editorNode = ReactDOM.findDOMNode(this.editor);
+    const editorNode = this.editor;
     invariant(
       editorNode instanceof HTMLElement,
       'editorNode is not an HTMLElement',
@@ -520,7 +520,26 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * the active mode.
    */
   setMode: DraftEditorModes => void = (mode: DraftEditorModes): void => {
-    this._handler = handlerMap[mode];
+    const {onPaste, onCut, onCopy} = this.props;
+    const editHandler = {...handlerMap.edit};
+
+    if (onPaste) {
+      editHandler.onPaste = onPaste;
+    }
+
+    if (onCut) {
+      editHandler.onCut = onCut;
+    }
+
+    if (onCopy) {
+      editHandler.onCopy = onCopy;
+    }
+
+    const handler = {
+      ...handlerMap,
+      edit: editHandler,
+    };
+    this._handler = handler[mode];
   };
 
   exitCurrentMode: () => void = (): void => {
