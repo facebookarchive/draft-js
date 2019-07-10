@@ -18,6 +18,7 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type SelectionState from 'SelectionState';
 import type {Map} from 'immutable';
+import type {BlockDataMergeBehavior} from 'insertFragmentIntoContentState';
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentStateInlineStyle = require('ContentStateInlineStyle');
@@ -118,6 +119,7 @@ const DraftModifier = {
     contentState: ContentState,
     targetRange: SelectionState,
     fragment: BlockMap,
+    mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
   ): ContentState {
     const withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
     const withoutText = removeRangeFromContentState(
@@ -129,6 +131,7 @@ const DraftModifier = {
       withoutText,
       withoutText.getSelectionAfter(),
       fragment,
+      mergeBlockData,
     );
   },
 
