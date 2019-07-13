@@ -73,4 +73,4 @@ Our philosophy regarding API changes is as follows:
 
 ## License
 By contributing to Draft.js, you agree that your contributions will be licensed
-under its BSD license.
+under its MIT license.
