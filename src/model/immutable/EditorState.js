@@ -41,6 +41,7 @@ type EditorStateRecordType = {
   selection: ?SelectionState,
   treeMap: ?OrderedMap<string, List<any>>,
   undoStack: Stack<ContentState>,
+  selectAllContents: ?SelectionState,
 };
 
 const defaultRecord: EditorStateRecordType = {
@@ -174,6 +175,23 @@ class EditorState {
 
   getSelection(): SelectionState {
     return this.getImmutable().get('selection');
+  }
+
+  selectAllContents(): SelectionState {
+
+    const content = this.getImmutable().get('currentContent');
+    let selection = this.getImmutable().get('selection');
+
+    // create a selection from beginning of first block,
+    // to end of last block
+    selection = selection.merge({
+      anchorKey: content.getFirstBlock().getKey(),
+      anchorOffset: 0,
+      focusOffset: content.getLastBlock().getText().length,
+      focusKey: content.getLastBlock().getKey(),
+    })
+
+    return selection;
   }
 
   getDecorator(): ?DraftDecoratorType {
@@ -662,3 +680,4 @@ function lookUpwardForInlineStyle(
 }
 
 module.exports = EditorState;
+
