@@ -1,0 +1,183 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ *
+ * This file provided by Facebook is for non-commercial testing and evaluation
+ * purposes only. Facebook reserves all rights not expressly granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+:root {
+  --nav-main-height: 50px;
+  --main-background: #f7f7f7;
+}
+
+.App {
+  text-align: center;
+}
+
+.playground-main select,
+.playground-main button {
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  border: none;
+  padding: 0px 10px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.playground-main select {
+  width: 100px;
+  background: #843131;
+}
+
+.playground-main button {
+  background: #3B3738;
+  margin-left: 10px;
+}
+
+.playground-main button:hover {
+  background: #843131;
+}
+
+.playground-main select:hover,
+.playground-main button:hover {
+  cursor: pointer;
+}
+
+.nav-main {
+  *zoom: 1;
+  background: #3B3738;
+  color: #fafafa;
+  position: fixed;
+  top: 0;
+  height: var(--nav-main-height);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  z-index: 100;
+  padding: 0 15px;
+}
+
+.nav-main:before, .nav-main:after {
+  content: " ";
+  display: table;
+}
+
+.nav-main:after {
+  clear: both;
+}
+
+.nav-main a {
+  color: #e9e9e9;
+  text-decoration: none;
+}
+
+.nav-main .nav-site {
+  float: right;
+  margin: 0 20px 0 0;
+}
+
+.nav-main .nav-site li {
+  margin: 0;
+}
+
+.nav-main .nav-site a {
+  padding: 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 50px;
+  display: inline-block;
+  height: 50px;
+  color: #aaa;
+}
+
+.nav-main .nav-site a:hover {
+  color: #fafafa;
+}
+
+.nav-main .nav-site a.active {
+  color: #fafafa;
+  border-bottom: 3px solid #C15757;
+  background: #333;
+}
+
+.nav-main .nav-home {
+  color: #fafafa;
+  font-size: 24px;
+  line-height: 50px;
+}
+
+.nav-home a {
+  color: #C15757;
+}
+
+.nav-main .nav-experiment-selector option,
+.nav-main .nav-experiment-selector {
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  text-align-last: right;
+}
+
+.nav-main .nav-experiment-selector option {
+  color: #000;
+  padding: 10px 0px;
+}
+
+.nav-home img {
+  vertical-align: -17px;
+  margin-right: 4px;
+  width: 50px;
+  height: 50px;
+}
+
+.nav-main ul {
+  display: inline;
+}
+
+.nav-main li {
+  display: inline;
+}
+
+.playground-main {
+  background: var(--main-background);
+  margin-top: var(--nav-main-height);
+  display: flex;
+  height: calc(100vh - var(--nav-main-height));
+  display: flex;
+}
+
+.playground-raw-preview {
+  padding: 10px 20px;
+}
+
+/**
+ * Third-party style overwrites
+ */
+.panelWrapper {
+  overflow-y: auto !important;
+}
+
+.playground-raw-preview ul {
+  /** sad :( but seems to not be a way to overwrite that by configuration */
+  background: var(--main-background) !important;
+}
+
+.RichEditor-editor {
+  padding: 10px 20px;
+}
+
+/**
+ * basic style for handling nested lists
+ */
+.RichEditor-editor li[data-block] li[data-block] {
+  margin-left: 20px;
+}

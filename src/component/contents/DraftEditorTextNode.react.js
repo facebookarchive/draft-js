@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftEditorTextNode.react
- * @typechecks
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -41,13 +39,21 @@ function isNewline(node: Element): boolean {
  * See http://jsfiddle.net/9khdavod/ for the failure case, and
  * http://jsfiddle.net/7pg143f7/ for the fixed case.
  */
-const NEWLINE_A = useNewlineChar ?
-  <span key="A" data-text="true">{'\n'}</span> :
-  <br key="A" data-text="true" />;
+const NEWLINE_A = useNewlineChar ? (
+  <span key="A" data-text="true">
+    {'\n'}
+  </span>
+) : (
+  <br key="A" data-text="true" />
+);
 
-const NEWLINE_B = useNewlineChar ?
-  <span key="B" data-text="true">{'\n'}</span> :
-  <br key="B" data-text="true" />;
+const NEWLINE_B = useNewlineChar ? (
+  <span key="B" data-text="true">
+    {'\n'}
+  </span>
+) : (
+  <br key="B" data-text="true" />
+);
 
 type Props = {
   children: string,
@@ -60,11 +66,13 @@ type Props = {
  * nodes with DOM state that already matches the expectations of our immutable
  * editor state.
  */
-class DraftEditorTextNode extends React.Component {
+class DraftEditorTextNode extends React.Component<Props> {
   _forceFlag: boolean;
 
   constructor(props: Props) {
     super(props);
+    // By flipping this flag, we also keep flipping keys which forces
+    // React to remount this node every time it rerenders.
     this._forceFlag = false;
   }
 
@@ -78,13 +86,15 @@ class DraftEditorTextNode extends React.Component {
     return node.textContent !== nextProps.children;
   }
 
-  componentWillUpdate(): void {
-    // By flipping this flag, we also keep flipping keys which forces
-    // React to remount this node every time it rerenders.
+  componentDidMount(): void {
     this._forceFlag = !this._forceFlag;
   }
 
-  render(): React.Element<any> {
+  componentDidUpdate(): void {
+    this._forceFlag = !this._forceFlag;
+  }
+
+  render(): React.Node {
     if (this.props.children === '') {
       return this._forceFlag ? NEWLINE_A : NEWLINE_B;
     }

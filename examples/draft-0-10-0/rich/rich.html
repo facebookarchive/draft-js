@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
 
 This file provided by Facebook is for non-commercial testing and evaluation
 purposes only. Facebook reserves all rights not expressly granted.
@@ -24,8 +24,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   </head>
   <body>
     <div id="target"></div>
-    <script src="../../../node_modules/react/dist/react.js"></script>
-    <script src="../../../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="../../../node_modules/react/umd/react.development.js"></script>
+    <script src="../../../node_modules/react-dom/umd/react-dom.development.js"></script>
     <script src="../../../node_modules/immutable/dist/immutable.js"></script>
     <script src="../../../node_modules/es6-shim/es6-shim.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
@@ -33,7 +33,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <script type="text/babel">
       'use strict';
 
-      const {Editor, EditorState, RichUtils} = Draft;
+      const {Editor, EditorState, RichUtils, getDefaultKeyBinding} = Draft;
 
       class RichEditorExample extends React.Component {
         constructor(props) {
@@ -43,14 +43,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
 
-          this.handleKeyCommand = (command) => this._handleKeyCommand(command);
-          this.onTab = (e) => this._onTab(e);
-          this.toggleBlockType = (type) => this._toggleBlockType(type);
-          this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
+          this.handleKeyCommand = this._handleKeyCommand.bind(this);
+          this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
+          this.toggleBlockType = this._toggleBlockType.bind(this);
+          this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
         }
 
-        _handleKeyCommand(command) {
-          const {editorState} = this.state;
+        _handleKeyCommand(command, editorState) {
           const newState = RichUtils.handleKeyCommand(editorState, command);
           if (newState) {
             this.onChange(newState);
@@ -59,9 +58,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           return false;
         }
 
-        _onTab(e) {
-          const maxDepth = 4;
-          this.onChange(RichUtils.onTab(e, this.state.editorState, maxDepth));
+        _mapKeyToEditorCommand(e) {
+          if (e.keyCode === 9 /* TAB */) {
+            const newEditorState = RichUtils.onTab(
+              e,
+              this.state.editorState,
+              4, /* maxDepth */
+            );
+            if (newEditorState !== this.state.editorState) {
+              this.onChange(newEditorState);
+            }
+            return;
+          }
+          return getDefaultKeyBinding(e);
         }
 
         _toggleBlockType(blockType) {
@@ -111,8 +120,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   customStyleMap={styleMap}
                   editorState={editorState}
                   handleKeyCommand={this.handleKeyCommand}
+                  keyBindingFn={this.mapKeyToEditorCommand}
                   onChange={this.onChange}
-                  onTab={this.onTab}
                   placeholder="Tell a story..."
                   ref="editor"
                   spellCheck={true}
@@ -207,10 +216,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       ];
 
       const InlineStyleControls = (props) => {
-        var currentStyle = props.editorState.getCurrentInlineStyle();
+        const currentStyle = props.editorState.getCurrentInlineStyle();
+        
         return (
           <div className="RichEditor-controls">
-            {INLINE_STYLES.map(type =>
+            {INLINE_STYLES.map((type) =>
               <StyleButton
                 key={type.label}
                 active={currentStyle.has(type.style)}

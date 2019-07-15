@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+Object {
+  "anchorKey": "a",
+  "anchorOffset": 0,
+  "focusKey": "a",
+  "focusOffset": 0,
+  "hasFocus": true,
+  "isBackward": false,
+}
+`;
+
+exports[` 2`] = `
+Object {
+  "anchorKey": "b",
+  "anchorOffset": 10,
+  "focusKey": "c",
+  "focusOffset": 15,
+  "hasFocus": true,
+  "isBackward": false,
+}
+`;
+
+exports[` 3`] = `
+Object {
+  "anchorKey": "a",
+  "anchorOffset": 10,
+  "focusKey": "a",
+  "focusOffset": 20,
+  "hasFocus": true,
+  "isBackward": false,
+}
+`;
+
+exports[`hasEdgeWithin is true if selection range is entirely within test range 1`] = `
+Object {
+  "anchorKey": "a",
+  "anchorOffset": 5,
+  "focusKey": "a",
+  "focusOffset": 5,
+  "hasFocus": true,
+  "isBackward": false,
+}
+`;
+
+exports[`must retrieve properties correctly 1`] = `
+Array [
+  "a",
+  0,
+  "a",
+  0,
+  false,
+  true,
+]
+`;
+
+exports[`must serialize properties correctly 1`] = `"Anchor: a:0, Focus: a:0, Is Backward: false, Has Focus: true"`;
+
+exports[`must serialize properties correctly 2`] = `"Anchor: a:10, Focus: a:20, Is Backward: false, Has Focus: true"`;
+
+exports[`must serialize properties correctly 3`] = `"Anchor: b:10, Focus: c:15, Is Backward: false, Has Focus: true"`;
+
+exports[`properly identifies start and end keys 1`] = `"a"`;
+
+exports[`properly identifies start and end keys 2`] = `"a"`;
+
+exports[`properly identifies start and end keys 3`] = `"b"`;
+
+exports[`properly identifies start and end keys 4`] = `"a"`;
+
+exports[`properly identifies start and end keys 5`] = `"a"`;
+
+exports[`properly identifies start and end keys 6`] = `"c"`;
+
+exports[`properly identifies start and end keys when backward 1`] = `
+Object {
+  "anchorKey": "b",
+  "anchorOffset": 10,
+  "focusKey": "c",
+  "focusOffset": 15,
+  "hasFocus": true,
+  "isBackward": true,
+}
+`;
+
+exports[`properly identifies start and end keys when backward 2`] = `"a"`;
+
+exports[`properly identifies start and end keys when backward 3`] = `"c"`;
+
+exports[`properly identifies start and end keys when backward 4`] = `"a"`;
+
+exports[`properly identifies start and end keys when backward 5`] = `"b"`;
+
+exports[`properly identifies start and end offsets 1`] = `0`;
+
+exports[`properly identifies start and end offsets 2`] = `10`;
+
+exports[`properly identifies start and end offsets 3`] = `10`;
+
+exports[`properly identifies start and end offsets 4`] = `0`;
+
+exports[`properly identifies start and end offsets 5`] = `20`;
+
+exports[`properly identifies start and end offsets 6`] = `15`;
+
+exports[`properly identifies start and end offsets when backward 1`] = `
+Object {
+  "anchorKey": "b",
+  "anchorOffset": 10,
+  "focusKey": "c",
+  "focusOffset": 15,
+  "hasFocus": true,
+  "isBackward": true,
+}
+`;
+
+exports[`properly identifies start and end offsets when backward 2`] = `10`;
+
+exports[`properly identifies start and end offsets when backward 3`] = `15`;
+
+exports[`properly identifies start and end offsets when backward 4`] = `20`;
+
+exports[`properly identifies start and end offsets when backward 5`] = `10`;

@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must apply entity correctly 1`] = `"x"`;
+
+exports[`must apply entity correctly 2`] = `"x"`;
+
+exports[`must apply style 1`] = `true`;
+
+exports[`must apply style 2`] = `true`;
+
+exports[`must apply style 3`] = `true`;
+
+exports[`must have appropriate default values 1`] = `
+Object {
+  "entity": null,
+  "style": Array [],
+}
+`;
+
+exports[`must have appropriate default values 2`] = `0`;
+
+exports[`must have appropriate default values 3`] = `null`;
+
+exports[`must remove entity correctly 1`] = `null`;
+
+exports[`must remove entity correctly 2`] = `null`;
+
+exports[`must remove style 1`] = `true`;
+
+exports[`must remove style 2`] = `false`;
+
+exports[`must remove style 3`] = `false`;
+
+exports[`must remove style 4`] = `false`;
+
+exports[`must reuse objects by defaulting config properties 1`] = `true`;
+
+exports[`must reuse objects by defaulting config properties 2`] = `true`;
+
+exports[`must reuse objects by defaulting config properties 3`] = `true`;
+
+exports[`must reuse the same objects 1`] = `true`;
+
+exports[`must reuse the same objects 2`] = `true`;
+
+exports[`must reuse the same objects 3`] = `true`;
+
+exports[`must reuse the same objects 4`] = `true`;
+
+exports[`must reuse the same objects 5`] = `true`;
+
+exports[`must run \`hasStyle\` correctly 1`] = `false`;
+
+exports[`must run \`hasStyle\` correctly 2`] = `true`;
+
+exports[`must run \`hasStyle\` correctly 3`] = `true`;
+
+exports[`must run \`hasStyle\` correctly 4`] = `false`;
+
+exports[`must run \`hasStyle\` correctly 5`] = `false`;
+
+exports[`must run \`hasStyle\` correctly 6`] = `true`;

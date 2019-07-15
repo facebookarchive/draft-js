@@ -1,29 +1,34 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DefaultDraftBlockRenderMap
- * @flow
+ * @format
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
+import type {CoreDraftBlockType} from 'DraftBlockType';
 
 const {Map} = require('immutable');
 const React = require('React');
 
 const cx = require('cx');
 
+type DefaultCoreDraftBlockRenderMap = Map<
+  CoreDraftBlockType,
+  DraftBlockRenderConfig,
+>;
+
 const UL_WRAP = <ul className={cx('public/DraftStyleDefault/ul')} />;
 const OL_WRAP = <ol className={cx('public/DraftStyleDefault/ol')} />;
 const PRE_WRAP = <pre className={cx('public/DraftStyleDefault/pre')} />;
 
-const DefaultDraftBlockRenderMap: DraftBlockRenderMap = Map({
+const DefaultDraftBlockRenderMap: DefaultCoreDraftBlockRenderMap = Map({
   'header-one': {
     element: 'h1',
   },
@@ -50,17 +55,17 @@ const DefaultDraftBlockRenderMap: DraftBlockRenderMap = Map({
     element: 'li',
     wrapper: OL_WRAP,
   },
-  'blockquote': {
+  blockquote: {
     element: 'blockquote',
   },
-  'atomic': {
+  atomic: {
     element: 'figure',
   },
   'code-block': {
     element: 'pre',
     wrapper: PRE_WRAP,
   },
-  'unstyled': {
+  unstyled: {
     element: 'div',
     aliasedElements: ['p'],
   },

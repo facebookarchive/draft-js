@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
  *
  * This file provided by Facebook is for non-commercial testing and evaluation
  * purposes only. Facebook reserves all rights not expressly granted.
@@ -54,7 +54,7 @@ export default class TeXEditorExample extends React.Component {
       return null;
     };
 
-    this._focus = () => this.refs.editor.focus();
+    this._focus = () => this.editor.focus();
     this._onChange = (editorState) => this.setState({editorState});
 
     this._handleKeyCommand = command => {
@@ -99,7 +99,7 @@ export default class TeXEditorExample extends React.Component {
               onChange={this._onChange}
               placeholder="Start a document..."
               readOnly={this.state.liveTeXEdits.count()}
-              ref="editor"
+              ref={(ref) => this.editor = ref}
               spellCheck={true}
             />
           </div>

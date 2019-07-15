@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
 
 This file provided by Facebook is for non-commercial testing and evaluation
 purposes only. Facebook reserves all rights not expressly granted.
@@ -26,8 +26,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       color may be active at any time.
     </div>
     <div id="target"></div>
-    <script src="../../../node_modules/react/dist/react.js"></script>
-    <script src="../../../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="../../../node_modules/react/umd/react.development.js"></script>
+    <script src="../../../node_modules/react-dom/umd/react-dom.development.js"></script>
     <script src="../../../node_modules/immutable/dist/immutable.js"></script>
     <script src="../../../node_modules/es6-shim/es6-shim.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
@@ -42,7 +42,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           super(props);
           this.state = {editorState: EditorState.createEmpty()};
 
-          this.focus = () => this.refs.editor.focus();
+          this.focus = () => this.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
           this.toggleColor = (toggledColor) => this._toggleColor(toggledColor);
         }
@@ -97,7 +97,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   editorState={editorState}
                   onChange={this.onChange}
                   placeholder="Write something colorful..."
-                  ref="editor"
+                  ref={(ref) => this.editor = ref}
                 />
               </div>
             </div>
@@ -146,6 +146,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           <div style={styles.controls}>
             {COLORS.map(type =>
               <StyleButton
+                key={type.label}
                 active={currentStyle.has(type.style)}
                 label={type.label}
                 onToggle={props.onToggle}

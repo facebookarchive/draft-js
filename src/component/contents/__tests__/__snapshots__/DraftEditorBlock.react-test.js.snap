@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must allow update when \`block\` has changed 1`] = `1`;
+
+exports[`must allow update when \`block\` has changed 2`] = `true`;
+
+exports[`must allow update when \`block\` has changed 3`] = `true`;
+
+exports[`must allow update when \`block\` has changed 4`] = `2`;
+
+exports[`must allow update when \`direction\` has changed 1`] = `1`;
+
+exports[`must allow update when \`direction\` has changed 2`] = `true`;
+
+exports[`must allow update when \`direction\` has changed 3`] = `2`;
+
+exports[`must allow update when \`tree\` has changed 1`] = `1`;
+
+exports[`must allow update when \`tree\` has changed 2`] = `true`;
+
+exports[`must allow update when \`tree\` has changed 3`] = `3`;
+
+exports[`must allow update when forcing selection 1`] = `1`;
+
+exports[`must allow update when forcing selection 2`] = `2`;
+
+exports[`must not scroll the window if unnecessary 1`] = `Array []`;
+
+exports[`must reject update if conditions are not met 1`] = `1`;
+
+exports[`must reject update if conditions are not met 2`] = `1`;
+
+exports[`must reject update if selection is not on an edge 1`] = `1`;
+
+exports[`must reject update if selection is not on an edge 2`] = `1`;
+
+exports[`must render a leaf node 1`] = `true`;
+
+exports[`must render a leaf node 2`] = `true`;
+
+exports[`must render a leaf node 3`] = `true`;
+
+exports[`must render a leaf node 4`] = `true`;
+
+exports[`must render a leaf node 5`] = `true`;
+
+exports[`must render multiple leaf nodes 1`] = `true`;
+
+exports[`must render multiple leaf nodes 2`] = `true`;
+
+exports[`must render multiple leaf nodes 3`] = `true`;
+
+exports[`must render multiple leaf nodes 4`] = `true`;
+
+exports[`must render multiple leaf nodes 5`] = `true`;
+
+exports[`must render multiple leaf nodes 6`] = `true`;
+
+exports[`must render multiple leaf nodes 7`] = `true`;
+
+exports[`must render multiple leaf nodes 8`] = `true`;
+
+exports[`must render multiple leaf nodes 9`] = `true`;
+
+exports[`must render multiple leaf nodes 10`] = `true`;
+
+exports[`must scroll the window if needed 1`] = `
+Array [
+  Array [
+    0,
+    26,
+  ],
+]
+`;
+
+exports[`must split apart styled spans 1`] = `2`;
+
+exports[`must split apart styled spans 2`] = `true`;
+
+exports[`must split apart styled spans 3`] = `true`;
+
+exports[`must split apart styled spans 4`] = `true`;
+
+exports[`must split apart styled spans 5`] = `true`;
+
+exports[`must split apart two decorated and undecorated 1`] = `2`;
+
+exports[`must split apart two decorated and undecorated 2`] = `true`;
+
+exports[`must split apart two decorated and undecorated 3`] = `true`;
+
+exports[`must split apart two decorators 1`] = `2`;
+
+exports[`must split apart two decorators 2`] = `true`;
+
+exports[`must split apart two decorators 3`] = `true`;
+
+exports[`must split styled spans apart within decorator 1`] = `3`;
+
+exports[`must split styled spans apart within decorator 2`] = `true`;
+
+exports[`must split styled spans apart within decorator 3`] = `true`;
+
+exports[`must split styled spans apart within decorator 4`] = `true`;
+
+exports[`must split styled spans apart within decorator 5`] = `true`;
+
+exports[`must split styled spans apart within decorator 6`] = `true`;
+
+exports[`must split styled spans apart within decorator 7`] = `true`;
+
+exports[`must split styled spans apart within decorator 8`] = `true`;

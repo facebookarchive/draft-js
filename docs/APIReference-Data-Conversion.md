@@ -1,10 +1,6 @@
 ---
 id: api-reference-data-conversion
 title: Data Conversion
-layout: docs
-category: API Reference
-next: api-reference-rich-utils
-permalink: docs/api-reference-data-conversion.html
 ---
 
 Because a text editor doesn't exist in a vacuum and it's important to save

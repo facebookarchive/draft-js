@@ -1,824 +1,657 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails isaac, oncall+ui_infra
+ * @emails oncall+draft_js
+ * @flow strict-local
+ * @format
  */
 
 'use strict';
 
 jest.disableAutomock();
 
-const {insertAtomicBlock, moveAtomicBlock} = require('AtomicBlockUtils');
-const EditorState = require('EditorState');
+jest.mock('generateRandomKey');
+
+const AtomicBlockUtils = require('AtomicBlockUtils');
+const BlockMapBuilder = require('BlockMapBuilder');
+const ContentBlockNode = require('ContentBlockNode');
 const Entity = require('DraftEntity');
+const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
+const invariant = require('invariant');
 
-describe('AtomicBlockUtils', () => {
-  const {
-    editorState,
-    contentState,
-    selectionState,
-  } = getSampleStateForTesting();
-  const originalFirstBlock = contentState.getBlockMap().first();
-  const entityKey = Entity.create('TOKEN', 'MUTABLE');
-  const character = ' ';
+const {editorState, contentState, selectionState} = getSampleStateForTesting();
 
-  function assertAtomicBlock(block) {
-    expect(block.getType()).toBe('atomic');
-    expect(block.getText()).toBe(character);
-    expect(block.getCharacterList().first().getEntity()).toBe(entityKey);
+const initialBlock = contentState.getBlockMap().first();
+const ENTITY_KEY = Entity.create('TOKEN', 'MUTABLE');
+const CHARACTER = ' ';
+
+const getInvariantViolation = msg => {
+  try {
+    /* eslint-disable fb-www/sprintf-like-args */
+    invariant(false, msg);
+    /* eslint-enable fb-www/sprintf-like-args */
+  } catch (e) {
+    return e;
   }
+};
 
-  describe('Collapsed cursor', () => {
-    it('must insert atomic at start of block', () => {
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
+const toggleExperimentalTreeDataSupport = enabled => {
+  jest.doMock('gkx', () => name => {
+    return name === 'draft_tree_data_support' ? enabled : false;
+  });
+};
 
-      // Empty block inserted above content.
-      const firstBlock = resultContent.getBlockMap().first();
-      expect(firstBlock.getType()).toBe('unstyled');
-      expect(firstBlock.getText()).toBe('');
+const assertAtomic = state => {
+  expect(
+    state
+      .getCurrentContent()
+      .getBlockMap()
+      .toIndexedSeq()
+      .toJS(),
+  ).toMatchSnapshot();
+};
 
-      const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertAtomicBlock(secondBlock);
+const assertInsertAtomicBlock = (
+  state = editorState,
+  entity = ENTITY_KEY,
+  character = CHARACTER,
+  experimentalTreeDataSupport = false,
+) => {
+  toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
+  const newState = AtomicBlockUtils.insertAtomicBlock(state, entity, character);
+  assertAtomic(newState);
+  return newState;
+};
 
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getText()).toBe(originalFirstBlock.getText());
-    });
+const assertMoveAtomicBlock = (
+  atomicBlock,
+  seletion,
+  state = editorState,
+  insertionType,
+) => {
+  const newState = AtomicBlockUtils.moveAtomicBlock(
+    state,
+    atomicBlock,
+    seletion,
+    insertionType,
+  );
+  assertAtomic(newState);
+  return newState;
+};
 
-    it('must insert atomic within a block, via split', () => {
-      const targetSelection = selectionState.merge({
+beforeEach(() => {
+  jest.resetModules();
+});
+
+test('must insert atomic at start of block with collapsed seletion', () => {
+  assertInsertAtomicBlock();
+});
+
+test('must insert atomic within a block, via split with collapsed selection', () => {
+  assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      editorState,
+      selectionState.merge({
         anchorOffset: 2,
         focusOffset: 2,
-      });
-      const targetEditor = EditorState.forceSelection(
-        editorState,
-        targetSelection,
-      );
+      }),
+    ),
+  );
+});
 
-      const resultEditor = insertAtomicBlock(
-        targetEditor,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
+test('must insert atomic after a block with collapsed selection', () => {
+  assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      editorState,
+      selectionState.merge({
+        anchorOffset: initialBlock.getLength(),
+        focusOffset: initialBlock.getLength(),
+      }),
+    ),
+  );
+});
 
-      const firstBlock = resultContent.getBlockMap().first();
-      expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(
-        firstBlock.getText(),
-      ).toBe(
-        originalFirstBlock.getText().slice(0, 2),
-      );
+test('must move atomic at start of block with collapsed selection', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const firstBlock = resultContent.getBlockMap().first();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
 
-      const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertAtomicBlock(secondBlock);
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: firstBlock.getKey(),
+      focusKey: firstBlock.getKey(),
+    }),
+    resultEditor,
+  );
+});
 
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(thirdBlock.getText()).toBe(originalFirstBlock.getText().slice(2));
-    });
+test('must move atomic at end of block with collapsed selection', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const lastBlock = resultContent.getBlockMap().last();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
 
-    it('must insert atomic after a block', () => {
-      const targetSelection = selectionState.merge({
-        anchorOffset: originalFirstBlock.getLength(),
-        focusOffset: originalFirstBlock.getLength(),
-      });
-      const targetEditor = EditorState.forceSelection(
-        editorState,
-        targetSelection,
-      );
+  // Move atomic block at end of the last block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: lastBlock.getKey(),
+      anchorOffset: lastBlock.getLength(),
+      focusKey: lastBlock.getKey(),
+      focusOffset: lastBlock.getLength(),
+    }),
+    resultEditor,
+  );
+});
 
-      const resultEditor = insertAtomicBlock(
-        targetEditor,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
+test('must move atomic inbetween block with collapsed selection', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+  const thirdBlock = resultContent
+    .getBlockMap()
+    .skip(2)
+    .first();
 
-      const firstBlock = resultContent.getBlockMap().first();
-      expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(firstBlock.getText()).toBe(originalFirstBlock.getText());
+  // Move atomic block inbetween the split parts of the third block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: thirdBlock.getKey(),
+      anchorOffset: 2,
+      focusKey: thirdBlock.getKey(),
+      focusOffset: 2,
+    }),
+    resultEditor,
+  );
+});
 
-      const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertAtomicBlock(secondBlock);
+test('must move atomic before block with collapsed selection', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const firstBlock = resultContent.getBlockMap().first();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
 
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(thirdBlock.getText()).toBe('');
-    });
+  // Move atomic block before the first block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: firstBlock.getKey(),
+    }),
+    resultEditor,
+    'before',
+  );
+});
 
-    it('must move atomic at start of block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
+test('must move atomic after block with collapsed selection', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+  const lastBlock = resultContent.getBlockMap().last();
 
-      const firstBlock = resultContent.getBlockMap().first();
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
+  // Move atomic block after the last block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      focusKey: lastBlock.getKey(),
+    }),
+    resultEditor,
+    'after',
+  );
+});
 
-      assertAtomicBlock(atomicBlock);
+test("mustn't move atomic next to itself with collapsed selection", () => {
+  // Insert atomic block at the second position
+  const resultEditor = assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      editorState,
+      selectionState.merge({
+        anchorOffset: initialBlock.getLength(),
+        focusOffset: initialBlock.getLength(),
+      }),
+    ),
+  );
+  const resultContent = resultEditor.getCurrentContent();
+  const beforeAtomicBlock = resultContent.getBlockMap().first();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+  const afterAtomicBlock = resultContent
+    .getBlockMap()
+    .skip(2)
+    .first();
 
-      // Move atomic block at start of the first block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          anchorKey: firstBlock.getKey(),
-          focusKey: firstBlock.getKey(),
-        }),
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
+  // Move atomic block above itself by moving it after preceding block by
+  // replacement
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        anchorKey: beforeAtomicBlock.getKey(),
+        anchorOffset: beforeAtomicBlock.getLength(),
+        focusKey: beforeAtomicBlock.getKey(),
+        focusOffset: beforeAtomicBlock.getLength(),
+      }),
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
+  // Move atomic block above itself by moving it after preceding block
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        anchorKey: beforeAtomicBlock.getKey(),
+        focusKey: beforeAtomicBlock.getKey(),
+      }),
+      'after',
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
-      // Atomic block must be on the first position now
-      const atomicResultFirstBlock = atomicResultContent.getBlockMap().first();
-      assertAtomicBlock(atomicResultFirstBlock);
-    });
+  // Move atomic block above itself by replacement
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        anchorKey: atomicBlock.getKey(),
+        focusKey: atomicBlock.getKey(),
+        anchorOffset: atomicBlock.getLength(),
+        focusOffset: atomicBlock.getLength(),
+      }),
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
-    it('must move atomic at end of block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
+  // Move atomic block above itself
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        anchorKey: atomicBlock.getKey(),
+      }),
+      'before',
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const lastBlock = resultContent.getBlockMap().last();
+  // Move atomic block below itself by moving it before following block by replacement
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        anchorKey: afterAtomicBlock.getKey(),
+        focusKey: afterAtomicBlock.getKey(),
+      }),
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
-      assertAtomicBlock(atomicBlock);
+  // Move atomic block below itself by moving it before following block
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        anchorKey: afterAtomicBlock.getKey(),
+        focusKey: afterAtomicBlock.getKey(),
+      }),
+      'before',
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
-      // Move atomic block at end of the last block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          anchorKey: lastBlock.getKey(),
-          anchorOffset: lastBlock.getLength(),
-          focusKey: lastBlock.getKey(),
-          focusOffset: lastBlock.getLength(),
-        }),
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
+  // Move atomic block below itself by replacement
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        anchorKey: atomicBlock.getKey(),
+        anchorOffset: atomicBlock.getLength(),
+        focusKey: atomicBlock.getKey(),
+        focusOffset: atomicBlock.getLength(),
+      }),
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
+  // Move atomic block below itself
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        focusKey: atomicBlock.getKey(),
+      }),
+      'after',
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
+});
 
-      // Atomic block must be on the last position now
-      const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
-      assertAtomicBlock(atomicResultLastBlock);
-    });
-
-    it('must move atomic inbetween block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-
-      assertAtomicBlock(atomicBlock);
-
-      // Move atomic block inbetween the splitted parts of the third block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          anchorKey: thirdBlock.getKey(),
-          anchorOffset: 2,
-          focusKey: thirdBlock.getKey(),
-          focusOffset: 2,
-        }),
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
-
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
-
-      // Atomic block must be inbetween the splitted block
-      const atomicResultSecondBlock =
-        atomicResultContent.getBlockMap().skip(1).first();
-      const atomicResultThirdBlock =
-        atomicResultContent.getBlockMap().skip(2).first();
-      const atomicResultFourthBlock =
-        atomicResultContent.getBlockMap().skip(3).first();
-
-      expect(atomicResultSecondBlock.getText()).toBe('Al');
-      assertAtomicBlock(atomicResultThirdBlock);
-      expect(atomicResultFourthBlock.getText()).toBe('pha');
-    });
-
-    it('must move atomic before block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const firstBlock = resultContent.getBlockMap().first();
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-
-      assertAtomicBlock(atomicBlock);
-
-      // Move atomic block before the first block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          anchorKey: firstBlock.getKey(),
-        }),
-        'before',
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
-
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
-
-      // Atomic block must be on the first position now
-      const atomicResultFirstBlock = atomicResultContent.getBlockMap().first();
-      assertAtomicBlock(atomicResultFirstBlock);
-    });
-
-    it('must move atomic after block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const lastBlock = resultContent.getBlockMap().last();
-
-      assertAtomicBlock(atomicBlock);
-
-      // Move atomic block after the last block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          focusKey: lastBlock.getKey(),
-        }),
-        'after',
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
-
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
-
-      // Atomic block must be on the last position now
-      const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
-      assertAtomicBlock(atomicResultLastBlock);
-    });
-
-    it('mustn\'t move atomic next to itself', () => {
-      const targetSelection = selectionState.merge({
-        anchorOffset: originalFirstBlock.getLength(),
-        focusOffset: originalFirstBlock.getLength(),
-      });
-      const targetEditor = EditorState.forceSelection(
-        editorState,
-        targetSelection,
-      );
-
-      // Insert atomic block at the second position
-      const resultEditor = insertAtomicBlock(
-        targetEditor,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const beforeAtomicBlock = resultContent.getBlockMap().first();
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const afterAtomicBlock = resultContent.getBlockMap().skip(2).first();
-
-      assertAtomicBlock(atomicBlock);
-
-      // Move atomic block above itself by moving it after preceeding block by
-      // replacement
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              anchorKey: beforeAtomicBlock.getKey(),
-              anchorOffset: beforeAtomicBlock.getLength(),
-              focusKey: beforeAtomicBlock.getKey(),
-              focusOffset: beforeAtomicBlock.getLength(),
-            }),
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
-
-      // Move atomic block above itself by moving it after preceeding block
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              anchorKey: beforeAtomicBlock.getKey(),
-              focusKey: beforeAtomicBlock.getKey(),
-            }),
-            'after',
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
-
-      // Move atomic block above itself by replacement
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              anchorKey: atomicBlock.getKey(),
-              focusKey: atomicBlock.getKey(),
-            }),
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
-
-      // Move atomic block above itself
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              anchorKey: atomicBlock.getKey(),
-            }),
-            'before',
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
-
-      // Move atomic block below itself by moving it before following block by
-      // replacement
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              anchorKey: afterAtomicBlock.getKey(),
-              focusKey: afterAtomicBlock.getKey(),
-            }),
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
-
-      // Move atomic block below itself by moving it before following block
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              anchorKey: afterAtomicBlock.getKey(),
-              focusKey: afterAtomicBlock.getKey(),
-            }),
-            'before',
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
-
-      // Move atomic block below itself by replacement
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              anchorKey: atomicBlock.getKey(),
-              anchorOffset: atomicBlock.getLength(),
-              focusKey: atomicBlock.getKey(),
-              focusOffset: atomicBlock.getLength(),
-            }),
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
-
-      // Move atomic block below itself
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              focusKey: atomicBlock.getKey(),
-            }),
-            'after',
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
-    });
-  });
-
-  describe('Non-collapsed cursor', () => {
-    it('must insert atomic at start of block', () => {
-      const targetSelection = selectionState.merge({
+/**
+ * Non collapsed
+ */
+test('must insert atomic at start of block', () => {
+  assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      editorState,
+      selectionState.merge({
         anchorOffset: 0,
         focusOffset: 2,
-      });
-      const targetEditor = EditorState.forceSelection(
-        editorState,
-        targetSelection,
-      );
+      }),
+    ),
+  );
+});
 
-      const resultEditor = insertAtomicBlock(
-        targetEditor,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const firstBlock = resultContent.getBlockMap().first();
-      expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(firstBlock.getText()).toBe('');
-
-      const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertAtomicBlock(secondBlock);
-
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(thirdBlock.getText()).toBe(originalFirstBlock.getText().slice(2));
-    });
-
-    it('must insert atomic within a block', () => {
-      const targetSelection = selectionState.merge({
+test('must insert atomic within a block', () => {
+  assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      editorState,
+      selectionState.merge({
         anchorOffset: 1,
         focusOffset: 2,
-      });
-      const targetEditor = EditorState.forceSelection(
-        editorState,
-        targetSelection,
-      );
+      }),
+    ),
+  );
+});
 
-      const resultEditor = insertAtomicBlock(
-        targetEditor,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const firstBlock = resultContent.getBlockMap().first();
-      expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(
-        firstBlock.getText(),
-      ).toBe(
-        originalFirstBlock.getText().slice(0, 1),
-      );
-
-      const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertAtomicBlock(secondBlock);
-
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(thirdBlock.getText()).toBe(originalFirstBlock.getText().slice(2));
-    });
-
-    it('must insert atomic at end of block', () => {
-      const origLength = originalFirstBlock.getLength();
-      const targetSelection = selectionState.merge({
+test('must insert atomic at end of block', () => {
+  const origLength = initialBlock.getLength();
+  assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      editorState,
+      selectionState.merge({
         anchorOffset: origLength - 2,
         focusOffset: origLength,
-      });
-      const targetEditor = EditorState.forceSelection(
-        editorState,
-        targetSelection,
-      );
+      }),
+    ),
+  );
+});
 
-      const resultEditor = insertAtomicBlock(
-        targetEditor,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const firstBlock = resultContent.getBlockMap().first();
-      expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(
-        firstBlock.getText(),
-      ).toBe(
-        originalFirstBlock.getText().slice(0, origLength - 2),
-      );
-
-      const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertAtomicBlock(secondBlock);
-
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(thirdBlock.getText()).toBe('');
-    });
-
-    it('must insert atomic for cross-block selection', () => {
-      const originalThirdBlock = contentState.getBlockMap().skip(2).first();
-
-      const targetSelection = selectionState.merge({
+test('must insert atomic for cross-block selection', () => {
+  const originalThirdBlock = contentState
+    .getBlockMap()
+    .skip(2)
+    .first();
+  assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      editorState,
+      selectionState.merge({
         anchorOffset: 2,
         focusKey: originalThirdBlock.getKey(),
         focusOffset: 2,
-      });
-      const targetEditor = EditorState.forceSelection(
-        editorState,
-        targetSelection,
-      );
+      }),
+    ),
+  );
+});
 
-      const resultEditor = insertAtomicBlock(
-        targetEditor,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
+test('must move atomic at start of block', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+  const lastBlock = resultContent.getBlockMap().last();
 
-      const firstBlock = resultContent.getBlockMap().first();
-      expect(firstBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(
-        firstBlock.getText(),
-      ).toBe(
-        originalFirstBlock.getText().slice(0, 2),
-      );
+  // Move atomic block at start of the last block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: lastBlock.getKey(),
+      anchorOffset: 0,
+      focusKey: lastBlock.getKey(),
+      focusOffset: 2,
+    }),
+    resultEditor,
+  );
+});
 
-      const secondBlock = resultContent.getBlockMap().skip(1).first();
-      assertAtomicBlock(secondBlock);
+test('must move atomic at end of block', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+  const lastBlock = resultContent.getBlockMap().last();
 
-      // Third block gets original first block's type, but sliced text from
-      // original second block.
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-      expect(thirdBlock.getType()).toBe(originalFirstBlock.getType());
-      expect(thirdBlock.getText()).toBe(originalThirdBlock.getText().slice(2));
-    });
+  // Move atomic block at end of the last block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: lastBlock.getKey(),
+      anchorOffset: lastBlock.getLength() - 2,
+      focusKey: lastBlock.getKey(),
+      focusOffset: lastBlock.getLength(),
+    }),
+    resultEditor,
+  );
+});
 
-    it('must move atomic at start of block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
+test('must move atomic inbetween block', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+  const thirdBlock = resultContent
+    .getBlockMap()
+    .skip(2)
+    .first();
 
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const lastBlock = resultContent.getBlockMap().last();
+  // Move atomic block inbetween the split parts of the third block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: thirdBlock.getKey(),
+      anchorOffset: 1,
+      focusKey: thirdBlock.getKey(),
+      focusOffset: 2,
+    }),
+    resultEditor,
+  );
+});
 
-      assertAtomicBlock(atomicBlock);
+test('must move atomic before block', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const firstBlock = resultContent.getBlockMap().first();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+  const lastBlock = resultContent.getBlockMap().last();
 
-      // Move atomic block at start of the last block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          anchorKey: lastBlock.getKey(),
-          anchorOffset: 0,
-          focusKey: lastBlock.getKey(),
-          focusOffset: 2,
-        }),
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
+  // Move atomic block before the first block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: firstBlock.getKey(),
+      anchorOffset: 2,
+      focusKey: lastBlock.getKey(),
+      focusOffset: 2,
+    }),
+    resultEditor,
+    'before',
+  );
+});
 
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
+test('must move atomic after block', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock();
+  const resultContent = resultEditor.getCurrentContent();
+  const firstBlock = resultContent.getBlockMap().first();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+  const lastBlock = resultContent.getBlockMap().last();
 
-      // Atomic block must be on the second last position now
-      const atomicResultSecondLastBlock =
-        atomicResultContent.getBlockMap().reverse().skip(1).first();
-      const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
+  // Move atomic block after the last block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: firstBlock.getKey(),
+      anchorOffset: 2,
+      focusKey: lastBlock.getKey(),
+      focusOffset: 2,
+    }),
+    resultEditor,
+    'after',
+  );
+});
 
-      assertAtomicBlock(atomicResultSecondLastBlock);
-      expect(atomicResultLastBlock.getText()).toBe('arlie');
-    });
+test("mustn't move atomic next to itself", () => {
+  // Insert atomic block at the second position
+  const resultEditor = assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      editorState,
+      selectionState.merge({
+        anchorOffset: initialBlock.getLength(),
+        focusOffset: initialBlock.getLength(),
+      }),
+    ),
+  );
+  const resultContent = resultEditor.getCurrentContent();
+  const beforeAtomicBlock = resultContent.getBlockMap().first();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+  const afterAtomicBlock = resultContent
+    .getBlockMap()
+    .skip(2)
+    .first();
 
-    it('must move atomic at end of block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
+  // Move atomic block above itself by moving it after preceding block by
+  // replacement
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        anchorKey: beforeAtomicBlock.getKey(),
+        anchorOffset: beforeAtomicBlock.getLength() - 2,
+        focusKey: beforeAtomicBlock.getKey(),
+        focusOffset: beforeAtomicBlock.getLength(),
+      }),
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
 
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const lastBlock = resultContent.getBlockMap().last();
+  // Move atomic block below itself by moving it before following block by
+  // replacement
+  expect(() => {
+    AtomicBlockUtils.moveAtomicBlock(
+      resultEditor,
+      atomicBlock,
+      new SelectionState({
+        anchorKey: afterAtomicBlock.getKey(),
+        anchorOffset: 0,
+        focusKey: afterAtomicBlock.getKey(),
+        focusOffset: 2,
+      }),
+    );
+  }).toThrow(getInvariantViolation('Block cannot be moved next to itself.'));
+});
 
-      assertAtomicBlock(atomicBlock);
-
-      // Move atomic block at end of the last block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          anchorKey: lastBlock.getKey(),
-          anchorOffset: lastBlock.getLength() - 2,
-          focusKey: lastBlock.getKey(),
-          focusOffset: lastBlock.getLength(),
-        }),
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
-
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
-
-      // Atomic block must be on the last position now
-      const atomicResultSecondLastBlock =
-        atomicResultContent.getBlockMap().reverse().skip(1).first();
-      const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
-
-      expect(atomicResultSecondLastBlock.getText()).toBe('Charl');
-      assertAtomicBlock(atomicResultLastBlock);
-    });
-
-    it('must move atomic inbetween block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const thirdBlock = resultContent.getBlockMap().skip(2).first();
-
-      assertAtomicBlock(atomicBlock);
-
-      // Move atomic block inbetween the splitted parts of the third block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          anchorKey: thirdBlock.getKey(),
-          anchorOffset: 1,
-          focusKey: thirdBlock.getKey(),
-          focusOffset: 2,
-        }),
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
-
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
-
-      // Atomic block must be inbetween the splitted block
-      const atomicResultSecondBlock =
-        atomicResultContent.getBlockMap().skip(1).first();
-      const atomicResultThirdBlock =
-        atomicResultContent.getBlockMap().skip(2).first();
-      const atomicResultFourthBlock =
-        atomicResultContent.getBlockMap().skip(3).first();
-
-      expect(atomicResultSecondBlock.getText()).toBe('A');
-      assertAtomicBlock(atomicResultThirdBlock);
-      expect(atomicResultFourthBlock.getText()).toBe('pha');
-    });
-
-    it('must move atomic before block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const firstBlock = resultContent.getBlockMap().first();
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const lastBlock = resultContent.getBlockMap().last();
-
-      assertAtomicBlock(atomicBlock);
-
-      // Move atomic block before the first block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          anchorKey: firstBlock.getKey(),
-          anchorOffset: 2,
-          focusKey: lastBlock.getKey(),
-          focusOffset: 2,
-        }),
-        'before',
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
-
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
-
-      // Atomic block must be on the first position now
-      const atomicResultFirstBlock = atomicResultContent.getBlockMap().first();
-      assertAtomicBlock(atomicResultFirstBlock);
-    });
-
-    it('must move atomic after block', () => {
-      // Insert atomic block at the first position
-      const resultEditor = insertAtomicBlock(
-        editorState,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const firstBlock = resultContent.getBlockMap().first();
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const lastBlock = resultContent.getBlockMap().last();
-
-      assertAtomicBlock(atomicBlock);
-
-      // Move atomic block after the last block
-      const atomicResultEditor = moveAtomicBlock(
-        resultEditor,
-        atomicBlock,
-        new SelectionState({
-          anchorKey: firstBlock.getKey(),
-          anchorOffset: 2,
-          focusKey: lastBlock.getKey(),
-          focusOffset: 2,
-        }),
-        'after',
-      );
-      const atomicResultContent = atomicResultEditor.getCurrentContent();
-
-      expect(atomicResultEditor.getLastChangeType()).toBe('move-block');
-
-      // Atomic block must be on the last position now
-      const atomicResultLastBlock = atomicResultContent.getBlockMap().last();
-      assertAtomicBlock(atomicResultLastBlock);
-    });
-
-    it('mustn\'t move atomic next to itself', () => {
-      const targetSelection = selectionState.merge({
-        anchorOffset: originalFirstBlock.getLength(),
-        focusOffset: originalFirstBlock.getLength(),
-      });
-      const targetEditor = EditorState.forceSelection(
-        editorState,
-        targetSelection,
-      );
-
-      // Insert atomic block at the second position
-      const resultEditor = insertAtomicBlock(
-        targetEditor,
-        entityKey,
-        character,
-      );
-      const resultContent = resultEditor.getCurrentContent();
-
-      const beforeAtomicBlock = resultContent.getBlockMap().first();
-      const atomicBlock = resultContent.getBlockMap().skip(1).first();
-      const afterAtomicBlock = resultContent.getBlockMap().skip(2).first();
-
-      assertAtomicBlock(atomicBlock);
-
-      // Move atomic block above itself by moving it after preceeding block by
-      // replacement
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              anchorKey: beforeAtomicBlock.getKey(),
-              anchorOffset: beforeAtomicBlock.getLength() - 2,
-              focusKey: beforeAtomicBlock.getKey(),
-              focusOffset: beforeAtomicBlock.getLength(),
+test('must be able to insert atomic block when experimentalTreeDataSupport is enabled', () => {
+  // Insert atomic block at the first position
+  assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      EditorState.createWithContent(
+        contentState.set(
+          'blockMap',
+          BlockMapBuilder.createFromArray([
+            new ContentBlockNode({
+              text: 'first block',
+              key: 'A',
             }),
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
+          ]),
+        ),
+      ),
+      SelectionState.createEmpty('A'),
+    ),
+    ENTITY_KEY,
+    CHARACTER,
+    true,
+  );
+});
 
-      // Move atomic block below itself by moving it before following block by
-      // replacement
-      expect(
-        function() {
-          moveAtomicBlock(
-            resultEditor,
-            atomicBlock,
-            new SelectionState({
-              anchorKey: afterAtomicBlock.getKey(),
-              anchorOffset: 0,
-              focusKey: afterAtomicBlock.getKey(),
-              focusOffset: 2,
+test('must be able to move atomic block when experimentalTreeDataSupport is enabled', () => {
+  // Insert atomic block at the first position
+  const resultEditor = assertInsertAtomicBlock(
+    EditorState.forceSelection(
+      EditorState.createWithContent(
+        contentState.set(
+          'blockMap',
+          BlockMapBuilder.createFromArray([
+            new ContentBlockNode({
+              text: 'first block',
+              key: 'A',
             }),
-          );
-        },
-      ).toThrow(new Error('Block cannot be moved next to itself.'));
-    });
-  });
+          ]),
+        ),
+      ),
+      SelectionState.createEmpty('A'),
+    ),
+    ENTITY_KEY,
+    CHARACTER,
+    true,
+  );
+
+  const resultContent = resultEditor.getCurrentContent();
+  const lastBlock = resultContent.getBlockMap().last();
+  const atomicBlock = resultContent
+    .getBlockMap()
+    .skip(1)
+    .first();
+
+  // Move atomic block at end of the last block
+  assertMoveAtomicBlock(
+    atomicBlock,
+    new SelectionState({
+      anchorKey: lastBlock.getKey(),
+      anchorOffset: lastBlock.getLength(),
+      focusKey: lastBlock.getKey(),
+      focusOffset: lastBlock.getLength(),
+      isBackward: false,
+      hasFocus: false,
+    }),
+    resultEditor,
+    'after',
+  );
 });

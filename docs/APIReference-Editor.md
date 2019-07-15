@@ -1,10 +1,6 @@
 ---
 id: api-reference-editor
 title: Editor Component
-layout: docs
-category: API Reference
-next: api-reference-editor-change-type
-permalink: docs/api-reference-editor.html
 ---
 
 This article discusses the API and props of the core controlled contentEditable
@@ -77,6 +73,16 @@ Optionally set a function to define custom block rendering. See
 [Advanced Topics: Block Components](/docs/advanced-topics-block-components.html)
 for details on usage.
 
+#### blockRendererMap
+```
+blockRendererMap?: DraftBlockRenderMap
+```
+Provide a map of block rendering configurations. Each block type maps to
+element tag and an optional react element wrapper. This configuration
+is used for both rendering and paste processing. See
+[Advanced Topics: Custom Block Rendering](https://draftjs.org/docs/advanced-topics-custom-block-render-map.html)
+for details on usage.
+
 #### blockStyleFn
 ```
 blockStyleFn?: (block: ContentBlock) => string
@@ -105,6 +111,31 @@ to spans of text. See
 for details on usage.
 
 ### Behavior (Optional)
+
+### autoCapitalize?: string
+
+```
+autoCapitalize?: string
+```
+
+Set if auto capitalization is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocapitalize).
+
+### autoComplete?: string
+
+```
+autoComplete?: string
+```
+
+Set if auto complete is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocomplete).
+
+### autoCorrect?: string
+
+```
+autoCorrect?: string
+```
+
+Set if auto correct is turned on and how it behaves. More about platform availability and usage can [be found on mdn](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input#attr-autocorrect).
+
 
 #### readOnly
 ```
@@ -175,14 +206,14 @@ the event is handled and the Draft core should do nothing more with it. By retur
 
 #### handleReturn
 ```
-handleReturn?: (e: SyntheticKeyboardEvent) => DraftHandleValue
+handleReturn?: (e: SyntheticKeyboardEvent, editorState: EditorState) => DraftHandleValue
 ```
 Handle a `RETURN` keydown event. Example usage: Choosing a mention tag from a
 rendered list of results to trigger applying the mention entity to your content.
 
 #### handleKeyCommand
 ```
-handleKeyCommand?: (command: string) => DraftHandleValue
+handleKeyCommand?: (command: string, editorState: EditorState, eventTimeStamp: number) => DraftHandleValue
 ```
 Handle the named editor command. See
 [Advanced Topics: Key Bindings](/docs/advanced-topics-key-bindings.html)
@@ -190,7 +221,7 @@ for details on usage.
 
 #### handleBeforeInput
 ```
-handleBeforeInput?: (chars: string) => DraftHandleValue
+handleBeforeInput?: (chars: string, editorState: EditorState, eventTimeStamp: number) => DraftHandleValue
 ```
 Handle the characters to be inserted from a `beforeInput` event. Returning `'handled'`
 causes the default behavior of the `beforeInput` event to be prevented (i.e. it is
@@ -203,7 +234,7 @@ and to convert typed emoticons into images.
 
 #### handlePastedText
 ```
-handlePastedText?: (text: string, html?: string) => DraftHandleValue
+handlePastedText?: (text: string, html?: string, editorState: EditorState) => DraftHandleValue
 ```
 Handle text and html(for rich text) that has been pasted directly into the editor. Returning true will prevent the default paste behavior.
 
@@ -227,29 +258,34 @@ Handle other drop operations.
 
 ### Key Handlers (Optional)
 
-These prop functions expose common useful key events. Example: At Facebook, these are
-used to provide keyboard interaction for mention results in inputs.
+Draft lets you supply a custom `keyDown` handler that wraps or overrides its
+default one.
 
-#### onEscape
-```
-onEscape?: (e: SyntheticKeyboardEvent) => void
-```
+#### keyBindingFn
 
-#### onTab
 ```
-onTab?: (e: SyntheticKeyboardEvent) => void
+keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string
 ```
 
-#### onUpArrow
+This prop function exposes `keyDown` events to a handler of your choosing. If an
+event of interest happens, you can perform custom logic and/or return a string
+corresponding to a `DraftEditorCommand` or a custom editor command of your
+own creation. Example: At Facebook, this is used to provide keyboard interaction
+for the mentions autocomplete menu that appears when typing a friend's name.
+You can find a more detailed explanation of this
+[here](/docs/advanced-topics-key-bindings.html).
+
+### Mouse events
+
+### onFocus
 ```
-onUpArrow?: (e: SyntheticKeyboardEvent) => void
+onFocus?: (e: SyntheticFocusEvent) => void
 ```
 
-#### onDownArrow
+### onBlur
 ```
-onDownArrow?: (e: SyntheticKeyboardEvent) => void
+onBlur?: (e: SyntheticFocusEvent) => void
 ```
-
 
 ## Methods
 

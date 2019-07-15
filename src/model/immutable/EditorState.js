@@ -1,35 +1,31 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule EditorState
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var BlockTree = require('BlockTree');
-var ContentState = require('ContentState');
-var EditorBidiService = require('EditorBidiService');
-var Immutable = require('immutable');
-var SelectionState = require('SelectionState');
-
 import type {BlockMap} from 'BlockMap';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {EditorChangeType} from 'EditorChangeType';
 import type {EntityMap} from 'EntityMap';
 import type {List, OrderedMap} from 'immutable';
-import type {EditorChangeType} from 'EditorChangeType';
 
-var {
-  OrderedSet,
-  Record,
-  Stack,
-} = Immutable;
+const BlockTree = require('BlockTree');
+const ContentState = require('ContentState');
+const EditorBidiService = require('EditorBidiService');
+const SelectionState = require('SelectionState');
+
+const Immutable = require('immutable');
+
+const {OrderedSet, Record, Stack} = Immutable;
 
 type EditorStateRecordType = {
   allowUndo: boolean,
@@ -47,7 +43,7 @@ type EditorStateRecordType = {
   undoStack: Stack<ContentState>,
 };
 
-var defaultRecord: EditorStateRecordType = {
+const defaultRecord: EditorStateRecordType = {
   allowUndo: true,
   currentContent: null,
   decorator: null,
@@ -63,14 +59,12 @@ var defaultRecord: EditorStateRecordType = {
   undoStack: Stack(),
 };
 
-var EditorStateRecord = Record(defaultRecord);
+const EditorStateRecord = (Record(defaultRecord): any);
 
 class EditorState {
   _immutable: EditorStateRecord;
 
-  static createEmpty(
-    decorator?: ?DraftDecoratorType,
-  ): EditorState {
+  static createEmpty(decorator?: ?DraftDecoratorType): EditorState {
     return EditorState.createWithContent(
       ContentState.createFromText(''),
       decorator,
@@ -81,7 +75,10 @@ class EditorState {
     contentState: ContentState,
     decorator?: ?DraftDecoratorType,
   ): EditorState {
-    var firstKey = contentState.getBlockMap().first().getKey();
+    const firstKey = contentState
+      .getBlockMap()
+      .first()
+      .getKey();
     return EditorState.create({
       currentContent: contentState,
       undoStack: Stack(),
@@ -92,32 +89,30 @@ class EditorState {
   }
 
   static create(config: Object): EditorState {
-    var {currentContent, decorator} = config;
-    var recordConfig = {
+    const {currentContent, decorator} = config;
+    const recordConfig = {
       ...config,
       treeMap: generateNewTreeMap(currentContent, decorator),
       directionMap: EditorBidiService.getDirectionMap(currentContent),
     };
-    return new EditorState(
-      new EditorStateRecord(recordConfig),
-    );
+    return new EditorState(new EditorStateRecord(recordConfig));
   }
 
   static set(editorState: EditorState, put: Object): EditorState {
-    var map = editorState.getImmutable().withMutations(state => {
-      var existingDecorator = state.get('decorator');
-      var decorator = existingDecorator;
+    const map = editorState.getImmutable().withMutations(state => {
+      const existingDecorator = state.get('decorator');
+      let decorator = existingDecorator;
       if (put.decorator === null) {
         decorator = null;
       } else if (put.decorator) {
         decorator = put.decorator;
       }
 
-      var newContent = put.currentContent || editorState.getCurrentContent();
+      const newContent = put.currentContent || editorState.getCurrentContent();
 
       if (decorator !== existingDecorator) {
-        var treeMap: OrderedMap<any, any> = state.get('treeMap');
-        var newTreeMap;
+        const treeMap: OrderedMap<any, any> = state.get('treeMap');
+        let newTreeMap;
         if (decorator && existingDecorator) {
           newTreeMap = regenerateTreeForNewDecorator(
             newContent,
@@ -138,7 +133,7 @@ class EditorState {
         return;
       }
 
-      var existingContent = editorState.getCurrentContent();
+      const existingContent = editorState.getCurrentContent();
       if (newContent !== existingContent) {
         state.set(
           'treeMap',
@@ -226,13 +221,13 @@ class EditorState {
    * based on the location of the selection state.
    */
   getCurrentInlineStyle(): DraftInlineStyle {
-    var override = this.getInlineStyleOverride();
+    const override = this.getInlineStyleOverride();
     if (override != null) {
       return override;
     }
 
-    var content = this.getCurrentContent();
-    var selection = this.getSelection();
+    const content = this.getCurrentContent();
+    const selection = this.getSelection();
 
     if (selection.isCollapsed()) {
       return getInlineStyleForCollapsedSelection(content, selection);
@@ -246,15 +241,18 @@ class EditorState {
   }
 
   isSelectionAtStartOfContent(): boolean {
-    var firstKey = this.getCurrentContent().getBlockMap().first().getKey();
+    const firstKey = this.getCurrentContent()
+      .getBlockMap()
+      .first()
+      .getKey();
     return this.getSelection().hasEdgeWithin(firstKey, 0, 0);
   }
 
   isSelectionAtEndOfContent(): boolean {
-    var content = this.getCurrentContent();
-    var blockMap = content.getBlockMap();
-    var last = blockMap.last();
-    var end = last.getLength();
+    const content = this.getCurrentContent();
+    const blockMap = content.getBlockMap();
+    const last = blockMap.last();
+    const end = last.getLength();
     return this.getSelection().hasEdgeWithin(last.getKey(), end, end);
   }
 
@@ -303,10 +301,10 @@ class EditorState {
    * Move selection to the end of the editor without forcing focus.
    */
   static moveSelectionToEnd(editorState: EditorState): EditorState {
-    var content = editorState.getCurrentContent();
-    var lastBlock = content.getLastBlock();
-    var lastKey = lastBlock.getKey();
-    var length = lastBlock.getLength();
+    const content = editorState.getCurrentContent();
+    const lastBlock = content.getLastBlock();
+    const lastKey = lastBlock.getKey();
+    const length = lastBlock.getLength();
 
     return EditorState.acceptSelection(
       editorState,
@@ -326,7 +324,7 @@ class EditorState {
    * to allow the user to continue working seamlessly.
    */
   static moveFocusToEnd(editorState: EditorState): EditorState {
-    var afterSelectionMove = EditorState.moveSelectionToEnd(editorState);
+    const afterSelectionMove = EditorState.moveSelectionToEnd(editorState);
     return EditorState.forceSelection(
       afterSelectionMove,
       afterSelectionMove.getSelection(),
@@ -342,13 +340,13 @@ class EditorState {
     editorState: EditorState,
     contentState: ContentState,
     changeType: EditorChangeType,
+    forceSelection: boolean = true,
   ): EditorState {
     if (editorState.getCurrentContent() === contentState) {
       return editorState;
     }
 
-    var forceSelection = changeType !== 'insert-characters';
-    var directionMap = EditorBidiService.getDirectionMap(
+    const directionMap = EditorBidiService.getDirectionMap(
       contentState,
       editorState.getDirectionMap(),
     );
@@ -364,10 +362,10 @@ class EditorState {
       });
     }
 
-    var selection = editorState.getSelection();
-    var currentContent = editorState.getCurrentContent();
-    var undoStack = editorState.getUndoStack();
-    var newContent = contentState;
+    const selection = editorState.getSelection();
+    const currentContent = editorState.getCurrentContent();
+    let undoStack = editorState.getUndoStack();
+    let newContent = contentState;
 
     if (
       selection !== currentContent.getSelectionAfter() ||
@@ -390,7 +388,7 @@ class EditorState {
     let inlineStyleOverride = editorState.getInlineStyleOverride();
 
     // Don't discard inline style overrides for the following change types:
-    var overrideChangeTypes = [
+    const overrideChangeTypes = [
       'adjust-depth',
       'change-block-type',
       'split-block',
@@ -400,7 +398,7 @@ class EditorState {
       inlineStyleOverride = null;
     }
 
-    var editorStateChanges = {
+    const editorStateChanges = {
       currentContent: newContent,
       directionMap,
       undoStack,
@@ -423,14 +421,14 @@ class EditorState {
       return editorState;
     }
 
-    var undoStack = editorState.getUndoStack();
-    var newCurrentContent = undoStack.peek();
+    const undoStack = editorState.getUndoStack();
+    const newCurrentContent = undoStack.peek();
     if (!newCurrentContent) {
       return editorState;
     }
 
-    var currentContent = editorState.getCurrentContent();
-    var directionMap = EditorBidiService.getDirectionMap(
+    const currentContent = editorState.getCurrentContent();
+    const directionMap = EditorBidiService.getDirectionMap(
       newCurrentContent,
       editorState.getDirectionMap(),
     );
@@ -457,14 +455,14 @@ class EditorState {
       return editorState;
     }
 
-    var redoStack = editorState.getRedoStack();
-    var newCurrentContent = redoStack.peek();
+    const redoStack = editorState.getRedoStack();
+    const newCurrentContent = redoStack.peek();
     if (!newCurrentContent) {
       return editorState;
     }
 
-    var currentContent = editorState.getCurrentContent();
-    var directionMap = EditorBidiService.getDirectionMap(
+    const currentContent = editorState.getCurrentContent();
+    const directionMap = EditorBidiService.getDirectionMap(
       newCurrentContent,
       editorState.getDirectionMap(),
     );
@@ -539,12 +537,11 @@ function regenerateTreeForNewBlocks(
   newEntityMap: EntityMap,
   decorator?: ?DraftDecoratorType,
 ): OrderedMap<string, List<any>> {
-  const contentState = editorState.getCurrentContent().set(
-    'entityMap',
-    newEntityMap,
-  );
-  var prevBlockMap = contentState.getBlockMap();
-  var prevTreeMap = editorState.getImmutable().get('treeMap');
+  const contentState = editorState
+    .getCurrentContent()
+    .set('entityMap', newEntityMap);
+  const prevBlockMap = contentState.getBlockMap();
+  const prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(
     newBlockMap
       .toSeq()
@@ -590,14 +587,12 @@ function mustBecomeBoundary(
   editorState: EditorState,
   changeType: EditorChangeType,
 ): boolean {
-  var lastChangeType = editorState.getLastChangeType();
+  const lastChangeType = editorState.getLastChangeType();
   return (
     changeType !== lastChangeType ||
-    (
-      changeType !== 'insert-characters' &&
+    (changeType !== 'insert-characters' &&
       changeType !== 'backspace-character' &&
-      changeType !== 'delete-character'
-    )
+      changeType !== 'delete-character')
   );
 }
 
@@ -605,9 +600,9 @@ function getInlineStyleForCollapsedSelection(
   content: ContentState,
   selection: SelectionState,
 ): DraftInlineStyle {
-  var startKey = selection.getStartKey();
-  var startOffset = selection.getStartOffset();
-  var startBlock = content.getBlockForKey(startKey);
+  const startKey = selection.getStartKey();
+  const startOffset = selection.getStartOffset();
+  const startBlock = content.getBlockForKey(startKey);
 
   // If the cursor is not at the start of the block, look backward to
   // preserve the style of the preceding character.
@@ -629,9 +624,9 @@ function getInlineStyleForNonCollapsedSelection(
   content: ContentState,
   selection: SelectionState,
 ): DraftInlineStyle {
-  var startKey = selection.getStartKey();
-  var startOffset = selection.getStartOffset();
-  var startBlock = content.getBlockForKey(startKey);
+  const startKey = selection.getStartKey();
+  const startOffset = selection.getStartOffset();
+  const startBlock = content.getBlockForKey(startKey);
 
   // If there is a character just inside the selection, use its style.
   if (startOffset < startBlock.getLength()) {
@@ -652,17 +647,17 @@ function lookUpwardForInlineStyle(
   content: ContentState,
   fromKey: string,
 ): DraftInlineStyle {
-  var previousBlock = content.getBlockBefore(fromKey);
-  var previousLength;
+  const lastNonEmpty = content
+    .getBlockMap()
+    .reverse()
+    .skipUntil((_, k) => k === fromKey)
+    .skip(1)
+    .skipUntil((block, _) => block.getLength())
+    .first();
 
-  while (previousBlock) {
-    previousLength = previousBlock.getLength();
-    if (previousLength) {
-      return previousBlock.getInlineStyleAt(previousLength - 1);
-    }
-    previousBlock = content.getBlockBefore(previousBlock.getKey());
+  if (lastNonEmpty) {
+    return lastNonEmpty.getInlineStyleAt(lastNonEmpty.getLength() - 1);
   }
-
   return OrderedSet();
 }
 

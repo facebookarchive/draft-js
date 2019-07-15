@@ -1,32 +1,30 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftEditorLeaf.react
- * @typechecks
+ * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 
-var ContentBlock = require('ContentBlock');
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
-var React = require('React');
-var ReactDOM = require('ReactDOM');
+const React = require('React');
+const ReactDOM = require('ReactDOM');
 
 const invariant = require('invariant');
-var setDraftEditorSelection = require('setDraftEditorSelection');
+const setDraftEditorSelection = require('setDraftEditorSelection');
 
 type Props = {
   // The block that contains this leaf.
-  block: ContentBlock,
+  block: BlockNodeRecord,
 
   // Mapping of style names to CSS declarations.
   customStyleMap: Object,
@@ -44,7 +42,7 @@ type Props = {
 
   // The current `SelectionState`, used to represent a selection range in the
   // editor
-  selection: SelectionState,
+  selection: ?SelectionState,
 
   // The offset of this string within its block.
   start: number,
@@ -65,7 +63,7 @@ type Props = {
  * DOM Selection API. In this way, top-level components can declaratively
  * maintain the selection state.
  */
-class DraftEditorLeaf extends React.Component {
+class DraftEditorLeaf extends React.Component<Props> {
   /**
    * By making individual leaf instances aware of their context within
    * the text of the editor, we can set our selection range more
@@ -75,6 +73,9 @@ class DraftEditorLeaf extends React.Component {
    * DOM structure of the DraftEditor component. If leaves had multiple
    * text nodes, this would be harder.
    */
+
+  leaf: ?HTMLElement;
+
   _setSelection(): void {
     const {selection} = this.props;
 
@@ -101,6 +102,9 @@ class DraftEditorLeaf extends React.Component {
 
     if (child.nodeType === Node.TEXT_NODE) {
       targetNode = child;
+      /* $FlowFixMe(>=0.79.1 site=www) This comment suppresses an error found
+     * when Flow v0.79 was deployed. To see the error delete this comment and
+     * run Flow. */
     } else if (child.tagName === 'BR') {
       targetNode = node;
     } else {
@@ -112,13 +116,13 @@ class DraftEditorLeaf extends React.Component {
   }
 
   shouldComponentUpdate(nextProps: Props): boolean {
-    const leafNode = ReactDOM.findDOMNode(this.refs.leaf);
+    const leafNode = ReactDOM.findDOMNode(this.leaf);
     invariant(leafNode, 'Missing leafNode');
-    return (
+    const shouldUpdate =
       leafNode.textContent !== nextProps.text ||
       nextProps.styleSet !== this.props.styleSet ||
-      nextProps.forceSelection
-    );
+      nextProps.forceSelection;
+    return shouldUpdate;
   }
 
   componentDidUpdate(): void {
@@ -129,7 +133,7 @@ class DraftEditorLeaf extends React.Component {
     this._setSelection();
   }
 
-  render(): React.Element<any> {
+  render(): React.Node {
     const {block} = this.props;
     let {text} = this.props;
 
@@ -146,13 +150,11 @@ class DraftEditorLeaf extends React.Component {
       const mergedStyles = {};
       const style = customStyleMap[styleName];
 
-      if (
-        style !== undefined &&
-        map.textDecoration !== style.textDecoration
-      ) {
+      if (style !== undefined && map.textDecoration !== style.textDecoration) {
         // .trim() is necessary for IE9/10/11 and Edge
-        mergedStyles.textDecoration =
-          [map.textDecoration, style.textDecoration].join(' ').trim();
+        mergedStyles.textDecoration = [map.textDecoration, style.textDecoration]
+          .join(' ')
+          .trim();
       }
 
       return Object.assign(map, style, mergedStyles);
@@ -166,7 +168,7 @@ class DraftEditorLeaf extends React.Component {
     return (
       <span
         data-offset-key={offsetKey}
-        ref="leaf"
+        ref={ref => (this.leaf = ref)}
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>

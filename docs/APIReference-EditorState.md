@@ -1,10 +1,6 @@
 ---
 id: api-reference-editor-state
 title: EditorState
-layout: docs
-category: API Reference
-next: api-reference-content-state
-permalink: docs/api-reference-editor-state.html
 ---
 
 `EditorState` is the top-level state object for the editor.
@@ -122,7 +118,14 @@ The list below includes the most commonly used instance methods for `EditorState
 > Note
 >
 > Use the static `EditorState` methods to set properties, rather than using
-> the Immutable API directly.
+> the Immutable API directly. This means using `EditorState.set` to pass
+> new options to an EditorState instance.
+>
+> **Example**
+> ```
+> const editorState = EditorState.createEmpty();
+> const editorStateWithoutUndo = EditorState.set(editorState, {allowUndo: false});
+> ```
 
 <ul class="apiIndex">
   <li>
@@ -358,7 +361,7 @@ as the set of inline styles to be applied to the next inserted characters.
 ```
 static set(editorState: EditorState, options: EditorStateRecordType): EditorState
 ```
-Returns a new `EditorState` object with new options passed in. 'The method is
+Returns a new `EditorState` object with new options passed in. The method is
 inherited from the Immutable `record` API.
 
 ## Properties and Getters

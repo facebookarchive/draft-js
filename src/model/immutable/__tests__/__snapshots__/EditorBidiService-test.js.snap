@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must create a new map 1`] = `
+Object {
+  "a": "LTR",
+}
+`;
+
+exports[`must return a new map if block keys change 1`] = `true`;
+
+exports[`must return a new map if block keys change 2`] = `true`;
+
+exports[`must return a new map if block keys change 3`] = `
+Object {
+  "a": "LTR",
+}
+`;
+
+exports[`must return a new map if block keys change 4`] = `
+Object {
+  "asdf": "LTR",
+}
+`;
+
+exports[`must return a new map if direction changes 1`] = `true`;
+
+exports[`must return a new map if direction changes 2`] = `true`;
+
+exports[`must return a new map if direction changes 3`] = `
+Object {
+  "a": "LTR",
+  "c": "LTR",
+}
+`;
+
+exports[`must return a new map if direction changes 4`] = `
+Object {
+  "a": "LTR",
+  "b": "RTL",
+}
+`;
+
+exports[`must return the same map if no changes 1`] = `true`;
+
+exports[`must return the same map if no changes 2`] = `false`;
+
+exports[`must return the same map if no changes 3`] = `
+Object {
+  "a": "LTR",
+}
+`;
+
+exports[`must return the same map if no changes 4`] = `
+Object {
+  "a": "LTR",
+}
+`;
+
+exports[`must return the same map if no directions change 1`] = `true`;
+
+exports[`must return the same map if no directions change 2`] = `true`;
+
+exports[`must return the same map if no directions change 3`] = `false`;
+
+exports[`must return the same map if no directions change 4`] = `
+Object {
+  "a": "LTR",
+}
+`;
+
+exports[`must return the same map if no directions change 5`] = `
+Object {
+  "a": "LTR",
+}
+`;
+
+exports[`must return the same map if no text changes 1`] = `true`;
+
+exports[`must return the same map if no text changes 2`] = `true`;
+
+exports[`must return the same map if no text changes 3`] = `false`;
+
+exports[`must return the same map if no text changes 4`] = `
+Object {
+  "a": "LTR",
+}
+`;
+
+exports[`must return the same map if no text changes 5`] = `
+Object {
+  "a": "LTR",
+}
+`;

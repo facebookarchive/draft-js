@@ -1,0 +1,344 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`must be able to convert from raw state to raw tree state 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "children": Array [],
+      "key": "A",
+      "text": "Alpha",
+    },
+    Object {
+      "children": Array [],
+      "key": "B",
+      "text": "Beta",
+    },
+    Object {
+      "children": Array [],
+      "key": "C",
+      "text": "Charlie",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
+exports[`must be able to convert from raw state to raw tree state with nested trees based on lists depth 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "children": Array [],
+      "depth": 0,
+      "key": "A",
+      "text": "Alpha",
+      "type": "ordered-list-item",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "B",
+          "text": "Beta",
+          "type": "ordered-list-item",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "depth": 2,
+              "key": "C",
+              "text": "Charlie",
+              "type": "ordered-list-item",
+            },
+          ],
+          "depth": 1,
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "key1",
+          "text": "",
+          "type": "ordered-list-item",
+        },
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "D",
+          "text": "Delta",
+          "type": "ordered-list-item",
+        },
+      ],
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "key0",
+      "text": "",
+      "type": "ordered-list-item",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
+exports[`must be able to convert from raw state to raw tree state with nested trees based on lists depth and attach nested blocks to closest depth parent 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "children": Array [],
+      "depth": 0,
+      "key": "A",
+      "text": "Alpha",
+      "type": "ordered-list-item",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "B",
+          "text": "Beta",
+          "type": "ordered-list-item",
+        },
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "C",
+          "text": "Charlie",
+          "type": "ordered-list-item",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "depth": 2,
+              "key": "D",
+              "text": "Delta",
+              "type": "ordered-list-item",
+            },
+          ],
+          "depth": 1,
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "key3",
+          "text": "",
+          "type": "ordered-list-item",
+        },
+      ],
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "key2",
+      "text": "",
+      "type": "ordered-list-item",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
+exports[`must be able to convert from raw state to raw tree state with nested trees of various depths 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "children": Array [],
+      "depth": 0,
+      "key": "A",
+      "text": "alpha",
+      "type": "unordered-list-item",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "B",
+          "text": "beta",
+          "type": "unordered-list-item",
+        },
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "C",
+          "text": "charlie",
+          "type": "unordered-list-item",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "depth": 2,
+              "key": "D",
+              "text": "delta",
+              "type": "unordered-list-item",
+            },
+          ],
+          "depth": 1,
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "key5",
+          "text": "",
+          "type": "unordered-list-item",
+        },
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "E",
+          "text": "epsilon",
+          "type": "unordered-list-item",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "depth": 2,
+              "key": "F",
+              "text": "foo",
+              "type": "unordered-list-item",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "depth": 3,
+                  "key": "G",
+                  "text": "gamma",
+                  "type": "unordered-list-item",
+                },
+              ],
+              "depth": 2,
+              "entityRanges": Array [],
+              "inlineStyleRanges": Array [],
+              "key": "key7",
+              "text": "",
+              "type": "unordered-list-item",
+            },
+          ],
+          "depth": 1,
+          "entityRanges": Array [],
+          "inlineStyleRanges": Array [],
+          "key": "key6",
+          "text": "",
+          "type": "unordered-list-item",
+        },
+        Object {
+          "children": Array [],
+          "depth": 1,
+          "key": "H",
+          "text": "house",
+          "type": "unordered-list-item",
+        },
+      ],
+      "depth": 0,
+      "entityRanges": Array [],
+      "inlineStyleRanges": Array [],
+      "key": "key4",
+      "text": "",
+      "type": "unordered-list-item",
+    },
+    Object {
+      "children": Array [],
+      "depth": 0,
+      "key": "I",
+      "text": "iota",
+      "type": "unordered-list-item",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
+exports[`must be able to convert from tree raw state with nested blocks to raw state 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "key": "A",
+      "text": "",
+      "type": "blockquote",
+    },
+    Object {
+      "key": "B",
+      "text": "Beta",
+      "type": "header-one",
+    },
+    Object {
+      "key": "C",
+      "text": "Charlie",
+      "type": "header-two",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
+exports[`must be able to convert from tree raw state with nested list blocks to raw state preserving lists depth 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "depth": 0,
+      "key": "A",
+      "text": "Alpha",
+      "type": "ordered-list-item",
+    },
+    Object {
+      "depth": 1,
+      "key": "B",
+      "text": "Beta",
+      "type": "ordered-list-item",
+    },
+    Object {
+      "depth": 2,
+      "key": "C",
+      "text": "Charlie",
+      "type": "ordered-list-item",
+    },
+    Object {
+      "depth": 1,
+      "key": "D",
+      "text": "Delta",
+      "type": "ordered-list-item",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
+exports[`must be able to convert from tree raw state with nested list blocks to raw state preserving lists depth only if type matches 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "depth": 0,
+      "key": "A",
+      "text": "Alpha",
+      "type": "ordered-list-item",
+    },
+    Object {
+      "depth": 1,
+      "key": "B",
+      "text": "Beta",
+      "type": "ordered-list-item",
+    },
+    Object {
+      "depth": 0,
+      "key": "C",
+      "text": "Charlie",
+      "type": "unordered-list-item",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
+exports[`must be able to convert from tree raw state with only root blocks to raw state 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "key": "A",
+      "text": "Alpha",
+    },
+    Object {
+      "key": "B",
+      "text": "Beta",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
