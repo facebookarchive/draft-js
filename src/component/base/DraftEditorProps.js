@@ -180,6 +180,11 @@ export type DraftEditorProps = {
   // is used for both rendering and paste processing.
   blockRenderMap: DraftBlockRenderMap,
 
+  // When the Editor loses focus (blurs) text selections are cleared
+  // by default to mimic <textarea> behaviour, however in some situations
+  // users may wish to preserve native behaviour.
+  preserveSelectionOnBlur?: boolean,
+
   // Overrides for cut, copy & paste, which can be used to implement custom
   // behavior like entity cut/copy/paste (see PR #1784)."
   onPaste?: (DraftEditor, SyntheticClipboardEvent<>) => void,
