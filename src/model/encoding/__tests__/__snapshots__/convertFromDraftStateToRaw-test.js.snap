@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`must be able to convert from draft state entities not in map 1`] = `
+Object {
+  "blocks": Array [
+    Object {
+      "data": Object {},
+      "depth": 0,
+      "entityRanges": Array [
+        Object {
+          "key": 0,
+          "length": 7,
+          "offset": 0,
+        },
+      ],
+      "inlineStyleRanges": Array [],
+      "key": "a",
+      "text": "badlink",
+      "type": "unstyled",
+    },
+  ],
+  "entityMap": Object {},
+}
+`;
+
 exports[`must be able to convert from draft state with ContentBlock to raw 1`] = `
 Object {
   "blocks": Array [
