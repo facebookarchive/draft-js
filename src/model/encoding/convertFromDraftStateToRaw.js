@@ -19,7 +19,6 @@ import type {RawDraftContentState} from 'RawDraftContentState';
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DraftStringKey = require('DraftStringKey');
-const FBLogger = require('FBLogger');
 
 const encodeEntityRanges = require('encodeEntityRanges');
 const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
@@ -118,16 +117,12 @@ const encodeRawEntityMap = (
   const rawEntityMap = {};
 
   Object.keys(entityMap).forEach((key, index) => {
-    try {
-      const entity = contentState.getEntity(DraftStringKey.unstringify(key));
-      rawEntityMap[index] = {
-        type: entity.getType(),
-        mutability: entity.getMutability(),
-        data: entity.getData(),
-      };
-    } catch (e) {
-      FBLogger('draft-js-contrib').catching(e);
-    }
+    const entity = contentState.getEntity(DraftStringKey.unstringify(key));
+    rawEntityMap[index] = {
+      type: entity.getType(),
+      mutability: entity.getMutability(),
+      data: entity.getData(),
+    };
   });
 
   return {
