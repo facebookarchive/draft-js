@@ -117,17 +117,12 @@ const encodeRawEntityMap = (
   const rawEntityMap = {};
 
   Object.keys(entityMap).forEach((key, index) => {
-    try {
-      const entity = contentState.getEntity(DraftStringKey.unstringify(key));
-      rawEntityMap[index] = {
-        type: entity.getType(),
-        mutability: entity.getMutability(),
-        data: entity.getData(),
-      };
-    } catch {
-      // keep contructing rawEntityMap even if one entity referenced in
-      // character metadata doesn't exist in contentState
-    }
+    const entity = contentState.getEntity(DraftStringKey.unstringify(key));
+    rawEntityMap[index] = {
+      type: entity.getType(),
+      mutability: entity.getMutability(),
+      data: entity.getData(),
+    };
   });
 
   return {
