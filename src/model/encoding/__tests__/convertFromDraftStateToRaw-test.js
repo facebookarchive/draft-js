@@ -61,8 +61,8 @@ const treeContentState = contentState.set(
   ]),
 );
 
-const getMetadata = entityKey =>
-  Immutable.Repeat(CharacterMetadata.create({entity: entityKey}), 5);
+const getMetadata = (entityKey, length) =>
+  Immutable.Repeat(CharacterMetadata.create({entity: entityKey}), length);
 const getLink = entityKey =>
   new DraftEntityInstance({
     type: 'LINK',
@@ -79,23 +79,23 @@ const contentStateWithNonContiguousEntities = ContentState.createFromBlockArray(
       key: 'a',
       type: 'unstyled',
       text: 'link2 link2 link3',
-      characterList: getMetadata('2')
+      characterList: getMetadata('2', 5)
         .toList()
         .push(CharacterMetadata.EMPTY)
-        .concat(getMetadata('2'))
+        .concat(getMetadata('2', 5))
         .push(CharacterMetadata.EMPTY)
-        .concat(getMetadata('3')),
+        .concat(getMetadata('3', 5)),
     }),
     new ContentBlock({
       key: 'b',
       type: 'unstyled',
       text: 'link4 link2 link5',
-      characterList: getMetadata('4')
+      characterList: getMetadata('4', 5)
         .toList()
         .push(CharacterMetadata.EMPTY)
-        .concat(getMetadata('2'))
+        .concat(getMetadata('2', 5))
         .push(CharacterMetadata.EMPTY)
-        .concat(getMetadata('5')),
+        .concat(getMetadata('5', 5)),
     }),
   ],
 )
@@ -103,6 +103,15 @@ const contentStateWithNonContiguousEntities = ContentState.createFromBlockArray(
   .addEntity(getLink('3'))
   .addEntity(getLink('4'))
   .addEntity(getLink('5'));
+
+const contentStateWithEntitiesNotInMap = ContentState.createFromBlockArray([
+  new ContentBlock({
+    key: 'a',
+    type: 'unstyled',
+    text: 'badlink',
+    characterList: getMetadata('999', 7).toList(),
+  }),
+]);
 
 const assertConvertFromDraftStateToRaw = content => {
   expect(convertFromDraftStateToRaw(content)).toMatchSnapshot();
@@ -118,4 +127,8 @@ test('must be able to convert from draft state with ContentBlockNode to raw', ()
 
 test('must be able to convert from draft state with noncontiguous entities to raw', () => {
   assertConvertFromDraftStateToRaw(contentStateWithNonContiguousEntities);
+});
+
+test('must be able to convert from draft state entities not in map', () => {
+  assertConvertFromDraftStateToRaw(contentStateWithEntitiesNotInMap);
 });
