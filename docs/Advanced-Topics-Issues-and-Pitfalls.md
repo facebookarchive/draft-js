@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-issues-and-pitfalls
 title: Issues and Pitfalls
-layout: docs
-category: Advanced Topics
-next: api-reference-editor
-permalink: docs/advanced-topics-issues-and-pitfalls.html
 ---
 
 This article addresses some known issues with the Draft editor framework, as
@@ -87,7 +83,7 @@ many examples but you are free to use
 [babel-polyfill](https://babeljs.io/docs/usage/polyfill/) if that's more
 your scene.
 
-When using either polyfill/shim, you should include it as early as possibly in
+When using either polyfill/shim, you should include it as early as possible in
 your application's entrypoint (at the very minimum, before you import Draft).
 For instance, using
 [create-react-app](https://github.com/facebookincubator/create-react-app) and

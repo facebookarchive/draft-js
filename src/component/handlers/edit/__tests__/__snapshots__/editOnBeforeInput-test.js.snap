@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`editor is updated with new text if it does not match current selection 1`] = `
+Immutable.Record {
+  "entityMap": Object {
+    "__add": [Function],
+    "__create": [Function],
+    "__get": [Function],
+    "__getLastCreatedEntityKey": [Function],
+    "__mergeData": [Function],
+    "__replaceData": [Function],
+    "add": [Function],
+    "create": [Function],
+    "get": [Function],
+    "getLastCreatedEntityKey": [Function],
+    "mergeData": [Function],
+    "replaceData": [Function],
+  },
+  "blockMap": Immutable.OrderedMap {
+    "a": Immutable.Record {
+      "key": "a",
+      "type": "unstyled",
+      "text": "Orsenal",
+      "characterList": Immutable.List [
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+        Immutable.Record {
+          "style": Immutable.OrderedSet [],
+          "entity": null,
+        },
+      ],
+      "depth": 0,
+      "data": Immutable.Map {},
+    },
+  },
+  "selectionBefore": Immutable.Record {
+    "anchorKey": "a",
+    "anchorOffset": 0,
+    "focusKey": "a",
+    "focusOffset": 1,
+    "isBackward": false,
+    "hasFocus": false,
+  },
+  "selectionAfter": Immutable.Record {
+    "anchorKey": "a",
+    "anchorOffset": 1,
+    "focusKey": "a",
+    "focusOffset": 1,
+    "isBackward": false,
+    "hasFocus": false,
+  },
+}
+`;
+
+exports[`editor selectionstate is updated if new text matches current selection 1`] = `
+Immutable.Record {
+  "anchorKey": "a",
+  "anchorOffset": 1,
+  "focusKey": "a",
+  "focusOffset": 1,
+  "isBackward": false,
+  "hasFocus": false,
+}
+`;
+
+exports[`editor selectionstate is updated if new text matches current selection and user selected backwards 1`] = `
+Immutable.Record {
+  "anchorKey": "a",
+  "anchorOffset": 1,
+  "focusKey": "a",
+  "focusOffset": 1,
+  "isBackward": false,
+  "hasFocus": false,
+}
+`;

@@ -1,20 +1,19 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftEditorBlock.react
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
+import type {DraftDecoratorComponentProps} from 'DraftDecorator';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
@@ -24,7 +23,6 @@ import type {List} from 'immutable';
 const DraftEditorLeaf = require('DraftEditorLeaf.react');
 const DraftOffsetKey = require('DraftOffsetKey');
 const React = require('React');
-const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
 const Style = require('Style');
 const UnicodeBidi = require('UnicodeBidi');
@@ -72,6 +70,8 @@ const isBlockOnSelectionEdge = (
  * appropriate decorator and inline style components.
  */
 class DraftEditorBlock extends React.Component<Props> {
+  _node: ?HTMLDivElement;
+
   shouldComponentUpdate(nextProps: Props): boolean {
     return (
       this.props.block !== nextProps.block ||
@@ -86,7 +86,7 @@ class DraftEditorBlock extends React.Component<Props> {
    * When a block is mounted and overlaps the selection state, we need to make
    * sure that the cursor is visible to match native behavior. This may not
    * be the case if the user has pressed `RETURN` or pasted some content, since
-   * programatically creating these new blocks and setting the DOM selection
+   * programmatically creating these new blocks and setting the DOM selection
    * will miss out on the browser natively scrolling to that position.
    *
    * To replicate native behavior, if the block overlaps the selection state
@@ -101,7 +101,10 @@ class DraftEditorBlock extends React.Component<Props> {
       return;
     }
 
-    const blockNode = ReactDOM.findDOMNode(this);
+    const blockNode = this._node;
+    if (blockNode == null) {
+      return;
+    }
     const scrollParent = Style.getScrollParent(blockNode);
     const scrollPosition = getScrollPosition(scrollParent);
     let scrollDelta;
@@ -144,7 +147,7 @@ class DraftEditorBlock extends React.Component<Props> {
     }
   }
 
-  _renderChildren(): Array<React.Element<any>> {
+  _renderChildren(): Array<React.Node> {
     const block = this.props.block;
     const blockKey = block.getKey();
     const text = block.getText();
@@ -196,10 +199,10 @@ class DraftEditorBlock extends React.Component<Props> {
 
         const decoratorProps = decorator.getPropsForKey(decoratorKey);
         const decoratorOffsetKey = DraftOffsetKey.encode(blockKey, ii, 0);
-        const decoratedText = text.slice(
-          leavesForLeafSet.first().get('start'),
-          leavesForLeafSet.last().get('end'),
-        );
+        const start = leavesForLeafSet.first().get('start');
+        const end = leavesForLeafSet.last().get('end');
+        const decoratedText = text.slice(start, end);
+        const entityKey = block.getEntityAt(leafSet.get('start'));
 
         // Resetting dir to the same value on a child node makes Chrome/Firefox
         // confused on cursor movement. See http://jsfiddle.net/d157kLck/3/
@@ -208,15 +211,20 @@ class DraftEditorBlock extends React.Component<Props> {
           this.props.direction,
         );
 
+        const commonProps: DraftDecoratorComponentProps = {
+          contentState: this.props.contentState,
+          decoratedText,
+          dir: dir,
+          key: decoratorOffsetKey,
+          start,
+          end,
+          blockKey,
+          entityKey,
+          offsetKey: decoratorOffsetKey,
+        };
+
         return (
-          <DecoratorComponent
-            {...decoratorProps}
-            contentState={this.props.contentState}
-            decoratedText={decoratedText}
-            dir={dir}
-            key={decoratorOffsetKey}
-            entityKey={block.getEntityAt(leafSet.get('start'))}
-            offsetKey={decoratorOffsetKey}>
+          <DecoratorComponent {...decoratorProps} {...commonProps}>
             {leaves}
           </DecoratorComponent>
         );
@@ -233,7 +241,10 @@ class DraftEditorBlock extends React.Component<Props> {
     });
 
     return (
-      <div data-offset-key={offsetKey} className={className}>
+      <div
+        data-offset-key={offsetKey}
+        className={className}
+        ref={ref => (this._node = ref)}>
         {this._renderChildren()}
       </div>
     );

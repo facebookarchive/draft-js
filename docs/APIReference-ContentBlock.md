@@ -1,10 +1,6 @@
 ---
 id: api-reference-content-block
 title: ContentBlock
-layout: docs
-category: API Reference
-next: api-reference-character-metadata
-permalink: docs/api-reference-content-block.html
 ---
 
 `ContentBlock` is an Immutable
@@ -165,7 +161,7 @@ supplied text.
 ```
 getKey(): string
 ```
-Returns the string key for this `ContentBlock`.
+Returns the string key for this `ContentBlock`. Block keys are alphanumeric string. It is recommended to use `generateRandomKey` to generate block keys.
 
 ### getType()
 

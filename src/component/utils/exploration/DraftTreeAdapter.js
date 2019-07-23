@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftTreeAdapter
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
@@ -17,6 +15,7 @@
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
+const generateRandomKey = require('generateRandomKey');
 const invariant = require('invariant');
 
 const traverseInDepthOrder = (
@@ -63,7 +62,7 @@ const addDepthToChildren = (block: RawDraftContentBlock) => {
  */
 const DraftTreeAdapter = {
   /**
-   * Converts from a tree raw state back to  draft raw state
+   * Converts from a tree raw state back to draft raw state
    */
   fromRawTreeStateToRawState(
     draftTreeState: RawDraftContentState,
@@ -85,6 +84,11 @@ const DraftTreeAdapter = {
       if (isListBlock(block)) {
         newBlock.depth = newBlock.depth || 0;
         addDepthToChildren(block);
+
+        // if it's a non-leaf node, we don't do anything else
+        if (block.children != null && block.children.length > 0) {
+          return;
+        }
       }
 
       delete newBlock.children;
@@ -106,8 +110,8 @@ const DraftTreeAdapter = {
   fromRawStateToRawTreeState(
     draftState: RawDraftContentState,
   ): RawDraftContentState {
-    let lastListDepthCacheRef = {};
     const transformedBlocks = [];
+    const parentStack = [];
 
     draftState.blocks.forEach(block => {
       const isList = isListBlock(block);
@@ -118,28 +122,51 @@ const DraftTreeAdapter = {
       };
 
       if (!isList) {
-        // reset the cache path
-        lastListDepthCacheRef = {};
         transformedBlocks.push(treeBlock);
         return;
       }
 
-      // update our depth cache reference path
-      lastListDepthCacheRef[depth] = treeBlock;
+      let lastParent = parentStack[0];
+      // block is non-nested & there are no nested blocks, directly push block
+      if (lastParent == null && depth === 0) {
+        transformedBlocks.push(treeBlock);
+        // block is first nested block or previous nested block is at a lower level
+      } else if (lastParent == null || lastParent.depth < depth - 1) {
+        // create new parent block
+        const newParent = {
+          key: generateRandomKey(),
+          text: '',
+          depth: depth - 1,
+          type: block.type,
+          children: [],
+          entityRanges: [],
+          inlineStyleRanges: [],
+        };
 
-      // if we are greater than zero we must have seen a parent already
-      if (depth > 0) {
-        const parent = lastListDepthCacheRef[depth - 1];
-
-        invariant(parent, 'Invalid depth for RawDraftContentBlock');
-
-        // push nested list blocks
-        parent.children.push(treeBlock);
-        return;
+        parentStack.unshift(newParent);
+        if (depth === 1) {
+          // add as a root-level block
+          transformedBlocks.push(newParent);
+        } else if (lastParent != null) {
+          // depth > 1 => also add as previous parent's child
+          lastParent.children.push(newParent);
+        }
+        newParent.children.push(treeBlock);
+      } else if (lastParent.depth === depth - 1) {
+        // add as child of last parent
+        lastParent.children.push(treeBlock);
+      } else {
+        // pop out parents at levels above this one from the parent stack
+        while (lastParent != null && lastParent.depth >= depth) {
+          parentStack.shift();
+          lastParent = parentStack[0];
+        }
+        if (depth > 0) {
+          lastParent.children.push(treeBlock);
+        } else {
+          transformedBlocks.push(treeBlock);
+        }
       }
-
-      // push root list blocks
-      transformedBlocks.push(treeBlock);
     });
 
     return {

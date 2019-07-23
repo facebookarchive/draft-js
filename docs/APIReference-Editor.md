@@ -1,10 +1,6 @@
 ---
 id: api-reference-editor
 title: Editor Component
-layout: docs
-category: API Reference
-next: api-reference-editor-change-type
-permalink: docs/api-reference-editor.html
 ---
 
 This article discusses the API and props of the core controlled contentEditable
@@ -75,6 +71,16 @@ blockRendererFn?: (block: ContentBlock) => ?Object
 ```
 Optionally set a function to define custom block rendering. See
 [Advanced Topics: Block Components](/docs/advanced-topics-block-components.html)
+for details on usage.
+
+#### blockRendererMap
+```
+blockRendererMap?: DraftBlockRenderMap
+```
+Provide a map of block rendering configurations. Each block type maps to
+element tag and an optional react element wrapper. This configuration
+is used for both rendering and paste processing. See
+[Advanced Topics: Custom Block Rendering](https://draftjs.org/docs/advanced-topics-custom-block-render-map.html)
 for details on usage.
 
 #### blockStyleFn
@@ -207,7 +213,7 @@ rendered list of results to trigger applying the mention entity to your content.
 
 #### handleKeyCommand
 ```
-handleKeyCommand?: (command: string, editorState: EditorState) => DraftHandleValue
+handleKeyCommand?: (command: string, editorState: EditorState, eventTimeStamp: number) => DraftHandleValue
 ```
 Handle the named editor command. See
 [Advanced Topics: Key Bindings](/docs/advanced-topics-key-bindings.html)
@@ -215,7 +221,7 @@ for details on usage.
 
 #### handleBeforeInput
 ```
-handleBeforeInput?: (chars: string, editorState: EditorState) => DraftHandleValue
+handleBeforeInput?: (chars: string, editorState: EditorState, eventTimeStamp: number) => DraftHandleValue
 ```
 Handle the characters to be inserted from a `beforeInput` event. Returning `'handled'`
 causes the default behavior of the `beforeInput` event to be prevented (i.e. it is
@@ -252,45 +258,22 @@ Handle other drop operations.
 
 ### Key Handlers (Optional)
 
-These prop functions expose common useful key events. Example: At Facebook, these are
-used to provide keyboard interaction for mention results in inputs.
+Draft lets you supply a custom `keyDown` handler that wraps or overrides its
+default one.
 
-#### onEscape
-```
-onEscape?: (e: SyntheticKeyboardEvent) => void
-```
-
-#### onTab
-```
-onTab?: (e: SyntheticKeyboardEvent) => void
-```
-
-#### onUpArrow
-```
-onUpArrow?: (e: SyntheticKeyboardEvent) => void
-```
-
-#### onRightArrow
-```
-onRightArrow?: (e: SyntheticKeyboardEvent) => void
-```
-
-#### onDownArrow
-```
-onDownArrow?: (e: SyntheticKeyboardEvent) => void
-```
 #### keyBindingFn
 
 ```
-keyBindingFn?: (e: SyntheticKeyboardEvent) => void
+keyBindingFn?: (e: SyntheticKeyboardEvent) => ?string
 ```
 
-This prop lets you handle key events directly and provides an opportunity to return custom editor commands. You can find a more detailed explanation of this [here](/docs/advanced-topics-key-bindings.html).
-
-#### onLeftArrow
-```
-onLeftArrow?: (e: SyntheticKeyboardEvent) => void
-```
+This prop function exposes `keyDown` events to a handler of your choosing. If an
+event of interest happens, you can perform custom logic and/or return a string
+corresponding to a `DraftEditorCommand` or a custom editor command of your
+own creation. Example: At Facebook, this is used to provide keyboard interaction
+for the mentions autocomplete menu that appears when typing a friend's name.
+You can find a more detailed explanation of this
+[here](/docs/advanced-topics-key-bindings.html).
 
 ### Mouse events
 

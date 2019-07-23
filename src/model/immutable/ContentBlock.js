@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule ContentBlock
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -18,9 +16,9 @@ import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 const CharacterMetadata = require('CharacterMetadata');
-const Immutable = require('immutable');
 
 const findRangesImmutable = require('findRangesImmutable');
+const Immutable = require('immutable');
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
@@ -35,7 +33,7 @@ const defaultRecord: BlockNodeConfig = {
   data: Map(),
 };
 
-const ContentBlockRecord = Record(defaultRecord);
+const ContentBlockRecord = (Record(defaultRecord): any);
 
 const decorateCharacterList = (config: BlockNodeConfig): BlockNodeConfig => {
   if (!config) {
@@ -85,12 +83,12 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
   }
 
   getInlineStyleAt(offset: number): DraftInlineStyle {
-    var character = this.getCharacterList().get(offset);
+    const character = this.getCharacterList().get(offset);
     return character ? character.getStyle() : EMPTY_SET;
   }
 
   getEntityAt(offset: number): ?string {
-    var character = this.getCharacterList().get(offset);
+    const character = this.getCharacterList().get(offset);
     return character ? character.getEntity() : null;
   }
 

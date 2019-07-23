@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-managing-focus
 title: Managing Focus
-layout: docs
-category: Advanced Topics
-next: advanced-topics-block-styling
-permalink: docs/advanced-topics-managing-focus.html
 ---
 
 Managing text input focus can be a tricky task within React components. The browser

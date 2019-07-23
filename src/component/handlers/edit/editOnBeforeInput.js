@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule editOnBeforeInput
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -16,16 +14,15 @@
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-var BlockTree = require('BlockTree');
-var DraftModifier = require('DraftModifier');
-var EditorState = require('EditorState');
-var UserAgent = require('UserAgent');
+const DraftModifier = require('DraftModifier');
+const EditorState = require('EditorState');
+const UserAgent = require('UserAgent');
 
-var getEntityKeyForSelection = require('getEntityKeyForSelection');
+const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isEventHandled = require('isEventHandled');
-var isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-var nullthrows = require('nullthrows');
-var setImmediate = require('setImmediate');
+const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
+const nullthrows = require('nullthrows');
+const setImmediate = require('setImmediate');
 
 // When nothing is focused, Firefox regards two characters, `'` and `/`, as
 // commands that should open and focus the "quickfind" search bar. This should
@@ -34,9 +31,9 @@ var setImmediate = require('setImmediate');
 // This breaks the input. Special case these characters to ensure that when
 // they are typed, we prevent default on the event to make sure not to
 // trigger quickfind.
-var FF_QUICKFIND_CHAR = "'";
-var FF_QUICKFIND_LINK_CHAR = '/';
-var isFirefox = UserAgent.isBrowser('Firefox');
+const FF_QUICKFIND_CHAR = "'";
+const FF_QUICKFIND_LINK_CHAR = '/';
+const isFirefox = UserAgent.isBrowser('Firefox');
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
@@ -54,15 +51,21 @@ function replaceText(
   text: string,
   inlineStyle: DraftInlineStyle,
   entityKey: ?string,
+  forceSelection: boolean,
 ): EditorState {
-  var contentState = DraftModifier.replaceText(
+  const contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),
     editorState.getSelection(),
     text,
     inlineStyle,
     entityKey,
   );
-  return EditorState.push(editorState, contentState, 'insert-characters');
+  return EditorState.push(
+    editorState,
+    contentState,
+    'insert-characters',
+    forceSelection,
+  );
 }
 
 /**
@@ -85,7 +88,7 @@ function editOnBeforeInput(
 
   const editorState = editor._latestEditorState;
 
-  var chars = e.data;
+  const chars = e.data;
 
   // In some cases (ex: IE ideographic space insertion) no character data
   // is provided. There's nothing to do when this happens.
@@ -100,7 +103,9 @@ function editOnBeforeInput(
   // start of the block.
   if (
     editor.props.handleBeforeInput &&
-    isEventHandled(editor.props.handleBeforeInput(chars, editorState))
+    isEventHandled(
+      editor.props.handleBeforeInput(chars, editorState, e.timeStamp),
+    )
   ) {
     e.preventDefault();
     return;
@@ -109,47 +114,28 @@ function editOnBeforeInput(
   // If selection is collapsed, conditionally allow native behavior. This
   // reduces re-renders and preserves spellcheck highlighting. If the selection
   // is not collapsed, we will re-render.
-  var selection = editorState.getSelection();
-  var selectionStart = selection.getStartOffset();
-  var selectionEnd = selection.getEndOffset();
-  var anchorKey = selection.getAnchorKey();
+  const selection = editorState.getSelection();
+  const selectionStart = selection.getStartOffset();
+  const anchorKey = selection.getAnchorKey();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
-
-    // If the currently selected text matches what the user is trying to
-    // replace it with, let's just update the `SelectionState`. If not, update
-    // the `ContentState` with the new text.
-    var currentlySelectedChars = editorState
-      .getCurrentContent()
-      .getPlainText()
-      .slice(selectionStart, selectionEnd);
-    if (chars === currentlySelectedChars) {
-      editor.update(
-        EditorState.forceSelection(
-          editorState,
-          selection.merge({
-            focusOffset: selectionEnd,
-          }),
+    editor.update(
+      replaceText(
+        editorState,
+        chars,
+        editorState.getCurrentInlineStyle(),
+        getEntityKeyForSelection(
+          editorState.getCurrentContent(),
+          editorState.getSelection(),
         ),
-      );
-    } else {
-      editor.update(
-        replaceText(
-          editorState,
-          chars,
-          editorState.getCurrentInlineStyle(),
-          getEntityKeyForSelection(
-            editorState.getCurrentContent(),
-            editorState.getSelection(),
-          ),
-        ),
-      );
-    }
+        true,
+      ),
+    );
     return;
   }
 
-  var newEditorState = replaceText(
+  let newEditorState = replaceText(
     editorState,
     chars,
     editorState.getCurrentInlineStyle(),
@@ -157,6 +143,7 @@ function editOnBeforeInput(
       editorState.getCurrentContent(),
       editorState.getSelection(),
     ),
+    false,
   );
 
   // Bunch of different cases follow where we need to prevent native insertion.
@@ -187,16 +174,60 @@ function editOnBeforeInput(
     }
   }
   if (!mustPreventNative) {
-    // Check the old and new "fingerprints" of the current block to determine
-    // whether this insertion requires any addition or removal of text nodes,
-    // in which case we would prevent the native character insertion.
-    var originalFingerprint = BlockTree.getFingerprint(
-      editorState.getBlockTree(anchorKey),
-    );
-    var newFingerprint = BlockTree.getFingerprint(
-      newEditorState.getBlockTree(anchorKey),
-    );
-    mustPreventNative = originalFingerprint !== newFingerprint;
+    // Let's say we have a decorator that highlights hashtags. In many cases
+    // we need to prevent native behavior and rerender ourselves --
+    // particularly, any case *except* where the inserted characters end up
+    // anywhere except exactly where you put them.
+    //
+    // Using [] to denote a decorated leaf, some examples:
+    //
+    // 1. 'hi #' and append 'f'
+    // desired rendering: 'hi [#f]'
+    // native rendering would be: 'hi #f' (incorrect)
+    //
+    // 2. 'x [#foo]' and insert '#' before 'f'
+    // desired rendering: 'x #[#foo]'
+    // native rendering would be: 'x [##foo]' (incorrect)
+    //
+    // 3. '[#foobar]' and insert ' ' between 'foo' and 'bar'
+    // desired rendering: '[#foo] bar'
+    // native rendering would be: '[#foo bar]' (incorrect)
+    //
+    // 4. '[#foo]' and delete '#' [won't use this beforeinput codepath though]
+    // desired rendering: 'foo'
+    // native rendering would be: '[foo]' (incorrect)
+    //
+    // 5. '[#foo]' and append 'b'
+    // desired rendering: '[#foob]'
+    // native rendering would be: '[#foob]' (native insertion is OK here)
+    //
+    // It is safe to allow native insertion if and only if the full list of
+    // decorator ranges matches what we expect native insertion to give. We
+    // don't need to compare the content because the only possible mutation
+    // to consider here is inserting plain text and decorators can't affect
+    // text content.
+    const oldBlockTree = editorState.getBlockTree(anchorKey);
+    const newBlockTree = newEditorState.getBlockTree(anchorKey);
+    mustPreventNative =
+      oldBlockTree.size !== newBlockTree.size ||
+      oldBlockTree.zip(newBlockTree).some(([oldLeafSet, newLeafSet]) => {
+        // selectionStart is guaranteed to be selectionEnd here
+        const oldStart = oldLeafSet.get('start');
+        const adjustedStart =
+          oldStart + (oldStart >= selectionStart ? chars.length : 0);
+        const oldEnd = oldLeafSet.get('end');
+        const adjustedEnd =
+          oldEnd + (oldEnd >= selectionStart ? chars.length : 0);
+        return (
+          // Different decorators
+          oldLeafSet.get('decoratorKey') !== newLeafSet.get('decoratorKey') ||
+          // Different number of inline styles
+          oldLeafSet.get('leaves').size !== newLeafSet.get('leaves').size ||
+          // Different effective decorator position
+          adjustedStart !== newLeafSet.get('start') ||
+          adjustedEnd !== newLeafSet.get('end')
+        );
+      });
   }
   if (!mustPreventNative) {
     mustPreventNative = mustPreventDefaultForCharacter(chars);
@@ -209,6 +240,9 @@ function editOnBeforeInput(
 
   if (mustPreventNative) {
     e.preventDefault();
+    newEditorState = EditorState.set(newEditorState, {
+      forceSelection: true,
+    });
     editor.update(newEditorState);
     return;
   }

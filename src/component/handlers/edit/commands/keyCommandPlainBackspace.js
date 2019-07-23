@@ -1,23 +1,21 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule keyCommandPlainBackspace
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var EditorState = require('EditorState');
-var UnicodeUtils = require('UnicodeUtils');
+const EditorState = require('EditorState');
+const UnicodeUtils = require('UnicodeUtils');
 
-var moveSelectionBackward = require('moveSelectionBackward');
-var removeTextWithStrategy = require('removeTextWithStrategy');
+const moveSelectionBackward = require('moveSelectionBackward');
+const removeTextWithStrategy = require('removeTextWithStrategy');
 
 /**
  * Remove the selected range. If the cursor is collapsed, remove the preceding
@@ -25,14 +23,14 @@ var removeTextWithStrategy = require('removeTextWithStrategy');
  * will remove a surrogate pair properly as well.
  */
 function keyCommandPlainBackspace(editorState: EditorState): EditorState {
-  var afterRemoval = removeTextWithStrategy(
+  const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
-      var selection = strategyState.getSelection();
-      var content = strategyState.getCurrentContent();
-      var key = selection.getAnchorKey();
-      var offset = selection.getAnchorOffset();
-      var charBehind = content.getBlockForKey(key).getText()[offset - 1];
+      const selection = strategyState.getSelection();
+      const content = strategyState.getCurrentContent();
+      const key = selection.getAnchorKey();
+      const offset = selection.getAnchorOffset();
+      const charBehind = content.getBlockForKey(key).getText()[offset - 1];
       return moveSelectionBackward(
         strategyState,
         charBehind ? UnicodeUtils.getUTF16Length(charBehind, 0) : 1,
@@ -45,7 +43,7 @@ function keyCommandPlainBackspace(editorState: EditorState): EditorState {
     return editorState;
   }
 
-  var selection = editorState.getSelection();
+  const selection = editorState.getSelection();
   return EditorState.push(
     editorState,
     afterRemoval.set('selectionBefore', selection),

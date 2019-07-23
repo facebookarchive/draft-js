@@ -1,10 +1,6 @@
 ---
 id: api-reference-content-state
 title: ContentState
-layout: docs
-category: API Reference
-next: api-reference-content-block
-permalink: docs/api-reference-content-state.html
 ---
 
 `ContentState` is an Immutable
@@ -146,6 +142,13 @@ objects.
 
 > Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map) to
 > set properties.
+> 
+> **Example**
+> ```
+> const editorState = EditorState.createEmpty();
+> const contentState = editorState.getCurrentContent();
+> const contentStateWithSelectionBefore = contentState.set('selectionBefore', SelectionState.createEmpty(contentState.getBlockForKey('1pu4d')));
+> ```
 
 <ul class="apiIndex">
   <li>

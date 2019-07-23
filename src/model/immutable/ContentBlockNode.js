@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule ContentBlockNode
  * @format
  * @flow
+ * @emails oncall+draft_js
  *
  * This file is a fork of ContentBlock adding support for nesting references by
  * providing links to children, parent, prevSibling, and nextSibling.
@@ -24,9 +22,9 @@ import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 const CharacterMetadata = require('CharacterMetadata');
-const Immutable = require('immutable');
 
 const findRangesImmutable = require('findRangesImmutable');
+const Immutable = require('immutable');
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
@@ -78,8 +76,10 @@ const decorateCharacterList = (
   return config;
 };
 
-class ContentBlockNode extends Record(defaultRecord) implements BlockNode {
+class ContentBlockNode extends (Record(defaultRecord): any)
+  implements BlockNode {
   constructor(props: ContentBlockNodeConfig = defaultRecord) {
+    /* eslint-disable-next-line constructor-super */
     super(decorateCharacterList(props));
   }
 
@@ -112,12 +112,12 @@ class ContentBlockNode extends Record(defaultRecord) implements BlockNode {
   }
 
   getInlineStyleAt(offset: number): DraftInlineStyle {
-    var character = this.getCharacterList().get(offset);
+    const character = this.getCharacterList().get(offset);
     return character ? character.getStyle() : EMPTY_SET;
   }
 
   getEntityAt(offset: number): ?string {
-    var character = this.getCharacterList().get(offset);
+    const character = this.getCharacterList().get(offset);
     return character ? character.getEntity() : null;
   }
 

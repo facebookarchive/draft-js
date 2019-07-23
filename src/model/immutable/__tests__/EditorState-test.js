@@ -1,12 +1,10 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
  */
 
@@ -19,10 +17,11 @@ const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
-const Immutable = require('immutable');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 const {BOLD, ITALIC} = require('SampleDraftInlineStyle');
 const SelectionState = require('SelectionState');
+
+const Immutable = require('immutable');
 
 const {List, Repeat} = Immutable;
 

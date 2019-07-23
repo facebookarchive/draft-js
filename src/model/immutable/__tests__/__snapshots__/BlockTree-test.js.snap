@@ -24,8 +24,6 @@ Array [
 ]
 `;
 
-exports[`must generate for styled block with empty decorator 2`] = `".3"`;
-
 exports[`must generate for styled block with multiple decorators 1`] = `
 Array [
   Object {
@@ -71,8 +69,6 @@ Array [
   },
 ]
 `;
-
-exports[`must generate for styled block with multiple decorators 2`] = `"y.3.1-.2-z.4.2"`;
 
 exports[`must generate for styled block with single decorator 1`] = `
 Array [
@@ -120,8 +116,6 @@ Array [
 ]
 `;
 
-exports[`must generate for styled block with single decorator 2`] = `".1-x.3.2-.2"`;
-
 exports[`must generate for unstyled block with empty decorator 1`] = `
 Array [
   Object {
@@ -137,8 +131,6 @@ Array [
   },
 ]
 `;
-
-exports[`must generate for unstyled block with empty decorator 2`] = `".1"`;
 
 exports[`must generate for unstyled block with multiple decorators 1`] = `
 Array [
@@ -178,8 +170,6 @@ Array [
 ]
 `;
 
-exports[`must generate for unstyled block with multiple decorators 2`] = `"y.3.1-.1-z.1.1"`;
-
 exports[`must generate for unstyled block with single decorator 1`] = `
 Array [
   Object {
@@ -217,5 +207,3 @@ Array [
   },
 ]
 `;
-
-exports[`must generate for unstyled block with single decorator 2`] = `".1-x.3.1-.1"`;

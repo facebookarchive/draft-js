@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-block-components
 title: Custom Block Components
-layout: docs
-category: Advanced Topics
-next: advanced-topics-inline-styles
-permalink: docs/advanced-topics-block-components.html
 ---
 
 Draft is designed to solve problems for straightforward rich text interfaces
@@ -62,7 +58,7 @@ class EditorWithMedia extends React.Component {
 ```
 
 If no custom renderer object is returned by the `blockRendererFn` function,
-`Editor` will render the default `DraftEditorBlock` text block component.
+`Editor` will render the default `EditorBlock` text block component.
 
 The `component` property defines the component to be used, while the optional
 `props` object includes props that will be passed through to the rendered
@@ -74,7 +70,7 @@ It is strongly recommended that you use `editable: false` if your custom
 component will not contain text.
 
 If your component contains text as provided by your `ContentState`, your custom
-component should compose a `DraftEditorBlock` component. This will allow the
+component should compose an `EditorBlock` component. This will allow the
 Draft framework to properly maintain cursor behavior within your contents.
 
 By defining this function within the context of a higher-level component,

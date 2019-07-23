@@ -1,12 +1,10 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
  */
 
@@ -24,7 +22,6 @@ const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const DraftEditorBlock = require('DraftEditorBlock.react');
-const Immutable = require('immutable');
 const React = require('React');
 const ReactDOM = require('ReactDOM');
 const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
@@ -35,6 +32,7 @@ const UnicodeBidiDirection = require('UnicodeBidiDirection');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
+const Immutable = require('immutable');
 const ReactTestRenderer = require('react-test-renderer');
 
 const {BOLD, NONE, ITALIC} = SampleDraftInlineStyle;
@@ -442,7 +440,7 @@ test('must split styled spans apart within decorator', () => {
   arePropsEqual(el.children[0], {offsetKey: 'a-0-0'});
   expect(el.children[0].type).toBe(DecoratorSpan);
 
-  var renderer = el.children[0].props;
+  const renderer = el.children[0].props;
   arePropsEqual(renderer.children[0], {offsetKey: 'a-0-0', styleSet: BOLD});
   expect(renderer.children[0].type).toBe(DraftEditorLeaf);
 

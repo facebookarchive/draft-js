@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule splitBlockInContentState
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -18,10 +16,11 @@ import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 
 const generateRandomKey = require('generateRandomKey');
+const Immutable = require('immutable');
 const invariant = require('invariant');
+const modifyBlockForContentState = require('modifyBlockForContentState');
 
 const {List, Map} = Immutable;
 
@@ -95,10 +94,23 @@ const splitBlockInContentState = (
   invariant(selectionState.isCollapsed(), 'Selection range must be collapsed.');
 
   const key = selectionState.getAnchorKey();
-  const offset = selectionState.getAnchorOffset();
   const blockMap = contentState.getBlockMap();
   const blockToSplit = blockMap.get(key);
   const text = blockToSplit.getText();
+
+  if (!text) {
+    const blockType = blockToSplit.getType();
+    if (
+      blockType === 'unordered-list-item' ||
+      blockType === 'ordered-list-item'
+    ) {
+      return modifyBlockForContentState(contentState, selectionState, block =>
+        block.merge({type: 'unstyled', depth: 0}),
+      );
+    }
+  }
+
+  const offset = selectionState.getAnchorOffset();
   const chars = blockToSplit.getCharacterList();
   const keyBelow = generateRandomKey();
   const isExperimentalTreeBlock = blockToSplit instanceof ContentBlockNode;

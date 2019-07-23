@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-block-styling
 title: Block Styling
-layout: docs
-category: Advanced Topics
-next: advanced-topics-custom-block-render-map
-permalink: docs/advanced-topics-block-styling.html
 ---
 
 Within `Editor`, some block types are given default CSS styles to limit the amount

@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-editorstate-race-conditions
 title: EditorState Race Conditions
-layout: docs
-category: Advanced Topics
-next: advanced-topics-issues-and-pitfalls
-permalink: docs/advanced-topics-editorstate-race-conditions.html
 ---
 
 Draft `Editor` is a *controlled input* component (you can read about this in detail in the [API Basics](/docs/quickstart-api-basics.html) section), meaning that changes made to the `Editor` state are propagated upwards through `onChange` and it's up to the app to feed it back to the `Editor` component.

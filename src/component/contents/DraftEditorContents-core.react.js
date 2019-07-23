@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftEditorContents-core.react
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -16,15 +14,18 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const EditorState = require('EditorState');
 const React = require('React');
 
 const cx = require('cx');
-const joinClasses = require('joinClasses');
+const joinClasses: (
+  className?: ?string,
+  ...classes: Array<?string>
+) => string = require('joinClasses');
 const nullthrows = require('nullthrows');
 
 type Props = {
@@ -59,7 +60,7 @@ const getListItemClasses = (
     'public/DraftStyleDefault/depth1': depth === 1,
     'public/DraftStyleDefault/depth2': depth === 2,
     'public/DraftStyleDefault/depth3': depth === 3,
-    'public/DraftStyleDefault/depth4': depth === 4,
+    'public/DraftStyleDefault/depth4': depth >= 4,
     'public/DraftStyleDefault/listLTR': direction === 'LTR',
     'public/DraftStyleDefault/listRTL': direction === 'RTL',
   });
