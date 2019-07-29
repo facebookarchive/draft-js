@@ -110,3 +110,29 @@ class MyEditor extends React.Component {
   }
 }
 ```
+
+You might run into issues where your editor loses focus and is therefore unable to modify styles within the editor. In such cases, you can try using the onMouseDown event as follows.
+
+```js
+class MyEditor extends React.Component {
+  // …
+
+  _onBoldClick(e) {
+    e.preventDefault();
+    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+  }
+
+  render() {
+    return (
+      <div>
+        <button onMouseDown={this._onBoldClick.bind(this)}>Bold</button>
+        <Editor
+          editorState={this.state.editorState}
+          handleKeyCommand={this.handleKeyCommand}
+          onChange={this.onChange}
+        />
+      </div>
+    );
+  }
+}
+```
