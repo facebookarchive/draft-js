@@ -200,12 +200,11 @@ class DraftEditorBlock extends React.Component<Props> {
           UnicodeBidi.getDirection(decoratedText),
           this.props.direction,
         );
-
         const commonProps: DraftDecoratorComponentProps = {
           contentState: this.props.contentState,
           decoratedText,
           dir: dir,
-          key: entityKey,
+          key: entityKey || decoratorOffsetKey,
           start,
           end,
           blockKey,
