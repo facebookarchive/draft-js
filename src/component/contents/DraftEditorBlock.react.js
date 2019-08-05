@@ -205,7 +205,7 @@ class DraftEditorBlock extends React.Component<Props> {
           contentState: this.props.contentState,
           decoratedText,
           dir: dir,
-          key: decoratorOffsetKey,
+          key: entityKey,
           start,
           end,
           blockKey,
