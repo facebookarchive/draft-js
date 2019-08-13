@@ -147,6 +147,10 @@ class DraftEditorBlock extends React.Component<Props> {
     return this.props.tree
       .map((leafSet, ii) => {
         const leavesForLeafSet = leafSet.get('leaves');
+        // T44088704
+        if (leavesForLeafSet.size === 0) {
+          return null;
+        }
         const lastLeaf = leavesForLeafSet.size - 1;
         const leaves = leavesForLeafSet
           .map((leaf, jj) => {
