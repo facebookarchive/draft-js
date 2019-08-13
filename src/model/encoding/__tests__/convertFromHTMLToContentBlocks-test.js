@@ -11,6 +11,7 @@
 'use strict';
 
 jest.disableAutomock();
+expect.addSnapshotSerializer(require('NonASCIIStringSnapshotSerializer'));
 
 jest.mock('generateRandomKey');
 
