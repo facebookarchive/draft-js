@@ -254,7 +254,7 @@ function addFocusToSelection(
     // logging to catch bug that is being reported in t18110632
     const nodeWasFocus = node === selection.focusNode;
 
-    if(selection.anchorNode){
+    if (selection.anchorNode) {
       try {
         selection.extend(node, offset);
       } catch (e) {
