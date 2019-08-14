@@ -253,48 +253,51 @@ function addFocusToSelection(
 
     // logging to catch bug that is being reported in t18110632
     const nodeWasFocus = node === selection.focusNode;
-    try {
-      selection.extend(node, offset);
-    } catch (e) {
-      DraftJsDebugLogging.logSelectionStateFailure({
-        anonymizedDom: getAnonymizedEditorDOM(node, function(n) {
-          const labels = [];
-          if (n === activeElement) {
-            labels.push('active element');
-          }
-          if (n === selection.anchorNode) {
-            labels.push('selection anchor node');
-          }
-          if (n === selection.focusNode) {
-            labels.push('selection focus node');
-          }
-          return labels;
-        }),
-        extraParams: JSON.stringify(
-          {
-            activeElementName: activeElement ? activeElement.nodeName : null,
-            nodeIsFocus: node === selection.focusNode,
-            nodeWasFocus: nodeWasFocus,
-            selectionRangeCount: selection.rangeCount,
-            selectionAnchorNodeName: selection.anchorNode
-              ? selection.anchorNode.nodeName
-              : null,
-            selectionAnchorOffset: selection.anchorOffset,
-            selectionFocusNodeName: selection.focusNode
-              ? selection.focusNode.nodeName
-              : null,
-            selectionFocusOffset: selection.focusOffset,
-            message: e ? '' + e : null,
-            offset: offset,
-          },
-          null,
-          2,
-        ),
-        selectionState: JSON.stringify(selectionState.toJS(), null, 2),
-      });
-      // allow the error to be thrown -
-      // better than continuing in a broken state
-      throw e;
+
+    if(selection.anchorNode){
+      try {
+        selection.extend(node, offset);
+      } catch (e) {
+        DraftJsDebugLogging.logSelectionStateFailure({
+          anonymizedDom: getAnonymizedEditorDOM(node, function(n) {
+            const labels = [];
+            if (n === activeElement) {
+              labels.push('active element');
+            }
+            if (n === selection.anchorNode) {
+              labels.push('selection anchor node');
+            }
+            if (n === selection.focusNode) {
+              labels.push('selection focus node');
+            }
+            return labels;
+          }),
+          extraParams: JSON.stringify(
+            {
+              activeElementName: activeElement ? activeElement.nodeName : null,
+              nodeIsFocus: node === selection.focusNode,
+              nodeWasFocus: nodeWasFocus,
+              selectionRangeCount: selection.rangeCount,
+              selectionAnchorNodeName: selection.anchorNode
+                ? selection.anchorNode.nodeName
+                : null,
+              selectionAnchorOffset: selection.anchorOffset,
+              selectionFocusNodeName: selection.focusNode
+                ? selection.focusNode.nodeName
+                : null,
+              selectionFocusOffset: selection.focusOffset,
+              message: e ? '' + e : null,
+              offset: offset,
+            },
+            null,
+            2,
+          ),
+          selectionState: JSON.stringify(selectionState.toJS(), null, 2),
+        });
+        // allow the error to be thrown -
+        // better than continuing in a broken state
+        throw e;
+      }
     }
   } else {
     // IE doesn't support extend. This will mean no backward selection.
