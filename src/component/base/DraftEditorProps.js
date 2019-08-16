@@ -187,7 +187,7 @@ export type DraftEditorProps = {
 
   // Overrides for cut, copy & paste, which can be used to implement custom
   // behavior like entity cut/copy/paste (see PR #1784)."
-  onPaste?: (DraftEditor, SyntheticClipboardEvent<>) => void,
+  onPaste?: (DraftEditor, SyntheticClipboardEvent<>) => void | Promise<void>,
   onCut?: (DraftEditor, SyntheticClipboardEvent<>) => void,
   onCopy?: (DraftEditor, SyntheticClipboardEvent<>) => void,
 };
