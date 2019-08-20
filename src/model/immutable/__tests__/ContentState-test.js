@@ -26,6 +26,7 @@ const MULTI_BLOCK = [
   {text: 'Four score', key: 'b'},
   {text: 'and seven', key: 'c'},
 ];
+const ZERO_WIDTH_CHAR_BLOCK = [{text: unescape('%u200B%u200B'), key: 'a'}];
 
 const SelectionState = require('SelectionState');
 
@@ -82,6 +83,12 @@ test('block fetching must retrieve or fail fetching block for key', () => {
   expect(block instanceof ContentBlock).toMatchSnapshot();
   expect(block.getText()).toMatchSnapshot();
   expect(state.getBlockForKey('x')).toMatchSnapshot();
+});
+
+test('must not include zero width chars for has text', () => {
+  expect(getSample(ZERO_WIDTH_CHAR_BLOCK).hasText()).toMatchSnapshot();
+  expect(getSample(SINGLE_BLOCK).hasText()).toMatchSnapshot();
+  expect(getSample(MULTI_BLOCK).hasText()).toMatchSnapshot();
 });
 
 test('must create entities instances', () => {

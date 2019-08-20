@@ -40,6 +40,12 @@ Object {
 }
 `;
 
+exports[`must not include zero width chars for has text 1`] = `false`;
+
+exports[`must not include zero width chars for has text 2`] = `true`;
+
+exports[`must not include zero width chars for has text 3`] = `true`;
+
 exports[`must replace entities data 1`] = `
 Object {
   "newProp": "baz",
