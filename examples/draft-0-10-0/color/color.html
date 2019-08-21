@@ -17,6 +17,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <meta charset="utf-8" />
     <title>Draft • Color</title>
     <link rel="stylesheet" href="../../../dist/Draft.css" />
+    <link rel="stylesheet" href="ColorfulEditor.css" />
   </head>
   <body>
     <div style="font-family: Georgia, serif; font-size: 15px; padding: 20px; width: 600px; line-height: 24px;">
@@ -116,14 +117,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
         render() {
           let style;
+          let className;
           if (this.props.active) {
-            style = {...styles.styleButton, ...colorStyleMap[this.props.style]};
+            if (typeof colorStyleMap[this.props.style] === 'string') {
+              className = colorStyleMap[this.props.style];
+              const { color, ...rest } = styles.styleButton;
+              style = rest;
+            } else {
+              style = {...styles.styleButton, ...colorStyleMap[this.props.style]};
+            }
           } else {
             style = styles.styleButton;
           }
 
           return (
-            <span style={style} onMouseDown={this.onToggle}>
+            <span style={style} className={className} onMouseDown={this.onToggle}>
               {this.props.label}
             </span>
           );
@@ -163,12 +171,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         red: {
           color: 'rgba(255, 0, 0, 1.0)',
         },
-        orange: {
-          color: 'rgba(255, 127, 0, 1.0)',
-        },
-        yellow: {
-          color: 'rgba(180, 180, 0, 1.0)',
-        },
+        // pass classNames for these two colors
+        orange: 'ColorfulEditor-orange',
+        yellow: 'ColorfulEditor-yellow',
         green: {
           color: 'rgba(0, 180, 0, 1.0)',
         },
