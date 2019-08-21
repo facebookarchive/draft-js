@@ -142,9 +142,15 @@ class DraftEditorLeaf extends React.Component<Props> {
     }
 
     const {customStyleMap, customStyleFn, offsetKey, styleSet} = this.props;
+    const classNames = [];
     let styleObj = styleSet.reduce((map, styleName) => {
       const mergedStyles = {};
-      const style = customStyleMap[styleName];
+      let style;
+      if (typeof customStyleMap[styleName] === 'string') {
+        classNames.push(customStyleMap[styleName]);
+      } else {
+        style = customStyleMap[styleName];
+      }
 
       if (style !== undefined && map.textDecoration !== style.textDecoration) {
         // .trim() is necessary for IE9/10/11 and Edge
@@ -161,11 +167,20 @@ class DraftEditorLeaf extends React.Component<Props> {
       styleObj = Object.assign(styleObj, newStyles);
     }
 
+    // skip inserting an empty `class` property to the element
+    const classes = classNames.length
+      ? // we don't use `cx` here to allow users to take care their classNames
+        // minification by themselves. This is handy when used libraries like `jss`
+        // or similar
+        {className: classNames.join(' ').trim()}
+      : {};
+
     return (
       <span
         data-offset-key={offsetKey}
         ref={ref => (this.leaf = ref)}
-        style={styleObj}>
+        style={styleObj}
+        {...classes}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>
     );
