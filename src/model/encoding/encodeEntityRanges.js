@@ -15,9 +15,6 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {EntityRange} from 'EntityRange';
 
 const DraftStringKey = require('DraftStringKey');
-const UnicodeUtils = require('UnicodeUtils');
-
-const {strlen} = UnicodeUtils;
 
 /**
  * Convert to UTF-8 character counts for storage.
@@ -33,8 +30,8 @@ function encodeEntityRanges(
       const text = block.getText();
       const key = block.getEntityAt(start);
       encoded.push({
-        offset: strlen(text.slice(0, start)),
-        length: strlen(text.slice(start, end)),
+        offset: text.slice(0, start).length,
+        length: text.slice(start, end).length,
         // Encode the key as a number for range storage.
         key: Number(storageMap[DraftStringKey.stringify(key)]),
       });

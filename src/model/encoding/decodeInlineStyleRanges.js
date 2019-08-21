@@ -11,11 +11,7 @@
 
 'use strict';
 
-const UnicodeUtils = require('UnicodeUtils');
-
 const {OrderedSet} = require('immutable');
-
-const {substr} = UnicodeUtils;
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
@@ -31,8 +27,8 @@ function decodeInlineStyleRanges(
   const styles = Array(text.length).fill(EMPTY_SET);
   if (ranges) {
     ranges.forEach((/*object*/ range) => {
-      let cursor = substr(text, 0, range.offset).length;
-      const end = cursor + substr(text, range.offset, range.length).length;
+      let cursor = range.offset;
+      const end = cursor + range.length;
       while (cursor < end) {
         styles[cursor] = styles[cursor].add(range.style);
         cursor++;
