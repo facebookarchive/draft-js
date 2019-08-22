@@ -36,7 +36,18 @@ function onInputType(inputType: string, editorState: EditorState): EditorState {
 }
 
 /**
- * This function is intended to handle spellcheck and autocorrect changes,
+ * This function serves two purposes
+ *
+ * 1. To update the editorState and call onChange method with the new
+ * editorState. This editorState is calculated in editOnBeforeInput but the
+ * onChange method is not called with the new state until this method does it.
+ * It is done to handle a specific case where certain character inputs might
+ * be replaced with something else. E.g. snippets ('rc' might be replaced
+ * with boilerplate code for react component). More information on the
+ * exact problem can be found here -
+ * https://github.com/facebook/draft-js/commit/07892ba479bd4dfc6afd1e0ed179aaf51cd138b1
+ *
+ * 2. intended to handle spellcheck and autocorrect changes,
  * which occur in the DOM natively without any opportunity to observe or
  * interpret the changes before they occur.
  *
