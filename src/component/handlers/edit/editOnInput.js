@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -18,6 +18,7 @@ const DraftOffsetKey = require('DraftOffsetKey');
 const EditorState = require('EditorState');
 const UserAgent = require('UserAgent');
 
+const {notEmptyKey} = require('draftKeyUtils');
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const gkx = require('gkx');
 const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
@@ -158,8 +159,8 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
   });
 
   const entityKey = block.getEntityAt(start);
-  const entity = entityKey && content.getEntity(entityKey);
-  const entityType = entity && entity.getMutability();
+  const entity = notEmptyKey(entityKey) ? content.getEntity(entityKey) : null;
+  const entityType = entity != null ? entity.getMutability() : null;
   const preserveEntity = entityType === 'MUTABLE';
 
   // Immutable or segmented entities cannot properly be handled by the
