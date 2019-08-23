@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -30,7 +30,7 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<>): void {
   // However if users wish to override this behaviour they can provide
   // a prop preserveSelectionOnBlur of `true`.
   if (
-    !editor.props.preserveSelectionOnBlur &&
+    !Boolean(editor.props.preserveSelectionOnBlur) &&
     getActiveElement() === document.body
   ) {
     const selection = global.getSelection();
