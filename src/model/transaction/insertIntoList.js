@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -17,10 +17,11 @@ import type {List} from 'immutable';
  * Maintain persistence for target list when appending and prepending.
  */
 function insertIntoList<T>(
-  targetList: List<T>,
+  targetListArg: List<T>,
   toInsert: List<T>,
   offset: number,
 ): List<T> {
+  let targetList = targetListArg;
   if (offset === targetList.count()) {
     toInsert.forEach(c => {
       targetList = targetList.push(c);
