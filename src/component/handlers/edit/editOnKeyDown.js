@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -155,7 +155,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
   const command = editor.props.keyBindingFn(e);
 
   // If no command is specified, allow keydown event to continue.
-  if (!command) {
+  if (command == null || command === '') {
     if (keyCode === Keys.SPACE && isChrome && isOptionKeyCommand(e)) {
       // The default keydown event has already been prevented in order to stop
       // Chrome from scrolling. Insert a nbsp into the editor as OSX would for
