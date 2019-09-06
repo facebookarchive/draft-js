@@ -20,7 +20,6 @@ const UserAgent = require('UserAgent');
 
 const {notEmptyKey} = require('draftKeyUtils');
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const gkx = require('gkx');
 const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
 const nullthrows = require('nullthrows');
 
@@ -68,20 +67,13 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
   const domSelection = global.getSelection();
 
   const {anchorNode, isCollapsed} = domSelection;
-  const isNotTextNode = anchorNode.nodeType !== Node.TEXT_NODE;
   const isNotTextOrElementNode =
     anchorNode.nodeType !== Node.TEXT_NODE &&
     anchorNode.nodeType !== Node.ELEMENT_NODE;
 
-  if (gkx('draft_killswitch_allow_nontextnodes')) {
-    if (isNotTextNode) {
-      return;
-    }
-  } else {
-    if (isNotTextOrElementNode) {
-      // TODO: (t16149272) figure out context for this change
-      return;
-    }
+  if (isNotTextOrElementNode) {
+    // TODO: (t16149272) figure out context for this change
+    return;
   }
 
   if (
