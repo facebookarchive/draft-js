@@ -77,9 +77,9 @@ the `getEntityAt()` method on a `ContentBlock` object, passing in the target
 offset value.
 
 ```js
+const contentState = editorState.getCurrentContent();
 const blockWithLinkAtBeginning = contentState.getBlockForKey('...');
 const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
-const contentState = editorState.getCurrentContent();
 const linkInstance = contentState.getEntity(linkKey);
 const {url} = linkInstance.getData();
 ```
@@ -100,8 +100,7 @@ from the text. Entities with this mutability type are effectively atomic.
 
 For instance, in a Facebook input, add a mention for a Page (e.g. Barack Obama).
 Then, either add a character within the mentioned text, or try to delete a character.
-Note that when adding characters, the entity is removed, and when deleting character,
-the entire entity is removed.
+Note that when adding or deleting characters, the entity is removed.
 
 This mutability value is useful in cases where the text absolutely must match
 its relevant metadata, and may not be altered.
