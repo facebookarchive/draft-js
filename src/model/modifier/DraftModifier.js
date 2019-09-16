@@ -26,7 +26,6 @@ const ContentStateInlineStyle = require('ContentStateInlineStyle');
 const applyEntityToContentState = require('applyEntityToContentState');
 const getCharacterRemovalRange = require('getCharacterRemovalRange');
 const getContentStateFragment = require('getContentStateFragment');
-const gkx = require('gkx');
 const Immutable = require('immutable');
 const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 const insertTextIntoContentState = require('insertTextIntoContentState');
@@ -174,24 +173,9 @@ const DraftModifier = {
         return removeRangeFromContentState(contentState, adjustedRemovalRange);
       }
     }
-    let adjustedRemovalRange = rangeToRemove;
-    if (gkx('draft_segmented_entities_behavior')) {
-      // Adjust the selection to properly delete segemented and immutable
-      // entities
-      adjustedRemovalRange = getCharacterRemovalRange(
-        contentState.getEntityMap(),
-        startBlock,
-        endBlock,
-        rangeToRemove,
-        removalDirection,
-      );
-    }
 
-    const withoutEntities = removeEntitiesAtEdges(
-      contentState,
-      adjustedRemovalRange,
-    );
-    return removeRangeFromContentState(withoutEntities, adjustedRemovalRange);
+    const withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
+    return removeRangeFromContentState(withoutEntities, rangeToRemove);
   },
 
   splitBlock: function(
