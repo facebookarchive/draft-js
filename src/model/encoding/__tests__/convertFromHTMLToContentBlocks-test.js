@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @emails oncall+draft_js
+ * @flow
  * @format
  */
 
@@ -91,22 +92,26 @@ const convertFromHTML = (html_string, config) => {
 };
 
 const AreTreeBlockNodesEquivalent = (html_string, config = {}) => {
-  const treeEnabled = convertFromHTML(html_string, {
-    ...config,
-    experimentalTreeDataSupport: true,
-  }).contentBlocks.map(block => normalizeBlock(block.toJS()));
+  const treeEnabled = (
+    convertFromHTML(html_string, {
+      ...config,
+      experimentalTreeDataSupport: true,
+    })?.contentBlocks || []
+  ).map(block => normalizeBlock(block.toJS()));
 
-  const treeDisabled = convertFromHTML(html_string, {
-    ...config,
-    experimentalTreeDataSupport: false,
-  }).contentBlocks.map(block => normalizeBlock(block.toJS()));
+  const treeDisabled = (
+    convertFromHTML(html_string, {
+      ...config,
+      experimentalTreeDataSupport: false,
+    })?.contentBlocks || []
+  ).map(block => normalizeBlock(block.toJS()));
 
   return JSON.stringify(treeEnabled) === JSON.stringify(treeDisabled);
 };
 
 const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
   expect(
-    convertFromHTML(html_string, config).contentBlocks.map(block =>
+    (convertFromHTML(html_string, config)?.contentBlocks || []).map(block =>
       block.toJS(),
     ),
   ).toMatchSnapshot();
@@ -122,10 +127,9 @@ const testConvertingAdjacentHtmlElementsToContentBlocks = (
       <${tag}>b</${tag}>
     `;
 
-    assertConvertFromHTMLToContentBlocks(
-      html_string,
+    assertConvertFromHTMLToContentBlocks(html_string, {
       experimentalTreeDataSupport,
-    );
+    });
   });
 };
 
@@ -147,21 +151,42 @@ test('img with http protocol should have camera emoji content', () => {
   const blocks = convertFromHTMLToContentBlocks(
     '<img src="http://www.facebook.com">',
   );
-  expect(blocks.contentBlocks[0].text).toMatchSnapshot();
+  expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
+  const entityMap = blocks?.entityMap;
+  expect(entityMap).not.toBe(null);
+  if (entityMap != null) {
+    expect(
+      entityMap.__get(entityMap.__getLastCreatedEntityKey()).mutability,
+    ).toBe('IMMUTABLE');
+  }
+});
+
+test('img with https protocol should have camera emoji content', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    '<img src="https://www.facebook.com">',
+  );
+  expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
+  const entityMap = blocks?.entityMap;
+  expect(entityMap).not.toBe(null);
+  if (entityMap != null) {
+    expect(
+      entityMap.__get(entityMap.__getLastCreatedEntityKey()).mutability,
+    ).toBe('IMMUTABLE');
+  }
 });
 
 test('img with data protocol should be correctly parsed', () => {
   const blocks = convertFromHTMLToContentBlocks(
     `<img src="${IMAGE_DATA_URL}">`,
   );
-  expect(blocks.contentBlocks[0].text).toMatchSnapshot();
+  expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
 });
 
 test('img with role presentation should not be rendered', () => {
   const blocks = convertFromHTMLToContentBlocks(
     `<img src="${IMAGE_DATA_URL}" role="presentation">`,
   );
-  expect(blocks.contentBlocks).toMatchSnapshot();
+  expect(blocks?.contentBlocks).toMatchSnapshot();
 });
 
 test('line break should be correctly parsed - single <br>', () => {
@@ -172,7 +197,7 @@ test('line break should be correctly parsed - single <br>', () => {
       lorem ipsum
     </div>`,
   );
-  expect(blocks.contentBlocks).toMatchSnapshot();
+  expect(blocks?.contentBlocks).toMatchSnapshot();
 });
 
 test('line break should be correctly parsed - multiple <br> in a content block', () => {
@@ -184,12 +209,12 @@ test('line break should be correctly parsed - multiple <br> in a content block',
       lorem ipsum
     </div>`,
   );
-  expect(blocks.contentBlocks).toMatchSnapshot();
+  expect(blocks?.contentBlocks).toMatchSnapshot();
 });
 
 test('highlighted text should be recognized and considered styled characters', () => {
   const blocks = convertFromHTMLToContentBlocks(`<mark>test</mark>`);
-  expect(blocks.contentBlocks).toMatchSnapshot();
+  expect(blocks?.contentBlocks).toMatchSnapshot();
 });
 
 test('converts nested html blocks when experimentalTreeDataSupport is enabled', () => {

@@ -587,7 +587,7 @@ class ContentBlocksBuilder {
     // TODO: T15530363 update this when we remove DraftEntity entirely
     this.currentEntity = this.entityMap.__create(
       'IMAGE',
-      'MUTABLE',
+      'IMMUTABLE',
       entityConfig,
     );
 
