@@ -349,6 +349,22 @@ test('Should not create empty container blocks around ol and their list items wh
   });
 });
 
+// Regression test for issue https://github.com/facebook/draft-js/issues/1822
+test('Should convert heading block after converting new line string', () => {
+  // Convert an HTML string containing a newline
+  // This was previously altering the module's internal state
+  convertFromHTML('a\n');
+  // Convert again, and assert this is not affected by the previous conversion
+  const contentBlocks = convertFromHTML('<h1>heading</h1>')?.contentBlocks;
+  expect(contentBlocks?.length).toBe(1);
+  const contentBlock = contentBlocks?.[0];
+  // #FIXME: Flow does not yet support method or property calls in optional chains.
+  if (contentBlock != null) {
+    expect(contentBlock.getType()).toBe('header-one');
+    expect(contentBlock.getText()).toBe('heading');
+  }
+});
+
 test('Should preserve entities for whitespace-only content', () => {
   const html_string = `
     <a href="http://www.facebook.com">
