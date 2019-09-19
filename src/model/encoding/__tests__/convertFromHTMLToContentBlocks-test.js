@@ -148,6 +148,21 @@ test('img with http protocol should have camera emoji content', () => {
     '<img src="http://www.facebook.com">',
   );
   expect(blocks.contentBlocks[0].text).toMatchSnapshot();
+  expect(
+    blocks.entityMap.__get(blocks.entityMap.__getLastCreatedEntityKey())
+      .mutability,
+  ).toBe('IMMUTABLE');
+});
+
+test('img with https protocol should have camera emoji content', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    '<img src="https://www.facebook.com">',
+  );
+  expect(blocks.contentBlocks[0].text).toMatchSnapshot();
+  expect(
+    blocks.entityMap.__get(blocks.entityMap.__getLastCreatedEntityKey())
+      .mutability,
+  ).toBe('IMMUTABLE');
 });
 
 test('img with data protocol should be correctly parsed', () => {
