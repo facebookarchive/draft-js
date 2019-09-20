@@ -4,6 +4,46 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.11.1 (September 19th, 2019)
+
+### Added
+* Support post processor on paste entities. (Tee Xie in 3043573)
+* Adding 'preserveSelectionOnBlur' prop (#2128) (Matthew Holloway in db792ef)
+
+### Changed
+* Reaping draft_segmented_entities_behavior (Mohamed Moussa in cd4adaa)
+* Make insertIntoList strict-local (Kevin Chavez in db64f93)
+* Adopt Contributor Covenant (Paul O'Shannessy in 2c61167)
+* Flowify editOnKeyDown.js (Kevin Chavez in 8473e41)
+* (Flowify) decodeInlineStyleRanges.js (Kevin Chavez in 20a619c)
+* Flowify editOnInput.js (Kevin Chavez in 594a14f)
+* Flowify editOnBlur.js (Kevin Chavez in 6972278)
+* updated function description for onEditInput event handler function (#2132) (Mukesh Soni in 14349f1)
+* updated hastext method to not account for zero space width chars (#2163) (Ajith V in 85aa3a3)
+* Encode non-ASCII characters in all snapshot tests (Daniel Lo Nigro in 734bd82)
+* @flow -> @flow-strict for html/shared (Runjie Guan in 0375c0e)
+* Revert D16421104: [rfc][draft-js] catch errors when encoding entity map (Frank Thompson in 8e9cabf)
+* catch errors when encoding entity map (Frank Thompson in 259d122)
+* Revert D16362778: [rfc][draftjs] catch errors when encoding entity map (Frank Thompson in 96e7f25)
+* catch errors when encoding entity map (Frank Thompson in c0e911c)
+* Flow-type DataTransfer.js (Kevin Chavez in ed09f78)
+* All these modules can actually be strict (Kevin Chavez in bc716b2)
+
+### Fixed
+* convertFromHTML breaks after converting \n string, issue #1822 (#1823) (Sannikov in 9246cc7)
+* Fixes HTML importer to make image entity immutable (#2184) (Claudio Procida in b858f43)
+* Fixing js example and cleaning up one sentence (#2172) (Liz LeCrone in 819f58c)
+* Reaping draft_killswitch_allow_nontextnodes (generatedunixname89002005287564 in 0e2e9a7)
+* Fix for workchat composer cursor jumping (Jainil Parekh in aed35d2)
+* Fix various grammatical errors (#2158) (Jordan Lee in 1ff8c8c)
+* Composer: Not assuming element has leaves (Nitzan Raz in ce8bdd0)
+* Update jsfiddle links with recent versions of the Draft and React (#2145) (Günay Mert Karadoğan in 22b7599)
+* Changes reference to BSD license to MIT (#2130) (claudiopro in 4064cae)
+* Updates CHANGELOG for v0.11.0 (#2052) (Claudio Procida in 973f7ff)
+* Fixed a bug causing block data being over-written when pasted. (Tee Xie in 82e2135)
+* Merge pull request #2113 from danielo515/patch-1 (Claudio Procida in 0e88544)
+* Update ShipIt Sync (Claudio Procida in 0f138d1)
+
 ## 0.11.0 (July 9th, 2019)
 
 ### Added
