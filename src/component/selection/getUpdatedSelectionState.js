@@ -28,9 +28,9 @@ function getUpdatedSelectionState(
   const selection: SelectionState = nullthrows(editorState.getSelection());
   if (__DEV__) {
     if (!anchorKey || !focusKey) {
-      /*eslint-disable no-console */
+      /* eslint-disable fb-www/no-console */
       console.warn('Invalid selection state.', arguments, editorState.toJS());
-      /*eslint-enable no-console */
+      /* eslint-enable fb-www/no-console */
       return selection;
     }
   }
@@ -46,6 +46,16 @@ function getUpdatedSelectionState(
   const focusLeaf = editorState
     .getBlockTree(focusBlockKey)
     .getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
+
+  if (!anchorLeaf || !focusLeaf) {
+    // If we cannot make sense of the updated selection state, stick to the current one.
+    if (__DEV__) {
+      /* eslint-disable fb-www/no-console */
+      console.warn('Invalid selection state.', arguments, editorState.toJS());
+      /* eslint-enable fb-www/no-console */
+    }
+    return selection;
+  }
 
   const anchorLeafStart: number = anchorLeaf.get('start');
   const focusLeafStart: number = focusLeaf.get('start');
