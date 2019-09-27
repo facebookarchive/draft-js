@@ -73,9 +73,9 @@ Optionally set a function to define custom block rendering. See
 [Advanced Topics: Block Components](/docs/advanced-topics-block-components.html)
 for details on usage.
 
-#### blockRendererMap
+#### blockRenderMap
 ```
-blockRendererMap?: DraftBlockRenderMap
+blockRenderMap?: DraftBlockRenderMap
 ```
 Provide a map of block rendering configurations. Each block type maps to
 element tag and an optional react element wrapper. This configuration
