@@ -4,6 +4,18 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.11.2 (September 30th, 2019)
+
+### Changed
+
+* Upgrade to Flow strict-local (generatedunixname89002005287564 in 0c92bf7)
+* chore(website): updates stylesheet for 0.11.1 (#2188) (Claudio Procida in 543df66)
+* Prepare 0.11.1 (#2186) (Claudio Procida in 3adf593)
+
+### Fixed
+
+* fix(selection): Returns previous selection if either leaf is null (#2189) (Claudio Procida in fe68e43)
+
 ## 0.11.1 (September 19th, 2019)
 
 ### Added
