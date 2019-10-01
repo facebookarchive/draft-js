@@ -8,8 +8,6 @@
     "react",
     "richtext"
   ],
-  "homepage": "http://draftjs.org/",
-  "bugs": "https://github.com/facebook/draft-js/issues",
   "files": [
     "dist/",
     "lib/",
@@ -17,7 +15,6 @@
   ],
   "main": "lib/Draft.js",
   "style": "dist/Draft.css",
-  "repository": "facebook/draft-js",
   "license": "MIT",
   "scripts": {
     "prepublish": "npm run build",
