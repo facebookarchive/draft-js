@@ -9,3 +9,4 @@ npm-debug.log
 yarn-error.log
 .DS_Store
 meta/bundle-size-stats/
+.idea

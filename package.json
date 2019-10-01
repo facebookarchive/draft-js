@@ -1,15 +1,13 @@
 {
   "name": "draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.11.7",
+  "version": "0.11.7-kentico.1",
   "keywords": [
     "draftjs",
     "editor",
     "react",
     "richtext"
   ],
-  "homepage": "http://draftjs.org/",
-  "bugs": "https://github.com/facebook/draft-js/issues",
   "files": [
     "dist/",
     "lib/",
@@ -17,7 +15,6 @@
   ],
   "main": "lib/Draft.js",
   "style": "dist/Draft.css",
-  "repository": "facebook/draft-js",
   "license": "MIT",
   "scripts": {
     "prepublish": "npm run build",
