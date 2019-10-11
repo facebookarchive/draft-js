@@ -17,7 +17,7 @@ with [immutable-js](https://facebook.github.io/immutable-js/), offering
 an API with functional state updates and aggressively leveraging data persistence
 for scalable memory usage.
 
-[Learn how to use Draft.js in your own project.](https://draftjs.org/docs/getting-started.html)
+[Learn how to use Draft.js in your project.](https://draftjs.org/docs/getting-started.html)
 
 ## API Notice
 
@@ -29,7 +29,7 @@ If you are interested in helping out, or tracking the progress, please follow
 
 ## Getting Started
 
-Currently Draft.js is distributed via npm. It depends on React and React DOM which must also be installed.
+Currently, Draft.js is distributed via npm. It depends on React and React DOM which must also be installed.
 
 ```
 npm install --save draft-js react react-dom
@@ -187,5 +187,5 @@ We actively welcome pull requests. Learn how to
 
 Draft.js is [MIT licensed](https://github.com/facebook/draft-js/blob/master/LICENSE).
 
-Examples provided in this repository and in the documentation are separately
+Examples provided in this repository and the documentation are separately
 licensed.
