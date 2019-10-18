@@ -27,7 +27,7 @@ import JSONTree from 'react-json-tree';
 import {convertToHTML} from 'draft-convert';
 import PanelGroup from 'react-panelgroup';
 import gkx from 'draft-js/lib/gkx';
-import convertFromHTMLModern from 'draft-js/lib/convertFromHTMLToContentBlocks2';
+import convertFromHTMLModern from 'draft-js/lib/convertFromHTMLToContentBlocks';
 
 import {
   ContentState,
