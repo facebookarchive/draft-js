@@ -146,7 +146,7 @@ disabled.
 
 This is useful when supporting interaction within
 [custom block components](/docs/advanced-topics-block-components.html)
-or if you just want to display content for a static use case.
+or if you only want to display content for a static use case.
 
 Default is `false`.
 

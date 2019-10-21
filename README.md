@@ -7,7 +7,7 @@ backed by an immutable model.
 
 - **Extensible and Customizable:** We provide the building blocks to enable
 the creation of a broad variety of rich text composition experiences, from
-simple text styles to embedded media.
+basic text styles to embedded media.
 - **Declarative Rich Text:** Draft.js fits seamlessly into
 [React](http://facebook.github.io/react/) applications,
 abstracting away the details of rendering, selection, and input behavior with a
@@ -138,7 +138,7 @@ Further examples of how Draft.js can be used are provided below.
 
 ### Examples
 
-Visit http://draftjs.org/ to try out a simple rich editor example.
+Visit http://draftjs.org/ to try out a basic rich editor example.
 
 The repository includes a variety of different editor examples to demonstrate
 some of the features offered by the framework.
