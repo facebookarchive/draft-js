@@ -352,7 +352,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       customStyleFn,
       editorKey: this._editorKey,
       editorState,
-      key: 'contents' + this.state.contentsKey,
       textDirectionality,
     };
 
@@ -420,7 +419,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
               all DraftEditorLeaf nodes so it's first in postorder traversal.
             */}
             <UpdateDraftEditorFlags editor={this} editorState={editorState} />
-            <DraftEditorContents {...editorContentsProps} />
+            <DraftEditorContents
+              {...editorContentsProps}
+              key={'contents' + this.state.contentsKey}
+            />
           </div>
         </div>
       </div>
