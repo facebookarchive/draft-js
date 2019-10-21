@@ -7,3 +7,6 @@ CHANGELOG.md
 # We will handle meeting notes and roadmap documents after the main docs are linted.
 meta/meeting-notes/**/*.md
 meta/roadmaps/*.md
+
+# This README contains some domain specific language that fails validation.
+examples/draft-0-10-0/playground/README.md
