@@ -18,5 +18,4 @@ npm start
 Open http://localhost:3000
 ```
 
-Anytime you change the contents, just refresh the page and it's going to be
-updated
+Anytime you change the contents, refresh the page and it's going to be updated

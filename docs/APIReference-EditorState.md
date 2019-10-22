@@ -530,7 +530,7 @@ operations.
 When performing operations that modify contents, we determine whether the
 current `ContentState` should be regarded as a "boundary" state that the user
 can reach by performing an undo operation. If so, the `ContentState` is pushed
-onto the `undoStack`. If not, the outgoing `ContentState` is simply discarded.
+onto the `undoStack`. If not, the outgoing `ContentState` is discarded.
 
 You should not manage this property manually. If you would like to disable
 undo/redo behavior, use the `allowUndo` property.

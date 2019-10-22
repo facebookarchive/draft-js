@@ -6,7 +6,7 @@ onPageNav: 'none'
 
 Draft.js is a framework for building rich text editors in React, powered by an immutable model and abstracting over cross-browser differences.
 
-Draft.js makes it easy to build any type of rich text input, whether you're just looking to support a few inline text styles or building a complex text editor for composing long-form articles.
+Draft.js allows you to build any type of rich text input, whether you're only looking to support a few inline text styles or building a complex text editor for composing long-form articles.
 
 Draft.js was introduced at [React.js Conf](https://conf2016.reactjs.org/schedule.html#rich-text-editing-with-react) in February 2016.
 

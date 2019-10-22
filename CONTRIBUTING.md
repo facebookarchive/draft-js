@@ -1,5 +1,5 @@
 # Contributing to Draft.js
-We want to make contributing to this project as easy and transparent as
+We want to make contributing to this project as approachable and transparent as
 possible.
 
 ## Code of Conduct
@@ -65,7 +65,7 @@ Our philosophy regarding API changes is as follows:
  * In order to avoid stagnation we will allow for API changes in cases where
  there is no other way to achieve a high priority bug fix or improvement.
  * When there is an API change:
-    * Changes will have a clearly documented reason and migration path
+    * Changes will have a well documented reason and migration path
     * When deprecating a pattern, these steps will be followed:
         * We will test the change internally first at FB
         * A version will be released that supports both, with deprecation warnings

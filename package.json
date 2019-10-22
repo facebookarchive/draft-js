@@ -26,12 +26,14 @@
     "dev": "gulp dev",
     "postbuild": "node node_modules/fbjs-scripts/node/check-lib-requires.js lib",
     "lint": "eslint .",
+    "lint-docs": "alex .",
     "format": "eslint . --fix",
     "flow": "flow src",
     "test": "cross-env NODE_ENV=test jest",
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
+    "alex": "^8.0.0",
     "fbjs": "^1.0.0",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.0"
