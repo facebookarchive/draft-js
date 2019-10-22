@@ -436,7 +436,7 @@ operations.</p>
 <p>When performing operations that modify contents, we determine whether the
 current <code>ContentState</code> should be regarded as a &quot;boundary&quot; state that the user
 can reach by performing an undo operation. If so, the <code>ContentState</code> is pushed
-onto the <code>undoStack</code>. If not, the outgoing <code>ContentState</code> is simply discarded.</p>
+onto the <code>undoStack</code>. If not, the outgoing <code>ContentState</code> is discarded.</p>
 <p>You should not manage this property manually. If you would like to disable
 undo/redo behavior, use the <code>allowUndo</code> property.</p>
 <p>See also <a href="#redostack">redoStack</a>.</p>
