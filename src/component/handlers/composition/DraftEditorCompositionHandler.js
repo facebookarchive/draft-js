@@ -1,3 +1,4 @@
+0;
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -9,7 +10,7 @@
  * @emails oncall+draft_js
  */
 
-'use strict';
+('use strict');
 
 import type DraftEditor from 'DraftEditor.react';
 
@@ -239,8 +240,6 @@ const DraftEditorCompositionHandler = {
     );
     const compositionEndSelectionState = documentSelection.selectionState;
 
-    editor.restoreEditorDOM();
-
     // See:
     // - https://github.com/facebook/draft-js/issues/2093
     // - https://github.com/facebook/draft-js/pull/2094
@@ -249,6 +248,13 @@ const DraftEditorCompositionHandler = {
     const editorStateWithUpdatedSelection = isIE
       ? EditorState.forceSelection(editorState, compositionEndSelectionState)
       : EditorState.acceptSelection(editorState, compositionEndSelectionState);
+
+    const anchorKey = compositionEndSelectionState.getAnchorKey();
+    const focusKey = compositionEndSelectionState.getFocusKey();
+
+    anchorKey === focusKey
+      ? editor.restoreBlockDOM(anchorKey)
+      : editor.restoreEditorDOM();
 
     editor.update(
       EditorState.push(
