@@ -16,7 +16,7 @@ import type {BlockMap} from 'BlockMap';
 import type {DraftEditorModes} from 'DraftEditorModes';
 import type {DraftEditorDefaultProps, DraftEditorProps} from 'DraftEditorProps';
 import type {DraftScrollPosition} from 'DraftScrollPosition';
-import type {BlockKeyMap} from 'BlockKeyMap'
+import type {BlockKeyMap} from 'BlockKeyMap';
 
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
