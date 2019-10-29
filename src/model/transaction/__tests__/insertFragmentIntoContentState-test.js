@@ -39,9 +39,8 @@ const initialBlock = contentState.getBlockMap().first();
 
 const getInvariantViolation = msg => {
   try {
-    /* eslint-disable fb-www/sprintf-like-args */
+    /* eslint-disable-next-line */
     invariant(false, msg);
-    /* eslint-enable fb-www/sprintf-like-args */
   } catch (e) {
     return e;
   }
