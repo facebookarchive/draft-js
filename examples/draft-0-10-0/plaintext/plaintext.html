@@ -47,7 +47,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         render() {
           return (
             <div style={styles.root}>
-              <div style={styles.editor} onClick={this.focus}>
+              <div style={styles.editor} onClick={this.domEditor.focus}>
                 <Editor
                   editorState={this.state.editorState}
                   onChange={this.onChange}
