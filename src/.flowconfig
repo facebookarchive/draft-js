@@ -4,6 +4,7 @@
 .*/react-dom/node_modules/.*
 .*/fbjs/node_modules/.*
 .*/node_modules/invariant/.*
+.*/node_modules/fbjs/lib/emptyFunction.js.flow
 
 [include]
 ../node_modules/fbjs/lib/
@@ -37,4 +38,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 module.name_mapper='ReactDOM' -> 'react-dom'
 
 [version]
-^0.92.0
+^0.110.1

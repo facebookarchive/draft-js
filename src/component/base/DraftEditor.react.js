@@ -33,7 +33,6 @@ const Style = require('Style');
 const UserAgent = require('UserAgent');
 
 const cx = require('cx');
-const emptyFunction = require('emptyFunction');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getScrollPosition = require('getScrollPosition');
@@ -136,8 +135,12 @@ class UpdateDraftEditorFlags extends React.Component<{
 class DraftEditor extends React.Component<DraftEditorProps, State> {
   static defaultProps: DraftEditorDefaultProps = {
     blockRenderMap: DefaultDraftBlockRenderMap,
-    blockRendererFn: emptyFunction.thatReturnsNull,
-    blockStyleFn: emptyFunction.thatReturns(''),
+    blockRendererFn: function() {
+      return null;
+    },
+    blockStyleFn: function() {
+      return '';
+    },
     keyBindingFn: getDefaultKeyBinding,
     readOnly: false,
     spellCheck: false,
