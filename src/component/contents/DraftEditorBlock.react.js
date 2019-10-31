@@ -19,6 +19,7 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 import type {List} from 'immutable';
+import type DraftEditor from 'DraftEditor.react';
 
 const DraftEditorLeaf = require('DraftEditorLeaf.react');
 const DraftOffsetKey = require('DraftOffsetKey');
@@ -32,7 +33,6 @@ const cx = require('cx');
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
-const invariant = require('invariant');
 const nullthrows = require('nullthrows');
 
 const SCROLL_BUFFER = 10;
@@ -51,6 +51,7 @@ type Props = {
   selection: SelectionState,
   startIndent?: boolean,
   tree: List<any>,
+  editor: DraftEditor,
 };
 
 /**
@@ -96,6 +97,7 @@ class DraftEditorBlock extends React.Component<Props> {
    */
   componentDidMount(): void {
     const selection = this.props.selection;
+    const editor = this.props.editor;
     const endKey = selection.getEndKey();
     if (!selection.getHasFocus() || endKey !== this.props.block.getKey()) {
       return;
@@ -105,34 +107,46 @@ class DraftEditorBlock extends React.Component<Props> {
     if (blockNode == null) {
       return;
     }
-    const scrollParent = Style.getScrollParent(blockNode);
+    const editorNode = ReactDOM.findDOMNode(editor);
+    let scrollParent = Style.getScrollParent(blockNode);
     const scrollPosition = getScrollPosition(scrollParent);
-    let scrollDelta;
+    const blockPosition = getElementPosition(blockNode);
+    const editorPosition = getElementPosition(editorNode);
+    const isScrParentWindow = scrollParent === window;
+    const viewportHeight = getViewportDimensions().height;
+    if (isScrParentWindow) {
+      scrollParent = window.document.body;
+    }
+    const scrollParentPosition = !isScrParentWindow
+      ? getElementPosition(scrollParent)
+      : {y: 0, height: viewportHeight};
 
-    if (scrollParent === window) {
-      const nodePosition = getElementPosition(blockNode);
-      const nodeBottom = nodePosition.y + nodePosition.height;
-      const viewportHeight = getViewportDimensions().height;
-      scrollDelta = nodeBottom - viewportHeight;
-      if (scrollDelta > 0) {
-        window.scrollTo(
-          scrollPosition.x,
-          scrollPosition.y + scrollDelta + SCROLL_BUFFER,
-        );
-      }
-    } else {
-      invariant(
-        blockNode instanceof HTMLElement,
-        'blockNode is not an HTMLElement',
+    //Fix issue #304
+    const blockHeight = blockPosition.height;
+    const blockTop = blockPosition.y - editorPosition.y;
+    const blockBottom = blockTop + blockHeight;
+    //viewport of editor:
+    const visTop = scrollParentPosition.y - editorPosition.y;
+    const visHeight = scrollParentPosition.height;
+    const visBottom = visTop + visHeight;
+    let scrollDeltaTop = visTop - blockTop;
+    let scrollDeltaBottom = visBottom - blockBottom;
+    const isBigBlock = blockHeight >= visHeight;
+    //for big block scroll to its top
+    let correctScrollTop = undefined;
+    if (visTop > blockTop || (isBigBlock && blockTop > visBottom)) {
+      correctScrollTop = Math.max(
+        0,
+        scrollPosition.y - SCROLL_BUFFER - scrollDeltaTop,
       );
-      const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
-      const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
-      scrollDelta = blockBottom - scrollBottom;
-      if (scrollDelta > 0) {
-        Scroll.setTop(
-          scrollParent,
-          Scroll.getTop(scrollParent) + scrollDelta + SCROLL_BUFFER,
-        );
+    } else if (!isBigBlock && blockBottom > visBottom) {
+      correctScrollTop = scrollPosition.y + SCROLL_BUFFER - scrollDeltaBottom;
+    }
+    if (correctScrollTop !== undefined) {
+      if (isScrParentWindow) {
+        window.scrollTo(scrollPosition.x, correctScrollTop);
+      } else {
+        Scroll.setTop(scrollParent, correctScrollTop);
       }
     }
   }

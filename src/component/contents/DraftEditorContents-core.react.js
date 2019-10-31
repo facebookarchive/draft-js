@@ -16,6 +16,7 @@ import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
+import type DraftEditor from 'DraftEditor.react';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
@@ -37,6 +38,7 @@ type Props = {
   editorKey?: string,
   editorState: EditorState,
   textDirectionality?: BidiDirection,
+  editor: DraftEditor,
 };
 
 /**
@@ -133,6 +135,7 @@ class DraftEditorContents extends React.Component<Props> {
       editorState,
       editorKey,
       textDirectionality,
+      editor,
     } = this.props;
 
     const content = editorState.getCurrentContent();
@@ -177,6 +180,7 @@ class DraftEditorContents extends React.Component<Props> {
         offsetKey,
         selection,
         tree: editorState.getBlockTree(key),
+        editor,
       };
 
       const configForType =
