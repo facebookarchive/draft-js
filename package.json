@@ -1,5 +1,5 @@
 {
-  "name": "draft-js",
+  "name": "@kollate/draft-js",
   "description": "A React framework for building text editors.",
   "version": "0.11.2",
   "keywords": [
@@ -17,7 +17,7 @@
   ],
   "main": "lib/Draft.js",
   "style": "dist/Draft.css",
-  "repository": "facebook/draft-js",
+  "repository": "skk2142/draft-js",
   "license": "MIT",
   "scripts": {
     "prepublish": "npm run build",
