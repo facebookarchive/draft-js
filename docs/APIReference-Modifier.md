@@ -113,7 +113,7 @@ insertText(
 ): ContentState
 ```
 Identical to `replaceText`, but enforces that the target range is collapsed
-so that no characters are replaced. This is just for convenience, since text
+so that no characters are replaced. This is only for convenience, since text
 edits are so often insertions rather than replacements.
 
 ### moveText
@@ -136,7 +136,7 @@ replaceWithFragment(
   fragment: BlockMap
 ): ContentState
 ```
-A "fragment" is a section of a block map, effectively just an
+A "fragment" is a section of a block map, effectively only an
 `OrderedMap<string, ContentBlock>` much the same as the full block map of a
 `ContentState` object.
 

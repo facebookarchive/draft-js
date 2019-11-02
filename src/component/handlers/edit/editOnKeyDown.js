@@ -1,13 +1,11 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -157,7 +155,7 @@ function editOnKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
   const command = editor.props.keyBindingFn(e);
 
   // If no command is specified, allow keydown event to continue.
-  if (!command) {
+  if (command == null || command === '') {
     if (keyCode === Keys.SPACE && isChrome && isOptionKeyCommand(e)) {
       // The default keydown event has already been prevented in order to stop
       // Chrome from scrolling. Insert a nbsp into the editor as OSX would for

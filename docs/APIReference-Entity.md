@@ -16,7 +16,7 @@ for details on updating your application
 [see our v0.10 API Migration Guide](/docs/v0-10-api-migration.html#content).
 
 Entity objects returned by `Entity` methods are represented as
-[DraftEntityInstance](https://github.com/facebook/draft-js/blob/master/src/model/entity/DraftEntityInstance.js) immutable records. These have a simple set of getter functions and should
+[DraftEntityInstance](https://github.com/facebook/draft-js/blob/master/src/model/entity/DraftEntityInstance.js) immutable records. These have a small set of getter functions and should
 be used only for retrieval.
 
 ## Overview

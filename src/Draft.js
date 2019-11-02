@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
@@ -36,11 +34,8 @@ const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getVisibleSelectionRect = require('getVisibleSelectionRect');
-const gkx = require('gkx');
 
-const convertFromHTML = gkx('draft_refactored_html_importer')
-  ? require('convertFromHTMLToContentBlocks2')
-  : require('convertFromHTMLToContentBlocks');
+const convertFromHTML = require('convertFromHTMLToContentBlocks');
 
 const DraftPublic = {
   Editor: DraftEditor,

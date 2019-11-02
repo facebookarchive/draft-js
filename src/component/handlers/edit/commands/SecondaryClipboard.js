@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow strict-local
@@ -39,9 +37,11 @@ const SecondaryClipboard = {
       const blockEnd = content.getBlockForKey(anchorKey).getLength();
 
       if (blockEnd === selection.getAnchorOffset()) {
-        targetRange = selection
-          .set('focusKey', content.getKeyAfter(anchorKey))
-          .set('focusOffset', 0);
+        const keyAfter = content.getKeyAfter(anchorKey);
+        if (keyAfter == null) {
+          return editorState;
+        }
+        targetRange = selection.set('focusKey', keyAfter).set('focusOffset', 0);
       } else {
         targetRange = selection.set('focusOffset', blockEnd);
       }

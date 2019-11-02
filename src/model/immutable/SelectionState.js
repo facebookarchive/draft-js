@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow strict-local
@@ -33,7 +31,10 @@ const defaultRecord: {
   hasFocus: false,
 };
 
-const SelectionStateRecord = Record(defaultRecord);
+/* $FlowFixMe This comment suppresses an error found when automatically adding
+ * a type annotation with the codemod Komodo/Annotate_exports. To see the error
+ * delete this comment and run Flow. */
+const SelectionStateRecord = (Record(defaultRecord): any);
 
 class SelectionState extends SelectionStateRecord {
   serialize(): string {

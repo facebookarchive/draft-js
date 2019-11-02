@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
  *
  * This file provided by Facebook is for non-commercial testing and evaluation
  * purposes only. Facebook reserves all rights not expressly granted.
@@ -18,38 +18,22 @@ import katex from 'katex';
 import React from 'react';
 
 class KatexOutput extends React.Component {
-  constructor(props) {
-    super(props);
-    this._timer = null;
-  }
-
   _update() {
-    if (this._timer) {
-      clearTimeout(this._timer);
-    }
-
-    this._timer = setTimeout(() => {
-      katex.render(
-        this.props.content,
-        this.refs.container,
-        {displayMode: true},
-      );
-    }, 0);
+    katex.render(
+      this.props.content,
+      this.refs.container,
+      {displayMode: true},
+    );
   }
 
   componentDidMount() {
     this._update();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.content !== this.props.content) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.content !== this.props.content) {
       this._update();
     }
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this._timer);
-    this._timer = null;
   }
 
   render() {

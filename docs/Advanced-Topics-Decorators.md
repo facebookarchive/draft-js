@@ -84,11 +84,11 @@ The strategy functions execute the provided callback with the `start` and
 ## Decorator Components
 
 For your decorated ranges of text, you must define a React component to use
-to render them. These tend to be simple `span` elements with CSS classes or
+to render them. These tend to be plain `span` elements with CSS classes or
 styles applied to them.
 
 In our current example, the `CompositeDecorator` object names `HandleSpan` and
-`HashtagSpan` as the components to use for decoration. These are just basic
+`HashtagSpan` as the components to use for decoration. These are basic
 stateless components:
 
 ```js
@@ -124,7 +124,7 @@ you wish, as long as they match the expected type -- you are not bound by
 ## Setting new decorators
 
 Further, it is acceptable to set a new `decorator` value on the `EditorState`
-on the fly, during normal state propagation -- through immutable means, of course.
+on the fly, during normal state propagation, through immutable means.
 
 This means that during your app workflow, if your decorator becomes invalid or
 requires a modification, you can create a new decorator object (or use

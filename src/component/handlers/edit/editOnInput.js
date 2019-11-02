@@ -1,13 +1,11 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -20,16 +18,36 @@ const DraftOffsetKey = require('DraftOffsetKey');
 const EditorState = require('EditorState');
 const UserAgent = require('UserAgent');
 
+const {notEmptyKey} = require('draftKeyUtils');
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const gkx = require('gkx');
+const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
 const nullthrows = require('nullthrows');
 
 const isGecko = UserAgent.isEngine('Gecko');
 
 const DOUBLE_NEWLINE = '\n\n';
 
+function onInputType(inputType: string, editorState: EditorState): EditorState {
+  switch (inputType) {
+    case 'deleteContentBackward':
+      return keyCommandPlainBackspace(editorState);
+  }
+  return editorState;
+}
+
 /**
- * This function is intended to handle spellcheck and autocorrect changes,
+ * This function serves two purposes
+ *
+ * 1. To update the editorState and call onChange method with the new
+ * editorState. This editorState is calculated in editOnBeforeInput but the
+ * onChange method is not called with the new state until this method does it.
+ * It is done to handle a specific case where certain character inputs might
+ * be replaced with something else. E.g. snippets ('rc' might be replaced
+ * with boilerplate code for react component). More information on the
+ * exact problem can be found here -
+ * https://github.com/facebook/draft-js/commit/07892ba479bd4dfc6afd1e0ed179aaf51cd138b1
+ *
+ * 2. intended to handle spellcheck and autocorrect changes,
  * which occur in the DOM natively without any opportunity to observe or
  * interpret the changes before they occur.
  *
@@ -40,7 +58,7 @@ const DOUBLE_NEWLINE = '\n\n';
  * when an `input` change leads to a DOM/model mismatch, the change should be
  * due to a spellcheck change, and we can incorporate it into our model.
  */
-function editOnInput(editor: DraftEditor): void {
+function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
@@ -49,20 +67,13 @@ function editOnInput(editor: DraftEditor): void {
   const domSelection = global.getSelection();
 
   const {anchorNode, isCollapsed} = domSelection;
-  const isNotTextNode = anchorNode.nodeType !== Node.TEXT_NODE;
   const isNotTextOrElementNode =
     anchorNode.nodeType !== Node.TEXT_NODE &&
     anchorNode.nodeType !== Node.ELEMENT_NODE;
 
-  if (gkx('draft_killswitch_allow_nontextnodes')) {
-    if (isNotTextNode) {
-      return;
-    }
-  } else {
-    if (isNotTextOrElementNode) {
-      // TODO: (t16149272) figure out context for this change
-      return;
-    }
+  if (isNotTextOrElementNode) {
+    // TODO: (t16149272) figure out context for this change
+    return;
   }
 
   if (
@@ -112,7 +123,21 @@ function editOnInput(editor: DraftEditor): void {
     // This can be buggy for some Android keyboards because they don't fire
     // standard onkeydown/pressed events and only fired editOnInput
     // so domText is already changed by the browser and ends up being equal
-    // to modelText unexpectedly
+    // to modelText unexpectedly.
+    // Newest versions of Android support the dom-inputevent-inputtype
+    // and we can use the `inputType` to properly apply the state changes.
+
+    /* $FlowFixMe inputType is only defined on a draft of a standard.
+     * https://w3c.github.io/input-events/#dom-inputevent-inputtype */
+    const {inputType} = e.nativeEvent;
+    if (inputType) {
+      const newEditorState = onInputType(inputType, editorState);
+      if (newEditorState !== editorState) {
+        editor.restoreEditorDOM();
+        editor.update(newEditorState);
+        return;
+      }
+    }
     return;
   }
 
@@ -126,8 +151,8 @@ function editOnInput(editor: DraftEditor): void {
   });
 
   const entityKey = block.getEntityAt(start);
-  const entity = entityKey && content.getEntity(entityKey);
-  const entityType = entity && entity.getMutability();
+  const entity = notEmptyKey(entityKey) ? content.getEntity(entityKey) : null;
+  const entityType = entity != null ? entity.getMutability() : null;
   const preserveEntity = entityType === 'MUTABLE';
 
   // Immutable or segmented entities cannot properly be handled by the

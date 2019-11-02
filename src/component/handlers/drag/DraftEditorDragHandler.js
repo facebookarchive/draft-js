@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
@@ -93,7 +91,9 @@ const DraftEditorDragHandler = {
       return;
     }
 
-    const files = data.getFiles();
+    /* $FlowFixMe This comment suppresses an error found DataTransfer was typed.
+     * getFiles() returns an array of <Files extends Blob>, not Blob */
+    const files: Array<Blob> = (data.getFiles(): any);
     if (files.length > 0) {
       if (
         editor.props.handleDroppedFiles &&
@@ -121,7 +121,11 @@ const DraftEditorDragHandler = {
       editor.update(moveText(editorState, dropSelection));
     } else {
       editor.update(
-        insertTextAtSelection(editorState, dropSelection, data.getText()),
+        insertTextAtSelection(
+          editorState,
+          dropSelection,
+          (data.getText(): any),
+        ),
       );
     }
     endDrag(editor);

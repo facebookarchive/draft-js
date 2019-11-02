@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
@@ -20,13 +18,17 @@ import type SelectionState from 'SelectionState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 
+const Immutable = require('immutable');
 const insertIntoList = require('insertIntoList');
 const invariant = require('invariant');
 const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
 
 const {List} = Immutable;
+
+export type BlockDataMergeBehavior =
+  | 'REPLACE_WITH_NEW_DATA'
+  | 'MERGE_OLD_DATA_TO_NEW_DATA';
 
 const updateExistingBlock = (
   contentState: ContentState,
@@ -35,12 +37,24 @@ const updateExistingBlock = (
   fragmentBlock: BlockNodeRecord,
   targetKey: string,
   targetOffset: number,
+  mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
 ): ContentState => {
   const targetBlock = blockMap.get(targetKey);
   const text = targetBlock.getText();
   const chars = targetBlock.getCharacterList();
   const finalKey = targetKey;
   const finalOffset = targetOffset + fragmentBlock.getText().length;
+
+  let data = null;
+
+  switch (mergeBlockData) {
+    case 'MERGE_OLD_DATA_TO_NEW_DATA':
+      data = fragmentBlock.getData().merge(targetBlock.getData());
+      break;
+    case 'REPLACE_WITH_NEW_DATA':
+      data = fragmentBlock.getData();
+      break;
+  }
 
   const newBlock = targetBlock.merge({
     text:
@@ -52,7 +66,7 @@ const updateExistingBlock = (
       fragmentBlock.getCharacterList(),
       targetOffset,
     ),
-    data: fragmentBlock.getData(),
+    data,
   });
 
   return contentState.merge({
@@ -292,6 +306,7 @@ const insertFragmentIntoContentState = (
   contentState: ContentState,
   selectionState: SelectionState,
   fragmentBlockMap: BlockMap,
+  mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
 ): ContentState => {
   invariant(
     selectionState.isCollapsed(),
@@ -322,6 +337,7 @@ const insertFragmentIntoContentState = (
       fragment.first(),
       targetKey,
       targetOffset,
+      mergeBlockData,
     );
   }
 

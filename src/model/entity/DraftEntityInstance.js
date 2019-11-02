@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @legacyServerCallableInstance
  * @format
@@ -21,11 +19,11 @@ const Immutable = require('immutable');
 
 const {Record} = Immutable;
 
-const DraftEntityInstanceRecord = Record({
+const DraftEntityInstanceRecord = (Record({
   type: 'TOKEN',
   mutability: 'IMMUTABLE',
   data: Object,
-});
+}): any);
 
 /**
  * An instance of a document entity, consisting of a `type` and relevant
