@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
  *
  * This file provided by Facebook is for non-commercial testing and evaluation
  * purposes only. Facebook reserves all rights not expressly granted.
@@ -23,18 +23,19 @@ const APP_PORT = 3000;
 var compiler = webpack({
   entry: path.resolve(__dirname, 'js', 'app.js'),
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
+        loader: 'babel-loader',
+        options: {
           presets: ['es2015', 'react'],
         },
       },
     ],
   },
   output: {filename: 'app.js', path: '/'},
+  mode: 'development',
 });
 var app = new WebpackDevServer(compiler, {
   contentBase: '/public/',

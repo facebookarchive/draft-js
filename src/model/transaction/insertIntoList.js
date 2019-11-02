@@ -1,13 +1,11 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -19,10 +17,11 @@ import type {List} from 'immutable';
  * Maintain persistence for target list when appending and prepending.
  */
 function insertIntoList<T>(
-  targetList: List<T>,
+  targetListArg: List<T>,
   toInsert: List<T>,
   offset: number,
 ): List<T> {
+  let targetList = targetListArg;
   if (offset === targetList.count()) {
     toInsert.forEach(c => {
       targetList = targetList.push(c);

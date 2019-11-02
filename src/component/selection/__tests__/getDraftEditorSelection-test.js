@@ -1,11 +1,8 @@
 /**
- * Copyright 2004-present Facebook. All Rights Reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @emails oncall+draft_js
  * @format
@@ -15,9 +12,9 @@
 
 jest.disableAutomock();
 
+const getDraftEditorSelection = require('getDraftEditorSelection');
 const getSampleSelectionMocksForTesting = require('getSampleSelectionMocksForTesting');
 const getSampleSelectionMocksForTestingNestedBlocks = require('getSampleSelectionMocksForTestingNestedBlocks');
-const getDraftEditorSelection = require('getDraftEditorSelection');
 
 let editorState = null;
 let root = null;

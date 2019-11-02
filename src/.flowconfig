@@ -4,6 +4,7 @@
 .*/react-dom/node_modules/.*
 .*/fbjs/node_modules/.*
 .*/node_modules/invariant/.*
+.*/node_modules/fbjs/lib/emptyFunction.js.flow
 
 [include]
 ../node_modules/fbjs/lib/
@@ -33,7 +34,8 @@ module.system.haste.paths.blacklist=.*/node_modules/invariant/.*
 esproposal.class_static_fields=enable
 suppress_type=$FlowIssue
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\).*\n
+suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 module.name_mapper='ReactDOM' -> 'react-dom'
 
 [version]
-^0.70.0
+^0.110.1

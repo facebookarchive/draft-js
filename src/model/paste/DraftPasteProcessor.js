@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
@@ -22,8 +20,7 @@ import type {EntityMap} from 'EntityMap';
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 
-const convertFromHTMLtoContentBlocksClassic = require('convertFromHTMLToContentBlocks');
-const convertFromHTMLtoContentBlocksNew = require('convertFromHTMLToContentBlocks2');
+const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 const generateRandomKey = require('generateRandomKey');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
 const gkx = require('gkx');
@@ -37,17 +34,12 @@ const ContentBlockRecord = experimentalTreeDataSupport
   ? ContentBlockNode
   : ContentBlock;
 
-const refactoredHTMLImporter = gkx('draft_refactored_html_importer');
-const convertFromHTMLtoContentBlocks = refactoredHTMLImporter
-  ? convertFromHTMLtoContentBlocksNew
-  : convertFromHTMLtoContentBlocksClassic;
-
 const DraftPasteProcessor = {
   processHTML(
     html: string,
     blockRenderMap?: DraftBlockRenderMap,
   ): ?{contentBlocks: ?Array<BlockNodeRecord>, entityMap: EntityMap} {
-    return convertFromHTMLtoContentBlocks(
+    return convertFromHTMLToContentBlocks(
       html,
       getSafeBodyFromHTML,
       blockRenderMap,

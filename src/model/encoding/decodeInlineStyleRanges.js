@@ -1,24 +1,23 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
 'use strict';
 
-const {OrderedSet} = require('immutable');
+import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type {InlineStyleRange} from 'InlineStyleRange';
+
 const UnicodeUtils = require('UnicodeUtils');
 
+const {OrderedSet} = require('immutable');
 const {substr} = UnicodeUtils;
-
-import type {DraftInlineStyle} from 'DraftInlineStyle';
 
 const EMPTY_SET = OrderedSet();
 
@@ -27,11 +26,11 @@ const EMPTY_SET = OrderedSet();
  */
 function decodeInlineStyleRanges(
   text: string,
-  ranges?: Array<Object>,
+  ranges?: Array<InlineStyleRange>,
 ): Array<DraftInlineStyle> {
   const styles = Array(text.length).fill(EMPTY_SET);
   if (ranges) {
-    ranges.forEach((/*object*/ range) => {
+    ranges.forEach(range => {
       let cursor = substr(text, 0, range.offset).length;
       const end = cursor + substr(text, range.offset, range.length).length;
       while (cursor < end) {

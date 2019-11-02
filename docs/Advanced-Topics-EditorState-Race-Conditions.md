@@ -68,4 +68,4 @@ this.handlePastedText = (text, styles, editorState) => {
 ```
 With `handlePastedText` you can implement the paste behavior by yourself.
 
-NOTE: If you need to have this behavior in your Editor there is a much easier way to achieve this. Just set the `Editor`'s `stripPastedStyles` property to `true`.
+NOTE: If you need to have this behavior in your Editor, you can achieve it by setting the `Editor`'s `stripPastedStyles` property to `true`.

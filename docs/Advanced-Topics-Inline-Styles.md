@@ -67,7 +67,7 @@ together in styled `span` nodes.
 ## Mapping a style string to CSS
 
 By default, `Editor` provides support for a basic list of inline styles:
-`'BOLD'`, `'ITALIC'`, `'UNDERLINE'`, and `'CODE'`. These are mapped to simple CSS
+`'BOLD'`, `'ITALIC'`, `'UNDERLINE'`, and `'CODE'`. These are mapped to plain CSS
 style objects, which are used to apply styles to the relevant ranges.
 
 For your editor, you may define custom style strings to include with these

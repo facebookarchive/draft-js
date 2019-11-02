@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017-present, Facebook, Inc.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -272,7 +272,7 @@ class Index extends React.Component {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.6/immutable.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
-        <script src="lib/Draft.js"></script>
+        <script src="lib/Draft.min.js"></script>
         <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script>
         <script type="text/javascript">{'try{Typekit.load();}catch(e){}'}</script>
         <script type="text/babel" dangerouslySetInnerHTML={{__html: richExample}} />

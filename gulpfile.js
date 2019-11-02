@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 'use strict';
@@ -40,6 +38,7 @@ var paths = {
     '!src/**/__mocks__/**/*.js',
   ],
   css: ['src/**/*.css'],
+  static: 'website/static',
 };
 
 var babelOptsJS = {
@@ -49,6 +48,7 @@ var babelOptsJS = {
       rewriteModules: {map: moduleMap},
     }),
   ],
+  plugins: [require('@babel/plugin-proposal-nullish-coalescing-operator')],
 };
 
 var babelOptsFlow = {
@@ -58,17 +58,16 @@ var babelOptsFlow = {
       rewriteModules: {map: moduleMap},
     }),
   ],
+  plugins: [require('@babel/plugin-proposal-nullish-coalescing-operator')],
 };
 
 var COPYRIGHT_HEADER = `/**
  * Draft v<%= version %>
  *
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 `;
 
@@ -247,6 +246,24 @@ gulp.task(
 );
 
 gulp.task(
+  'website:static',
+  gulp.series(
+    'dist:min',
+    'css',
+    gulp.parallel(function() {
+      return gulp
+        .src(paths.dist + '/Draft.min.js')
+        .pipe(gulp.dest(paths.static + '/lib'));
+    }),
+    gulp.parallel(function() {
+      return gulp
+        .src(paths.dist + '/Draft.css')
+        .pipe(gulp.dest(paths.static + '/css'));
+    }),
+  ),
+);
+
+gulp.task(
   'check-dependencies',
   gulp.series(function() {
     return gulp.src('package.json').pipe(gulpCheckDependencies());
@@ -256,14 +273,14 @@ gulp.task(
 gulp.task(
   'watch',
   gulp.series(function() {
-    gulp.watch(paths.src, ['modules']);
+    gulp.watch(paths.src, gulp.parallel('modules'));
   }),
 );
 
 gulp.task(
   'dev',
   gulp.series(function() {
-    gulp.watch(paths.src, ['modules', 'dist']);
+    gulp.watch(paths.src, gulp.parallel('dist'));
   }),
 );
 
@@ -273,6 +290,6 @@ gulp.task(
     'check-dependencies',
     'clean',
     gulp.parallel('modules', 'flow'),
-    gulp.parallel('dist', 'dist:min'),
+    gulp.parallel('dist', 'dist:min', 'website:static'),
   ),
 );

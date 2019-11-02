@@ -1,10 +1,8 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
@@ -39,7 +37,9 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Get files, unless this is likely to be a string the user wants inline.
   if (!data.isRichText()) {
-    const files = data.getFiles();
+    /* $FlowFixMe This comment suppresses an error found DataTransfer was typed.
+     * getFiles() returns an array of <Files extends Blob>, not Blob */
+    const files: Array<Blob> = (data.getFiles(): any);
     const defaultFileText = data.getText();
     if (files.length > 0) {
       // Allow customized paste handling for images, etc. Otherwise, fall
@@ -93,8 +93,8 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   }
 
   let textBlocks: Array<string> = [];
-  const text = data.getText();
-  const html = data.getHTML();
+  const text: string = (data.getText(): any);
+  const html: string = (data.getHTML(): any);
   const editorState = editor._latestEditorState;
 
   if (
