@@ -16,13 +16,14 @@ import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 
-const emptyFunction = require('emptyFunction');
 const findRangesImmutable = require('findRangesImmutable');
 const Immutable = require('immutable');
 
 const {List, Repeat, Record} = Immutable;
 
-const returnTrue = emptyFunction.thatReturnsTrue;
+const returnTrue = function() {
+  return true;
+};
 
 const defaultLeafRange: {
   start: ?number,

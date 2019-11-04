@@ -33,7 +33,6 @@ const Style = require('Style');
 const UserAgent = require('UserAgent');
 
 const cx = require('cx');
-const emptyFunction = require('emptyFunction');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getScrollPosition = require('getScrollPosition');
@@ -136,8 +135,12 @@ class UpdateDraftEditorFlags extends React.Component<{
 class DraftEditor extends React.Component<DraftEditorProps, State> {
   static defaultProps: DraftEditorDefaultProps = {
     blockRenderMap: DefaultDraftBlockRenderMap,
-    blockRendererFn: emptyFunction.thatReturnsNull,
-    blockStyleFn: emptyFunction.thatReturns(''),
+    blockRendererFn: function() {
+      return null;
+    },
+    blockStyleFn: function() {
+      return '';
+    },
     keyBindingFn: getDefaultKeyBinding,
     readOnly: false,
     spellCheck: false,
@@ -352,7 +355,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       customStyleFn,
       editorKey: this._editorKey,
       editorState,
-      key: 'contents' + this.state.contentsKey,
       textDirectionality,
     };
 
@@ -420,7 +422,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
               all DraftEditorLeaf nodes so it's first in postorder traversal.
             */}
             <UpdateDraftEditorFlags editor={this} editorState={editorState} />
-            <DraftEditorContents {...editorContentsProps} />
+            <DraftEditorContents
+              {...editorContentsProps}
+              key={'contents' + this.state.contentsKey}
+            />
           </div>
         </div>
       </div>
@@ -524,6 +529,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     const editHandler = {...handlerMap.edit};
 
     if (onPaste) {
+      /* $FlowFixMe(>=0.111.0) This comment suppresses an error found when Flow
+       * v0.111.0 was deployed. To see the error, delete this comment and run
+       * Flow. */
       editHandler.onPaste = onPaste;
     }
 

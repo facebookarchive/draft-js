@@ -117,7 +117,7 @@ The recommendation above is especially important for custom block renderers
 that involve text input, like the TeX editor example.
 
 It is also worth noting that within the Facebook Notes editor, we have not
-tried to perform any special SelectionState rendering or management on embedded
+tried to perform any specific SelectionState rendering or management on embedded
 media, such as rendering a highlight on an embedded photo when selecting it.
 This is in part because of the rich interaction provided on the media
 itself, with resize handles and other controls exposed to mouse behavior.

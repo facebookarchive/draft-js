@@ -77,6 +77,9 @@ beforeEach(() => {
 const convertFromHTML = (html_string, config) => {
   const options = {
     ...DEFAULT_CONFIG,
+    /* $FlowFixMe(>=0.111.0) This comment suppresses an error found when Flow
+     * v0.111.0 was deployed. To see the error, delete this comment and run
+     * Flow. */
     ...config,
   };
 

@@ -7,7 +7,7 @@ backed by an immutable model.
 
 - **Extensible and Customizable:** We provide the building blocks to enable
 the creation of a broad variety of rich text composition experiences, from
-simple text styles to embedded media.
+basic text styles to embedded media.
 - **Declarative Rich Text:** Draft.js fits seamlessly into
 [React](http://facebook.github.io/react/) applications,
 abstracting away the details of rendering, selection, and input behavior with a
@@ -138,7 +138,7 @@ Further examples of how Draft.js can be used are provided below.
 
 ### Examples
 
-Visit http://draftjs.org/ to try out a simple rich editor example.
+Visit http://draftjs.org/ to try out a basic rich editor example.
 
 The repository includes a variety of different editor examples to demonstrate
 some of the features offered by the framework.
@@ -160,7 +160,7 @@ comment inputs, [Notes](https://www.facebook.com/notes/), and
 
 ## Browser Support
 
-| ![IE / Edge](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png) <br /> IE / Edge | ![Firefox](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png) <br /> Firefox | ![Chrome](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png) <br /> Chrome | ![Safari](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png ) <br /> Safari | ![iOS Safari](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari-ios.png) <br />iOS Safari | ![Chrome for Android](https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome-android.png) <br/> Chrome for Android |
+| ![IE / Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_32x32.png) <br /> IE / Edge | ![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_32x32.png) <br /> Firefox | ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_32x32.png) <br /> Chrome | ![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_32x32.png) <br /> Safari | ![iOS Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari-ios/safari-ios_32x32.png) <br />iOS Safari | ![Chrome for Android](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_32x32.png) <br/> Chrome for Android |
 | --------- | --------- | --------- | --------- | --------- | --------- |
 | IE11, Edge [1, 2]| last 2 versions| last 2 versions| last 2 versions| not fully supported [3] | not fully supported [3]
 
