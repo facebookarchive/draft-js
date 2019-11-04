@@ -174,7 +174,6 @@ class DraftEditorContents extends React.Component<Props> {
         decorator,
         direction,
         forceSelection,
-        key,
         offsetKey,
         selection,
         tree: editorState.getBlockTree(key),
@@ -225,7 +224,7 @@ class DraftEditorContents extends React.Component<Props> {
       const child = React.createElement(
         Element,
         childProps,
-        <Component {...componentProps} />,
+        <Component {...componentProps} key={key} />,
       );
 
       processedBlocks.push({

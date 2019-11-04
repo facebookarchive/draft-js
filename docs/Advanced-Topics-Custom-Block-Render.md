@@ -65,7 +65,7 @@ class RichEditor extends React.Component {
 }
 ```
 
-There are cases where instead of overwriting the defaults, we just want to add new block types.
+There are cases where instead of overwriting the defaults, we only want to add new block types.
 This can be done by using the DefaultDraftBlockRenderMap reference to create a new blockRenderMap
 
 *example of extending default block render map:*
