@@ -199,13 +199,15 @@ function editOnBeforeInput(
     //
     // 5. '[#foo]' and append 'b'
     // desired rendering: '[#foob]'
-    // native rendering would be: '[#foob]' (native insertion is OK here)
+    // native rendering would be: '[#foob]'
+    // (native insertion here would be ok for decorators like simple spans,
+    // but not more complex decorators. To be safe, we need to prevent it.)
     //
     // It is safe to allow native insertion if and only if the full list of
-    // decorator ranges matches what we expect native insertion to give. We
-    // don't need to compare the content because the only possible mutation
-    // to consider here is inserting plain text and decorators can't affect
-    // text content.
+    // decorator ranges matches what we expect native insertion to give, and
+    // the range lengths have not changed. We don't need to compare the content
+    // because the only possible mutation to consider here is inserting plain
+    // text and decorators can't affect text content.
     const oldBlockTree = editorState.getBlockTree(anchorKey);
     const newBlockTree = newEditorState.getBlockTree(anchorKey);
     mustPreventNative =
@@ -218,14 +220,19 @@ function editOnBeforeInput(
         const oldEnd = oldLeafSet.get('end');
         const adjustedEnd =
           oldEnd + (oldEnd >= selectionStart ? chars.length : 0);
+        const newStart = newLeafSet.get('start');
+        const newEnd = newLeafSet.get('end');
+        const newDecoratorKey = newLeafSet.get('decoratorKey');
         return (
           // Different decorators
-          oldLeafSet.get('decoratorKey') !== newLeafSet.get('decoratorKey') ||
+          oldLeafSet.get('decoratorKey') !== newDecoratorKey ||
           // Different number of inline styles
           oldLeafSet.get('leaves').size !== newLeafSet.get('leaves').size ||
           // Different effective decorator position
-          adjustedStart !== newLeafSet.get('start') ||
-          adjustedEnd !== newLeafSet.get('end')
+          adjustedStart !== newStart ||
+          adjustedEnd !== newEnd ||
+          // Decorator already existed and its length changed
+          (newDecoratorKey != null && newEnd - newStart !== oldEnd - oldStart)
         );
       });
   }

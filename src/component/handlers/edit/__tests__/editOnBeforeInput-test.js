@@ -218,12 +218,14 @@ test('decorator fingerprint logic bails out of native insertion', () => {
     testDecoratorFingerprint('hi #', 4, 'f', true);
     testDecoratorFingerprint('x #foo', 3, '#', true);
     testDecoratorFingerprint('#foobar', 4, ' ', true);
+    testDecoratorFingerprint('#foo', 4, 'b', true);
+    testDecoratorFingerprint('#foo bar #baz', 2, 'o', true);
+    testDecoratorFingerprint('#foo bar #baz', 12, 'a', true);
 
     // but these are OK to let through
-    testDecoratorFingerprint('#foo', 4, 'b', false);
-    testDecoratorFingerprint('#foo bar #baz', 2, 'o', false);
     testDecoratorFingerprint('#foo bar #baz', 7, 'o', false);
-    testDecoratorFingerprint('#foo bar #baz', 12, 'a', false);
+    testDecoratorFingerprint('start #foo bar #baz end', 5, 'a', false);
+    testDecoratorFingerprint('start #foo bar #baz end', 20, 'a', false);
   } finally {
     global.getSelection = oldGetSelection;
   }
