@@ -5,12 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @emails oncall+draft_js
+ * @flow
  * @format
  */
 
 'use strict';
 
 jest.disableAutomock();
+
+import type DraftEditor from 'DraftEditor.react';
 
 const CompositeDraftDecorator = require('CompositeDraftDecorator');
 const ContentBlock = require('ContentBlock');
@@ -50,10 +53,13 @@ const getEditorState = (text: string = 'Arsenal') => {
   );
 };
 
-const getInputEvent = data => ({
-  data,
-  preventDefault: jest.fn(),
-});
+const getDraftEditor = (obj): DraftEditor => (obj: any);
+
+const getInputEvent = (data): SyntheticInputEvent<> =>
+  ({
+    data,
+    preventDefault: jest.fn(),
+  }: any);
 
 test('editor is not updated if no character data is provided', () => {
   const editorState = EditorState.acceptSelection(
@@ -61,11 +67,11 @@ test('editor is not updated if no character data is provided', () => {
     rangedSelection,
   );
 
-  const editor = {
+  const editor = getDraftEditor({
     _latestEditorState: editorState,
     props: {},
     update: jest.fn(),
-  };
+  });
 
   onBeforeInput(editor, getInputEvent());
 
@@ -78,13 +84,13 @@ test('editor is not updated if handled by handleBeforeInput', () => {
     rangedSelection,
   );
 
-  const editor = {
+  const editor = getDraftEditor({
     _latestEditorState: editorState,
     props: {
       handleBeforeInput: () => true,
     },
     update: jest.fn(),
-  };
+  });
 
   onBeforeInput(editor, getInputEvent('O'));
 
@@ -97,17 +103,18 @@ test('editor is updated with new text if it does not match current selection', (
     rangedSelection,
   );
 
-  const editor = {
+  const update = jest.fn();
+  const editor = getDraftEditor({
     _latestEditorState: editorState,
     props: {},
-    update: jest.fn(),
-  };
+    update,
+  });
 
   onBeforeInput(editor, getInputEvent('O'));
 
-  expect(editor.update).toHaveBeenCalledTimes(1);
+  expect(update).toHaveBeenCalledTimes(1);
 
-  const newEditorState = editor.update.mock.calls[0][0];
+  const newEditorState = update.mock.calls[0][0];
   expect(newEditorState.getCurrentContent()).toMatchSnapshot();
 });
 
@@ -117,17 +124,18 @@ test('editor selectionstate is updated if new text matches current selection', (
     rangedSelection,
   );
 
-  const editor = {
+  const update = jest.fn();
+  const editor = getDraftEditor({
     _latestEditorState: editorState,
     props: {},
-    update: jest.fn(),
-  };
+    update,
+  });
 
   onBeforeInput(editor, getInputEvent('A'));
 
-  expect(editor.update).toHaveBeenCalledTimes(1);
+  expect(update).toHaveBeenCalledTimes(1);
 
-  const newEditorState = editor.update.mock.calls[0][0];
+  const newEditorState = update.mock.calls[0][0];
   expect(newEditorState.getSelection()).toMatchSnapshot();
 });
 
@@ -137,17 +145,18 @@ test('editor selectionstate is updated if new text matches current selection and
     rangedSelectionBackwards,
   );
 
-  const editor = {
+  const update = jest.fn();
+  const editor = getDraftEditor({
     _latestEditorState: editorState,
     props: {},
-    update: jest.fn(),
-  };
+    update,
+  });
 
   onBeforeInput(editor, getInputEvent('A'));
 
-  expect(editor.update).toHaveBeenCalledTimes(1);
+  expect(update).toHaveBeenCalledTimes(1);
 
-  const newEditorState = editor.update.mock.calls[0][0];
+  const newEditorState = update.mock.calls[0][0];
   expect(newEditorState.getSelection()).toMatchSnapshot();
 });
 
@@ -158,10 +167,10 @@ function hashtagStrategy(contentBlock, callback, contentState) {
 
 function findWithRegex(regex, contentBlock, callback) {
   const text = contentBlock.getText();
-  let matchArr, start;
-  while ((matchArr = regex.exec(text)) !== null) {
-    start = matchArr.index;
-    callback(start, start + matchArr[0].length);
+  let matchArr = regex.exec(text);
+  while (matchArr !== null) {
+    callback(matchArr.index, matchArr.index + matchArr[0].length);
+    matchArr = regex.exec(text);
   }
 }
 
@@ -187,12 +196,12 @@ function testDecoratorFingerprint(
     }),
   );
 
-  const editor = {
+  const editor = getDraftEditor({
     _latestEditorState: editorState,
     _latestCommittedEditorState: editorState,
     props: {},
     update: jest.fn(),
-  };
+  });
 
   const ev = getInputEvent(charToInsert);
   onBeforeInput(editor, ev);
