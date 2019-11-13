@@ -301,6 +301,15 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         accessibilityID: this._placeholderAccessibilityID,
       };
 
+      /* $FlowFixMe(>=0.112.0 site=mobile) This comment suppresses an error
+       * found when Flow v0.112 was deployed. To see the error delete this
+       * comment and run Flow. */
+      /* $FlowFixMe(>=0.112.0 site=www) This comment suppresses an error found
+       * when Flow v0.112 was deployed. To see the error delete this comment
+       * and run Flow. */
+      /* $FlowFixMe(>=0.112.0 site=www,mobile) This comment suppresses an error
+       * found when Flow v0.112 was deployed. To see the error delete this
+       * comment and run Flow. */
       return <DraftEditorPlaceholder {...placeHolderProps} />;
     }
     return null;
