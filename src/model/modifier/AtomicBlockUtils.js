@@ -32,13 +32,14 @@ const ContentBlockRecord = experimentalTreeDataSupport
   ? ContentBlockNode
   : ContentBlock;
 
-const {List, Repeat} = Immutable;
+const {List, Repeat, Map} = Immutable;
 
 const AtomicBlockUtils = {
   insertAtomicBlock: function(
     editorState: EditorState,
     entityKey: string,
     character: string,
+    blockData: {} = {},
   ): EditorState {
     const contentState = editorState.getCurrentContent();
     const selectionState = editorState.getSelection();
@@ -66,6 +67,7 @@ const AtomicBlockUtils = {
       type: 'atomic',
       text: character,
       characterList: List(Repeat(charData, character.length)),
+      data: Map(blockData),
     };
 
     let atomicDividerBlockConfig = {

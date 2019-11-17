@@ -16,6 +16,7 @@ import type DraftEditor from 'DraftEditor.react';
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const Style = require('Style');
+const ReactDOM = require('ReactDOM');
 
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
@@ -32,8 +33,8 @@ const getScrollPosition = require('getScrollPosition');
 function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   const editorState = editor._latestEditorState;
   const selection = editorState.getSelection();
-  const element = e.target;
-  let scrollPosition;
+  // const element = e.target;
+  // let scrollPosition;
 
   // No selection, so there's nothing to cut.
   if (selection.isCollapsed()) {
@@ -41,11 +42,16 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     return;
   }
 
+  // CHANGES COPIED FROM https://github.com/facebook/draft-js/pull/1428/files/45b30b4d30b46691b9c5976885265f86e3b524a2
+
   // Track the current scroll position so that it can be forced back in place
   // after the editor regains control of the DOM.
-  if (element instanceof Node) {
-    scrollPosition = getScrollPosition(Style.getScrollParent(element));
-  }
+  // if (element instanceof Node) {
+  //   scrollPosition = getScrollPosition(Style.getScrollParent(element));
+  // }
+  const editorNode = ReactDOM.findDOMNode(editor.editor);
+  const scrollParent = Style.getScrollParent(editorNode);
+  const scrollPosition = getScrollPosition(scrollParent);
 
   const fragment = getFragmentFromSelection(editorState);
   editor.setClipboard(fragment);
