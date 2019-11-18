@@ -27,7 +27,9 @@ export type CoreDraftBlockType =
   | 'ordered-list-item'
   | 'blockquote'
   | 'code-block'
-  | 'atomic';
+  | 'atomic'
+  | 'section'
+  | 'article';
 
 /**
  * User defined types can be of any valid string.
