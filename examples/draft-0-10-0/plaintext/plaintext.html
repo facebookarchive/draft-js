@@ -38,6 +38,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.onChange = (editorState) => this.setState({editorState});
           this.logState = () => console.log(this.state.editorState.toJS());
           this.setDomEditorRef = ref => this.domEditor = ref;
+          this.focus = () => this.domEditor.focus();
         }
                 
         componentDidMount(){
