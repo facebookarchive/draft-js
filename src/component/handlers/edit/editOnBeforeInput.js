@@ -79,7 +79,7 @@ function replaceText(
  */
 function editOnBeforeInput(
   editor: DraftEditor,
-  e: SyntheticInputEvent<>,
+  e: SyntheticInputEvent<HTMLElement>,
 ): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
@@ -159,7 +159,12 @@ function editOnBeforeInput(
     // Chrome will also split up a node into two pieces if it contains a Tab
     // char, for no explicable reason. Seemingly caused by this commit:
     // https://chromium.googlesource.com/chromium/src/+/013ac5eaf3%5E%21/
-    const nativeSelection = global.getSelection();
+
+    // in test environment, e.target is not available
+    const nativeSelection = (e.currentTarget
+      ? e.currentTarget.ownerDocument.defaultView
+      : global
+    ).getSelection();
     // Selection is necessarily collapsed at this point due to earlier check.
     if (
       nativeSelection.anchorNode &&

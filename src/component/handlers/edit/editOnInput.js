@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow strict-local
+ * @flow
  * @emails oncall+draft_js
  */
 
@@ -63,8 +63,9 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
   }
-
-  const domSelection = global.getSelection();
+  // at this point editor is not null for sure (after input)
+  const castedEditorElement: HTMLElement = (editor.editor: any);
+  const domSelection = castedEditorElement.ownerDocument.defaultView.getSelection();
 
   const {anchorNode, isCollapsed} = domSelection;
   const isNotTextOrElementNode =

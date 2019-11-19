@@ -14,6 +14,7 @@
 const UserAgent = require('UserAgent');
 
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
+const getWindowForNode = require('getWindowForNode');
 const Immutable = require('immutable');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
@@ -45,8 +46,9 @@ class DOMObserver {
   constructor(container: HTMLElement) {
     this.container = container;
     this.mutations = Map();
-    if (window.MutationObserver && !USE_CHAR_DATA) {
-      this.observer = new window.MutationObserver(mutations =>
+    const containerWindow = getWindowForNode(container);
+    if (containerWindow.MutationObserver && !USE_CHAR_DATA) {
+      this.observer = new containerWindow.MutationObserver(mutations =>
         this.registerMutations(mutations),
       );
     } else {

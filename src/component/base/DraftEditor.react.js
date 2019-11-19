@@ -38,6 +38,7 @@ const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getScrollPosition = require('getScrollPosition');
 const gkx = require('gkx');
 const invariant = require('invariant');
+const isHTMLElement = require('isHTMLElement');
 const nullthrows = require('nullthrows');
 
 const isIE = UserAgent.isBrowser('IE');
@@ -457,7 +458,13 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
      * ie9-beta-minor-change-list.aspx
      */
     if (isIE) {
-      document.execCommand('AutoUrlDetect', false, false);
+      // editor can be null after mounting
+      // https://stackoverflow.com/questions/44074747/componentdidmount-called-before-ref-callback
+      if (!this.editor) {
+        global.execCommand('AutoUrlDetect', false, false);
+      } else {
+        this.editor.ownerDocument.execCommand('AutoUrlDetect', false, false);
+      }
     }
   }
 
@@ -492,10 +499,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
 
-    invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
-    );
+    invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
 
     editorNode.focus();
 
@@ -519,10 +523,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
   blur: () => void = (): void => {
     const editorNode = this.editor;
-    invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
-    );
+    if (!editorNode) {
+      return;
+    }
+    invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
     editorNode.blur();
   };
 

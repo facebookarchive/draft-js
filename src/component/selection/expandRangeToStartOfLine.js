@@ -11,15 +11,16 @@
 
 const UnicodeUtils = require('UnicodeUtils');
 
+const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
 const getRangeClientRects = require('getRangeClientRects');
 const invariant = require('invariant');
-
 /**
  * Return the computed line height, in pixels, for the provided element.
  */
 function getLineHeightPx(element: Element): number {
   const computed = getComputedStyle(element);
-  const div = document.createElement('div');
+  const correctDocument = getCorrectDocumentFromNode(element);
+  const div = correctDocument.createElement('div');
   div.style.fontFamily = computed.fontFamily;
   div.style.fontSize = computed.fontSize;
   div.style.fontStyle = computed.fontStyle;
@@ -28,7 +29,7 @@ function getLineHeightPx(element: Element): number {
   div.style.position = 'absolute';
   div.textContent = 'M';
 
-  const documentBody = document.body;
+  const documentBody = correctDocument.body;
   invariant(documentBody, 'Missing document.body');
 
   // forced layout here
