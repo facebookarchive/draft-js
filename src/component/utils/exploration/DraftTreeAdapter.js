@@ -46,10 +46,11 @@ const isListBlock = (block?: RawDraftContentBlock): boolean => {
 
 const addDepthToChildren = (block: RawDraftContentBlock) => {
   if (Array.isArray(block.children)) {
-    block.children = block.children.map(child =>
-      child.type === block.type
-        ? {...child, depth: (block.depth || 0) + 1}
-        : child,
+    block.children = block.children.map(
+      child =>
+        child.type === block.type
+          ? {...child, depth: (block.depth || 0) + 1}
+          : child,
     );
   }
 };

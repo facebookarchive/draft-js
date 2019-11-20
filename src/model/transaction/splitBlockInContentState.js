@@ -132,13 +132,7 @@ const splitBlockInContentState = (
     .skipUntil(v => v === blockToSplit)
     .rest();
   let newBlocks = blocksBefore
-    .concat(
-      [
-        [key, blockAbove],
-        [keyBelow, blockBelow],
-      ],
-      blocksAfter,
-    )
+    .concat([[key, blockAbove], [keyBelow, blockBelow]], blocksAfter)
     .toOrderedMap();
 
   if (isExperimentalTreeBlock) {

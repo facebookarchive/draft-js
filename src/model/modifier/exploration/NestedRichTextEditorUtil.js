@@ -522,10 +522,11 @@ const onUntab = (blockMap: BlockMap, block: ContentBlockNode): BlockMap => {
       .toOrderedMap();
 
     // set the nextChildren's parent to the new block
-    blockMap = blockMap.map(block =>
-      nextChildren.includes(block.getKey())
-        ? block.merge({parent: newBlock.getKey()})
-        : block,
+    blockMap = blockMap.map(
+      block =>
+        nextChildren.includes(block.getKey())
+          ? block.merge({parent: newBlock.getKey()})
+          : block,
     );
     // update the next/previous pointers for the children at the split
     blockMap = blockMap
