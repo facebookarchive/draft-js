@@ -1,4 +1,3 @@
-0;
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
  *
@@ -10,7 +9,7 @@
  * @emails oncall+draft_js
  */
 
-('use strict');
+'use strict';
 
 import type DraftEditor from 'DraftEditor.react';
 
