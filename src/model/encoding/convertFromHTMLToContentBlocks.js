@@ -730,10 +730,7 @@ class ContentBlocksBuilder {
       const config = blockConfigs[i];
       text += config.text;
       characterList = characterList.concat(config.characterList);
-      /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
-       * found when Flow v0.68 was deployed. To see the error delete this
-       * comment and run Flow. */
-      if (text !== '' && config.blockType !== 'unstyled') {
+      if (text !== '' && config.type !== 'unstyled') {
         text += '\n';
         characterList = characterList.push(characterList.last());
       }

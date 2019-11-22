@@ -531,3 +531,21 @@ test('Should import line breaks without creating a leading space', () => {
     experimentalTreeDataSupport: false,
   });
 });
+
+test('Should import two blockquotes without extra line breaks', () => {
+  const html_string = `
+    <blockquote>
+      <div>
+        <span>First</span>
+      </div>
+    </blockquote
+    <blockquote>
+      <div>
+        <span>Second</span>
+      </div>
+    </blockquote>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
