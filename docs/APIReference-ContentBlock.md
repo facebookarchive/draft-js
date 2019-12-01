@@ -158,7 +158,7 @@ supplied text.
 
 ### `getKey()`
 
-```
+```js
 getKey(): string
 ```
 Returns the string key for this `ContentBlock`. Block keys are alphanumeric string. It is recommended to use `generateRandomKey` to generate block keys.
@@ -259,26 +259,26 @@ Executes a callback for each contiguous range of entities within this `ContentBl
 > Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map)
 > for the `ContentBlock` constructor or to set properties.
 
-### key
+### `key`
 
 See `getKey()`.
 
-### text
+### `text`
 
 See `getText()`.
 
-### type
+### `type`
 
 See `getType()`.
 
-### characterList
+### `characterList`
 
 See `getCharacterList()`.
 
-### depth
+### `depth`
 
 See `getDepth()`.
 
-### data
+### `data`
 
 See `getData()`.

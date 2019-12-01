@@ -76,7 +76,7 @@ for information on how `CharacterMetadata` is used within `ContentBlock`.
 Under the hood, these methods will utilize pooling to return a matching object,
 or return a new object if none exists.
 
-### create
+### `create()`
 
 ```js
 static create(config?: CharacterMetadataConfig): CharacterMetadata
@@ -90,7 +90,7 @@ configuration already exists. If so, the pooled object will be returned.
 Otherwise, a new `CharacterMetadata` will be pooled for this configuration,
 and returned.
 
-### applyStyle
+### `applyStyle()`
 
 ```js
 static applyStyle(
@@ -101,7 +101,7 @@ static applyStyle(
 
 Apply an inline style to this `CharacterMetadata`.
 
-### removeStyle
+### `removeStyle()`
 
 ```js
 static removeStyle(
@@ -112,7 +112,7 @@ static removeStyle(
 
 Remove an inline style from this `CharacterMetadata`.
 
-### applyEntity
+### `applyEntity()`
 
 ```js
 static applyEntity(
@@ -126,7 +126,7 @@ Apply an entity key -- or provide `null` to remove an entity key -- on this
 
 ## Methods
 
-### getStyle
+### `getStyle()`
 
 ```js
 getStyle(): DraftInlineStyle
@@ -135,7 +135,7 @@ getStyle(): DraftInlineStyle
 Returns the `DraftInlineStyle` for this character, an `OrderedSet` of strings
 that represents the inline style to apply for the character at render time.
 
-### hasStyle
+### `hasStyle()`
 
 ```js
 hasStyle(style: string): boolean
@@ -143,7 +143,7 @@ hasStyle(style: string): boolean
 
 Returns whether this character has the specified style.
 
-### getEntity
+### `getEntity()`
 
 ```js
 getEntity(): ?string

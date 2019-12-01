@@ -11,7 +11,7 @@ parameters and return `EditorState` objects.
 
 ## Static Methods
 
-### insertAtomicBlock
+### `insertAtomicBlock()`
 
 ```js
 insertAtomicBlock: function(
@@ -21,7 +21,7 @@ insertAtomicBlock: function(
 ): EditorState
 ```
 
-### moveAtomicBlock
+### `moveAtomicBlock()`
 
 ```js
 moveAtomicBlock: function(

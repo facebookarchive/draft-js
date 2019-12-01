@@ -83,7 +83,7 @@ will be the same as the input object if no edit was actually performed.
 
 ## Static Methods
 
-### `replaceText`
+### `replaceText()`
 
 ```js
 replaceText(
@@ -102,7 +102,7 @@ Example: On Facebook, when replacing `@abraham lincoln` with a mention of
 Abraham Lincoln, the entire old range is the target to replace and the mention
 entity should be applied to the inserted string.
 
-### `insertText`
+### `insertText()`
 
 ```js
 insertText(
@@ -118,9 +118,9 @@ Identical to `replaceText`, but enforces that the target range is collapsed
 so that no characters are replaced. This is only for convenience, since text
 edits are so often insertions rather than replacements.
 
-### `moveText`
+### `moveText()`
 
-```
+```js
 moveText(
   contentState: ContentState,
   removalRange: SelectionState,
@@ -130,7 +130,7 @@ moveText(
 
 Moves the "removal" range to the "target" range, replacing the target text.
 
-### `replaceWithFragment`
+### `replaceWithFragment()`
 
 ```js
 replaceWithFragment(
@@ -149,7 +149,7 @@ This method will replace the "target" range with the fragment.
 Example: When pasting content, we convert the paste into a fragment to be inserted
 into the editor, then use this method to add it.
 
-### `removeRange`
+### `removeRange()`
 
 ```js
 removeRange(
@@ -162,7 +162,7 @@ removeRange(
 Remove an entire range of text from the editor. The removal direction is important
 for proper entity deletion behavior.
 
-### `splitBlock`
+### `splitBlock()`
 
 ```js
 splitBlock(
@@ -174,7 +174,7 @@ splitBlock(
 Split the selected block into two blocks. This should only be used if the
 selection is collapsed.
 
-### `applyInlineStyle`
+### `applyInlineStyle()`
 
 ```js
 applyInlineStyle(
@@ -186,7 +186,7 @@ applyInlineStyle(
 
 Apply the specified inline style to the entire selected range.
 
-### `removeInlineStyle`
+### `removeInlineStyle()`
 
 ```js
 removeInlineStyle(
@@ -198,7 +198,7 @@ removeInlineStyle(
 
 Remove the specified inline style from the entire selected range.
 
-### `setBlockType`
+### `setBlockType()`
 
 ```js
 setBlockType(
@@ -210,7 +210,7 @@ setBlockType(
 
 Set the block type for all selected blocks.
 
-### `setBlockData`
+### `setBlockData()`
 
 ```js
 setBlockData(
@@ -222,7 +222,7 @@ setBlockData(
 
 Set the block data for all selected blocks.
 
-### `mergeBlockData`
+### `mergeBlockData()`
 
 ```js
 mergeBlockData(
@@ -234,7 +234,7 @@ mergeBlockData(
 
 Update block data for all selected blocks.
 
-### `applyEntity`
+### `applyEntity()`
 
 ```js
 applyEntity(

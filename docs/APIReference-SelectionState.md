@@ -40,7 +40,7 @@ and _end_ values.
 For instance, when extracting a slice of text from a block based on a
 `SelectionState`, it is irrelevant whether the selection is backward:
 
-```
+```js
 var selectionState = editorState.getSelection();
 var anchorKey = selectionState.getAnchorKey();
 var currentContent = editorState.getCurrentContent();
@@ -141,7 +141,8 @@ _Start_ and _end_ values are derived.
 > set properties.
 >
 > **Example**
-> ```
+>
+> ```js
 > const selectionState = SelectionState.createEmpty();
 > const selectionStateWithNewFocusOffset = selection.set('focusOffset', 1);
 > ```
@@ -297,7 +298,7 @@ start/end range within a given block.
 This is useful when setting DOM selection within a block after contents are
 rendered.
 
-### serialize()
+### `serialize()`
 
 ```js
 serialize(): string

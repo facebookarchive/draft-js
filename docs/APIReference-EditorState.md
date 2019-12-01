@@ -122,7 +122,8 @@ The list below includes the most commonly used instance methods for `EditorState
 > new options to an EditorState instance.
 >
 > **Example**
-> ```
+>
+> ```js
 > const editorState = EditorState.createEmpty();
 > const editorStateWithoutUndo = EditorState.set(editorState, {allowUndo: false});
 > ```

@@ -144,7 +144,8 @@ objects.
 > set properties.
 >
 > **Example**
-> ```
+>
+> ```js
 > const editorState = EditorState.createEmpty();
 > const contentState = editorState.getCurrentContent();
 > const contentStateWithSelectionBefore = contentState.set('selectionBefore', SelectionState.createEmpty(contentState.getBlockForKey('1pu4d')));
@@ -170,7 +171,7 @@ objects.
 
 ## Static Methods
 
-### `createFromText`
+### `createFromText()`
 
 ```js
 static createFromText(
@@ -182,7 +183,7 @@ static createFromText(
 Generates a `ContentState` from a string, with a delimiter to split the string
 into `ContentBlock` objects. If no delimiter is provided, '`\n`' is used.
 
-### `createFromBlockArray`
+### `createFromBlockArray()`
 
 ```js
 static createFromBlockArray(
@@ -197,7 +198,7 @@ the content.
 
 ## Methods
 
-### `getEntityMap`
+### `getEntityMap()`
 
 ```js
 getEntityMap(): EntityMap
@@ -211,7 +212,7 @@ In most cases, you should be able to use the convenience methods below to target
 specific `DraftEntity` records or obtain information about the state of the
 content.
 
-### `getBlockMap`
+### `getBlockMap()`
 
 ```js
 getBlockMap(): BlockMap
@@ -223,7 +224,7 @@ of an entire document.
 In most cases, you should be able to use the convenience methods below to target
 specific `ContentBlock` objects or obtain information about the state of the content.
 
-### `getSelectionBefore`
+### `getSelectionBefore()`
 
 ```js
 getSelectionBefore(): SelectionState
@@ -234,7 +235,7 @@ Returns the `SelectionState` displayed in the editor before rendering `blockMap`
 When performing an `undo` action in the editor, the `selectionBefore` of the current
 `ContentState` is used to place the selection range in the appropriate position.
 
-### `getSelectionAfter`
+### `getSelectionAfter()`
 
 ```js
 getSelectionAfter(): SelectionState
@@ -245,7 +246,7 @@ Returns the `SelectionState` displayed in the editor after rendering `blockMap`.
 When performing any action in the editor that leads to this `blockMap` being rendered,
 the selection range will be placed in the `selectionAfter` position.
 
-### `getBlockForKey`
+### `getBlockForKey()`
 
 ```js
 getBlockForKey(key: string): ContentBlock
@@ -264,7 +265,7 @@ var selectedBlockType = editorState
   .getType();
 ```
 
-### `getKeyBefore`
+### `getKeyBefore()`
 
 ```js
 getKeyBefore(key: string): ?string
@@ -272,7 +273,7 @@ getKeyBefore(key: string): ?string
 
 Returns the key before the specified key in `blockMap`, or null if this is the first key.
 
-### `getKeyAfter`
+### `getKeyAfter()`
 
 ```js
 getKeyAfter(key: string): ?string
@@ -280,7 +281,7 @@ getKeyAfter(key: string): ?string
 
 Returns the key after the specified key in `blockMap`, or null if this is the last key.
 
-### `getBlockBefore`
+### `getBlockBefore()`
 
 ```js
 getBlockBefore(key: string): ?ContentBlock
@@ -289,7 +290,7 @@ getBlockBefore(key: string): ?ContentBlock
 Returns the `ContentBlock` before the specified key in `blockMap`, or null if this is
 the first key.
 
-### `getBlockAfter`
+### `getBlockAfter()`
 
 ```js
 getBlockAfter(key: string): ?ContentBlock
@@ -297,7 +298,7 @@ getBlockAfter(key: string): ?ContentBlock
 
 Returns the `ContentBlock` after the specified key in `blockMap`, or null if this is the last key.
 
-### `getBlocksAsArray`
+### `getBlocksAsArray()`
 
 ```js
 getBlocksAsArray(): Array<ContentBlock>
@@ -307,7 +308,7 @@ Returns the values of `blockMap` as an array.
 
 You generally won't need to use this method, since `getBlockMap` provides an `OrderedMap` that you should use for iteration.
 
-### `getFirstBlock`
+### `getFirstBlock()`
 
 ```js
 getFirstBlock(): ContentBlock
@@ -315,7 +316,7 @@ getFirstBlock(): ContentBlock
 
 Returns the first `ContentBlock`.
 
-### `getLastBlock`
+### `getLastBlock()`
 
 ```js
 getLastBlock(): ContentBlock
@@ -323,7 +324,7 @@ getLastBlock(): ContentBlock
 
 Returns the last `ContentBlock`.
 
-### `getPlainText`
+### `getPlainText()`
 
 ```js
 getPlainText(delimiter?: string): string
@@ -332,7 +333,7 @@ getPlainText(delimiter?: string): string
 Returns the full plaintext value of the contents, joined with a delimiter. If no
 delimiter is specified, the line feed character (`\u000A`) is used.
 
-### `getLastCreatedEntityKey`
+### `getLastCreatedEntityKey()`
 
 ```js
 getLastCreatedEntityKey(): string
@@ -343,7 +344,7 @@ Returns the string key that can be used to reference the most recently created
 key in ContentState. The string value should be used within CharacterMetadata
 objects to track the entity for annotated characters.
 
-### `hasText`
+### `hasText()`
 
 ```js
 hasText(): boolean
@@ -351,7 +352,7 @@ hasText(): boolean
 
 Returns whether the contents contain any text at all.
 
-### `createEntity`
+### `createEntity()`
 
 ```js
 createEntity(
@@ -363,7 +364,7 @@ createEntity(
 
 Returns `ContentState` record updated to include the newly created `DraftEntity` record in it's `EntityMap`. Call `getLastCreatedEntityKey` to get the key of the newly created `DraftEntity` record.
 
-### `getEntity`
+### `getEntity()`
 
 ```js
 getEntity(key: string): DraftEntityInstance
@@ -371,7 +372,7 @@ getEntity(key: string): DraftEntityInstance
 
 Returns the DraftEntityInstance for the specified key. Throws if no instance exists for that key.
 
-### `mergeEntityData`
+### `mergeEntityData()`
 
 ```js
 mergeEntityData(
@@ -385,7 +386,7 @@ metadata through typical mutative means.
 
 The mergeData method allows you to apply updates to the specified entity.
 
-### `replaceEntityData`
+### `replaceEntityData()`
 
 ```js
 replaceEntityData(
@@ -396,7 +397,7 @@ replaceEntityData(
 
 The replaceData method is similar to the mergeData method, except it will totally discard the existing data value for the instance and replace it with the specified newData.
 
-### `addEntity`
+### `addEntity()`
 
 ```js
 addEntity(instance: DraftEntityInstance): ContentState
@@ -415,14 +416,14 @@ editing.
 > Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map) to
 > set properties.
 
-### blockMap
+### `blockMap`
 
 See `getBlockMap()`.
 
-### selectionBefore
+### `selectionBefore`
 
 See `getSelectionBefore()`.
 
-### selectionAfter
+### `selectionAfter`
 
 See `getSelectionAfter()`.
