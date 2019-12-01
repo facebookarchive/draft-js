@@ -28,7 +28,7 @@ objects.
   </li>
   <li>
     <a href="#createfromblockarray">
-      <pre>static createFromBlockArray(blocks: Array<ContentBlock>): ContentState</pre>
+      <pre>static createFromBlockArray(blocks: Array&lt;ContentBlock&gt;): ContentState</pre>
     </a>
   </li>
 </ul>
