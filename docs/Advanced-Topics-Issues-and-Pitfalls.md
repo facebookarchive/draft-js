@@ -87,11 +87,11 @@ When using either polyfill/shim, you should include it as early as possible in
 your application's entrypoint (at the very minimum, before you import Draft).
 For instance, using
 [create-react-app](https://github.com/facebookincubator/create-react-app) and
-targeting ie11, `src/index.js` is probably a good spot to import your polyfill:
+targeting IE11, `src/index.js` is probably a good spot to import your polyfill:
 
-**src/index.js**
+**`src/index.js`**
 
-```
+```js
 import 'babel-polyfill';
 // or
 import 'es6-shim';

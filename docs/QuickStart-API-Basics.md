@@ -42,12 +42,11 @@ The top-level component can maintain control over the input state via this
 
 In a React rich text scenario, however, there are two clear problems:
 
-1. A string of plaintext is insufficient to represent the complex state of
-a rich editor.
+1. A string of plaintext is insufficient to represent the complex state of a rich editor.
 2. There is no such `onChange` event available for a ContentEditable element.
 
 State is therefore represented as a single immutable
-[EditorState](/docs/api-reference-editor-state.html) object, and
+[EditorState](/docs/api-reference-editor-state) object, and
 `onChange` is implemented within the `Editor` core to provide this state
 value to the top level.
 
@@ -71,5 +70,4 @@ class MyEditor extends React.Component {
 }
 ```
 
-For any edits or selection changes that occur in the editor DOM, your `onChange`
-handler will execute with the latest `EditorState` object based on those changes.
+For any edits or selection changes that occur in the editor DOM, your `onChange` handler will execute with the latest `EditorState` object based on those changes.

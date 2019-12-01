@@ -11,18 +11,13 @@ is also available to follow along.
 
 ## EditorState: Yours to Command
 
-The previous article introduced the `EditorState` object as a snapshot of the
-full state of the editor, as provided by the `Editor` core via the
-`onChange` prop.
+The previous article introduced the `EditorState` object as a snapshot of the full state of the editor, as provided by the `Editor` core via the `onChange` prop.
 
-However, since your top-level React component is responsible for maintaining the
-state, you also have the freedom to apply changes to that `EditorState` object
-in any way you see fit.
+However, since your top-level React component is responsible for maintaining the state, you also have the freedom to apply changes to that `EditorState` object in any way you see fit.
 
-For inline and block style behavior, for example, the [`RichUtils`](/docs/api-reference-rich-utils.html) module
-provides a number of useful functions to help manipulate state.
+For inline and block style behavior, for example, the [`RichUtils`](/docs/api-reference-rich-utils) module provides a number of useful functions to help manipulate state.
 
-Similarly, the [Modifier](/docs/api-reference-modifier.html) module also provides a
+Similarly, the [Modifier](/docs/api-reference-modifier) module also provides a
 number of common operations that allow you to apply edits, including changes
 to text, styles, and more. This module is a suite of edit functions that
 compose simpler, smaller edit functions to return the desired `EditorState`
@@ -76,7 +71,7 @@ class MyEditor extends React.Component {
 > `editorState` argument represents the latest editor state as it might be
 > changed internally by draft when handling the key. Use this instance of the
 > editor state inside `handleKeyCommand`. See
-> [Advanced Topics - Key Binding](/docs/advanced-topics-key-bindings.html) for more
+> [Advanced Topics - Key Binding](/docs/advanced-topics-key-bindings) for more
 > on this, as well as details on why the function returns `handled` or `not-handled`.
 
 ## Styling Controls in UI

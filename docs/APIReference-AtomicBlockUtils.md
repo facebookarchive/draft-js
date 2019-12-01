@@ -13,7 +13,7 @@ parameters and return `EditorState` objects.
 
 ### insertAtomicBlock
 
-```
+```js
 insertAtomicBlock: function(
   editorState: EditorState,
   entityKey: string,
@@ -23,7 +23,7 @@ insertAtomicBlock: function(
 
 ### moveAtomicBlock
 
-```
+```js
 moveAtomicBlock: function(
   editorState: EditorState,
   atomicBlock: ContentBlock,
