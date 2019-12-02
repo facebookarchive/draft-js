@@ -4,6 +4,45 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.11.3 (December 2nd, 2019)
+
+## Added
+* Take over enhancements to render Draft.js in an iframe (#1938) (Claudio Procida in dceddf5)
+* Implement click listener for editor wrapper (#2230) (Max Vyz in 8f77aa3)
+* Add linting for insensitive and inconsiderate language (#2223) (Claudio Procida in 5dd99d3)
+
+### Changed
+* Updates to Prettier 1.19.1 (#2265) (Claudio Procida in abcbe20)
+* Bump mixin-deep from 1.3.1 to 1.3.2 in /examples/draft-0-10-0/universal (#2259) (dependabot[bot] in 37d281b)
+* Upgrade dependencies in /website (#2263) (Kevin Chavez in 0b57720)
+* Update dependencies in examples/draft-0-10-0/universal (#2257) (Kevin Chavez in ae2dd14)
+* Update dependencies in examples/draft-0-10-0/playground (#2258) (Kevin Chavez in 11bc5d8)
+* Prettify files rest of non-intern files in html/ (George Zahariev in 6217dc8)
+* add flow declaration in editOnBeforeInput-test.js (Frank Thompson in 0601090)
+* Bump lodash.merge from 4.6.1 to 4.6.2 in /website (#2241) (dependabot[bot] in 177db5e)
+* Defaulting to createEmpty if block map is empty in createWithContent (Fixes issue #2226) (#2240) (David Fuentes in c42662e)
+* Bump handlebars from 4.1.1 to 4.5.1 in /examples/draft-0-10-0/playground (#2242) (dependabot[bot] in 2a761af)
+* Suppress non-synced files in www for 0.111 (Jordan Brown in 4bca140)
+* Upgrade more deps. (#2239) (Kevin Chavez in a477e83)
+* Bump lodash.template from 4.4.0 to 4.5.0 in /examples/draft-0-10-0/playground (#2236) (dependabot[bot] in 0e03745)
+* Bump mixin-deep from 1.3.1 to 1.3.2 in /website (#2234) (dependabot[bot] in 78f20cc)
+* Bump lodash from 4.17.11 to 4.17.15 in /website (#2233) (dependabot[bot] in da1ab7c)
+* Updated browser icons in README (#2238) (SuNNjek in 6ed6ed4)
+* Bump mixin-deep from 1.3.1 to 1.3.2 in /examples/draft-0-10-0/playground (#2235) (dependabot[bot] in 2744ff7)
+* Upgrade 8 dependencies (including jest, @babel/core, etc). (#2237) (Kevin Chavez in 46103ac)
+* Upgrades ESLint and related plugins/configs. (#2231) (Kevin Chavez in 53d2a63)
+
+### Fixed
+* fix wrong property access in convertFromHTMLToContentBlocks (Frank Thompson in 7d26fab)
+* Fix draftjs type error for event (Jack Armstrong in e7ae2e7)
+* fix decorator handling in editOnBeforeInput (Frank Thompson in 1452b87)
+* fixes #304, kudos to @andpor (#2197) (Ante Beslic in 2908035)
+* Fix playground example import (#2220) (Ryan Lee in 778e88d)
+* Fix React warnings (#2221) (Alan Norbauer in 2595016)
+
+### Meta
+* deploy v112 to www (Daniel Sainati in ae542b7)
+
 ## 0.11.2 (September 30th, 2019)
 
 ### Changed
