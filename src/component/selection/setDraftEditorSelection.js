@@ -306,9 +306,11 @@ function addFocusToSelection(
     // Additionally, clone the selection range. IE11 throws an
     // InvalidStateError when attempting to access selection properties
     // after the range is detached.
-    const range = selection.getRangeAt(0);
-    range.setEnd(node, offset);
-    selection.addRange(range.cloneRange());
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      range.setEnd(node, offset);
+      selection.addRange(range.cloneRange());
+    }
   }
 }
 
@@ -333,4 +335,7 @@ function addPointToSelection(
   selection.addRange(range);
 }
 
-module.exports = setDraftEditorSelection;
+module.exports = {
+  setDraftEditorSelection,
+  addFocusToSelection,
+};
