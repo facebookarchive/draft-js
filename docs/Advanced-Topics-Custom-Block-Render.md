@@ -8,7 +8,7 @@ The block rendering is used to define supported block types and their respective
 renderers, as well as converting pasted content to known Draft block types.
 
 When pasting content, or when calling
-[convertFromHTML](/docs/api-reference-data-conversion.html#convertfromhtml),
+[convertFromHTML](/docs/api-reference-data-conversion#convertfromhtml),
 Draft will convert pasted content to the respective block rendering type
 by matching the Draft block render map with the matched tag.
 
@@ -99,7 +99,7 @@ particular block type, you can add the array `aliasedElements` to the block conf
 
 *example of unstyled block type alias usage:*
 
-```
+```js
 'unstyled': {
   element: 'div',
   aliasedElements: ['p'],
@@ -111,8 +111,8 @@ particular block type, you can add the array `aliasedElements` to the block conf
 By default, the html element is used to wrap block types. However, a react component
 can also be provided to the _blockRenderMap_ to wrap the EditorBlock.
 
-During pasting, or when calling 
-[convertFromHTML](/docs/api-reference-data-conversion.html#convertfromhtml),
+During pasting, or when calling
+[convertFromHTML](/docs/api-reference-data-conversion#convertfromhtml),
 the html will be scanned for matching tag elements. A wrapper will be used when there is a definition for
 it on the _blockRenderMap_ to wrap that particular block type. For example:
 

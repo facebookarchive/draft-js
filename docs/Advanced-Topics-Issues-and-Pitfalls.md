@@ -28,16 +28,16 @@ you must always allow your `EditorState` to propagate to your `Editor`
 component without delay, and independently perform batched updates that do
 not affect the state of your `Editor` component.
 
-### Missing Draft.css
+### Missing `Draft.css`
 
 The Draft framework includes a handful of CSS resources intended for use with
-the editor, available in a single file via the build, Draft.css.
+the editor, available in a single file via the build, `Draft.css`.
 
 This CSS should be included when rendering the editor, as these styles set defaults
 for text alignment, spacing, and other important features. Without it, you may
 encounter issues with block positioning, alignment, and cursor behavior.
 
-If you choose to write your own CSS independent of Draft.css, you will most
+If you choose to write your own CSS independent of `Draft.css`, you will most
 likely need to replicate much of the default styling.
 
 ## Known Issues
@@ -87,11 +87,11 @@ When using either polyfill/shim, you should include it as early as possible in
 your application's entrypoint (at the very minimum, before you import Draft).
 For instance, using
 [create-react-app](https://github.com/facebookincubator/create-react-app) and
-targeting ie11, `src/index.js` is probably a good spot to import your polyfill:
+targeting IE11, `src/index.js` is probably a good spot to import your polyfill:
 
-**src/index.js**
+**`src/index.js`**
 
-```
+```js
 import 'babel-polyfill';
 // or
 import 'es6-shim';

@@ -23,7 +23,7 @@ Here is a quick list of what has been changed and how to update your application
 
 **Old Syntax**
 
-```
+```js
 const entityKey = Entity.create(
   urlType,
   'IMMUTABLE',
@@ -33,7 +33,7 @@ const entityKey = Entity.create(
 
 **New Syntax**
 
-```
+```js
 const contentStateWithEntity = contentState.createEntity(
   urlType,
   'IMMUTABLE',
@@ -46,14 +46,14 @@ const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 
 **Old Syntax**
 
-```
+```js
 const entityInstance = Entity.get(entityKey);
 // entityKey is a string key associated with that entity when it was created
 ```
 
 **New Syntax**
 
-```
+```js
 const entityInstance = contentState.getEntity(entityKey);
 // entityKey is a string key associated with that entity when it was created
 ```
@@ -62,7 +62,7 @@ const entityInstance = contentState.getEntity(entityKey);
 
 **Old Syntax**
 
-```
+```js
 const compositeDecorator = new CompositeDecorator([
   {
     strategy: (contentBlock, callback) => exampleFindTextRange(contentBlock, callback),
@@ -73,7 +73,7 @@ const compositeDecorator = new CompositeDecorator([
 
 **New Syntax**
 
-```
+```js
 const compositeDecorator = new CompositeDecorator([
   {
     strategy: (
@@ -90,7 +90,7 @@ Note that ExampleTokenComponent will receive contentState as a prop.
 
 Why does the 'contentState' get passed into the decorator strategy now? Because we may need it if our strategy is to  find certain entities in the contentBlock:
 
-```
+```js
 const mutableEntityStrategy = function(contentBlock, callback, contentState) {
   contentBlock.findEntityRanges(
     (character) => {
@@ -113,7 +113,7 @@ const mutableEntityStrategy = function(contentBlock, callback, contentState) {
 
 **Old Syntax**
 
-```
+```js
 function findLinkEntities(contentBlock, callback) {
   contentBlock.findEntityRanges(
     (character) => {
@@ -130,7 +130,7 @@ function findLinkEntities(contentBlock, callback) {
 
 **New Syntax**
 
-```
+```js
 function findLinkEntities(contentBlock, callback, contentState) {
   contentBlock.findEntityRanges(
     (character) => {

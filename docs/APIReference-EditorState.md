@@ -122,7 +122,8 @@ The list below includes the most commonly used instance methods for `EditorState
 > new options to an EditorState instance.
 >
 > **Example**
-> ```
+>
+> ```js
 > const editorState = EditorState.createEmpty();
 > const editorStateWithoutUndo = EditorState.set(editorState, {allowUndo: false});
 > ```
@@ -197,25 +198,28 @@ The list below includes the most commonly used instance methods for `EditorState
 
 ## Common Instance Methods
 
-### getCurrentContent
+### `getCurrentContent`
 
-```
+```js
 getCurrentContent(): ContentState
 ```
+
 Returns the current contents of the editor.
 
-### getSelection
+### `getSelection`
 
-```
+```js
 getSelection(): SelectionState
 ```
+
 Returns the current cursor/selection state of the editor.
 
-### getCurrentInlineStyle
+### `getCurrentInlineStyle`
 
-```
+```js
 getCurrentInlineStyle(): DraftInlineStyle
 ```
+
 Returns an `OrderedSet<string>` that represents the "current" inline style
 for the editor.
 
@@ -223,11 +227,12 @@ This is the inline style value that would be used if a character were inserted
 for the current `ContentState` and `SelectionState`, and takes into account
 any inline style overrides that should be applied.
 
-### getBlockTree
+### `getBlockTree`
 
-```
+```js
 getBlockTree(blockKey: string): List;
 ```
+
 Returns an Immutable `List` of decorated and styled ranges. This is used for
 rendering purposes, and is generated based on the `currentContent` and
 `decorator`.
@@ -237,42 +242,45 @@ block, decorator, and styled range components.
 
 ## Static Methods
 
-### createEmpty
+### `createEmpty`
 
-```
+```js
 static createEmpty(decorator?: DraftDecoratorType): EditorState
 ```
+
 Returns a new `EditorState` object with an empty `ContentState` and default
 configuration.
 
-### createWithContent
+### `createWithContent`
 
-```
+```js
 static createWithContent(
   contentState: ContentState,
   decorator?: DraftDecoratorType
 ): EditorState
 ```
+
 Returns a new `EditorState` object based on the `ContentState` and decorator
 provided.
 
-### create
+### `create`
 
-```
+```js
 static create(config: EditorStateCreationConfig): EditorState
 ```
 Returns a new `EditorState` object based on a configuration object. Use this
 if you need custom configuration not available via the methods above.
 
-### push
+### `push`
 
-```
+```js
 static push(
   editorState: EditorState,
   contentState: ContentState,
   changeType: EditorChangeType
 ): EditorState
 ```
+
 Returns a new `EditorState` object with the specified `ContentState` applied
 as the new `currentContent`. Based on the `changeType`, this `ContentState`
 may be regarded as a boundary state for undo/redo behavior.
@@ -281,86 +289,93 @@ All content changes must be applied to the EditorState with this method.
 
 _To be renamed._
 
-### undo
+### `undo`
 
-```
+```js
 static undo(editorState: EditorState): EditorState
 ```
+
 Returns a new `EditorState` object with the top of the undo stack applied
 as the new `currentContent`.
 
 The existing `currentContent` is pushed onto the `redo` stack.
 
-### redo
+### `redo`
 
-```
+```js
 static redo(editorState: EditorState): EditorState
 ```
-Returns a new `EditorState` object with the top of the redo stack applied
-as the new `currentContent`.
+
+Returns a new `EditorState` object with the top of the redo stack applied as the new `currentContent`.
 
 The existing `currentContent` is pushed onto the `undo` stack.
 
-### acceptSelection
+### `acceptSelection`
 
-```
+```js
 static acceptSelection(
   editorState: EditorState,
   selectionState: SelectionState
 ): EditorState
 ```
+
 Returns a new `EditorState` object with the specified `SelectionState` applied,
 but without requiring the selection to be rendered.
 
 For example, this is useful when the DOM selection has changed outside of our
 control, and no re-renders are necessary.
 
-### forceSelection
+### `forceSelection`
 
-```
+```js
 static forceSelection(
   editorState: EditorState,
   selectionState: SelectionState
 ): EditorState
 ```
+
 Returns a new `EditorState` object with the specified `SelectionState` applied,
 forcing the selection to be rendered.
 
 This is useful when the selection should be manually rendered in the correct
 location to maintain control of the rendered output.
 
-### moveSelectionToEnd
+### `moveSelectionToEnd`
 
-```
+```js
 static moveSelectionToEnd(editorState: EditorState): EditorState
 ```
+
 Returns a new `EditorState` object with the selection at the end.
 
 Moves selection to the end of the editor without forcing focus.
 
-### moveFocusToEnd
+### `moveFocusToEnd`
 
-```
+```js
 static moveFocusToEnd(editorState: EditorState): EditorState
 ```
+
 Returns a new `EditorState` object with selection at the end and forces focus.
 
 This is useful in scenarios where we want to programmatically focus the input
 and it makes sense to allow the user to continue working seamlessly.
 
-### setInlineStyleOverride
+### `setInlineStyleOverride`
 
-```
+```js
 static setInlineStyleOverride(editorState: EditorState, inlineStyleOverride: DraftInlineStyle): EditorState
 ```
+
 Returns a new `EditorState` object with the specified `DraftInlineStyle` applied
 as the set of inline styles to be applied to the next inserted characters.
 
-### set
+### `set`
 
-```
+```js
 static set(editorState: EditorState, options: EditorStateRecordType): EditorState
 ```
+
 Returns a new `EditorState` object with new options passed in. The method is
 inherited from the Immutable `record` API.
 
@@ -378,74 +393,81 @@ state tracked in this object.
 > You should not use the Immutable API when using EditorState objects.
 > Instead, use the instance getters and static methods above.
 
-### allowUndo
+### `allowUndo`
 
-```
+```js
 allowUndo: boolean;
 getAllowUndo()
 ```
+
 Whether to allow undo/redo behavior in this editor. Default is `true`.
 
 Since the undo/redo stack is the major source of memory retention, if you have
 an editor UI that does not require undo/redo behavior, you might consider
 setting this to `false`.
 
-### currentContent
+### `currentContent`
 
-```
+```js
 currentContent: ContentState;
 getCurrentContent()
 ```
+
 The currently rendered `ContentState`. See [getCurrentContent()](#getcurrentcontent).
 
-### decorator
+### `decorator`
 
-```
+```js
 decorator: ?DraftDecoratorType;
 getDecorator()
 ```
+
 The current decorator object, if any.
 
 Note that the `ContentState` is independent of your decorator. If a decorator
 is provided, it will be used to decorate ranges of text for rendering.
 
-### directionMap
+### `directionMap`
 
-```
+```js
 directionMap: BlockMap;
 getDirectionMap()
 ```
+
 A map of each block and its text direction, as determined by UnicodeBidiService.
 
 You should not manage this manually.
 
-### forceSelection
+### `forceSelection`
 
-```
+```js
 forceSelection: boolean;
 mustForceSelection()
 ```
+
 Whether to force the current `SelectionState` to be rendered.
 
 You should not set this property manually -- see
-[forceSelection()](#forceselection).
+[`forceSelection()`](#forceselection).
 
-### inCompositionMode
+### `inCompositionMode`
 
-```
+```js
 inCompositionMode: boolean;
 isInCompositionMode()
 ```
+
 Whether the user is in IME composition mode. This is useful for rendering the
 appropriate UI for IME users, even when no content changes have been committed
 to the editor. You should not set this property manually.
 
-### inlineStyleOverride
+### `inlineStyleOverride`
 
-```
+```js
 inlineStyleOverride: DraftInlineStyle;
 getInlineStyleOverride()
 ```
+
 An inline style value to be applied to the next inserted characters. This is
 used when keyboard commands or style buttons are used to apply an inline style
 for a collapsed selection range.
@@ -453,21 +475,23 @@ for a collapsed selection range.
 `DraftInlineStyle` is a type alias for an immutable `OrderedSet` of strings,
 each of which corresponds to an inline style.
 
-### lastChangeType
+### `lastChangeType`
 
-```
+```js
 lastChangeType: EditorChangeType;
 getLastChangeType()
 ```
+
 The type of content change that took place in order to bring us to our current
 `ContentState`. This is used when determining boundary states for undo/redo.
 
-### nativelyRenderedContent
+### `nativelyRenderedContent`
 
-```
+```js
 nativelyRenderedContent: ?ContentState;
 getNativelyRenderedContent()
 ```
+
 During edit behavior, the editor may allow certain actions to render natively.
 For instance, during normal typing behavior in the contentEditable-based component,
 we can typically allow key events to fall through to print characters in the DOM.
@@ -477,12 +501,13 @@ When allowing native rendering behavior, it is appropriate to use the
 `nativelyRenderedContent` property to indicate that no re-render is necessary
 for this `EditorState`.
 
-### redoStack
+### `redoStack`
 
-```
+```js
 redoStack: Stack<ContentState>;
 getRedoStack()
 ```
+
 An immutable stack of `ContentState` objects that can be resurrected for redo
 operations. When performing an undo operation, the current `ContentState` is
 pushed onto the `redoStack`.
@@ -492,22 +517,24 @@ undo/redo behavior, use the `allowUndo` property.
 
 See also [undoStack](#undostack).
 
-### selection
+### `selection`
 
-```
+```js
 selection: SelectionState;
 getSelection()
 ```
+
 The currently rendered `SelectionState`. See [acceptSelection()](#acceptselection)
 and [forceSelection()](#forceselection).
 
 You should not manage this property manually.
 
-### treeMap
+### `treeMap`
 
-```
+```js
 treeMap: OrderedMap<string, List>;
 ```
+
 The fully decorated and styled tree of ranges to be rendered in the editor
 component. The `treeMap` object is generated based on a `ContentState` and an
 optional decorator (`DraftDecoratorType`).
@@ -518,12 +545,13 @@ method.
 
 You should not manage this property manually.
 
-### undoStack
+### `undoStack`
 
-```
+```js
 undoStack: Stack<ContentState>;
 getUndoStack()
 ```
+
 An immutable stack of `ContentState` objects that can be restored for undo
 operations.
 
@@ -535,4 +563,4 @@ onto the `undoStack`. If not, the outgoing `ContentState` is discarded.
 You should not manage this property manually. If you would like to disable
 undo/redo behavior, use the `allowUndo` property.
 
-See also [redoStack](#redostack).
+See also [`redoStack`](#redostack).

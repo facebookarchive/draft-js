@@ -11,58 +11,58 @@ parameters and return `EditorState` objects.
 
 ## Static Methods
 
-### currentBlockContainsLink
+### `currentBlockContainsLink()`
 
-```
+```js
 currentBlockContainsLink(
   editorState: EditorState
 ): boolean
 ```
 
-### getCurrentBlockType
+### `getCurrentBlockType()`
 
-```
+```js
 getCurrentBlockType(
   editorState: EditorState
 ): string
 ```
 
-### handleKeyCommand
+### `handleKeyCommand()`
 
-```
+```js
 handleKeyCommand(
   editorState: EditorState,
   command: string
 ): ?EditorState
 ```
 
-### insertSoftNewline
+### `insertSoftNewline()`
 
-```
+```js
 insertSoftNewline(
   editorState: EditorState
 ): EditorState
 ```
 
-### onBackspace
+### `onBackspace()`
 
-```
+```js
 onBackspace(
   editorState: EditorState
 ): EditorState?
 ```
 
-### onDelete
+### `onDelete()`
 
-```
+```js
 onDelete(
   editorState: EditorState
 ): EditorState?
 ```
 
-### onTab
+### `onTab()`
 
-```
+```js
 onTab(
   event: SyntheticEvent,
   editorState: EditorState,
@@ -70,26 +70,26 @@ onTab(
 ): EditorState
 ```
 
-### toggleBlockType
+### `toggleBlockType()`
 
-```
+```js
 toggleBlockType(
   editorState: EditorState,
   blockType: string
 ): EditorState
 ```
 
-### toggleCode
+### `toggleCode()`
 
-```
+```js
 toggleCode(
   editorState: EditorState
 ): EditorState
 ```
 
-### toggleInlineStyle
+### `toggleInlineStyle()`
 
-```
+```js
 toggleInlineStyle(
   editorState: EditorState,
   inlineStyle: string
@@ -101,9 +101,9 @@ user's selection is collapsed, apply or remove the style for the
 internal state. If it is not collapsed, apply the change directly
 to the document state.
 
-### toggleLink
+### `toggleLink()`
 
-```
+```js
 toggleLink(
   editorState: EditorState,
   targetSelection: SelectionState,
@@ -111,9 +111,9 @@ toggleLink(
 ): EditorState
 ```
 
-### tryToRemoveBlockStyle
+### `tryToRemoveBlockStyle()`
 
-```
+```js
 tryToRemoveBlockStyle(
   editorState: EditorState
 ): ContentState?

@@ -3,9 +3,7 @@ id: api-reference-selection-state
 title: SelectionState
 ---
 
-`SelectionState` is an Immutable
-[Record](http://facebook.github.io/immutable-js/docs/#/Record/Record) that
-represents a selection range in the editor.
+`SelectionState` is an Immutable [Record](http://facebook.github.io/immutable-js/docs/#/Record/Record) that represents a selection range in the editor.
 
 The most common use for the `SelectionState` object is via `EditorState.getSelection()`,
 which provides the `SelectionState` currently being rendered in the editor.
@@ -42,7 +40,7 @@ and _end_ values.
 For instance, when extracting a slice of text from a block based on a
 `SelectionState`, it is irrelevant whether the selection is backward:
 
-```
+```js
 var selectionState = editorState.getSelection();
 var anchorKey = selectionState.getAnchorKey();
 var currentContent = editorState.getCurrentContent();
@@ -141,13 +139,13 @@ _Start_ and _end_ values are derived.
 
 > Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record) to
 > set properties.
-> 
+>
 > **Example**
-> ```
+>
+> ```js
 > const selectionState = SelectionState.createEmpty();
 > const selectionStateWithNewFocusOffset = selection.set('focusOffset', 1);
 > ```
-
 
 <ul class="apiIndex">
   <li>
@@ -184,114 +182,128 @@ _Start_ and _end_ values are derived.
 
 ## Static Methods
 
-### createEmpty()
+### `createEmpty()`
 
-```
+```js
 createEmpty(blockKey: string): SelectionState
 ```
+
 Create a `SelectionState` object at the zero offset of the provided block key
 and `hasFocus` set to false.
 
 ## Methods
 
-### getStartKey()
+### `getStartKey()`
 
-```
+```js
 getStartKey(): string
 ```
+
 Returns the key of the block containing the start position of the selection range.
 
-### getStartOffset()
+### `getStartOffset()`
 
-```
+```js
 getStartOffset(): number
 ```
+
 Returns the block-level character offset of the start position of the selection range.
 
-### getEndKey()
+### `getEndKey()`
 
-```
+```js
 getEndKey(): string
 ```
+
 Returns the key of the block containing the end position of the selection range.
 
-### getEndOffset()
+### `getEndOffset()`
 
-```
+```js
 getEndOffset(): number
 ```
+
 Returns the block-level character offset of the end position of the selection range.
 
-### getAnchorKey()
+### `getAnchorKey()`
 
-```
+```js
 getAnchorKey(): string
 ```
+
 Returns the key of the block containing the anchor position of the selection range.
 
-### getAnchorOffset()
+### `getAnchorOffset()`
 
-```
+```js
 getAnchorOffset(): number
 ```
+
 Returns the block-level character offset of the anchor position of the selection range.
 
-### getFocusKey()
+### `getFocusKey()`
 
-```
+```js
 getFocusKey(): string
 ```
+
 Returns the key of the block containing the focus position of the selection range.
 
-### getFocusOffset()
+### `getFocusOffset()`
 
-```
+```js
 getFocusOffset(): number
 ```
+
 Returns the block-level character offset of the focus position of the selection range.
 
-### getIsBackward()
+### `getIsBackward()`
 
-```
+```js
 getIsBackward(): boolean
 ```
+
 Returns whether the focus position is before the anchor position in the document.
 
 This must be derived from the key order of the active `ContentState`, or if the selection
 range is entirely within one block, a comparison of the anchor and focus offset values.
 
-### getHasFocus()
+### `getHasFocus()`
 
-```
+```js
 getHasFocus(): boolean
 ```
+
 Returns whether the editor has focus.
 
-### isCollapsed()
+### `isCollapsed()`
 
-```
+```js
 isCollapsed(): boolean
 ```
+
 Returns whether the selection range is collapsed, i.e. a caret. This is true
 when the anchor and focus keys are the same /and/ the anchor and focus offsets
 are the same.
 
-### hasEdgeWithin()
+### `hasEdgeWithin()`
 
-```
+```js
 hasEdgeWithin(blockKey: string, start: number, end: number): boolean
 ```
+
 Returns whether the selection range has an edge that overlaps with the specified
 start/end range within a given block.
 
 This is useful when setting DOM selection within a block after contents are
 rendered.
 
-### serialize()
+### `serialize()`
 
-```
+```js
 serialize(): string
 ```
+
 Returns a serialized version of the `SelectionState`. Useful for debugging.
 
 ## Properties
@@ -299,7 +311,7 @@ Returns a serialized version of the `SelectionState`. Useful for debugging.
 > Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record) to
 > set properties.
 
-```
+```js
 var selectionState = SelectionState.createEmpty('foo');
 var updatedSelection = selectionState.merge({
   focusKey: 'bar',
@@ -309,23 +321,26 @@ var anchorKey = updatedSelection.getAnchorKey(); // 'foo'
 var focusKey = updatedSelection.getFocusKey(); // 'bar'
 ```
 
-### anchorKey
+### `anchorKey`
+
 The block containing the anchor end of the selection range.
 
-### anchorOffset
+### `anchorOffset`
+
 The offset position of the anchor end of the selection range.
 
-### focusKey
+### `focusKey`
+
 The block containing the focus end of the selection range.
 
-### focusOffset
+### `focusOffset`
+
 The offset position of the focus end of the selection range.
 
-### isBackward
-If the anchor position is lower in the document than the focus position, the
-selection is backward. Note: The `SelectionState` is an object with
-no knowledge of the `ContentState` structure. Therefore, when updating
-`SelectionState` values, you are responsible for updating `isBackward` as well.
+### `isBackward`
 
-### hasFocus
+If the anchor position is lower in the document than the focus position, the selection is backward. Note: The `SelectionState` is an object with no knowledge of the `ContentState` structure. Therefore, when updating `SelectionState` values, you are responsible for updating `isBackward` as well.
+
+### `hasFocus`
+
 Whether the editor currently has focus.

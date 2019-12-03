@@ -8,7 +8,7 @@ Draft.js is a framework for building rich text editors in React, powered by an i
 
 Draft.js allows you to build any type of rich text input, whether you're only looking to support a few inline text styles or building a complex text editor for composing long-form articles.
 
-Draft.js was introduced at [React.js Conf](https://conf2016.reactjs.org/schedule.html#rich-text-editing-with-react) in February 2016.
+Draft.js was introduced at [React.js Conf](https://conf2016.reactjs.org/schedule#rich-text-editing-with-react) in February 2016.
 
 <iframe width="650" height="365" src="https://www.youtube.com/embed/feUYwoLhE_4" frameborder="0" allowfullscreen></iframe>
 
@@ -30,7 +30,7 @@ npm install draft-js react react-dom babel-polyfill
 yarn add draft-js react react-dom es6-shim
 ```
 
-Learn more about [using a shim with Draft](/docs/advanced-topics-issues-and-pitfalls.html#polyfills).
+Learn more about [using a shim with Draft](/docs/advanced-topics-issues-and-pitfalls#polyfills).
 
 ## API Changes Notice
 
@@ -98,6 +98,6 @@ Because Draft.js supports unicode, you must have the following meta tag in the `
 <meta charset="utf-8" />
 ```
 
-`Draft.css` should be included when rendering the editor. Learn more about [why](/docs/advanced-topics-issues-and-pitfalls.html#missing-draftcss).
+`Draft.css` should be included when rendering the editor. Learn more about [why](/docs/advanced-topics-issues-and-pitfalls#missing-draftcss).
 
 Next, let's go into the basics of the API and learn what else you can do with Draft.js.
