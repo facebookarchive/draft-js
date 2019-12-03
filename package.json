@@ -33,7 +33,6 @@
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
-    "alex": "^8.0.0",
     "fbjs": "^1.0.0",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.1"
@@ -46,6 +45,7 @@
     "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
     "@babel/plugin-proposal-optional-chaining": "^7.6.0",
+    "alex": "^8.0.0",
     "babel-eslint": "^10.0.3",
     "babel-preset-fbjs": "^3.3.0",
     "cross-env": "^6.0.3",
