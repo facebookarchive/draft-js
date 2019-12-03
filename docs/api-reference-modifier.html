@@ -135,46 +135,46 @@ will be the same as the input object if no edit was actually performed.</p>
   </li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="static-methods"></a><a href="#static-methods" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Static Methods</h2>
-<h3><a class="anchor" aria-hidden="true" id="replacetext"></a><a href="#replacetext" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>replaceText</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">replaceText</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">rangeToReplace</span>: SelectionState,
-  <span class="hljs-attribute">text</span>: string,
+<h3><a class="anchor" aria-hidden="true" id="replacetext"></a><a href="#replacetext" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>replaceText()</code></h3>
+<pre><code class="hljs css language-js">replaceText(
+  contentState: ContentState,
+  <span class="hljs-attr">rangeToReplace</span>: SelectionState,
+  <span class="hljs-attr">text</span>: string,
   inlineStyle?: DraftInlineStyle,
   entityKey?: ?string
-): <span class="hljs-selector-tag">ContentState</span>
+): ContentState
 </code></pre>
 <p>Replaces the specified range of this <code>ContentState</code> with the supplied string,
 with the inline style and entity key applied to the entire inserted string.</p>
 <p>Example: On Facebook, when replacing <code>@abraham lincoln</code> with a mention of
 Abraham Lincoln, the entire old range is the target to replace and the mention
 entity should be applied to the inserted string.</p>
-<h3><a class="anchor" aria-hidden="true" id="inserttext"></a><a href="#inserttext" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>insertText</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">insertText</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">targetRange</span>: SelectionState,
-  <span class="hljs-attribute">text</span>: string,
+<h3><a class="anchor" aria-hidden="true" id="inserttext"></a><a href="#inserttext" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>insertText()</code></h3>
+<pre><code class="hljs css language-js">insertText(
+  contentState: ContentState,
+  <span class="hljs-attr">targetRange</span>: SelectionState,
+  <span class="hljs-attr">text</span>: string,
   inlineStyle?: DraftInlineStyle,
   entityKey?: ?string
-): <span class="hljs-selector-tag">ContentState</span>
+): ContentState
 </code></pre>
 <p>Identical to <code>replaceText</code>, but enforces that the target range is collapsed
 so that no characters are replaced. This is only for convenience, since text
 edits are so often insertions rather than replacements.</p>
-<h3><a class="anchor" aria-hidden="true" id="movetext"></a><a href="#movetext" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>moveText</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">moveText</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">removalRange</span>: SelectionState,
-  <span class="hljs-attribute">targetRange</span>: SelectionState
-): <span class="hljs-selector-tag">ContentState</span>
+<h3><a class="anchor" aria-hidden="true" id="movetext"></a><a href="#movetext" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>moveText()</code></h3>
+<pre><code class="hljs css language-js">moveText(
+  contentState: ContentState,
+  <span class="hljs-attr">removalRange</span>: SelectionState,
+  <span class="hljs-attr">targetRange</span>: SelectionState
+): ContentState
 </code></pre>
 <p>Moves the &quot;removal&quot; range to the &quot;target&quot; range, replacing the target text.</p>
-<h3><a class="anchor" aria-hidden="true" id="replacewithfragment"></a><a href="#replacewithfragment" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>replaceWithFragment</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">replaceWithFragment</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">targetRange</span>: SelectionState,
-  <span class="hljs-attribute">fragment</span>: BlockMap
-): <span class="hljs-selector-tag">ContentState</span>
+<h3><a class="anchor" aria-hidden="true" id="replacewithfragment"></a><a href="#replacewithfragment" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>replaceWithFragment()</code></h3>
+<pre><code class="hljs css language-js">replaceWithFragment(
+  contentState: ContentState,
+  <span class="hljs-attr">targetRange</span>: SelectionState,
+  <span class="hljs-attr">fragment</span>: BlockMap
+): ContentState
 </code></pre>
 <p>A &quot;fragment&quot; is a section of a block map, effectively only an
 <code>OrderedMap&lt;string, ContentBlock&gt;</code> much the same as the full block map of a
@@ -182,73 +182,72 @@ edits are so often insertions rather than replacements.</p>
 <p>This method will replace the &quot;target&quot; range with the fragment.</p>
 <p>Example: When pasting content, we convert the paste into a fragment to be inserted
 into the editor, then use this method to add it.</p>
-<h3><a class="anchor" aria-hidden="true" id="removerange"></a><a href="#removerange" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>removeRange</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">removeRange</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">rangeToRemove</span>: SelectionState,
-  <span class="hljs-attribute">removalDirection</span>: DraftRemovalDirection
-): <span class="hljs-selector-tag">ContentState</span>
+<h3><a class="anchor" aria-hidden="true" id="removerange"></a><a href="#removerange" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>removeRange()</code></h3>
+<pre><code class="hljs css language-js">removeRange(
+  contentState: ContentState,
+  <span class="hljs-attr">rangeToRemove</span>: SelectionState,
+  <span class="hljs-attr">removalDirection</span>: DraftRemovalDirection
+): ContentState
 </code></pre>
 <p>Remove an entire range of text from the editor. The removal direction is important
 for proper entity deletion behavior.</p>
-<h3><a class="anchor" aria-hidden="true" id="splitblock"></a><a href="#splitblock" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>splitBlock</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">splitBlock</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">selectionState</span>: SelectionState
-): <span class="hljs-selector-tag">ContentState</span>
+<h3><a class="anchor" aria-hidden="true" id="splitblock"></a><a href="#splitblock" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>splitBlock()</code></h3>
+<pre><code class="hljs css language-js">splitBlock(
+  contentState: ContentState,
+  <span class="hljs-attr">selectionState</span>: SelectionState
+): ContentState
 </code></pre>
 <p>Split the selected block into two blocks. This should only be used if the
 selection is collapsed.</p>
-<h3><a class="anchor" aria-hidden="true" id="applyinlinestyle"></a><a href="#applyinlinestyle" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>applyInlineStyle</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">applyInlineStyle</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">selectionState</span>: SelectionState,
-  <span class="hljs-attribute">inlineStyle</span>: string
-): <span class="hljs-selector-tag">ContentState</span>
+<h3><a class="anchor" aria-hidden="true" id="applyinlinestyle"></a><a href="#applyinlinestyle" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>applyInlineStyle()</code></h3>
+<pre><code class="hljs css language-js">applyInlineStyle(
+  contentState: ContentState,
+  <span class="hljs-attr">selectionState</span>: SelectionState,
+  <span class="hljs-attr">inlineStyle</span>: string
+): ContentState
 </code></pre>
 <p>Apply the specified inline style to the entire selected range.</p>
-<h3><a class="anchor" aria-hidden="true" id="removeinlinestyle"></a><a href="#removeinlinestyle" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>removeInlineStyle</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">removeInlineStyle</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">selectionState</span>: SelectionState,
-  <span class="hljs-attribute">inlineStyle</span>: string
-): <span class="hljs-selector-tag">ContentState</span>
+<h3><a class="anchor" aria-hidden="true" id="removeinlinestyle"></a><a href="#removeinlinestyle" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>removeInlineStyle()</code></h3>
+<pre><code class="hljs css language-js">removeInlineStyle(
+  contentState: ContentState,
+  <span class="hljs-attr">selectionState</span>: SelectionState,
+  <span class="hljs-attr">inlineStyle</span>: string
+): ContentState
 </code></pre>
 <p>Remove the specified inline style from the entire selected range.</p>
-<h3><a class="anchor" aria-hidden="true" id="setblocktype"></a><a href="#setblocktype" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>setBlockType</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">setBlockType</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">selectionState</span>: SelectionState,
-  <span class="hljs-attribute">blockType</span>: DraftBlockType
-): <span class="hljs-selector-tag">ContentState</span>
+<h3><a class="anchor" aria-hidden="true" id="setblocktype"></a><a href="#setblocktype" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>setBlockType()</code></h3>
+<pre><code class="hljs css language-js">setBlockType(
+  contentState: ContentState,
+  <span class="hljs-attr">selectionState</span>: SelectionState,
+  <span class="hljs-attr">blockType</span>: DraftBlockType
+): ContentState
 </code></pre>
 <p>Set the block type for all selected blocks.</p>
-<h3><a class="anchor" aria-hidden="true" id="setblockdata"></a><a href="#setblockdata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>setBlockData</h3>
-<pre><code class="hljs">setBlockData(
-<span class="hljs-symbol">  contentState:</span> ContentState,
-<span class="hljs-symbol">  selectionState:</span> SelectionState,
-<span class="hljs-symbol">  blockData:</span> Map<span class="hljs-params">&lt;any, any&gt;</span>
+<h3><a class="anchor" aria-hidden="true" id="setblockdata"></a><a href="#setblockdata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>setBlockData()</code></h3>
+<pre><code class="hljs css language-js">setBlockData(
+  contentState: ContentState,
+  <span class="hljs-attr">selectionState</span>: SelectionState,
+  <span class="hljs-attr">blockData</span>: <span class="hljs-built_in">Map</span>&lt;any, any&gt;
 ): ContentState
 </code></pre>
 <p>Set the block data for all selected blocks.</p>
-<h3><a class="anchor" aria-hidden="true" id="mergeblockdata"></a><a href="#mergeblockdata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>mergeBlockData</h3>
-<pre><code class="hljs">mergeBlockData(
-<span class="hljs-symbol">  contentState:</span> ContentState,
-<span class="hljs-symbol">  selectionState:</span> SelectionState,
-<span class="hljs-symbol">  blockData:</span> Map<span class="hljs-params">&lt;any, any&gt;</span>
+<h3><a class="anchor" aria-hidden="true" id="mergeblockdata"></a><a href="#mergeblockdata" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>mergeBlockData()</code></h3>
+<pre><code class="hljs css language-js">mergeBlockData(
+  contentState: ContentState,
+  <span class="hljs-attr">selectionState</span>: SelectionState,
+  <span class="hljs-attr">blockData</span>: <span class="hljs-built_in">Map</span>&lt;any, any&gt;
 ): ContentState
 </code></pre>
 <p>Update block data for all selected blocks.</p>
-<h3><a class="anchor" aria-hidden="true" id="applyentity"></a><a href="#applyentity" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>applyEntity</h3>
-<pre><code class="hljs"><span class="hljs-selector-tag">applyEntity</span>(
-  <span class="hljs-attribute">contentState</span>: ContentState,
-  <span class="hljs-attribute">selectionState</span>: SelectionState,
-  <span class="hljs-attribute">entityKey</span>: ?string
-): <span class="hljs-selector-tag">ContentState</span>
+<h3><a class="anchor" aria-hidden="true" id="applyentity"></a><a href="#applyentity" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>applyEntity()</code></h3>
+<pre><code class="hljs css language-js">applyEntity(
+  contentState: ContentState,
+  <span class="hljs-attr">selectionState</span>: SelectionState,
+  <span class="hljs-attr">entityKey</span>: ?string
+): ContentState
 </code></pre>
-<p>Apply an entity to the entire selected range, or remove all entities from the
-range if <code>entityKey</code> is <code>null</code>.</p>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/api-reference-key-binding-util"><span class="arrow-prev">← </span><span class="function-name-prevnext">KeyBindingUtil</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a></li><li><a href="#static-methods">Static Methods</a><ul class="toc-headings"><li><a href="#replacetext">replaceText</a></li><li><a href="#inserttext">insertText</a></li><li><a href="#movetext">moveText</a></li><li><a href="#replacewithfragment">replaceWithFragment</a></li><li><a href="#removerange">removeRange</a></li><li><a href="#splitblock">splitBlock</a></li><li><a href="#applyinlinestyle">applyInlineStyle</a></li><li><a href="#removeinlinestyle">removeInlineStyle</a></li><li><a href="#setblocktype">setBlockType</a></li><li><a href="#setblockdata">setBlockData</a></li><li><a href="#mergeblockdata">mergeBlockData</a></li><li><a href="#applyentity">applyEntity</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/getting-started.html">Getting Started</a><a href="/docs/api-reference-editor.html">API Reference</a></div><div><h5>Community</h5><a href="http://stackoverflow.com/questions/tagged/draftjs" target="_blank">Stack Overflow</a><a href="https://twitter.com/draft_js" target="_blank">Twitter</a></div><div><h5>More</h5><a href="https://github.com/facebook/draft-js">GitHub</a><a class="github-button" href="https://github.com/facebook/draft-js" data-icon="octicon-star" data-count-href="/facebook/draft-js/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2019 Facebook Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+<p>Apply an entity to the entire selected range, or remove all entities from the range if <code>entityKey</code> is <code>null</code>.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/api-reference-key-binding-util"><span class="arrow-prev">← </span><span class="function-name-prevnext">KeyBindingUtil</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#overview">Overview</a></li><li><a href="#static-methods">Static Methods</a><ul class="toc-headings"><li><a href="#replacetext"><code>replaceText()</code></a></li><li><a href="#inserttext"><code>insertText()</code></a></li><li><a href="#movetext"><code>moveText()</code></a></li><li><a href="#replacewithfragment"><code>replaceWithFragment()</code></a></li><li><a href="#removerange"><code>removeRange()</code></a></li><li><a href="#splitblock"><code>splitBlock()</code></a></li><li><a href="#applyinlinestyle"><code>applyInlineStyle()</code></a></li><li><a href="#removeinlinestyle"><code>removeInlineStyle()</code></a></li><li><a href="#setblocktype"><code>setBlockType()</code></a></li><li><a href="#setblockdata"><code>setBlockData()</code></a></li><li><a href="#mergeblockdata"><code>mergeBlockData()</code></a></li><li><a href="#applyentity"><code>applyEntity()</code></a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/getting-started.html">Getting Started</a><a href="/docs/api-reference-editor.html">API Reference</a></div><div><h5>Community</h5><a href="http://stackoverflow.com/questions/tagged/draftjs" target="_blank">Stack Overflow</a><a href="https://twitter.com/draft_js" target="_blank">Twitter</a></div><div><h5>More</h5><a href="https://github.com/facebook/draft-js">GitHub</a><a class="github-button" href="https://github.com/facebook/draft-js" data-icon="octicon-star" data-count-href="/facebook/draft-js/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2019 Facebook Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

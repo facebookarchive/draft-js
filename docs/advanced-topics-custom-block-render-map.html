@@ -66,7 +66,7 @@
 The block rendering is used to define supported block types and their respective
 renderers, as well as converting pasted content to known Draft block types.</p>
 <p>When pasting content, or when calling
-<a href="/docs/api-reference-data-conversion.html#convertfromhtml">convertFromHTML</a>,
+<a href="/docs/api-reference-data-conversion#convertfromhtml">convertFromHTML</a>,
 Draft will convert pasted content to the respective block rendering type
 by matching the Draft block render map with the matched tag.</p>
 <h2><a class="anchor" aria-hidden="true" id="draft-default-block-render-map"></a><a href="#draft-default-block-render-map" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Draft default block render map</h2>
@@ -146,16 +146,16 @@ This can be done by using the DefaultDraftBlockRenderMap reference to create a n
 Draft block types. If you want to specify other HTML elements that map to a
 particular block type, you can add the array <code>aliasedElements</code> to the block config.</p>
 <p><em>example of unstyled block type alias usage:</em></p>
-<pre><code class="hljs"><span class="hljs-string">'unstyled'</span>: {
-  elemen<span class="hljs-variable">t:</span> <span class="hljs-string">'div'</span>,
-  aliasedElement<span class="hljs-variable">s:</span> [<span class="hljs-string">'p'</span>],
+<pre><code class="hljs css language-js"><span class="hljs-string">'unstyled'</span>: {
+  <span class="hljs-attr">element</span>: <span class="hljs-string">'div'</span>,
+  <span class="hljs-attr">aliasedElements</span>: [<span class="hljs-string">'p'</span>],
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="custom-block-wrappers"></a><a href="#custom-block-wrappers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom block wrappers</h2>
 <p>By default, the html element is used to wrap block types. However, a react component
 can also be provided to the <em>blockRenderMap</em> to wrap the EditorBlock.</p>
 <p>During pasting, or when calling
-<a href="/docs/api-reference-data-conversion.html#convertfromhtml">convertFromHTML</a>,
+<a href="/docs/api-reference-data-conversion#convertfromhtml">convertFromHTML</a>,
 the html will be scanned for matching tag elements. A wrapper will be used when there is a definition for
 it on the <em>blockRenderMap</em> to wrap that particular block type. For example:</p>
 <p>Draft uses wrappers to wrap <code>&lt;li/&gt;</code> inside either <code>&lt;ol/&gt;</code> or <code>&lt;ul/&gt;</code>, but wrappers can also be used

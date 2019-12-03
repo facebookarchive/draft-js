@@ -72,7 +72,7 @@ examples demonstrate complex inline style behavior in action.</p>
 <h2><a class="anchor" aria-hidden="true" id="model"></a><a href="#model" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Model</h2>
 <p>Within the Draft model, inline styles are represented at the character level,
 using an immutable <code>OrderedSet</code> to define the list of styles to be applied to
-each character. These styles are identified by string. (See <a href="/docs/api-reference-character-metadata.html">CharacterMetadata</a>
+each character. These styles are identified by string. (See <a href="/docs/api-reference-character-metadata">CharacterMetadata</a>
 for details.)</p>
 <p>For example, consider the text &quot;Hello <strong>world</strong>&quot;. The first six characters of
 the string are represented by the empty set, <code>OrderedSet()</code>. The final five
@@ -92,7 +92,7 @@ reuse identical immutable objects.</p>
 <h2><a class="anchor" aria-hidden="true" id="overlapping-styles"></a><a href="#overlapping-styles" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overlapping Styles</h2>
 <p>Now let's say that we wish to make the middle range of characters italic as well:
 He<em>llo</em> <strong><em>wo</em>rld</strong>. This operation can be performed via the
-<a href="/docs/api-reference-modifier.html">Modifier</a> API.</p>
+<a href="/docs/api-reference-modifier">Modifier</a> API.</p>
 <p>The end result will accommodate the overlap by including <code>'ITALIC'</code> in the
 relevant <code>OrderedSet</code> objects as well.</p>
 <pre><code class="hljs css language-js">[
