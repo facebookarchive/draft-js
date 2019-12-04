@@ -31,6 +31,7 @@ module.exports = {
     ],
   ],
   themeConfig: {
+    disableDarkMode: true,
     navbar: {
       title: 'Draft.js',
       logo: {
