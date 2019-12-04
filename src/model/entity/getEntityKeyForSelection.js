@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -14,6 +14,8 @@
 import type ContentState from 'ContentState';
 import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
+
+const {notEmptyKey} = require('draftKeyUtils');
 
 /**
  * Return the entity key that should be used when inserting text for the
@@ -56,7 +58,7 @@ function getEntityKeyForSelection(
  * return it. If not, return null.
  */
 function filterKey(entityMap: EntityMap, entityKey: ?string): ?string {
-  if (entityKey) {
+  if (notEmptyKey(entityKey)) {
     const entity = entityMap.__get(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;
   }
