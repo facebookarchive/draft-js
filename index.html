@@ -1,234 +1,37 @@
-<!DOCTYPE html><html lang=""><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Draft.js · Rich Text Editor Framework for React</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Rich Text Editor Framework for React"/><meta property="og:title" content="Draft.js · Rich Text Editor Framework for React"/><meta property="og:type" content="website"/><meta property="og:url" content="https://draftjs.org/"/><meta property="og:description" content="Rich Text Editor Framework for React"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/draftjs-logo.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-forest-light.min.css"/><script>
-              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="generator" content="Docusaurus">
+<script type="text/javascript">/*<![CDATA[*/window.__chunkMapping={"17896441":["/17896441.aa990c0a.js"],"71398962":["/71398962.0b97e3a8.js"],"main":["/main.facc9556.js"],"0520cc89":["/0520cc89.eb6ee534.js"],"0b77d202":["/0b77d202.645681f5.js"],"0f3d60d7":["/0f3d60d7.700a9032.js"],"1156aa84":["/1156aa84.609f7c82.js"],"129f7f91":["/129f7f91.69396532.js"],"1480bea2":["/1480bea2.8b1e07f2.js"],"18ac0339":["/18ac0339.2ae2468f.js"],"19e0a979":["/19e0a979.7c178a53.js"],"1be78505":[],"1d140065":["/1d140065.a2cf98de.js"],"20292a86":["/20292a86.28ba7ec1.js"],"21da552c":["/21da552c.a6698bfe.js"],"2270fa8c":["/2270fa8c.d13184d9.js"],"2457d957":["/2457d957.7392c9c3.js"],"2654362a":["/2654362a.29945cdc.js"],"294fda3d":["/294fda3d.0989a92f.js"],"2b98c556":["/2b98c556.95a72686.js"],"33cdebd9":["/33cdebd9.c1b5061d.js"],"3e34fe14":["/3e34fe14.12768592.js"],"446ca8b8":["/446ca8b8.5cf40541.js"],"57d941a4":["/57d941a4.e4a52feb.js"],"58a8cec2":["/58a8cec2.c25dbbd0.js"],"5f441fd3":["/5f441fd3.595ea20b.js"],"63d4bdf9":["/63d4bdf9.f04fd70e.js"],"68c13531":["/68c13531.5ec6f58b.js"],"7459f30a":["/7459f30a.b2fe5038.js"],"78538dcb":["/78538dcb.1050c977.js"],"7b1cf308":["/7b1cf308.f3a9c8ad.js"],"7c9afe2b":["/7c9afe2b.ba88c2fa.js"],"7de09da7":["/7de09da7.fc1d54e2.js"],"808dc608":["/808dc608.1f50c48d.js"],"81805afb":["/81805afb.23c829a6.js"],"870486c5":["/870486c5.4c77f86d.js"],"8c15fe9f":["/8c15fe9f.d581c50f.js"],"917fd6d3":["/917fd6d3.b1cadebc.js"],"99cd67ea":["/99cd67ea.87ea1e7a.js"],"9c9e4252":["/9c9e4252.92582fe7.js"],"9cea9ed2":["/9cea9ed2.4dae3eac.js"],"9e39fef5":["/9e39fef5.7c36404d.js"],"9e6f2cad":["/9e6f2cad.3d5af40d.js"],"9f2c4a23":["/9f2c4a23.3368cc88.js"],"a060a53d":["/a060a53d.521ff13d.js"],"ac822fb8":["/ac822fb8.b7524fbc.js"],"aed4c5b6":["/aed4c5b6.5dde54a6.js"],"b4aed302":["/b4aed302.a2cf9f33.js"],"b58a489f":["/b58a489f.9aa80699.js"],"b5962b3a":["/b5962b3a.396b2587.js"],"b852ecf3":["/b852ecf3.3fcea7bc.js"],"c15d5a93":["/c15d5a93.6b9893c0.js"],"c1d64cf0":["/c1d64cf0.ac979f11.js"],"c406754e":["/c406754e.75232010.js"],"c4f5d8e4":["/c4f5d8e4.eac71f36.js"],"cd9ad9a8":["/cd9ad9a8.03af3438.js"],"d249d4f2":["/d249d4f2.a5979a77.js"],"d334a335":["/d334a335.be40872d.js"],"d7ea8175":["/d7ea8175.d1b22590.js"],"e9a2ba18":["/e9a2ba18.c3f185e0.js"],"ed359331":["/ed359331.ad33d134.js"],"ee3a8fdc":["/ee3a8fdc.9977f8f3.js"],"f030f88d":["/f030f88d.2e8591b1.js"],"f0cbc9b5":["/f0cbc9b5.d0347103.js"],"fdbef18d":["/fdbef18d.f1a15c2a.js"]};/*]]>*/</script>
 
-              ga('create', 'UA-44373548-19', 'auto');
-              ga('send', 'pageview');
-            </script><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/draftjs-logo.svg" alt="Draft.js"/><h2 class="headerTitleWithLogo">Draft.js</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/getting-started" target="_self">Docs</a></li><li class=""><a href="https://github.com/facebook/draft-js" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div><div class="hero"><div class="wrap"><div class="text"><strong>Draft.js</strong></div><div class="minitext">Rich Text Editor Framework for React</div></div></div><section class="content wrap"><section class="home-section home-getting-started"><p>Draft.js is a framework for building rich text editors in React, powered by an immutable model and abstracting over cross-browser differences.</p><p>Draft.js makes it easy to build any type of rich text input, whether you&#x27;re just looking to support a few inline text styles or building a complex text editor for composing long-form articles.</p><p>In Draft.js, everything is customizable – we provide the building blocks so that you have full control over the user interface. <span class="hide-on-mobile">Here&#x27;s a simple example of a rich text editor built in Draft.js:</span></p><div class="hide-on-mobile" id="rich-example"></div></section><section class="home-bottom-section"><div class="buttons-unit"><a href="docs/getting-started.html" class="button">Learn more about Draft</a></div></section></section><script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.6/immutable.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script><script src="lib/Draft.min.js"></script><script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><script type="text/babel">
-'use strict';
+<title data-react-helmet="true">Draft.js · Rich Text Editor Framework for React</title>
 
-const {Editor, EditorState, RichUtils, getDefaultKeyBinding} = Draft;
+<meta data-react-helmet="true" http-equiv="x-ua-compatible" content="ie=edge"/><meta data-react-helmet="true" property="og:title" content="Draft.js · Rich Text Editor Framework for React"/><meta data-react-helmet="true" name="description" content="Rich Text Editor Framework for React"/><meta data-react-helmet="true" property="og:description" content="Rich Text Editor Framework for React"/><meta data-react-helmet="true" property="og:url" content="https://draftjs.org/"/><meta data-react-helmet="true" name="twitter:card" content="summary"/>
 
-class RichEditorExample extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {editorState: EditorState.createEmpty()};
+<link data-react-helmet="true" rel="shortcut icon" href="/img/draftjs-logo.ico"/>
 
-    this.focus = () => this.editor.focus();
-    this.onChange = (editorState) => this.setState({editorState});
 
-    this.handleKeyCommand = this._handleKeyCommand.bind(this);
-    this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
-    this.toggleBlockType = this._toggleBlockType.bind(this);
-    this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
-  }
+<link rel="stylesheet" type="text/css" href="/styles.ea78cda3.css" />
 
-  _handleKeyCommand(command, editorState) {
-    const newState = RichUtils.handleKeyCommand(editorState, command);
-    if (newState) {
-      this.onChange(newState);
-      return true;
-    }
-    return false;
-  }
+</head>
+<body >
+<div id="__docusaurus">
+<nav class="navbar navbar--light navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><div aria-label="Navigation bar toggle" class="navbar__toggle" role="button" tabindex="0"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img" focusable="false"><title>Menu</title><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></div><a aria-current="page" class="navbar__brand active" href="/"><img class="navbar__logo" src="/img/draftjs-logo.svg" alt="Draft.js Logo"/><strong class="">Draft.js</strong></a></div><div class="navbar__items navbar__items--right"><a class="navbar__item navbar__link" href="/docs/getting-started">Docs</a><a class="navbar__item navbar__link" target="_blank" rel="noopener noreferrer" href="https://github.com/facebook/draft-js">GitHub</a><div class="navbar__search"><span aria-label="expand searchbar" role="button" class="search-icon" tabindex="0"></span><input type="search" id="search_input_react" placeholder="Search" aria-label="Search" class="navbar__search-input search-bar"/></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div><div class="navbar-sidebar"><div class="navbar-sidebar__brand"><a aria-current="page" class="navbar__brand active" href="/"><img class="navbar__logo" src="/img/draftjs-logo.svg" alt="Draft.js Logo"/><strong>Draft.js</strong></a></div><div class="navbar-sidebar__items"><div class="menu"><ul class="menu__list"><li class="menu__list-item"><a class="menu__link" href="/docs/getting-started">Docs</a></li><li class="menu__list-item"><a class="menu__link" target="_blank" rel="noopener noreferrer" href="https://github.com/facebook/draft-js">GitHub</a></li></ul></div></div></div></nav><div class="main-wrapper"><div class="hero hero--primary shadow--lw"><div class="container"><div class="row"><div class="col"><h1 class="hero__title">Draft.js</h1><p class="hero__subtitle">Rich Text Editor Framework for React</p><div><a class="button button--secondary button--lg" href="/docs/getting-started">Get Started</a></div></div><div class="col text--center"><img class="demoGif_kn4n" src="/img/demo.gif"/></div></div></div></div><div class="container"><div class="margin-vert--xl"><div class="row"><div class="col"><h3>Extensible and Customizable</h3><p>We provide the building blocks to enable the creation of a broad variety of rich text composition experiences, from basic text styles to embedded media.</p></div><div class="col"><h3>Declarative Rich Text</h3><p>Draft.js fits seamlessly into React applications, abstracting away the details of rendering, selection, and input behavior with a familiar declarative API.</p></div><div class="col"><h3>Immutable Editor State</h3><p>The Draft.js model is built with<!-- --> <a href="https://immutable-js.github.io/immutable-js/" target="_blank" rel="noreferrer noopener">immutable-js</a>, offering an API with functional state updates and aggressively leveraging data persistence for scalable memory usage.</p></div></div></div><div class="row margin-vert--xl hideOnTabletAndSmaller_16nh"><div class="col col--6 col--offset-3"><h2>Try it out!</h2><p>Here&#x27;s a simple example of a rich text editor built in Draft.js.</p><div id="rich-example"><div class="RichEditor-root"><div class="RichEditor-controls"><span class="RichEditor-styleButton">H1</span><span class="RichEditor-styleButton">H2</span><span class="RichEditor-styleButton">H3</span><span class="RichEditor-styleButton">H4</span><span class="RichEditor-styleButton">H5</span><span class="RichEditor-styleButton">H6</span><span class="RichEditor-styleButton">Blockquote</span><span class="RichEditor-styleButton">UL</span><span class="RichEditor-styleButton">OL</span><span class="RichEditor-styleButton">Code Block</span></div><div class="RichEditor-controls"><span class="RichEditor-styleButton">Bold</span><span class="RichEditor-styleButton">Italic</span><span class="RichEditor-styleButton">Underline</span><span class="RichEditor-styleButton">Monospace</span></div><div class="RichEditor-editor"><div class="DraftEditor-root"><div class="public-DraftEditorPlaceholder-root"><div class="public-DraftEditorPlaceholder-inner" id="placeholder-6ltqn" style="white-space:pre-wrap">Tell a story...</div></div><div class="DraftEditor-editorContainer"><div aria-describedby="placeholder-6ltqn" class="notranslate public-DraftEditor-content" contenteditable="true" role="textbox" spellcheck="true" style="outline:none;user-select:text;-webkit-user-select:text;white-space:pre-wrap;word-wrap:break-word"><div data-contents="true"><div data-block="true" data-editor="6ltqn" data-offset-key="bhiqb-0-0"><div data-offset-key="bhiqb-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="bhiqb-0-0"><br data-text="true"/></span></div></div></div></div></div></div></div></div></div></div></div><div class="margin-vert--xl text--center"><a class="button button--primary button--lg" href="/docs/getting-started">Learn more about Draft.js</a></div></div></div><footer class="footer footer--dark"><div class="container"><div class="row footer__links"><div class="col footer__col"><h4 class="footer__title">Docs</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" href="/docs/getting-started">Getting Started</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/api-reference-editor">API Reference</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">Community</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" target="_blank" rel="noopener noreferrer" href="https://stackoverflow.com/questions/tagged/draftjs">Stack Overflow</a></li><li class="footer__item"><a class="footer__link-item" target="_blank" rel="noopener noreferrer" href="https://twitter.com/draft_js">Twitter</a></li></ul></div><div class="col footer__col"><h4 class="footer__title">More</h4><ul class="footer__items"><li class="footer__item"><a class="footer__link-item" target="_blank" rel="noopener noreferrer" href="https://github.com/facebook/draft-js">GitHub</a></li></ul></div></div><div class="text--center"><div class="margin-bottom--sm"><a href="https://opensource.facebook.com/" target="_blank" rel="noopener noreferrer" class="footerLogoLink_1Wg7"><img class="footer__logo" alt="Facebook Open Source Logo" src="/img/oss_logo.png"/></a></div>Copyright © 2019 Facebook, Inc.</div></div></footer>
+</div>
 
-  _mapKeyToEditorCommand(e) {
-    switch (e.keyCode) {
-      case 9: // TAB
-        const newEditorState = RichUtils.onTab(
-          e,
-          this.state.editorState,
-          4, /* maxDepth */
-        );
-        if (newEditorState !== this.state.editorState) {
-          this.onChange(newEditorState);
-        }
-        return;
-    }
-    return getDefaultKeyBinding(e);
-  }
+<script type="text/javascript" src="/styles.917fe3a0.js"></script>
 
-  _toggleBlockType(blockType) {
-    this.onChange(
-      RichUtils.toggleBlockType(
-        this.state.editorState,
-        blockType
-      )
-    );
-  }
+<script type="text/javascript" src="/runtime~main.89368e98.js"></script>
 
-  _toggleInlineStyle(inlineStyle) {
-    this.onChange(
-      RichUtils.toggleInlineStyle(
-        this.state.editorState,
-        inlineStyle
-      )
-    );
-  }
+<script type="text/javascript" src="/main.facc9556.js"></script>
 
-  render() {
-    const {editorState} = this.state;
+<script type="text/javascript" src="/2.c6d4de90.js"></script>
 
-    // If the user changes block type before entering any text, we can
-    // either style the placeholder or hide it. Let's just hide it now.
-    let className = 'RichEditor-editor';
-    var contentState = editorState.getCurrentContent();
-    if (!contentState.hasText()) {
-      if (contentState.getBlockMap().first().getType() !== 'unstyled') {
-        className += ' RichEditor-hidePlaceholder';
-      }
-    }
+<script type="text/javascript" src="/68.5bc41e3b.js"></script>
 
-    return (
-      <div className="RichEditor-root">
-        <BlockStyleControls
-          editorState={editorState}
-          onToggle={this.toggleBlockType}
-        />
-        <InlineStyleControls
-          editorState={editorState}
-          onToggle={this.toggleInlineStyle}
-        />
-        <div className={className} onClick={this.focus}>
-          <Editor
-            blockStyleFn={getBlockStyle}
-            customStyleMap={styleMap}
-            editorState={editorState}
-            handleKeyCommand={this.handleKeyCommand}
-            keyBindingFn={this.mapKeyToEditorCommand}
-            onChange={this.onChange}
-            placeholder="Tell a story..."
-            ref={(ref) => this.editor = ref}
-            spellCheck={true}
-          />
-        </div>
-      </div>
-    );
-  }
-}
+<script type="text/javascript" src="/c4f5d8e4.eac71f36.js"></script>
 
-// Custom overrides for "code" style.
-const styleMap = {
-  CODE: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-    fontSize: 16,
-    padding: 2,
-  },
-};
-
-function getBlockStyle(block) {
-  switch (block.getType()) {
-    case 'blockquote': return 'RichEditor-blockquote';
-    default: return null;
-  }
-}
-
-class StyleButton extends React.Component {
-  constructor() {
-    super();
-    this.onToggle = (e) => {
-      e.preventDefault();
-      this.props.onToggle(this.props.style);
-    };
-  }
-
-  render() {
-    let className = 'RichEditor-styleButton';
-    if (this.props.active) {
-      className += ' RichEditor-activeButton';
-    }
-
-    return (
-      <span className={className} onMouseDown={this.onToggle}>
-        {this.props.label}
-      </span>
-    );
-  }
-}
-
-const BLOCK_TYPES = [
-  {label: 'H1', style: 'header-one'},
-  {label: 'H2', style: 'header-two'},
-  {label: 'H3', style: 'header-three'},
-  {label: 'H4', style: 'header-four'},
-  {label: 'H5', style: 'header-five'},
-  {label: 'H6', style: 'header-six'},
-  {label: 'Blockquote', style: 'blockquote'},
-  {label: 'UL', style: 'unordered-list-item'},
-  {label: 'OL', style: 'ordered-list-item'},
-  {label: 'Code Block', style: 'code-block'},
-];
-
-const BlockStyleControls = (props) => {
-  const {editorState} = props;
-  const selection = editorState.getSelection();
-  const blockType = editorState
-    .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getType();
-
-  return (
-    <div className="RichEditor-controls">
-      {BLOCK_TYPES.map((type) =>
-        <StyleButton
-          key={type.label}
-          active={type.style === blockType}
-          label={type.label}
-          onToggle={props.onToggle}
-          style={type.style}
-        />
-      )}
-    </div>
-  );
-};
-
-var INLINE_STYLES = [
-  {label: 'Bold', style: 'BOLD'},
-  {label: 'Italic', style: 'ITALIC'},
-  {label: 'Underline', style: 'UNDERLINE'},
-  {label: 'Monospace', style: 'CODE'},
-];
-
-const InlineStyleControls = (props) => {
-  var currentStyle = props.editorState.getCurrentInlineStyle();
-  return (
-    <div className="RichEditor-controls">
-      {INLINE_STYLES.map(type =>
-        <StyleButton
-          key={type.label}
-          active={currentStyle.has(type.style)}
-          label={type.label}
-          onToggle={props.onToggle}
-          style={type.style}
-        />
-      )}
-    </div>
-  );
-};
-
-ReactDOM.render(
-  <RichEditorExample />,
-  document.getElementById('rich-example')
-);
-</script></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/getting-started.html">Getting Started</a><a href="/docs/api-reference-editor.html">API Reference</a></div><div><h5>Community</h5><a href="http://stackoverflow.com/questions/tagged/draftjs" target="_blank">Stack Overflow</a><a href="https://twitter.com/draft_js" target="_blank">Twitter</a></div><div><h5>More</h5><a href="https://github.com/facebook/draft-js">GitHub</a><a class="github-button" href="https://github.com/facebook/draft-js" data-icon="octicon-star" data-count-href="/facebook/draft-js/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://code.facebook.com/projects/" target="_blank" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2019 Facebook Inc.</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
-                document.addEventListener('keyup', function(e) {
-                  if (e.target !== document.body) {
-                    return;
-                  }
-                  // keyCode for '/' (slash)
-                  if (e.keyCode === 191) {
-                    const search = document.getElementById('search_input_react');
-                    search && search.focus();
-                  }
-                });
-              </script><script>
-              var search = docsearch({
-                
-                apiKey: 'ae94c9e3ee00ea8edddd484adafc37cd',
-                indexName: 'draft-js',
-                inputSelector: '#search_input_react'
-              });
-            </script></body></html>
+</body>
+</html>
