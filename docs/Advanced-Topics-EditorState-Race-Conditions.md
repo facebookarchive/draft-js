@@ -3,7 +3,7 @@ id: advanced-topics-editorstate-race-conditions
 title: EditorState Race Conditions
 ---
 
-Draft `Editor` is a *controlled input* component (you can read about this in detail in the [API Basics](/docs/quickstart-api-basics) section), meaning that changes made to the `Editor` state are propagated upwards through `onChange` and it's up to the app to feed it back to the `Editor` component.
+Draft `Editor` is a _controlled input_ component (you can read about this in detail in the [API Basics](/docs/quickstart-api-basics) section), meaning that changes made to the `Editor` state are propagated upwards through `onChange` and it's up to the app to feed it back to the `Editor` component.
 
 This cycle usually looks like:
 
@@ -32,9 +32,9 @@ Here's an example: Suppose you want to remove all the text styles that come from
 ```js
 this.onPaste = function() {
   this.setState({
-    editorState: removeEditorStyles(this.state.editorState)
+    editorState: removeEditorStyles(this.state.editorState),
   });
-}
+};
 ```
 
 However, this won't work as expected. You now have two event handlers that set a new `EditorState` in the exact same browser event. Since the event handlers will run one after the other only the last `setState` will prevail. Here's how it looks like in the JS timeline:
@@ -54,26 +54,26 @@ Now that you understand the problem, what can you do to avoid it? In general be 
 To minimize this problem Draft offers the latest `EditorState` instance in most of its callback functions. In your code you should use the provided `EditorState` instead of your local one to make sure you're basing your changes on the latest one.
 Here's a list of supported callbacks on the `Editor`:
 
-* `handleReturn(event, editorState)`
-* `handleKeyCommand(command, editorState)`
-* `handleBeforeInput(chars, editorState)`
-* `handlePastedText(text, html, editorState)`
+- `handleReturn(event, editorState)`
+- `handleKeyCommand(command, editorState)`
+- `handleBeforeInput(chars, editorState)`
+- `handlePastedText(text, html, editorState)`
 
 The paste example can then be re-written in a race condition free way by using these methods:
 
 ```js
 this.handlePastedText = (text, styles, editorState) => {
   this.setState({
-    editorState: removeEditorStyles(text, editorState)
+    editorState: removeEditorStyles(text, editorState),
   });
-}
+};
 //...
 <Editor
   editorState={this.state.editorState}
   onChange={this.onChange}
   handlePastedText={this.handlePastedText}
   placeholder="Enter some text..."
-/>
+/>;
 ```
 
 With `handlePastedText` you can implement the paste behavior by yourself.

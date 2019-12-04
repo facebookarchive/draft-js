@@ -16,7 +16,7 @@ will be the same as the input object if no edit was actually performed.
 
 ## Overview
 
-*Methods*
+_Methods_
 
 <ul class="apiIndex">
   <li>

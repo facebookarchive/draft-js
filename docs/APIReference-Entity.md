@@ -21,7 +21,7 @@ be used only for retrieval.
 
 ## Overview
 
-*Methods*
+_Methods_
 
 <ul class="apiIndex">
   <li>

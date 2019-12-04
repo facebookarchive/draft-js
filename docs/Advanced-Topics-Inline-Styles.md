@@ -31,11 +31,11 @@ In essence, our styles are:
 [
   [], // H
   [], // e
-  ...
+  // ...
   ['BOLD'], // w
   ['BOLD'], // o
   // etc.
-]
+];
 ```
 
 ## Overlapping Styles
@@ -52,12 +52,12 @@ relevant `OrderedSet` objects as well.
   [], // H
   [], // e
   ['ITALIC'], // l
-  ...
+  // ...
   ['BOLD', 'ITALIC'], // w
   ['BOLD', 'ITALIC'], // o
   ['BOLD'], // r
   // etc.
-]
+];
 ```
 
 When determining how to render inline-styled text, Draft will identify

@@ -55,7 +55,7 @@ _Start_ and _end_ values are derived.
 
 ## Overview
 
-*Static Methods*
+_Static Methods_
 
 <ul class="apiIndex">
   <li>
@@ -65,7 +65,7 @@ _Start_ and _end_ values are derived.
   </li>
 </ul>
 
-*Methods*
+_Methods_
 
 <ul class="apiIndex">
   <li>
@@ -135,7 +135,7 @@ _Start_ and _end_ values are derived.
   </li>
 </ul>
 
-*Properties*
+_Properties_
 
 > Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record) to
 > set properties.

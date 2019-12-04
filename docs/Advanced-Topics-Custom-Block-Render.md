@@ -14,23 +14,23 @@ by matching the Draft block render map with the matched tag.
 
 ## Draft default block render map
 
-|  HTML element   |            Draft block type             |
-| --------------- | --------------------------------------- |
-|     `<h1/>`     |               header-one                |
-|     `<h2/>`     |               header-two                |
-|     `<h3/>`     |              header-three               |
-|     `<h4/>`     |               header-four               |
-|     `<h5/>`     |               header-five               |
-|     `<h6/>`     |               header-six                |
-| `<blockquote/>` |               blockquote                |
-|    `<pre/>`     |               code-block                |
-|   `<figure/>`   |                 atomic                  |
-|     `<li/>`     | unordered-list-item,ordered-list-item** |
-|    `<div/>`     |               unstyled***               |
+| HTML element    | Draft block type                          |
+| --------------- | ----------------------------------------- |
+| `<h1/>`         | header-one                                |
+| `<h2/>`         | header-two                                |
+| `<h3/>`         | header-three                              |
+| `<h4/>`         | header-four                               |
+| `<h5/>`         | header-five                               |
+| `<h6/>`         | header-six                                |
+| `<blockquote/>` | blockquote                                |
+| `<pre/>`        | code-block                                |
+| `<figure/>`     | atomic                                    |
+| `<li/>`         | unordered-list-item,ordered-list-item\*\* |
+| `<div/>`        | unstyled\*\*\*                            |
 
 \*\* - Block type will be based on the parent `<ul/>` or `<ol/>`
 
-\*\*\* -  Any block that is not recognized by the block rendering mapping will be treated as unstyled
+\*\*\* - Any block that is not recognized by the block rendering mapping will be treated as unstyled
 
 ## Configuring block render map
 
@@ -38,7 +38,7 @@ Draft's default block render map can be overwritten by passing an
 [Immutable Map](http://facebook.github.io/immutable-js/docs/#/Map) to
 the editor blockRender props.
 
-*example of overwriting default block render map:*
+_example of overwriting default block render map:_
 
 ```js
 // The example below deliberately only allows
@@ -68,7 +68,7 @@ class RichEditor extends React.Component {
 There are cases where instead of overwriting the defaults, we only want to add new block types.
 This can be done by using the DefaultDraftBlockRenderMap reference to create a new blockRenderMap
 
-*example of extending default block render map:*
+_example of extending default block render map:_
 
 ```js
 const blockRenderMap = Immutable.Map({
@@ -97,7 +97,7 @@ When Draft parses pasted HTML, it maps from HTML elements back into
 Draft block types. If you want to specify other HTML elements that map to a
 particular block type, you can add the array `aliasedElements` to the block config.
 
-*example of unstyled block type alias usage:*
+_example of unstyled block type alias usage:_
 
 ```js
 'unstyled': {
@@ -119,7 +119,7 @@ it on the _blockRenderMap_ to wrap that particular block type. For example:
 Draft uses wrappers to wrap `<li/>` inside either `<ol/>` or `<ul/>`, but wrappers can also be used
 to wrap any other custom block type.
 
-*example of extending default block render map to use a react component for a custom block:*
+_example of extending default block render map to use a react component for a custom block:_
 
 ```js
 class MyCustomBlock extends React.Component {

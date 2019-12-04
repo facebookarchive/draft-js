@@ -11,7 +11,7 @@ is also available to follow along.
 
 The `Editor` React component is built as a controlled ContentEditable component,
 with the goal of providing a top-level API modeled on the familiar React
-*controlled input* API.
+_controlled input_ API.
 
 As a brief refresher, controlled inputs involve two key pieces:
 
@@ -27,7 +27,7 @@ class MyInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {value: ''};
-    this.onChange = (evt) => this.setState({value: evt.target.value});
+    this.onChange = evt => this.setState({value: evt.target.value});
   }
   render() {
     return <input value={this.state.value} onChange={this.onChange} />;
@@ -62,10 +62,13 @@ class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {editorState: EditorState.createEmpty()};
-    this.onChange = (editorState) => this.setState({editorState});
+    this.onChange = editorState => this.setState({editorState});
   }
+
   render() {
-    return <Editor editorState={this.state.editorState} onChange={this.onChange} />;
+    return (
+      <Editor editorState={this.state.editorState} onChange={this.onChange} />
+    );
   }
 }
 ```

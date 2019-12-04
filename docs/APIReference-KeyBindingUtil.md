@@ -16,7 +16,7 @@ isCtrlKeyCommand: function(
 ): boolean
 ```
 
-Check whether the `ctrlKey` modifier is *not* being used in conjunction with
+Check whether the `ctrlKey` modifier is _not_ being used in conjunction with
 the `altKey` modifier. If they are combined, the result is an `altGraph`
 key modifier, which is not handled by this set of key bindings.
 

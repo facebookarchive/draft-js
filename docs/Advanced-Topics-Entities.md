@@ -29,14 +29,14 @@ An entity is an object that represents metadata for a range of text within a
 Draft editor. It has three properties:
 
 - **type**: A string that indicates what kind of entity it is, e.g. `'LINK'`,
-`'MENTION'`, `'PHOTO'`.
+  `'MENTION'`, `'PHOTO'`.
 - **mutability**: Not to be confused with immutability a la `immutable-js`, this
-property denotes the behavior of a range of text annotated with this entity
-object when editing the text range within the editor. This is addressed in
-greater detail below.
+  property denotes the behavior of a range of text annotated with this entity
+  object when editing the text range within the editor. This is addressed in
+  greater detail below.
 - **data**: An optional object containing metadata for the entity. For instance,
-a `'LINK'` entity might contain a `data` object that contains the `href` value
-for that link.
+  a `'LINK'` entity might contain a `data` object that contains the `href` value
+  for that link.
 
 All entities are stored in the ContentState record. The entities are referenced
 by key within `ContentState` and React components used to decorate annotated
@@ -58,18 +58,18 @@ content. For instance, the `Modifier` module contains an `applyEntity` method:
 
 ```js
 const contentState = editorState.getCurrentContent();
-const contentStateWithEntity = contentState.createEntity(
-  'LINK',
-  'MUTABLE',
-  {url: 'http://www.zombo.com'}
-);
+const contentStateWithEntity = contentState.createEntity('LINK', 'MUTABLE', {
+  url: 'http://www.zombo.com',
+});
 const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 const contentStateWithLink = Modifier.applyEntity(
   contentStateWithEntity,
   selectionState,
-  entityKey
+  entityKey,
 );
-const newEditorState = EditorState.push(editorState, { currentContent: contentStateWithLink });
+const newEditorState = EditorState.push(editorState, {
+  currentContent: contentStateWithLink,
+});
 ```
 
 For a given range of text, then, you can extract its associated entity key by using
@@ -83,6 +83,7 @@ const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
 const linkInstance = contentState.getEntity(linkKey);
 const {url} = linkInstance.getData();
 ```
+
 ## "Mutability"
 
 Entities may have one of three "mutability" values. The difference between them
