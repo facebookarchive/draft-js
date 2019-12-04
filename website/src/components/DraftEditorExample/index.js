@@ -5,19 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const React = require('react');
+import React from 'react';
+import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import {Editor, EditorState, RichUtils, getDefaultKeyBinding} from 'draft-js';
+import classnames from 'classnames';
 
-const CompLibrary = require('../../core/CompLibrary.js');
-const MarkdownBlock = CompLibrary.MarkdownBlock; /* Used to read markdown */
-const Container = CompLibrary.Container;
-const GridBlock = CompLibrary.GridBlock;
+import Layout from '@theme/Layout';
 
-const siteConfig = require(process.cwd() + '/siteConfig.js');
-
-var richExample = `
-'use strict';
-
-const {Editor, EditorState, RichUtils, getDefaultKeyBinding} = Draft;
+import './css/example.css';
+import './css/draft.css';
+import './css/rich-editor.css';
 
 class RichEditorExample extends React.Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class RichEditorExample extends React.Component {
     this.state = {editorState: EditorState.createEmpty()};
 
     this.focus = () => this.editor.focus();
-    this.onChange = (editorState) => this.setState({editorState});
+    this.onChange = editorState => this.setState({editorState});
 
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
     this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
@@ -48,7 +47,7 @@ class RichEditorExample extends React.Component {
         const newEditorState = RichUtils.onTab(
           e,
           this.state.editorState,
-          4, /* maxDepth */
+          4 /* maxDepth */,
         );
         if (newEditorState !== this.state.editorState) {
           this.onChange(newEditorState);
@@ -59,20 +58,12 @@ class RichEditorExample extends React.Component {
   }
 
   _toggleBlockType(blockType) {
-    this.onChange(
-      RichUtils.toggleBlockType(
-        this.state.editorState,
-        blockType
-      )
-    );
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, blockType));
   }
 
   _toggleInlineStyle(inlineStyle) {
     this.onChange(
-      RichUtils.toggleInlineStyle(
-        this.state.editorState,
-        inlineStyle
-      )
+      RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle),
     );
   }
 
@@ -84,7 +75,12 @@ class RichEditorExample extends React.Component {
     let className = 'RichEditor-editor';
     var contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
-      if (contentState.getBlockMap().first().getType() !== 'unstyled') {
+      if (
+        contentState
+          .getBlockMap()
+          .first()
+          .getType() !== 'unstyled'
+      ) {
         className += ' RichEditor-hidePlaceholder';
       }
     }
@@ -108,7 +104,7 @@ class RichEditorExample extends React.Component {
             keyBindingFn={this.mapKeyToEditorCommand}
             onChange={this.onChange}
             placeholder="Tell a story..."
-            ref={(ref) => this.editor = ref}
+            ref={ref => (this.editor = ref)}
             spellCheck={true}
           />
         </div>
@@ -129,15 +125,17 @@ const styleMap = {
 
 function getBlockStyle(block) {
   switch (block.getType()) {
-    case 'blockquote': return 'RichEditor-blockquote';
-    default: return null;
+    case 'blockquote':
+      return 'RichEditor-blockquote';
+    default:
+      return null;
   }
 }
 
 class StyleButton extends React.Component {
   constructor() {
     super();
-    this.onToggle = (e) => {
+    this.onToggle = e => {
       e.preventDefault();
       this.props.onToggle(this.props.style);
     };
@@ -170,7 +168,7 @@ const BLOCK_TYPES = [
   {label: 'Code Block', style: 'code-block'},
 ];
 
-const BlockStyleControls = (props) => {
+const BlockStyleControls = props => {
   const {editorState} = props;
   const selection = editorState.getSelection();
   const blockType = editorState
@@ -180,7 +178,7 @@ const BlockStyleControls = (props) => {
 
   return (
     <div className="RichEditor-controls">
-      {BLOCK_TYPES.map((type) =>
+      {BLOCK_TYPES.map(type => (
         <StyleButton
           key={type.label}
           active={type.style === blockType}
@@ -188,23 +186,23 @@ const BlockStyleControls = (props) => {
           onToggle={props.onToggle}
           style={type.style}
         />
-      )}
+      ))}
     </div>
   );
 };
 
-var INLINE_STYLES = [
+const INLINE_STYLES = [
   {label: 'Bold', style: 'BOLD'},
   {label: 'Italic', style: 'ITALIC'},
   {label: 'Underline', style: 'UNDERLINE'},
   {label: 'Monospace', style: 'CODE'},
 ];
 
-const InlineStyleControls = (props) => {
-  var currentStyle = props.editorState.getCurrentInlineStyle();
+const InlineStyleControls = props => {
+  const currentStyle = props.editorState.getCurrentInlineStyle();
   return (
     <div className="RichEditor-controls">
-      {INLINE_STYLES.map(type =>
+      {INLINE_STYLES.map(type => (
         <StyleButton
           key={type.label}
           active={currentStyle.has(type.style)}
@@ -212,73 +210,9 @@ const InlineStyleControls = (props) => {
           onToggle={props.onToggle}
           style={type.style}
         />
-      )}
+      ))}
     </div>
   );
 };
 
-ReactDOM.render(
-  <RichEditorExample />,
-  document.getElementById('rich-example')
-);
-`;
-
-class Index extends React.Component {
-  render() {
-    return (
-      <div>
-        <div className="hero">
-          <div className="wrap">
-            <div className="text"><strong>Draft.js</strong></div>
-            <div className="minitext">
-              Rich Text Editor Framework for React
-            </div>
-          </div>
-        </div>
-
-        <section className="content wrap">
-          <section className="home-section home-getting-started">
-            <p>
-              Draft.js is a framework for building rich text editors in React,
-              powered by an immutable model and abstracting over cross-browser
-              differences.
-            </p>
-
-            <p>
-              Draft.js makes it easy to build any type of rich text input,
-              whether you're just looking to support a few inline text styles
-              or building a complex text editor for composing long-form
-              articles.
-            </p>
-
-            <p>
-              In Draft.js, everything is customizable &ndash; we provide the
-              building blocks so that you have full control over the user
-              interface. <span className="hide-on-mobile">Here's a simple example of a rich text editor built in
-              Draft.js:</span>
-            </p>
-
-            <div className="hide-on-mobile" id="rich-example"></div>
-          </section>
-
-          <section className="home-bottom-section">
-            <div className="buttons-unit">
-              <a href="docs/getting-started.html" className="button">Learn more about Draft</a>
-            </div>
-          </section>
-        </section>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.6/immutable.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
-        <script src="lib/Draft.min.js"></script>
-        <script type="text/javascript" src="//use.typekit.net/vqa1hcx.js"></script>
-        <script type="text/javascript">{'try{Typekit.load();}catch(e){}'}</script>
-        <script type="text/babel" dangerouslySetInnerHTML={{__html: richExample}} />
-      </div>
-    );
-  }
-}
-
-module.exports = Index;
+export default RichEditorExample;

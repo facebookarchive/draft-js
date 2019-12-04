@@ -74,7 +74,7 @@ supplied text.
   </li>
   <li>
     <a href="#getcharacterlist">
-      <pre>getCharacterList(): List<CharacterMetadata></pre>
+      <pre>getCharacterList(): List&lt;CharacterMetadata&gt;</pre>
     </a>
   </li>
   <li>
@@ -99,7 +99,7 @@ supplied text.
   </li>
   <li>
     <a href="#getdata">
-      <pre>getData(): Map<any, any></pre>
+      <pre>getData(): Map&lt;any, any&gt;</pre>
     </a>
   </li>
   <li>
@@ -139,7 +139,7 @@ supplied text.
   </li>
   <li>
     <a href="#characterlist">
-      <pre>characterList: List<CharacterMetadata></pre>
+      <pre>characterList: List&lt;CharacterMetadata&gt;</pre>
     </a>
   </li>
   <li>
@@ -149,7 +149,7 @@ supplied text.
   </li>
   <li>
     <a href="#data">
-      <pre>data: Map<any, any></pre>
+      <pre>data: Map&lt;any, any&gt;</pre>
     </a>
   </li>
 </ul>
