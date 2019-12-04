@@ -49,7 +49,7 @@ script:
       git config --global user.name "Travis CI"
       git config --global user.email "travis@reactjs.org"
       echo "machine github.com login reactjs-bot password $GITHUB_TOKEN" > ~/.netrc
-      cd website && yarn install && GIT_USER=reactjs-bot USE_SSH=true yarn deploy
+      cd website && yarn install && GIT_USER=reactjs-bot yarn deploy
     else
       # Make sure the website builds without error
       cd website && yarn install && yarn build
