@@ -113,14 +113,19 @@ class DOMObserver {
         return target.textContent;
       }
     } else if (type === 'childList') {
-      // `characterData` events won't happen or are ignored when
-      // removing the last character of a leaf node, what happens
-      // instead is a `childList` event with a `removedNodes` array.
-      // For this case the textContent should be '' and
-      // `DraftModifier.replaceText` will make sure the content is
-      // updated properly.
       if (removedNodes && removedNodes.length) {
+        // `characterData` events won't happen or are ignored when
+        // removing the last character of a leaf node, what happens
+        // instead is a `childList` event with a `removedNodes` array.
+        // For this case the textContent should be '' and
+        // `DraftModifier.replaceText` will make sure the content is
+        // updated properly.
         return '';
+      } else if (target.textContent !== '') {
+        // Typing Chinese in an empty block in MS Edge results in a
+        // `childList` event with non-empty textContent.
+        // See https://github.com/facebook/draft-js/issues/2082
+        return target.textContent;
       }
     }
     return null;
