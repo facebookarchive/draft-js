@@ -61,7 +61,6 @@ notifications:
   email:
     recipients:
       - claudio.procida@gmail.com
-      - niveditc@gmail.com
     on_success: change # send a notification when the build status changes
     on_failure: always # always send a notification
   webhooks: https://code.facebook.com/travis/webhook/
