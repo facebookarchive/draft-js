@@ -25,6 +25,8 @@
     "build": "gulp",
     "dev": "gulp dev",
     "postbuild": "node node_modules/fbjs-scripts/node/check-lib-requires.js lib",
+    "prettier": "prettier --config prettier.config.js --write \"**/*.{js,ts}\"",
+    "prettier:diff": "prettier --config prettier.config.js --list-different \"**/*.{js,ts}\"",
     "lint": "eslint .",
     "lint-docs": "alex .",
     "format": "eslint . --fix",
