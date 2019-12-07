@@ -21,7 +21,7 @@ This command starts a local development server and open up a browser window. Mos
 If you have changed any documentation, before submitting your PR, please run the following command from the root of the directory to use Prettier to format the documentation.
 
 ```
-$ yarn prettier
+$ yarn format-docs
 ```
 
 ### Build
