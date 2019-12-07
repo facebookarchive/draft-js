@@ -11,6 +11,8 @@
 
 'use strict';
 
+jest.disableAutomock();
+
 const isHTMLBRElement = require('isHTMLBRElement');
 
 test('isHTMLBRElement recognizes null', () => {
