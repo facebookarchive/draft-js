@@ -11,7 +11,7 @@
 
 'use strict';
 
-jest.disableAutomock().mock('UserAgent');
+jest.mock('UserAgent');
 
 const BLOCK_DELIMITER_CHAR = '\n';
 const TEST_A = 'Hello';

@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 // DraftEditorComposition uses timers to detect duplicate `compositionend`
 // events.
 jest.useFakeTimers();

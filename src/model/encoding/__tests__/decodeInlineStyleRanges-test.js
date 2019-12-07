@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 
 test('must decode for an unstyled block', () => {

@@ -10,8 +10,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const BlockTree = require('BlockTree');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');

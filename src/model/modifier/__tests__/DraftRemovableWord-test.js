@@ -11,7 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
 expect.addSnapshotSerializer(require('NonASCIIStringSnapshotSerializer'));
 
 const DraftRemovableWord = require('DraftRemovableWord');

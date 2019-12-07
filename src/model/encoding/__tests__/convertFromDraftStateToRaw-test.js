@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');

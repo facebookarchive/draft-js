@@ -8,8 +8,6 @@
  * @format
  */
 
-jest.disableAutomock();
-
 const AtomicBlockUtils = require('AtomicBlockUtils');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');

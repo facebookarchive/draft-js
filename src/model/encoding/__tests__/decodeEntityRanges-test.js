@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const decodeEntityRanges = require('decodeEntityRanges');
 
 test('must decode when no entities present', () => {

@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 jest.mock('ReactDOM');
 
 const getContentEditableContainer = require('getContentEditableContainer');

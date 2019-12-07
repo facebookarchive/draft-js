@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 jest.mock('generateRandomKey');
 
 const ContentBlock = require('ContentBlock');

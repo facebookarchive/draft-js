@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 import type DraftEditor from 'DraftEditor.react';
 
 const CompositeDraftDecorator = require('CompositeDraftDecorator');

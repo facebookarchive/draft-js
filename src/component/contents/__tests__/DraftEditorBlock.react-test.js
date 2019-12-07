@@ -11,7 +11,6 @@
 'use strict';
 
 jest
-  .disableAutomock()
   .mock('Style')
   .mock('getElementPosition')
   .mock('getScrollPosition')

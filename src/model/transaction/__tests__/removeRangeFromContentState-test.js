@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
 const SelectionState = require('SelectionState');

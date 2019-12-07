@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const Immutable = require('immutable');
 const insertIntoList = require('insertIntoList');
 

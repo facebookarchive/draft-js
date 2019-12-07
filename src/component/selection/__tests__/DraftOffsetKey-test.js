@@ -9,8 +9,6 @@
  * @flow strict-local
  */
 
-jest.disableAutomock();
-
 const DraftOffsetKey = require('DraftOffsetKey');
 
 test('decodes offset key with no delimiter', () => {
