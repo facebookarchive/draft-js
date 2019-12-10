@@ -8,8 +8,6 @@
  * @format
  */
 
-jest.disableAutomock();
-
 jest.mock('generateRandomKey');
 
 const AtomicBlockUtils = require('AtomicBlockUtils');

@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
 const EditorState = require('EditorState');

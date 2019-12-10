@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 jest.mock('SelectionState');
 
 let contentState;

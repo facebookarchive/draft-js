@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlockNode = require('ContentBlockNode');
 const {BOLD, NONE} = require('SampleDraftInlineStyle');

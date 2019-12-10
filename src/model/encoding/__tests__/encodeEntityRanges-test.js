@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const ContentBlock = require('ContentBlock');
 
 const createCharacterList = require('createCharacterList');

@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const ContentStateInlineStyle = require('ContentStateInlineStyle');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');

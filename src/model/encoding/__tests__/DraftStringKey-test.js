@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const {stringify, unstringify} = require('DraftStringKey');
 
 test('must convert maybe strings to a string key', () => {

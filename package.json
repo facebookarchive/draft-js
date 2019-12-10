@@ -87,7 +87,6 @@
     "npm": "2.x || 3.x || 5.x || 6.x"
   },
   "jest": {
-    "automock": true,
     "globals": {
       "__DEV__": true
     },

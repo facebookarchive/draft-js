@@ -9,8 +9,6 @@
  * @format
  */
 
-jest.disableAutomock();
-
 const sanitizeDraftText = require('sanitizeDraftText');
 
 test('must strip trailing carriage returns', () => {
