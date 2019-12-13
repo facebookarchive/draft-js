@@ -156,29 +156,6 @@ function editOnBeforeInput(
     );
   }
   if (!mustPreventNative) {
-    // Chrome will also split up a node into two pieces if it contains a Tab
-    // char, for no explicable reason. Seemingly caused by this commit:
-    // https://chromium.googlesource.com/chromium/src/+/013ac5eaf3%5E%21/
-
-    // in test environment, e.target is not available
-    const nativeSelection = (e.currentTarget
-      ? e.currentTarget.ownerDocument.defaultView
-      : global
-    ).getSelection();
-    // Selection is necessarily collapsed at this point due to earlier check.
-    if (
-      nativeSelection.anchorNode &&
-      nativeSelection.anchorNode.nodeType === Node.TEXT_NODE
-    ) {
-      // See isTabHTMLSpanElement in chromium EditingUtilities.cpp.
-      const parentNode = nativeSelection.anchorNode.parentNode;
-      mustPreventNative =
-        parentNode.nodeName === 'SPAN' &&
-        parentNode.firstChild.nodeType === Node.TEXT_NODE &&
-        parentNode.firstChild.nodeValue.indexOf('\t') !== -1;
-    }
-  }
-  if (!mustPreventNative) {
     // Let's say we have a decorator that highlights hashtags. In many cases
     // we need to prevent native behavior and rerender ourselves --
     // particularly, any case *except* where the inserted characters end up
