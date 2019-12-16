@@ -26,8 +26,10 @@
     "dev": "gulp dev",
     "postbuild": "node node_modules/fbjs-scripts/node/check-lib-requires.js lib",
     "lint": "eslint .",
-    "lint-docs": "alex .",
+    "lint-docs": "alex . && yarn format-docs:diff",
     "format": "eslint . --fix",
+    "format-docs": "prettier --config prettier.config.js --write \"docs/**/*.md\"",
+    "format-docs:diff": "prettier --config prettier.config.js --list-different \"docs/**/*.md\"",
     "flow": "flow src",
     "test": "cross-env NODE_ENV=test jest",
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"

@@ -41,7 +41,6 @@ Given a `ContentState` object, convert it to a raw JS structure. This is useful
 when saving an editor state for storage, conversion to other formats, or
 other usage within an application.
 
-
 ### `convertFromHTML()`
 
 ```js
@@ -52,7 +51,7 @@ const sampleMarkup =
 const blocksFromHTML = convertFromHTML(sampleMarkup);
 const state = ContentState.createFromBlockArray(
   blocksFromHTML.contentBlocks,
-  blocksFromHTML.entityMap
+  blocksFromHTML.entityMap,
 );
 
 this.state = {

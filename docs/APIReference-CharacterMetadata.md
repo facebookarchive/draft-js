@@ -26,7 +26,7 @@ for information on how `CharacterMetadata` is used within `ContentBlock`.
 
 ## Overview
 
-*Static Methods*
+_Static Methods_
 
 <ul class="apiIndex">
   <li>
@@ -51,7 +51,7 @@ for information on how `CharacterMetadata` is used within `ContentBlock`.
   </li>
 </ul>
 
-*Methods*
+_Methods_
 
 <ul class="apiIndex">
   <li>

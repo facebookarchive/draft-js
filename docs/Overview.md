@@ -36,7 +36,7 @@ Learn more about [using a shim with Draft](/docs/advanced-topics-issues-and-pitf
 
 Before getting started, please be aware that we recently changed the API of
 Entity storage in Draft. The latest version, `v0.10.0`, supports both the old
-and new API.  Following that up will be `v0.11.0` which will remove the old API.
+and new API. Following that up will be `v0.11.0` which will remove the old API.
 If you are interested in helping out, or tracking the progress, please follow
 [issue 839](https://github.com/facebook/draft-js/issues/839).
 
@@ -51,19 +51,17 @@ class MyEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {editorState: EditorState.createEmpty()};
-    this.onChange = (editorState) => this.setState({editorState});
+    this.onChange = editorState => this.setState({editorState});
   }
+
   render() {
     return (
-        <Editor editorState={this.state.editorState} onChange={this.onChange} />
+      <Editor editorState={this.state.editorState} onChange={this.onChange} />
     );
   }
 }
 
-ReactDOM.render(
-  <MyEditor />,
-  document.getElementById('container')
-);
+ReactDOM.render(<MyEditor />, document.getElementById('container'));
 ```
 
 Since the release of React 16.8, you can use [Hooks](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.
@@ -75,21 +73,13 @@ import {Editor, EditorState} from 'draft-js';
 
 function MyEditor() {
   const [editorState, setEditorState] = React.useState(
-    EditorState.createEmpty()
+    EditorState.createEmpty(),
   );
 
-  return (
-    <Editor
-      editorState={editorState}
-      onChange={setEditorState}
-    />
-  );
+  return <Editor editorState={editorState} onChange={setEditorState} />;
 }
 
-ReactDOM.render(
-  <MyEditor />,
-  document.getElementById('container')
-);
+ReactDOM.render(<MyEditor />, document.getElementById('container'));
 ```
 
 Because Draft.js supports unicode, you must have the following meta tag in the `<head></head>` block of your HTML file:

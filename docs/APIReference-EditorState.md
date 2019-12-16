@@ -8,11 +8,11 @@ title: EditorState
 It is an Immutable [Record](http://facebook.github.io/immutable-js/docs/#/Record/Record)
 that represents the entire state of a Draft editor, including:
 
-  - The current text content state
-  - The current selection state
-  - The fully decorated representation of the contents
-  - Undo/redo stacks
-  - The most recent type of change made to the contents
+- The current text content state
+- The current selection state
+- The fully decorated representation of the contents
+- Undo/redo stacks
+- The most recent type of change made to the contents
 
 > Note
 >
@@ -21,7 +21,7 @@ that represents the entire state of a Draft editor, including:
 
 ## Overview
 
-*Common instance methods*
+_Common instance methods_
 
 The list below includes the most commonly used instance methods for `EditorState` objects.
 
@@ -48,7 +48,7 @@ The list below includes the most commonly used instance methods for `EditorState
   </li>
 </ul>
 
-*Static Methods*
+_Static Methods_
 
 <ul class="apiIndex">
   <li>
@@ -113,7 +113,7 @@ The list below includes the most commonly used instance methods for `EditorState
   </li>
 </ul>
 
-*Properties*
+_Properties_
 
 > Note
 >
@@ -125,7 +125,9 @@ The list below includes the most commonly used instance methods for `EditorState
 >
 > ```js
 > const editorState = EditorState.createEmpty();
-> const editorStateWithoutUndo = EditorState.set(editorState, {allowUndo: false});
+> const editorStateWithoutUndo = EditorState.set(editorState, {
+>   allowUndo: false,
+> });
 > ```
 
 <ul class="apiIndex">
@@ -268,6 +270,7 @@ provided.
 ```js
 static create(config: EditorStateCreationConfig): EditorState
 ```
+
 Returns a new `EditorState` object based on a configuration object. Use this
 if you need custom configuration not available via the methods above.
 
@@ -397,7 +400,7 @@ state tracked in this object.
 
 ```js
 allowUndo: boolean;
-getAllowUndo()
+getAllowUndo();
 ```
 
 Whether to allow undo/redo behavior in this editor. Default is `true`.
@@ -410,7 +413,7 @@ setting this to `false`.
 
 ```js
 currentContent: ContentState;
-getCurrentContent()
+getCurrentContent();
 ```
 
 The currently rendered `ContentState`. See [getCurrentContent()](#getcurrentcontent).
@@ -431,7 +434,7 @@ is provided, it will be used to decorate ranges of text for rendering.
 
 ```js
 directionMap: BlockMap;
-getDirectionMap()
+getDirectionMap();
 ```
 
 A map of each block and its text direction, as determined by UnicodeBidiService.
@@ -442,7 +445,7 @@ You should not manage this manually.
 
 ```js
 forceSelection: boolean;
-mustForceSelection()
+mustForceSelection();
 ```
 
 Whether to force the current `SelectionState` to be rendered.
@@ -454,7 +457,7 @@ You should not set this property manually -- see
 
 ```js
 inCompositionMode: boolean;
-isInCompositionMode()
+isInCompositionMode();
 ```
 
 Whether the user is in IME composition mode. This is useful for rendering the
@@ -465,7 +468,7 @@ to the editor. You should not set this property manually.
 
 ```js
 inlineStyleOverride: DraftInlineStyle;
-getInlineStyleOverride()
+getInlineStyleOverride();
 ```
 
 An inline style value to be applied to the next inserted characters. This is
@@ -479,7 +482,7 @@ each of which corresponds to an inline style.
 
 ```js
 lastChangeType: EditorChangeType;
-getLastChangeType()
+getLastChangeType();
 ```
 
 The type of content change that took place in order to bring us to our current
@@ -521,7 +524,7 @@ See also [undoStack](#undostack).
 
 ```js
 selection: SelectionState;
-getSelection()
+getSelection();
 ```
 
 The currently rendered `SelectionState`. See [acceptSelection()](#acceptselection)

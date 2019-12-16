@@ -16,7 +16,7 @@ See [API Basics](/docs/quickstart-api-basics) for an introduction.
 ### `editorState`
 
 ```js
-editorState: EditorState
+editorState: EditorState;
 ```
 
 The `EditorState` object to be rendered by the `Editor`.
@@ -84,6 +84,7 @@ Optionally set a function to define custom block rendering. See [Advanced Topics
 ```js
 blockRendererMap?: DraftBlockRenderMap
 ```
+
 Provide a map of block rendering configurations. Each block type maps to element tag and an optional react element wrapper. This configuration is used for both rendering and paste processing. See
 [Advanced Topics: Custom Block Rendering](/docs/advanced-topics-custom-block-render-map) for details on usage.
 
@@ -248,7 +249,7 @@ handleBeforeInput?: (
 Handle the characters to be inserted from a `beforeInput` event. Returning `'handled'`
 causes the default behavior of the `beforeInput` event to be prevented (i.e. it is
 the same as calling the `preventDefault` method on the event).
-Example usage: After a user has typed `- ` at the start of a new block, you might
+Example usage: After a user has typed `-` at the start of a new block, you might
 convert that `ContentBlock` into an `unordered-list-item`.
 
 At Facebook, we also use this to convert typed ASCII quotes into "smart" quotes,

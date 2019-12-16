@@ -92,12 +92,20 @@ In our current example, the `CompositeDecorator` object names `HandleSpan` and
 stateless components:
 
 ```js
-const HandleSpan = (props) => {
-  return <span {...props} style={styles.handle}>{props.children}</span>;
+const HandleSpan = props => {
+  return (
+    <span {...props} style={styles.handle}>
+      {props.children}
+    </span>
+  );
 };
 
-const HashtagSpan = (props) => {
-  return <span {...props} style={styles.hashtag}>{props.children}</span>;
+const HashtagSpan = props => {
+  return (
+    <span {...props} style={styles.hashtag}>
+      {props.children}
+    </span>
+  );
 };
 ```
 
@@ -137,10 +145,12 @@ following:
 
 ```js
 function turnOffHandleDecorations(editorState) {
-  const onlyHashtags = new CompositeDecorator([{
-    strategy: hashtagStrategy,
-    component: HashtagSpan,
-  }]);
+  const onlyHashtags = new CompositeDecorator([
+    {
+      strategy: hashtagStrategy,
+      component: HashtagSpan,
+    },
+  ]);
   return EditorState.set(editorState, {decorator: onlyHashtags});
 }
 ```

@@ -18,7 +18,7 @@ objects.
 
 ## Overview
 
-*Static Methods*
+_Static Methods_
 
 <ul class="apiIndex">
   <li>
@@ -33,7 +33,7 @@ objects.
   </li>
 </ul>
 
-*Methods*
+_Methods_
 
 <ul class="apiIndex">
   <li>
@@ -138,7 +138,7 @@ objects.
   </li>
 </ul>
 
-*Properties*
+_Properties_
 
 > Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map) to
 > set properties.
@@ -148,7 +148,10 @@ objects.
 > ```js
 > const editorState = EditorState.createEmpty();
 > const contentState = editorState.getCurrentContent();
-> const contentStateWithSelectionBefore = contentState.set('selectionBefore', SelectionState.createEmpty(contentState.getBlockForKey('1pu4d')));
+> const contentStateWithSelectionBefore = contentState.set(
+>   'selectionBefore',
+>   SelectionState.createEmpty(contentState.getBlockForKey('1pu4d')),
+> );
 > ```
 
 <ul class="apiIndex">
@@ -205,7 +208,7 @@ getEntityMap(): EntityMap
 ```
 
 Returns an object store containing all `DraftEntity` records that have been
-created.  In upcoming v0.11.0 the map returned will be an Immutable ordered map
+created. In upcoming v0.11.0 the map returned will be an Immutable ordered map
 of `DraftEntity` records.
 
 In most cases, you should be able to use the convenience methods below to target
