@@ -20,7 +20,8 @@ const React = require('React');
 
 const invariant = require('invariant');
 const isHTMLBRElement = require('isHTMLBRElement');
-const setDraftEditorSelection = require('setDraftEditorSelection');
+const setDraftEditorSelection = require('setDraftEditorSelection')
+  .setDraftEditorSelection;
 
 type Props = {
   // The block that contains this leaf.
