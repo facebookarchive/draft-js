@@ -110,6 +110,12 @@ class DOMObserver {
       // These events are also followed by a `childList`, which is the one
       // we are able to retrieve the offsetKey and apply the '' text.
       if (target.textContent !== '') {
+        // IE 11 considers the enter keypress that concludes the composition
+        // as an input char. This strips that newline character so the draft
+        // state does not receive spurious newlines.
+        if (USE_CHAR_DATA) {
+          return target.textContent.replace('\n', '');
+        }
         return target.textContent;
       }
     } else if (type === 'childList') {
