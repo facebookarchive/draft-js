@@ -15,12 +15,15 @@ import type SelectionState from 'SelectionState';
 
 const DraftEffects = require('DraftEffects');
 const DraftJsDebugLogging = require('DraftJsDebugLogging');
+const UserAgent = require('UserAgent');
 
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
 const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
 const invariant = require('invariant');
 const isElement = require('isElement');
+
+const isIE = UserAgent.isBrowser('IE');
 
 function getAnonymizedDOM(
   node: Node,
@@ -332,7 +335,17 @@ function addPointToSelection(
     DraftEffects.handleExtensionCausedError();
   }
   range.setStart(node, offset);
-  selection.addRange(range);
+
+  // IE sometimes throws Unspecified Error when trying to addRange
+  if (isIE) {
+    try {
+      selection.addRange(range);
+    } catch {
+      // ignore
+    }
+  } else {
+    selection.addRange(range);
+  }
 }
 
 module.exports = {
