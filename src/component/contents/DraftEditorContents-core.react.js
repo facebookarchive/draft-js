@@ -20,6 +20,7 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
 const React = require('React');
+const {Map} = require('immutable');
 
 const cx = require('cx');
 const joinClasses: (
@@ -37,6 +38,7 @@ type Props = {
   editorKey?: string,
   editorState: EditorState,
   textDirectionality?: BidiDirection,
+  blocksKey: number,
 };
 
 /**
@@ -76,6 +78,8 @@ const getListItemClasses = (
  * the contents of the editor.
  */
 class DraftEditorContents extends React.Component<Props> {
+  composedBlocksComponentKeys = Map();
+
   shouldComponentUpdate(nextProps: Props): boolean {
     const prevEditorState = this.props.editorState;
     const nextEditorState = nextProps.editorState;
@@ -123,6 +127,19 @@ class DraftEditorContents extends React.Component<Props> {
     );
   }
 
+  getBlockComponentKey(blockKey: string): string {
+    let key = blockKey;
+    const composedBlockKeys = this.props.getComposedBlockKeys();
+    if (composedBlockKeys && composedBlockKeys.includes(blockKey)) {
+      key = `${blockKey}-${this.props.blocksKey.toString()}`;
+      this.composedBlocksComponentKeys = this.composedBlocksComponentKeys.set(
+        blockKey,
+        key,
+      );
+    }
+    return key;
+  }
+
   render(): React.Node {
     const {
       blockRenderMap,
@@ -149,7 +166,7 @@ class DraftEditorContents extends React.Component<Props> {
 
     for (let ii = 0; ii < blocksAsArray.length; ii++) {
       const block = blocksAsArray[ii];
-      const key = block.getKey();
+      const blockKey = block.getKey();
       const blockType = block.getType();
 
       const customRenderer = blockRendererFn(block);
@@ -162,8 +179,9 @@ class DraftEditorContents extends React.Component<Props> {
 
       const direction = textDirectionality
         ? textDirectionality
-        : directionMap.get(key);
-      const offsetKey = DraftOffsetKey.encode(key, 0, 0);
+        : directionMap.get(blockKey);
+      const offsetKey = DraftOffsetKey.encode(blockKey, 0, 0);
+      const componentKey = this.getBlockComponentKey(blockKey);
       const componentProps = {
         contentState: content,
         block,
@@ -174,10 +192,10 @@ class DraftEditorContents extends React.Component<Props> {
         decorator,
         direction,
         forceSelection,
-        key,
+        key: componentKey,
         offsetKey,
         selection,
-        tree: editorState.getBlockTree(key),
+        tree: editorState.getBlockTree(blockKey),
       };
 
       const configForType =
@@ -212,7 +230,7 @@ class DraftEditorContents extends React.Component<Props> {
         'data-block': true,
         'data-editor': editorKey,
         'data-offset-key': offsetKey,
-        key,
+        key: componentKey,
       };
       if (customEditable !== undefined) {
         childProps = {
@@ -231,7 +249,7 @@ class DraftEditorContents extends React.Component<Props> {
       processedBlocks.push({
         block: child,
         wrapperTemplate,
-        key,
+        key: blockKey,
         offsetKey,
       });
 

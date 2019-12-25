@@ -40,6 +40,7 @@ const getScrollPosition = require('getScrollPosition');
 const gkx = require('gkx');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
+const {List} = require('immutable');
 
 const isIE = UserAgent.isBrowser('IE');
 
@@ -59,6 +60,7 @@ const handlerMap = {
 
 type State = {
   contentsKey: number,
+  blocksKey: number,
 };
 
 let didInitODS = false;
@@ -154,6 +156,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _latestEditorState: EditorState;
   _latestCommittedEditorState: EditorState;
   _pendingStateFromBeforeInput: void | EditorState;
+  _composedBlockKeys: List<string>;
 
   /**
    * Define proxies that can route events to the current handler.
@@ -185,7 +188,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   blur: () => void;
   setMode: (mode: DraftEditorModes) => void;
   exitCurrentMode: () => void;
+  registerComposedBlockKey: (blockKey: string) => void;
   restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void;
+  restoreComposedBlocksDOM: () => void;
   setClipboard: (clipboard: ?BlockMap) => void;
   getClipboard: () => ?BlockMap;
   getEditorKey: () => string;
@@ -204,6 +209,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this._placeholderAccessibilityID = 'placeholder-' + this._editorKey;
     this._latestEditorState = props.editorState;
     this._latestCommittedEditorState = props.editorState;
+    this._composedBlockKeys = List();
 
     this._onBeforeInput = this._buildHandler('onBeforeInput');
     this._onBlur = this._buildHandler('onBlur');
@@ -249,8 +255,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       });
     }
 
-    // See `restoreEditorDOM()`.
-    this.state = {contentsKey: 0};
+    // See `restoreEditorDOM()` and `restoreComposedBlocksDOM()`
+    this.state = {contentsKey: 0, blocksKey: 0};
   }
 
   /**
@@ -354,6 +360,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       editorState,
       key: 'contents' + this.state.contentsKey,
       textDirectionality,
+      blocksKey: this.state.blocksKey,
+      getComposedBlockKeys: this.getComposedBlockKeys,
     };
 
     return (
@@ -546,6 +554,16 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this.setMode('edit');
   };
 
+  registerComposedBlockKey: (blockKey: string) => void = (
+    blockKey: string,
+  ): void => {
+    this._composedBlockKeys = this._composedBlockKeys.push(blockKey);
+  };
+
+  getComposedBlockKeys: () => List<string> = (): List<String> => {
+    return this._composedBlockKeys;
+  };
+
   /**
    * Used via `this.restoreEditorDOM()`.
    *
@@ -558,9 +576,17 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void = (
     scrollPosition?: DraftScrollPosition,
   ): void => {
-    this.setState({contentsKey: this.state.contentsKey + 1}, () => {
-      this.focus(scrollPosition);
-    });
+    this._composedBlockKeys = this._composedBlockKeys.clear();
+    this.setState(
+      {contentsKey: this.state.contentsKey + 1, blocksKey: 0},
+      () => {
+        this.focus(scrollPosition);
+      },
+    );
+  };
+
+  restoreComposedBlocksDOM: () => void = (): void => {
+    this.setState({blocksKey: this.state.blocksKey + 1});
   };
 
   /**
