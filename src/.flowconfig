@@ -37,5 +37,17 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[
 suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 module.name_mapper='ReactDOM' -> 'react-dom'
 
+[strict]
+deprecated-type
+sketchy-null
+unclear-type
+unsafe-getters-setters
+; Can't enable these- immutable.js raises errors
+; untyped-import
+; untyped-type-import
+; Can't enable this one- getTextContentFromFiles requires invariant.
+; The publicly-available fbjs version of invariant isn't flow strict.
+; nonstrict-import
+
 [version]
 ^0.110.1
