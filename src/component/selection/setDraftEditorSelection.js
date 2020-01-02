@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow strict-local
+ * @flow
  * @emails oncall+draft_js
  */
 
@@ -253,7 +253,7 @@ function addFocusToSelection(
       // the call to 'selection.extend' is about to throw
       DraftJsDebugLogging.logSelectionStateFailure({
         anonymizedDom: getAnonymizedEditorDOM(node),
-        extraParams: JSON.stringify({offset: offset}),
+        extraParams: JSON.stringify({offset}),
         selectionState: JSON.stringify(selectionState.toJS()),
       });
     }
@@ -292,7 +292,7 @@ function addFocusToSelection(
               : null,
             selectionFocusOffset: selection.focusOffset,
             message: e ? '' + e : null,
-            offset: offset,
+            offset,
           },
           null,
           2,
