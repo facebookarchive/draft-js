@@ -253,7 +253,7 @@ function addFocusToSelection(
       // the call to 'selection.extend' is about to throw
       DraftJsDebugLogging.logSelectionStateFailure({
         anonymizedDom: getAnonymizedEditorDOM(node),
-        extraParams: JSON.stringify({offset: offset}),
+        extraParams: JSON.stringify({offset}),
         selectionState: JSON.stringify(selectionState.toJS()),
       });
     }
@@ -292,7 +292,7 @@ function addFocusToSelection(
               : null,
             selectionFocusOffset: selection.focusOffset,
             message: e ? '' + e : null,
-            offset: offset,
+            offset,
           },
           null,
           2,
@@ -329,7 +329,7 @@ function addPointToSelection(
     // in this case we know that the call to 'range.setStart' is about to throw
     DraftJsDebugLogging.logSelectionStateFailure({
       anonymizedDom: getAnonymizedEditorDOM(node),
-      extraParams: JSON.stringify({offset: offset}),
+      extraParams: JSON.stringify({offset}),
       selectionState: JSON.stringify(selectionState.toJS()),
     });
     DraftEffects.handleExtensionCausedError();
@@ -340,8 +340,11 @@ function addPointToSelection(
   if (isIE) {
     try {
       selection.addRange(range);
-    } catch {
-      // ignore
+    } catch (e) {
+      if (__DEV__) {
+        /* eslint-disable-next-line no-console */
+        console.warn('Call to selection.addRange() threw exception: ', e);
+      }
     }
   } else {
     selection.addRange(range);
