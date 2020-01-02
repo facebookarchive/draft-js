@@ -340,7 +340,7 @@ function addPointToSelection(
   if (isIE) {
     try {
       selection.addRange(range);
-    } catch {
+    } catch (e) {
       // ignore
     }
   } else {
