@@ -35,16 +35,33 @@ function getUpdatedSelectionState(
   }
 
   const anchorPath = DraftOffsetKey.decode(anchorKey);
-  const anchorBlockKey = anchorPath.blockKey;
-  const anchorLeaf = editorState
-    .getBlockTree(anchorBlockKey)
-    .getIn([anchorPath.decoratorKey, 'leaves', anchorPath.leafKey]);
-
   const focusPath = DraftOffsetKey.decode(focusKey);
+
+  const anchorBlockKey = anchorPath.blockKey;
   const focusBlockKey = focusPath.blockKey;
-  const focusLeaf = editorState
-    .getBlockTree(focusBlockKey)
-    .getIn([focusPath.decoratorKey, 'leaves', focusPath.leafKey]);
+
+  const anchorBlock = editorState.getBlockTree(anchorBlockKey);
+  const focusBlock = editorState.getBlockTree(focusBlockKey);
+
+  // When there are more than one draft-js fields on the screen and the
+  // selection starts on one of them and ends at another, valids anchor and
+  // focus keys are extracted from the DOM, but only one is actually present
+  // on the editorState of the focused Editor.
+  // There is nothing we can do about that, let's return the current selection.
+  if (!anchorBlock || !focusBlock) {
+    return selection;
+  }
+
+  const anchorLeaf = anchorBlock.getIn([
+    anchorPath.decoratorKey,
+    'leaves',
+    anchorPath.leafKey,
+  ]);
+  const focusLeaf = focusBlock.getIn([
+    focusPath.decoratorKey,
+    'leaves',
+    focusPath.leafKey,
+  ]);
 
   if (!anchorLeaf || !focusLeaf) {
     // If we cannot make sense of the updated selection state, stick to the current one.
