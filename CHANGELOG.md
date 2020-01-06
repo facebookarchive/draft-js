@@ -4,9 +4,40 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.11.4 (January 7th, 2020)
+
+### Added
+* Add Section and Article to DefaultBlockRenderMap (#2212) (Tarun047 in e20f79f)
+
+### Changed
+* Add rules to .flowconfig for flow strict rules (#2288) (Kevin Chavez in f223799)
+* Update website's yarn version to 0.11.3 (Kevin Chavez in efcaf42)
+* Prettify docs files (#2275) (Yangshun Tay in 6fc9964)
+* Remove Jest auto mocking (#2279) (Yangshun Tay in 817e371)
+* Add myself to get TravisCI emails (Kevin Chavez in f4167fe)
+* Unit tests for isHTMLBRElement (Claudio Procida in bb81765)
+* Remove niveditc from Travis CI email (Nivedita Chopra in 7721805)
+* Create CNAME (#2276) (Yangshun Tay in 92680be)
+* Upgrade to Docusaurus 2 (#2268) (Yangshun Tay in 5b10191)
+* move alex to dev dependencies (#2272) (Ilya in b889d5d)
+* Improve docs syntax and formatting (#2267) (Yangshun Tay in 9b4a628)
+
+### Fixed
+* fix(chore): fixes webpack-stream error with missing catch var declaration (#2291) (Claudio Procida in 4252469)
+* IE could not display composer when opening or creating a new group chat from the chat create view (Jainil Parekh in 64b51df)
+* Fix DOMObserver mutation data for IE (#2285) (Jainil Parekh in afb708f)
+* Added tests and fixed IE IndexSizeError trying to get a range from a selection when there is not one (#2271) (Lauren Wyatt in aa55de2)
+* Fix scroll behavior when node has tab chars (#2256) (cdr in 5d37c03)
+* Fix docs links in readme (#2284) (Lucas Cordeiro in 3b6d231)
+* Fix isHTMLBRElement test (#2278) (Yangshun Tay in 0603772)
+* Fix `isHTMLBRElement` check (Jack Armstrong in e869fcb)
+* Fix typing Chinese in Edge (#2082) (#2088) (Robbert Brak in 8c0727e)
+* Fix Travis website deployment (#2274) (Yangshun Tay in 861aab8)
+* getEntityKeyForSelection.js (Kevin Chavez in c07a404)
+
 ## 0.11.3 (December 2nd, 2019)
 
-## Added
+### Added
 * Take over enhancements to render Draft.js in an iframe (#1938) (Claudio Procida in dceddf5)
 * Implement click listener for editor wrapper (#2230) (Max Vyz in 8f77aa3)
 * Add linting for insensitive and inconsiderate language (#2223) (Claudio Procida in 5dd99d3)
