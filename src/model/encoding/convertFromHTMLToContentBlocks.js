@@ -48,7 +48,15 @@ const REGEX_ZWS = new RegExp('&#8203;?', 'g');
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight
 const boldValues = ['bold', 'bolder', '500', '600', '700', '800', '900'];
-const notBoldValues = ['light', 'lighter', '100', '200', '300', '400'];
+const notBoldValues = [
+  'light',
+  'lighter',
+  'normal',
+  '100',
+  '200',
+  '300',
+  '400',
+];
 
 const anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
 const imgAttr = ['alt', 'className', 'height', 'src', 'width'];
@@ -169,9 +177,10 @@ const isValidImage = (node: Node): boolean => {
  * Try to guess the inline style of an HTML element based on its css
  * styles (font-weight, font-style and text-decoration).
  */
-const styleFromNodeAttributes = (node: Node): DraftInlineStyle => {
-  const style = OrderedSet();
-
+const styleFromNodeAttributes = (
+  node: Node,
+  style: DraftInlineStyle,
+): DraftInlineStyle => {
   if (!isHTMLElement(node)) {
     return style;
   }
@@ -262,7 +271,6 @@ class ContentBlocksBuilder {
   currentBlockType: string = 'unstyled';
   currentDepth: number = 0;
   currentEntity: ?string = null;
-  currentStyle: DraftInlineStyle = OrderedSet();
   currentText: string = '';
   wrapper: ?string = null;
 
@@ -297,7 +305,6 @@ class ContentBlocksBuilder {
     this.currentBlockType = 'unstyled';
     this.currentDepth = 0;
     this.currentEntity = null;
-    this.currentStyle = OrderedSet();
     this.currentText = '';
     this.entityMap = DraftEntity;
     this.wrapper = null;
@@ -311,7 +318,7 @@ class ContentBlocksBuilder {
     this.contentBlocks = [];
     this.currentDepth = 0;
     // Converts the HTML node to block config
-    this.blockConfigs.push(...this._toBlockConfigs([node]));
+    this.blockConfigs.push(...this._toBlockConfigs([node], OrderedSet()));
 
     // There might be some left over text in the builder's
     // internal state, if so make a ContentBlock out of it.
@@ -343,20 +350,6 @@ class ContentBlocksBuilder {
       contentBlocks: this.contentBlocks,
       entityMap: this.entityMap,
     };
-  }
-
-  /**
-   * Add a new inline style to the upcoming nodes.
-   */
-  addStyle(inlineStyle: DraftInlineStyle): void {
-    this.currentStyle = this.currentStyle.union(inlineStyle);
-  }
-
-  /**
-   * Remove a currently applied inline style.
-   */
-  removeStyle(inlineStyle: DraftInlineStyle): void {
-    this.currentStyle = this.currentStyle.subtract(inlineStyle);
   }
 
   // ***********************************WARNING******************************
@@ -392,7 +385,10 @@ class ContentBlocksBuilder {
    * block configs. Some text content may be left in the builders internal
    * state to enable chaining sucessive calls.
    */
-  _toBlockConfigs(nodes: Array<Node>): Array<ContentBlockConfig> {
+  _toBlockConfigs(
+    nodes: Array<Node>,
+    style: DraftInlineStyle,
+  ): Array<ContentBlockConfig> {
     const blockConfigs = [];
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
@@ -416,7 +412,9 @@ class ContentBlocksBuilder {
             this.currentDepth++;
           }
         }
-        blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
+        blockConfigs.push(
+          ...this._toBlockConfigs(Array.from(node.childNodes), style),
+        );
         this.currentDepth = wasCurrentDepth;
         this.wrapper = wasWrapper;
         continue;
@@ -453,7 +451,10 @@ class ContentBlocksBuilder {
         }
 
         const key = generateRandomKey();
-        const childConfigs = this._toBlockConfigs(Array.from(node.childNodes));
+        const childConfigs = this._toBlockConfigs(
+          Array.from(node.childNodes),
+          style,
+        );
         this._trimCurrentText();
         blockConfigs.push(
           this._makeBlockConfig({
@@ -469,37 +470,33 @@ class ContentBlocksBuilder {
       }
 
       if (nodeName === '#text') {
-        this._addTextNode(node);
+        this._addTextNode(node, style);
         continue;
       }
 
       if (nodeName === 'br') {
-        this._addBreakNode(node);
+        this._addBreakNode(node, style);
         continue;
       }
 
       if (isValidImage(node)) {
-        this._addImgNode(node);
+        this._addImgNode(node, style);
         continue;
       }
 
       if (isValidAnchor(node)) {
-        this._addAnchorNode(node, blockConfigs);
+        this._addAnchorNode(node, blockConfigs, style);
         continue;
       }
 
-      const inlineStyle = HTMLTagToRawInlineStyleMap.has(nodeName)
-        ? OrderedSet.of(HTMLTagToRawInlineStyleMap.get(nodeName))
-        : OrderedSet();
-      const attributesStyle = styleFromNodeAttributes(node);
-
-      this.addStyle(inlineStyle);
-      this.addStyle(attributesStyle);
-
-      blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
-
-      this.removeStyle(attributesStyle);
-      this.removeStyle(inlineStyle);
+      let newStyle = style;
+      if (HTMLTagToRawInlineStyleMap.has(nodeName)) {
+        newStyle = newStyle.add(HTMLTagToRawInlineStyleMap.get(nodeName));
+      }
+      newStyle = styleFromNodeAttributes(node, newStyle);
+      blockConfigs.push(
+        ...this._toBlockConfigs(Array.from(node.childNodes), newStyle),
+      );
     }
 
     return blockConfigs;
@@ -508,10 +505,10 @@ class ContentBlocksBuilder {
   /**
    * Append a string of text to the internal buffer.
    */
-  _appendText(text: string) {
+  _appendText(text: string, style: DraftInlineStyle) {
     this.currentText += text;
     const characterMetadata = CharacterMetadata.create({
-      style: this.currentStyle,
+      style,
       entity: this.currentEntity,
     });
     this.characterList = this.characterList.push(
@@ -550,7 +547,7 @@ class ContentBlocksBuilder {
   /**
    * Add the content of an HTML text node to the internal state
    */
-  _addTextNode(node: Node) {
+  _addTextNode(node: Node, style: DraftInlineStyle) {
     let text = node.textContent;
     const trimmedText = text.trim();
 
@@ -568,20 +565,20 @@ class ContentBlocksBuilder {
       text = text.replace(REGEX_LF, SPACE);
     }
 
-    this._appendText(text);
+    this._appendText(text, style);
   }
 
-  _addBreakNode(node: Node) {
+  _addBreakNode(node: Node, style: DraftInlineStyle) {
     if (!isHTMLBRElement(node)) {
       return;
     }
-    this._appendText('\n');
+    this._appendText('\n', style);
   }
 
   /**
    * Add the content of an HTML img node to the internal state
    */
-  _addImgNode(node: Node) {
+  _addImgNode(node: Node, style: DraftInlineStyle) {
     if (!isHTMLImageElement(node)) {
       return;
     }
@@ -607,10 +604,10 @@ class ContentBlocksBuilder {
     // See https://github.com/facebook/draft-js/issues/231 for some context.
     if (gkx('draftjs_fix_paste_for_img')) {
       if (image.getAttribute('role') !== 'presentation') {
-        this._appendText('\ud83d\udcf7');
+        this._appendText('\ud83d\udcf7', style);
       }
     } else {
-      this._appendText('\ud83d\udcf7');
+      this._appendText('\ud83d\udcf7', style);
     }
 
     this.currentEntity = null;
@@ -621,7 +618,11 @@ class ContentBlocksBuilder {
    * (if any) are converted to Block Configs and appended to the provided
    * blockConfig array.
    */
-  _addAnchorNode(node: Node, blockConfigs: Array<ContentBlockConfig>) {
+  _addAnchorNode(
+    node: Node,
+    blockConfigs: Array<ContentBlockConfig>,
+    style: DraftInlineStyle,
+  ) {
     // The check has already been made by isValidAnchor but
     // we have to do it again to keep flow happy.
     if (!isHTMLAnchorElement(node)) {
@@ -645,7 +646,9 @@ class ContentBlocksBuilder {
       entityConfig || {},
     );
 
-    blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes)));
+    blockConfigs.push(
+      ...this._toBlockConfigs(Array.from(node.childNodes), style),
+    );
     this.currentEntity = null;
   }
 
