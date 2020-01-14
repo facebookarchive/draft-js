@@ -34,6 +34,7 @@ type Props = {
   direction: BidiDirection,
   text: string,
   leafSet: Set<any>,
+  ...
 };
 
 class DraftEditorDecoratedLeaves extends React.Component<Props> {

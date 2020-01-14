@@ -37,6 +37,7 @@ type Props = {
   editorKey?: string,
   editorState: EditorState,
   textDirectionality?: BidiDirection,
+  ...
 };
 
 /**

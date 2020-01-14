@@ -41,7 +41,11 @@ class DOMObserver {
   observer: ?MutationObserver;
   container: HTMLElement;
   mutations: Map<string, string>;
-  onCharData: ?({target: EventTarget, type: string}) => void;
+  onCharData: ?({
+    target: EventTarget,
+    type: string,
+    ...
+  }) => void;
 
   constructor(container: HTMLElement) {
     this.container = container;
