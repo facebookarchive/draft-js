@@ -8,7 +8,7 @@
  * @format
  */
 
-jest.disableAutomock().mock('ContentState');
+jest.mock('ContentState');
 
 const CompositeDraftDecorator = require('CompositeDraftDecorator');
 const ContentState = require('ContentState');

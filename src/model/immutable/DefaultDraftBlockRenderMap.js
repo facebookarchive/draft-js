@@ -47,6 +47,12 @@ const DefaultDraftBlockRenderMap: DefaultCoreDraftBlockRenderMap = Map({
   'header-six': {
     element: 'h6',
   },
+  section: {
+    element: 'section',
+  },
+  article: {
+    element: 'article',
+  },
   'unordered-list-item': {
     element: 'li',
     wrapper: UL_WRAP,

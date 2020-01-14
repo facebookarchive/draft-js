@@ -127,7 +127,11 @@ class ContentState extends ContentStateRecord {
 
   hasText(): boolean {
     const blockMap = this.getBlockMap();
-    return blockMap.size > 1 || blockMap.first().getLength() > 0;
+    return (
+      blockMap.size > 1 ||
+      // make sure that there are no zero width space chars
+      escape(blockMap.first().getText()).replace(/%u200B/g, '').length > 0
+    );
   }
 
   createEntity(

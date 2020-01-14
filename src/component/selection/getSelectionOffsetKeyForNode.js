@@ -15,14 +15,19 @@
  * Get offset key from a node or it's child nodes. Return the first offset key
  * found on the DOM tree of given node.
  */
+const isElement = require('isElement');
+
 function getSelectionOffsetKeyForNode(node: Node): ?string {
-  if (node instanceof Element) {
-    const offsetKey = node.getAttribute('data-offset-key');
+  if (isElement(node)) {
+    const castedNode: Element = (node: any);
+    const offsetKey = castedNode.getAttribute('data-offset-key');
     if (offsetKey) {
       return offsetKey;
     }
-    for (let ii = 0; ii < node.childNodes.length; ii++) {
-      const childOffsetKey = getSelectionOffsetKeyForNode(node.childNodes[ii]);
+    for (let ii = 0; ii < castedNode.childNodes.length; ii++) {
+      const childOffsetKey = getSelectionOffsetKeyForNode(
+        castedNode.childNodes[ii],
+      );
       if (childOffsetKey) {
         return childOffsetKey;
       }

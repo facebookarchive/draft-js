@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 jest.mock('generateRandomKey');
 
 const AtomicBlockUtils = require('AtomicBlockUtils');
@@ -33,10 +31,8 @@ const CHARACTER = ' ';
 
 const getInvariantViolation = msg => {
   try {
-    /* eslint-disable fb-www/sprintf-like-args */
+    /* eslint-disable-next-line */
     invariant(false, msg);
-    /* eslint-enable fb-www/sprintf-like-args */
-    return 'Should not reach here.';
   } catch (e) {
     return e;
   }

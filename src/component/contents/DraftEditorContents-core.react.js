@@ -174,7 +174,6 @@ class DraftEditorContents extends React.Component<Props> {
         decorator,
         direction,
         forceSelection,
-        key,
         offsetKey,
         selection,
         tree: editorState.getBlockTree(key),
@@ -225,7 +224,10 @@ class DraftEditorContents extends React.Component<Props> {
       const child = React.createElement(
         Element,
         childProps,
-        <Component {...componentProps} />,
+        /* $FlowFixMe(>=0.112.0 site=www,mobile) This comment suppresses an
+         * error found when Flow v0.112 was deployed. To see the error delete
+         * this comment and run Flow. */
+        <Component {...componentProps} key={key} />,
       );
 
       processedBlocks.push({

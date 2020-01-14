@@ -75,6 +75,9 @@ class EditorState {
     contentState: ContentState,
     decorator?: ?DraftDecoratorType,
   ): EditorState {
+    if (contentState.getBlockMap().count() === 0) {
+      return EditorState.createEmpty(decorator);
+    }
     const firstKey = contentState
       .getBlockMap()
       .first()

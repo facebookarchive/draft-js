@@ -1,0 +1,12 @@
+# The Code of Conduct calls out language that can't be used so it's not linted.
+CODE_OF_CONDUCT.md
+
+# The CHANGELOG contains references to commit messages.
+CHANGELOG.md
+
+# We will handle meeting notes and roadmap documents after the main docs are linted.
+meta/meeting-notes/**/*.md
+meta/roadmaps/*.md
+
+# This README contains some domain specific language that fails validation.
+examples/draft-0-10-0/playground/README.md

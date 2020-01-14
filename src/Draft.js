@@ -34,11 +34,8 @@ const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getVisibleSelectionRect = require('getVisibleSelectionRect');
-const gkx = require('gkx');
 
-const convertFromHTML = gkx('draft_refactored_html_importer')
-  ? require('convertFromHTMLToContentBlocks2')
-  : require('convertFromHTMLToContentBlocks');
+const convertFromHTML = require('convertFromHTMLToContentBlocks');
 
 const DraftPublic = {
   Editor: DraftEditor,

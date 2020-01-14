@@ -9,7 +9,7 @@ depth to a list item.
 
 ## Implementation
 
-The [`RichUtils`](/docs/api-reference-rich-utils.html) module provides a handy `onTab` method that manages this
+The [`RichUtils`](/docs/api-reference-rich-utils) module provides a handy `onTab` method that manages this
 behavior, and should be sufficient for most nested list needs. You can use
 the `onTab` prop on your `Editor` to make use of this utility.
 

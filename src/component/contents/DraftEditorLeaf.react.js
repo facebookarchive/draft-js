@@ -19,7 +19,9 @@ const DraftEditorTextNode = require('DraftEditorTextNode.react');
 const React = require('React');
 
 const invariant = require('invariant');
-const setDraftEditorSelection = require('setDraftEditorSelection');
+const isHTMLBRElement = require('isHTMLBRElement');
+const setDraftEditorSelection = require('setDraftEditorSelection')
+  .setDraftEditorSelection;
 
 type Props = {
   // The block that contains this leaf.
@@ -101,7 +103,7 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     if (child.nodeType === Node.TEXT_NODE) {
       targetNode = child;
-    } else if (child instanceof Element && child.tagName === 'BR') {
+    } else if (isHTMLBRElement(child)) {
       targetNode = node;
     } else {
       targetNode = child.firstChild;

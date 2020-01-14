@@ -7,38 +7,38 @@ This article discusses how to customize Draft default block rendering.
 The block rendering is used to define supported block types and their respective
 renderers, as well as converting pasted content to known Draft block types.
 
-When pasting content or when using the
-[convertFromHTML](/docs/api-reference-data-conversion.html#convertfromhtml)
-Draft will then convert the pasted content to the respective block rendering type
+When pasting content, or when calling
+[convertFromHTML](/docs/api-reference-data-conversion#convertfromhtml),
+Draft will convert pasted content to the respective block rendering type
 by matching the Draft block render map with the matched tag.
 
 ## Draft default block render map
 
-|  HTML element   |            Draft block type             |
-| --------------- | --------------------------------------- |
-|     `<h1/>`     |               header-one                |
-|     `<h2/>`     |               header-two                |
-|     `<h3/>`     |              header-three               |
-|     `<h4/>`     |               header-four               |
-|     `<h5/>`     |               header-five               |
-|     `<h6/>`     |               header-six                |
-| `<blockquote/>` |               blockquote                |
-|    `<pre/>`     |               code-block                |
-|   `<figure/>`   |                 atomic                  |
-|     `<li/>`     | unordered-list-item,ordered-list-item** |
-|    `<div/>`     |               unstyled***               |
+| HTML element    | Draft block type                          |
+| --------------- | ----------------------------------------- |
+| `<h1/>`         | header-one                                |
+| `<h2/>`         | header-two                                |
+| `<h3/>`         | header-three                              |
+| `<h4/>`         | header-four                               |
+| `<h5/>`         | header-five                               |
+| `<h6/>`         | header-six                                |
+| `<blockquote/>` | blockquote                                |
+| `<pre/>`        | code-block                                |
+| `<figure/>`     | atomic                                    |
+| `<li/>`         | unordered-list-item,ordered-list-item\*\* |
+| `<div/>`        | unstyled\*\*\*                            |
 
 \*\* - Block type will be based on the parent `<ul/>` or `<ol/>`
 
-\*\*\* -  Any block that is not recognized by the block rendering mapping will be treated as unstyled
+\*\*\* - Any block that is not recognized by the block rendering mapping will be treated as unstyled
 
 ## Configuring block render map
 
-Draft default block render map can be overwritten, by passing an
+Draft's default block render map can be overwritten by passing an
 [Immutable Map](http://facebook.github.io/immutable-js/docs/#/Map) to
 the editor blockRender props.
 
-*example of overwriting default block render map:*
+_example of overwriting default block render map:_
 
 ```js
 // The example below deliberately only allows
@@ -65,10 +65,10 @@ class RichEditor extends React.Component {
 }
 ```
 
-There are cases where instead of overwriting the defaults we just want to add new block types;
-this can be done by using the DefaultDraftBlockRenderMap reference to create a new blockRenderMap
+There are cases where instead of overwriting the defaults, we only want to add new block types.
+This can be done by using the DefaultDraftBlockRenderMap reference to create a new blockRenderMap
 
-*example of extending default block render map:*
+_example of extending default block render map:_
 
 ```js
 const blockRenderMap = Immutable.Map({
@@ -95,11 +95,11 @@ class RichEditor extends React.Component {
 
 When Draft parses pasted HTML, it maps from HTML elements back into
 Draft block types. If you want to specify other HTML elements that map to a
-particular block type, you can add an array `aliasedElements` to the block config.
+particular block type, you can add the array `aliasedElements` to the block config.
 
-*example of unstyled block type alias usage:*
+_example of unstyled block type alias usage:_
 
-```
+```js
 'unstyled': {
   element: 'div',
   aliasedElements: ['p'],
@@ -108,18 +108,18 @@ particular block type, you can add an array `aliasedElements` to the block confi
 
 ## Custom block wrappers
 
-By default the html element is used to wrap block types however a react component
+By default, the html element is used to wrap block types. However, a react component
 can also be provided to the _blockRenderMap_ to wrap the EditorBlock.
 
-During pasting or when using the
-[convertFromHTML](/docs/api-reference-data-conversion.html#convertfromhtml)
+During pasting, or when calling
+[convertFromHTML](/docs/api-reference-data-conversion#convertfromhtml),
 the html will be scanned for matching tag elements. A wrapper will be used when there is a definition for
 it on the _blockRenderMap_ to wrap that particular block type. For example:
 
-Draft uses wrappers to wrap `<li/>` inside either `<ol/>` or `<ul/>` but wrappers can also be used
-to wrap any other custom block type
+Draft uses wrappers to wrap `<li/>` inside either `<ol/>` or `<ul/>`, but wrappers can also be used
+to wrap any other custom block type.
 
-*example of extending default block render map to use a react component for a custom block:*
+_example of extending default block render map to use a react component for a custom block:_
 
 ```js
 class MyCustomBlock extends React.Component {

@@ -5,13 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @emails oncall+draft_js
- * @flow
+ * @flow strict-local
  * @format
  */
 
 'use strict';
-
-jest.disableAutomock();
 
 // DraftEditorComposition uses timers to detect duplicate `compositionend`
 // events.
@@ -67,7 +65,7 @@ function getEditorStateFromHTML(html: string) {
   const state =
     blocksFromHTML != null
       ? ContentState.createFromBlockArray(
-          blocksFromHTML.contentBlocks ?? [],
+          blocksFromHTML.contentBlocks || [],
           blocksFromHTML.entityMap,
         )
       : ContentState.createEmpty();

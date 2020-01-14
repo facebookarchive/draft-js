@@ -14,6 +14,7 @@
 const UserAgent = require('UserAgent');
 
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
+const getWindowForNode = require('getWindowForNode');
 const Immutable = require('immutable');
 const invariant = require('invariant');
 const nullthrows = require('nullthrows');
@@ -45,8 +46,9 @@ class DOMObserver {
   constructor(container: HTMLElement) {
     this.container = container;
     this.mutations = Map();
-    if (window.MutationObserver && !USE_CHAR_DATA) {
-      this.observer = new window.MutationObserver(mutations =>
+    const containerWindow = getWindowForNode(container);
+    if (containerWindow.MutationObserver && !USE_CHAR_DATA) {
+      this.observer = new containerWindow.MutationObserver(mutations =>
         this.registerMutations(mutations),
       );
     } else {
@@ -108,17 +110,28 @@ class DOMObserver {
       // These events are also followed by a `childList`, which is the one
       // we are able to retrieve the offsetKey and apply the '' text.
       if (target.textContent !== '') {
+        // IE 11 considers the enter keypress that concludes the composition
+        // as an input char. This strips that newline character so the draft
+        // state does not receive spurious newlines.
+        if (USE_CHAR_DATA) {
+          return target.textContent.replace('\n', '');
+        }
         return target.textContent;
       }
     } else if (type === 'childList') {
-      // `characterData` events won't happen or are ignored when
-      // removing the last character of a leaf node, what happens
-      // instead is a `childList` event with a `removedNodes` array.
-      // For this case the textContent should be '' and
-      // `DraftModifier.replaceText` will make sure the content is
-      // updated properly.
       if (removedNodes && removedNodes.length) {
+        // `characterData` events won't happen or are ignored when
+        // removing the last character of a leaf node, what happens
+        // instead is a `childList` event with a `removedNodes` array.
+        // For this case the textContent should be '' and
+        // `DraftModifier.replaceText` will make sure the content is
+        // updated properly.
         return '';
+      } else if (target.textContent !== '') {
+        // Typing Chinese in an empty block in MS Edge results in a
+        // `childList` event with non-empty textContent.
+        // See https://github.com/facebook/draft-js/issues/2082
+        return target.textContent;
       }
     }
     return null;

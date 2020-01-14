@@ -9,8 +9,6 @@
  * @format
  */
 
-jest.disableAutomock();
-
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 

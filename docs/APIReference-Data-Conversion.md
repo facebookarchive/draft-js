@@ -22,18 +22,18 @@ objects.
 
 ## Functions
 
-### convertFromRaw
+### `convertFromRaw()`
 
-```
+```js
 convertFromRaw(rawState: RawDraftContentState): ContentState
 ```
 
 Given a raw state, convert it to a `ContentState`. This is useful when
 restoring contents to use within a Draft editor.
 
-### convertToRaw
+### `convertToRaw()`
 
-```
+```js
 convertToRaw(contentState: ContentState): RawDraftContentState
 ```
 
@@ -41,10 +41,9 @@ Given a `ContentState` object, convert it to a raw JS structure. This is useful
 when saving an editor state for storage, conversion to other formats, or
 other usage within an application.
 
+### `convertFromHTML()`
 
-### convertFromHTML
-
-```
+```js
 const sampleMarkup =
   '<b>Bold text</b>, <i>Italic text</i><br/ ><br />' +
   '<a href="http://www.facebook.com">Example link</a>';
@@ -52,7 +51,7 @@ const sampleMarkup =
 const blocksFromHTML = convertFromHTML(sampleMarkup);
 const state = ContentState.createFromBlockArray(
   blocksFromHTML.contentBlocks,
-  blocksFromHTML.entityMap
+  blocksFromHTML.entityMap,
 );
 
 this.state = {

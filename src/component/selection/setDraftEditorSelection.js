@@ -15,10 +15,15 @@ import type SelectionState from 'SelectionState';
 
 const DraftEffects = require('DraftEffects');
 const DraftJsDebugLogging = require('DraftJsDebugLogging');
+const UserAgent = require('UserAgent');
 
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
+const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
 const invariant = require('invariant');
+const isElement = require('isElement');
+
+const isIE = UserAgent.isBrowser('IE');
 
 function getAnonymizedDOM(
   node: Node,
@@ -34,10 +39,11 @@ function getAnonymizedDOM(
   }
 
   invariant(
-    anonymized instanceof Element,
+    isElement(anonymized),
     'Node must be an Element if it is not a text node.',
   );
-  return anonymized.outerHTML;
+  const castedElement: Element = (anonymized: any);
+  return castedElement.outerHTML;
 }
 
 function anonymizeTextWithin(
@@ -48,7 +54,7 @@ function anonymizeTextWithin(
 
   if (node.nodeType === Node.TEXT_NODE) {
     const length = node.textContent.length;
-    return document.createTextNode(
+    return getCorrectDocumentFromNode(node).createTextNode(
       '[text ' +
         length +
         (labels.length ? ' | ' + labels.join(', ') : '') +
@@ -74,15 +80,15 @@ function getAnonymizedEditorDOM(
 ): string {
   // grabbing the DOM content of the Draft editor
   let currentNode = node;
+  // this should only be used after checking with isElement
+  let castedNode: Element = (currentNode: any);
   while (currentNode) {
-    if (
-      currentNode instanceof Element &&
-      currentNode.hasAttribute('contenteditable')
-    ) {
+    if (isElement(currentNode) && castedNode.hasAttribute('contenteditable')) {
       // found the Draft editor container
       return getAnonymizedDOM(currentNode, getNodeLabels);
     } else {
       currentNode = currentNode.parentNode;
+      castedNode = (currentNode: any);
     }
   }
   return 'Could not find contentEditable parent of node';
@@ -113,11 +119,12 @@ function setDraftEditorSelection(
   // It's possible that the editor has been removed from the DOM but
   // our selection code doesn't know it yet. Forcing selection in
   // this case may lead to errors, so just bail now.
-  if (!containsNode(document.documentElement, node)) {
+  const documentObject = getCorrectDocumentFromNode(node);
+  if (!containsNode(documentObject.documentElement, node)) {
     return;
   }
 
-  const selection = global.getSelection();
+  const selection = documentObject.defaultView.getSelection();
   let anchorKey = selectionState.getAnchorKey();
   let anchorOffset = selectionState.getAnchorOffset();
   let focusKey = selectionState.getFocusKey();
@@ -246,7 +253,7 @@ function addFocusToSelection(
       // the call to 'selection.extend' is about to throw
       DraftJsDebugLogging.logSelectionStateFailure({
         anonymizedDom: getAnonymizedEditorDOM(node),
-        extraParams: JSON.stringify({offset: offset}),
+        extraParams: JSON.stringify({offset}),
         selectionState: JSON.stringify(selectionState.toJS()),
       });
     }
@@ -285,7 +292,7 @@ function addFocusToSelection(
               : null,
             selectionFocusOffset: selection.focusOffset,
             message: e ? '' + e : null,
-            offset: offset,
+            offset,
           },
           null,
           2,
@@ -302,9 +309,11 @@ function addFocusToSelection(
     // Additionally, clone the selection range. IE11 throws an
     // InvalidStateError when attempting to access selection properties
     // after the range is detached.
-    const range = selection.getRangeAt(0);
-    range.setEnd(node, offset);
-    selection.addRange(range.cloneRange());
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      range.setEnd(node, offset);
+      selection.addRange(range.cloneRange());
+    }
   }
 }
 
@@ -314,19 +323,35 @@ function addPointToSelection(
   offset: number,
   selectionState: SelectionState,
 ): void {
-  const range = document.createRange();
+  const range = getCorrectDocumentFromNode(node).createRange();
   // logging to catch bug that is being reported in t16250795
   if (offset > getNodeLength(node)) {
     // in this case we know that the call to 'range.setStart' is about to throw
     DraftJsDebugLogging.logSelectionStateFailure({
       anonymizedDom: getAnonymizedEditorDOM(node),
-      extraParams: JSON.stringify({offset: offset}),
+      extraParams: JSON.stringify({offset}),
       selectionState: JSON.stringify(selectionState.toJS()),
     });
     DraftEffects.handleExtensionCausedError();
   }
   range.setStart(node, offset);
-  selection.addRange(range);
+
+  // IE sometimes throws Unspecified Error when trying to addRange
+  if (isIE) {
+    try {
+      selection.addRange(range);
+    } catch (e) {
+      if (__DEV__) {
+        /* eslint-disable-next-line no-console */
+        console.warn('Call to selection.addRange() threw exception: ', e);
+      }
+    }
+  } else {
+    selection.addRange(range);
+  }
 }
 
-module.exports = setDraftEditorSelection;
+module.exports = {
+  setDraftEditorSelection,
+  addFocusToSelection,
+};

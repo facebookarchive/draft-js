@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const SelectionState = require('SelectionState');
 
 const applyEntityToContentState = require('applyEntityToContentState');

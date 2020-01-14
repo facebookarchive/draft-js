@@ -18,6 +18,7 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type SelectionState from 'SelectionState';
 import type {Map} from 'immutable';
+import type {BlockDataMergeBehavior} from 'insertFragmentIntoContentState';
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentStateInlineStyle = require('ContentStateInlineStyle');
@@ -25,7 +26,6 @@ const ContentStateInlineStyle = require('ContentStateInlineStyle');
 const applyEntityToContentState = require('applyEntityToContentState');
 const getCharacterRemovalRange = require('getCharacterRemovalRange');
 const getContentStateFragment = require('getContentStateFragment');
-const gkx = require('gkx');
 const Immutable = require('immutable');
 const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 const insertTextIntoContentState = require('insertTextIntoContentState');
@@ -118,6 +118,7 @@ const DraftModifier = {
     contentState: ContentState,
     targetRange: SelectionState,
     fragment: BlockMap,
+    mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
   ): ContentState {
     const withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
     const withoutText = removeRangeFromContentState(
@@ -129,6 +130,7 @@ const DraftModifier = {
       withoutText,
       withoutText.getSelectionAfter(),
       fragment,
+      mergeBlockData,
     );
   },
 
@@ -171,24 +173,9 @@ const DraftModifier = {
         return removeRangeFromContentState(contentState, adjustedRemovalRange);
       }
     }
-    let adjustedRemovalRange = rangeToRemove;
-    if (gkx('draft_segmented_entities_behavior')) {
-      // Adjust the selection to properly delete segemented and immutable
-      // entities
-      adjustedRemovalRange = getCharacterRemovalRange(
-        contentState.getEntityMap(),
-        startBlock,
-        endBlock,
-        rangeToRemove,
-        removalDirection,
-      );
-    }
 
-    const withoutEntities = removeEntitiesAtEdges(
-      contentState,
-      adjustedRemovalRange,
-    );
-    return removeRangeFromContentState(withoutEntities, adjustedRemovalRange);
+    const withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
+    return removeRangeFromContentState(withoutEntities, rangeToRemove);
   },
 
   splitBlock: function(

@@ -19,6 +19,8 @@ const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
  * Return the bounding ClientRect for the visible DOM selection, if any.
  * In cases where there are no selected ranges or the bounding rect is
  * temporarily invalid, return null.
+ *
+ * When using from an iframe, you should pass the iframe window object
  */
 function getVisibleSelectionRect(global: any): ?FakeClientRect {
   const selection = global.getSelection();

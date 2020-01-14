@@ -37,6 +37,7 @@ const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
 const Immutable = require('immutable');
 const invariant = require('invariant');
+const isHTMLElement = require('isHTMLElement');
 
 const SCROLL_BUFFER = 10;
 
@@ -251,11 +252,9 @@ class DraftEditorBlockNode extends React.Component<Props> {
         );
       }
     } else {
-      invariant(
-        blockNode instanceof HTMLElement,
-        'blockNode is not an HTMLElement',
-      );
-      const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
+      invariant(isHTMLElement(blockNode), 'blockNode is not an HTMLElement');
+      const htmlBlockNode: HTMLElement = (blockNode: any);
+      const blockBottom = htmlBlockNode.offsetHeight + htmlBlockNode.offsetTop;
       const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
       if (scrollDelta > 0) {

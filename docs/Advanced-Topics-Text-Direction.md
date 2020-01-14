@@ -26,6 +26,6 @@ This may be useful, for instance, if an editor requires strictly centered
 contents, or needs to keep text aligned flush against another UI element.
 
 The `Editor` component therefore provides a `textAlignment` prop, with a
-simple set of values: `'left'`, `'center'`, and `'right'`. Using these values,
+small set of values: `'left'`, `'center'`, and `'right'`. Using these values,
 the contents of your editor will be aligned to the specified direction regardless
 of language and character set.

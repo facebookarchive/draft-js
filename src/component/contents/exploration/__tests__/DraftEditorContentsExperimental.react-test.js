@@ -10,8 +10,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');

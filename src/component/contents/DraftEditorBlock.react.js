@@ -33,6 +33,7 @@ const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
 const invariant = require('invariant');
+const isHTMLElement = require('isHTMLElement');
 const nullthrows = require('nullthrows');
 
 const SCROLL_BUFFER = 10;
@@ -121,12 +122,11 @@ class DraftEditorBlock extends React.Component<Props> {
         );
       }
     } else {
-      invariant(
-        blockNode instanceof HTMLElement,
-        'blockNode is not an HTMLElement',
-      );
+      invariant(isHTMLElement(blockNode), 'blockNode is not an HTMLElement');
       const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
-      const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
+      const pOffset = scrollParent.offsetTop + scrollParent.offsetHeight;
+      const scrollBottom = pOffset + scrollPosition.y;
+
       scrollDelta = blockBottom - scrollBottom;
       if (scrollDelta > 0) {
         Scroll.setTop(
@@ -147,6 +147,10 @@ class DraftEditorBlock extends React.Component<Props> {
     return this.props.tree
       .map((leafSet, ii) => {
         const leavesForLeafSet = leafSet.get('leaves');
+        // T44088704
+        if (leavesForLeafSet.size === 0) {
+          return null;
+        }
         const lastLeaf = leavesForLeafSet.size - 1;
         const leaves = leavesForLeafSet
           .map((leaf, jj) => {

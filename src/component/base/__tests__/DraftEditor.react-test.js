@@ -10,8 +10,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 jest.mock('generateRandomKey');
 
 const DraftEditor = require('DraftEditor.react');
