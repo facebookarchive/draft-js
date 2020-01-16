@@ -18,4 +18,5 @@ export type InlineStyleRange = {
   style: string,
   offset: number,
   length: number,
+  ...
 };

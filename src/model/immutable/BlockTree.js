@@ -28,6 +28,7 @@ const returnTrue = function() {
 const defaultLeafRange: {
   start: ?number,
   end: ?number,
+  ...
 } = {
   start: null,
   end: null,
@@ -40,6 +41,7 @@ const defaultDecoratorRange: {
   end: ?number,
   decoratorKey: ?string,
   leaves: ?List<LeafRange>,
+  ...
 } = {
   start: null,
   end: null,

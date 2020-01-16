@@ -75,6 +75,7 @@ function getRemovalRange(
 ): {
   start: number,
   end: number,
+  ...
 } {
   let removalRange;
 

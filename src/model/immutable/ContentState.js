@@ -36,6 +36,7 @@ const defaultRecord: {
   blockMap: ?BlockMap,
   selectionBefore: ?SelectionState,
   selectionAfter: ?SelectionState,
+  ...
 } = {
   entityMap: null,
   blockMap: null,
@@ -144,13 +145,19 @@ class ContentState extends ContentStateRecord {
     return this;
   }
 
-  mergeEntityData(key: string, toMerge: {[key: string]: any}): ContentState {
+  mergeEntityData(
+    key: string,
+    toMerge: {[key: string]: any, ...},
+  ): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity.__mergeData(key, toMerge);
     return this;
   }
 
-  replaceEntityData(key: string, newData: {[key: string]: any}): ContentState {
+  replaceEntityData(
+    key: string,
+    newData: {[key: string]: any, ...},
+  ): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity.__replaceData(key, newData);
     return this;
@@ -169,7 +176,9 @@ class ContentState extends ContentStateRecord {
 
   static createFromBlockArray(
     // TODO: update flow type when we completely deprecate the old entity API
-    blocks: Array<BlockNodeRecord> | {contentBlocks: Array<BlockNodeRecord>},
+    blocks:
+      | Array<BlockNodeRecord>
+      | {contentBlocks: Array<BlockNodeRecord>, ...},
     entityMap: ?any,
   ): ContentState {
     // TODO: remove this when we completely deprecate the old entity API

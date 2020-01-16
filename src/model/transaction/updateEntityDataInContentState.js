@@ -16,7 +16,7 @@ import type ContentState from 'ContentState';
 function updateEntityDataInContentState(
   contentState: ContentState,
   key: string,
-  data: {[key: string]: any},
+  data: {[key: string]: any, ...},
   merge: boolean,
 ): ContentState {
   const instance = contentState.getEntity(key);

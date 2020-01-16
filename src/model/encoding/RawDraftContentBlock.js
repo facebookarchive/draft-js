@@ -28,4 +28,5 @@ export type RawDraftContentBlock = {
   entityRanges: ?Array<EntityRange>,
   data?: Object,
   children?: Array<RawDraftContentBlock>,
+  ...
 };
