@@ -10,6 +10,7 @@ Immutable.Record {
     "__mergeData": [Function],
     "__replaceData": [Function],
     "add": [Function],
+    "clear": [Function],
     "create": [Function],
     "get": [Function],
     "getLastCreatedEntityKey": [Function],
