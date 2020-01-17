@@ -67,6 +67,11 @@ const DraftPublic = {
   genKey: generateRandomKey,
   getDefaultKeyBinding,
   getVisibleSelectionRect,
+
+  reset: () => {
+    DraftEntity.clear();
+    CharacterMetadata.clear();
+  },
 };
 
 module.exports = DraftPublic;

@@ -102,6 +102,12 @@ class CharacterMetadata extends CharacterMetadataRecord {
     pool = pool.set(configMap, newCharacter);
     return newCharacter;
   }
+
+  static clear(): void {
+    pool = Map([
+      [Map(defaultRecord), EMPTY],
+    ]);
+  }
 }
 
 const EMPTY = new CharacterMetadata();
