@@ -106,3 +106,10 @@ test('must reuse objects by defaulting config properties', () => {
     CharacterMetadata.create({style: UNDERLINE}) === underlined,
   ).toMatchSnapshot();
 });
+
+test('clear pool', () => {
+  CharacterMetadata.clear();
+  expect(
+    CharacterMetadata.create({style: NONE, entity: 'a'}) !== withEntity,
+  ).toBe(true);
+});

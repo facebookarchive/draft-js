@@ -104,7 +104,9 @@ class CharacterMetadata extends CharacterMetadataRecord {
   }
 
   static clear(): void {
-    pool = pool.clear();
+    pool = Map([
+      [Map(defaultRecord), EMPTY],
+    ]);
   }
 }
 
