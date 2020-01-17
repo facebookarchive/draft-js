@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`clear entities 1`] = `
+Immutable.Record {
+  "type": "LINK",
+  "mutability": "MUTABLE",
+  "data": Object {
+    "uri": "zombo.com",
+  },
+}
+`;
+
 exports[`must create instances 1`] = `"string"`;
 
 exports[`must merge data 1`] = `

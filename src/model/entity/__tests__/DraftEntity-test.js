@@ -55,3 +55,11 @@ test('must merge data', () => {
   expect(newEntity.getData()).toMatchSnapshot();
   expect(entityWithNewURI.getData()).toMatchSnapshot();
 });
+
+test('clear entities', () => {
+  const key = createLink();
+  const retrieved = DraftEntity.__get(key);
+  expect(retrieved).toMatchSnapshot();
+  DraftEntity.clear();
+  expect(() => DraftEntity.__get(key)).toThrow();
+});
