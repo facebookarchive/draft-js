@@ -71,7 +71,7 @@
     "gulp-flatten": "^0.4.0",
     "gulp-header": "^2.0.9",
     "gulp-if": "^3.0.0",
-    "gulp-rename": "^1.4.0",
+    "gulp-rename": "2",
     "gulp-util": "^3.0.6",
     "jest": "^24.9.0",
     "prettier": "1.19.1",
@@ -80,8 +80,8 @@
     "react-test-renderer": "^16.0.0",
     "stats-webpack-plugin": "^0.6.2",
     "through2": "^3.0.1",
-    "uglifyjs-webpack-plugin": "^1.1.6",
-    "webpack-stream": "^4.0.0"
+    "uglifyjs-webpack-plugin": "2",
+    "webpack-stream": "5.2.1"
   },
   "devEngines": {
     "node": "10.x || 12.x || 13.x",

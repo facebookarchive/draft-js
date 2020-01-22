@@ -71,7 +71,12 @@ var COPYRIGHT_HEADER = `/**
  */
 `;
 
+var wpack = null;
+
 var buildDist = function(opts) {
+  if (wpack !== null) {
+    return wpack;
+  }
   var webpackOpts = {
     externals: {
       immutable: {
@@ -115,7 +120,7 @@ var buildDist = function(opts) {
   if (!opts.debug) {
     webpackOpts.plugins.push(new UglifyJsPlugin());
   }
-  return webpackStream(webpackOpts, null, function(err, stats) {
+  wpack = webpackStream(webpackOpts, null, function(err, stats) {
     if (err) {
       throw new gulpUtil.PluginError('webpack', err);
     }
@@ -123,6 +128,7 @@ var buildDist = function(opts) {
       gulpUtil.log('webpack', '\n' + stats.toString({colors: true}));
     }
   });
+  return wpack;
 };
 
 gulp.task(
