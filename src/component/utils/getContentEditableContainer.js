@@ -13,13 +13,11 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const ReactDOM = require('ReactDOM');
-
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
 
 function getContentEditableContainer(editor: DraftEditor): HTMLElement {
-  const editorNode = ReactDOM.findDOMNode(editor.editorContainer);
+  const editorNode = editor.editorContainer;
   invariant(editorNode, 'Missing editorNode');
   invariant(
     isHTMLElement(editorNode.firstChild),
