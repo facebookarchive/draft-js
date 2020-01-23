@@ -17,7 +17,6 @@ import type SelectionState from 'SelectionState';
 const DataTransfer = require('DataTransfer');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
-const ReactDOM = require('ReactDOM');
 
 const findAncestorOffsetKey = require('findAncestorOffsetKey');
 const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
@@ -142,7 +141,7 @@ function endDrag(editor) {
   // Prior to React v16.5.0 onDrop breaks onSelect event:
   // https://github.com/facebook/react/issues/11379.
   // Dispatching a mouseup event on DOM node will make it go back to normal.
-  const editorNode = ReactDOM.findDOMNode(editor);
+  const editorNode = editor.editorContainer;
   if (editorNode) {
     const mouseUpEvent = new MouseEvent('mouseup', {
       view: getWindowForNode(editorNode),
