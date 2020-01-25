@@ -28,7 +28,6 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 const DraftEditorNode = require('DraftEditorNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
 const React = require('React');
-const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
 const Style = require('Style');
 
@@ -177,12 +176,14 @@ const getElementPropsConfig = (
   offsetKey: string,
   blockStyleFn: BlockStyleFn,
   customConfig: *,
+  ref: null | {|current: null | Element|},
 ): Object => {
   let elementProps: Object = {
     'data-block': true,
     'data-editor': editorKey,
     'data-offset-key': offsetKey,
     key: block.getKey(),
+    ref,
   };
   const customClass = blockStyleFn(block);
 
@@ -202,6 +203,8 @@ const getElementPropsConfig = (
 };
 
 class DraftEditorBlockNode extends React.Component<Props> {
+  wrapperRef: {|current: null | Element|} = React.createRef<Element>();
+
   shouldComponentUpdate(nextProps: Props): boolean {
     const {block, direction, tree} = this.props;
     const isContainerNode = !block.getChildKeys().isEmpty();
@@ -236,7 +239,11 @@ class DraftEditorBlockNode extends React.Component<Props> {
       return;
     }
 
-    const blockNode = ReactDOM.findDOMNode(this);
+    const blockNode = this.wrapperRef.current;
+    if (!blockNode) {
+      // This Block Node was rendered without a wrapper element.
+      return;
+    }
     const scrollParent = Style.getScrollParent(blockNode);
     const scrollPosition = getScrollPosition(scrollParent);
     let scrollDelta;
@@ -303,6 +310,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
           offsetKey,
           blockStyleFn,
           customConfig,
+          null,
         );
         const childProps = {
           ...this.props,
@@ -377,6 +385,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
       offsetKey,
       blockStyleFn,
       customConfig,
+      this.wrapperRef,
     );
 
     // root block nodes needs to be wrapped
