@@ -76,6 +76,10 @@ export type DraftEditorProps = {
   // or null if no command should be invoked.
   keyBindingFn: (e: SyntheticKeyboardEvent<>) => ?string,
 
+  // Set whether the editor should prevent scrolling into view on mount
+  // if it happens offscreen. By default, `false` to match the native behavior.
+  preventScroll?: boolean,
+
   // Set whether the `DraftEditor` component should be editable. Useful for
   // temporarily disabling edit behavior or allowing `DraftEditor` rendering
   // to be used for consumption purposes.

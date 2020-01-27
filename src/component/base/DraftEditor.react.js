@@ -328,6 +328,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       customStyleFn,
       customStyleMap,
       editorState,
+      preventScroll,
       readOnly,
       textAlignment,
       textDirectionality,
@@ -369,6 +370,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       customStyleFn,
       editorKey: this._editorKey,
       editorState,
+      preventScroll,
       textDirectionality,
     };
 

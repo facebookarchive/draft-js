@@ -49,6 +49,7 @@ type Props = {
   direction: BidiDirection,
   forceSelection: boolean,
   offsetKey: string,
+  preventScroll?: boolean,
   selection: SelectionState,
   startIndent?: boolean,
   tree: List<any>,
@@ -96,6 +97,9 @@ class DraftEditorBlock extends React.Component<Props> {
    * scroll parent.
    */
   componentDidMount(): void {
+    if (this.props.preventScroll) {
+      return;
+    }
     const selection = this.props.selection;
     const endKey = selection.getEndKey();
     if (!selection.getHasFocus() || endKey !== this.props.block.getKey()) {
