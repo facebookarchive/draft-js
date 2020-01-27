@@ -549,9 +549,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     const editHandler = {...handlerMap.edit};
 
     if (onPaste) {
-      /* $FlowFixMe(>=0.111.0) This comment suppresses an error found when Flow
-       * v0.111.0 was deployed. To see the error, delete this comment and run
-       * Flow. */
+      /* $FlowFixMe(>=0.117.0 site=www) This comment suppresses an error found
+       * when Flow v0.117 was deployed. To see the error delete this comment
+       * and run Flow. */
       editHandler.onPaste = onPaste;
     }
 
