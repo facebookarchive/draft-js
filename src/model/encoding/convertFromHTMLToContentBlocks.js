@@ -241,6 +241,7 @@ type ContentBlockConfig = {
   prevSibling: ?string,
   nextSibling: ?string,
   childConfigs: Array<ContentBlockConfig>,
+  ...
 };
 
 /**
@@ -338,6 +339,7 @@ class ContentBlocksBuilder {
   getContentBlocks(): {
     contentBlocks: ?Array<BlockNodeRecord>,
     entityMap: EntityMap,
+    ...
   } {
     if (this.contentBlocks.length === 0) {
       if (experimentalTreeDataSupport) {
@@ -725,6 +727,7 @@ class ContentBlocksBuilder {
   ): {
     text: string,
     characterList: List<CharacterMetadata>,
+    ...
   } {
     const l = blockConfigs.length - 1;
     let text = '';
@@ -753,7 +756,11 @@ const convertFromHTMLToContentBlocks = (
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
-): ?{contentBlocks: ?Array<BlockNodeRecord>, entityMap: EntityMap} => {
+): ?{
+  contentBlocks: ?Array<BlockNodeRecord>,
+  entityMap: EntityMap,
+  ...
+} => {
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.

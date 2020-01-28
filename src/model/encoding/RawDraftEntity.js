@@ -20,5 +20,6 @@ import type {DraftEntityType} from 'DraftEntityType';
 export type RawDraftEntity = {
   type: DraftEntityType,
   mutability: DraftEntityMutability,
-  data: ?{[key: string]: any},
+  data: ?{[key: string]: any, ...},
+  ...
 };

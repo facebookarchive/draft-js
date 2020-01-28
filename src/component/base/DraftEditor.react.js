@@ -285,6 +285,16 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     };
   }
 
+  _handleEditorContainerRef: (HTMLElement | null) => void = (
+    node: HTMLElement | null,
+  ): void => {
+    this.editorContainer = node;
+    // Instead of having a direct ref on the child, we'll grab it here.
+    // This is safe as long as the rendered structure is static (which it is).
+    // This lets the child support ref={props.editorRef} without merging refs.
+    this.editor = node !== null ? (node: any).firstChild : null;
+  };
+
   _showPlaceholder(): boolean {
     return (
       !!this.props.placeholder &&
@@ -318,6 +328,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       customStyleFn,
       customStyleMap,
       editorState,
+      preventScroll,
       readOnly,
       textAlignment,
       textDirectionality,
@@ -359,6 +370,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       customStyleFn,
       editorKey: this._editorKey,
       editorState,
+      preventScroll,
       textDirectionality,
     };
 
@@ -367,7 +379,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         {this._renderPlaceholder()}
         <div
           className={cx('DraftEditor/editorContainer')}
-          ref={ref => (this.editorContainer = ref)}>
+          ref={this._handleEditorContainerRef}>
+          {/* Note: _handleEditorContainerRef assumes this div won't move: */}
           <div
             aria-activedescendant={
               readOnly ? null : this.props.ariaActiveDescendantID
@@ -415,7 +428,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onMouseUp={this._onMouseUp}
             onPaste={this._onPaste}
             onSelect={this._onSelect}
-            ref={ref => (this.editor = ref)}
+            ref={this.props.editorRef}
             role={readOnly ? null : ariaRole}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
@@ -536,9 +549,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     const editHandler = {...handlerMap.edit};
 
     if (onPaste) {
-      /* $FlowFixMe(>=0.111.0) This comment suppresses an error found when Flow
-       * v0.111.0 was deployed. To see the error, delete this comment and run
-       * Flow. */
+      /* $FlowFixMe(>=0.117.0 site=www) This comment suppresses an error found
+       * when Flow v0.117 was deployed. To see the error delete this comment
+       * and run Flow. */
       editHandler.onPaste = onPaste;
     }
 

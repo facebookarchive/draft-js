@@ -29,6 +29,8 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
   // opposed to clicking to another tab or window).
   const {ownerDocument} = e.currentTarget;
   if (
+    // This ESLint rule conflicts with `sketchy-null-bool` flow check
+    // eslint-disable-next-line no-extra-boolean-cast
     !Boolean(editor.props.preserveSelectionOnBlur) &&
     getActiveElement(ownerDocument) === ownerDocument.body
   ) {

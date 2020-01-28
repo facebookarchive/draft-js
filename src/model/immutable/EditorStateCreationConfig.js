@@ -20,4 +20,5 @@ export type EditorStateCreationConfig = {
   currentContent: ContentState,
   decorator: ?DraftDecoratorType,
   selection: SelectionState,
+  ...
 };
