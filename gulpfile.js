@@ -38,7 +38,6 @@ var paths = {
     '!src/**/__mocks__/**/*.js',
   ],
   css: ['src/**/*.css'],
-  static: 'website/static',
 };
 
 var babelOptsJS = {
@@ -246,24 +245,6 @@ gulp.task(
 );
 
 gulp.task(
-  'website:static',
-  gulp.series(
-    'dist:min',
-    'css',
-    gulp.parallel(function() {
-      return gulp
-        .src(paths.dist + '/Draft.min.js')
-        .pipe(gulp.dest(paths.static + '/lib'));
-    }),
-    gulp.parallel(function() {
-      return gulp
-        .src(paths.dist + '/Draft.css')
-        .pipe(gulp.dest(paths.static + '/css'));
-    }),
-  ),
-);
-
-gulp.task(
   'check-dependencies',
   gulp.series(function() {
     return gulp.src('package.json').pipe(gulpCheckDependencies());
@@ -290,6 +271,6 @@ gulp.task(
     'check-dependencies',
     'clean',
     gulp.parallel('modules', 'flow'),
-    gulp.parallel('dist', 'dist:min', 'website:static'),
+    gulp.parallel('dist', 'dist:min'),
   ),
 );
