@@ -168,19 +168,20 @@ class DraftEditorLeaf extends React.Component<Props> {
     }
 
     // skip inserting an empty `class` property to the element
-    const classes = classNames.length
+    const className = classNames.length
       ? // we don't use `cx` here to allow users to take care their classNames
         // minification by themselves. This is handy when used libraries like `jss`
         // or similar
-        {className: classNames.join(' ').trim()}
-      : {};
+        classNames.join(' ').trim()
+      : null;
 
     return (
       <span
         data-offset-key={offsetKey}
         ref={ref => (this.leaf = ref)}
         style={styleObj}
-        {...classes}>
+        className={className}
+      >
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>
     );
