@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -17,10 +17,11 @@ const CharacterMetadata = require('CharacterMetadata');
 
 function applyEntityToContentBlock(
   contentBlock: BlockNodeRecord,
-  start: number,
+  startArg: number,
   end: number,
   entityKey: ?string,
 ): BlockNodeRecord {
+  let start = startArg;
   let characterList = contentBlock.getCharacterList();
   while (start < end) {
     characterList = characterList.set(

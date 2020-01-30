@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -97,7 +97,11 @@ const contentState = new ContentState({
 let editorState = EditorState.createWithContent(contentState);
 editorState = EditorState.forceSelection(editorState, selectionState);
 
-const getSampleStateForTesting = (): Object => {
+const getSampleStateForTesting = (): {|
+  editorState: EditorState,
+  contentState: ContentState,
+  selectionState: SelectionState,
+|} => {
   return {editorState, contentState, selectionState};
 };
 
