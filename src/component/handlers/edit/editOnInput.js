@@ -115,7 +115,8 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
   // we will have manually inserted an extra soft newline in DraftEditorLeaf.
   // We want to remove this extra newline for the purpose of our comparison
   // of DOM and model text.
-  if (domText.endsWith(DOUBLE_NEWLINE)) {
+  const lastSymbols = domText.slice(domText.length - DOUBLE_NEWLINE.length);
+  if (lastSymbols === DOUBLE_NEWLINE) {
     domText = domText.slice(0, -1);
   }
 
