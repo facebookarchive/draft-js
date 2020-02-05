@@ -139,7 +139,7 @@ class DraftEditorLeaf extends React.Component<Props> {
     // an extra line feed character. Browsers collapse trailing newline
     // characters, which leaves the cursor in the wrong place after a
     // shift+enter. The extra character repairs this.
-    if (text.endsWith('\n') && this.props.isLast) {
+    if (text[text.lengths - 1] === '\n' && this.props.isLast) {
       text += '\n';
     }
 
