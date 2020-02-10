@@ -23,11 +23,11 @@ const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
 const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
+const flushControlled = require('DraftEditorFlushControlled');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
 const DraftEffects = require('DraftEffects');
 const EditorState = require('EditorState');
 const React = require('React');
-const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
 const Style = require('Style');
 const UserAgent = require('UserAgent');
@@ -263,11 +263,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * editor mode, if any has been specified.
    */
   _buildHandler(eventName: string): Function {
-    const flushControlled: (fn: Function) => void =
-      /* $FlowFixMe(>=0.79.1 site=www) This comment suppresses an error found
-       * when Flow v0.79 was deployed. To see the error delete this comment and
-       * run Flow. */
-      ReactDOM.unstable_flushControlled;
     // Wrap event handlers in `flushControlled`. In sync mode, this is
     // effectively a no-op. In async mode, this ensures all updates scheduled
     // inside the handler are flushed before React yields to the browser.
