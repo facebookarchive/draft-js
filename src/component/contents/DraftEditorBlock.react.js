@@ -213,7 +213,6 @@ class DraftEditorBlock extends React.Component<Props> {
           contentState: this.props.contentState,
           decoratedText,
           dir: dir,
-          key: decoratorOffsetKey,
           start,
           end,
           blockKey,
@@ -222,7 +221,10 @@ class DraftEditorBlock extends React.Component<Props> {
         };
 
         return (
-          <DecoratorComponent {...decoratorProps} {...commonProps}>
+          <DecoratorComponent
+            {...decoratorProps}
+            {...commonProps}
+            key={decoratorOffsetKey}>
             {leaves}
           </DecoratorComponent>
         );

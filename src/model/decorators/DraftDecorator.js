@@ -66,7 +66,6 @@ export type DraftDecoratorComponentProps = {
   // undefined. That's why `getEntityKeyAt()` is typed to return `?string`.
   // See https://github.com/facebook/draft-js/blob/2da3dcb1c4c106d1b2a0f07b3d0275b8d724e777/src/model/immutable/BlockNode.js#L51
   entityKey: ?string,
-  key: React.Key,
   offsetKey: string,
   start: number,
   ...
