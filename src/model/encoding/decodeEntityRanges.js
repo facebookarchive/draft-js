@@ -5,11 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict
  * @emails oncall+draft_js
  */
 
 'use strict';
+
+import type {EntityRange} from 'EntityRange';
 
 const UnicodeUtils = require('UnicodeUtils');
 
@@ -20,7 +22,7 @@ const {substr} = UnicodeUtils;
  */
 function decodeEntityRanges(
   text: string,
-  ranges: Array<Object>,
+  ranges: Array<EntityRange>,
 ): Array<?string> {
   const entities = Array(text.length).fill(null);
   if (ranges) {
