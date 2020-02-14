@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict
  * @emails oncall+draft_js
  */
 
@@ -20,6 +20,6 @@ import type {DraftEntityType} from 'DraftEntityType';
 export type RawDraftEntity = {
   type: DraftEntityType,
   mutability: DraftEntityMutability,
-  data: ?{[key: string]: any, ...},
+  data: ?{[key: string]: mixed, ...},
   ...
 };
