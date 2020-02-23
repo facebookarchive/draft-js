@@ -69,8 +69,8 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
 
   const {anchorNode, isCollapsed} = domSelection;
   const isNotTextOrElementNode =
-    anchorNode.nodeType !== Node.TEXT_NODE &&
-    anchorNode.nodeType !== Node.ELEMENT_NODE;
+    anchorNode?.nodeType !== Node.TEXT_NODE &&
+    anchorNode?.nodeType !== Node.ELEMENT_NODE;
 
   if (isNotTextOrElementNode) {
     // TODO: (t16149272) figure out context for this change
