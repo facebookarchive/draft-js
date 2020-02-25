@@ -9,10 +9,10 @@
  * @emails oncall+draft_js
  */
 
-const ReactDOM = require('ReactDOM');
+const ReactDOMComet = require('ReactDOMComet');
 
 const flushControlled: void | ((fn: () => void) => void) =
   // $FlowExpectedError unstable_flushControlled is not yet in the upstream Flow typing
-  ReactDOM.unstable_flushControlled;
+  ReactDOMComet.unstable_flushControlled;
 
 module.exports = flushControlled;
