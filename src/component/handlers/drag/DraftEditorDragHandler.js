@@ -41,6 +41,9 @@ function getSelectionForEvent(
    * found when Flow v0.68 was deployed. To see the error delete this comment
    * and run Flow. */
   if (typeof eventTargetDocument.caretRangeFromPoint === 'function') {
+    /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
+     * found when Flow v0.68 was deployed. To see the error delete this comment
+     * and run Flow. */
     const dropRange = eventTargetDocument.caretRangeFromPoint(event.x, event.y);
     node = dropRange.startContainer;
     offset = dropRange.startOffset;
@@ -93,8 +96,6 @@ const DraftEditorDragHandler = {
       return;
     }
 
-    /* $FlowFixMe This comment suppresses an error found DataTransfer was typed.
-     * getFiles() returns an array of <Files extends Blob>, not Blob */
     const files: Array<Blob> = (data.getFiles(): any);
     if (files.length > 0) {
       if (
@@ -104,6 +105,9 @@ const DraftEditorDragHandler = {
         return;
       }
 
+      /* $FlowFixMe This comment suppresses an error found DataTransfer was
+       * typed. getFiles() returns an array of <Files extends Blob>, not Blob
+       */
       getTextContentFromFiles(files, fileText => {
         fileText &&
           editor.update(
