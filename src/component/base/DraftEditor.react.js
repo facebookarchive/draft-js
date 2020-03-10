@@ -146,6 +146,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     readOnly: false,
     spellCheck: false,
     stripPastedStyles: false,
+    style: {},
   };
 
   _blockSelectEvents: boolean;
@@ -305,6 +306,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         editorState: this.props.editorState,
         textAlignment: this.props.textAlignment,
         accessibilityID: this._placeholderAccessibilityID,
+        style: this.props.style,
       };
 
       /* $FlowFixMe(>=0.112.0 site=www,mobile) This comment suppresses an error
@@ -325,6 +327,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       editorState,
       preventScroll,
       readOnly,
+      style,
       textAlignment,
       textDirectionality,
     } = this.props;
@@ -343,6 +346,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       WebkitUserSelect: 'text',
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
+      ...style,
     };
 
     // The aria-expanded and aria-haspopup properties should only be rendered

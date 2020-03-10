@@ -94,6 +94,9 @@ export type DraftEditorProps = {
   // that you set this to `true`.
   stripPastedStyles: boolean,
 
+  // inline styles to pass through to the content
+  style?: Object,
+
   tabIndex?: number,
 
   // exposed especially to help improve mobile web behaviors

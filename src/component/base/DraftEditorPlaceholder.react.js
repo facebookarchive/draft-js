@@ -23,6 +23,7 @@ type Props = {
   editorState: EditorState,
   text: string,
   textAlignment: DraftTextAlignment,
+  style: Object,
 };
 
 /**
@@ -50,6 +51,7 @@ class DraftEditorPlaceholder extends React.Component<Props> {
 
     const contentStyle = {
       whiteSpace: 'pre-wrap',
+      ...this.props.style,
     };
 
     return (
