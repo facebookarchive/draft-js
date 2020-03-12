@@ -336,15 +336,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       'DraftEditor/alignCenter': textAlignment === 'center',
     });
 
-    const contentStyle = {
-      outline: 'none',
-      // fix parent-draggable Safari bug. #1326
-      userSelect: 'text',
-      WebkitUserSelect: 'text',
-      whiteSpace: 'pre-wrap',
-      wordWrap: 'break-word',
-    };
-
     // The aria-expanded and aria-haspopup properties should only be rendered
     // for a combobox.
     /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
@@ -426,7 +417,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             ref={this.props.editorRef}
             role={readOnly ? null : ariaRole}
             spellCheck={allowSpellCheck && this.props.spellCheck}
-            style={contentStyle}
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
             {/*

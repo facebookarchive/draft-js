@@ -48,16 +48,11 @@ class DraftEditorPlaceholder extends React.Component<Props> {
       'public/DraftEditorPlaceholder/hasFocus': hasFocus,
     });
 
-    const contentStyle = {
-      whiteSpace: 'pre-wrap',
-    };
-
     return (
       <div className={className}>
         <div
           className={cx('public/DraftEditorPlaceholder/inner')}
-          id={this.props.accessibilityID}
-          style={contentStyle}>
+          id={this.props.accessibilityID}>
           {this.props.text}
         </div>
       </div>
