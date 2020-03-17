@@ -37,7 +37,7 @@ const CHAMELEON_CHARS = "['\u2018\u2019]";
 // "chameleon chars" also count as punctuation in this regex.
 const WHITESPACE_AND_PUNCTUATION = '\\s|(?![_])' + punctuation;
 
-var DELETE_STRING =
+const DELETE_STRING =
   '^(?:(?:' +
   WHITESPACE_AND_PUNCTUATION +
   '))|' +
@@ -53,9 +53,9 @@ var DELETE_STRING =
   '(?:(?!' +
   WHITESPACE_AND_PUNCTUATION +
   ').)';
-var DELETE_REGEX = new RegExp(DELETE_STRING);
+const DELETE_REGEX = new RegExp(DELETE_STRING);
 
-var BACKSPACE_STRING =
+const BACKSPACE_STRING =
   '(?:(?!' +
   WHITESPACE_AND_PUNCTUATION +
   ').)' +
