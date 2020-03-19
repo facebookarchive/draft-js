@@ -35,7 +35,7 @@ esproposal.class_static_fields=enable
 suppress_type=$FlowIssue
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\).*\n
 suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
-module.name_mapper='ReactDOM' -> 'react-dom'
+module.name_mapper='ReactDOMComet' -> 'react-dom'
 
 [strict]
 deprecated-type
