@@ -5,11 +5,11 @@ Draft is well suited for universal (isomorphic) rendering contexts:
 Here, we have three files:
 
 * editor.js
-  A simple draftjs editor exported as `<SimpleEditor />`
+  A basic draftjs editor exported as `<SimpleEditor />`
 * client.js
-  A simple clientside entrypoint that clientside renders the index page route's logic into a `#react-content` div.
+  A basic clientside entrypoint that clientside renders the index page route's logic into a `#react-content` div.
 * index.js
-  A simple express server that prerenders a <SimpleEditor /> in the `#react-content` div
+  A basic express server that prerenders a <SimpleEditor /> in the `#react-content` div
 
 you can run this by first building draft-js and then installing this demo's dependencies
 

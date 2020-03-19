@@ -1,13 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -15,15 +14,18 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const EditorState = require('EditorState');
 const React = require('React');
 
 const cx = require('cx');
-const joinClasses = require('joinClasses');
+const joinClasses: (
+  className?: ?string,
+  ...classes: Array<?string>
+) => string = require('joinClasses');
 const nullthrows = require('nullthrows');
 
 type Props = {
@@ -172,7 +174,6 @@ class DraftEditorContents extends React.Component<Props> {
         decorator,
         direction,
         forceSelection,
-        key,
         offsetKey,
         selection,
         tree: editorState.getBlockTree(key),
@@ -223,7 +224,16 @@ class DraftEditorContents extends React.Component<Props> {
       const child = React.createElement(
         Element,
         childProps,
-        <Component {...componentProps} />,
+        /* $FlowFixMe(>=0.112.0 site=mobile) This comment suppresses an error
+         * found when Flow v0.112 was deployed. To see the error delete this
+         * comment and run Flow. */
+        /* $FlowFixMe(>=0.112.0 site=www) This comment suppresses an error
+         * found when Flow v0.112 was deployed. To see the error delete this
+         * comment and run Flow. */
+        /* $FlowFixMe(>=0.112.0 site=www,mobile) This comment suppresses an
+         * error found when Flow v0.112 was deployed. To see the error delete
+         * this comment and run Flow. */
+        <Component {...componentProps} key={key} />,
       );
 
       processedBlocks.push({

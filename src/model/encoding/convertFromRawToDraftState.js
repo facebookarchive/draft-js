@@ -1,13 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -23,7 +22,7 @@ const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
 const DraftEntity = require('DraftEntity');
 const DraftTreeAdapter = require('DraftTreeAdapter');
-const Immutable = require('immutable');
+const DraftTreeInvariants = require('DraftTreeInvariants');
 const SelectionState = require('SelectionState');
 
 const createCharacterList = require('createCharacterList');
@@ -31,6 +30,7 @@ const decodeEntityRanges = require('decodeEntityRanges');
 const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
 const generateRandomKey = require('generateRandomKey');
 const gkx = require('gkx');
+const Immutable = require('immutable');
 const invariant = require('invariant');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
@@ -213,7 +213,9 @@ const decodeRawBlocks = (
   rawState: RawDraftContentState,
   entityMap: *,
 ): BlockMap => {
-  const isTreeRawBlock = Array.isArray(rawState.blocks[0].children);
+  const isTreeRawBlock = rawState.blocks.find(
+    block => Array.isArray(block.children) && block.children.length > 0,
+  );
   const rawBlocks =
     experimentalTreeDataSupport && !isTreeRawBlock
       ? DraftTreeAdapter.fromRawStateToRawTreeState(rawState).blocks
@@ -228,7 +230,15 @@ const decodeRawBlocks = (
     );
   }
 
-  return decodeContentBlockNodes(rawBlocks, entityMap);
+  const blockMap = decodeContentBlockNodes(rawBlocks, entityMap);
+  // in dev mode, check that the tree invariants are met
+  if (__DEV__) {
+    invariant(
+      DraftTreeInvariants.isValidTree(blockMap),
+      'Should be a valid tree',
+    );
+  }
+  return blockMap;
 };
 
 const decodeRawEntityMap = (rawState: RawDraftContentState): * => {

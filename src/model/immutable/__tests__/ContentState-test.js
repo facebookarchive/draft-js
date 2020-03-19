@@ -1,18 +1,15 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
 'use strict';
-
-jest.disableAutomock();
 
 jest.mock('SelectionState');
 
@@ -27,6 +24,7 @@ const MULTI_BLOCK = [
   {text: 'Four score', key: 'b'},
   {text: 'and seven', key: 'c'},
 ];
+const ZERO_WIDTH_CHAR_BLOCK = [{text: unescape('%u200B%u200B'), key: 'a'}];
 
 const SelectionState = require('SelectionState');
 
@@ -85,6 +83,12 @@ test('block fetching must retrieve or fail fetching block for key', () => {
   expect(state.getBlockForKey('x')).toMatchSnapshot();
 });
 
+test('must not include zero width chars for has text', () => {
+  expect(getSample(ZERO_WIDTH_CHAR_BLOCK).hasText()).toMatchSnapshot();
+  expect(getSample(SINGLE_BLOCK).hasText()).toMatchSnapshot();
+  expect(getSample(MULTI_BLOCK).hasText()).toMatchSnapshot();
+});
+
 test('must create entities instances', () => {
   const contentState = createLink();
   expect(typeof contentState.getLastCreatedEntityKey()).toMatchSnapshot();
@@ -101,7 +105,6 @@ test('must retrieve an entities instance given a key', () => {
 test('must throw when retrieving entities for an invalid key', () => {
   const contentState = createLink();
   expect(() => contentState.getEntity('asdfzxcvqweriuop')).toThrow();
-  expect(() => contentState.getEntity(null)).toThrow();
 });
 
 test('must merge entities data', () => {

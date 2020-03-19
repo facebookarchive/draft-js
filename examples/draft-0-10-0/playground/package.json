@@ -5,19 +5,32 @@
   "dependencies": {
     "codemirror": "^5.32.0",
     "draft-convert": "^2.0.1",
-    "draft-js": "file:../../../",
+    "draft-js": "file:../../..",
     "immutable": "^3.8.2",
     "react": "^16.2.0",
+    "react-app-polyfill": "^1.0.4",
     "react-codemirror2": "^3.0.7",
     "react-dom": "^16.2.0",
     "react-json-tree": "^0.11.0",
     "react-panelgroup": "^1.0.5",
-    "react-scripts": "1.0.17"
+    "react-scripts": "3.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

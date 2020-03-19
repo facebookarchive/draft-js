@@ -11,9 +11,9 @@ parameters and return `EditorState` objects.
 
 ## Static Methods
 
-### insertAtomicBlock
+### `insertAtomicBlock()`
 
-```
+```js
 insertAtomicBlock: function(
   editorState: EditorState,
   entityKey: string,
@@ -21,9 +21,9 @@ insertAtomicBlock: function(
 ): EditorState
 ```
 
-### moveAtomicBlock
+### `moveAtomicBlock()`
 
-```
+```js
 moveAtomicBlock: function(
   editorState: EditorState,
   atomicBlock: ContentBlock,

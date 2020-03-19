@@ -1,29 +1,27 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
 'use strict';
-
-jest.disableAutomock();
 
 jest.mock('generateRandomKey');
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
-const Immutable = require('immutable');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
+const Immutable = require('immutable');
 const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
+const invariant = require('invariant');
 
 const {contentState, selectionState} = getSampleStateForTesting();
 const {List, Map} = Immutable;
@@ -32,19 +30,28 @@ const DEFAULT_BLOCK_CONFIG = {
   key: 'j',
   type: 'unstyled',
   text: 'xx',
-  data: new Map({a: 1}),
+  data: Map({a: 1}),
 };
 
 const initialBlock = contentState.getBlockMap().first();
+
+const getInvariantViolation = msg => {
+  try {
+    /* eslint-disable-next-line */
+    invariant(false, msg);
+  } catch (e) {
+    return e;
+  }
+};
 
 const createFragment = (fragment = {}, experimentalTreeDataSupport = false) => {
   const ContentBlockNodeRecord = experimentalTreeDataSupport
     ? ContentBlockNode
     : ContentBlock;
-  fragment = Array.isArray(fragment) ? fragment : [fragment];
+  const newFragment = Array.isArray(fragment) ? fragment : [fragment];
 
   return BlockMapBuilder.createFromArray(
-    fragment.map(
+    newFragment.map(
       config =>
         new ContentBlockNodeRecord({
           ...DEFAULT_BLOCK_CONFIG,
@@ -111,7 +118,7 @@ test('must apply multiblock fragments', () => {
       {
         key: 'k',
         text: 'yy',
-        data: new Map({b: 2}),
+        data: Map({b: 2}),
       },
     ]),
   );
@@ -125,7 +132,6 @@ test('must be able to insert a fragment with a single ContentBlockNode', () => {
       {
         key: 'A',
         text: '',
-        data: null,
       },
     ]),
   );
@@ -362,7 +368,6 @@ test('must throw an error when trying to apply ContentBlockNode fragments when s
       {
         key: 'A',
         text: '',
-        data: null,
         children: List(['B']),
       },
       {
@@ -385,7 +390,7 @@ test('must throw an error when trying to apply ContentBlockNode fragments when s
       ]),
     ),
   ).toThrow(
-    new Error(
+    getInvariantViolation(
       '`insertFragment` should not be called when a container node is selected.',
     ),
   );

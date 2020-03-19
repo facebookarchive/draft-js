@@ -1,13 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -15,16 +14,17 @@
 import type ContentState from 'ContentState';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
+import type {DataObjectForLink, RichTextUtils} from 'RichTextUtils';
+import type SelectionState from 'SelectionState';
 import type URI from 'URI';
 
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
 
 const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
 const nullthrows = require('nullthrows');
 
-const RichTextEditorUtil = {
+const RichTextEditorUtil: RichTextUtils = {
   currentBlockContainsLink: function(editorState: EditorState): boolean {
     const selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
@@ -47,7 +47,7 @@ const RichTextEditorUtil = {
       .getType();
   },
 
-  getDataObjectForLinkURL: function(uri: URI): Object {
+  getDataObjectForLinkURL: function(uri: URI): DataObjectForLink {
     return {url: uri.toString()};
   },
 

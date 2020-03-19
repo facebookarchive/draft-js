@@ -1,19 +1,19 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftInsertionType} from 'DraftInsertionType';
+import type SelectionState from 'SelectionState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -21,11 +21,10 @@ const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
 const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
-const Immutable = require('immutable');
-const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
 const gkx = require('gkx');
+const Immutable = require('immutable');
 const moveBlockInContentState = require('moveBlockInContentState');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');

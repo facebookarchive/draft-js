@@ -278,17 +278,183 @@ Object {
 }
 `;
 
+exports[`ignore empty children array 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "A",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "C",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "B",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+    "text": "C",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
+exports[`ignore empty children array for tree conversion 1 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "A",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "C",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "B",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+    "text": "C",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
+exports[`ignore empty children array for tree conversion 2 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": "B",
+    "parent": null,
+    "prevSibling": null,
+    "text": "A",
+    "type": "ordered-list-item",
+  },
+  "B": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "C",
+    "parent": null,
+    "prevSibling": "A",
+    "text": "B",
+    "type": "ordered-list-item",
+  },
+  "C": Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "C",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "B",
+    "text": "C",
+    "type": "ordered-list-item",
+  },
+}
+`;
+
 exports[`must be able to convert content blocks that have list with depth from raw state to tree state when experimentalTreeDataSupport is enabled 1`] = `
 Object {
   "A": Object {
     "characterList": Array [],
-    "children": Array [
-      "B",
-    ],
+    "children": Array [],
     "data": Object {},
     "depth": 0,
     "key": "A",
-    "nextSibling": null,
+    "nextSibling": "key0",
     "parent": null,
     "prevSibling": null,
     "text": "",
@@ -296,14 +462,12 @@ Object {
   },
   "B": Object {
     "characterList": Array [],
-    "children": Array [
-      "C",
-    ],
+    "children": Array [],
     "data": Object {},
     "depth": 1,
     "key": "B",
-    "nextSibling": null,
-    "parent": "A",
+    "nextSibling": "key1",
+    "parent": "key0",
     "prevSibling": null,
     "text": "",
     "type": "ordered-list-item",
@@ -388,9 +552,38 @@ Object {
     "depth": 2,
     "key": "C",
     "nextSibling": null,
-    "parent": "B",
+    "parent": "key1",
     "prevSibling": null,
     "text": "deeply nested list",
+    "type": "ordered-list-item",
+  },
+  "key0": Object {
+    "characterList": Array [],
+    "children": Array [
+      "B",
+      "key1",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "A",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  "key1": Object {
+    "characterList": Array [],
+    "children": Array [
+      "C",
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "key1",
+    "nextSibling": null,
+    "parent": "key0",
+    "prevSibling": "B",
+    "text": "",
     "type": "ordered-list-item",
   },
 }

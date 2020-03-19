@@ -1,19 +1,20 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
+
+const warning = require('warning');
 
 /**
  * Given a collapsed selection, move the focus `maxDistance` forward within
@@ -28,6 +29,11 @@ function moveSelectionForward(
   maxDistance: number,
 ): SelectionState {
   const selection = editorState.getSelection();
+  // Should eventually make this an invariant
+  warning(
+    selection.isCollapsed(),
+    'moveSelectionForward should only be called with a collapsed SelectionState',
+  );
   const key = selection.getStartKey();
   const offset = selection.getStartOffset();
   const content = editorState.getCurrentContent();

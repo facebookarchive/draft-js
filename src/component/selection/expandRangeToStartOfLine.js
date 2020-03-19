@@ -1,26 +1,26 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 const UnicodeUtils = require('UnicodeUtils');
 
+const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
 const getRangeClientRects = require('getRangeClientRects');
 const invariant = require('invariant');
-
 /**
  * Return the computed line height, in pixels, for the provided element.
  */
 function getLineHeightPx(element: Element): number {
   const computed = getComputedStyle(element);
-  const div = document.createElement('div');
+  const correctDocument = getCorrectDocumentFromNode(element);
+  const div = correctDocument.createElement('div');
   div.style.fontFamily = computed.fontFamily;
   div.style.fontSize = computed.fontSize;
   div.style.fontStyle = computed.fontStyle;
@@ -29,7 +29,7 @@ function getLineHeightPx(element: Element): number {
   div.style.position = 'absolute';
   div.textContent = 'M';
 
-  let documentBody = document.body;
+  const documentBody = correctDocument.body;
   invariant(documentBody, 'Missing document.body');
 
   // forced layout here

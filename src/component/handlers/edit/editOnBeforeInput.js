@@ -1,13 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -52,6 +51,7 @@ function replaceText(
   text: string,
   inlineStyle: DraftInlineStyle,
   entityKey: ?string,
+  forceSelection: boolean,
 ): EditorState {
   const contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),
@@ -60,7 +60,12 @@ function replaceText(
     inlineStyle,
     entityKey,
   );
-  return EditorState.push(editorState, contentState, 'insert-characters');
+  return EditorState.push(
+    editorState,
+    contentState,
+    'insert-characters',
+    forceSelection,
+  );
 }
 
 /**
@@ -74,7 +79,7 @@ function replaceText(
  */
 function editOnBeforeInput(
   editor: DraftEditor,
-  e: SyntheticInputEvent<>,
+  e: SyntheticInputEvent<HTMLElement>,
 ): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
@@ -111,42 +116,22 @@ function editOnBeforeInput(
   // is not collapsed, we will re-render.
   const selection = editorState.getSelection();
   const selectionStart = selection.getStartOffset();
-  const selectionEnd = selection.getEndOffset();
   const anchorKey = selection.getAnchorKey();
 
   if (!selection.isCollapsed()) {
     e.preventDefault();
-
-    // If the currently selected text matches what the user is trying to
-    // replace it with, let's just update the `SelectionState`. If not, update
-    // the `ContentState` with the new text.
-    const currentlySelectedChars = editorState
-      .getCurrentContent()
-      .getPlainText()
-      .slice(selectionStart, selectionEnd);
-    if (chars === currentlySelectedChars) {
-      editor.update(
-        EditorState.forceSelection(
-          editorState,
-          selection.merge({
-            anchorOffset: selectionEnd,
-            focusOffset: selectionEnd,
-          }),
+    editor.update(
+      replaceText(
+        editorState,
+        chars,
+        editorState.getCurrentInlineStyle(),
+        getEntityKeyForSelection(
+          editorState.getCurrentContent(),
+          editorState.getSelection(),
         ),
-      );
-    } else {
-      editor.update(
-        replaceText(
-          editorState,
-          chars,
-          editorState.getCurrentInlineStyle(),
-          getEntityKeyForSelection(
-            editorState.getCurrentContent(),
-            editorState.getSelection(),
-          ),
-        ),
-      );
-    }
+        true,
+      ),
+    );
     return;
   }
 
@@ -158,6 +143,7 @@ function editOnBeforeInput(
       editorState.getCurrentContent(),
       editorState.getSelection(),
     ),
+    false,
   );
 
   // Bunch of different cases follow where we need to prevent native insertion.
@@ -168,24 +154,6 @@ function editOnBeforeInput(
     mustPreventNative = isSelectionAtLeafStart(
       editor._latestCommittedEditorState,
     );
-  }
-  if (!mustPreventNative) {
-    // Chrome will also split up a node into two pieces if it contains a Tab
-    // char, for no explicable reason. Seemingly caused by this commit:
-    // https://chromium.googlesource.com/chromium/src/+/013ac5eaf3%5E%21/
-    const nativeSelection = global.getSelection();
-    // Selection is necessarily collapsed at this point due to earlier check.
-    if (
-      nativeSelection.anchorNode &&
-      nativeSelection.anchorNode.nodeType === Node.TEXT_NODE
-    ) {
-      // See isTabHTMLSpanElement in chromium EditingUtilities.cpp.
-      const parentNode = nativeSelection.anchorNode.parentNode;
-      mustPreventNative =
-        parentNode.nodeName === 'SPAN' &&
-        parentNode.firstChild.nodeType === Node.TEXT_NODE &&
-        parentNode.firstChild.nodeValue.indexOf('\t') !== -1;
-    }
   }
   if (!mustPreventNative) {
     // Let's say we have a decorator that highlights hashtags. In many cases
@@ -213,13 +181,15 @@ function editOnBeforeInput(
     //
     // 5. '[#foo]' and append 'b'
     // desired rendering: '[#foob]'
-    // native rendering would be: '[#foob]' (native insertion is OK here)
+    // native rendering would be: '[#foob]'
+    // (native insertion here would be ok for decorators like simple spans,
+    // but not more complex decorators. To be safe, we need to prevent it.)
     //
     // It is safe to allow native insertion if and only if the full list of
-    // decorator ranges matches what we expect native insertion to give. We
-    // don't need to compare the content because the only possible mutation
-    // to consider here is inserting plain text and decorators can't affect
-    // text content.
+    // decorator ranges matches what we expect native insertion to give, and
+    // the range lengths have not changed. We don't need to compare the content
+    // because the only possible mutation to consider here is inserting plain
+    // text and decorators can't affect text content.
     const oldBlockTree = editorState.getBlockTree(anchorKey);
     const newBlockTree = newEditorState.getBlockTree(anchorKey);
     mustPreventNative =
@@ -232,14 +202,19 @@ function editOnBeforeInput(
         const oldEnd = oldLeafSet.get('end');
         const adjustedEnd =
           oldEnd + (oldEnd >= selectionStart ? chars.length : 0);
+        const newStart = newLeafSet.get('start');
+        const newEnd = newLeafSet.get('end');
+        const newDecoratorKey = newLeafSet.get('decoratorKey');
         return (
           // Different decorators
-          oldLeafSet.get('decoratorKey') !== newLeafSet.get('decoratorKey') ||
+          oldLeafSet.get('decoratorKey') !== newDecoratorKey ||
           // Different number of inline styles
           oldLeafSet.get('leaves').size !== newLeafSet.get('leaves').size ||
           // Different effective decorator position
-          adjustedStart !== newLeafSet.get('start') ||
-          adjustedEnd !== newLeafSet.get('end')
+          adjustedStart !== newStart ||
+          adjustedEnd !== newEnd ||
+          // Decorator already existed and its length changed
+          (newDecoratorKey != null && newEnd - newStart !== oldEnd - oldStart)
         );
       });
   }
@@ -254,6 +229,9 @@ function editOnBeforeInput(
 
   if (mustPreventNative) {
     e.preventDefault();
+    newEditorState = EditorState.set(newEditorState, {
+      forceSelection: true,
+    });
     editor.update(newEditorState);
     return;
   }

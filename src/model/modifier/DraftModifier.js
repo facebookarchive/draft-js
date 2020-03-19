@@ -1,13 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -19,15 +18,15 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type SelectionState from 'SelectionState';
 import type {Map} from 'immutable';
+import type {BlockDataMergeBehavior} from 'insertFragmentIntoContentState';
 
 const CharacterMetadata = require('CharacterMetadata');
 const ContentStateInlineStyle = require('ContentStateInlineStyle');
-const Immutable = require('immutable');
 
 const applyEntityToContentState = require('applyEntityToContentState');
 const getCharacterRemovalRange = require('getCharacterRemovalRange');
 const getContentStateFragment = require('getContentStateFragment');
-const gkx = require('gkx');
+const Immutable = require('immutable');
 const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 const insertTextIntoContentState = require('insertTextIntoContentState');
 const invariant = require('invariant');
@@ -119,6 +118,7 @@ const DraftModifier = {
     contentState: ContentState,
     targetRange: SelectionState,
     fragment: BlockMap,
+    mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
   ): ContentState {
     const withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
     const withoutText = removeRangeFromContentState(
@@ -130,6 +130,7 @@ const DraftModifier = {
       withoutText,
       withoutText.getSelectionAfter(),
       fragment,
+      mergeBlockData,
     );
   },
 
@@ -172,24 +173,9 @@ const DraftModifier = {
         return removeRangeFromContentState(contentState, adjustedRemovalRange);
       }
     }
-    let adjustedRemovalRange = rangeToRemove;
-    if (gkx('draft_segmented_entities_behavior')) {
-      // Adjust the selection to properly delete segemented and immutable
-      // entities
-      adjustedRemovalRange = getCharacterRemovalRange(
-        contentState.getEntityMap(),
-        startBlock,
-        endBlock,
-        rangeToRemove,
-        removalDirection,
-      );
-    }
 
-    const withoutEntities = removeEntitiesAtEdges(
-      contentState,
-      adjustedRemovalRange,
-    );
-    return removeRangeFromContentState(withoutEntities, adjustedRemovalRange);
+    const withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
+    return removeRangeFromContentState(withoutEntities, rangeToRemove);
   },
 
   splitBlock: function(

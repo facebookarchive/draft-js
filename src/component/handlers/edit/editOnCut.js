@@ -1,13 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow strict-local
+ * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -20,6 +19,7 @@ const Style = require('Style');
 
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
+const isNode = require('isInstanceOfNode');
 
 /**
  * On `cut` events, native behavior is allowed to occur so that the system
@@ -44,8 +44,9 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Track the current scroll position so that it can be forced back in place
   // after the editor regains control of the DOM.
-  if (element instanceof Node) {
-    scrollPosition = getScrollPosition(Style.getScrollParent(element));
+  if (isNode(element)) {
+    const node: Node = (element: any);
+    scrollPosition = getScrollPosition(Style.getScrollParent(node));
   }
 
   const fragment = getFragmentFromSelection(editorState);

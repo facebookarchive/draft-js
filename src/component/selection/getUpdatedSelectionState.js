@@ -1,13 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
  * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -29,9 +28,8 @@ function getUpdatedSelectionState(
   const selection: SelectionState = nullthrows(editorState.getSelection());
   if (__DEV__) {
     if (!anchorKey || !focusKey) {
-      /*eslint-disable no-console */
+      /* eslint-disable-next-line */
       console.warn('Invalid selection state.', arguments, editorState.toJS());
-      /*eslint-enable no-console */
       return selection;
     }
   }
@@ -59,6 +57,15 @@ function getUpdatedSelectionState(
     'leaves',
     focusPath.leafKey,
   ]);
+
+  if (!anchorLeaf || !focusLeaf) {
+    // If we cannot make sense of the updated selection state, stick to the current one.
+    if (__DEV__) {
+      /* eslint-disable-next-line */
+      console.warn('Invalid selection state.', arguments, editorState.toJS());
+    }
+    return selection;
+  }
 
   const anchorLeafStart: number = anchorLeaf.get('start');
   const focusLeafStart: number = focusLeaf.get('start');

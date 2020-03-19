@@ -1,13 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -15,6 +14,8 @@
 import type ContentState from 'ContentState';
 import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
+
+const {notEmptyKey} = require('draftKeyUtils');
 
 /**
  * Return the entity key that should be used when inserting text for the
@@ -57,7 +58,7 @@ function getEntityKeyForSelection(
  * return it. If not, return null.
  */
 function filterKey(entityMap: EntityMap, entityKey: ?string): ?string {
-  if (entityKey) {
+  if (notEmptyKey(entityKey)) {
     const entity = entityMap.__get(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;
   }

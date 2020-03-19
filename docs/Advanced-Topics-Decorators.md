@@ -14,7 +14,7 @@ offers a live example of decorators in action.
 ## CompositeDecorator
 
 The decorator concept is based on scanning the contents of a given
-[ContentBlock](/docs/api-reference-content-block.html)
+[ContentBlock](/docs/api-reference-content-block)
 for ranges of text that match a defined strategy, then rendering them
 with a specified React component.
 
@@ -84,20 +84,28 @@ The strategy functions execute the provided callback with the `start` and
 ## Decorator Components
 
 For your decorated ranges of text, you must define a React component to use
-to render them. These tend to be simple `span` elements with CSS classes or
+to render them. These tend to be plain `span` elements with CSS classes or
 styles applied to them.
 
 In our current example, the `CompositeDecorator` object names `HandleSpan` and
-`HashtagSpan` as the components to use for decoration. These are just basic
+`HashtagSpan` as the components to use for decoration. These are basic
 stateless components:
 
 ```js
-const HandleSpan = (props) => {
-  return <span {...props} style={styles.handle}>{props.children}</span>;
+const HandleSpan = props => {
+  return (
+    <span {...props} style={styles.handle}>
+      {props.children}
+    </span>
+  );
 };
 
-const HashtagSpan = (props) => {
-  return <span {...props} style={styles.hashtag}>{props.children}</span>;
+const HashtagSpan = props => {
+  return (
+    <span {...props} style={styles.hashtag}>
+      {props.children}
+    </span>
+  );
 };
 ```
 
@@ -124,7 +132,7 @@ you wish, as long as they match the expected type -- you are not bound by
 ## Setting new decorators
 
 Further, it is acceptable to set a new `decorator` value on the `EditorState`
-on the fly, during normal state propagation -- through immutable means, of course.
+on the fly, during normal state propagation, through immutable means.
 
 This means that during your app workflow, if your decorator becomes invalid or
 requires a modification, you can create a new decorator object (or use
@@ -137,10 +145,12 @@ following:
 
 ```js
 function turnOffHandleDecorations(editorState) {
-  const onlyHashtags = new CompositeDecorator([{
-    strategy: hashtagStrategy,
-    component: HashtagSpan,
-  }]);
+  const onlyHashtags = new CompositeDecorator([
+    {
+      strategy: hashtagStrategy,
+      component: HashtagSpan,
+    },
+  ]);
   return EditorState.set(editorState, {decorator: onlyHashtags});
 }
 ```

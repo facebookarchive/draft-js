@@ -1,0 +1,17 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@media only screen and (max-width: 996px) {
+  .demoGif {
+    margin-top: 2rem;
+    width: 100%;
+  }
+
+  .hideOnTabletAndSmaller {
+    display: none;
+  }
+}

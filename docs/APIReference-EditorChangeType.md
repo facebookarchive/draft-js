@@ -22,68 +22,68 @@ static typechecking on your project. Flow will enforce the use of an appropriate
 
 ## Values
 
-#### `adjust-depth`
+### `adjust-depth`
 
 The `depth` value of one or more `ContentBlock` objects is being changed.
 
-#### `apply-entity`
+### `apply-entity`
 
 An entity is being applied (or removed via `null`) to one or more characters.
 
-#### `backspace-character`
+### `backspace-character`
 
 A single character is being backward-removed.
 
-#### `change-block-data`
+### `change-block-data`
 
 The `data` value of one or more `ContentBlock` objects is being changed.
 
-#### `change-block-type`
+### `change-block-type`
 
 The `type` value of one or more `ContentBlock` objects is being changed.
 
-#### `change-inline-style`
+### `change-inline-style`
 
 An inline style is being applied or removed for one or more characters.
 
-#### `move-block`
+### `move-block`
 
 A block is being moved within the [BlockMap](https://github.com/facebook/draft-js/blob/master/src/model/immutable/BlockMap.js).
 
-#### `delete-character`
+### `delete-character`
 
 A single character is being forward-removed.
 
-#### `insert-characters`
+### `insert-characters`
 
 One or more characters is being inserted at a selection state.
 
-#### `insert-fragment`
+### `insert-fragment`
 
 A "fragment" of content (i.e. a
 [BlockMap](https://github.com/facebook/draft-js/blob/master/src/model/immutable/BlockMap.js))
 is being inserted at a selection state.
 
-#### `redo`
+### `redo`
 
 A redo operation is being performed. Since redo behavior is handled by the
 Draft core, it is unlikely that you will need to use this explicitly.
 
-#### `remove-range`
+### `remove-range`
 
 Multiple characters or blocks are being removed.
 
-#### `spellcheck-change`
+### `spellcheck-change`
 
 A spellcheck or autocorrect change is being performed. This is used to inform
 the core editor whether to try to allow native undo behavior.
 
-#### `split-block`
+### `split-block`
 
 A single `ContentBlock` is being split into two, for instance when the user
 presses return.
 
-#### `undo`
+### `undo`
 
 An undo operation is being performed. Since undo behavior is handled by the
 Draft core, it is unlikely that you will need to use this explicitly.

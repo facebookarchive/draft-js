@@ -1,5 +1,15 @@
 /**
- * Copyright 2004-present Facebook. All Rights Reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+ *
+ * This file provided by Facebook is for non-commercial testing and evaluation
+ * purposes only. Facebook reserves all rights not expressly granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * @flow
  * @format
@@ -9,7 +19,14 @@ import React, {Component} from 'react';
 
 import {Editor, RichUtils, getDefaultKeyBinding} from 'draft-js';
 
+import gkx from 'draft-js/lib/gkx';
+import NestedRichTextEditorUtil from 'draft-js/lib/NestedRichTextEditorUtil';
+
 import './DraftJsRichEditorExample.css';
+
+const RichTextUtils = gkx('draft_tree_data_support')
+  ? NestedRichTextEditorUtil
+  : RichUtils;
 
 class DraftJsRichEditorExample extends Component {
   constructor(props) {
@@ -23,7 +40,7 @@ class DraftJsRichEditorExample extends Component {
   }
 
   _handleKeyCommand(command, editorState) {
-    const newState = RichUtils.handleKeyCommand(editorState, command);
+    const newState = RichTextUtils.handleKeyCommand(editorState, command);
     if (newState) {
       this.onChange(newState);
       return true;
@@ -33,7 +50,7 @@ class DraftJsRichEditorExample extends Component {
 
   _mapKeyToEditorCommand(e) {
     if (e.keyCode === 9 /* TAB */) {
-      const newEditorState = RichUtils.onTab(
+      const newEditorState = RichTextUtils.onTab(
         e,
         this.props.editorState,
         4 /* maxDepth */,
@@ -47,12 +64,14 @@ class DraftJsRichEditorExample extends Component {
   }
 
   _toggleBlockType(blockType) {
-    this.onChange(RichUtils.toggleBlockType(this.props.editorState, blockType));
+    this.onChange(
+      RichTextUtils.toggleBlockType(this.props.editorState, blockType),
+    );
   }
 
   _toggleInlineStyle(inlineStyle) {
     this.onChange(
-      RichUtils.toggleInlineStyle(this.props.editorState, inlineStyle),
+      RichTextUtils.toggleInlineStyle(this.props.editorState, inlineStyle),
     );
   }
 
