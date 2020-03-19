@@ -38,6 +38,7 @@ type Props = {
   editorState: EditorState,
   preventScroll?: boolean,
   textDirectionality?: BidiDirection,
+  ...
 };
 
 /**

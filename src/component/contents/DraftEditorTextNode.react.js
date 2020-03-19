@@ -57,9 +57,7 @@ const NEWLINE_B = ref =>
     <br key="B" data-text="true" ref={ref} />
   );
 
-type Props = {
-  children: string,
-};
+type Props = {children: string, ...};
 
 /**
  * The lowest-level component in a `DraftEditor`, the text node component

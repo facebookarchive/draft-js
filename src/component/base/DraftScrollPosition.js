@@ -14,4 +14,5 @@
 export type DraftScrollPosition = {
   x: number,
   y: number,
+  ...
 };

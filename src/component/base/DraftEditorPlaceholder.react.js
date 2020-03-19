@@ -23,6 +23,7 @@ type Props = {
   editorState: EditorState,
   text: string,
   textAlignment: DraftTextAlignment,
+  ...
 };
 
 /**

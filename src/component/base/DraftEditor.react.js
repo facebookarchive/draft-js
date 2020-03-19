@@ -57,15 +57,14 @@ const handlerMap = {
   render: null,
 };
 
-type State = {
-  contentsKey: number,
-};
+type State = {contentsKey: number, ...};
 
 let didInitODS = false;
 
 class UpdateDraftEditorFlags extends React.Component<{
   editor: DraftEditor,
   editorState: EditorState,
+  ...
 }> {
   render(): React.Node {
     return null;

@@ -53,6 +53,7 @@ type Props = {
   selection: SelectionState,
   startIndent?: boolean,
   tree: List<any>,
+  ...
 };
 
 /**
