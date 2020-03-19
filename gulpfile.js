@@ -7,27 +7,25 @@
 
 'use strict';
 
-var babel = require('gulp-babel');
+var packageData = require('./package.json');
+var moduleMap = require('./scripts/module-map');
+var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
 var del = require('del');
+var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
+var gulp = require('gulp');
+var babel = require('gulp-babel');
 var cleanCSS = require('gulp-clean-css');
 var concatCSS = require('gulp-concat-css');
 var derequire = require('gulp-derequire');
 var flatten = require('gulp-flatten');
-var gulp = require('gulp');
-var gulpif = require('gulp-if');
-var gulpUtil = require('gulp-util');
 var header = require('gulp-header');
-var packageData = require('./package.json');
+var gulpif = require('gulp-if');
 var rename = require('gulp-rename');
+var gulpUtil = require('gulp-util');
 var StatsPlugin = require('stats-webpack-plugin');
 var through = require('through2');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var webpackStream = require('webpack-stream');
-
-var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
-var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
-
-var moduleMap = require('./scripts/module-map');
 
 var paths = {
   dist: 'dist',
@@ -38,7 +36,6 @@ var paths = {
     '!src/**/__mocks__/**/*.js',
   ],
   css: ['src/**/*.css'],
-  static: 'website/static',
 };
 
 var babelOptsJS = {
@@ -71,7 +68,12 @@ var COPYRIGHT_HEADER = `/**
  */
 `;
 
+var wpStream = null;
+
 var buildDist = function(opts) {
+  if (wpStream !== null) {
+    return wpStream;
+  }
   var webpackOpts = {
     externals: {
       immutable: {
@@ -115,7 +117,7 @@ var buildDist = function(opts) {
   if (!opts.debug) {
     webpackOpts.plugins.push(new UglifyJsPlugin());
   }
-  return webpackStream(webpackOpts, null, function(err, stats) {
+  wpStream = webpackStream(webpackOpts, null, function(err, stats) {
     if (err) {
       throw new gulpUtil.PluginError('webpack', err);
     }
@@ -123,6 +125,7 @@ var buildDist = function(opts) {
       gulpUtil.log('webpack', '\n' + stats.toString({colors: true}));
     }
   });
+  return wpStream;
 };
 
 gulp.task(
@@ -246,24 +249,6 @@ gulp.task(
 );
 
 gulp.task(
-  'website:static',
-  gulp.series(
-    'dist:min',
-    'css',
-    gulp.parallel(function() {
-      return gulp
-        .src(paths.dist + '/Draft.min.js')
-        .pipe(gulp.dest(paths.static + '/lib'));
-    }),
-    gulp.parallel(function() {
-      return gulp
-        .src(paths.dist + '/Draft.css')
-        .pipe(gulp.dest(paths.static + '/css'));
-    }),
-  ),
-);
-
-gulp.task(
   'check-dependencies',
   gulp.series(function() {
     return gulp.src('package.json').pipe(gulpCheckDependencies());
@@ -290,6 +275,6 @@ gulp.task(
     'check-dependencies',
     'clean',
     gulp.parallel('modules', 'flow'),
-    gulp.parallel('dist', 'dist:min', 'website:static'),
+    gulp.parallel('dist', 'dist:min'),
   ),
 );

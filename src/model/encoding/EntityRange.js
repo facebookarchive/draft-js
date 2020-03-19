@@ -21,4 +21,5 @@ export type EntityRange = {
   key: number,
   offset: number,
   length: number,
+  ...
 };

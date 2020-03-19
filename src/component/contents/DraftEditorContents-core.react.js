@@ -36,6 +36,7 @@ type Props = {
   customStyleMap?: Object,
   editorKey?: string,
   editorState: EditorState,
+  preventScroll?: boolean,
   textDirectionality?: BidiDirection,
 };
 
@@ -132,6 +133,7 @@ class DraftEditorContents extends React.Component<Props> {
       customStyleFn,
       editorState,
       editorKey,
+      preventScroll,
       textDirectionality,
     } = this.props;
 
@@ -175,6 +177,7 @@ class DraftEditorContents extends React.Component<Props> {
         direction,
         forceSelection,
         offsetKey,
+        preventScroll,
         selection,
         tree: editorState.getBlockTree(key),
       };
@@ -224,12 +227,6 @@ class DraftEditorContents extends React.Component<Props> {
       const child = React.createElement(
         Element,
         childProps,
-        /* $FlowFixMe(>=0.112.0 site=mobile) This comment suppresses an error
-         * found when Flow v0.112 was deployed. To see the error delete this
-         * comment and run Flow. */
-        /* $FlowFixMe(>=0.112.0 site=www) This comment suppresses an error
-         * found when Flow v0.112 was deployed. To see the error delete this
-         * comment and run Flow. */
         /* $FlowFixMe(>=0.112.0 site=www,mobile) This comment suppresses an
          * error found when Flow v0.112 was deployed. To see the error delete
          * this comment and run Flow. */

@@ -4,8 +4,8 @@ exports[`must decode when an entity is present 1`] = `
 Array [
   null,
   null,
-  "6",
-  "6",
+  6,
+  6,
   null,
 ]
 `;
@@ -14,11 +14,11 @@ exports[`must decode when an entity is present more than once 1`] = `
 Array [
   null,
   null,
-  "6",
-  "6",
+  6,
+  6,
   null,
-  "6",
-  "6",
+  6,
+  6,
   null,
 ]
 `;
@@ -27,11 +27,11 @@ exports[`must decode when multiple entities present 1`] = `
 Array [
   null,
   null,
-  "6",
-  "6",
+  6,
+  6,
   null,
-  "8",
-  "8",
+  8,
+  8,
   null,
 ]
 `;
@@ -69,16 +69,16 @@ Array [
   null,
   null,
   null,
-  "6",
-  "6",
-  "6",
-  "6",
-  "6",
-  "6",
+  6,
+  6,
+  6,
+  6,
+  6,
+  6,
   null,
   null,
-  "8",
-  "8",
+  8,
+  8,
   null,
 ]
 `;

@@ -42,6 +42,7 @@ type Props = {
   hasSelection: boolean,
   selection: SelectionState,
   tree: List<any>,
+  ...
 };
 
 class DraftEditorNode extends React.Component<Props> {

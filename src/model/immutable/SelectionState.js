@@ -22,6 +22,7 @@ const defaultRecord: {
   focusOffset: number,
   isBackward: boolean,
   hasFocus: boolean,
+  ...
 } = {
   anchorKey: '',
   anchorOffset: 0,

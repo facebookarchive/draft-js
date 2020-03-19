@@ -19,7 +19,6 @@ function isInstanceOfNode(target: ?EventTarget): boolean {
     if (!node.ownerDocument.defaultView) {
       return node instanceof Node;
     }
-    // $FlowFixMe https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682
     if (node instanceof node.ownerDocument.defaultView.Node) {
       return true;
     }

@@ -37,6 +37,7 @@ type Props = {
   editorKey?: string,
   editorState: EditorState,
   textDirectionality?: BidiDirection,
+  ...
 };
 
 /**
@@ -146,12 +147,6 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
         blockRenderMap.get('unstyled');
       const wrapperTemplate = configForType.wrapper;
       processedBlocks.push({
-        /* $FlowFixMe(>=0.112.0 site=mobile) This comment suppresses an error
-         * found when Flow v0.112 was deployed. To see the error delete this
-         * comment and run Flow. */
-        /* $FlowFixMe(>=0.112.0 site=www) This comment suppresses an error
-         * found when Flow v0.112 was deployed. To see the error delete this
-         * comment and run Flow. */
         /* $FlowFixMe(>=0.112.0 site=www,mobile) This comment suppresses an
          * error found when Flow v0.112 was deployed. To see the error delete
          * this comment and run Flow. */

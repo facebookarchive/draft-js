@@ -89,8 +89,8 @@ test('must remove styles', () => {
 test('must add and remove styles accross multiple blocks', () => {
   const nextBlock = contentState.getBlockAfter(selectionState.getStartKey());
   const selection = selectionState.merge({
-    focusKey: nextBlock.getKey(),
-    focusOffset: nextBlock.getLength(),
+    focusKey: nextBlock?.getKey(),
+    focusOffset: nextBlock?.getLength(),
   });
 
   const modified = assertAddContentStateInlineStyle('BOLD', selection);

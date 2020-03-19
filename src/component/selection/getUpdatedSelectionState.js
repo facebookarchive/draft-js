@@ -36,27 +36,25 @@ function getUpdatedSelectionState(
 
   const anchorPath = DraftOffsetKey.decode(anchorKey);
   const anchorBlockKey = anchorPath.blockKey;
-  const anchorBlockTree = editorState.getBlockTree(anchorBlockKey);
-  if (!anchorBlockTree) {
-    return selection;
-  }
-  const anchorLeaf = anchorBlockTree.getIn([
-    anchorPath.decoratorKey,
-    'leaves',
-    anchorPath.leafKey,
-  ]);
+  const anchorLeafBlockTree = editorState.getBlockTree(anchorBlockKey);
+  const anchorLeaf =
+    anchorLeafBlockTree &&
+    anchorLeafBlockTree.getIn([
+      anchorPath.decoratorKey,
+      'leaves',
+      anchorPath.leafKey,
+    ]);
 
   const focusPath = DraftOffsetKey.decode(focusKey);
   const focusBlockKey = focusPath.blockKey;
-  const focusBlockTree = editorState.getBlockTree(focusBlockKey);
-  if (!focusBlockKey) {
-    return selection;
-  }
-  const focusLeaf = focusBlockTree.getIn([
-    focusPath.decoratorKey,
-    'leaves',
-    focusPath.leafKey,
-  ]);
+  const focusLeafBlockTree = editorState.getBlockTree(focusBlockKey);
+  const focusLeaf =
+    focusLeafBlockTree &&
+    focusLeafBlockTree.getIn([
+      focusPath.decoratorKey,
+      'leaves',
+      focusPath.leafKey,
+    ]);
 
   if (!anchorLeaf || !focusLeaf) {
     // If we cannot make sense of the updated selection state, stick to the current one.

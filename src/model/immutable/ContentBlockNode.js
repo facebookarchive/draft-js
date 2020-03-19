@@ -33,6 +33,7 @@ type ContentBlockNodeConfig = BlockNodeConfig & {
   parent?: ?BlockNodeKey,
   prevSibling?: ?BlockNodeKey,
   nextSibling?: ?BlockNodeKey,
+  ...
 };
 
 const EMPTY_SET = OrderedSet();
