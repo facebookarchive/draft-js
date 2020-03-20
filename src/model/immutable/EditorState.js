@@ -27,6 +27,36 @@ const Immutable = require('immutable');
 
 const {OrderedSet, Record, Stack} = Immutable;
 
+// When configuring an editor, the user can chose to provide or not provide
+// basically all keys. `currentContent` varies, so this type doesn't include it.
+// (See the types defined below.)
+type BaseEditorStateConfig = {|
+  allowUndo?: boolean,
+  decorator?: ?DraftDecoratorType,
+  directionMap?: ?OrderedMap<string, string>,
+  forceSelection?: boolean,
+  inCompositionMode?: boolean,
+  inlineStyleOverride?: ?DraftInlineStyle,
+  lastChangeType?: ?EditorChangeType,
+  nativelyRenderedContent?: ?ContentState,
+  redoStack?: Stack<ContentState>,
+  selection?: ?SelectionState,
+  treeMap?: ?OrderedMap<string, List<any>>,
+  undoStack?: Stack<ContentState>,
+|};
+
+// When crating an editor, we want currentContent to be set.
+type EditorStateCreationConfigType = {|
+  ...BaseEditorStateConfig,
+  currentContent: ContentState,
+|};
+
+// When using EditorState.set(...), currentContent is optional
+type EditorStateChangeConfigType = {|
+  ...BaseEditorStateConfig,
+  currentContent?: ?ContentState,
+|};
+
 type EditorStateRecordType = {
   allowUndo: boolean,
   currentContent: ?ContentState,
@@ -41,7 +71,6 @@ type EditorStateRecordType = {
   selection: ?SelectionState,
   treeMap: ?OrderedMap<string, List<any>>,
   undoStack: Stack<ContentState>,
-  ...
 };
 
 const defaultRecord: EditorStateRecordType = {
@@ -92,7 +121,7 @@ class EditorState {
     });
   }
 
-  static create(config: Object): EditorState {
+  static create(config: EditorStateCreationConfigType): EditorState {
     const {currentContent, decorator} = config;
     const recordConfig = {
       ...config,
@@ -102,7 +131,10 @@ class EditorState {
     return new EditorState(new EditorStateRecord(recordConfig));
   }
 
-  static set(editorState: EditorState, put: Object): EditorState {
+  static set(
+    editorState: EditorState,
+    put: EditorStateChangeConfigType,
+  ): EditorState {
     const map = editorState.getImmutable().withMutations(state => {
       const existingDecorator = state.get('decorator');
       let decorator = existingDecorator;
@@ -115,7 +147,7 @@ class EditorState {
       const newContent = put.currentContent || editorState.getCurrentContent();
 
       if (decorator !== existingDecorator) {
-        const treeMap: OrderedMap<any, any> = state.get('treeMap');
+        const treeMap: OrderedMap<string, any> = state.get('treeMap');
         let newTreeMap;
         if (decorator && existingDecorator) {
           newTreeMap = regenerateTreeForNewDecorator(
