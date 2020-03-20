@@ -68,12 +68,7 @@ var COPYRIGHT_HEADER = `/**
  */
 `;
 
-var wpStream = null;
-
 var buildDist = function(opts) {
-  if (wpStream !== null) {
-    return wpStream;
-  }
   var webpackOpts = {
     externals: {
       immutable: {
@@ -117,7 +112,7 @@ var buildDist = function(opts) {
   if (!opts.debug) {
     webpackOpts.plugins.push(new UglifyJsPlugin());
   }
-  wpStream = webpackStream(webpackOpts, null, function(err, stats) {
+  const wpStream = webpackStream(webpackOpts, null, function(err, stats) {
     if (err) {
       throw new gulpUtil.PluginError('webpack', err);
     }
