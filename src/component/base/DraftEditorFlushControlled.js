@@ -12,7 +12,6 @@
 const ReactDOMComet = require('ReactDOMComet');
 
 const flushControlled: void | ((fn: () => void) => void) =
-  // $FlowExpectedError unstable_flushControlled is not yet in the upstream Flow typing
   ReactDOMComet.unstable_flushControlled;
 
 module.exports = flushControlled;
