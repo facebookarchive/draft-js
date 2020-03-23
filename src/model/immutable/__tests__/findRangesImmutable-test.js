@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const findRangesImmutable = require('findRangesImmutable');
 const Immutable = require('immutable');
 

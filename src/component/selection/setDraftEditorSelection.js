@@ -15,12 +15,15 @@ import type SelectionState from 'SelectionState';
 
 const DraftEffects = require('DraftEffects');
 const DraftJsDebugLogging = require('DraftJsDebugLogging');
+const UserAgent = require('UserAgent');
 
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
 const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
 const invariant = require('invariant');
 const isElement = require('isElement');
+
+const isIE = UserAgent.isBrowser('IE');
 
 function getAnonymizedDOM(
   node: Node,
@@ -250,7 +253,7 @@ function addFocusToSelection(
       // the call to 'selection.extend' is about to throw
       DraftJsDebugLogging.logSelectionStateFailure({
         anonymizedDom: getAnonymizedEditorDOM(node),
-        extraParams: JSON.stringify({offset: offset}),
+        extraParams: JSON.stringify({offset}),
         selectionState: JSON.stringify(selectionState.toJS()),
       });
     }
@@ -289,7 +292,7 @@ function addFocusToSelection(
               : null,
             selectionFocusOffset: selection.focusOffset,
             message: e ? '' + e : null,
-            offset: offset,
+            offset,
           },
           null,
           2,
@@ -306,9 +309,11 @@ function addFocusToSelection(
     // Additionally, clone the selection range. IE11 throws an
     // InvalidStateError when attempting to access selection properties
     // after the range is detached.
-    const range = selection.getRangeAt(0);
-    range.setEnd(node, offset);
-    selection.addRange(range.cloneRange());
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      range.setEnd(node, offset);
+      selection.addRange(range.cloneRange());
+    }
   }
 }
 
@@ -324,13 +329,29 @@ function addPointToSelection(
     // in this case we know that the call to 'range.setStart' is about to throw
     DraftJsDebugLogging.logSelectionStateFailure({
       anonymizedDom: getAnonymizedEditorDOM(node),
-      extraParams: JSON.stringify({offset: offset}),
+      extraParams: JSON.stringify({offset}),
       selectionState: JSON.stringify(selectionState.toJS()),
     });
     DraftEffects.handleExtensionCausedError();
   }
   range.setStart(node, offset);
-  selection.addRange(range);
+
+  // IE sometimes throws Unspecified Error when trying to addRange
+  if (isIE) {
+    try {
+      selection.addRange(range);
+    } catch (e) {
+      if (__DEV__) {
+        /* eslint-disable-next-line no-console */
+        console.warn('Call to selection.addRange() threw exception: ', e);
+      }
+    }
+  } else {
+    selection.addRange(range);
+  }
 }
 
-module.exports = setDraftEditorSelection;
+module.exports = {
+  setDraftEditorSelection,
+  addFocusToSelection,
+};

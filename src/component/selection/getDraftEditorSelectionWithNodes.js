@@ -24,6 +24,7 @@ const nullthrows = require('nullthrows');
 type SelectionPoint = {
   key: string,
   offset: number,
+  ...
 };
 
 /**

@@ -25,6 +25,7 @@ export type BlockNodeConfig = {
   key?: BlockNodeKey,
   text?: string,
   type?: DraftBlockType,
+  ...
 };
 
 // https://github.com/facebook/draft-js/issues/1492

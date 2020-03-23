@@ -37,8 +37,6 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Get files, unless this is likely to be a string the user wants inline.
   if (!data.isRichText()) {
-    /* $FlowFixMe This comment suppresses an error found DataTransfer was typed.
-     * getFiles() returns an array of <Files extends Blob>, not Blob */
     const files: Array<Blob> = (data.getFiles(): any);
     const defaultFileText = data.getText();
     if (files.length > 0) {
@@ -51,6 +49,9 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
         return;
       }
 
+      /* $FlowFixMe This comment suppresses an error found DataTransfer was
+       * typed. getFiles() returns an array of <Files extends Blob>, not Blob
+       */
       getTextContentFromFiles(files, (/*string*/ fileText) => {
         fileText = fileText || defaultFileText;
         if (!fileText) {

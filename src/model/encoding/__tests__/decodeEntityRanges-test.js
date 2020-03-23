@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const decodeEntityRanges = require('decodeEntityRanges');
 
 test('must decode when no entities present', () => {
@@ -25,7 +23,7 @@ test('must decode when an entity is present', () => {
     {
       offset: 2,
       length: 2,
-      key: '6',
+      key: 6,
     },
   ]);
   expect(decoded).toMatchSnapshot();
@@ -36,12 +34,12 @@ test('must decode when multiple entities present', () => {
     {
       offset: 2,
       length: 2,
-      key: '6',
+      key: 6,
     },
     {
       offset: 5,
       length: 2,
-      key: '8',
+      key: 8,
     },
   ]);
   expect(decoded).toMatchSnapshot();
@@ -52,12 +50,12 @@ test('must decode when an entity is present more than once', () => {
     {
       offset: 2,
       length: 2,
-      key: '6',
+      key: 6,
     },
     {
       offset: 5,
       length: 2,
-      key: '6',
+      key: 6,
     },
   ]);
   expect(decoded).toMatchSnapshot();
@@ -68,12 +66,12 @@ test('must handle ranges that include surrogate pairs', () => {
     {
       offset: 6,
       length: 5,
-      key: '6',
+      key: 6,
     },
     {
       offset: 13,
       length: 2,
-      key: '8',
+      key: 8,
     },
   ]);
   expect(decoded).toMatchSnapshot();

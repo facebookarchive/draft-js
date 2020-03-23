@@ -10,5 +10,18 @@ module.exports = {
   trailingComma: 'all',
   bracketSpacing: false,
   jsxBracketSameLine: true,
-  parser: 'flow',
+  overrides: [
+    {
+      files: '*.js',
+      options: {
+        parser: 'flow',
+      },
+    },
+    {
+      files: '*.md',
+      options: {
+        printWidth: 80,
+      },
+    },
+  ],
 };

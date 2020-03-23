@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const applyEntityToContentBlock = require('applyEntityToContentBlock');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const removeEntitiesAtEdges = require('removeEntitiesAtEdges');

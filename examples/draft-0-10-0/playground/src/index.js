@@ -12,6 +12,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import 'react-app-polyfill/ie9'; // For IE 9-11 support
+
 import GkManager from './GkManager';
 import React from 'react';
 import ReactDOM from 'react-dom';

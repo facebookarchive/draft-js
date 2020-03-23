@@ -41,7 +41,11 @@ class DOMObserver {
   observer: ?MutationObserver;
   container: HTMLElement;
   mutations: Map<string, string>;
-  onCharData: ?({target: EventTarget, type: string}) => void;
+  onCharData: ?({
+    target: EventTarget,
+    type: string,
+    ...
+  }) => void;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -110,17 +114,28 @@ class DOMObserver {
       // These events are also followed by a `childList`, which is the one
       // we are able to retrieve the offsetKey and apply the '' text.
       if (target.textContent !== '') {
+        // IE 11 considers the enter keypress that concludes the composition
+        // as an input char. This strips that newline character so the draft
+        // state does not receive spurious newlines.
+        if (USE_CHAR_DATA) {
+          return target.textContent.replace('\n', '');
+        }
         return target.textContent;
       }
     } else if (type === 'childList') {
-      // `characterData` events won't happen or are ignored when
-      // removing the last character of a leaf node, what happens
-      // instead is a `childList` event with a `removedNodes` array.
-      // For this case the textContent should be '' and
-      // `DraftModifier.replaceText` will make sure the content is
-      // updated properly.
       if (removedNodes && removedNodes.length) {
+        // `characterData` events won't happen or are ignored when
+        // removing the last character of a leaf node, what happens
+        // instead is a `childList` event with a `removedNodes` array.
+        // For this case the textContent should be '' and
+        // `DraftModifier.replaceText` will make sure the content is
+        // updated properly.
         return '';
+      } else if (target.textContent !== '') {
+        // Typing Chinese in an empty block in MS Edge results in a
+        // `childList` event with non-empty textContent.
+        // See https://github.com/facebook/draft-js/issues/2082
+        return target.textContent;
       }
     }
     return null;

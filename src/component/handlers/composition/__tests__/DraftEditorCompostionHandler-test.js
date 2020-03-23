@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 // DraftEditorComposition uses timers to detect duplicate `compositionend`
 // events.
 jest.useFakeTimers();
@@ -67,7 +65,7 @@ function getEditorStateFromHTML(html: string) {
   const state =
     blocksFromHTML != null
       ? ContentState.createFromBlockArray(
-          blocksFromHTML.contentBlocks ?? [],
+          blocksFromHTML.contentBlocks || [],
           blocksFromHTML.entityMap,
         )
       : ContentState.createEmpty();

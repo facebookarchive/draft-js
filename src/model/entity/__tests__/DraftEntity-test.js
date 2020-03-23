@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const DraftEntity = require('DraftEntity');
 
 beforeEach(() => {

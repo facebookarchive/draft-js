@@ -5,21 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow strict-local
+ * @flow strict
  * @emails oncall+draft_js
  */
+
+const isElement = require('isElement');
 
 function isHTMLBRElement(node: ?Node): boolean {
   if (!node || !node.ownerDocument) {
     return false;
   }
-  if (!node.ownerDocument.defaultView) {
-    return node instanceof HTMLBRElement;
-  }
-  if (node instanceof node.ownerDocument.defaultView.HTMLElement) {
-    return true;
-  }
-  return false;
+  return isElement(node) && node.nodeName === 'BR';
 }
 
 module.exports = isHTMLBRElement;

@@ -11,8 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
-
 const SelectionState = require('SelectionState');
 
 const applyEntityToContentState = require('applyEntityToContentState');
@@ -33,8 +31,8 @@ const selectBlock = new SelectionState({
 const selectAdjacentBlocks = new SelectionState({
   anchorKey: initialBlock.getKey(),
   anchorOffset: 0,
-  focusKey: secondBlock.getKey(),
-  focusOffset: secondBlock.getLength(),
+  focusKey: secondBlock?.getKey(),
+  focusOffset: secondBlock?.getLength(),
 });
 
 const assertApplyEntityToContentState = (

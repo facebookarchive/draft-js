@@ -11,7 +11,6 @@
 
 'use strict';
 
-jest.disableAutomock();
 expect.addSnapshotSerializer(require('NonASCIIStringSnapshotSerializer'));
 
 jest.mock('generateRandomKey');
@@ -434,6 +433,20 @@ test('Should scope attribute styles', () => {
 
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: true,
+  });
+});
+
+test('Should properly handle nested attribute styles', () => {
+  const html_string = [
+    '<span style="font-weight: bold">',
+    '<span>bold</span>',
+    '<span style="font-weight: normal">not bold</span>',
+    '<span>bold again</span>',
+    '</span>',
+  ].join('');
+
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
   });
 });
 

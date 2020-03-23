@@ -15,4 +15,5 @@ export type DraftOffsetKeyPath = {
   blockKey: string,
   decoratorKey: number,
   leafKey: number,
+  ...
 };

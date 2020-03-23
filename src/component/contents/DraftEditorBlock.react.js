@@ -49,9 +49,11 @@ type Props = {
   direction: BidiDirection,
   forceSelection: boolean,
   offsetKey: string,
+  preventScroll?: boolean,
   selection: SelectionState,
   startIndent?: boolean,
   tree: List<any>,
+  ...
 };
 
 /**
@@ -96,6 +98,9 @@ class DraftEditorBlock extends React.Component<Props> {
    * scroll parent.
    */
   componentDidMount(): void {
+    if (this.props.preventScroll) {
+      return;
+    }
     const selection = this.props.selection;
     const endKey = selection.getEndKey();
     if (!selection.getHasFocus() || endKey !== this.props.block.getKey()) {
@@ -209,7 +214,6 @@ class DraftEditorBlock extends React.Component<Props> {
           contentState: this.props.contentState,
           decoratedText,
           dir: dir,
-          key: decoratorOffsetKey,
           start,
           end,
           blockKey,
@@ -218,7 +222,10 @@ class DraftEditorBlock extends React.Component<Props> {
         };
 
         return (
-          <DecoratorComponent {...decoratorProps} {...commonProps}>
+          <DecoratorComponent
+            {...decoratorProps}
+            {...commonProps}
+            key={decoratorOffsetKey}>
             {leaves}
           </DecoratorComponent>
         );

@@ -5,16 +5,18 @@
   "license": "MIT",
   "dependencies": {
     "draft-js": "file:../../../",
-    "express": "^4.14.0",
-    "immutable": "^3.8.1",
+    "express": "^4.17.1",
+    "immutable": "^3.8.2",
     "react": "file:../../../node_modules/react",
     "react-dom": "file:../../../node_modules/react-dom"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "babelify": "^7.3.0",
-    "browserify": "^13.1.1"
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/node": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.0"
   },
   "scripts": {
     "build": "browserify client.js -t babelify -o static/bundle.js",

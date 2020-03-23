@@ -10,6 +10,7 @@ module.exports = Object.assign(
     immutable: 'immutable',
     React: 'react',
     ReactDOM: 'react-dom',
+    ReactDOMComet: 'react-dom',
     'object-assign': 'object-assign',
 
     ReactTestUtils: 'react-dom/lib/ReactTestUtils',

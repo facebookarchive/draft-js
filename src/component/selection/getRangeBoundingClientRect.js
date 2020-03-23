@@ -20,6 +20,7 @@ export type FakeClientRect = {
   top: number,
   bottom: number,
   height: number,
+  ...
 };
 
 /**

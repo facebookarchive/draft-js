@@ -22,6 +22,7 @@ type CharacterMetadataConfigValueType = DraftInlineStyle | ?string;
 type CharacterMetadataConfig = {
   style?: CharacterMetadataConfigValueType,
   entity?: CharacterMetadataConfigValueType,
+  ...
 };
 
 const EMPTY_SET = OrderedSet();

@@ -14,7 +14,7 @@ offers a live example of decorators in action.
 ## CompositeDecorator
 
 The decorator concept is based on scanning the contents of a given
-[ContentBlock](/docs/api-reference-content-block.html)
+[ContentBlock](/docs/api-reference-content-block)
 for ranges of text that match a defined strategy, then rendering them
 with a specified React component.
 
@@ -92,12 +92,20 @@ In our current example, the `CompositeDecorator` object names `HandleSpan` and
 stateless components:
 
 ```js
-const HandleSpan = (props) => {
-  return <span {...props} style={styles.handle}>{props.children}</span>;
+const HandleSpan = props => {
+  return (
+    <span {...props} style={styles.handle}>
+      {props.children}
+    </span>
+  );
 };
 
-const HashtagSpan = (props) => {
-  return <span {...props} style={styles.hashtag}>{props.children}</span>;
+const HashtagSpan = props => {
+  return (
+    <span {...props} style={styles.hashtag}>
+      {props.children}
+    </span>
+  );
 };
 ```
 
@@ -137,10 +145,12 @@ following:
 
 ```js
 function turnOffHandleDecorations(editorState) {
-  const onlyHashtags = new CompositeDecorator([{
-    strategy: hashtagStrategy,
-    component: HashtagSpan,
-  }]);
+  const onlyHashtags = new CompositeDecorator([
+    {
+      strategy: hashtagStrategy,
+      component: HashtagSpan,
+    },
+  ]);
   return EditorState.set(editorState, {decorator: onlyHashtags});
 }
 ```
