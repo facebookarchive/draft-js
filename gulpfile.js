@@ -45,7 +45,10 @@ var babelOptsJS = {
       rewriteModules: {map: moduleMap},
     }),
   ],
-  plugins: [require('@babel/plugin-proposal-nullish-coalescing-operator')],
+  plugins: [
+    require('@babel/plugin-proposal-nullish-coalescing-operator'),
+    require('@babel/plugin-proposal-optional-chaining'),
+  ],
 };
 
 var babelOptsFlow = {
@@ -55,7 +58,10 @@ var babelOptsFlow = {
       rewriteModules: {map: moduleMap},
     }),
   ],
-  plugins: [require('@babel/plugin-proposal-nullish-coalescing-operator')],
+  plugins: [
+    require('@babel/plugin-proposal-nullish-coalescing-operator'),
+    require('@babel/plugin-proposal-optional-chaining'),
+  ],
 };
 
 var COPYRIGHT_HEADER = `/**
