@@ -154,7 +154,8 @@ const isValidAnchor = (node: Node) => {
     anchorNode.href &&
     (anchorNode.protocol === 'http:' ||
       anchorNode.protocol === 'https:' ||
-      anchorNode.protocol === 'mailto:')
+      anchorNode.protocol === 'mailto:' ||
+      anchorNode.protocol === 'tel:')
   );
 };
 
