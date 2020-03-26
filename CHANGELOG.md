@@ -4,6 +4,43 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.11.5 (Mar 26, 2020)
+
+## Removed
+* Remove examples for draft.js 0.9.0 (#2358) (Kevin Chavez in fd16d8e2)
+
+## Changed
+* Update deps in 'universal' example (#2362) (Kevin Chavez in dc8bfbb2)
+* Remove unused Flow suppressions in WWW (George Zahariev in 3858858b)
+* Improve types for EditorState (Kevin Chavez in 792bd3ab)
+* Don't SSR example editor on website. (#2356) (Kevin Chavez in 9191a3f2)
+* Deprecate Travis Bot files and configuration (Chris Lüer in 6c1c6544)
+* Require ReactDOMComet instead of ReactDOM (Dan Abramov in 66301633)
+* Strictify DraftEditorLeaf.react.js (Kevin Chavez in b4a1db99)
+* Make decodeEntityRanges flow strict (Kevin Chavez in 7af73b70)
+* Move key to static argument instead of spread (Sebastian Markbage in d6527a95)
+* "ecmascript" => "ECMAScript" (#2327) (Agastya Chandrakant in 6cfed736)
+* Abstract ReactDOM as ReactDOMComet (Sebastian Markbage in 24339f12)
+* Prevent (but not fix) ‘Cannot read property 'getIn' of undefined’ in getUpdatedSelectionState (Steven Luscher in a9fcbb20)
+* Make some more modules strict(-local) (Kevin Chavez in c30ca735 and 70025659)
+* Update webpack deps (#2310) (Kevin Chavez in 0131e1d5)
+* Remove unused gulp task remained from docusaurus 2 migration (#2308) (Kanitkorn S in 963e3126)
+* Re-write `DraftEditorExample` in the website using react hooks (#2287) (Kevin Chavez in 9b9376bd)
+* Add a preventScroll prop (Dan Abramov in 3ba907bb)
+* Add editorRef prop to DraftEditor (Dan Abramov in 8c500424)
+* Remove findDOMNode from DraftEditorBlockNode (Sebastian Markbage in 0dd39781)
+* Remove findDOMNode in DraftEditorDragHandler (Sebastian Markbage in c1a55ceb)
+* Remove findDOMNode from getContentEditableContainer (Sebastian Markbage in 9d587d9f)
+* Upgrade to Flow explicit inexact object type syntax (Jordan Brown in b051fc1b)
+* Upgrade eslint + flow, and fix failed test from nullishCoalescingOperator (#2083) (Kanitkorn S in 824fd125)
+* chore(travis): bumps node versions used in Travis CI to 10 and 12 (#2300) (Claudio Procida in e711230f)
+
+## Fixed
+* Fix Uncaught TypeError: Cannot read property 'nodeType' of null at editOnInput (#2330) (Konstantin Tarkus in db3216d9)
+* Fix keyBindingFn documentation URL (Ryan Silva in 3251017d)
+* fix style handling in convertFromHTMLToContentBlocks (Frank Thompson in ad8374d2)
+* remove unused flow suppressions (Panagiotis Vekris in 822d2fbd)
+
 ## 0.11.4 (January 7th, 2020)
 
 ### Added
