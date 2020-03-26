@@ -133,13 +133,11 @@ class DraftJsPlaygroundContainer extends React.Component {
 
   _setHTMLContent(html) {
     const parsedHtml = fromHTML(html);
-
     if (!parsedHtml) {
       return;
     }
 
     const {contentBlocks, entityMap} = parsedHtml;
-
     if (!contentBlocks) {
       return;
     }
@@ -160,7 +158,6 @@ class DraftJsPlaygroundContainer extends React.Component {
 
   setContent = () => {
     const {mode, codeMirrorValue} = this.state;
-
     if (mode === 'html') {
       this._setHTMLContent(codeMirrorValue);
     } else {
