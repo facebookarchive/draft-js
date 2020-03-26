@@ -3,17 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "codemirror": "^5.32.0",
-    "draft-convert": "^2.0.1",
+    "codemirror": "^5.52.2",
+    "draft-convert": "^2.1.8",
     "draft-js": "file:../../..",
     "immutable": "^3.8.2",
-    "react": "^16.2.0",
-    "react-app-polyfill": "^1.0.4",
-    "react-codemirror2": "^3.0.7",
-    "react-dom": "^16.2.0",
-    "react-json-tree": "^0.11.0",
-    "react-panelgroup": "^1.0.5",
-    "react-scripts": "3.2.0"
+    "react": "^16.13.1",
+    "react-app-polyfill": "^1.0.6",
+    "react-codemirror2": "^7.1.0",
+    "react-dom": "^16.13.1",
+    "react-json-tree": "^0.11.2",
+    "react-panelgroup": "^1.0.10",
+    "react-scripts": "3.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

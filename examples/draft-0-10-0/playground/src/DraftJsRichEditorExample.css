@@ -15,7 +15,6 @@
 .DraftJsPlaygroundContainer-editor {
   padding: 0;
   background: #fff;
-  padding-top: 30px;
   height: auto;
 }
 
@@ -29,7 +28,6 @@
 .RichEditor-editor {
   cursor: text;
   font-size: 16px;
-  margin-top: 10px;
 }
 
 .RichEditor-editor .public-DraftEditorPlaceholder-root,
@@ -63,9 +61,6 @@
 }
 
 .RichEditor-controls-container {
-  position: fixed;
-  top: 50px;
-  padding: 20px 0 0;
   border-bottom: 1px solid #ccc;
   background: #fff;
   z-index: 10;

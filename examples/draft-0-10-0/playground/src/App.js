@@ -15,7 +15,7 @@
  * @format
  */
 
-import React, {Component} from 'react';
+import React from 'react';
 import './DraftJsPlaygroundContainer.css';
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import 'codemirror/lib/codemirror.css';
@@ -92,7 +92,7 @@ const BASE_CONTENT = {
   html: baseHtmlContent,
 };
 
-class DraftJsPlaygroundContainer extends Component {
+class DraftJsPlaygroundContainer extends React.Component {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -224,7 +224,7 @@ class DraftJsPlaygroundContainer extends Component {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://draftjs.org/docs/overview.html#content">
+                  href="https://draftjs.org/docs/getting-started">
                   Docs
                 </a>
               </li>
