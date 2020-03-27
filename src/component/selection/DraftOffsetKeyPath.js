@@ -11,9 +11,8 @@
 
 'use strict';
 
-export type DraftOffsetKeyPath = {
+export type DraftOffsetKeyPath = {|
   blockKey: string,
   decoratorKey: number,
   leafKey: number,
-  ...
-};
+|};

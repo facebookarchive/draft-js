@@ -21,11 +21,10 @@ const invariant = require('invariant');
 const isElement = require('isElement');
 const nullthrows = require('nullthrows');
 
-type SelectionPoint = {
+type SelectionPoint = {|
   key: string,
   offset: number,
-  ...
-};
+|};
 
 /**
  * Convert the current selection range to an anchor/focus pair of offset keys

@@ -13,15 +13,14 @@
 
 const getRangeClientRects = require('getRangeClientRects');
 
-export type FakeClientRect = {
+export type FakeClientRect = {|
   left: number,
   width: number,
   right: number,
   top: number,
   bottom: number,
   height: number,
-  ...
-};
+|};
 
 /**
  * Like range.getBoundingClientRect() but normalizes for browser bugs.
