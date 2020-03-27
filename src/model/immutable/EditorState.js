@@ -71,6 +71,7 @@ type EditorStateRecordType = {
   selection: ?SelectionState,
   treeMap: ?OrderedMap<string, List<any>>,
   undoStack: Stack<ContentState>,
+  ...
 };
 
 const defaultRecord: EditorStateRecordType = {
