@@ -9,7 +9,7 @@
     "@docusaurus/core": "^2.0.0-alpha.36",
     "@docusaurus/preset-classic": "^2.0.0-alpha.36",
     "classnames": "^2.2.6",
-    "draft-js": "^0.11.4",
+    "draft-js": "0.11.5",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
   },
