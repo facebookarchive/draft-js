@@ -395,3 +395,30 @@ test('must throw an error when trying to apply ContentBlockNode fragments when s
     ),
   );
 });
+
+test('must keep the block data when inserting fragment without block data', () => {
+  const initialSelection = SelectionState.createEmpty('A');
+  const initialContent = contentState.set(
+    'blockMap',
+    createContentBlockNodeFragment([
+      {
+        key: 'A',
+        text: 'a',
+        type: 'atomic',
+      },
+    ]),
+  );
+
+  assertInsertFragmentIntoContentState(
+    createContentBlockNodeFragment([
+      {
+        key: 'B',
+        text: 'some text',
+        type: 'unstyled',
+        data: Map({}),
+      },
+    ]),
+    initialSelection,
+    initialContent,
+  );
+});

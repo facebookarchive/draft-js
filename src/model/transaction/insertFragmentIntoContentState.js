@@ -44,6 +44,7 @@ const updateExistingBlock = (
   const chars = targetBlock.getCharacterList();
   const finalKey = targetKey;
   const finalOffset = targetOffset + fragmentBlock.getText().length;
+  const fragmentData = fragmentBlock.getData();
 
   let data = null;
 
@@ -66,7 +67,7 @@ const updateExistingBlock = (
       fragmentBlock.getCharacterList(),
       targetOffset,
     ),
-    data,
+    data: fragmentData.size ? fragmentData : targetBlock.getData(),
   });
 
   return contentState.merge({
@@ -98,12 +99,13 @@ const updateHead = (
   const headText = text.slice(0, targetOffset);
   const headCharacters = chars.slice(0, targetOffset);
   const appendToHead = fragment.first();
+  const appendData = appendToHead.getData();
 
   return block.merge({
     text: headText + appendToHead.getText(),
     characterList: headCharacters.concat(appendToHead.getCharacterList()),
     type: headText ? block.getType() : appendToHead.getType(),
-    data: appendToHead.getData(),
+    data: appendData.size ? appendData : block.getData(),
   });
 };
 
@@ -125,11 +127,12 @@ const updateTail = (
   const tailText = text.slice(targetOffset, blockSize);
   const tailCharacters = chars.slice(targetOffset, blockSize);
   const prependToTail = fragment.last();
+  const prependData = prependToTail.getData();
 
   return prependToTail.merge({
     text: prependToTail.getText() + tailText,
     characterList: prependToTail.getCharacterList().concat(tailCharacters),
-    data: prependToTail.getData(),
+    data: prependData.size ? prependData : block.getData(),
   });
 };
 
