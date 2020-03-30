@@ -261,7 +261,11 @@ function addFocusToSelection(
     // logging to catch bug that is being reported in t18110632
     const nodeWasFocus = node === selection.focusNode;
     try {
-      selection.extend(node, offset);
+      // Fixes some reports of "InvalidStateError: Failed to execute 'extend' on
+      // 'Selection': This Selection object doesn't have any Ranges."
+      if (selection.rangeCount > 0) {
+        selection.extend(node, offset);
+      }
     } catch (e) {
       DraftJsDebugLogging.logSelectionStateFailure({
         anonymizedDom: getAnonymizedEditorDOM(node, function(n) {
