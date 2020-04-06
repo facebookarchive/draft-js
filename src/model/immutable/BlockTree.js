@@ -17,6 +17,7 @@ import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 
 const findRangesImmutable = require('findRangesImmutable');
+const getOwnObjectValues = require('getOwnObjectValues');
 const Immutable = require('immutable');
 
 const {List, Repeat, Record} = Immutable;
@@ -34,15 +35,25 @@ const defaultLeafRange: {
   end: null,
 };
 
-const LeafRange = Record(defaultLeafRange);
+const LeafRange = (Record(defaultLeafRange): any);
 
-const defaultDecoratorRange: {
+export type DecoratorRangeRawType = {
+  start: ?number,
+  end: ?number,
+  decoratorKey: ?string,
+  leaves: ?Array<LeafRange>,
+  ...
+};
+
+type DecoratorRangeType = {
   start: ?number,
   end: ?number,
   decoratorKey: ?string,
   leaves: ?List<LeafRange>,
   ...
-} = {
+};
+
+const defaultDecoratorRange: DecoratorRangeType = {
   start: null,
   end: null,
   decoratorKey: null,
@@ -55,7 +66,7 @@ const BlockTree = {
   /**
    * Generate a block tree for a given ContentBlock/decorator pair.
    */
-  generate: function(
+  generate(
     contentState: ContentState,
     block: BlockNodeRecord,
     decorator: ?DraftDecoratorType,
@@ -91,6 +102,18 @@ const BlockTree = {
     });
 
     return List(leafSets);
+  },
+
+  fromJS({leaves, ...other}: DecoratorRangeRawType): DecoratorRange {
+    return new DecoratorRange({
+      ...other,
+      leaves:
+        leaves != null
+          ? List(
+              Array.isArray(leaves) ? leaves : getOwnObjectValues(leaves),
+            ).map(leaf => LeafRange(leaf))
+          : null,
+    });
   },
 };
 

@@ -12,7 +12,9 @@
 'use strict';
 
 import type {BlockMap} from 'BlockMap';
+import type {BlockNodeRawConfig} from 'BlockNode';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {ContentStateRawType} from 'ContentStateRawType';
 import type DraftEntityInstance from 'DraftEntityInstance';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
@@ -26,19 +28,22 @@ const DraftEntity = require('DraftEntity');
 const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
+const getOwnObjectValues = require('getOwnObjectValues');
 const gkx = require('gkx');
 const Immutable = require('immutable');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-const {List, Record, Repeat} = Immutable;
+const {List, Record, Repeat, Map: ImmutableMap, OrderedMap} = Immutable;
 
-const defaultRecord: {
+type ContentStateRecordType = {
   entityMap: ?any,
   blockMap: ?BlockMap,
   selectionBefore: ?SelectionState,
   selectionAfter: ?SelectionState,
   ...
-} = {
+};
+
+const defaultRecord: ContentStateRecordType = {
   entityMap: null,
   blockMap: null,
   selectionBefore: null,
@@ -46,6 +51,10 @@ const defaultRecord: {
 };
 
 const ContentStateRecord = (Record(defaultRecord): any);
+
+const ContentBlockNodeRecord = gkx('draft_tree_data_support')
+  ? ContentBlockNode
+  : ContentBlock;
 
 class ContentState extends ContentStateRecord {
   getEntityMap(): any {
@@ -211,9 +220,6 @@ class ContentState extends ContentStateRecord {
     const strings = text.split(delimiter);
     const blocks = strings.map(block => {
       block = sanitizeDraftText(block);
-      const ContentBlockNodeRecord = gkx('draft_tree_data_support')
-        ? ContentBlockNode
-        : ContentBlock;
       return new ContentBlockNodeRecord({
         key: generateRandomKey(),
         text: block,
@@ -222,6 +228,37 @@ class ContentState extends ContentStateRecord {
       });
     });
     return ContentState.createFromBlockArray(blocks);
+  }
+
+  static fromJS(state: ContentStateRawType): ContentState {
+    return new ContentState({
+      ...state,
+      blockMap: OrderedMap(state.blockMap).map(
+        ContentState._createContentBlockFromRaw,
+      ),
+      selectionBefore: new SelectionState(state.selectionBefore),
+      selectionAfter: new SelectionState(state.selectionAfter),
+    });
+  }
+
+  static _createContentBlockFromRaw(
+    block: BlockNodeRawConfig,
+  ): ContentBlockNodeRecord {
+    const characterList = block.characterList;
+
+    return new ContentBlockNodeRecord({
+      ...block,
+      data: ImmutableMap(block.data),
+      characterList:
+        characterList != null
+          ? List(
+              (Array.isArray(characterList)
+                ? characterList
+                : getOwnObjectValues(characterList)
+              ).map(c => CharacterMetadata.fromJS(c)),
+            )
+          : undefined,
+    });
   }
 }
 
