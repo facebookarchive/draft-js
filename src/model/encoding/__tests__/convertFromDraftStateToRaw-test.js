@@ -11,6 +11,9 @@
 
 'use strict';
 
+const mockUUID = require('mockUUID');
+jest.mock('uuid', () => jest.fn(mockUUID));
+
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
@@ -69,38 +72,38 @@ const getLink = entityKey =>
       url: `www.${entityKey}.com`,
     },
   });
-// We start numbering our entities with '2' because getSampleStateForTesting
-// already created an entity with key '1'.
+// We start numbering our entities with '3' because getSampleStateForTesting
+// already created an entity with key '2'.
 const contentStateWithNonContiguousEntities = ContentState.createFromBlockArray(
   [
     new ContentBlock({
       key: 'a',
       type: 'unstyled',
       text: 'link2 link2 link3',
-      characterList: getMetadata('2')
+      characterList: getMetadata('3')
         .toList()
         .push(CharacterMetadata.EMPTY)
-        .concat(getMetadata('2'))
+        .concat(getMetadata('4'))
         .push(CharacterMetadata.EMPTY)
-        .concat(getMetadata('3')),
+        .concat(getMetadata('5')),
     }),
     new ContentBlock({
       key: 'b',
       type: 'unstyled',
       text: 'link4 link2 link5',
-      characterList: getMetadata('4')
+      characterList: getMetadata('5')
         .toList()
         .push(CharacterMetadata.EMPTY)
-        .concat(getMetadata('2'))
+        .concat(getMetadata('3'))
         .push(CharacterMetadata.EMPTY)
-        .concat(getMetadata('5')),
+        .concat(getMetadata('6')),
     }),
   ],
 )
-  .addEntity(getLink('2'))
   .addEntity(getLink('3'))
   .addEntity(getLink('4'))
-  .addEntity(getLink('5'));
+  .addEntity(getLink('5'))
+  .addEntity(getLink('6'));
 
 const assertConvertFromDraftStateToRaw = content => {
   expect(convertFromDraftStateToRaw(content)).toMatchSnapshot();

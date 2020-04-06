@@ -13,6 +13,8 @@
 
 jest.mock('generateRandomKey');
 
+const mockUUID = require('mockUUID');
+jest.mock('uuid', () => mockUUID);
 const AtomicBlockUtils = require('AtomicBlockUtils');
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -84,6 +86,7 @@ const assertMoveAtomicBlock = (
 
 beforeEach(() => {
   jest.resetModules();
+  jest.mock('uuid', () => mockUUID);
 });
 
 test('must insert atomic at start of block with collapsed seletion', () => {

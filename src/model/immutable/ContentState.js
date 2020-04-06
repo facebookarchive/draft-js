@@ -16,6 +16,7 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type DraftEntityInstance from 'DraftEntityInstance';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
+import type {Map} from 'immutable';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -172,6 +173,14 @@ class ContentState extends ContentStateRecord {
   getEntity(key: string): DraftEntityInstance {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity.__get(key);
+  }
+
+  getAllEntities(): Map<string, DraftEntityInstance> {
+    return DraftEntity.__getAll();
+  }
+
+  loadWithEntities(entities: Map<string, DraftEntityInstance>): void {
+    return DraftEntity.__loadWithEntities(entities);
   }
 
   static createFromBlockArray(

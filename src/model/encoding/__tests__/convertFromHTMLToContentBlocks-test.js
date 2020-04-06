@@ -20,6 +20,7 @@ const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 const cx = require('cx');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
+const mockUUID = require('mockUUID');
 
 const DEFAULT_CONFIG = {
   DOMBuilder: getSafeBodyFromHTML,
@@ -71,6 +72,7 @@ const toggleExperimentalTreeDataSupport = enabled => {
 
 beforeEach(() => {
   jest.resetModules();
+  jest.mock('uuid', () => mockUUID);
 });
 
 const convertFromHTML = (html_string, config) => {

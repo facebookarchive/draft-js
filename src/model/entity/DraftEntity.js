@@ -16,11 +16,12 @@ const DraftEntityInstance = require('DraftEntityInstance');
 
 const Immutable = require('immutable');
 const invariant = require('invariant');
+const uuid = require('uuid');
 
 const {Map} = Immutable;
 
 let instances: Map<string, DraftEntityInstance> = Map();
-let instanceKey = 0;
+let instanceKey: string = uuid();
 
 /**
  * Temporary utility for generating the warnings
@@ -52,6 +53,8 @@ export type DraftEntityMapObject = {
     key: string,
     newData: {[key: string]: any, ...},
   ) => DraftEntityInstance,
+  __loadWithEntities: (entities: Map<string, DraftEntityInstance>) => void,
+  __getAll: () => Map<string, DraftEntityInstance>,
   __getLastCreatedEntityKey: () => string,
   __create: (
     type: DraftEntityType,
@@ -144,6 +147,21 @@ const DraftEntity: DraftEntityMapObject = {
   },
 
   /**
+   * Get all the entities in the content state.
+   */
+  __getAll(): Map<string, DraftEntityInstance> {
+    return instances;
+  },
+
+  /**
+   * Load the entity map with the given set of entities.
+   */
+  __loadWithEntities(entities: Map<string, DraftEntityInstance>): void {
+    instances = entities;
+    instanceKey = uuid();
+  },
+
+  /**
    * WARNING: This method will be deprecated soon!
    * Please use 'contentState.mergeEntityData' instead.
    * ---
@@ -182,8 +200,8 @@ const DraftEntity: DraftEntityMapObject = {
    * We need this to support the new API, as part of transitioning to put Entity
    * storage in contentState.
    */
-  __getLastCreatedEntityKey: function(): string {
-    return '' + instanceKey;
+  __getLastCreatedEntityKey(): string {
+    return instanceKey;
   },
 
   /**
@@ -207,10 +225,10 @@ const DraftEntity: DraftEntityMapObject = {
    * Add an existing DraftEntityInstance to the DraftEntity map. This is
    * useful when restoring instances from the server.
    */
-  __add: function(instance: DraftEntityInstance): string {
-    const key = '' + ++instanceKey;
-    instances = instances.set(key, instance);
-    return key;
+  __add(instance: DraftEntityInstance): string {
+    instanceKey = uuid();
+    instances = instances.set(instanceKey, instance);
+    return instanceKey;
   },
 
   /**

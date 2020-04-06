@@ -163,12 +163,12 @@ Object {
           "offset": 0,
         },
         Object {
-          "key": 0,
+          "key": 1,
           "length": 5,
           "offset": 6,
         },
         Object {
-          "key": 1,
+          "key": 2,
           "length": 5,
           "offset": 12,
         },
@@ -207,28 +207,28 @@ Object {
   "entityMap": Object {
     "0": Object {
       "data": Object {
-        "url": "www.2.com",
+        "url": "www.3.com",
       },
       "mutability": "IMMUTABLE",
       "type": "LINK",
     },
     "1": Object {
       "data": Object {
-        "url": "www.3.com",
+        "url": "www.4.com",
       },
       "mutability": "IMMUTABLE",
       "type": "LINK",
     },
     "2": Object {
       "data": Object {
-        "url": "www.4.com",
+        "url": "www.5.com",
       },
       "mutability": "IMMUTABLE",
       "type": "LINK",
     },
     "3": Object {
       "data": Object {
-        "url": "www.5.com",
+        "url": "www.6.com",
       },
       "mutability": "IMMUTABLE",
       "type": "LINK",
