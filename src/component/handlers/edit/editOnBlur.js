@@ -11,6 +11,7 @@
 
 'use strict';
 
+import type {SelectionObject} from 'DraftDOMTypes';
 import type DraftEditor from 'DraftEditor.react';
 
 const EditorState = require('EditorState');
@@ -34,7 +35,7 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
     !Boolean(editor.props.preserveSelectionOnBlur) &&
     getActiveElement(ownerDocument) === ownerDocument.body
   ) {
-    const selection = ownerDocument.defaultView.getSelection();
+    const selection: SelectionObject = ownerDocument.defaultView.getSelection();
     const editorNode = editor.editor;
     if (
       selection.rangeCount === 1 &&

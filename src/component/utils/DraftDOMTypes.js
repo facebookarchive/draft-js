@@ -24,5 +24,7 @@ export type SelectionObject = {|
   isCollapsed: boolean,
   rangeCount: number,
   type: string,
+
+  removeAllRanges(): void,
   // ...etc. This is a non-exhaustive definition.
 |};
