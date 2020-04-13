@@ -11,6 +11,7 @@
 
 'use strict';
 
+import type {SelectionObject} from 'DraftDOMTypes';
 import type DraftEditor from 'DraftEditor.react';
 
 const DraftModifier = require('DraftModifier');
@@ -65,14 +66,14 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
   }
   // at this point editor is not null for sure (after input)
   const castedEditorElement: HTMLElement = (editor.editor: any);
-  const domSelection = castedEditorElement.ownerDocument.defaultView.getSelection();
+  const domSelection: SelectionObject = castedEditorElement.ownerDocument.defaultView.getSelection();
 
   const {anchorNode, isCollapsed} = domSelection;
   const isNotTextOrElementNode =
     anchorNode?.nodeType !== Node.TEXT_NODE &&
     anchorNode?.nodeType !== Node.ELEMENT_NODE;
 
-  if (isNotTextOrElementNode) {
+  if (anchorNode == null || isNotTextOrElementNode) {
     // TODO: (t16149272) figure out context for this change
     return;
   }
@@ -86,10 +87,14 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     // https://chromium.googlesource.com/chromium/src/+/a3b600981286b135632371477f902214c55a1724
     // To work around, we'll merge the sibling text nodes back into this one.
     const span = anchorNode.parentNode;
+    if (span == null) {
+      // Handle null-parent case.
+      return;
+    }
     anchorNode.nodeValue = span.textContent;
     for (
       let child = span.firstChild;
-      child !== null;
+      child != null;
       child = child.nextSibling
     ) {
       if (child !== anchorNode) {
