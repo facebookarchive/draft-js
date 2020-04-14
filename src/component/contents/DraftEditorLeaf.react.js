@@ -163,10 +163,18 @@ class DraftEditorLeaf extends React.Component<Props> {
       styleObj = Object.assign(styleObj, newStyles);
     }
 
+    let renderClassName;
+    if (styleObj.className) {
+      const {className, ...otherStyles} = styleObj;
+      renderClassName = className;
+      styleObj = otherStyles;
+    }
+
     return (
       <span
         data-offset-key={offsetKey}
         ref={ref => (this.leaf = ref)}
+        className={renderClassName}
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>
