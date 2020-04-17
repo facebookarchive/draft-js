@@ -176,6 +176,22 @@ This should be used if your editor does not support rich styles.
 
 Default is `false`.
 
+### `keepPastedSoftLineBreaks`
+
+```js
+keepPastedSoftLineBreaks?: boolean
+```
+
+Set wether to interpret line breaks as distinct blocks or as soft line breaks.
+
+It means that if set to `true`, line breaks will not produce multiple blocks,
+but one with all the text. It will still habve line breaks, as if 
+they were inserted using the function `RichUtils.insertSoftNewline()`
+
+To take effect `stripPastedStyles` must also be set to `true`.
+
+Default is `false`.
+
 ## DOM and Accessibility (Optional)
 
 ### `tabIndex`
