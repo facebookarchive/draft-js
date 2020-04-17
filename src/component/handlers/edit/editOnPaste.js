@@ -106,7 +106,10 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   }
 
   if (text) {
-    textBlocks = splitTextIntoTextBlocks(text);
+    textBlocks =
+      editor.props.keepPastedSoftLineBreaks && editor.props.stripPastedStyles
+        ? Array(text)
+        : splitTextIntoTextBlocks(text);
   }
 
   if (!editor.props.stripPastedStyles) {
