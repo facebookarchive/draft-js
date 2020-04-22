@@ -26,12 +26,13 @@ function getUpdatedSelectionState(
   focusOffset: number,
 ): SelectionState {
   const selection: SelectionState = nullthrows(editorState.getSelection());
-  if (__DEV__) {
-    if (!anchorKey || !focusKey) {
+  if (!anchorKey || !focusKey) {
+    // If we cannot make sense of the updated selection state, stick to the current one.
+    if (__DEV__) {
       /* eslint-disable-next-line */
       console.warn('Invalid selection state.', arguments, editorState.toJS());
-      return selection;
     }
+    return selection;
   }
 
   const anchorPath = DraftOffsetKey.decode(anchorKey);
