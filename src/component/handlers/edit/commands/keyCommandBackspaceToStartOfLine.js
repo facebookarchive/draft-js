@@ -11,6 +11,8 @@
 
 'use strict';
 
+import type {SelectionObject} from 'DraftDOMTypes';
+
 const EditorState = require('EditorState');
 
 const expandRangeToStartOfLine = require('expandRangeToStartOfLine');
@@ -30,7 +32,10 @@ function keyCommandBackspaceToStartOfLine(
         return moveSelectionBackward(strategyState, 1);
       }
       const {ownerDocument} = e.currentTarget;
-      const domSelection = ownerDocument.defaultView.getSelection();
+      const domSelection: SelectionObject = ownerDocument.defaultView.getSelection();
+      // TODO(T65805998): Noticed this while flowifiying: this could throw if nothing is
+      // selected. Not doing it now to keep my flowification diff from altering
+      // behaviour, but we should be safe and handle that case eventually.
       let range = domSelection.getRangeAt(0);
       range = expandRangeToStartOfLine(range);
 

@@ -26,5 +26,6 @@ export type SelectionObject = {|
   type: string,
 
   removeAllRanges(): void,
+  getRangeAt: (index: number) => Range,
   // ...etc. This is a non-exhaustive definition.
 |};
