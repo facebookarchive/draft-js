@@ -27,5 +27,7 @@ export type SelectionObject = {|
 
   removeAllRanges(): void,
   getRangeAt: (index: number) => Range,
+  extend?: (node: Node, offset?: number) => void,
+  addRange: (range: Range) => void,
   // ...etc. This is a non-exhaustive definition.
 |};
