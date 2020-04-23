@@ -52,6 +52,9 @@ const defaultRecord: ContentStateRecordType = {
 
 const ContentStateRecord = (Record(defaultRecord): any);
 
+/* $FlowFixMe Supressing a `signature-verification-failure` error here.
+ * TODO: T65949050 Clean up the branch for this GK
+ */
 const ContentBlockNodeRecord = gkx('draft_tree_data_support')
   ? ContentBlockNode
   : ContentBlock;
@@ -234,14 +237,14 @@ class ContentState extends ContentStateRecord {
     return new ContentState({
       ...state,
       blockMap: OrderedMap(state.blockMap).map(
-        ContentState._createContentBlockFromRaw,
+        ContentState.createContentBlockFromJS,
       ),
       selectionBefore: new SelectionState(state.selectionBefore),
       selectionAfter: new SelectionState(state.selectionAfter),
     });
   }
 
-  static _createContentBlockFromRaw(
+  static createContentBlockFromJS(
     block: BlockNodeRawConfig,
   ): ContentBlockNodeRecord {
     const characterList = block.characterList;
