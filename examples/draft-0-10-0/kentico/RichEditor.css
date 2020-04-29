@@ -76,22 +76,29 @@
   color: #5890ff;
 }
 
+.docs p {
+  line-height: 20px;
+}
+
 .rte__kentico {
   color: white;
-  background-image: linear-gradient(#f05a22, #f05a22);
+  background-color: #f05a22;
+  white-space: pre-wrap;
+}
+
+.rte__kentico-programmatic {
   border-radius: 0.5em;
   padding-right: 0.5em;
   padding-left: 0.5em;
   border-bottom-left-radius: 0;
 }
 
-.rte__kentico {
-  color: white;
-  background-image: linear-gradient(#f05a22, #f05a22);
-}
-
 .rte__kentico + .rte__kentico {
   border-top-left-radius: 0;
   padding-left: 0;
   margin-left: -0.5em;
+}
+
+.rte__highlight {
+  background-image: linear-gradient(rgba(255, 255, 0, 0.5), rgba(255, 255, 0, 0.5));
 }

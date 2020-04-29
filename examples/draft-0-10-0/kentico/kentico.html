@@ -29,7 +29,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <p>This page showcases customizations of the DraftJS editor and scenarios for it's testing. It is also a documentation for the type of customizations made.</p>
       <h2>Class name support for inline styles</h2>
       <p>DraftJS editor supports natively only inline styles rendered directly to the editor leaf DOM nodes. With this customization <code>className</code> property can be added to the style object and it renders to the <code>class</code> attribute in the resulting HTML.</p>
-      <p>Add text and apply <strong>Kentico</strong> inline style from the toolbar. The style should be applied (Kentico logo <span class="rte__kentico" style="display: inline-block;">leaf</span> design), there should be both inline style <code>display: inline-block</code> and class name <code>rte__kentico</code> rendered.</p>
+      <p>Add text and apply <strong>Kentico</strong> inline style from the toolbar. The style should be applied (Kentico logo <span class="rte__kentico rte__kentico-programmatic" style="display: inline-block; text-decoration: underline;">leaf</span> design), there should be inline style <code>display: inline-block; text-decoration: underline;</code> and class names <code>rte__kentico rte__kentico-programmatic</code> rendered.</p>
+      <p>It should combine well with the <strong>Highlight</strong> inline style from the toolbar which should apply <span class="rte__highlight">highlight</span> and class name <code>rte__highlight</code> and mix properly with the other styles including <strong>Kentico</strong> like this: <span class="rte__kentico rte__kentico-programmatic" style="display: inline-block; text-decoration: underline;">Hello </span><span class="rte__kentico rte__kentico-programmatic rte__highlight" style="display: inline-block; text-decoration: underline;">world</span></p>
       <h2>RTL short-circuit</h2>
       <p>We disabled the default handling of RTL detection in individual blocks for performance reasons. No need to test it here.</p>
       <h2><code>getIn</code> error</h2>
@@ -133,6 +134,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                   editorState={editorState}
                   handleKeyCommand={this.handleKeyCommand}
                   keyBindingFn={this.mapKeyToEditorCommand}
+                  customStyleFn={getCustomStyle}
                   onChange={this.onChange}
                   placeholder="Tell a story..."
                   ref="editor"
@@ -157,6 +159,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           className: 'rte__kentico',
           display: 'inline-block',
         },
+
+        HIGHLIGHT: {
+          className: 'rte__highlight',
+          display: 'inline-block',
+        },
       };
 
       function getBlockStyle(block) {
@@ -164,6 +171,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           case 'blockquote': return 'RichEditor-blockquote';
           default: return null;
         }
+      }
+
+      function getCustomStyle(style) {
+        if (style.includes('KENTICO')) {
+          return {
+            className: 'rte__kentico-programmatic',
+            textDecoration: 'underline',
+          };
+        }
+        return {};
       }
 
       class StyleButton extends React.Component {
@@ -231,6 +248,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         {label: 'Underline', style: 'UNDERLINE'},
         {label: 'Monospace', style: 'CODE'},
         {label: 'Kentico', style: 'KENTICO'},
+        {label: 'Highlight', style: 'HIGHLIGHT'},
       ];
 
       const InlineStyleControls = (props) => {
