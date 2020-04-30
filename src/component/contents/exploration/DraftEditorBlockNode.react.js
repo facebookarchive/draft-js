@@ -101,7 +101,7 @@ const applyWrapperElementToSiblings = (
 ): Array<React.Node> => {
   const wrappedSiblings = [];
 
-  // we check back until we find a sibbling that does not have same wrapper
+  // we check back until we find a sibling that does not have same wrapper
   for (const sibling: any of nodes.reverse()) {
     if (sibling.type !== Element) {
       break;
