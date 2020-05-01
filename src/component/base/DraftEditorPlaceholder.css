@@ -10,6 +10,7 @@
 .public/DraftEditorPlaceholder/root {
   color: var(fig-secondary-text);
   position: absolute;
+  width: 100%;
   z-index: 1;
 }
 
