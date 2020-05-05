@@ -1113,9 +1113,9 @@ ajv@^6.10.2:
     uri-js "^4.2.2"
 
 alex@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/alex/-/alex-8.0.0.tgz#39422b53e19fb93be9fd8d94e87a5a958dae45d5"
-  integrity sha512-E2XUxYvzLGWa7LsWN1qgQlJ3FdS/szAL6AIc5ZjfxTM/D1/gxKHraLxUZPT3S7zWgMDSOKc6xW/kKddDOJipXw==
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/alex/-/alex-8.1.1.tgz#361bc91f1d8e540c4441937e0f40de6303cbf064"
+  integrity sha512-WH3BEF0fr+Pj7N8caH6Y+DInOUIB2VnRyT8UJ/39cmHivCu6raX++d0ZcYwbD/ONLTWU+VMAiQjCYaNywIZAjw==
   dependencies:
     meow "^5.0.0"
     rehype-parse "^6.0.0"
@@ -1125,7 +1125,7 @@ alex@^8.0.0:
     remark-parse "^7.0.0"
     remark-retext "^3.0.0"
     retext-english "^3.0.0"
-    retext-equality "~4.2.0"
+    retext-equality "~4.3.0"
     retext-profanities "~5.0.0"
     unified "^8.0.0"
     unified-diff "^3.0.0"
@@ -7713,10 +7713,10 @@ retext-english@^3.0.0:
     parse-english "^4.0.0"
     unherit "^1.0.4"
 
-retext-equality@~4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/retext-equality/-/retext-equality-4.2.0.tgz#89ad472444f74e54656eada33ab7748fcbe7a2ef"
-  integrity sha512-7ie79FKs/unD01g3yciMqmKBInECngoCi1keH3HHhylepZ6IqQddzPPxSSHAnhGTCp4VD1WvlzNtet7Gsjl/Ow==
+retext-equality@~4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/retext-equality/-/retext-equality-4.3.0.tgz#818e00311f56517a8f9e72c8eb7fb87441f1f0d5"
+  integrity sha512-jW+6X5BrxVEaZ71qLIaqK6/Y+jqlxijVOcPH2SdHtNaMIHJWvBf5fd1IgHmEp0UREth0YQSI7KNtJurrSPQyMA==
   dependencies:
     lodash.difference "^4.5.0"
     lodash.intersection "^4.4.0"
