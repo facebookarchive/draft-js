@@ -1,0 +1,8 @@
+version: 1
+update_configs:
+  - package_manager: "javascript"
+    directory: "/examples/draft-0-10-0/"
+    update_schedule: "monthly"
+  - package_manager: "javascript"
+    directory: "/"
+    update_schedule: "weekly"
