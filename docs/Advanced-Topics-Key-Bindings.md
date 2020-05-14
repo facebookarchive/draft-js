@@ -44,7 +44,7 @@ First, let's define our key binding function:
 import {getDefaultKeyBinding, KeyBindingUtil} from 'draft-js';
 const {hasCommandModifier} = KeyBindingUtil;
 
-function myKeyBindingFn(e: SyntheticKeyboardEvent): string {
+function myKeyBindingFn(e: SyntheticKeyboardEvent): string | null {
   if (e.keyCode === 83 /* `S` key */ && hasCommandModifier(e)) {
     return 'myeditor-save';
   }
