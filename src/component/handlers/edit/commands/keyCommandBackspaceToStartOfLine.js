@@ -33,9 +33,10 @@ function keyCommandBackspaceToStartOfLine(
       }
       const {ownerDocument} = e.currentTarget;
       const domSelection: SelectionObject = ownerDocument.defaultView.getSelection();
-      // TODO(T65805998): Noticed this while flowifiying: this could throw if nothing is
-      // selected. Not doing it now to keep my flowification diff from altering
-      // behaviour, but we should be safe and handle that case eventually.
+      // getRangeAt can technically throw if there's no selection, but we know
+      // there is one here because text editor has focus (the cursor is a
+      // selection of length 0). Therefore, we don't need to wrap this in a
+      // try-catch block.
       let range = domSelection.getRangeAt(0);
       range = expandRangeToStartOfLine(range);
 
