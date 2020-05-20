@@ -75,7 +75,7 @@ import 'draft-js/dist/Draft.css';
 
 function MyEditor() {
   const [editorState, setEditorState] = React.useState(
-    EditorState.createEmpty(),
+    () => EditorState.createEmpty(),
   );
 
   return <Editor editorState={editorState} onChange={setEditorState} />;
