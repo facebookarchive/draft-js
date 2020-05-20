@@ -46,6 +46,7 @@ If you are interested in helping out, or tracking the progress, please follow
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState} from 'draft-js';
+import 'draft-js/dist/Draft.css';
 
 class MyEditor extends React.Component {
   constructor(props) {
@@ -70,6 +71,7 @@ Since the release of React 16.8, you can use [Hooks](https://reactjs.org/docs/ho
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState} from 'draft-js';
+import 'draft-js/dist/Draft.css';
 
 function MyEditor() {
   const [editorState, setEditorState] = React.useState(
