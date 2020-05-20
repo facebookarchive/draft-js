@@ -51,4 +51,4 @@ unsafe-getters-setters
 ; nonstrict-import
 
 [version]
-^0.123.0
+^0.125.0
