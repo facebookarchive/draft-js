@@ -78,7 +78,7 @@
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-test-renderer": "^16.0.0",
-    "stats-webpack-plugin": "^0.6.2",
+    "stats-webpack-plugin": "^0.7.0",
     "through2": "^3.0.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack-stream": "5.2.1"
