@@ -74,7 +74,7 @@
     "gulp-rename": "^2.0.0",
     "gulp-util": "^3.0.6",
     "jest": "^26.0.1",
-    "prettier": "1.19.1",
+    "prettier": "2.0.5",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-test-renderer": "^16.0.0",
