@@ -1139,6 +1139,314 @@ Array [
 ]
 `;
 
+exports[`Should recognize preformatted blocks 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "following some pre some_code_stuff",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`Should recognize preformatted blocks mixed other styles 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "BOLD",
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+      Object {
+        "entity": null,
+        "style": Array [
+          "CODE",
+        ],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key0",
+    "text": "example bold and code",
+    "type": "unstyled",
+  },
+]
+`;
+
 exports[`Should recognized and *not* override html structure when having known draft-js classname with nesting enabled 1`] = `
 Array [
   Object {

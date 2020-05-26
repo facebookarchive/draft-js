@@ -128,6 +128,17 @@ const buildBlockTypeMap = (
   return Map(blockTypeMap);
 };
 
+const detectInlineStyle = (node: Node): string | null => {
+  if (isHTMLElement(node)) {
+    const element: HTMLElement = (node: any);
+    // Currently only used to detect preformatted inline code
+    if (element.style.fontFamily.includes('monospace')) {
+      return 'CODE';
+    }
+  }
+  return null;
+};
+
 /**
  * If we're pasting from one DraftEditor to another we can check to see if
  * existing list item depth classes are being used and preserve this style
@@ -497,6 +508,10 @@ class ContentBlocksBuilder {
         newStyle = newStyle.add(HTMLTagToRawInlineStyleMap.get(nodeName));
       }
       newStyle = styleFromNodeAttributes(node, newStyle);
+      const inlineStyle = detectInlineStyle(node);
+      if (inlineStyle != null) {
+        newStyle = newStyle.add(inlineStyle);
+      }
       blockConfigs.push(
         ...this._toBlockConfigs(Array.from(node.childNodes), newStyle),
       );
