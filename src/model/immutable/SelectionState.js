@@ -12,6 +12,7 @@
 'use strict';
 
 const Immutable = require('immutable');
+const RawDraftEditorState = require('RawDraftEditorState');
 
 const {Record} = Immutable;
 
@@ -144,6 +145,16 @@ class SelectionState extends SelectionStateRecord {
       focusOffset: 0,
       isBackward: false,
       hasFocus: false,
+    });
+  }
+  static createFromRaw(raw: RawDraftEditorState): SelectionState {
+    return new SelectionState({
+      anchorKey: raw.anchorKey,  
+      anchorOffset: raw.anchorOffset,
+      focusOffset: raw.focusOffset,
+      focusKey: raw.focusKey,     
+      isBackward: raw.isBackward,
+      hasFocus: raw.hasFocus,
     });
   }
 }

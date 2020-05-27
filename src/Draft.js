@@ -26,8 +26,12 @@ const DraftEntityInstance = require('DraftEntityInstance');
 const EditorState = require('EditorState');
 const KeyBindingUtil = require('KeyBindingUtil');
 const RawDraftContentState = require('RawDraftContentState');
+const RawDraftEditorState = require('RawDraftEditorState');
 const RichTextEditorUtil = require('RichTextEditorUtil');
 const SelectionState = require('SelectionState');
+
+const convertEditorStateToRaw = require('convertEditorStateToRaw');
+const convertFromRawToEditorState = require('convertFromRawToEditorState');
 
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
@@ -51,6 +55,7 @@ const DraftPublic = {
   ContentBlock,
   ContentState,
   RawDraftContentState,
+  RawDraftEditorState,
   SelectionState,
 
   AtomicBlockUtils,
@@ -62,6 +67,8 @@ const DraftPublic = {
   DefaultDraftInlineStyle,
 
   convertFromHTML,
+  convertEditorStateToRaw,
+  convertFromRawToEditorState,
   convertFromRaw: convertFromRawToDraftState,
   convertToRaw: convertFromDraftStateToRaw,
   genKey: generateRandomKey,

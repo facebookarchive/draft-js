@@ -35,6 +35,7 @@ import {
   convertFromHTML as convertFromHTMLClassic,
   convertToRaw,
   convertFromRaw,
+  convertEditorStateToRaw
 } from 'draft-js';
 
 const fromHTML = gkx('draft_refactored_html_importer')
