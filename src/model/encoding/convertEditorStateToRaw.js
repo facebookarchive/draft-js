@@ -12,9 +12,8 @@
 'use strict';
 
 
-import type {RawDraftEditorState} from 'RawDraftEditorState';
-import type {EditorState} from 'EditorState';
-
+const RawDraftEditorState = require('RawDraftEditorState');
+const EditorState =  require('EditorState');
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 
 
