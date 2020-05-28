@@ -11,7 +11,7 @@
 
 'use strict';
 
-const RawDraftEditorState = requite('RawDraftEditorState');
+const RawDraftEditorState = require('RawDraftEditorState');
 const ContentState = require('ContentState');
 const DraftDecoratorType =  require('DraftDecoratorType');
 const EditorState = require('EditorState');
