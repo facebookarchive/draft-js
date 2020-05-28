@@ -12,6 +12,7 @@
 'use strict';
 
 const EditorState = require('EditorState');
+const ContentState = require('ContentState');
 const RawDraftEditorState = require('RawDraftEditorState');
 const convertEditorStateToRaw = require('convertEditorStateToRaw');
 
