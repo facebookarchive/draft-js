@@ -16,6 +16,7 @@ const ContentState = require('ContentState');
 const SelectionState = require('SelectionState');
 const RawDraftEditorState = require('RawDraftEditorState');
 const convertEditorStateToRaw = require('convertEditorStateToRaw');
+const convertFromRawToEditorState = require('convertFromRawToEditorState');
 
 const newEditorState = EditorState.createWithContent(ContentState.createFromText("first line\nsecond line"));
 const blocks = newEditorState.getCurrentContent().getBlocksAsArray();
