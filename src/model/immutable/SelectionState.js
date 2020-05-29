@@ -12,7 +12,7 @@
 'use strict';
 
 const Immutable = require('immutable');
-const RawDraftEditorState = require('RawDraftEditorState');
+import type {RawDraftEditorState} from 'RawDraftEditorState';
 
 const {Record} = Immutable;
 
