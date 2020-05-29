@@ -13,6 +13,7 @@
 
 const EditorState = require('EditorState');
 const ContentState = require('ContentState');
+const SelectionState = require('SelectionState');
 const RawDraftEditorState = require('RawDraftEditorState');
 const convertEditorStateToRaw = require('convertEditorStateToRaw');
 
