@@ -14,15 +14,8 @@
 import type {RawDraftContentState} from 'RawDraftContentState';
 import type {RawDraftSelectionState} from 'RawDraftSelectionState';
 
-
-/**
- * A type that represents a composed document as vanilla JavaScript objects,
- * with all styles and entities represented as ranges. Corresponding entity
- * objects are packaged as objects as well.
- *
- * This object is especially useful when sending the document state to the
- * server for storage, as its representation is more concise than our
- * immutable objects.
+/** 
+ * This object is used to create a raw editor state. It includes raw content and raw selection.
  */
 export type RawDraftEditorState = {
   rawContent: RawDraftContentState,  

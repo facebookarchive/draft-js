@@ -11,9 +11,10 @@
 
 'use strict';
 
-const RawDraftEditorState = require('RawDraftEditorState');
+import type RawDraftEditorState from 'RawDraftEditorState';
+import type {DraftDecoratorType} from 'DraftDecoratorType';
+
 const ContentState = require('ContentState');
-const DraftDecoratorType =  require('DraftDecoratorType');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
 const convertFromRawToDraftState = require('convertFromRawToDraftState');

@@ -11,15 +11,9 @@
 
 'use strict';
 
-
-/**
- * A type that represents a composed document as vanilla JavaScript objects,
- * with all styles and entities represented as ranges. Corresponding entity
- * objects are packaged as objects as well.
- *
- * This object is especially useful when sending the document state to the
- * server for storage, as its representation is more concise than our
- * immutable objects.
+/** 
+ * This object is represents raw form of the selection state.
+ * Will be used in converting editor state to raw form and recreating it using its raw form.
  */
 export type RawDraftSelectionState = {
     anchorKey:String,
