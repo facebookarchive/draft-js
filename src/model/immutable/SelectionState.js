@@ -149,12 +149,12 @@ class SelectionState extends SelectionStateRecord {
   }
   static createFromRaw(raw: RawDraftEditorState): SelectionState {
     return new SelectionState({
-      anchorKey: raw.anchorKey,  
-      anchorOffset: raw.anchorOffset,
-      focusOffset: raw.focusOffset,
-      focusKey: raw.focusKey,     
-      isBackward: raw.isBackward,
-      hasFocus: raw.hasFocus,
+      anchorKey: raw.rawSelection.anchorKey,
+      anchorOffset: raw.rawSelection.anchorOffset,
+      focusOffset: raw.rawSelection.focusOffset,
+      focusKey: raw.rawSelection.focusKey,
+      isBackward: raw.rawSelection.isBackward,
+      hasFocus: raw.rawSelection.hasFocus,
     });
   }
 }

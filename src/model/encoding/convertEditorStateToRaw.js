@@ -11,18 +11,17 @@
 
 'use strict';
 
-import type RawDraftEditorState from 'RawDraftEditorState';
-const EditorState =  require('EditorState');
+import type {RawDraftEditorState} from 'RawDraftEditorState';
+const EditorState = require('EditorState');
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 
 const convertEditorStateToRaw = (
   editorState: EditorState,
 ): RawDraftEditorState => {
-
   let selectionState = editorState.getSelection();
 
-  let rawDraftEditorState:RawDraftEditorState = {
-    rawContent: convertFromDraftStateToRaw(editorState.getCurrentContent()),  
+  let rawDraftEditorState: RawDraftEditorState = {
+    rawContent: convertFromDraftStateToRaw(editorState.getCurrentContent()),
     rawSelection: {
       anchorKey: selectionState.getAnchorKey(),
       focusKey: selectionState.getFocusKey(),
@@ -30,7 +29,7 @@ const convertEditorStateToRaw = (
       focusOffset: selectionState.getFocusOffset(),
       isBackward: selectionState.getIsBackward(),
       hasFocus: selectionState.getHasFocus(),
-    }
+    },
   };
 
   return rawDraftEditorState;

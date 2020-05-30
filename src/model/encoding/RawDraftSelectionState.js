@@ -11,15 +11,15 @@
 
 'use strict';
 
-/** 
+/**
  * This object is represents raw form of the selection state.
  * Will be used in converting editor state to raw form and recreating it using its raw form.
  */
 export type RawDraftSelectionState = {
-    anchorKey:String,
-    focusKey:String,
-    anchorOffset:Number,
-    focusOffset:Number,
-    isBackward:Boolean,
-    hasFocus:Boolean
+  anchorKey: string,
+  focusKey: string,
+  anchorOffset: number,
+  focusOffset: number,
+  isBackward: boolean,
+  hasFocus: boolean,
 };

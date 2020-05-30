@@ -23,19 +23,24 @@ const convertFromRawToEditorState = (
   rawEditorState: RawDraftEditorState,
   decorator?: ?DraftDecoratorType,
 ): EditorState => {
-  
-  let contentState:ContentState = convertFromRawToDraftState(rawEditorState.rawContent);  
-  let bareEditorState:EditorState = EditorState.createWithContent(contentState, decorator);
+  let contentState: ContentState = convertFromRawToDraftState(
+    rawEditorState.rawContent,
+  );
+  let bareEditorState: EditorState = EditorState.createWithContent(
+    contentState,
+    decorator,
+  );
 
-  let createdSelectionState:SelectionState = SelectionState.createFromRaw(rawEditorState.rawSelection)
+  let createdSelectionState: SelectionState = SelectionState.createFromRaw(
+    rawEditorState,
+  );
 
   let finalEditorState = EditorState.forceSelection(
     bareEditorState,
-    createdSelectionState
+    createdSelectionState,
   );
 
   return finalEditorState;
-
 };
 
 module.exports = convertFromRawToEditorState;

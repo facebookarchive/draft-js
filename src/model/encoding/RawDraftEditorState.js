@@ -14,10 +14,10 @@
 import type {RawDraftContentState} from 'RawDraftContentState';
 import type {RawDraftSelectionState} from 'RawDraftSelectionState';
 
-/** 
+/**
  * This object is used to create a raw editor state. It includes raw content and raw selection.
  */
 export type RawDraftEditorState = {
-  rawContent: RawDraftContentState,  
-  rawSelection: RawDraftSelectionState
+  rawContent: RawDraftContentState,
+  rawSelection: RawDraftSelectionState,
 };
