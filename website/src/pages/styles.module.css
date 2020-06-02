@@ -5,6 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+.container {
+  filter: grayscale(100%);
+}
+
+.blm {
+  font-size: 20px;
+  height: 80px;
+  padding: 20px;
+  text-align: center;
+}
+
 @media only screen and (max-width: 996px) {
   .demoGif {
     margin-top: 2rem;
@@ -13,5 +24,9 @@
 
   .hideOnTabletAndSmaller {
     display: none;
+  }
+
+  .blm {
+    height: 70px;
   }
 }
