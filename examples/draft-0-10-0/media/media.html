@@ -89,6 +89,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           );
 
           this.setState({
+            // The third parameter here is a space string, not an empty string
+            // If you set an empty string, you will get an error: Unknown DraftEntity key: null
             editorState: AtomicBlockUtils.insertAtomicBlock(
               newEditorState,
               entityKey,
