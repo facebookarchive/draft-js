@@ -13,6 +13,21 @@
   --ifm-color-primary-light: rgb(150, 80, 80);
   --ifm-color-primary-lighter: rgb(169, 111, 111);
   --ifm-color-primary-lightest: rgb(194, 152, 152);
-
   --ifm-code-font-size: 95%;
+}
+
+.navbar {
+  filter: grayscale(100%);
+}
+
+.menu {
+  filter: grayscale(100%);
+}
+
+.hero {
+  filter: grayscale(100%);
+}
+
+.container {
+  filter: grayscale(100%);
 }
