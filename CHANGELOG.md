@@ -4,12 +4,59 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.11.6 (June 4th, 2020)
+
+### Added
+* Adds BLM banner (#2454) (claudiopro in 2a0c5bbe)
+* HtmlConversion: Add support for telephone links (#2365) (Andrew Lauria in e1e9a0c5)
+* 7.C - Block Operations - Consume (Shalabh Vyas in 99c6b06c)
+* Add fromJS() API to Draft model objects (Shalabh Vyas in 3ee5a23e)
+
+### Changed
+* Add Null return value type in code example (#2429) (Jacob D. Castro in 45bb6b52)
+* Add /meta/bundle-size-stats to .gitignore (#2436) (Kevin Chavez in e3a689df)
+* Update eslint, cross-env and gulp-derequire. Fix version numbers for … (#2437) (Kevin Chavez in 79a25b5c)
+* Update Overview.md (#2434) (Mohamed ABDELLANI in e5e293f1)
+* Upgrade jest and flow-bin deps (#2435) (Kevin Chavez in 9ac399cc)
+* Update cadence for dependabot updates (#2402) (Kevin Chavez in 6619077c)
+* Bump alex from 8.0.0 to 8.1.1 (#2407) (dependabot-preview[bot] in 7e604b06)
+* Bump fstream from 1.0.11 to 1.0.12 in /examples/draft-0-10-0/tex (#2396) (dependabot[bot] in 1f5d40ec)
+* Bump acorn from 6.0.5 to 6.4.1 in /examples/draft-0-10-0/tex (#2376) (dependabot[bot] in 9028881c)
+* chore(flow): Updates flow-bin to 0.123 (#2393) (Claudio Procida in 497a4787)
+* Short-circuit getUpdatedSelectionState for invalid selection updates on prod (Kevin Chavez in 0585b68f)
+* Type selection object in setDraftEditorSelection.js (Kevin Chavez in 31dec710)
+* Type selection object in keyCommandBackspaceToStartOfLine.js (Kevin Chavez in aa5c4a19)
+* Flow v0.123.0 in www (Panagiotis Vekris in af675755)
+* Type selection object in getDraftEditorSelection.js (Kevin Chavez in dfacb1b4)
+* Type selection object in editOnBlur.js (Kevin Chavez in 22997144)
+* Type selection object in editOnInput. (Kevin Chavez in 41beae1b)
+* upgrade to flow 0.122.0 (Marshall Roch in 97dd19b2)
+* DraftEntity ID Changes (Shalabh Vyas in 13989e31)
+* use pasted block type if pasting to empty unstyled block (Frank Thompson in 7d3d3c8f)
+* Update deps for and cleanup playground example (#2368) (Kevin Chavez in 2658dd60)
+* Only extend selection if it has ranges in setDraftEditorSelection.js (Kevin Chavez in d53fa7ab)
+* Update draft.js on website to v0.11.5 (#2370) (Kevin Chavez in 538d864e)
+* Make a few types exact (Kevin Chavez in 0950285d)
+* Remaining non-generated non-reason-parsed files (Jordan Brown in 153482ff)
+
+### Fixed
+* Fix draft-js pasted inline styles (Giulio Jiang in 92176ab2)
+* docs: in react hooks example, limit createEmpty calls (#2432) (Benjamin Atkin in 05e838e6)
+* Revisit comment for todo of T65805998, validate there's nothing to worry about (Kevin Chavez in 268ece35)
+* html/shared/draft-js/model/transaction (generatedunixname89002005287564 in c75f1e4c)
+* types-first in html/js/mobile (Panagiotis Vekris in e66f39ef)
+* Address #2413 by making Firefox follow the same behaviour as Chrome (#2414) (Kevin Chavez in 6d619c61)
+* Prevent placeholder from unnecessarily wrapping (#2392) (Frank Yan in 9d6bbfdc)
+* docs: Fix simple typo, sibbling -> sibling (#2384) (Tim Gates in d1cb1e77)
+* Fix build by adding missing modules (Kevin Chavez in fbe3417e)
+* Fix flow by allowing optional chaining (#2369) (Kevin Chavez in 85764327)
+
 ## 0.11.5 (Mar 26, 2020)
 
-## Removed
+### Removed
 * Remove examples for draft.js 0.9.0 (#2358) (Kevin Chavez in fd16d8e2)
 
-## Changed
+### Changed
 * Update deps in 'universal' example (#2362) (Kevin Chavez in dc8bfbb2)
 * Remove unused Flow suppressions in WWW (George Zahariev in 3858858b)
 * Improve types for EditorState (Kevin Chavez in 792bd3ab)
@@ -35,7 +82,7 @@ Changes to `src` are live in production on facebook.com at the time of release.
 * Upgrade eslint + flow, and fix failed test from nullishCoalescingOperator (#2083) (Kanitkorn S in 824fd125)
 * chore(travis): bumps node versions used in Travis CI to 10 and 12 (#2300) (Claudio Procida in e711230f)
 
-## Fixed
+### Fixed
 * Fix Uncaught TypeError: Cannot read property 'nodeType' of null at editOnInput (#2330) (Konstantin Tarkus in db3216d9)
 * Fix keyBindingFn documentation URL (Ryan Silva in 3251017d)
 * fix style handling in convertFromHTMLToContentBlocks (Frank Thompson in ad8374d2)
