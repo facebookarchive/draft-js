@@ -119,18 +119,14 @@ test('must collapse nested blocks to the topmost level', () => {
   `);
 });
 
-/**
- * todo: azelenskiy
- * Changes to the mocked DOM appear to have broken this.
- *
- * test('must suppress blocks nested inside other blocks', () => {
- *   const html = '<p><h2>Some text here</h2> more text here </p>';
- *   const output = DraftPasteProcessor.processHTML(html, CUSTOM_BLOCK_MAP);
- *   assertBlockTypes(output, [
- *   'unstyled',
- *   ]);
- * });
- */
+test('must suppress blocks nested inside other blocks', () => {
+  assertDraftPasteProcessorProcessHTML(`
+    <p>
+      <h2>Some text here</h2>
+      more text here
+    </p>
+  `);
+});
 
 test('must detect two touching blocks', () => {
   assertDraftPasteProcessorProcessHTML(`
@@ -317,6 +313,33 @@ test('must preserve list formatting', () => {
         </ol>
       </li>
       <li>what</li>
+    </ul>
+  `);
+});
+
+test('must preserve nested lists', () => {
+  assertDraftPasteProcessorProcessHTML(`
+    <ul>
+      <li>this</li>
+      <li>
+        is
+        <ul>
+          <li>a</li>
+          <li>nested</li>
+        </ul>
+      </li>
+      <li>list</li>
+    </ul>
+  `);
+});
+
+test('must preserve list items with nested Ps', () => {
+  assertDraftPasteProcessorProcessHTML(`
+    <p>Hello</p>
+    <ul>
+      <li>
+        <p><strong>Hi</strong> there</p>
+      </li>
     </ul>
   `);
 });
