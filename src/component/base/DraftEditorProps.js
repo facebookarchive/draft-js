@@ -89,6 +89,12 @@ export type DraftEditorProps = {
   ariaActiveDescendantID?: string,
   ariaAutoComplete?: string,
   ariaControls?: string,
+  /**
+   * aria-describedby attribute. should point to the id of a descriptive
+   * element. The substring, "{{editor_id_placeholder}}" will be replaced with
+   * the DOM id of the placeholder element if it exists.
+   * @default "{{editor_id_placeholder}}"
+   */
   ariaDescribedBy?: string,
   ariaExpanded?: boolean,
   ariaLabel?: string,
@@ -175,6 +181,7 @@ export type DraftEditorProps = {
 };
 
 export type DraftEditorDefaultProps = {
+  ariaDescribedBy: string,
   blockRenderMap: DraftBlockRenderMap,
   blockRendererFn: (block: BlockNodeRecord) => ?Object,
   blockStyleFn: (block: BlockNodeRecord) => string,
