@@ -17,6 +17,7 @@ import type SelectionState from 'SelectionState';
 
 const ContentBlockNode = require('ContentBlockNode');
 
+const {isHeaderBlock, isListBlock} = require('blockTypeUtils');
 const generateRandomKey = require('generateRandomKey');
 const Immutable = require('immutable');
 const invariant = require('invariant');
@@ -99,11 +100,15 @@ const splitBlockInContentState = (
   const text = blockToSplit.getText();
 
   if (!text) {
-    const blockType = blockToSplit.getType();
-    if (
-      blockType === 'unordered-list-item' ||
-      blockType === 'ordered-list-item'
-    ) {
+    const isList = isListBlock(blockToSplit);
+
+    if (isList && blockToSplit.depth > 0) {
+      return modifyBlockForContentState(contentState, selectionState, block =>
+        block.merge({depth: block.depth - 1}),
+      );
+    }
+
+    if (isList || blockToSplit.type === 'blockquote') {
       return modifyBlockForContentState(contentState, selectionState, block =>
         block.merge({type: 'unstyled', depth: 0}),
       );
@@ -115,13 +120,21 @@ const splitBlockInContentState = (
   const keyBelow = generateRandomKey();
   const isExperimentalTreeBlock = blockToSplit instanceof ContentBlockNode;
 
+  const blockAboveText = text.slice(0, offset);
+  const blockBelowText = text.slice(offset);
+  const blockBelowType =
+    !blockBelowText && isHeaderBlock(blockToSplit)
+      ? 'unstyled'
+      : blockToSplit.type;
+
   const blockAbove = blockToSplit.merge({
-    text: text.slice(0, offset),
+    text: blockAboveText,
     characterList: chars.slice(0, offset),
   });
   const blockBelow = blockAbove.merge({
     key: keyBelow,
-    text: text.slice(offset),
+    type: blockBelowType,
+    text: blockBelowText,
     characterList: chars.slice(offset),
     data: Map(),
   });

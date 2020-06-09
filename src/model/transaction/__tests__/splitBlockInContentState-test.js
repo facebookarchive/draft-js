@@ -14,7 +14,9 @@
 jest.mock('generateRandomKey');
 
 const BlockMapBuilder = require('BlockMapBuilder');
+const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
+const ContentState = require('ContentState');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
@@ -24,6 +26,17 @@ const splitBlockInContentState = require('splitBlockInContentState');
 const {List} = Immutable;
 
 const {contentState, selectionState} = getSampleStateForTesting();
+
+const prepareContentWithBlock = (
+  block: ContentBlock,
+): {|
+  contentState: ContentState,
+  selectionState: SelectionState,
+|} => {
+  const contentState = ContentState.createFromBlockArray([block]);
+  const selectionState = SelectionState.createEmpty(block.key);
+  return {contentState, selectionState};
+};
 
 const contentBlockNodes = [
   new ContentBlockNode({
@@ -207,14 +220,221 @@ test('must split at the end of a nested ContentBlock', () => {
   );
 });
 
-test('must convert empty list item ContentBlock to unstyled rather than split', () => {
+test('must preserve blockquote type when splitting in the middle', () => {
+  const block = new ContentBlock({
+    text: 'hello',
+    type: 'blockquote',
+  });
+  const {contentState, selectionState} = prepareContentWithBlock(block);
+  const SPLIT_OFFSET = 2;
+
   assertSplitBlockInContentState(
-    treeSelectionState.merge({
-      anchorOffset: 0,
-      focusOffset: 0,
-      anchorKey: 'H',
-      focusKey: 'H',
+    selectionState.merge({
+      anchorOffset: SPLIT_OFFSET,
+      focusOffset: SPLIT_OFFSET,
     }),
-    treeContentState,
+    contentState,
   );
+});
+
+test('must preserve blockquote type when splitting at end', () => {
+  const block = new ContentBlock({
+    text: 'hello',
+    type: 'blockquote',
+  });
+  const {contentState, selectionState} = prepareContentWithBlock(block);
+  const SPLIT_OFFSET = block.getLength();
+
+  assertSplitBlockInContentState(
+    selectionState.merge({
+      anchorOffset: SPLIT_OFFSET,
+      focusOffset: SPLIT_OFFSET,
+    }),
+    contentState,
+  );
+});
+
+test('must convert empty blockquote to unstyled rather than splitting', () => {
+  const block = new ContentBlock({
+    text: '',
+    type: 'blockquote',
+  });
+  const {contentState, selectionState} = prepareContentWithBlock(block);
+
+  assertSplitBlockInContentState(selectionState, contentState);
+});
+
+test('must preserve code-block type even when empty', () => {
+  const block = new ContentBlock({
+    text: '',
+    type: 'code-block',
+  });
+  const {contentState, selectionState} = prepareContentWithBlock(block);
+
+  assertSplitBlockInContentState(selectionState, contentState);
+});
+
+test('must preserve list item depth when splitting at the start', () => {
+  ['unordered-list-item', 'ordered-list-item'].forEach(listType => {
+    const block = new ContentBlock({
+      text: 'hello',
+      type: listType,
+      depth: 1,
+    });
+    const {contentState, selectionState} = prepareContentWithBlock(block);
+
+    assertSplitBlockInContentState(
+      selectionState.merge({
+        anchorOffset: 0,
+        focusOffset: 0,
+      }),
+      contentState,
+    );
+  });
+});
+
+test('must preserve list item depth when splitting in the middle', () => {
+  ['unordered-list-item', 'ordered-list-item'].forEach(listType => {
+    const block = new ContentBlock({
+      text: 'hello',
+      type: listType,
+      depth: 1,
+    });
+    const {contentState, selectionState} = prepareContentWithBlock(block);
+    const SPLIT_OFFSET = 2;
+
+    assertSplitBlockInContentState(
+      selectionState.merge({
+        anchorOffset: SPLIT_OFFSET,
+        focusOffset: SPLIT_OFFSET,
+      }),
+      contentState,
+    );
+  });
+});
+
+test('must preserve list item depth when splitting at the end', () => {
+  ['unordered-list-item', 'ordered-list-item'].forEach(listType => {
+    const block = new ContentBlock({
+      text: 'hello',
+      type: listType,
+      depth: 1,
+    });
+    const {contentState, selectionState} = prepareContentWithBlock(block);
+    const SPLIT_OFFSET = block.getLength();
+
+    assertSplitBlockInContentState(
+      selectionState.merge({
+        anchorOffset: SPLIT_OFFSET,
+        focusOffset: SPLIT_OFFSET,
+      }),
+      contentState,
+    );
+  });
+});
+
+test('must reduce depth of indented empty list item rather than split', () => {
+  ['unordered-list-item', 'ordered-list-item'].forEach(listType => {
+    const {contentState, selectionState} = prepareContentWithBlock(
+      new ContentBlock({
+        text: '',
+        type: listType,
+        depth: 1,
+      }),
+    );
+
+    assertSplitBlockInContentState(selectionState, contentState);
+  });
+});
+
+test('must convert non-indented empty list item to unstyled rather than split', () => {
+  ['unordered-list-item', 'ordered-list-item'].forEach(listType => {
+    const {contentState, selectionState} = prepareContentWithBlock(
+      new ContentBlock({
+        text: '',
+        type: listType,
+        depth: 0,
+      }),
+    );
+
+    assertSplitBlockInContentState(selectionState, contentState);
+  });
+});
+
+test('must convert the new block to unstyled when splitting at end of header blocks', () => {
+  [
+    'header-one',
+    'header-two',
+    'header-three',
+    'header-four',
+    'header-five',
+    'header-six',
+  ].forEach(headerType => {
+    const headerBlock = new ContentBlock({
+      text: 'hello',
+      type: headerType,
+    });
+    const {contentState, selectionState} = prepareContentWithBlock(headerBlock);
+    const SPLIT_OFFSET = headerBlock.getLength();
+
+    assertSplitBlockInContentState(
+      selectionState.merge({
+        anchorOffset: SPLIT_OFFSET,
+        focusOffset: SPLIT_OFFSET,
+      }),
+      contentState,
+    );
+  });
+});
+
+test('must preserve header type when splitting at the start of header block', () => {
+  [
+    'header-one',
+    'header-two',
+    'header-three',
+    'header-four',
+    'header-five',
+    'header-six',
+  ].forEach(headerType => {
+    const {contentState, selectionState} = prepareContentWithBlock(
+      new ContentBlock({
+        text: 'hello',
+        type: headerType,
+      }),
+    );
+
+    assertSplitBlockInContentState(
+      selectionState.merge({
+        anchorOffset: 0,
+        focusOffset: 0,
+      }),
+      contentState,
+    );
+  });
+});
+
+test('must preserve header type when splitting within a header block', () => {
+  [
+    'header-one',
+    'header-two',
+    'header-three',
+    'header-four',
+    'header-five',
+    'header-six',
+  ].forEach(headerType => {
+    const {contentState, selectionState} = prepareContentWithBlock(
+      new ContentBlock({
+        text: 'hello',
+        type: headerType,
+      }),
+    );
+
+    assertSplitBlockInContentState(
+      selectionState.merge({
+        anchorOffset: 2,
+        focusOffset: 2,
+      }),
+      contentState,
+    );
+  });
 });

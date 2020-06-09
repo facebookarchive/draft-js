@@ -1,6 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`must convert empty list item ContentBlock to unstyled rather than split 1`] = `
+exports[`must convert empty blockquote to unstyled rather than splitting 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must convert non-indented empty list item to unstyled rather than split 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must convert non-indented empty list item to unstyled rather than split 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must convert the new block to unstyled when splitting at end of header blocks 1`] = `
 Array [
   Object {
     "characterList": Array [
@@ -25,46 +64,67 @@ Array [
         "style": Array [],
       },
     ],
-    "children": Array [],
     "data": Object {},
     "depth": 0,
-    "key": "A",
-    "nextSibling": "B",
-    "parent": null,
-    "prevSibling": null,
-    "text": "Alpha",
-    "type": "unstyled",
+    "key": "",
+    "text": "hello",
+    "type": "header-one",
   },
   Object {
     "characterList": Array [],
-    "children": Array [
-      "C",
-      "F",
+    "data": Object {},
+    "depth": 0,
+    "key": "key21",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must convert the new block to unstyled when splitting at end of header blocks 2`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
     ],
     "data": Object {},
     "depth": 0,
-    "key": "B",
-    "nextSibling": "G",
-    "parent": null,
-    "prevSibling": "A",
-    "text": "",
-    "type": "unstyled",
+    "key": "",
+    "text": "hello",
+    "type": "header-two",
   },
   Object {
     "characterList": Array [],
-    "children": Array [
-      "D",
-      "E",
-    ],
     "data": Object {},
     "depth": 0,
-    "key": "C",
-    "nextSibling": "F",
-    "parent": "B",
-    "prevSibling": null,
+    "key": "key22",
     "text": "",
     "type": "unstyled",
   },
+]
+`;
+
+exports[`must convert the new block to unstyled when splitting at end of header blocks 3`] = `
+Array [
   Object {
     "characterList": Array [
       Object {
@@ -88,138 +148,1041 @@ Array [
         "style": Array [],
       },
     ],
-    "children": Array [],
     "data": Object {},
     "depth": 0,
-    "key": "D",
-    "nextSibling": "E",
-    "parent": "C",
-    "prevSibling": null,
-    "text": "Delta",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "E",
-    "nextSibling": null,
-    "parent": "C",
-    "prevSibling": "D",
-    "text": "Elephant",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "F",
-    "nextSibling": null,
-    "parent": "B",
-    "prevSibling": "C",
-    "text": "Fire",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "G",
-    "nextSibling": null,
-    "parent": null,
-    "prevSibling": "B",
-    "text": "Gorila",
-    "type": "unstyled",
+    "key": "",
+    "text": "hello",
+    "type": "header-three",
   },
   Object {
     "characterList": Array [],
-    "children": Array [],
     "data": Object {},
     "depth": 0,
-    "key": "H",
-    "nextSibling": null,
-    "parent": null,
-    "prevSibling": "G",
+    "key": "key23",
     "text": "",
     "type": "unstyled",
+  },
+]
+`;
+
+exports[`must convert the new block to unstyled when splitting at end of header blocks 4`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "hello",
+    "type": "header-four",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key24",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must convert the new block to unstyled when splitting at end of header blocks 5`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "hello",
+    "type": "header-five",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key25",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must convert the new block to unstyled when splitting at end of header blocks 6`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "hello",
+    "type": "header-six",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key26",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must preserve blockquote type when splitting at end 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "hello",
+    "type": "blockquote",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key13",
+    "text": "",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must preserve blockquote type when splitting in the middle 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "he",
+    "type": "blockquote",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key12",
+    "text": "llo",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`must preserve code-block type even when empty 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "code-block",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "key14",
+    "text": "",
+    "type": "code-block",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting at the start of header block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "header-one",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key27",
+    "text": "hello",
+    "type": "header-one",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting at the start of header block 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "header-two",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key28",
+    "text": "hello",
+    "type": "header-two",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting at the start of header block 3`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "header-three",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key29",
+    "text": "hello",
+    "type": "header-three",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting at the start of header block 4`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "header-four",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key30",
+    "text": "hello",
+    "type": "header-four",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting at the start of header block 5`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "header-five",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key31",
+    "text": "hello",
+    "type": "header-five",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting at the start of header block 6`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "header-six",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key32",
+    "text": "hello",
+    "type": "header-six",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting within a header block 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "he",
+    "type": "header-one",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key33",
+    "text": "llo",
+    "type": "header-one",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting within a header block 2`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "he",
+    "type": "header-two",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key34",
+    "text": "llo",
+    "type": "header-two",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting within a header block 3`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "he",
+    "type": "header-three",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key35",
+    "text": "llo",
+    "type": "header-three",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting within a header block 4`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "he",
+    "type": "header-four",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key36",
+    "text": "llo",
+    "type": "header-four",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting within a header block 5`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "he",
+    "type": "header-five",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key37",
+    "text": "llo",
+    "type": "header-five",
+  },
+]
+`;
+
+exports[`must preserve header type when splitting within a header block 6`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "he",
+    "type": "header-six",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "key38",
+    "text": "llo",
+    "type": "header-six",
+  },
+]
+`;
+
+exports[`must preserve list item depth when splitting at the end 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "",
+    "text": "hello",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "key19",
+    "text": "",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`must preserve list item depth when splitting at the end 2`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "",
+    "text": "hello",
+    "type": "ordered-list-item",
+  },
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "key20",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+]
+`;
+
+exports[`must preserve list item depth when splitting at the start 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "",
+    "text": "",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "key15",
+    "text": "hello",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`must preserve list item depth when splitting at the start 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 1,
+    "key": "",
+    "text": "",
+    "type": "ordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "key16",
+    "text": "hello",
+    "type": "ordered-list-item",
+  },
+]
+`;
+
+exports[`must preserve list item depth when splitting in the middle 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "",
+    "text": "he",
+    "type": "unordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "key17",
+    "text": "llo",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`must preserve list item depth when splitting in the middle 2`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "",
+    "text": "he",
+    "type": "ordered-list-item",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "data": Object {},
+    "depth": 1,
+    "key": "key18",
+    "text": "llo",
+    "type": "ordered-list-item",
+  },
+]
+`;
+
+exports[`must reduce depth of indented empty list item rather than split 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "unordered-list-item",
+  },
+]
+`;
+
+exports[`must reduce depth of indented empty list item rather than split 2`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "",
+    "text": "",
+    "type": "ordered-list-item",
   },
 ]
 `;

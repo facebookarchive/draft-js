@@ -15,6 +15,7 @@
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
+const {isListBlock} = require('blockTypeUtils');
 const generateRandomKey = require('generateRandomKey');
 const invariant = require('invariant');
 
@@ -34,14 +35,6 @@ const traverseInDepthOrder = (
 
     stack = stack.concat([...children.reverse()]);
   }
-};
-
-const isListBlock = (block?: RawDraftContentBlock): boolean => {
-  if (!(block && block.type)) {
-    return false;
-  }
-  const {type} = block;
-  return type === 'unordered-list-item' || type === 'ordered-list-item';
 };
 
 const addDepthToChildren = (block: RawDraftContentBlock) => {
