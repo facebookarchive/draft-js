@@ -16,6 +16,7 @@ import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
+import type {BlockKeyMap} from 'BlockKeyMap';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
@@ -38,6 +39,7 @@ type Props = {
   editorState: EditorState,
   preventScroll?: boolean,
   textDirectionality?: BidiDirection,
+  blockKeyMap: BlockKeyMap,
   ...
 };
 
@@ -85,8 +87,16 @@ class DraftEditorContents extends React.Component<Props> {
     const prevDirectionMap = prevEditorState.getDirectionMap();
     const nextDirectionMap = nextEditorState.getDirectionMap();
 
+    const prevBlockKeyMap = this.props.blockKeyMap;
+    const nextBlockKeyMap = nextProps.blockKeyMap;
+
     // Text direction has changed for one or more blocks. We must re-render.
     if (prevDirectionMap !== nextDirectionMap) {
+      return true;
+    }
+
+    // blockKeyMap has chaged. We must re-render on block level.
+    if (prevBlockKeyMap !== nextBlockKeyMap) {
       return true;
     }
 
@@ -136,6 +146,7 @@ class DraftEditorContents extends React.Component<Props> {
       editorKey,
       preventScroll,
       textDirectionality,
+      blockKeyMap,
     } = this.props;
 
     const content = editorState.getCurrentContent();
@@ -181,6 +192,7 @@ class DraftEditorContents extends React.Component<Props> {
         preventScroll,
         selection,
         tree: editorState.getBlockTree(key),
+        key: `${key}-${blockKeyMap.get(key) || '0'}`,
       };
 
       const configForType =
@@ -231,7 +243,7 @@ class DraftEditorContents extends React.Component<Props> {
         /* $FlowFixMe(>=0.112.0 site=www,mobile) This comment suppresses an
          * error found when Flow v0.112 was deployed. To see the error delete
          * this comment and run Flow. */
-        <Component {...componentProps} key={key} />,
+        <Component {...componentProps} />,
       );
 
       processedBlocks.push({
