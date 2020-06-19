@@ -13,11 +13,10 @@
 
 const UserAgent = require('UserAgent');
 
-const findAncestorOffsetKey = require('findAncestorOffsetKey');
+const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
 const getWindowForNode = require('getWindowForNode');
 const Immutable = require('immutable');
 const invariant = require('invariant');
-const nullthrows = require('nullthrows');
 
 const {Map} = Immutable;
 
@@ -41,11 +40,7 @@ class DOMObserver {
   observer: ?MutationObserver;
   container: HTMLElement;
   mutations: Map<string, string>;
-  onCharData: ?({
-    target: EventTarget,
-    type: string,
-    ...
-  }) => void;
+  onCharData: ?({target: EventTarget, type: string}) => void;
 
   constructor(container: HTMLElement) {
     this.container = container;
@@ -106,48 +101,71 @@ class DOMObserver {
     }
   }
 
-  getMutationTextContent(mutation: MutationRecordT): ?string {
+  registerMutation(mutation: MutationRecordT): void {
     const {type, target, removedNodes} = mutation;
+
     if (type === 'characterData') {
+      const targetOffsetKey = findRealAncestorOffsetKey(target);
+
       // When `textContent` is '', there is a race condition that makes
       // getting the offsetKey from the target not possible.
       // These events are also followed by a `childList`, which is the one
       // we are able to retrieve the offsetKey and apply the '' text.
-      if (target.textContent !== '') {
+      if (target.textContent !== '' && targetOffsetKey) {
+        let txt = target.textContent
+
         // IE 11 considers the enter keypress that concludes the composition
         // as an input char. This strips that newline character so the draft
         // state does not receive spurious newlines.
         if (USE_CHAR_DATA) {
-          return target.textContent.replace('\n', '');
+          txt = target.textContent.replace('\n', '');
         }
-        return target.textContent;
-      }
-    } else if (type === 'childList') {
-      if (removedNodes && removedNodes.length) {
-        // `characterData` events won't happen or are ignored when
-        // removing the last character of a leaf node, what happens
-        // instead is a `childList` event with a `removedNodes` array.
-        // For this case the textContent should be '' and
-        // `DraftModifier.replaceText` will make sure the content is
-        // updated properly.
-        return '';
-      } else if (target.textContent !== '') {
-        // Typing Chinese in an empty block in MS Edge results in a
-        // `childList` event with non-empty textContent.
-        // See https://github.com/facebook/draft-js/issues/2082
-        return target.textContent;
-      }
-    }
-    return null;
-  }
 
-  registerMutation(mutation: MutationRecordT): void {
-    const textContent = this.getMutationTextContent(mutation);
-    if (textContent != null) {
-      const offsetKey = nullthrows(findAncestorOffsetKey(mutation.target));
-      this.mutations = this.mutations.set(offsetKey, textContent);
+        this.mutations = this.mutations.set(
+          targetOffsetKey,
+          txt,
+        );
+      }
+    } else if (type === 'childList' && removedNodes && removedNodes.length) {
+      const rmNode = removedNodes[0];
+      const rmNodeOffsetKey = getOffsetKey(rmNode);
+
+      // that means a leaf in treeMap will be empty
+      if (rmNodeOffsetKey) {
+        this.mutations = this.mutations.set(rmNodeOffsetKey, '');
+      }
+    } else if (type === 'childList' && target.textContent !== '') {
+      // Typing Chinese in an empty block in MS Edge results in a
+      // `childList` event with non-empty textContent.
+      // See https://github.com/facebook/draft-js/issues/2082
+      this.mutations = this.mutations.set(
+        targetOffsetKey,
+        target.textContent,
+      );
     }
   }
+}
+
+// See https://github.com/facebook/draft-js/issues/2466
+function findRealAncestorOffsetKey(node: Node): ?string {
+  let searchNode = node;
+  while (
+    searchNode &&
+    searchNode !== getCorrectDocumentFromNode(node).documentElement
+  ) {
+    const key = getOffsetKey(searchNode);
+
+    if (key) {
+      return key;
+    }
+    searchNode = searchNode.parentNode;
+  }
+  return null;
+}
+
+function getOffsetKey(node: Node): ?string {
+  const key = node.getAttribute && node.getAttribute('data-offset-key');
+  return key || null;
 }
 
 module.exports = DOMObserver;
