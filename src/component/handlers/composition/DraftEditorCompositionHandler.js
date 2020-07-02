@@ -18,12 +18,15 @@ const DraftModifier = require('DraftModifier');
 const DraftOffsetKey = require('DraftOffsetKey');
 const EditorState = require('EditorState');
 const Keys = require('Keys');
+const UserAgent = require('UserAgent');
 
 const editOnSelect = require('editOnSelect');
 const getContentEditableContainer = require('getContentEditableContainer');
 const getDraftEditorSelection = require('getDraftEditorSelection');
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const nullthrows = require('nullthrows');
+
+const isIE = UserAgent.isBrowser('IE');
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon
@@ -225,10 +228,14 @@ const DraftEditorCompositionHandler = {
 
     editor.restoreEditorDOM();
 
-    const editorStateWithUpdatedSelection = EditorState.acceptSelection(
-      editorState,
-      compositionEndSelectionState,
-    );
+    // See:
+    // - https://github.com/facebook/draft-js/issues/2093
+    // - https://github.com/facebook/draft-js/pull/2094
+    // Apply this fix only in IE for now. We can test it in
+    // other browsers in the future to ensure no regressions
+    const editorStateWithUpdatedSelection = isIE
+      ? EditorState.forceSelection(editorState, compositionEndSelectionState)
+      : EditorState.acceptSelection(editorState, compositionEndSelectionState);
 
     editor.update(
       EditorState.push(
