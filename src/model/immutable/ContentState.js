@@ -52,9 +52,9 @@ const defaultRecord: ContentStateRecordType = {
 
 const ContentStateRecord = (Record(defaultRecord): any);
 
-/* $FlowFixMe Supressing a `signature-verification-failure` error here.
- * TODO: T65949050 Clean up the branch for this GK
- */
+/* $FlowFixMe[signature-verification-failure] Supressing a `signature-
+ * verification-failure` error here. TODO: T65949050 Clean up the branch for
+ * this GK */
 const ContentBlockNodeRecord = gkx('draft_tree_data_support')
   ? ContentBlockNode
   : ContentBlock;

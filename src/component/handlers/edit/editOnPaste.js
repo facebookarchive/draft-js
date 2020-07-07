@@ -49,9 +49,9 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
         return;
       }
 
-      /* $FlowFixMe This comment suppresses an error found DataTransfer was
-       * typed. getFiles() returns an array of <Files extends Blob>, not Blob
-       */
+      /* $FlowFixMe[incompatible-call] This comment suppresses an error found
+       * DataTransfer was typed. getFiles() returns an array of <Files extends
+       * Blob>, not Blob */
       getTextContentFromFiles(files, (/*string*/ fileText) => {
         fileText = fileText || defaultFileText;
         if (!fileText) {

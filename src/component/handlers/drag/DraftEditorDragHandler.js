@@ -37,13 +37,13 @@ function getSelectionForEvent(
   let offset: ?number = null;
 
   const eventTargetDocument = getCorrectDocumentFromNode(event.currentTarget);
-  /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.68 was deployed. To see the error delete this comment
-   * and run Flow. */
+  /* $FlowFixMe[prop-missing] (>=0.68.0 site=www,mobile) This comment
+   * suppresses an error found when Flow v0.68 was deployed. To see the error
+   * delete this comment and run Flow. */
   if (typeof eventTargetDocument.caretRangeFromPoint === 'function') {
-    /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
-     * found when Flow v0.68 was deployed. To see the error delete this comment
-     * and run Flow. */
+    /* $FlowFixMe[incompatible-use] (>=0.68.0 site=www,mobile) This comment
+     * suppresses an error found when Flow v0.68 was deployed. To see the error
+     * delete this comment and run Flow. */
     const dropRange = eventTargetDocument.caretRangeFromPoint(event.x, event.y);
     node = dropRange.startContainer;
     offset = dropRange.startOffset;
@@ -105,9 +105,9 @@ const DraftEditorDragHandler = {
         return;
       }
 
-      /* $FlowFixMe This comment suppresses an error found DataTransfer was
-       * typed. getFiles() returns an array of <Files extends Blob>, not Blob
-       */
+      /* $FlowFixMe[incompatible-call] This comment suppresses an error found
+       * DataTransfer was typed. getFiles() returns an array of <Files extends
+       * Blob>, not Blob */
       getTextContentFromFiles(files, fileText => {
         fileText &&
           editor.update(

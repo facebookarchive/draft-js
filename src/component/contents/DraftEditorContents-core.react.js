@@ -228,9 +228,9 @@ class DraftEditorContents extends React.Component<Props> {
       const child = React.createElement(
         Element,
         childProps,
-        /* $FlowFixMe(>=0.112.0 site=www,mobile) This comment suppresses an
-         * error found when Flow v0.112 was deployed. To see the error delete
-         * this comment and run Flow. */
+        /* $FlowFixMe[incompatible-type] (>=0.112.0 site=www,mobile) This
+         * comment suppresses an error found when Flow v0.112 was deployed. To
+         * see the error delete this comment and run Flow. */
         <Component {...componentProps} key={key} />,
       );
 
