@@ -17,7 +17,7 @@ const DraftEditor = require('DraftEditor.react');
 const EditorState = require('EditorState');
 const React = require('React');
 
-// $FlowFixMe
+// $FlowFixMe[cannot-resolve-module]
 const ReactShallowRenderer = require('react-test-renderer/shallow');
 
 let shallow;

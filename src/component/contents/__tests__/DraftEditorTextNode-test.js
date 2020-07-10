@@ -34,21 +34,21 @@ const renderIntoContainer = element => {
 };
 
 const initializeAsIE = () => {
-  /* $FlowFixMe(>=0.99.0 site=www) This comment suppresses an error found when
-   * Flow v0.47 was deployed. To see the error delete this comment and run
-   * Flow. */
+  /* $FlowFixMe[prop-missing] (>=0.99.0 site=www) This comment suppresses an
+   * error found when Flow v0.47 was deployed. To see the error delete this
+   * comment and run Flow. */
   UserAgent.isBrowser.mockImplementation(() => true);
 };
 
 const initializeAsNonIE = () => {
-  /* $FlowFixMe(>=0.99.0 site=www) This comment suppresses an error found when
-   * Flow v0.47 was deployed. To see the error delete this comment and run
-   * Flow. */
+  /* $FlowFixMe[prop-missing] (>=0.99.0 site=www) This comment suppresses an
+   * error found when Flow v0.47 was deployed. To see the error delete this
+   * comment and run Flow. */
   UserAgent.isBrowser.mockImplementation(() => false);
 };
 
 const expectPopulatedSpan = (stub, testString) => {
-  // $FlowExpectedError node could be null
+  // $FlowExpectedError[incompatible-type] node could be null
   const node: Element = ReactDOM.findDOMNode(stub);
   expect(node.tagName).toBe('SPAN');
   expect(node.childNodes.length).toBe(1);
@@ -60,7 +60,8 @@ test('must initialize correctly with an empty string, non-IE', function() {
   const stub = renderIntoContainer(
     <DraftEditorTextNode>{''}</DraftEditorTextNode>,
   );
-  // $FlowExpectedError we know node is an Element
+  // $FlowExpectedError[incompatible-use] we know node is an Element
+  // $FlowExpectedError[prop-missing] we know node is an Element
   expect(ReactDOM.findDOMNode(stub).tagName).toBe('BR');
 });
 
@@ -149,13 +150,13 @@ test('must skip updates if text already matches DOM, non-IE', function() {
 
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-  // $FlowExpectedError property render is missing in HTMLDivElement
+  // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
   expect(stub.render.mock.calls.length).toBe(0);
 
   // Sanity check that updating is performed when appropriate.
   renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
-  // $FlowExpectedError property render is missing in HTMLDivElement
+  // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
   expect(stub.render.mock.calls.length).toBe(1);
 });
 
@@ -169,13 +170,13 @@ test('must skip updates if text already matches DOM, IE', function() {
 
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-  // $FlowExpectedError property render is missing in HTMLDivElement
+  // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
   expect(stub.render.mock.calls.length).toBe(0);
 
   // Sanity check that updating is performed when appropriate.
   renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
-  // $FlowExpectedError property render is missing in HTMLDivElement
+  // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
   expect(stub.render.mock.calls.length).toBe(1);
 });
 
@@ -187,7 +188,8 @@ test('must update from non-empty to empty, non-IE', function() {
 
   renderIntoContainer(<DraftEditorTextNode>{''}</DraftEditorTextNode>);
 
-  // $FlowExpectedError we know node is an Element
+  // $FlowExpectedError[incompatible-use] we know node is an Element
+  // $FlowExpectedError[prop-missing] we know node is an Element
   expect(ReactDOM.findDOMNode(stub).tagName).toBe('BR');
 });
 
@@ -217,11 +219,11 @@ test('must force unchanged text back into the DOM', function() {
     <DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>,
   );
 
-  // $FlowExpectedError we know node is not null
+  // $FlowExpectedError[incompatible-use] we know node is not null
   ReactDOM.findDOMNode(stub).textContent = TEST_B;
 
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-  // $FlowExpectedError we know node is not null
+  // $FlowExpectedError[incompatible-use] we know node is not null
   expect(ReactDOM.findDOMNode(stub).textContent).toBe(TEST_A);
 });
