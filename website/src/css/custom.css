@@ -31,3 +31,7 @@
 .container {
   filter: grayscale(100%);
 }
+
+.main-wrapper a:link:not(.button) {
+  text-decoration: underline;
+}
