@@ -16,22 +16,6 @@
   --ifm-code-font-size: 95%;
 }
 
-.navbar {
-  filter: grayscale(100%);
-}
-
-.menu {
-  filter: grayscale(100%);
-}
-
-.hero {
-  filter: grayscale(100%);
-}
-
-.container {
-  filter: grayscale(100%);
-}
-
 .main-wrapper a:link:not(.button) {
   text-decoration: underline;
 }
