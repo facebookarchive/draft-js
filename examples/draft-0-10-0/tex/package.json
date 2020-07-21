@@ -15,7 +15,7 @@
     "katex": "^0.5.1",
     "react": "file:../../../node_modules/react",
     "react-dom": "file:../../../node_modules/react-dom",
-    "webpack": "^4.0.0",
+    "webpack": "^4.43.0",
     "webpack-dev-server": "^3.1.14"
   },
   "devDependencies": {
