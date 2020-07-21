@@ -161,8 +161,9 @@ const isValidAnchor = (node: Node) => {
     return false;
   }
   const anchorNode: HTMLAnchorElement = (node: any);
-  return !!(
-    anchorNode.href &&
+  return (
+    !!anchorNode.href &&
+    URI.tryParseURI(anchorNode.href) != null &&
     (anchorNode.protocol === 'http:' ||
       anchorNode.protocol === 'https:' ||
       anchorNode.protocol === 'mailto:' ||
