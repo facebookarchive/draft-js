@@ -81,6 +81,8 @@ export type DraftEditorProps = {
   // use case should not have any block or inline styles, it is recommended
   // that you set this to `true`.
   stripPastedStyles: boolean,
+  // Set wether to interpret line breaks as distinct blocks or as soft line breaks
+  keepPastedSoftLineBreaks: boolean,
   tabIndex?: number,
   // exposed especially to help improve mobile web behaviors
   autoCapitalize?: string,
@@ -189,5 +191,6 @@ export type DraftEditorDefaultProps = {
   readOnly: boolean,
   spellCheck: boolean,
   stripPastedStyles: boolean,
+  keepPastedSoftLineBreaks: boolean,
   ...
 };
