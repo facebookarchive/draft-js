@@ -4356,7 +4356,7 @@ draft-convert@^2.1.8:
     invariant "^2.2.1"
 
 "draft-js@file:../../..":
-  version "0.11.4"
+  version "0.11.6"
   dependencies:
     fbjs "^1.0.0"
     immutable "~3.7.4"
@@ -9503,10 +9503,10 @@ react-base16-styling@^0.5.1:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-react-codemirror2@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-7.1.0.tgz#b874a275ad4f6f2ee5adb23b550c0f4b8b82776d"
-  integrity sha512-Rel0QbPnCTjHxgZYt6TkGw4icSZXNyONHb72a+1wWA+PlYJIvzFAv4pZlDPG0rpKpKmy4kSUlkoWgneH7w3A0g==
+react-codemirror2@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-7.2.1.tgz#38dab492fcbe5fb8ebf5630e5bb7922db8d3a10c"
+  integrity sha512-t7YFmz1AXdlImgHXA9Ja0T6AWuopilub24jRaQdPVbzUJVNKIYuy3uCFZYa7CE5S3UW6SrSa5nAqVQvtzRF9gw==
 
 react-dev-utils@^10.2.1:
   version "10.2.1"
