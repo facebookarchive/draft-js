@@ -874,10 +874,10 @@ babel-types@^6.19.0, babel-types@^6.24.1, babel-types@^6.26.0:
     lodash "^4.17.4"
     to-fast-properties "^1.0.3"
 
-babel@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/babel/-/babel-6.0.0.tgz#007d4592123a6a7287a50f8727c156607692092b"
-  integrity sha1-AH1FkhI6anKHpQ+HJ8FWYHaSCSs=
+babel@6.23.0:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel/-/babel-6.23.0.tgz#d0d1e7d803e974765beea3232d4e153c0efb90f4"
+  integrity sha1-0NHn2APpdHZb7qMjLU4VPA77kPQ=
 
 babylon@^6.18.0:
   version "6.18.0"
@@ -1636,7 +1636,7 @@ domain-browser@^1.1.1:
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
 
 "draft-js@file:../../..":
-  version "0.11.5"
+  version "0.11.6"
   dependencies:
     fbjs "^1.0.0"
     immutable "~3.7.4"

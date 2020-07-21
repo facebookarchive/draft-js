@@ -4,7 +4,7 @@
     "start": "babel-node ./server.js"
   },
   "dependencies": {
-    "babel": "6.0.0",
+    "babel": "6.23.0",
     "babel-core": "^6.8.0",
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.9.0",
