@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "codemirror": "^5.52.2",
-    "draft-convert": "^2.1.8",
+    "draft-convert": "^2.1.10",
     "draft-js": "file:../../..",
     "immutable": "^3.8.2",
     "react": "^16.13.1",
