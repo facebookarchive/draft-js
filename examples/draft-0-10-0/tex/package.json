@@ -6,7 +6,7 @@
   "dependencies": {
     "babel": "6.0.0",
     "babel-core": "^6.8.0",
-    "babel-loader": "^7.0.0",
+    "babel-loader": "^8.1.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
     "draft-js": "file:../../../",
