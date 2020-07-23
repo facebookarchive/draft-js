@@ -81,6 +81,10 @@ export type DraftEditorProps = {
   // use case should not have any block or inline styles, it is recommended
   // that you set this to `true`.
   stripPastedStyles: boolean,
+  formatPastedText?: (
+    text: string,
+    html: ?string,
+  ) => {text: string, html: ?string},
   tabIndex?: number,
   // exposed especially to help improve mobile web behaviors
   autoCapitalize?: string,

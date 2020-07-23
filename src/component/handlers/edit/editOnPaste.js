@@ -94,10 +94,18 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   }
 
   let textBlocks: Array<string> = [];
-  const text: string = (data.getText(): any);
-  const html: string = (data.getHTML(): any);
+  let text: string = (data.getText(): any);
+  let html: string = (data.getHTML(): any);
   const editorState = editor._latestEditorState;
 
+  if (editor.props.formatPastedText) {
+    const {
+      text: formattedText,
+      html: formattedHtml,
+    } = editor.props.formatPastedText(text, html);
+    text = formattedText;
+    html = ((formattedHtml: any): string);
+  }
   if (
     editor.props.handlePastedText &&
     isEventHandled(editor.props.handlePastedText(text, html, editorState))
@@ -118,11 +126,15 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     // editor in Firefox and IE will not include empty lines. The resulting
     // paste will preserve the newlines correctly.
     const internalClipboard = editor.getClipboard();
-    if (data.isRichText() && internalClipboard) {
+    if (
+      !editor.props.formatPastedText &&
+      data.isRichText() &&
+      internalClipboard
+    ) {
       if (
         // If the editorKey is present in the pasted HTML, it should be safe to
         // assume this is an internal paste.
-        html.indexOf(editor.getEditorKey()) !== -1 ||
+        html?.indexOf(editor.getEditorKey()) !== -1 ||
         // The copy may have been made within a single block, in which case the
         // editor key won't be part of the paste. In this case, just check
         // whether the pasted text matches the internal clipboard.
