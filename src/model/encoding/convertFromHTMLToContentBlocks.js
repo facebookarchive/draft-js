@@ -161,14 +161,24 @@ const isValidAnchor = (node: Node) => {
     return false;
   }
   const anchorNode: HTMLAnchorElement = (node: any);
-  return (
-    !!anchorNode.href &&
-    URI.tryParseURI(anchorNode.href) != null &&
-    (anchorNode.protocol === 'http:' ||
-      anchorNode.protocol === 'https:' ||
-      anchorNode.protocol === 'mailto:' ||
-      anchorNode.protocol === 'tel:')
-  );
+
+  if (
+    !anchorNode.href ||
+    (anchorNode.protocol !== 'http:' &&
+      anchorNode.protocol !== 'https:' &&
+      anchorNode.protocol !== 'mailto:' &&
+      anchorNode.protocol !== 'tel:')
+  ) {
+    return false;
+  }
+
+  try {
+    // Just checking whether we can actually create a URI
+    const _ = new URI(anchorNode.href);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 /**
