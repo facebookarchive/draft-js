@@ -46,33 +46,27 @@ function getCharacterRemovalRange(
   }
   let newSelectionState = selectionState;
   if (startEntityKey && startEntityKey === endEntityKey) {
-    newSelectionState = getEntityRemovalRange(
+    newSelectionState = getEntityRemovalRangeAtStartForEntireSelection(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
       startEntityKey,
-      true,
-      true,
     );
   } else if (startEntityKey && endEntityKey) {
-    const startSelectionState = getEntityRemovalRange(
+    const startSelectionState = getEntityRemovalRangeAtStartNotForEntireSelection(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
       startEntityKey,
-      false,
-      true,
     );
-    const endSelectionState = getEntityRemovalRange(
+    const endSelectionState = getEntityRemovalRangeAtEnd(
       entityMap,
       endBlock,
       newSelectionState,
       direction,
       endEntityKey,
-      false,
-      false,
     );
     newSelectionState = newSelectionState.merge({
       anchorOffset: startSelectionState.getAnchorOffset(),
@@ -80,28 +74,24 @@ function getCharacterRemovalRange(
       isBackward: false,
     });
   } else if (startEntityKey) {
-    const startSelectionState = getEntityRemovalRange(
+    const startSelectionState = getEntityRemovalRangeAtStartNotForEntireSelection(
       entityMap,
       startBlock,
       newSelectionState,
       direction,
       startEntityKey,
-      false,
-      true,
     );
     newSelectionState = newSelectionState.merge({
       anchorOffset: startSelectionState.getStartOffset(),
       isBackward: false,
     });
   } else if (endEntityKey) {
-    const endSelectionState = getEntityRemovalRange(
+    const endSelectionState = getEntityRemovalRangeAtEnd(
       entityMap,
       endBlock,
       newSelectionState,
       direction,
       endEntityKey,
-      false,
-      false,
     );
     newSelectionState = newSelectionState.merge({
       focusOffset: endSelectionState.getEndOffset(),
@@ -109,6 +99,66 @@ function getCharacterRemovalRange(
     });
   }
   return newSelectionState;
+}
+
+function getEntityRemovalRangeAtStartForEntireSelection(
+  entityMap: EntityMap,
+  block: BlockNodeRecord,
+  selectionState: SelectionState,
+  direction: DraftRemovalDirection,
+  entityKey: string,
+  isEntireSelectionWithinEntity: boolean = true,
+  isEntityAtStart: boolean = true,
+): SelectionState {
+  return getEntityRemovalRange(
+    entityMap,
+    block,
+    selectionState,
+    direction,
+    entityKey,
+    isEntireSelectionWithinEntity,
+    isEntityAtStart,
+  );
+}
+
+function getEntityRemovalRangeAtStartNotForEntireSelection(
+  entityMap: EntityMap,
+  block: BlockNodeRecord,
+  selectionState: SelectionState,
+  direction: DraftRemovalDirection,
+  entityKey: string,
+  isEntireSelectionWithinEntity: boolean = false,
+  isEntityAtStart: boolean = true,
+): SelectionState {
+  return getEntityRemovalRange(
+    entityMap,
+    block,
+    selectionState,
+    direction,
+    entityKey,
+    isEntireSelectionWithinEntity,
+    isEntityAtStart,
+  );
+}
+
+function getEntityRemovalRangeAtEnd(
+  entityMap: EntityMap,
+  block: BlockNodeRecord,
+  selectionState: SelectionState,
+  direction: DraftRemovalDirection,
+  entityKey: string,
+  isEntireSelectionWithinEntity: boolean = false,
+  isEntityAtStart: boolean = false,
+): SelectionState {
+  return getEntityRemovalRange(
+    entityMap,
+    block,
+    selectionState,
+    direction,
+    entityKey,
+    isEntireSelectionWithinEntity,
+    isEntityAtStart,
+  );
 }
 
 function getEntityRemovalRange(
