@@ -148,8 +148,8 @@ To run the examples, first build Draft.js locally:
 ```
 git clone https://github.com/facebook/draft-js.git
 cd draft-js
-npm install
-npm run build
+yarn install
+yarn run build
 ```
 
 then open the example HTML files in your browser.
