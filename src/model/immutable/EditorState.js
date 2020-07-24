@@ -117,8 +117,15 @@ class EditorState {
   _immutable: EditorStateRecord;
 
   static createEmpty(decorator?: ?DraftDecoratorType): EditorState {
+    return this.createWithText('', decorator);
+  }
+
+  static createWithText(
+    text: string,
+    decorator?: ?DraftDecoratorType,
+  ): EditorState {
     return EditorState.createWithContent(
-      ContentState.createFromText(''),
+      ContentState.createFromText(text),
       decorator,
     );
   }

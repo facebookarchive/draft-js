@@ -1,7 +1,13 @@
 version: 1
 update_configs:
   - package_manager: "javascript"
-    directory: "/examples/draft-0-10-0/"
+    directory: "/examples/draft-0-10-0/playground"
+    update_schedule: "monthly"
+  - package_manager: "javascript"
+    directory: "/examples/draft-0-10-0/tex"
+    update_schedule: "monthly"
+  - package_manager: "javascript"
+    directory: "/examples/draft-0-10-0/universal"
     update_schedule: "monthly"
   - package_manager: "javascript"
     directory: "/"
