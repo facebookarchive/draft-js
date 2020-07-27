@@ -118,7 +118,7 @@ _Properties_
 
 > Note
 >
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map)
+> Use [Immutable Map API](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Map)
 > for the `ContentBlock` constructor or to set properties.
 
 <ul class="apiIndex">
@@ -260,7 +260,7 @@ Executes a callback for each contiguous range of entities within this `ContentBl
 
 > Note
 >
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map)
+> Use [Immutable Map API](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Map)
 > for the `ContentBlock` constructor or to set properties.
 
 ### `key`
