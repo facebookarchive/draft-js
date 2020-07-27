@@ -1,6 +1,6 @@
 <p align="center">
   <a href="http://draftjs.org/">
-    <img src="https://draftjs.org/img/draftjs-logo.svg" alt="draftjs-logo" width="15%" />
+    <img src="https://draftjs.org/img/draftjs-logo.svg" alt="draftjs-logo" width="8%" />
   </a>
 </p>
 <h1 align="center">
