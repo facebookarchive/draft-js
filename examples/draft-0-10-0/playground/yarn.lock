@@ -3459,10 +3459,10 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codemirror@^5.52.2:
-  version "5.52.2"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.52.2.tgz#c29e1f7179f85eb0dd17c0586fa810e4838ff584"
-  integrity sha512-WCGCixNUck2HGvY8/ZNI1jYfxPG5cRHv0VjmWuNzbtCLz8qYA5d+je4QhSSCtCaagyeOwMi/HmmPTjBgiTm2lQ==
+codemirror@^5.56.0:
+  version "5.56.0"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.56.0.tgz#675640fcc780105cd22d3faa738b5d7ea6426f61"
+  integrity sha512-MfKVmYgifXjQpLSgpETuih7A7WTTIsxvKfSLGseTY5+qt0E1UD1wblZGM6WLenORo8sgmf+3X+WTe2WF7mufyw==
 
 collection-visit@^1.0.0:
   version "1.0.0"
@@ -4346,17 +4346,17 @@ dotenv@8.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
-draft-convert@^2.1.8:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/draft-convert/-/draft-convert-2.1.8.tgz#0508efafeea79e11e5793ba771948128ba151291"
-  integrity sha512-69etPa5JzZVELs4Lzobgxes1oka5IUyJC+NVIVnA9HPO5eOYLqAONFYxmav1vJjYyHsabq/20nSXj2MtIIQ4Fg==
+draft-convert@^2.1.10:
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/draft-convert/-/draft-convert-2.1.10.tgz#07552f0aadff7ac01c8619d769210d4ea8fcab77"
+  integrity sha512-PRdcjBqFUfEb2jlPM+bOyyCNlTzGaHdyhvKsw5nur6Dj1YclmuAiTwJ8yTsEa95YI9kwzbO5ccZ/+tYj/LlS0A==
   dependencies:
     "@babel/runtime" "^7.5.5"
     immutable "~3.7.4"
     invariant "^2.2.1"
 
 "draft-js@file:../../..":
-  version "0.11.4"
+  version "0.11.6"
   dependencies:
     fbjs "^1.0.0"
     immutable "~3.7.4"
@@ -9503,10 +9503,10 @@ react-base16-styling@^0.5.1:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-react-codemirror2@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-7.1.0.tgz#b874a275ad4f6f2ee5adb23b550c0f4b8b82776d"
-  integrity sha512-Rel0QbPnCTjHxgZYt6TkGw4icSZXNyONHb72a+1wWA+PlYJIvzFAv4pZlDPG0rpKpKmy4kSUlkoWgneH7w3A0g==
+react-codemirror2@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/react-codemirror2/-/react-codemirror2-7.2.1.tgz#38dab492fcbe5fb8ebf5630e5bb7922db8d3a10c"
+  integrity sha512-t7YFmz1AXdlImgHXA9Ja0T6AWuopilub24jRaQdPVbzUJVNKIYuy3uCFZYa7CE5S3UW6SrSa5nAqVQvtzRF9gw==
 
 react-dev-utils@^10.2.1:
   version "10.2.1"
@@ -9572,10 +9572,10 @@ react-json-tree@^0.11.2:
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
 
-react-panelgroup@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/react-panelgroup/-/react-panelgroup-1.0.10.tgz#53d2d8279a89dca0dabcf58ad5c4240e21b17486"
-  integrity sha512-0Atbm0sgknwbu+qlVgWpWxbr6zZn66fhNCpuDYYijBhLg9KByF1Me1OoyEGCFig9Yf5sSnCS6nXdZ7tvnypO/A==
+react-panelgroup@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/react-panelgroup/-/react-panelgroup-1.0.12.tgz#e19c2d9d1fa4fbe504cdac9255eebc1c569c08f4"
+  integrity sha512-DuA+6TnxLK1TmlQqijYCbzvEVZYS3i6SyG9xqk7SW/S4pzzIxQ73lkSHLkMBG55/iOvGQEL/uH3Y96btk6mPDw==
   dependencies:
     prop-types "^15.6.1"
 
