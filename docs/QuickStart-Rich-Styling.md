@@ -17,7 +17,7 @@ However, since your top-level React component is responsible for maintaining the
 
 For inline and block style behavior, for example, the [`RichUtils`](/docs/api-reference-rich-utils) module provides a number of useful functions to help manipulate state.
 
-Similarly, the [Modifier](/docs/api-reference-modifier) module also provides a
+Similarly, the [`Modifier`](/docs/api-reference-modifier) module also provides a
 number of common operations that allow you to apply edits, including changes
 to text, styles, and more. This module is a suite of edit functions that
 compose simpler, smaller edit functions to return the desired `EditorState`
