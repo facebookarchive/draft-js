@@ -2823,7 +2823,7 @@ babel-preset-react-app@^9.1.2:
     babel-plugin-macros "2.8.0"
     babel-plugin-transform-react-remove-prop-types "0.4.24"
 
-babel-runtime@^6.26.0, babel-runtime@^6.6.1:
+babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -9563,12 +9563,11 @@ react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
 
-react-json-tree@^0.11.2:
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.11.2.tgz#af70199fcbc265699ade2aec492465c51608f95e"
-  integrity sha512-aYhUPj1y5jR3ZQ+G3N7aL8FbTyO03iLwnVvvEikLcNFqNTyabdljo9xDftZndUBFyyyL0aK3qGO9+8EilILHUw==
+react-json-tree@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.12.0.tgz#58c4de7294ffe46dd2be9a4c43cc360fde466d7d"
+  integrity sha512-lp+NDCsU25JTueO1s784oZ5wEmh1c6kHk96szlX1e9bAlyNiHwCBXINpp0C5/D/LwQi9H/a6NjXGkSOS8zxMDg==
   dependencies:
-    babel-runtime "^6.6.1"
     prop-types "^15.5.8"
     react-base16-styling "^0.5.1"
 
