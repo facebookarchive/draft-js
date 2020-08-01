@@ -11,7 +11,7 @@
     "draft-js": "file:../../../",
     "express": "^4.17.1",
     "immutable": "^3.7.4",
-    "katex": "^0.7.0",
+    "katex": "^0.12.0",
     "react": "file:../../../node_modules/react",
     "react-dom": "file:../../../node_modules/react-dom",
     "webpack": "^4.44.0",
