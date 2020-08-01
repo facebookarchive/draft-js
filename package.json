@@ -35,7 +35,7 @@
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
-    "fbjs": "^1.0.0",
+    "fbjs": "^2.0.0",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.1"
   },
@@ -61,7 +61,7 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.5",
-    "fbjs-scripts": "^1.2.0",
+    "fbjs-scripts": "^2.0.0",
     "flow-bin": "^0.130.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
