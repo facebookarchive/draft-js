@@ -47,8 +47,6 @@ If you are interested in helping out, or tracking the progress, please follow
 
 ## Getting Started
 
-Currently Draft.js is distributed via npm. It depends on React and React DOM which must also be installed.
-
 ```
 npm install --save draft-js react react-dom
 
@@ -56,6 +54,8 @@ or
 
 yarn add draft-js react react-dom
 ```
+
+Draft.js depends on React and React DOM which must also be installed.
 
 ### Using Draft.js
 
@@ -161,13 +161,15 @@ Visit http://draftjs.org/ to try out a basic rich editor example.
 The repository includes a variety of different editor examples to demonstrate
 some of the features offered by the framework.
 
-To run the examples, first build Draft.js locally:
+To run the examples, first build Draft.js locally. The Draft.js build is tested
+with Yarn v1 only. If you're using any other package manager and something doesn't
+work, try using yarn v1:
 
 ```
 git clone https://github.com/facebook/draft-js.git
 cd draft-js
-npm install
-npm run build
+yarn install
+yarn run build
 ```
 
 then open the example HTML files in your browser.
