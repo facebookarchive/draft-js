@@ -23,19 +23,19 @@ module.system.haste.use_name_reducers=true
 module.system.haste.name_reducers='^.*/\([a-zA-Z0-9$_.-]+\.js\(\.flow\)?\)$' -> '\1'
 # strip .js or .js.flow suffix
 module.system.haste.name_reducers='^\(.*\)\.js\(\.flow\)?$' -> '\1'
-module.system.haste.paths.whitelist=<PROJECT_ROOT>/.*
-module.system.haste.paths.whitelist=.*/node_modules/fbjs/lib/.*
-module.system.haste.paths.blacklist=.*/__tests__/.*
-module.system.haste.paths.blacklist=.*/react/node_modules/.*
-module.system.haste.paths.blacklist=.*/react-dom/node_modules/.*
-module.system.haste.paths.blacklist=.*/fbjs/node_modules/.*
-module.system.haste.paths.blacklist=.*/node_modules/invariant/.*
+module.system.haste.paths.includes=<PROJECT_ROOT>/.*
+module.system.haste.paths.includes=.*/node_modules/fbjs/lib/.*
+module.system.haste.paths.excludes=.*/__tests__/.*
+module.system.haste.paths.excludes=.*/react/node_modules/.*
+module.system.haste.paths.excludes=.*/react-dom/node_modules/.*
+module.system.haste.paths.excludes=.*/fbjs/node_modules/.*
+module.system.haste.paths.excludes=.*/node_modules/invariant/.*
 
 esproposal.class_static_fields=enable
 esproposal.optional_chaining=enable
 suppress_type=$FlowIssue
-suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\).*\n
-suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
+; suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\).*\n
+; suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 module.name_mapper='ReactDOMComet' -> 'react-dom'
 
 [strict]
@@ -51,4 +51,4 @@ unsafe-getters-setters
 ; nonstrict-import
 
 [version]
-^0.125.0
+^0.130.0
