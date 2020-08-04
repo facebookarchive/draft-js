@@ -66,6 +66,7 @@ const assertDraftPasteProcessorProcessText = (
     textBlocks,
     EMPTY_CHAR_METADATA,
     'unstyled',
+    {},
   );
   expect(contentBlocks.map(block => block.toJS())).toMatchSnapshot();
 };

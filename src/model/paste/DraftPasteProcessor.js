@@ -54,6 +54,7 @@ const DraftPasteProcessor = {
     textBlocks: Array<string>,
     character: CharacterMetadata,
     type: DraftBlockType,
+    data: Immutable.Map<any, any>,
   ): Array<BlockNodeRecord> {
     return textBlocks.reduce((acc, textLine, index) => {
       textLine = sanitizeDraftText(textLine);
@@ -64,6 +65,7 @@ const DraftPasteProcessor = {
         type,
         text: textLine,
         characterList: List(Repeat(character, textLine.length)),
+        data,
       };
 
       // next block updates previous block
