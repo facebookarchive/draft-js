@@ -15,6 +15,7 @@ import Layout from '@theme/Layout';
 import classnames from 'classnames';
 
 import DraftEditorExample from '../components/DraftEditorExample';
+import MediaEditorExample from '../components/MediaEditorExample';
 import styles from './styles.module.css';
 
 /** Won't render children on server */
@@ -106,13 +107,24 @@ function Home() {
             styles.hideOnTabletAndSmaller,
           )}>
           <ClientOnly fallback={null}>
-            <div className="col col--6 col--offset-3">
+            <div
+              className="col col--6 col--offset-3"
+              style={{textAlign: 'center'}}>
               <h2>Try it out!</h2>
               <p>
                 Here's a simple example of a rich text editor built in Draft.js.
               </p>
-              <div id="rich-example">
-                <DraftEditorExample />
+            </div>
+            <div className="row" style={{width: '100%'}}>
+              <div className="col">
+                <div id="rich-example">
+                  <DraftEditorExample />
+                </div>
+              </div>
+              <div className="col">
+                <div id="rich-example">
+                  <MediaEditorExample />
+                </div>
               </div>
             </div>
           </ClientOnly>
