@@ -63,9 +63,6 @@ const toggleExperimentalTreeDataSupport = enabled => {
     if (name === 'draft_tree_data_support') {
       return enabled;
     }
-    if (name === 'draftjs_fix_paste_for_img') {
-      return true;
-    }
     return false;
   });
 };
@@ -184,13 +181,6 @@ test('img with data protocol should be correctly parsed', () => {
     `<img src="${IMAGE_DATA_URL}">`,
   );
   expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
-});
-
-test('img with role presentation should not be rendered', () => {
-  const blocks = convertFromHTMLToContentBlocks(
-    `<img src="${IMAGE_DATA_URL}" role="presentation">`,
-  );
-  expect(blocks?.contentBlocks).toMatchSnapshot();
 });
 
 test('line break should be correctly parsed - single <br>', () => {
