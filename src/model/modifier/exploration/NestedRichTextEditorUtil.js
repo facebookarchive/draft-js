@@ -291,7 +291,6 @@ const NestedRichTextEditorUtil: RichTextUtils = {
   onTab: (
     event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
-    maxDepth: number,
   ): EditorState => {
     const selection = editorState.getSelection();
     const key = selection.getAnchorKey();
@@ -307,11 +306,6 @@ const NestedRichTextEditorUtil: RichTextUtils = {
     }
 
     event.preventDefault();
-
-    const depth = block.getDepth();
-    if (!event.shiftKey && depth === maxDepth) {
-      return editorState;
-    }
 
     // implement nested tree behaviour for onTab
     let blockMap = editorState.getCurrentContent().getBlockMap();
@@ -367,7 +361,6 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       content,
       selection,
       event.shiftKey ? -1 : 1,
-      maxDepth,
     );
 
     return EditorState.push(editorState, withAdjustment, 'adjust-depth');
