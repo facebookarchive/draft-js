@@ -272,3 +272,46 @@ test('must merge D and E when deleting range from end of D to start of E', () =>
     treeContentState,
   );
 });
+
+// Simulates having collapsed selection at start of Elephant and hitting backspace
+// We expect Elephant will be merged with previous block, Delta
+test('parent should be removed from children list in grandParent', () => {
+  const contentBlockNodes = [
+    new ContentBlockNode({
+      key: 'A',
+      children: List(['B', 'C']),
+    }),
+    new ContentBlockNode({
+      parent: 'A',
+      key: 'B',
+      nextSibling: 'C',
+      text: '',
+    }),
+    new ContentBlockNode({
+      parent: 'A',
+      key: 'C',
+      prevSibling: 'B',
+      children: List(['D']),
+    }),
+    new ContentBlockNode({
+      parent: 'C',
+      key: 'D',
+      text: '',
+    }),
+  ];
+
+  const newSelectionState = SelectionState.createEmpty('D');
+  const newContentState = contentState.set(
+    'blockMap',
+    BlockMapBuilder.createFromArray(contentBlockNodes),
+  );
+
+  assertRemoveRangeFromContentState(
+    newSelectionState.merge({
+      anchorKey: 'D',
+      focusKey: 'C',
+      isBackward: true,
+    }),
+    newContentState,
+  );
+});
