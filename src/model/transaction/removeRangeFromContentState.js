@@ -178,7 +178,7 @@ const updateBlockMapLinks = (
     // update start block next - can only happen if startBlock == endBlock
     transformBlock(startBlock.getNextSiblingKey(), blocks, block =>
       block.merge({
-        prevSibling: startBlock.getPrevSiblingKey(),
+        prevSibling: getPrevValidSibling(block, blocks, originalBlockMap),
       }),
     );
 
@@ -199,7 +199,7 @@ const updateBlockMapLinks = (
     // update end block prev
     transformBlock(endBlock.getPrevSiblingKey(), blocks, block =>
       block.merge({
-        nextSibling: endBlock.getNextSiblingKey(),
+        nextSibling: getNextValidSibling(block, blocks, originalBlockMap),
       }),
     );
 
@@ -357,12 +357,27 @@ const removeRangeFromContentState = (
     endOffset === 0 &&
     endBlock.getParentKey() === startKey &&
     endBlock.getPrevSiblingKey() == null;
+  let shouldPreserveBlocks = false;
+
+  // If endBlock is posited before startBlock, shouldPreserveBlocks is used
+  // to prevent the blocks after startBlock from being deleted.
+  if (!shouldDeleteParent) {
+    const blocksAfterStartKey = blockMap
+      .toSeq()
+      .skipUntil((_, k) => k === startKey);
+    const blocksAfterEndKey = blockMap
+      .toSeq()
+      .skipUntil((_, k) => k === endKey);
+    shouldPreserveBlocks =
+      blocksAfterEndKey.count() > blocksAfterStartKey.count();
+  }
+
   const newBlocks = shouldDeleteParent
     ? Map([[startKey, null]])
     : blockMap
         .toSeq()
         .skipUntil((_, k) => k === startKey)
-        .takeUntil((_, k) => k === endKey)
+        .takeUntil((_, k) => k === endKey || shouldPreserveBlocks)
         .filter((_, k) => parentAncestors.indexOf(k) === -1)
         .concat(Map([[endKey, null]]))
         .map((_, k) => {

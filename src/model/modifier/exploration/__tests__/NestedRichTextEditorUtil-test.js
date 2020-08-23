@@ -1073,3 +1073,70 @@ test('onDelete removes a following atomic block', () => {
     blockMapAfterDelete.size === blockSizeBeforeRemove + 1,
   ).toMatchSnapshot();
 });
+
+test('onBackspace removes a preceding atomic block - followed by one sibling block', () => {
+  assertNestedUtilOperation(editorState => {
+    const content = editorState.getCurrentContent();
+    const atomicKey = content
+      .getBlockMap()
+      .find(block => block.getType() === 'atomic')
+      .getKey();
+
+    const blockAfter = content.getBlockAfter(atomicKey);
+    const keyAfter = blockAfter.getKey();
+
+    const withSelectionAboveAtomic = EditorState.forceSelection(
+      editorState,
+      new SelectionState({
+        anchorKey: keyAfter,
+        anchorOffset: 0,
+        focusKey: keyAfter,
+        focusOffset: 0,
+      }),
+    );
+
+    return onBackspace(withSelectionAboveAtomic);
+  });
+});
+
+test('onBackspace removes a preceding atomic block - followed by multiple sibling blocks', () => {
+  assertNestedUtilOperation(editorState => {
+    const contentState = editorState.getCurrentContent();
+    const newState = EditorState.set(editorState, {
+      currentContent: contentState.set(
+        'blockMap',
+        BlockMapBuilder.createFromArray(
+          contentBlockNodes.concat(
+            new ContentBlockNode({
+              key: 'J',
+              prevSibling: 'I',
+              text: '',
+              type: 'unstyled',
+            }),
+          ),
+        ),
+      ),
+    });
+
+    const newContent = newState.getCurrentContent();
+    const atomicKey = newContent
+      .getBlockMap()
+      .find(block => block.getType() === 'atomic')
+      .getKey();
+
+    const blockAfter = newContent.getBlockAfter(atomicKey);
+    const keyAfter = blockAfter.getKey();
+
+    const withSelectionAboveAtomic = EditorState.forceSelection(
+      newState,
+      new SelectionState({
+        anchorKey: keyAfter,
+        anchorOffset: 0,
+        focusKey: keyAfter,
+        focusOffset: 0,
+      }),
+    );
+
+    return onBackspace(withSelectionAboveAtomic);
+  });
+});
