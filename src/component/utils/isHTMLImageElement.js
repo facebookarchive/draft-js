@@ -9,13 +9,11 @@
  * @emails oncall+draft_js
  */
 
-const isElement = require('isElement');
+import isElement from 'isElement';
 
-function isHTMLImageElement(node: ?Node): boolean {
+export default function isHTMLImageElement(node: ?Node): boolean {
   if (!node || !node.ownerDocument) {
     return false;
   }
   return isElement(node) && node.nodeName === 'IMG';
 }
-
-module.exports = isHTMLImageElement;

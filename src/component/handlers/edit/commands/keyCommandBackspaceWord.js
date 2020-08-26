@@ -11,17 +11,19 @@
 
 'use strict';
 
-const DraftRemovableWord = require('DraftRemovableWord');
-const EditorState = require('EditorState');
+import * as DraftRemovableWord from 'DraftRemovableWord';
+import EditorState from 'EditorState';
 
-const moveSelectionBackward = require('moveSelectionBackward');
-const removeTextWithStrategy = require('removeTextWithStrategy');
+import moveSelectionBackward from 'moveSelectionBackward';
+import removeTextWithStrategy from 'removeTextWithStrategy';
 
 /**
  * Delete the word that is left of the cursor, as well as any spaces or
  * punctuation after the word.
  */
-function keyCommandBackspaceWord(editorState: EditorState): EditorState {
+export default function keyCommandBackspaceWord(
+  editorState: EditorState,
+): EditorState {
   const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
@@ -49,5 +51,3 @@ function keyCommandBackspaceWord(editorState: EditorState): EditorState {
 
   return EditorState.push(editorState, afterRemoval, 'remove-range');
 }
-
-module.exports = keyCommandBackspaceWord;

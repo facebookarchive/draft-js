@@ -11,13 +11,13 @@
 
 'use strict';
 
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
+import ContentBlockNode from 'ContentBlockNode';
+import ContentState from 'ContentState';
+import EditorState from 'EditorState';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
-const getSampleSelectionMocksForTestingNestedBlocks = (): Object => {
+export default function getSampleSelectionMocksForTestingNestedBlocks(): Object {
   const root = document.createElement('div');
   const contents = document.createElement('div');
 
@@ -139,6 +139,4 @@ const getSampleSelectionMocksForTestingNestedBlocks = (): Object => {
     leafChildren,
     textNodes,
   };
-};
-
-module.exports = getSampleSelectionMocksForTestingNestedBlocks;
+}

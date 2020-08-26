@@ -13,13 +13,13 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const Style = require('Style');
+import * as DraftModifier from 'DraftModifier';
+import EditorState from 'EditorState';
+import Style from 'Style';
 
-const getFragmentFromSelection = require('getFragmentFromSelection');
-const getScrollPosition = require('getScrollPosition');
-const isNode = require('isInstanceOfNode');
+import getFragmentFromSelection from 'getFragmentFromSelection';
+import getScrollPosition from 'getScrollPosition';
+import isNode from 'isInstanceOfNode';
 
 /**
  * On `cut` events, native behavior is allowed to occur so that the system
@@ -30,7 +30,10 @@ const isNode = require('isInstanceOfNode');
  * In addition, we can keep a copy of the removed fragment, including all
  * styles and entities, for use as an internal paste.
  */
-function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
+export default function editOnCut(
+  editor: DraftEditor,
+  e: SyntheticClipboardEvent<>,
+): void {
   const editorState = editor._latestEditorState;
   const selection = editorState.getSelection();
   const element = e.target;
@@ -71,5 +74,3 @@ function removeFragment(editorState: EditorState): EditorState {
   );
   return EditorState.push(editorState, newContent, 'remove-range');
 }
-
-module.exports = editOnCut;

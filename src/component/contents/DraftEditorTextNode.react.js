@@ -11,11 +11,11 @@
 
 'use strict';
 
-const React = require('React');
-const UserAgent = require('UserAgent');
+import * as React from 'React';
+import UserAgent from 'UserAgent';
 
-const invariant = require('invariant');
-const isElement = require('isElement');
+import invariant from 'invariant';
+import isElement from 'isElement';
 
 // In IE, spans with <br> tags render as two newlines. By rendering a span
 // with only a newline character, we can be sure to render a single line.
@@ -66,7 +66,7 @@ type Props = {children: string, ...};
  * nodes with DOM state that already matches the expectations of our immutable
  * editor state.
  */
-class DraftEditorTextNode extends React.Component<Props> {
+export default class DraftEditorTextNode extends React.Component<Props> {
   _forceFlag: boolean;
   _node: ?(HTMLSpanElement | HTMLBRElement);
 
@@ -113,5 +113,3 @@ class DraftEditorTextNode extends React.Component<Props> {
     );
   }
 }
-
-module.exports = DraftEditorTextNode;

@@ -15,12 +15,12 @@ import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-const ContentBlockNode = require('ContentBlockNode');
+import ContentBlockNode from 'ContentBlockNode';
 
-const generateRandomKey = require('generateRandomKey');
-const Immutable = require('immutable');
-const invariant = require('invariant');
-const modifyBlockForContentState = require('modifyBlockForContentState');
+import generateRandomKey from 'generateRandomKey';
+import Immutable from 'immutable';
+import invariant from 'invariant';
+import modifyBlockForContentState from 'modifyBlockForContentState';
 
 const {List, Map} = Immutable;
 
@@ -87,10 +87,10 @@ const updateBlockMapLinks = (
   });
 };
 
-const splitBlockInContentState = (
+export default function splitBlockInContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-): ContentState => {
+): ContentState {
   invariant(selectionState.isCollapsed(), 'Selection range must be collapsed.');
 
   const key = selectionState.getAnchorKey();
@@ -161,6 +161,4 @@ const splitBlockInContentState = (
       isBackward: false,
     }),
   });
-};
-
-module.exports = splitBlockInContentState;
+}

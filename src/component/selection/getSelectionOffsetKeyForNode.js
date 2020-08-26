@@ -15,9 +15,9 @@
  * Get offset key from a node or it's child nodes. Return the first offset key
  * found on the DOM tree of given node.
  */
-const isElement = require('isElement');
+import isElement from 'isElement';
 
-function getSelectionOffsetKeyForNode(node: Node): ?string {
+export default function getSelectionOffsetKeyForNode(node: Node): ?string {
   if (isElement(node)) {
     const castedNode: Element = (node: any);
     const offsetKey = castedNode.getAttribute('data-offset-key');
@@ -35,5 +35,3 @@ function getSelectionOffsetKeyForNode(node: Node): ?string {
   }
   return null;
 }
-
-module.exports = getSelectionOffsetKeyForNode;

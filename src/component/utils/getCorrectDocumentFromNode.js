@@ -9,11 +9,9 @@
  * @emails oncall+draft_js
  */
 
-function getCorrectDocumentFromNode(node: ?Node): Document {
+export default function getCorrectDocumentFromNode(node: ?Node): Document {
   if (!node || !node.ownerDocument) {
     return document;
   }
   return node.ownerDocument;
 }
-
-module.exports = getCorrectDocumentFromNode;

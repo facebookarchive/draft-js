@@ -15,12 +15,12 @@ expect.addSnapshotSerializer(require('NonASCIIStringSnapshotSerializer'));
 
 jest.mock('generateRandomKey');
 
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
+import DefaultDraftBlockRenderMap from 'DefaultDraftBlockRenderMap';
 
-const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
-const cx = require('cx');
-const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
-const mockUUID = require('mockUUID');
+import convertFromHTMLToContentBlocks from 'convertFromHTMLToContentBlocks';
+import cx from 'cx';
+import getSafeBodyFromHTML from 'getSafeBodyFromHTML';
+import mockUUID from 'mockUUID';
 
 const DEFAULT_CONFIG = {
   DOMBuilder: getSafeBodyFromHTML,

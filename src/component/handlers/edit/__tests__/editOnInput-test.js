@@ -11,11 +11,11 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import EditorState from 'EditorState';
 
-const onInput = require('editOnInput');
+import onInput from 'editOnInput';
 
 jest.mock('findAncestorOffsetKey', () => jest.fn(() => 'blockkey-0-0'));
 jest.mock('keyCommandPlainBackspace', () => jest.fn(() => ({})));

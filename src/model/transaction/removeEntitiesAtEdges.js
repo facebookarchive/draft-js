@@ -17,12 +17,12 @@ import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
 import type {List} from 'immutable';
 
-const CharacterMetadata = require('CharacterMetadata');
+import CharacterMetadata from 'CharacterMetadata';
 
-const findRangesImmutable = require('findRangesImmutable');
-const invariant = require('invariant');
+import findRangesImmutable from 'findRangesImmutable';
+import invariant from 'invariant';
 
-function removeEntitiesAtEdges(
+export default function removeEntitiesAtEdges(
   contentState: ContentState,
   selectionState: SelectionState,
 ): ContentState {
@@ -132,5 +132,3 @@ function removeForBlock(
 
   return block;
 }
-
-module.exports = removeEntitiesAtEdges;

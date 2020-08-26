@@ -15,11 +15,11 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {Map} = Immutable;
 
-function modifyBlockForContentState(
+export default function modifyBlockForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   operation: (block: BlockNodeRecord) => BlockNodeRecord,
@@ -40,5 +40,3 @@ function modifyBlockForContentState(
     selectionAfter: selectionState,
   });
 }
-
-module.exports = modifyBlockForContentState;

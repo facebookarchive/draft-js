@@ -11,9 +11,11 @@
 
 'use strict';
 
-const Keys = require('Keys');
+import Keys from 'Keys';
 
-function isSoftNewlineEvent(e: SyntheticKeyboardEvent<>): boolean {
+export default function isSoftNewlineEvent(
+  e: SyntheticKeyboardEvent<>,
+): boolean {
   return (
     e.which === Keys.RETURN &&
     (e.getModifierState('Shift') ||
@@ -21,5 +23,3 @@ function isSoftNewlineEvent(e: SyntheticKeyboardEvent<>): boolean {
       e.getModifierState('Control'))
   );
 }
-
-module.exports = isSoftNewlineEvent;

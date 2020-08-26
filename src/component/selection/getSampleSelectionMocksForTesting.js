@@ -11,16 +11,16 @@
 
 'use strict';
 
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
-const {BOLD} = require('SampleDraftInlineStyle');
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import EditorState from 'EditorState';
+import {BOLD} from 'SampleDraftInlineStyle';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 const {EMPTY} = CharacterMetadata;
 
-const getSampleSelectionMocksForTesting = (): Object => {
+export default function getSampleSelectionMocksForTesting(): Object {
   const root = document.createElement('div');
   const contents = document.createElement('div');
 
@@ -141,6 +141,4 @@ const getSampleSelectionMocksForTesting = (): Object => {
     leafChildren,
     textNodes,
   };
-};
-
-module.exports = getSampleSelectionMocksForTesting;
+}

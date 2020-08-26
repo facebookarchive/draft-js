@@ -13,12 +13,12 @@
 
 jest.mock('generateRandomKey');
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import ContentBlock from 'ContentBlock';
+import ContentBlockNode from 'ContentBlockNode';
 
-const Immutable = require('immutable');
-const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
+import Immutable from 'immutable';
+import randomizeBlockMapKeys from 'randomizeBlockMapKeys';
 
 const {List} = Immutable;
 

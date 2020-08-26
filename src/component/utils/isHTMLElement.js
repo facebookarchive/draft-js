@@ -9,7 +9,7 @@
  * @emails oncall+draft_js
  */
 
-function isHTMLElement(node: ?Node): boolean {
+export default function isHTMLElement(node: ?Node): boolean {
   if (!node || !node.ownerDocument) {
     return false;
   }
@@ -21,5 +21,3 @@ function isHTMLElement(node: ?Node): boolean {
   }
   return false;
 }
-
-module.exports = isHTMLElement;

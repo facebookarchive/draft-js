@@ -16,13 +16,13 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlockNode = require('ContentBlockNode');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import ContentBlockNode from 'ContentBlockNode';
 
-const Immutable = require('immutable');
-const insertIntoList = require('insertIntoList');
-const invariant = require('invariant');
-const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
+import Immutable from 'immutable';
+import insertIntoList from 'insertIntoList';
+import invariant from 'invariant';
+import randomizeBlockMapKeys from 'randomizeBlockMapKeys';
 
 const {List} = Immutable;
 
@@ -308,12 +308,12 @@ const insertFragment = (
   });
 };
 
-const insertFragmentIntoContentState = (
+export default function insertFragmentIntoContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   fragmentBlockMap: BlockMap,
   mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
-): ContentState => {
+): ContentState {
   invariant(
     selectionState.isCollapsed(),
     '`insertFragment` should only be called with a collapsed selection state.',
@@ -355,6 +355,4 @@ const insertFragmentIntoContentState = (
     targetKey,
     targetOffset,
   );
-};
-
-module.exports = insertFragmentIntoContentState;
+}

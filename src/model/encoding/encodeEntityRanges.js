@@ -14,15 +14,13 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {EntityRange} from 'EntityRange';
 
-const DraftStringKey = require('DraftStringKey');
-const UnicodeUtils = require('UnicodeUtils');
-
-const {strlen} = UnicodeUtils;
+import * as DraftStringKey from 'DraftStringKey';
+import {strlen} from 'UnicodeUtils';
 
 /**
  * Convert to UTF-8 character counts for storage.
  */
-function encodeEntityRanges(
+export default function encodeEntityRanges(
   block: BlockNodeRecord,
   storageMap: Object,
 ): Array<EntityRange> {
@@ -42,5 +40,3 @@ function encodeEntityRanges(
   );
   return encoded;
 }
-
-module.exports = encodeEntityRanges;

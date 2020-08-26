@@ -11,7 +11,7 @@
 
 'use strict';
 
-const React = require('React');
+import * as React from 'React';
 
 export type DraftBlockRenderConfig = {
   element: string,

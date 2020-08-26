@@ -11,9 +11,9 @@
 
 'use strict';
 
-const Immutable = require('immutable');
-const insertIntoList = require('insertIntoList');
-const invariant = require('invariant');
+import Immutable from 'immutable';
+import insertIntoList from 'insertIntoList';
+import invariant from 'invariant';
 
 const {Repeat} = Immutable;
 
@@ -21,7 +21,7 @@ import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-function insertTextIntoContentState(
+export default function insertTextIntoContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   text: string,
@@ -69,5 +69,3 @@ function insertTextIntoContentState(
     }),
   });
 }
-
-module.exports = insertTextIntoContentState;

@@ -13,7 +13,7 @@
 
 import type {FakeClientRect} from 'getRangeBoundingClientRect';
 
-const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
+import getRangeBoundingClientRect from 'getRangeBoundingClientRect';
 
 /**
  * Return the bounding ClientRect for the visible DOM selection, if any.
@@ -22,7 +22,7 @@ const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
  *
  * When using from an iframe, you should pass the iframe window object
  */
-function getVisibleSelectionRect(global: any): ?FakeClientRect {
+export default function getVisibleSelectionRect(global: any): ?FakeClientRect {
   const selection = global.getSelection();
   if (!selection.rangeCount) {
     return null;
@@ -41,5 +41,3 @@ function getVisibleSelectionRect(global: any): ?FakeClientRect {
 
   return boundingRect;
 }
-
-module.exports = getVisibleSelectionRect;

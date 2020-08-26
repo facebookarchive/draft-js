@@ -9,11 +9,11 @@
  * @emails oncall+draft_js
  */
 
-const UnicodeUtils = require('UnicodeUtils');
+import * as UnicodeUtils from 'UnicodeUtils';
 
-const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
-const getRangeClientRects = require('getRangeClientRects');
-const invariant = require('invariant');
+import getCorrectDocumentFromNode from 'getCorrectDocumentFromNode';
+import getRangeClientRects from 'getRangeClientRects';
+import invariant from 'invariant';
 /**
  * Return the computed line height, in pixels, for the provided element.
  */
@@ -107,7 +107,7 @@ function getNodeLength(node: Node): number {
  * Given a collapsed range, move the start position backwards as far as
  * possible while the range still spans only a single line.
  */
-function expandRangeToStartOfLine(range: Range): Range {
+export default function expandRangeToStartOfLine(range: Range): Range {
   invariant(
     range.collapsed,
     'expandRangeToStartOfLine: Provided range is not collapsed.',
@@ -206,5 +206,3 @@ function expandRangeToStartOfLine(range: Range): Range {
   range.setStart(bestContainer, bestOffset);
   return range;
 }
-
-module.exports = expandRangeToStartOfLine;

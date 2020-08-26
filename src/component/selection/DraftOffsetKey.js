@@ -15,28 +15,24 @@ import type {DraftOffsetKeyPath} from 'DraftOffsetKeyPath';
 
 const KEY_DELIMITER = '-';
 
-const DraftOffsetKey = {
-  encode: function(
-    blockKey: string,
-    decoratorKey: number,
-    leafKey: number,
-  ): string {
-    return blockKey + KEY_DELIMITER + decoratorKey + KEY_DELIMITER + leafKey;
-  },
+export function encode(
+  blockKey: string,
+  decoratorKey: number,
+  leafKey: number,
+): string {
+  return blockKey + KEY_DELIMITER + decoratorKey + KEY_DELIMITER + leafKey;
+}
 
-  decode: function(offsetKey: string): DraftOffsetKeyPath {
-    // Extracts the last two parts of offsetKey and captures the rest in blockKeyParts
-    const [leafKey, decoratorKey, ...blockKeyParts] = offsetKey
-      .split(KEY_DELIMITER)
-      .reverse();
+export function decode(offsetKey: string): DraftOffsetKeyPath {
+  // Extracts the last two parts of offsetKey and captures the rest in blockKeyParts
+  const [leafKey, decoratorKey, ...blockKeyParts] = offsetKey
+    .split(KEY_DELIMITER)
+    .reverse();
 
-    return {
-      // Recomposes the parts of blockKey after reversing them
-      blockKey: blockKeyParts.reverse().join(KEY_DELIMITER),
-      decoratorKey: parseInt(decoratorKey, 10),
-      leafKey: parseInt(leafKey, 10),
-    };
-  },
-};
-
-module.exports = DraftOffsetKey;
+  return {
+    // Recomposes the parts of blockKey after reversing them
+    blockKey: blockKeyParts.reverse().join(KEY_DELIMITER),
+    decoratorKey: parseInt(decoratorKey, 10),
+    leafKey: parseInt(leafKey, 10),
+  };
+}

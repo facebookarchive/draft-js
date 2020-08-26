@@ -11,9 +11,9 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
+import ContentBlock from 'ContentBlock';
 
-const applyEntityToContentBlock = require('applyEntityToContentBlock');
+import applyEntityToContentBlock from 'applyEntityToContentBlock';
 
 const sampleBlock = new ContentBlock({
   key: 'a',

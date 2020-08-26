@@ -16,10 +16,10 @@ import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
 
-const DraftEntitySegments = require('DraftEntitySegments');
+import * as DraftEntitySegments from 'DraftEntitySegments';
 
-const getRangesForDraftEntity = require('getRangesForDraftEntity');
-const invariant = require('invariant');
+import getRangesForDraftEntity from 'getRangesForDraftEntity';
+import invariant from 'invariant';
 
 /**
  * Given a SelectionState and a removal direction, determine the entire range
@@ -30,7 +30,7 @@ const invariant = require('invariant');
  * range, the entire entity must be removed. The returned `SelectionState`
  * will be adjusted accordingly.
  */
-function getCharacterRemovalRange(
+export default function getCharacterRemovalRange(
   entityMap: EntityMap,
   startBlock: BlockNodeRecord,
   endBlock: BlockNodeRecord,
@@ -177,5 +177,3 @@ function getEntityRemovalRange(
     isBackward: false,
   });
 }
-
-module.exports = getCharacterRemovalRange;

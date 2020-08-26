@@ -11,10 +11,10 @@
 
 'use strict';
 
-const SelectionState = require('SelectionState');
+import SelectionState from 'SelectionState';
 
-const applyEntityToContentState = require('applyEntityToContentState');
-const getSampleStateForTesting = require('getSampleStateForTesting');
+import applyEntityToContentState from 'applyEntityToContentState';
+import getSampleStateForTesting from 'getSampleStateForTesting';
 
 const {contentState, selectionState} = getSampleStateForTesting();
 

@@ -25,18 +25,18 @@ import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
-const DraftEditorNode = require('DraftEditorNode.react');
-const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
-const Scroll = require('Scroll');
-const Style = require('Style');
+import DraftEditorNode from 'DraftEditorNode.react';
+import * as DraftOffsetKey from 'DraftOffsetKey';
+import * as React from 'React';
+import * as Scroll from 'Scroll';
+import Style from 'Style';
 
-const getElementPosition = require('getElementPosition');
-const getScrollPosition = require('getScrollPosition');
-const getViewportDimensions = require('getViewportDimensions');
-const Immutable = require('immutable');
-const invariant = require('invariant');
-const isHTMLElement = require('isHTMLElement');
+import getElementPosition from 'getElementPosition';
+import getScrollPosition from 'getScrollPosition';
+import getViewportDimensions from 'getViewportDimensions';
+import Immutable from 'immutable';
+import invariant from 'invariant';
+import isHTMLElement from 'isHTMLElement';
 
 const SCROLL_BUFFER = 10;
 
@@ -202,7 +202,7 @@ const getElementPropsConfig = (
   return elementProps;
 };
 
-class DraftEditorBlockNode extends React.Component<Props> {
+export default class DraftEditorBlockNode extends React.Component<Props> {
   wrapperRef: {|current: null | Element|} = React.createRef<Element>();
 
   shouldComponentUpdate(nextProps: Props): boolean {
@@ -392,5 +392,3 @@ class DraftEditorBlockNode extends React.Component<Props> {
     return React.createElement(Element, elementProps, blockNode);
   }
 }
-
-module.exports = DraftEditorBlockNode;

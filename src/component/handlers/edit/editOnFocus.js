@@ -13,10 +13,13 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const EditorState = require('EditorState');
-const UserAgent = require('UserAgent');
+import EditorState from 'EditorState';
+import UserAgent from 'UserAgent';
 
-function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent<>): void {
+export default function editOnFocus(
+  editor: DraftEditor,
+  e: SyntheticFocusEvent<>,
+): void {
   const editorState = editor._latestEditorState;
   const currentSelection = editorState.getSelection();
   if (currentSelection.getHasFocus()) {
@@ -42,5 +45,3 @@ function editOnFocus(editor: DraftEditor, e: SyntheticFocusEvent<>): void {
     editor.update(EditorState.acceptSelection(editorState, selection));
   }
 }
-
-module.exports = editOnFocus;

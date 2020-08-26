@@ -16,11 +16,11 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftInsertionType} from 'DraftInsertionType';
 
-const ContentBlockNode = require('ContentBlockNode');
+import ContentBlockNode from 'ContentBlockNode';
 
-const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
-const Immutable = require('immutable');
-const invariant = require('invariant');
+import getNextDelimiterBlockKey from 'getNextDelimiterBlockKey';
+import Immutable from 'immutable';
+import invariant from 'invariant';
 
 const {OrderedMap, List} = Immutable;
 
@@ -137,12 +137,12 @@ const updateBlockMapLinks = (
   });
 };
 
-const moveBlockInContentState = (
+export default function moveBlockInContentState(
   contentState: ContentState,
   blockToBeMoved: BlockNodeRecord,
   targetBlock: BlockNodeRecord,
   insertionMode: DraftInsertionType,
-): ContentState => {
+): ContentState {
   invariant(insertionMode !== 'replace', 'Replacing blocks is not supported.');
 
   const targetKey = targetBlock.getKey();
@@ -242,6 +242,4 @@ const moveBlockInContentState = (
       focusKey: blockKey,
     }),
   });
-};
-
-module.exports = moveBlockInContentState;
+}

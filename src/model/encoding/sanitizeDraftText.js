@@ -13,8 +13,6 @@
 
 const REGEX_BLOCK_DELIMITER = new RegExp('\r', 'g');
 
-function sanitizeDraftText(input: string): string {
+export default function sanitizeDraftText(input: string): string {
   return input.replace(REGEX_BLOCK_DELIMITER, '');
 }
-
-module.exports = sanitizeDraftText;

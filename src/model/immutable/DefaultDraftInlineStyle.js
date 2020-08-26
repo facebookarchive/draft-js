@@ -11,25 +11,23 @@
 
 'use strict';
 
-module.exports = {
-  BOLD: {
-    fontWeight: 'bold',
-  },
+export const BOLD = {
+  fontWeight: 'bold',
+};
 
-  CODE: {
-    fontFamily: 'monospace',
-    wordWrap: 'break-word',
-  },
+export const CODE = {
+  fontFamily: 'monospace',
+  wordWrap: 'break-word',
+};
 
-  ITALIC: {
-    fontStyle: 'italic',
-  },
+export const ITALIC = {
+  fontStyle: 'italic',
+};
 
-  STRIKETHROUGH: {
-    textDecoration: 'line-through',
-  },
+export const STRIKETHROUGH = {
+  textDecoration: 'line-through',
+};
 
-  UNDERLINE: {
-    textDecoration: 'underline',
-  },
+export const UNDERLINE = {
+  textDecoration: 'underline',
 };

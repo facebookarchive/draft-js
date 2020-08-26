@@ -14,14 +14,10 @@
 import type {BlockMap} from 'BlockMap';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {OrderedMap} = Immutable;
 
-const BlockMapBuilder = {
-  createFromArray: function(blocks: Array<BlockNodeRecord>): BlockMap {
-    return OrderedMap(blocks.map(block => [block.getKey(), block]));
-  },
-};
-
-module.exports = BlockMapBuilder;
+export function createFromArray(blocks: Array<BlockNodeRecord>): BlockMap {
+  return OrderedMap(blocks.map(block => [block.getKey(), block]));
+}

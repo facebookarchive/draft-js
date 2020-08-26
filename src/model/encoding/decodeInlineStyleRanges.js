@@ -14,17 +14,17 @@
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {InlineStyleRange} from 'InlineStyleRange';
 
-const UnicodeUtils = require('UnicodeUtils');
+import {substr} from 'UnicodeUtils';
 
-const {OrderedSet} = require('immutable');
-const {substr} = UnicodeUtils;
+import immutable from 'immutable';
+const {OrderedSet} = immutable;
 
 const EMPTY_SET = OrderedSet();
 
 /**
  * Convert to native JavaScript string lengths to determine ranges.
  */
-function decodeInlineStyleRanges(
+export default function decodeInlineStyleRanges(
   text: string,
   ranges?: Array<InlineStyleRange>,
 ): Array<DraftInlineStyle> {
@@ -41,5 +41,3 @@ function decodeInlineStyleRanges(
   }
   return styles;
 }
-
-module.exports = decodeInlineStyleRanges;

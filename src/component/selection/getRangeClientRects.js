@@ -11,9 +11,9 @@
 
 'use strict';
 
-const UserAgent = require('UserAgent');
+import UserAgent from 'UserAgent';
 
-const invariant = require('invariant');
+import invariant from 'invariant';
 
 const isChrome = UserAgent.isBrowser('Chrome');
 
@@ -65,4 +65,4 @@ const getRangeClientRects = ((isChrome
       return Array.from(range.getClientRects());
     }): (range: Range) => Array<ClientRect>);
 
-module.exports = getRangeClientRects;
+export default getRangeClientRects;

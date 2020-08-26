@@ -9,11 +9,9 @@
  * @emails oncall+draft_js
  */
 
-function getWindowForNode(node: ?Node): any {
+export default function getWindowForNode(node: ?Node): any {
   if (!node || !node.ownerDocument || !node.ownerDocument.defaultView) {
     return window;
   }
   return node.ownerDocument.defaultView;
 }
-
-module.exports = getWindowForNode;

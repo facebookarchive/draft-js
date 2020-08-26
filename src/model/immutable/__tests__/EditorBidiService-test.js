@@ -11,11 +11,11 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorBidiService = require('EditorBidiService');
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import * as EditorBidiService from 'EditorBidiService';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {OrderedMap, Seq} = Immutable;
 

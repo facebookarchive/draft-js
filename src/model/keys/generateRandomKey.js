@@ -14,7 +14,7 @@
 const seenKeys = {};
 const MULTIPLIER = Math.pow(2, 24);
 
-function generateRandomKey(): string {
+export default function generateRandomKey(): string {
   let key;
   while (key === undefined || seenKeys.hasOwnProperty(key) || !isNaN(+key)) {
     key = Math.floor(Math.random() * MULTIPLIER).toString(32);
@@ -22,5 +22,3 @@ function generateRandomKey(): string {
   seenKeys[key] = true;
   return key;
 }
-
-module.exports = generateRandomKey;

@@ -11,7 +11,7 @@
 
 'use strict';
 
-const invariant = require('invariant');
+import invariant from 'invariant';
 
 const TEXT_CLIPPING_REGEX = /\.textClipping$/;
 
@@ -27,7 +27,7 @@ const TEXT_SIZE_UPPER_BOUND = 5000;
 /**
  * Extract the text content from a file list.
  */
-function getTextContentFromFiles(
+export default function getTextContentFromFiles(
   files: Array<File>,
   callback: (contents: string) => void,
 ): void {
@@ -80,5 +80,3 @@ function readFile(file: File, callback: (contents: string) => void): void {
   };
   reader.readAsText(file);
 }
-
-module.exports = getTextContentFromFiles;

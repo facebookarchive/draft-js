@@ -15,7 +15,7 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftDecorator} from 'DraftDecorator';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {List} = Immutable;
 
@@ -40,7 +40,7 @@ const DELIMITER = '.';
  * Thus, when a collision like this is encountered, the earlier match is
  * preserved and the new match is discarded.
  */
-class CompositeDraftDecorator {
+export default class CompositeDraftDecorator {
   _decorators: $ReadOnlyArray<DraftDecorator>;
 
   constructor(decorators: $ReadOnlyArray<DraftDecorator>) {
@@ -116,5 +116,3 @@ function occupySlice(
     targetArr[ii] = componentKey;
   }
 }
-
-module.exports = CompositeDraftDecorator;

@@ -13,15 +13,15 @@
 
 jest.mock('generateRandomKey');
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const SelectionState = require('SelectionState');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import ContentBlock from 'ContentBlock';
+import ContentBlockNode from 'ContentBlockNode';
+import SelectionState from 'SelectionState';
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const Immutable = require('immutable');
-const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
-const invariant = require('invariant');
+import getSampleStateForTesting from 'getSampleStateForTesting';
+import Immutable from 'immutable';
+import insertFragmentIntoContentState from 'insertFragmentIntoContentState';
+import invariant from 'invariant';
 
 const {contentState, selectionState} = getSampleStateForTesting();
 const {List, Map} = Immutable;

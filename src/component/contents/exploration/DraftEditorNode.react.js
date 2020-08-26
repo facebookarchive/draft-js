@@ -20,13 +20,13 @@ import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type SelectionState from 'SelectionState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
-const DraftEditorDecoratedLeaves = require('DraftEditorDecoratedLeaves.react');
-const DraftEditorLeaf = require('DraftEditorLeaf.react');
-const DraftOffsetKey = require('DraftOffsetKey');
-const Immutable = require('immutable');
-const React = require('React');
+import DraftEditorDecoratedLeaves from 'DraftEditorDecoratedLeaves.react';
+import DraftEditorLeaf from 'DraftEditorLeaf.react';
+import * as DraftOffsetKey from 'DraftOffsetKey';
+import * as React from 'React';
 
-const cx = require('cx');
+import cx from 'cx';
+import Immutable from 'immutable';
 
 const {List} = Immutable;
 
@@ -45,7 +45,7 @@ type Props = {
   ...
 };
 
-class DraftEditorNode extends React.Component<Props> {
+export default class DraftEditorNode extends React.Component<Props> {
   render(): React.Node {
     const {
       block,
@@ -127,5 +127,3 @@ class DraftEditorNode extends React.Component<Props> {
     );
   }
 }
-
-module.exports = DraftEditorNode;

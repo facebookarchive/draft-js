@@ -10,7 +10,18 @@
  */
 
 const BLACK_LIST_PROPS = ['data-reactroot'];
-const transformSnapshotProps = (
+/**
+ * This is meant to be used in combination with ReactTestRenderer
+ * to ensure compatibility with running our snapshot tests internally
+ *
+ * usage example:
+ *
+ * const blockNode = ReactTestRenderer.create(
+ *  <DraftComponentFooBar {...childProps} />,
+ * );
+ *
+ * expect(transformSnapshotProps(blockNode.toJSON())).toMatchSnapshot();
+ */ export const transformSnapshotProps = (
   node: any,
   blackList: Array<string> = BLACK_LIST_PROPS,
 ): any => {
@@ -29,21 +40,3 @@ const transformSnapshotProps = (
   }
   return node;
 };
-
-const DraftTestHelper = {
-  /**
-   * This is meant to be used in combination with ReactTestRenderer
-   * to ensure compatibility with running our snapshot tests internally
-   *
-   * usage example:
-   *
-   * const blockNode = ReactTestRenderer.create(
-   *  <DraftComponentFooBar {...childProps} />,
-   * );
-   *
-   * expect(transformSnapshotProps(blockNode.toJSON())).toMatchSnapshot();
-   */
-  transformSnapshotProps,
-};
-
-module.exports = DraftTestHelper;

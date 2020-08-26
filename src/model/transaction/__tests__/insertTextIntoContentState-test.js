@@ -11,11 +11,11 @@
 
 'use strict';
 
-const CharacterMetadata = require('CharacterMetadata');
-const {BOLD} = require('SampleDraftInlineStyle');
+import CharacterMetadata from 'CharacterMetadata';
+import {BOLD} from 'SampleDraftInlineStyle';
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const insertTextIntoContentState = require('insertTextIntoContentState');
+import getSampleStateForTesting from 'getSampleStateForTesting';
+import insertTextIntoContentState from 'insertTextIntoContentState';
 
 const {contentState, selectionState} = getSampleStateForTesting();
 

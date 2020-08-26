@@ -20,7 +20,7 @@ import type {List} from 'immutable';
  * When ranges are found, execute a specified `found` function to supply
  * the values to the caller.
  */
-function findRangesImmutable<T>(
+export default function findRangesImmutable<T>(
   haystack: List<T>,
   areEqualFn: (a: T, b: T) => boolean,
   filterFn: (value: T) => boolean,
@@ -44,5 +44,3 @@ function findRangesImmutable<T>(
 
   filterFn(haystack.last()) && foundFn(cursor, haystack.count());
 }
-
-module.exports = findRangesImmutable;

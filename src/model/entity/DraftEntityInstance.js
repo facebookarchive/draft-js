@@ -15,7 +15,7 @@
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {Record} = Immutable;
 
@@ -36,7 +36,7 @@ const DraftEntityInstanceRecord = (Record({
  * the rendered anchor. For a mention, the ID could be used to retrieve
  * a hovercard.
  */
-class DraftEntityInstance extends DraftEntityInstanceRecord {
+export default class DraftEntityInstance extends DraftEntityInstanceRecord {
   getType(): DraftEntityType {
     return this.get('type');
   }
@@ -49,5 +49,3 @@ class DraftEntityInstance extends DraftEntityInstanceRecord {
     return this.get('data');
   }
 }
-
-module.exports = DraftEntityInstance;

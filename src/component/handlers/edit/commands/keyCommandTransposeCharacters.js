@@ -11,17 +11,19 @@
 
 'use strict';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+import * as DraftModifier from 'DraftModifier';
+import EditorState from 'EditorState';
 
-const getContentStateFragment = require('getContentStateFragment');
+import getContentStateFragment from 'getContentStateFragment';
 
 /**
  * Transpose the characters on either side of a collapsed cursor, or
  * if the cursor is at the end of the block, transpose the last two
  * characters.
  */
-function keyCommandTransposeCharacters(editorState: EditorState): EditorState {
+export default function keyCommandTransposeCharacters(
+  editorState: EditorState,
+): EditorState {
   const selection = editorState.getSelection();
   if (!selection.isCollapsed()) {
     return editorState;
@@ -85,5 +87,3 @@ function keyCommandTransposeCharacters(editorState: EditorState): EditorState {
 
   return EditorState.acceptSelection(newEditorState, finalSelection);
 }
-
-module.exports = keyCommandTransposeCharacters;

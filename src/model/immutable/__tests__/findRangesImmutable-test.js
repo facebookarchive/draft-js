@@ -11,8 +11,8 @@
 
 'use strict';
 
-const findRangesImmutable = require('findRangesImmutable');
-const Immutable = require('immutable');
+import findRangesImmutable from 'findRangesImmutable';
+import Immutable from 'immutable';
 
 const {List} = Immutable;
 

@@ -11,11 +11,11 @@
 
 'use strict';
 
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlockNode = require('ContentBlockNode');
-const {BOLD, NONE} = require('SampleDraftInlineStyle');
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlockNode from 'ContentBlockNode';
+import {BOLD, NONE} from 'SampleDraftInlineStyle';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const entity_KEY = 'x';
 

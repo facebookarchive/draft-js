@@ -9,7 +9,7 @@
  * @flow strict-local
  */
 
-const DraftOffsetKey = require('DraftOffsetKey');
+import * as DraftOffsetKey from 'DraftOffsetKey';
 
 test('decodes offset key with no delimiter', () => {
   expect(DraftOffsetKey.decode('key-0-1')).toMatchSnapshot();

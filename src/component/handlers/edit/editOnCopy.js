@@ -13,14 +13,17 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const getFragmentFromSelection = require('getFragmentFromSelection');
+import getFragmentFromSelection from 'getFragmentFromSelection';
 
 /**
  * If we have a selection, create a ContentState fragment and store
  * it in our internal clipboard. Subsequent paste events will use this
  * fragment if no external clipboard data is supplied.
  */
-function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
+export default function editOnCopy(
+  editor: DraftEditor,
+  e: SyntheticClipboardEvent<>,
+): void {
   const editorState = editor._latestEditorState;
   const selection = editorState.getSelection();
 
@@ -32,5 +35,3 @@ function editOnCopy(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   editor.setClipboard(getFragmentFromSelection(editor._latestEditorState));
 }
-
-module.exports = editOnCopy;

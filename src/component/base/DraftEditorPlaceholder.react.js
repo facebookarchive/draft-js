@@ -14,9 +14,9 @@
 import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
 
-const React = require('React');
+import * as React from 'React';
 
-const cx = require('cx');
+import cx from 'cx';
 
 type Props = {
   accessibilityID: string,
@@ -32,7 +32,7 @@ type Props = {
  *
  * Override placeholder style via CSS.
  */
-class DraftEditorPlaceholder extends React.Component<Props> {
+export default class DraftEditorPlaceholder extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     return (
       this.props.text !== nextProps.text ||
@@ -65,5 +65,3 @@ class DraftEditorPlaceholder extends React.Component<Props> {
     );
   }
 }
-
-module.exports = DraftEditorPlaceholder;

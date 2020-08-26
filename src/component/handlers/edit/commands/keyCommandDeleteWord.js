@@ -11,17 +11,19 @@
 
 'use strict';
 
-const DraftRemovableWord = require('DraftRemovableWord');
-const EditorState = require('EditorState');
+import * as DraftRemovableWord from 'DraftRemovableWord';
+import EditorState from 'EditorState';
 
-const moveSelectionForward = require('moveSelectionForward');
-const removeTextWithStrategy = require('removeTextWithStrategy');
+import moveSelectionForward from 'moveSelectionForward';
+import removeTextWithStrategy from 'removeTextWithStrategy';
 
 /**
  * Delete the word that is right of the cursor, as well as any spaces or
  * punctuation before the word.
  */
-function keyCommandDeleteWord(editorState: EditorState): EditorState {
+export default function keyCommandDeleteWord(
+  editorState: EditorState,
+): EditorState {
   const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
@@ -47,5 +49,3 @@ function keyCommandDeleteWord(editorState: EditorState): EditorState {
 
   return EditorState.push(editorState, afterRemoval, 'remove-range');
 }
-
-module.exports = keyCommandDeleteWord;

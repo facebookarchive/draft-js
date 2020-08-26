@@ -22,14 +22,14 @@ const toggleExperimentalTreeDataSupport = enabled => {
 // Seems to be important to put this at the top
 toggleExperimentalTreeDataSupport(true);
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlockNode = require('ContentBlockNode');
-const EditorState = require('EditorState');
-const SecondaryClipboard = require('SecondaryClipboard');
-const SelectionState = require('SelectionState');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import ContentBlockNode from 'ContentBlockNode';
+import EditorState from 'EditorState';
+import * as SecondaryClipboard from 'SecondaryClipboard';
+import SelectionState from 'SelectionState';
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const Immutable = require('immutable');
+import getSampleStateForTesting from 'getSampleStateForTesting';
+import Immutable from 'immutable';
 
 const {List} = Immutable;
 

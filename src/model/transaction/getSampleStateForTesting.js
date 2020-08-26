@@ -11,17 +11,16 @@
 
 'use strict';
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
-const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
-const SelectionState = require('SelectionState');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import EditorState from 'EditorState';
+import {BOLD, ITALIC} from 'SampleDraftInlineStyle';
+import SelectionState from 'SelectionState';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
-const {BOLD, ITALIC} = SampleDraftInlineStyle;
 const ENTITY_KEY = '2';
 
 const BLOCKS = [
@@ -97,12 +96,10 @@ const contentState = new ContentState({
 let editorState = EditorState.createWithContent(contentState);
 editorState = EditorState.forceSelection(editorState, selectionState);
 
-const getSampleStateForTesting = (): {|
+export default function getSampleStateForTesting(): {|
   editorState: EditorState,
   contentState: ContentState,
   selectionState: SelectionState,
-|} => {
+|} {
   return {editorState, contentState, selectionState};
-};
-
-module.exports = getSampleStateForTesting;
+}

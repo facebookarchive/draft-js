@@ -16,7 +16,7 @@ import type {List} from 'immutable';
 /**
  * Maintain persistence for target list when appending and prepending.
  */
-function insertIntoList<T>(
+export default function insertIntoList<T>(
   targetListArg: List<T>,
   toInsert: List<T>,
   offset: number,
@@ -37,5 +37,3 @@ function insertIntoList<T>(
   }
   return targetList;
 }
-
-module.exports = insertIntoList;

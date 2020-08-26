@@ -13,8 +13,6 @@
 
 const NEWLINE_REGEX = /\r\n?|\n/g;
 
-function splitTextIntoTextBlocks(text: string): Array<string> {
+export default function splitTextIntoTextBlocks(text: string): Array<string> {
   return text.split(NEWLINE_REGEX);
 }
-
-module.exports = splitTextIntoTextBlocks;

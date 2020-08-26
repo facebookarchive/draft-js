@@ -17,8 +17,6 @@ import type {DraftHandleValue} from 'DraftHandleValue';
  * Utility method for determining whether or not the value returned
  * from a handler indicates that it was handled.
  */
-function isEventHandled(value: DraftHandleValue): boolean {
+export default function isEventHandled(value: DraftHandleValue): boolean {
   return value === 'handled' || value === true;
 }
-
-module.exports = isEventHandled;

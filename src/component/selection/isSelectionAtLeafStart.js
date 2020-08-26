@@ -13,7 +13,9 @@
 
 import type EditorState from 'EditorState';
 
-function isSelectionAtLeafStart(editorState: EditorState): boolean {
+export default function isSelectionAtLeafStart(
+  editorState: EditorState,
+): boolean {
   const selection = editorState.getSelection();
   const anchorKey = selection.getAnchorKey();
   const blockTree = editorState.getBlockTree(anchorKey);
@@ -44,5 +46,3 @@ function isSelectionAtLeafStart(editorState: EditorState): boolean {
 
   return isAtStart;
 }
-
-module.exports = isSelectionAtLeafStart;

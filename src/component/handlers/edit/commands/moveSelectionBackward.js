@@ -14,7 +14,7 @@
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
-const warning = require('warning');
+import warning from 'warning';
 
 /**
  * Given a collapsed selection, move the focus `maxDistance` backward within
@@ -24,7 +24,7 @@ const warning = require('warning');
  * This function is not Unicode-aware, so surrogate pairs will be treated
  * as having length 2.
  */
-function moveSelectionBackward(
+export default function moveSelectionBackward(
   editorState: EditorState,
   maxDistance: number,
 ): SelectionState {
@@ -60,5 +60,3 @@ function moveSelectionBackward(
     isBackward: true,
   });
 }
-
-module.exports = moveSelectionBackward;

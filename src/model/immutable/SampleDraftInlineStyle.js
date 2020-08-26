@@ -11,21 +11,32 @@
 
 'use strict';
 
-const {OrderedSet} = require('immutable');
+import immutable from 'immutable';
 
-module.exports = {
-  BOLD: (OrderedSet.of('BOLD'): OrderedSet<string>),
-  BOLD_ITALIC: (OrderedSet.of('BOLD', 'ITALIC'): OrderedSet<string>),
-  BOLD_ITALIC_UNDERLINE: (OrderedSet.of(
-    'BOLD',
-    'ITALIC',
-    'UNDERLINE',
-  ): OrderedSet<string>),
-  BOLD_UNDERLINE: (OrderedSet.of('BOLD', 'UNDERLINE'): OrderedSet<string>),
-  CODE: (OrderedSet.of('CODE'): OrderedSet<string>),
-  ITALIC: (OrderedSet.of('ITALIC'): OrderedSet<string>),
-  ITALIC_UNDERLINE: (OrderedSet.of('ITALIC', 'UNDERLINE'): OrderedSet<string>),
-  NONE: (OrderedSet(): OrderedSet<string>),
-  STRIKETHROUGH: (OrderedSet.of('STRIKETHROUGH'): OrderedSet<string>),
-  UNDERLINE: (OrderedSet.of('UNDERLINE'): OrderedSet<string>),
-};
+const {OrderedSet} = immutable;
+
+export const BOLD = (OrderedSet.of('BOLD'): OrderedSet<string>);
+export const BOLD_ITALIC = (OrderedSet.of(
+  'BOLD',
+  'ITALIC',
+): OrderedSet<string>);
+export const BOLD_ITALIC_UNDERLINE = (OrderedSet.of(
+  'BOLD',
+  'ITALIC',
+  'UNDERLINE',
+): OrderedSet<string>);
+export const BOLD_UNDERLINE = (OrderedSet.of(
+  'BOLD',
+  'UNDERLINE',
+): OrderedSet<string>);
+export const CODE = (OrderedSet.of('CODE'): OrderedSet<string>);
+export const ITALIC = (OrderedSet.of('ITALIC'): OrderedSet<string>);
+export const ITALIC_UNDERLINE = (OrderedSet.of(
+  'ITALIC',
+  'UNDERLINE',
+): OrderedSet<string>);
+export const NONE = (OrderedSet(): OrderedSet<string>);
+export const STRIKETHROUGH = (OrderedSet.of(
+  'STRIKETHROUGH',
+): OrderedSet<string>);
+export const UNDERLINE = (OrderedSet.of('UNDERLINE'): OrderedSet<string>);

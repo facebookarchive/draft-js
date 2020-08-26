@@ -13,10 +13,10 @@
 
 import type {BlockMap} from 'BlockMap';
 
-const ContentBlockNode = require('ContentBlockNode');
+import ContentBlockNode from 'ContentBlockNode';
 
-const generateRandomKey = require('generateRandomKey');
-const Immutable = require('immutable');
+import generateRandomKey from 'generateRandomKey';
+import Immutable from 'immutable';
 
 const {OrderedMap} = Immutable;
 
@@ -117,7 +117,7 @@ const randomizeContentBlockKeys = (blockMap: BlockMap): BlockMap => {
   );
 };
 
-const randomizeBlockMapKeys = (blockMap: BlockMap): BlockMap => {
+export default function randomizeBlockMapKeys(blockMap: BlockMap): BlockMap {
   const isTreeBasedBlockMap = blockMap.first() instanceof ContentBlockNode;
 
   if (!isTreeBasedBlockMap) {
@@ -125,6 +125,4 @@ const randomizeBlockMapKeys = (blockMap: BlockMap): BlockMap => {
   }
 
   return randomizeContentBlockNodeKeys(blockMap);
-};
-
-module.exports = randomizeBlockMapKeys;
+}

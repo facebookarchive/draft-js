@@ -11,9 +11,9 @@
 
 'use strict';
 
-const EditorState = require('EditorState');
+import EditorState from 'EditorState';
 
-function keyCommandUndo(
+export default function keyCommandUndo(
   e: SyntheticKeyboardEvent<>,
   editorState: EditorState,
   updateFn: (editorState: EditorState) => void,
@@ -47,5 +47,3 @@ function keyCommandUndo(
     updateFn(undoneState);
   }, 0);
 }
-
-module.exports = keyCommandUndo;

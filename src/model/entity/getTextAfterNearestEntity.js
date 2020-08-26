@@ -17,7 +17,7 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
  * Find the string of text between the previous entity and the specified
  * offset. This allows us to narrow down search areas for regex matching.
  */
-function getTextAfterNearestEntity(
+export default function getTextAfterNearestEntity(
   block: BlockNodeRecord,
   offset: number,
 ): string {
@@ -30,5 +30,3 @@ function getTextAfterNearestEntity(
 
   return block.getText().slice(start, offset);
 }
-
-module.exports = getTextAfterNearestEntity;

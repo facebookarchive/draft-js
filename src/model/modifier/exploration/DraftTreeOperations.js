@@ -13,12 +13,12 @@
  */
 import type {BlockMap} from 'BlockMap';
 
-const ContentBlockNode = require('ContentBlockNode');
-const DraftTreeInvariants = require('DraftTreeInvariants');
+import ContentBlockNode from 'ContentBlockNode';
+import * as DraftTreeInvariants from 'DraftTreeInvariants';
 
-const generateRandomKey = require('generateRandomKey');
-const Immutable = require('immutable');
-const invariant = require('invariant');
+import generateRandomKey from 'generateRandomKey';
+import Immutable from 'immutable';
+import invariant from 'invariant';
 
 type SiblingInsertPosition = 'previous' | 'next';
 
@@ -37,7 +37,7 @@ const verifyTree = (tree: BlockMap): void => {
  * The block map returned by this method may not be a valid tree (siblings are
  * unaffected)
  */
-const updateParentChild = (
+export const updateParentChild = (
   blockMap: BlockMap,
   parentKey: string,
   childKey: string,
@@ -95,7 +95,7 @@ const updateParentChild = (
  * The block map returned by this method may not be a valid tree (parent/child/
  * other siblings are unaffected)
  */
-const updateSibling = (
+export const updateSibling = (
   blockMap: BlockMap,
   prevKey: string,
   nextKey: string,
@@ -123,7 +123,7 @@ const updateSibling = (
  * The block map returned by this method may not be a valid tree (siblings are
  * unaffected)
  */
-const replaceParentChild = (
+export const replaceParentChild = (
   blockMap: BlockMap,
   parentKey: string,
   existingChildKey: string,
@@ -156,7 +156,7 @@ const replaceParentChild = (
  * This operation respects the tree data invariants - it expects and returns a
  * valid tree.
  */
-const createNewParent = (blockMap: BlockMap, key: string): BlockMap => {
+export const createNewParent = (blockMap: BlockMap, key: string): BlockMap => {
   verifyTree(blockMap);
   const block = blockMap.get(key);
   invariant(block != null, 'block must exist in block map');
@@ -205,7 +205,7 @@ const createNewParent = (blockMap: BlockMap, key: string): BlockMap => {
  * This operation respects the tree data invariants - it expects and returns a
  * valid tree.
  */
-const updateAsSiblingsChild = (
+export const updateAsSiblingsChild = (
   blockMap: BlockMap,
   key: string,
   position: SiblingInsertPosition,
@@ -297,7 +297,7 @@ const updateAsSiblingsChild = (
  * This operation respects the tree data invariants - it expects and returns a
  * valid tree.
  */
-const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
+export const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
   verifyTree(blockMap);
   const block = blockMap.get(key);
   invariant(block != null, 'block must exist in block map');
@@ -449,7 +449,7 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
  * This operation respects the tree data invariants - it expects and returns a
  * valid tree.
  */
-const mergeBlocks = (blockMap: BlockMap, key: string): BlockMap => {
+export const mergeBlocks = (blockMap: BlockMap, key: string): BlockMap => {
   verifyTree(blockMap);
   // current block must be a non-leaf
   const block = blockMap.get(key);
@@ -497,14 +497,4 @@ const mergeBlocks = (blockMap: BlockMap, key: string): BlockMap => {
   }
   verifyTree(newBlockMap);
   return newBlockMap;
-};
-
-module.exports = {
-  updateParentChild,
-  replaceParentChild,
-  updateSibling,
-  createNewParent,
-  updateAsSiblingsChild,
-  moveChildUp,
-  mergeBlocks,
 };

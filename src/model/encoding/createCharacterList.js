@@ -13,13 +13,13 @@
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-const CharacterMetadata = require('CharacterMetadata');
+import CharacterMetadata from 'CharacterMetadata';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {List} = Immutable;
 
-function createCharacterList(
+export default function createCharacterList(
   inlineStyles: Array<DraftInlineStyle>,
   entities: Array<?string>,
 ): List<CharacterMetadata> {
@@ -29,5 +29,3 @@ function createCharacterList(
   });
   return List(characterArray);
 }
-
-module.exports = createCharacterList;

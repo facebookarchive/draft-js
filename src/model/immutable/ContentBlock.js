@@ -15,10 +15,10 @@ import type {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-const CharacterMetadata = require('CharacterMetadata');
+import CharacterMetadata from 'CharacterMetadata';
 
-const findRangesImmutable = require('findRangesImmutable');
-const Immutable = require('immutable');
+import findRangesImmutable from 'findRangesImmutable';
+import Immutable from 'immutable';
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
@@ -49,7 +49,8 @@ const decorateCharacterList = (config: BlockNodeConfig): BlockNodeConfig => {
   return config;
 };
 
-class ContentBlock extends ContentBlockRecord implements BlockNode {
+export default class ContentBlock extends ContentBlockRecord
+  implements BlockNode {
   constructor(config: BlockNodeConfig) {
     super(decorateCharacterList(config));
   }
@@ -136,5 +137,3 @@ function haveEqualEntity(
 ): boolean {
   return charA.getEntity() === charB.getEntity();
 }
-
-module.exports = ContentBlock;
