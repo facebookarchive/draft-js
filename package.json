@@ -35,6 +35,7 @@
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
+    "@babel/plugin-proposal-optional-catch-binding": "^7.10.4",
     "fbjs": "^2.0.0",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.1"
