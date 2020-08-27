@@ -13,13 +13,13 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const DraftJsDebugLogging = require('DraftJsDebugLogging');
-const EditorState = require('EditorState');
+import * as DraftJsDebugLogging from 'DraftJsDebugLogging';
+import EditorState from 'EditorState';
 
-const getContentEditableContainer = require('getContentEditableContainer');
-const getDraftEditorSelection = require('getDraftEditorSelection');
+import getContentEditableContainer from 'getContentEditableContainer';
+import getDraftEditorSelection from 'getDraftEditorSelection';
 
-function editOnSelect(editor: DraftEditor): void {
+export default function editOnSelect(editor: DraftEditor): void {
   if (
     editor._blockSelectEvents ||
     editor._latestEditorState !== editor.props.editorState
@@ -59,5 +59,3 @@ function editOnSelect(editor: DraftEditor): void {
     editor.update(editorState);
   }
 }
-
-module.exports = editOnSelect;

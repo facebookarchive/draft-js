@@ -13,13 +13,13 @@
 
 jest.mock('generateRandomKey');
 
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
+import ContentBlock from 'ContentBlock';
+import ContentBlockNode from 'ContentBlockNode';
+import ContentState from 'ContentState';
+import EditorState from 'EditorState';
 
-const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
-const Immutable = require('immutable');
+import getNextDelimiterBlockKey from 'getNextDelimiterBlockKey';
+import Immutable from 'immutable';
 
 const {List} = Immutable;
 

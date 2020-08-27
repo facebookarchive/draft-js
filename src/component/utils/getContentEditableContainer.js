@@ -13,10 +13,12 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const invariant = require('invariant');
-const isHTMLElement = require('isHTMLElement');
+import invariant from 'invariant';
+import isHTMLElement from 'isHTMLElement';
 
-function getContentEditableContainer(editor: DraftEditor): HTMLElement {
+export default function getContentEditableContainer(
+  editor: DraftEditor,
+): HTMLElement {
   const editorNode = editor.editorContainer;
   invariant(editorNode, 'Missing editorNode');
   invariant(
@@ -26,5 +28,3 @@ function getContentEditableContainer(editor: DraftEditor): HTMLElement {
   const htmlElement = (editorNode.firstChild: any);
   return htmlElement;
 }
-
-module.exports = getContentEditableContainer;

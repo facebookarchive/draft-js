@@ -17,29 +17,29 @@ import type {DraftEditorModes} from 'DraftEditorModes';
 import type {DraftEditorDefaultProps, DraftEditorProps} from 'DraftEditorProps';
 import type {DraftScrollPosition} from 'DraftScrollPosition';
 
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
-const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
-const DraftEditorContents = require('DraftEditorContents.react');
-const DraftEditorDragHandler = require('DraftEditorDragHandler');
-const DraftEditorEditHandler = require('DraftEditorEditHandler');
-const flushControlled = require('DraftEditorFlushControlled');
-const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
-const DraftEffects = require('DraftEffects');
-const EditorState = require('EditorState');
-const React = require('React');
-const Scroll = require('Scroll');
-const Style = require('Style');
-const UserAgent = require('UserAgent');
+import DefaultDraftBlockRenderMap from 'DefaultDraftBlockRenderMap';
+import {DefaultDraftInlineStyle} from 'DefaultDraftInlineStyle';
+import {DraftEditorCompositionHandler} from 'DraftEditorCompositionHandler';
+import DraftEditorContents from 'DraftEditorContents.react';
+import {DraftEditorDragHandler} from 'DraftEditorDragHandler';
+import {DraftEditorEditHandler} from 'DraftEditorEditHandler';
+import flushControlled from 'DraftEditorFlushControlled';
+import DraftEditorPlaceholder from 'DraftEditorPlaceholder.react';
+import * as DraftEffects from 'DraftEffects';
+import EditorState from 'EditorState';
+import * as React from 'React';
+import * as Scroll from 'Scroll';
+import Style from 'Style';
+import UserAgent from 'UserAgent';
 
-const cx = require('cx');
-const generateRandomKey = require('generateRandomKey');
-const getDefaultKeyBinding = require('getDefaultKeyBinding');
-const getScrollPosition = require('getScrollPosition');
-const gkx = require('gkx');
-const invariant = require('invariant');
-const isHTMLElement = require('isHTMLElement');
-const nullthrows = require('nullthrows');
+import cx from 'cx';
+import generateRandomKey from 'generateRandomKey';
+import getDefaultKeyBinding from 'getDefaultKeyBinding';
+import getScrollPosition from 'getScrollPosition';
+import gkx from 'gkx';
+import invariant from 'invariant';
+import isHTMLElement from 'isHTMLElement';
+import nullthrows from 'nullthrows';
 
 const isIE = UserAgent.isBrowser('IE');
 
@@ -132,7 +132,10 @@ class UpdateDraftEditorFlags extends React.Component<{
  * div, and provides a wide variety of useful function props for managing the
  * state of the editor. See `DraftEditorProps` for details.
  */
-class DraftEditor extends React.Component<DraftEditorProps, State> {
+export default class DraftEditor extends React.Component<
+  DraftEditorProps,
+  State,
+> {
   static defaultProps: DraftEditorDefaultProps = {
     ariaDescribedBy: '{{editor_id_placeholder}}',
     blockRenderMap: DefaultDraftBlockRenderMap,
@@ -651,5 +654,3 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     }
   };
 }
-
-module.exports = DraftEditor;

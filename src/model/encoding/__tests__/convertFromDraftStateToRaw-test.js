@@ -11,19 +11,19 @@
 
 'use strict';
 
-const mockUUID = require('mockUUID');
+import mockUUID from 'mockUUID';
 jest.mock('uuid', () => jest.fn(mockUUID));
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const DraftEntityInstance = require('DraftEntityInstance');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlock from 'ContentBlock';
+import ContentBlockNode from 'ContentBlockNode';
+import ContentState from 'ContentState';
+import DraftEntityInstance from 'DraftEntityInstance';
 
-const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const Immutable = require('immutable');
+import convertFromDraftStateToRaw from 'convertFromDraftStateToRaw';
+import getSampleStateForTesting from 'getSampleStateForTesting';
+import Immutable from 'immutable';
 
 const {contentState} = getSampleStateForTesting();
 

@@ -13,12 +13,12 @@
 
 jest.mock('generateRandomKey');
 
-const DraftEditor = require('DraftEditor.react');
-const EditorState = require('EditorState');
-const React = require('React');
+import DraftEditor from 'DraftEditor.react';
+import EditorState from 'EditorState';
+import * as React from 'React';
 
 // $FlowFixMe[cannot-resolve-module]
-const ReactShallowRenderer = require('react-test-renderer/shallow');
+import ReactShallowRenderer from 'react-test-renderer/shallow';
 
 let shallow;
 let editorState;

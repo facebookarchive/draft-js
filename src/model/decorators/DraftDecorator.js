@@ -16,7 +16,7 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {HTMLDir} from 'UnicodeBidiDirection';
 
-const React = require('React');
+import * as React from 'React';
 
 export type DraftDecoratorStrategy = (
   block: BlockNodeRecord,

@@ -14,17 +14,17 @@
 import type DraftEditor from 'DraftEditor.react';
 import type SelectionState from 'SelectionState';
 
-const DataTransfer = require('DataTransfer');
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+import DataTransfer from 'DataTransfer';
+import * as DraftModifier from 'DraftModifier';
+import EditorState from 'EditorState';
 
-const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
-const getTextContentFromFiles = require('getTextContentFromFiles');
-const getUpdatedSelectionState = require('getUpdatedSelectionState');
-const getWindowForNode = require('getWindowForNode');
-const isEventHandled = require('isEventHandled');
-const nullthrows = require('nullthrows');
+import findAncestorOffsetKey from 'findAncestorOffsetKey';
+import getCorrectDocumentFromNode from 'getCorrectDocumentFromNode';
+import getTextContentFromFiles from 'getTextContentFromFiles';
+import getUpdatedSelectionState from 'getUpdatedSelectionState';
+import getWindowForNode from 'getWindowForNode';
+import isEventHandled from 'isEventHandled';
+import nullthrows from 'nullthrows';
 
 /**
  * Get a SelectionState for the supplied mouse event.
@@ -67,76 +67,70 @@ function getSelectionForEvent(
   );
 }
 
-const DraftEditorDragHandler = {
-  /**
-   * Drag originating from input terminated.
-   */
-  onDragEnd: function(editor: DraftEditor): void {
-    editor.exitCurrentMode();
-    endDrag(editor);
-  },
+/**
+ * Drag originating from input terminated.
+ */
+function onDragEnd(editor: DraftEditor): void {
+  editor.exitCurrentMode();
+  endDrag(editor);
+}
 
-  /**
-   * Handle data being dropped.
-   */
-  onDrop: function(editor: DraftEditor, e: Object): void {
-    const data = new DataTransfer(e.nativeEvent.dataTransfer);
+/**
+ * Handle data being dropped.
+ */
+function onDrop(editor: DraftEditor, e: Object): void {
+  const data = new DataTransfer(e.nativeEvent.dataTransfer);
 
-    const editorState: EditorState = editor._latestEditorState;
-    const dropSelection: ?SelectionState = getSelectionForEvent(
-      e.nativeEvent,
-      editorState,
-    );
+  const editorState: EditorState = editor._latestEditorState;
+  const dropSelection: ?SelectionState = getSelectionForEvent(
+    e.nativeEvent,
+    editorState,
+  );
 
-    e.preventDefault();
-    editor._dragCount = 0;
-    editor.exitCurrentMode();
+  e.preventDefault();
+  editor._dragCount = 0;
+  editor.exitCurrentMode();
 
-    if (dropSelection == null) {
-      return;
-    }
+  if (dropSelection == null) {
+    return;
+  }
 
-    const files: Array<Blob> = (data.getFiles(): any);
-    if (files.length > 0) {
-      if (
-        editor.props.handleDroppedFiles &&
-        isEventHandled(editor.props.handleDroppedFiles(dropSelection, files))
-      ) {
-        return;
-      }
-
-      /* $FlowFixMe[incompatible-call] This comment suppresses an error found
-       * DataTransfer was typed. getFiles() returns an array of <Files extends
-       * Blob>, not Blob */
-      getTextContentFromFiles(files, fileText => {
-        fileText &&
-          editor.update(
-            insertTextAtSelection(editorState, dropSelection, fileText),
-          );
-      });
-      return;
-    }
-
-    const dragType = editor._internalDrag ? 'internal' : 'external';
+  const files: Array<Blob> = (data.getFiles(): any);
+  if (files.length > 0) {
     if (
-      editor.props.handleDrop &&
-      isEventHandled(editor.props.handleDrop(dropSelection, data, dragType))
+      editor.props.handleDroppedFiles &&
+      isEventHandled(editor.props.handleDroppedFiles(dropSelection, files))
     ) {
-      // handled
-    } else if (editor._internalDrag) {
-      editor.update(moveText(editorState, dropSelection));
-    } else {
-      editor.update(
-        insertTextAtSelection(
-          editorState,
-          dropSelection,
-          (data.getText(): any),
-        ),
-      );
+      return;
     }
-    endDrag(editor);
-  },
-};
+
+    /* $FlowFixMe[incompatible-call] This comment suppresses an error found
+     * DataTransfer was typed. getFiles() returns an array of <Files extends
+     * Blob>, not Blob */
+    getTextContentFromFiles(files, fileText => {
+      fileText &&
+        editor.update(
+          insertTextAtSelection(editorState, dropSelection, fileText),
+        );
+    });
+    return;
+  }
+
+  const dragType = editor._internalDrag ? 'internal' : 'external';
+  if (
+    editor.props.handleDrop &&
+    isEventHandled(editor.props.handleDrop(dropSelection, data, dragType))
+  ) {
+    // handled
+  } else if (editor._internalDrag) {
+    editor.update(moveText(editorState, dropSelection));
+  } else {
+    editor.update(
+      insertTextAtSelection(editorState, dropSelection, (data.getText(): any)),
+    );
+  }
+  endDrag(editor);
+}
 
 function endDrag(editor) {
   editor._internalDrag = false;
@@ -185,4 +179,7 @@ function insertTextAtSelection(
   return EditorState.push(editorState, newContentState, 'insert-fragment');
 }
 
-module.exports = DraftEditorDragHandler;
+export const DraftEditorDragHandler = {
+  onDragEnd,
+  onDrop,
+};

@@ -11,7 +11,7 @@
 
 'use strict';
 
-const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
+import decodeInlineStyleRanges from 'decodeInlineStyleRanges';
 
 test('must decode for an unstyled block', () => {
   const block = {text: 'Hello', inlineStyleRanges: []};

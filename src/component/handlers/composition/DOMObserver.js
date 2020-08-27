@@ -11,13 +11,13 @@
 
 'use strict';
 
-const UserAgent = require('UserAgent');
+import UserAgent from 'UserAgent';
 
-const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const getWindowForNode = require('getWindowForNode');
-const Immutable = require('immutable');
-const invariant = require('invariant');
-const nullthrows = require('nullthrows');
+import findAncestorOffsetKey from 'findAncestorOffsetKey';
+import getWindowForNode from 'getWindowForNode';
+import Immutable from 'immutable';
+import invariant from 'invariant';
+import nullthrows from 'nullthrows';
 
 const {Map} = Immutable;
 
@@ -37,7 +37,7 @@ const DOM_OBSERVER_OPTIONS = {
 // IE11 has very broken mutation observers, so we also listen to DOMCharacterDataModified
 const USE_CHAR_DATA = UserAgent.isBrowser('IE <= 11');
 
-class DOMObserver {
+export default class DOMObserver {
   observer: ?MutationObserver;
   container: HTMLElement;
   mutations: Map<string, string>;
@@ -149,5 +149,3 @@ class DOMObserver {
     }
   }
 }
-
-module.exports = DOMObserver;

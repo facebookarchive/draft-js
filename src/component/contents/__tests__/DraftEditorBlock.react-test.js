@@ -16,25 +16,24 @@ jest
   .mock('getScrollPosition')
   .mock('getViewportDimensions');
 
-const BlockTree = require('BlockTree');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const DraftEditorBlock = require('DraftEditorBlock.react');
-const React = require('React');
-const ReactDOM = require('ReactDOM');
-const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
-const SelectionState = require('SelectionState');
-const Style = require('Style');
-const UnicodeBidiDirection = require('UnicodeBidiDirection');
+import * as BlockTree from 'BlockTree';
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import DraftEditorBlock from 'DraftEditorBlock.react';
+import DraftEditorLeaf from 'DraftEditorLeaf.react';
+import * as React from 'React';
+import * as ReactDOM from 'ReactDOM';
+import {BOLD, ITALIC, NONE} from 'SampleDraftInlineStyle';
+import SelectionState from 'SelectionState';
+import Style from 'Style';
+import * as UnicodeBidiDirection from 'UnicodeBidiDirection';
 
-const getElementPosition = require('getElementPosition');
-const getScrollPosition = require('getScrollPosition');
-const getViewportDimensions = require('getViewportDimensions');
-const Immutable = require('immutable');
-const ReactTestRenderer = require('react-test-renderer');
-
-const {BOLD, NONE, ITALIC} = SampleDraftInlineStyle;
+import getElementPosition from 'getElementPosition';
+import getScrollPosition from 'getScrollPosition';
+import getViewportDimensions from 'getViewportDimensions';
+import Immutable from 'immutable';
+import ReactTestRenderer from 'react-test-renderer';
 
 const mockGetDecorations = jest.fn();
 
@@ -74,8 +73,6 @@ getElementPosition.mockReturnValue({
 });
 getScrollPosition.mockReturnValue({x: 0, y: 0});
 getViewportDimensions.mockReturnValue({width: 1200, height: 800});
-
-const DraftEditorLeaf = require('DraftEditorLeaf.react');
 
 const returnEmptyString = () => {
   return '';

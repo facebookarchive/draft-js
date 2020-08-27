@@ -16,9 +16,9 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {InlineStyleRange} from 'InlineStyleRange';
 import type {List} from 'immutable';
 
-const UnicodeUtils = require('UnicodeUtils');
+import * as UnicodeUtils from 'UnicodeUtils';
 
-const findRangesImmutable = require('findRangesImmutable');
+import findRangesImmutable from 'findRangesImmutable';
 
 const areEqual = (a, b) => a === b;
 const isTruthy = a => !!a;
@@ -62,7 +62,7 @@ function getEncodedInlinesForType(
  * Retrieve the encoded arrays of inline styles, with each individual style
  * treated separately.
  */
-function encodeInlineStyleRanges(
+export default function encodeInlineStyleRanges(
   block: BlockNodeRecord,
 ): Array<InlineStyleRange> {
   const styleList = block
@@ -76,5 +76,3 @@ function encodeInlineStyleRanges(
 
   return Array.prototype.concat.apply(EMPTY_ARRAY, ranges.toJS());
 }
-
-module.exports = encodeInlineStyleRanges;

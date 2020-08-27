@@ -13,14 +13,14 @@
 
 import type {SelectionObject} from 'DraftDOMTypes';
 
-const EditorState = require('EditorState');
+import EditorState from 'EditorState';
 
-const expandRangeToStartOfLine = require('expandRangeToStartOfLine');
-const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
-const moveSelectionBackward = require('moveSelectionBackward');
-const removeTextWithStrategy = require('removeTextWithStrategy');
+import expandRangeToStartOfLine from 'expandRangeToStartOfLine';
+import getDraftEditorSelectionWithNodes from 'getDraftEditorSelectionWithNodes';
+import moveSelectionBackward from 'moveSelectionBackward';
+import removeTextWithStrategy from 'removeTextWithStrategy';
 
-function keyCommandBackspaceToStartOfLine(
+export default function keyCommandBackspaceToStartOfLine(
   editorState: EditorState,
   e: SyntheticKeyboardEvent<HTMLElement>,
 ): EditorState {
@@ -58,5 +58,3 @@ function keyCommandBackspaceToStartOfLine(
 
   return EditorState.push(editorState, afterRemoval, 'remove-range');
 }
-
-module.exports = keyCommandBackspaceToStartOfLine;

@@ -16,24 +16,24 @@ jest
   .mock('getScrollPosition')
   .mock('getViewportDimensions');
 
-const BlockTree = require('BlockTree');
-const CompositeDraftDecorator = require('CompositeDraftDecorator');
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
-const EditorState = require('EditorState');
-const React = require('React');
-const SelectionState = require('SelectionState');
-const Style = require('Style');
-const UnicodeBidiDirection = require('UnicodeBidiDirection');
+import * as BlockTree from 'BlockTree';
+import CompositeDraftDecorator from 'CompositeDraftDecorator';
+import ContentBlockNode from 'ContentBlockNode';
+import ContentState from 'ContentState';
+import DefaultDraftBlockRenderMap from 'DefaultDraftBlockRenderMap';
+import DraftEditorBlockNode from 'DraftEditorBlockNode.react';
+import EditorState from 'EditorState';
+import * as React from 'React';
+import SelectionState from 'SelectionState';
+import Style from 'Style';
+import * as UnicodeBidiDirection from 'UnicodeBidiDirection';
 
-const TestHelper = require('_DraftTestHelper');
-const getElementPosition = require('getElementPosition');
-const getScrollPosition = require('getScrollPosition');
-const getViewportDimensions = require('getViewportDimensions');
-const Immutable = require('immutable');
-const ReactTestRenderer = require('react-test-renderer');
+import {transformSnapshotProps} from '_DraftTestHelper';
+import getElementPosition from 'getElementPosition';
+import getScrollPosition from 'getScrollPosition';
+import getViewportDimensions from 'getViewportDimensions';
+import Immutable from 'immutable';
+import ReactTestRenderer from 'react-test-renderer';
 
 const {List} = Immutable;
 
@@ -126,9 +126,7 @@ const assertDraftEditorBlockRendering = props => {
     <DraftEditorBlockNode {...childProps} />,
   );
 
-  expect(
-    TestHelper.transformSnapshotProps(blockNode.toJSON()),
-  ).toMatchSnapshot();
+  expect(transformSnapshotProps(blockNode.toJSON())).toMatchSnapshot();
 };
 
 beforeEach(() => {

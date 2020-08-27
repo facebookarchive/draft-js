@@ -13,9 +13,9 @@
 
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 
-const KeyBindingUtil = require('KeyBindingUtil');
-const Keys = require('Keys');
-const UserAgent = require('UserAgent');
+import {hasCommandModifier, isCtrlKeyCommand} from 'KeyBindingUtil';
+import Keys from 'Keys';
+import UserAgent from 'UserAgent';
 
 const isOSX = UserAgent.isPlatform('Mac OS X');
 
@@ -23,8 +23,6 @@ const isOSX = UserAgent.isPlatform('Mac OS X');
 // This bug was fixed in Firefox 29. Feature detection is virtually impossible
 // so we just check the version number. See #342765.
 const shouldFixFirefoxMovement = isOSX && UserAgent.isBrowser('Firefox < 29');
-
-const {hasCommandModifier, isCtrlKeyCommand} = KeyBindingUtil;
 
 function shouldRemoveWord(e: SyntheticKeyboardEvent<>): boolean {
   return (isOSX && e.altKey) || isCtrlKeyCommand(e);
@@ -58,7 +56,7 @@ function getBackspaceCommand(e: SyntheticKeyboardEvent<>): ?DraftEditorCommand {
 /**
  * Retrieve a bound key command for the given event.
  */
-function getDefaultKeyBinding(
+export default function getDefaultKeyBinding(
   e: SyntheticKeyboardEvent<>,
 ): ?DraftEditorCommand {
   switch (e.keyCode) {
@@ -110,5 +108,3 @@ function getDefaultKeyBinding(
       return null;
   }
 }
-
-module.exports = getDefaultKeyBinding;

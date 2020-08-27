@@ -14,7 +14,7 @@
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-function adjustBlockDepthForContentState(
+export default function adjustBlockDepthForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   adjustment: number,
@@ -41,5 +41,3 @@ function adjustBlockDepthForContentState(
     selectionAfter: selectionState,
   });
 }
-
-module.exports = adjustBlockDepthForContentState;

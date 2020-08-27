@@ -14,15 +14,15 @@
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const UserAgent = require('UserAgent');
+import * as DraftModifier from 'DraftModifier';
+import EditorState from 'EditorState';
+import UserAgent from 'UserAgent';
 
-const getEntityKeyForSelection = require('getEntityKeyForSelection');
-const isEventHandled = require('isEventHandled');
-const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
-const nullthrows = require('nullthrows');
-const setImmediate = require('setImmediate');
+import getEntityKeyForSelection from 'getEntityKeyForSelection';
+import isEventHandled from 'isEventHandled';
+import isSelectionAtLeafStart from 'isSelectionAtLeafStart';
+import nullthrows from 'nullthrows';
+import setImmediate from 'setImmediate';
 
 // When nothing is focused, Firefox regards two characters, `'` and `/`, as
 // commands that should open and focus the "quickfind" search bar. This should
@@ -77,7 +77,7 @@ function replaceText(
  * preserve spellcheck highlighting, which disappears or flashes if re-render
  * occurs on the relevant text nodes.
  */
-function editOnBeforeInput(
+export default function editOnBeforeInput(
   editor: DraftEditor,
   e: SyntheticInputEvent<HTMLElement>,
 ): void {
@@ -252,5 +252,3 @@ function editOnBeforeInput(
     }
   });
 }
-
-module.exports = editOnBeforeInput;

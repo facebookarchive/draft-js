@@ -10,8 +10,8 @@
 
 jest.mock('ContentState');
 
-const CompositeDraftDecorator = require('CompositeDraftDecorator');
-const ContentState = require('ContentState');
+import CompositeDraftDecorator from 'CompositeDraftDecorator';
+import ContentState from 'ContentState';
 
 class ContentBlock {
   constructor(text) {

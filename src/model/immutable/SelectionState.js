@@ -11,7 +11,7 @@
 
 'use strict';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {Record} = Immutable;
 
@@ -37,7 +37,7 @@ const defaultRecord: {
  * exports. To see the error delete this comment and run Flow. */
 const SelectionStateRecord = (Record(defaultRecord): any);
 
-class SelectionState extends SelectionStateRecord {
+export default class SelectionState extends SelectionStateRecord {
   serialize(): string {
     return (
       'Anchor: ' +
@@ -147,5 +147,3 @@ class SelectionState extends SelectionStateRecord {
     });
   }
 }
-
-module.exports = SelectionState;

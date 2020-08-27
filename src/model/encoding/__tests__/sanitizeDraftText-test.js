@@ -9,7 +9,7 @@
  * @format
  */
 
-const sanitizeDraftText = require('sanitizeDraftText');
+import sanitizeDraftText from 'sanitizeDraftText';
 
 test('must strip trailing carriage returns', () => {
   expect(sanitizeDraftText('test\u000d')).toMatchSnapshot();

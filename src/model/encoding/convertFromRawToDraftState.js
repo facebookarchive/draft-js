@@ -17,21 +17,21 @@ import type CharacterMetadata from 'CharacterMetadata';
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const DraftEntity = require('DraftEntity');
-const DraftTreeAdapter = require('DraftTreeAdapter');
-const DraftTreeInvariants = require('DraftTreeInvariants');
-const SelectionState = require('SelectionState');
+import ContentBlock from 'ContentBlock';
+import ContentBlockNode from 'ContentBlockNode';
+import ContentState from 'ContentState';
+import DraftEntity from 'DraftEntity';
+import * as DraftTreeAdapter from 'DraftTreeAdapter';
+import * as DraftTreeInvariants from 'DraftTreeInvariants';
+import SelectionState from 'SelectionState';
 
-const createCharacterList = require('createCharacterList');
-const decodeEntityRanges = require('decodeEntityRanges');
-const decodeInlineStyleRanges = require('decodeInlineStyleRanges');
-const generateRandomKey = require('generateRandomKey');
-const gkx = require('gkx');
-const Immutable = require('immutable');
-const invariant = require('invariant');
+import createCharacterList from 'createCharacterList';
+import decodeEntityRanges from 'decodeEntityRanges';
+import decodeInlineStyleRanges from 'decodeInlineStyleRanges';
+import generateRandomKey from 'generateRandomKey';
+import gkx from 'gkx';
+import Immutable from 'immutable';
+import invariant from 'invariant';
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
@@ -260,9 +260,9 @@ const decodeRawEntityMap = (rawState: RawDraftContentState): * => {
   return entityMap;
 };
 
-const convertFromRawToDraftState = (
+export default function convertFromRawToDraftState(
   rawState: RawDraftContentState,
-): ContentState => {
+): ContentState {
   invariant(Array.isArray(rawState.blocks), 'invalid RawDraftContentState');
 
   // decode entities
@@ -282,6 +282,4 @@ const convertFromRawToDraftState = (
     selectionBefore: selectionState,
     selectionAfter: selectionState,
   });
-};
-
-module.exports = convertFromRawToDraftState;
+}

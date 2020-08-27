@@ -17,10 +17,10 @@ const BLOCK_DELIMITER_CHAR = '\n';
 const TEST_A = 'Hello';
 const TEST_B = ' World!';
 
-const DraftEditorTextNode = require('DraftEditorTextNode.react');
-const React = require('React');
-const ReactDOM = require('ReactDOM');
-const UserAgent = require('UserAgent');
+import DraftEditorTextNode from 'DraftEditorTextNode.react';
+import * as React from 'React';
+import * as ReactDOM from 'ReactDOM';
+import UserAgent from 'UserAgent';
 
 let container;
 

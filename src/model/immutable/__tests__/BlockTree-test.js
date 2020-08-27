@@ -10,13 +10,13 @@
 
 'use strict';
 
-const BlockTree = require('BlockTree');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const {BOLD} = require('SampleDraftInlineStyle');
+import BlockTree from 'BlockTree';
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import {BOLD} from 'SampleDraftInlineStyle';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {EMPTY} = CharacterMetadata;
 

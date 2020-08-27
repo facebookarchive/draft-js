@@ -11,25 +11,31 @@
 
 'use strict';
 
-module.exports = {
-  BOLD: {
-    fontWeight: 'bold',
-  },
+const BOLD = {
+  fontWeight: 'bold',
+};
 
-  CODE: {
-    fontFamily: 'monospace',
-    wordWrap: 'break-word',
-  },
+const CODE = {
+  fontFamily: 'monospace',
+  wordWrap: 'break-word',
+};
 
-  ITALIC: {
-    fontStyle: 'italic',
-  },
+const ITALIC = {
+  fontStyle: 'italic',
+};
 
-  STRIKETHROUGH: {
-    textDecoration: 'line-through',
-  },
+const STRIKETHROUGH = {
+  textDecoration: 'line-through',
+};
 
-  UNDERLINE: {
-    textDecoration: 'underline',
-  },
+const UNDERLINE = {
+  textDecoration: 'underline',
+};
+
+export const DefaultDraftInlineStyle = {
+  BOLD,
+  CODE,
+  ITALIC,
+  STRIKETHROUGH,
+  UNDERLINE,
 };

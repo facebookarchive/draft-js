@@ -14,10 +14,11 @@
 import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {CoreDraftBlockType} from 'DraftBlockType';
 
-const React = require('React');
+import * as React from 'React';
 
-const cx = require('cx');
-const {Map} = require('immutable');
+import cx from 'cx';
+import immutable from 'immutable';
+const {Map} = immutable;
 
 type DefaultCoreDraftBlockRenderMap = Map<
   CoreDraftBlockType,
@@ -77,4 +78,4 @@ const DefaultDraftBlockRenderMap: DefaultCoreDraftBlockRenderMap = Map({
   },
 });
 
-module.exports = DefaultDraftBlockRenderMap;
+export default DefaultDraftBlockRenderMap;

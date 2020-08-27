@@ -10,15 +10,15 @@
 
 jest.mock('generateRandomKey');
 
-const AtomicBlockUtils = require('AtomicBlockUtils');
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlockNode = require('ContentBlockNode');
-const EditorState = require('EditorState');
-const NestedRichTextEditorUtil = require('NestedRichTextEditorUtil');
-const SelectionState = require('SelectionState');
+import * as AtomicBlockUtils from 'AtomicBlockUtils';
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import ContentBlockNode from 'ContentBlockNode';
+import EditorState from 'EditorState';
+import NestedRichTextEditorUtil from 'NestedRichTextEditorUtil';
+import SelectionState from 'SelectionState';
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const Immutable = require('immutable');
+import getSampleStateForTesting from 'getSampleStateForTesting';
+import Immutable from 'immutable';
 
 const {List} = Immutable;
 

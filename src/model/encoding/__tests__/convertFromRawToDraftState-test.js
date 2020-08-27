@@ -12,8 +12,8 @@
 
 jest.mock('generateRandomKey');
 
-const convertFromRawToDraftState = require('convertFromRawToDraftState');
-const mockUUID = require('mockUUID');
+import convertFromRawToDraftState from 'convertFromRawToDraftState';
+import mockUUID from 'mockUUID';
 
 const toggleExperimentalTreeDataSupport = enabled => {
   jest.doMock('gkx', () => name => {

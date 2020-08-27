@@ -15,12 +15,12 @@
 import type {BlockMap} from 'BlockMap';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 
-const ContentBlockNode = require('ContentBlockNode');
+import ContentBlockNode from 'ContentBlockNode';
 
-const getNextDelimiterBlockKey = (
+export default function getNextDelimiterBlockKey(
   block: BlockNodeRecord,
   blockMap: BlockMap,
-): ?string => {
+): ?string {
   const isExperimentalTreeBlock = block instanceof ContentBlockNode;
 
   if (!isExperimentalTreeBlock) {
@@ -53,6 +53,4 @@ const getNextDelimiterBlockKey = (
   }
 
   return nextNonDescendantBlock.getNextSiblingKey();
-};
-
-module.exports = getNextDelimiterBlockKey;
+}

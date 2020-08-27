@@ -19,12 +19,12 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {EditorChangeType} from 'EditorChangeType';
 import type {EntityMap} from 'EntityMap';
 
-const BlockTree = require('BlockTree');
-const ContentState = require('ContentState');
-const EditorBidiService = require('EditorBidiService');
-const SelectionState = require('SelectionState');
+import BlockTree from 'BlockTree';
+import ContentState from 'ContentState';
+import * as EditorBidiService from 'EditorBidiService';
+import SelectionState from 'SelectionState';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {OrderedSet, Record, Stack, OrderedMap, List} = Immutable;
 
@@ -113,7 +113,7 @@ const defaultRecord: EditorStateRecordType = {
 
 const EditorStateRecord = (Record(defaultRecord): any);
 
-class EditorState {
+export default class EditorState {
   // $FlowFixMe[value-as-type]
   _immutable: EditorStateRecord;
 
@@ -767,5 +767,3 @@ function lookUpwardForInlineStyle(
   }
   return OrderedSet();
 }
-
-module.exports = EditorState;

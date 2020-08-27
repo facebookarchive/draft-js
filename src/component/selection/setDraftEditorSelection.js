@@ -14,15 +14,15 @@
 import type {SelectionObject} from 'DraftDOMTypes';
 import type SelectionState from 'SelectionState';
 
-const DraftEffects = require('DraftEffects');
-const DraftJsDebugLogging = require('DraftJsDebugLogging');
-const UserAgent = require('UserAgent');
+import * as DraftEffects from 'DraftEffects';
+import * as DraftJsDebugLogging from 'DraftJsDebugLogging';
+import UserAgent from 'UserAgent';
 
-const containsNode = require('containsNode');
-const getActiveElement = require('getActiveElement');
-const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
-const invariant = require('invariant');
-const isElement = require('isElement');
+import containsNode from 'containsNode';
+import getActiveElement from 'getActiveElement';
+import getCorrectDocumentFromNode from 'getCorrectDocumentFromNode';
+import invariant from 'invariant';
+import isElement from 'isElement';
 
 const isIE = UserAgent.isBrowser('IE');
 
@@ -110,7 +110,7 @@ function getNodeLength(node: Node): number {
  * to programatically create a backward selection. Thus, for all IE
  * versions, we use the old IE API to create our selections.
  */
-function setDraftEditorSelection(
+export function setDraftEditorSelection(
   selectionState: SelectionState,
   node: Node,
   blockKey: string,
@@ -235,7 +235,7 @@ function setDraftEditorSelection(
 /**
  * Extend selection towards focus point.
  */
-function addFocusToSelection(
+export function addFocusToSelection(
   selection: SelectionObject,
   node: ?Node,
   offset: number,
@@ -359,8 +359,3 @@ function addPointToSelection(
     selection.addRange(range);
   }
 }
-
-module.exports = {
-  setDraftEditorSelection,
-  addFocusToSelection,
-};

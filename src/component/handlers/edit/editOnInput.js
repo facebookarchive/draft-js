@@ -14,15 +14,15 @@
 import type {SelectionObject} from 'DraftDOMTypes';
 import type DraftEditor from 'DraftEditor.react';
 
-const DraftModifier = require('DraftModifier');
-const DraftOffsetKey = require('DraftOffsetKey');
-const EditorState = require('EditorState');
-const UserAgent = require('UserAgent');
+import * as DraftModifier from 'DraftModifier';
+import * as DraftOffsetKey from 'DraftOffsetKey';
+import EditorState from 'EditorState';
+import UserAgent from 'UserAgent';
 
-const {notEmptyKey} = require('draftKeyUtils');
-const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
-const nullthrows = require('nullthrows');
+import {notEmptyKey} from 'draftKeyUtils';
+import findAncestorOffsetKey from 'findAncestorOffsetKey';
+import keyCommandPlainBackspace from 'keyCommandPlainBackspace';
+import nullthrows from 'nullthrows';
 
 const isGecko = UserAgent.isEngine('Gecko');
 
@@ -59,7 +59,10 @@ function onInputType(inputType: string, editorState: EditorState): EditorState {
  * when an `input` change leads to a DOM/model mismatch, the change should be
  * due to a spellcheck change, and we can incorporate it into our model.
  */
-function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
+export default function editOnInput(
+  editor: DraftEditor,
+  e: SyntheticInputEvent<>,
+): void {
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
@@ -213,5 +216,3 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     EditorState.push(editorState, contentWithAdjustedDOMSelection, changeType),
   );
 }
-
-module.exports = editOnInput;

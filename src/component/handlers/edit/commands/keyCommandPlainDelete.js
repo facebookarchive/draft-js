@@ -11,18 +11,20 @@
 
 'use strict';
 
-const EditorState = require('EditorState');
-const UnicodeUtils = require('UnicodeUtils');
+import EditorState from 'EditorState';
+import * as UnicodeUtils from 'UnicodeUtils';
 
-const moveSelectionForward = require('moveSelectionForward');
-const removeTextWithStrategy = require('removeTextWithStrategy');
+import moveSelectionForward from 'moveSelectionForward';
+import removeTextWithStrategy from 'removeTextWithStrategy';
 
 /**
  * Remove the selected range. If the cursor is collapsed, remove the following
  * character. This operation is Unicode-aware, so removing a single character
  * will remove a surrogate pair properly as well.
  */
-function keyCommandPlainDelete(editorState: EditorState): EditorState {
+export default function keyCommandPlainDelete(
+  editorState: EditorState,
+): EditorState {
   const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
@@ -51,5 +53,3 @@ function keyCommandPlainDelete(editorState: EditorState): EditorState {
     selection.isCollapsed() ? 'delete-character' : 'remove-range',
   );
 }
-
-module.exports = keyCommandPlainDelete;

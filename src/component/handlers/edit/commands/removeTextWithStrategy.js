@@ -16,9 +16,9 @@ import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
-const DraftModifier = require('DraftModifier');
+import * as DraftModifier from 'DraftModifier';
 
-const gkx = require('gkx');
+import gkx from 'gkx';
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
@@ -26,7 +26,7 @@ const experimentalTreeDataSupport = gkx('draft_tree_data_support');
  * For a collapsed selection state, remove text based on the specified strategy.
  * If the selection state is not collapsed, remove the entire selected range.
  */
-function removeTextWithStrategy(
+export default function removeTextWithStrategy(
   editorState: EditorState,
   strategy: (editorState: EditorState) => SelectionState,
   direction: DraftRemovalDirection,
@@ -77,5 +77,3 @@ function removeTextWithStrategy(
   }
   return DraftModifier.removeRange(content, target, direction);
 }
-
-module.exports = removeTextWithStrategy;

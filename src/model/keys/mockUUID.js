@@ -13,8 +13,6 @@
 
 let counter = 0;
 
-function mockUUID(): string {
+export default function mockUUID(): string {
   return '' + ++counter;
 }
-
-module.exports = mockUUID;

@@ -13,7 +13,7 @@
 
 expect.addSnapshotSerializer(require('NonASCIIStringSnapshotSerializer'));
 
-const DraftRemovableWord = require('DraftRemovableWord');
+import * as DraftRemovableWord from 'DraftRemovableWord';
 
 let forward;
 let backward;

@@ -14,12 +14,12 @@
 import type {DOMDerivedSelection} from 'DOMDerivedSelection';
 import type EditorState from 'EditorState';
 
-const findAncestorOffsetKey = require('findAncestorOffsetKey');
-const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
-const getUpdatedSelectionState = require('getUpdatedSelectionState');
-const invariant = require('invariant');
-const isElement = require('isElement');
-const nullthrows = require('nullthrows');
+import findAncestorOffsetKey from 'findAncestorOffsetKey';
+import getSelectionOffsetKeyForNode from 'getSelectionOffsetKeyForNode';
+import getUpdatedSelectionState from 'getUpdatedSelectionState';
+import invariant from 'invariant';
+import isElement from 'isElement';
+import nullthrows from 'nullthrows';
 
 type SelectionPoint = {|
   key: string,
@@ -30,7 +30,7 @@ type SelectionPoint = {|
  * Convert the current selection range to an anchor/focus pair of offset keys
  * and values that can be interpreted by components.
  */
-function getDraftEditorSelectionWithNodes(
+export default function getDraftEditorSelectionWithNodes(
   editorState: EditorState,
   root: ?HTMLElement,
   anchorNode: Node,
@@ -235,5 +235,3 @@ function getTextContentLength(node: Node): number {
   const textContent = node.textContent;
   return textContent === '\n' ? 0 : textContent.length;
 }
-
-module.exports = getDraftEditorSelectionWithNodes;

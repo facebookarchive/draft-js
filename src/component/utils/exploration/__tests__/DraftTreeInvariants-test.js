@@ -13,10 +13,10 @@
 
 // missing parent -> child connection
 
-const ContentBlockNode = require('ContentBlockNode');
-const DraftTreeInvariants = require('DraftTreeInvariants');
+import ContentBlockNode from 'ContentBlockNode';
+import * as DraftTreeInvariants from 'DraftTreeInvariants';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 test('single block', () =>
   expect(

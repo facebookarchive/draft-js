@@ -11,14 +11,14 @@
 
 'use strict';
 
-const EditorState = require('EditorState');
+import EditorState from 'EditorState';
 
 /**
  * Collapse selection at the start of the first selected block. This is used
  * for Firefox versions that attempt to navigate forward/backward instead of
  * moving the cursor. Other browsers are able to move the cursor natively.
  */
-function keyCommandMoveSelectionToStartOfBlock(
+export default function keyCommandMoveSelectionToStartOfBlock(
   editorState: EditorState,
 ): EditorState {
   const selection = editorState.getSelection();
@@ -34,5 +34,3 @@ function keyCommandMoveSelectionToStartOfBlock(
     forceSelection: true,
   });
 }
-
-module.exports = keyCommandMoveSelectionToStartOfBlock;

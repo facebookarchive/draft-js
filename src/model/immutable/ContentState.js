@@ -20,18 +20,18 @@ import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
 import type {Map} from 'immutable';
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const DraftEntity = require('DraftEntity');
-const SelectionState = require('SelectionState');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlock from 'ContentBlock';
+import ContentBlockNode from 'ContentBlockNode';
+import DraftEntity from 'DraftEntity';
+import SelectionState from 'SelectionState';
 
-const generateRandomKey = require('generateRandomKey');
-const getOwnObjectValues = require('getOwnObjectValues');
-const gkx = require('gkx');
-const Immutable = require('immutable');
-const sanitizeDraftText = require('sanitizeDraftText');
+import generateRandomKey from 'generateRandomKey';
+import getOwnObjectValues from 'getOwnObjectValues';
+import gkx from 'gkx';
+import Immutable from 'immutable';
+import sanitizeDraftText from 'sanitizeDraftText';
 
 const {List, Record, Repeat, Map: ImmutableMap, OrderedMap} = Immutable;
 
@@ -59,7 +59,7 @@ const ContentBlockNodeRecord = gkx('draft_tree_data_support')
   ? ContentBlockNode
   : ContentBlock;
 
-class ContentState extends ContentStateRecord {
+export default class ContentState extends ContentStateRecord {
   getEntityMap(): any {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity;
@@ -264,5 +264,3 @@ class ContentState extends ContentStateRecord {
     });
   }
 }
-
-module.exports = ContentState;

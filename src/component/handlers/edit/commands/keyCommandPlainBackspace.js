@@ -11,18 +11,20 @@
 
 'use strict';
 
-const EditorState = require('EditorState');
-const UnicodeUtils = require('UnicodeUtils');
+import EditorState from 'EditorState';
+import * as UnicodeUtils from 'UnicodeUtils';
 
-const moveSelectionBackward = require('moveSelectionBackward');
-const removeTextWithStrategy = require('removeTextWithStrategy');
+import moveSelectionBackward from 'moveSelectionBackward';
+import removeTextWithStrategy from 'removeTextWithStrategy';
 
 /**
  * Remove the selected range. If the cursor is collapsed, remove the preceding
  * character. This operation is Unicode-aware, so removing a single character
  * will remove a surrogate pair properly as well.
  */
-function keyCommandPlainBackspace(editorState: EditorState): EditorState {
+export default function keyCommandPlainBackspace(
+  editorState: EditorState,
+): EditorState {
   const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
@@ -50,5 +52,3 @@ function keyCommandPlainBackspace(editorState: EditorState): EditorState {
     selection.isCollapsed() ? 'backspace-character' : 'remove-range',
   );
 }
-
-module.exports = keyCommandPlainBackspace;

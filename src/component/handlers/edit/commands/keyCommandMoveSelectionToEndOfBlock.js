@@ -11,12 +11,12 @@
 
 'use strict';
 
-const EditorState = require('EditorState');
+import EditorState from 'EditorState';
 
 /**
  * See comment for `moveSelectionToStartOfBlock`.
  */
-function keyCommandMoveSelectionToEndOfBlock(
+export default function keyCommandMoveSelectionToEndOfBlock(
   editorState: EditorState,
 ): EditorState {
   const selection = editorState.getSelection();
@@ -34,5 +34,3 @@ function keyCommandMoveSelectionToEndOfBlock(
     forceSelection: true,
   });
 }
-
-module.exports = keyCommandMoveSelectionToEndOfBlock;

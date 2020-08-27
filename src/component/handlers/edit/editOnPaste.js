@@ -15,23 +15,26 @@ import type {BlockMap} from 'BlockMap';
 import type DraftEditor from 'DraftEditor.react';
 import type {EntityMap} from 'EntityMap';
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const CharacterMetadata = require('CharacterMetadata');
-const DataTransfer = require('DataTransfer');
-const DraftModifier = require('DraftModifier');
-const DraftPasteProcessor = require('DraftPasteProcessor');
-const EditorState = require('EditorState');
-const RichTextEditorUtil = require('RichTextEditorUtil');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import CharacterMetadata from 'CharacterMetadata';
+import DataTransfer from 'DataTransfer';
+import * as DraftModifier from 'DraftModifier';
+import * as DraftPasteProcessor from 'DraftPasteProcessor';
+import EditorState from 'EditorState';
+import RichTextEditorUtil from 'RichTextEditorUtil';
 
-const getEntityKeyForSelection = require('getEntityKeyForSelection');
-const getTextContentFromFiles = require('getTextContentFromFiles');
-const isEventHandled = require('isEventHandled');
-const splitTextIntoTextBlocks = require('splitTextIntoTextBlocks');
+import getEntityKeyForSelection from 'getEntityKeyForSelection';
+import getTextContentFromFiles from 'getTextContentFromFiles';
+import isEventHandled from 'isEventHandled';
+import splitTextIntoTextBlocks from 'splitTextIntoTextBlocks';
 
 /**
  * Paste content.
  */
-function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
+export default function editOnPaste(
+  editor: DraftEditor,
+  e: SyntheticClipboardEvent<>,
+): void {
   e.preventDefault();
   const data = new DataTransfer(e.clipboardData);
 
@@ -239,5 +242,3 @@ function areTextBlocksAndClipboardEqual(
     blockMap.valueSeq().every((block, ii) => block.getText() === textBlocks[ii])
   );
 }
-
-module.exports = editOnPaste;

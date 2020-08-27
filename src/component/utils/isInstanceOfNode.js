@@ -9,7 +9,7 @@
  * @emails oncall+draft_js
  */
 
-function isInstanceOfNode(target: ?EventTarget): boolean {
+export default function isInstanceOfNode(target: ?EventTarget): boolean {
   // we changed the name because of having duplicate module provider (fbjs)
   if (!target || !('ownerDocument' in target)) {
     return false;
@@ -25,5 +25,3 @@ function isInstanceOfNode(target: ?EventTarget): boolean {
   }
   return false;
 }
-
-module.exports = isInstanceOfNode;

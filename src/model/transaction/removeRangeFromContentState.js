@@ -16,10 +16,10 @@ import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-const ContentBlockNode = require('ContentBlockNode');
+import ContentBlockNode from 'ContentBlockNode';
 
-const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
-const Immutable = require('immutable');
+import getNextDelimiterBlockKey from 'getNextDelimiterBlockKey';
+import Immutable from 'immutable';
 
 const {List, Map} = Immutable;
 
@@ -282,10 +282,10 @@ const updateBlockMapLinks = (
   });
 };
 
-const removeRangeFromContentState = (
+export default function removeRangeFromContentState(
   contentState: ContentState,
   selectionState: SelectionState,
-): ContentState => {
+): ContentState {
   if (selectionState.isCollapsed()) {
     return contentState;
   }
@@ -391,7 +391,7 @@ const removeRangeFromContentState = (
       isBackward: false,
     }),
   });
-};
+}
 
 /**
  * Maintain persistence for target list when removing characters on the
@@ -419,5 +419,3 @@ const removeFromList = (
   }
   return targetList;
 };
-
-module.exports = removeRangeFromContentState;

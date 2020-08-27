@@ -11,11 +11,11 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
+import ContentBlock from 'ContentBlock';
 
-const createCharacterList = require('createCharacterList');
-const encodeEntityRanges = require('encodeEntityRanges');
-const Immutable = require('immutable');
+import createCharacterList from 'createCharacterList';
+import encodeEntityRanges from 'encodeEntityRanges';
+import Immutable from 'immutable';
 
 const {OrderedSet, Repeat} = Immutable;
 

@@ -11,13 +11,13 @@
 
 'use strict';
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlockNode = require('ContentBlockNode');
-const SelectionState = require('SelectionState');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import ContentBlockNode from 'ContentBlockNode';
+import SelectionState from 'SelectionState';
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const Immutable = require('immutable');
-const removeRangeFromContentState = require('removeRangeFromContentState');
+import getSampleStateForTesting from 'getSampleStateForTesting';
+import Immutable from 'immutable';
+import removeRangeFromContentState from 'removeRangeFromContentState';
 
 const {List} = Immutable;
 

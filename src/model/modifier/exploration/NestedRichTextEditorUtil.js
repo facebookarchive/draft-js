@@ -19,15 +19,15 @@ import type {DataObjectForLink, RichTextUtils} from 'RichTextUtils';
 import type SelectionState from 'SelectionState';
 import type URI from 'URI';
 
-const ContentBlockNode = require('ContentBlockNode');
-const DraftModifier = require('DraftModifier');
-const DraftTreeOperations = require('DraftTreeOperations');
-const EditorState = require('EditorState');
-const RichTextEditorUtil = require('RichTextEditorUtil');
+import ContentBlockNode from 'ContentBlockNode';
+import * as DraftModifier from 'DraftModifier';
+import * as DraftTreeOperations from 'DraftTreeOperations';
+import EditorState from 'EditorState';
+import RichTextEditorUtil from 'RichTextEditorUtil';
 
-const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
-const generateRandomKey = require('generateRandomKey');
-const invariant = require('invariant');
+import adjustBlockDepthForContentState from 'adjustBlockDepthForContentState';
+import generateRandomKey from 'generateRandomKey';
+import invariant from 'invariant';
 
 // Eventually we could allow to control this list by either allowing user configuration
 // and/or a schema in conjunction to DraftBlockRenderMap
@@ -588,4 +588,4 @@ const onUntab = (blockMap: BlockMap, block: ContentBlockNode): BlockMap => {
   return blockMap;
 };
 
-module.exports = NestedRichTextEditorUtil;
+export default NestedRichTextEditorUtil;

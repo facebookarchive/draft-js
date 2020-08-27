@@ -13,13 +13,13 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const CompositeDraftDecorator = require('CompositeDraftDecorator');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
+import CompositeDraftDecorator from 'CompositeDraftDecorator';
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import EditorState from 'EditorState';
+import SelectionState from 'SelectionState';
 
-const onBeforeInput = require('editOnBeforeInput');
+import onBeforeInput from 'editOnBeforeInput';
 
 const DEFAULT_SELECTION = {
   anchorKey: 'a',

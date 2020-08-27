@@ -14,26 +14,25 @@
 import type DraftEditor from 'DraftEditor.react';
 import type {DraftEditorCommand} from 'DraftEditorCommand';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const KeyBindingUtil = require('KeyBindingUtil');
-const Keys = require('Keys');
-const SecondaryClipboard = require('SecondaryClipboard');
-const UserAgent = require('UserAgent');
+import * as DraftModifier from 'DraftModifier';
+import EditorState from 'EditorState';
+import {isOptionKeyCommand} from 'KeyBindingUtil';
+import Keys from 'Keys';
+import * as SecondaryClipboard from 'SecondaryClipboard';
+import UserAgent from 'UserAgent';
 
-const isEventHandled = require('isEventHandled');
-const keyCommandBackspaceToStartOfLine = require('keyCommandBackspaceToStartOfLine');
-const keyCommandBackspaceWord = require('keyCommandBackspaceWord');
-const keyCommandDeleteWord = require('keyCommandDeleteWord');
-const keyCommandInsertNewline = require('keyCommandInsertNewline');
-const keyCommandMoveSelectionToEndOfBlock = require('keyCommandMoveSelectionToEndOfBlock');
-const keyCommandMoveSelectionToStartOfBlock = require('keyCommandMoveSelectionToStartOfBlock');
-const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
-const keyCommandPlainDelete = require('keyCommandPlainDelete');
-const keyCommandTransposeCharacters = require('keyCommandTransposeCharacters');
-const keyCommandUndo = require('keyCommandUndo');
+import isEventHandled from 'isEventHandled';
+import keyCommandBackspaceToStartOfLine from 'keyCommandBackspaceToStartOfLine';
+import keyCommandBackspaceWord from 'keyCommandBackspaceWord';
+import keyCommandDeleteWord from 'keyCommandDeleteWord';
+import keyCommandInsertNewline from 'keyCommandInsertNewline';
+import keyCommandMoveSelectionToEndOfBlock from 'keyCommandMoveSelectionToEndOfBlock';
+import keyCommandMoveSelectionToStartOfBlock from 'keyCommandMoveSelectionToStartOfBlock';
+import keyCommandPlainBackspace from 'keyCommandPlainBackspace';
+import keyCommandPlainDelete from 'keyCommandPlainDelete';
+import keyCommandTransposeCharacters from 'keyCommandTransposeCharacters';
+import keyCommandUndo from 'keyCommandUndo';
 
-const {isOptionKeyCommand} = KeyBindingUtil;
 const isChrome = UserAgent.isBrowser('Chrome');
 
 /**
@@ -83,7 +82,7 @@ function onKeyCommand(
  * See `getDefaultKeyBinding` for defaults. Alternatively, the top-level
  * component may provide a custom mapping via the `keyBindingFn` prop.
  */
-function editOnKeyDown(
+export default function editOnKeyDown(
   editor: DraftEditor,
   e: SyntheticKeyboardEvent<HTMLElement>,
 ): void {
@@ -202,5 +201,3 @@ function editOnKeyDown(
     editor.update(newState);
   }
 }
-
-module.exports = editOnKeyDown;

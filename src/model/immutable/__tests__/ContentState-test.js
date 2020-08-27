@@ -15,9 +15,9 @@ jest.mock('SelectionState');
 
 let contentState;
 
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
 
 const SINGLE_BLOCK = [{text: 'Lorem ipsum', key: 'a'}];
 const MULTI_BLOCK = [
@@ -26,7 +26,7 @@ const MULTI_BLOCK = [
 ];
 const ZERO_WIDTH_CHAR_BLOCK = [{text: unescape('%u200B%u200B'), key: 'a'}];
 
-const SelectionState = require('SelectionState');
+import SelectionState from 'SelectionState';
 
 const createLink = () => {
   return contentState.createEntity('LINK', 'MUTABLE', {uri: 'zombo.com'});

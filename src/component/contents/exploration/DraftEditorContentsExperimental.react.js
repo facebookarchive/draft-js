@@ -22,11 +22,11 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
-const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
-const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
+import DraftEditorBlockNode from 'DraftEditorBlockNode.react';
+import * as DraftOffsetKey from 'DraftOffsetKey';
+import * as React from 'React';
 
-const nullthrows = require('nullthrows');
+import nullthrows from 'nullthrows';
 
 type Props = {
   blockRenderMap: DraftBlockRenderMap,
@@ -49,7 +49,7 @@ type Props = {
  * (for instance, ARIA props) must be allowed to update without affecting
  * the contents of the editor.
  */
-class DraftEditorContentsExperimental extends React.Component<Props> {
+export default class DraftEditorContentsExperimental extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
     const prevEditorState = this.props.editorState;
     const nextEditorState = nextProps.editorState;
@@ -191,5 +191,3 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
     return <div data-contents="true">{outputBlocks}</div>;
   }
 }
-
-module.exports = DraftEditorContentsExperimental;

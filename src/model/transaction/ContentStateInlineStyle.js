@@ -14,26 +14,26 @@
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-const CharacterMetadata = require('CharacterMetadata');
-const {Map} = require('immutable');
+import CharacterMetadata from 'CharacterMetadata';
 
-const ContentStateInlineStyle = {
-  add: function(
-    contentState: ContentState,
-    selectionState: SelectionState,
-    inlineStyle: string,
-  ): ContentState {
-    return modifyInlineStyle(contentState, selectionState, inlineStyle, true);
-  },
+import immutable from 'immutable';
 
-  remove: function(
-    contentState: ContentState,
-    selectionState: SelectionState,
-    inlineStyle: string,
-  ): ContentState {
-    return modifyInlineStyle(contentState, selectionState, inlineStyle, false);
-  },
-};
+const {Map} = immutable;
+export function add(
+  contentState: ContentState,
+  selectionState: SelectionState,
+  inlineStyle: string,
+): ContentState {
+  return modifyInlineStyle(contentState, selectionState, inlineStyle, true);
+}
+
+export function remove(
+  contentState: ContentState,
+  selectionState: SelectionState,
+  inlineStyle: string,
+): ContentState {
+  return modifyInlineStyle(contentState, selectionState, inlineStyle, false);
+}
 
 function modifyInlineStyle(
   contentState: ContentState,
@@ -85,5 +85,3 @@ function modifyInlineStyle(
     selectionAfter: selectionState,
   });
 }
-
-module.exports = ContentStateInlineStyle;

@@ -13,17 +13,17 @@
 
 jest.mock('generateRandomKey');
 
-const mockUUID = require('mockUUID');
+import mockUUID from 'mockUUID';
 jest.mock('uuid', () => mockUUID);
-const AtomicBlockUtils = require('AtomicBlockUtils');
-const BlockMapBuilder = require('BlockMapBuilder');
-const ContentBlockNode = require('ContentBlockNode');
-const Entity = require('DraftEntity');
-const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
+import * as AtomicBlockUtils from 'AtomicBlockUtils';
+import * as BlockMapBuilder from 'BlockMapBuilder';
+import ContentBlockNode from 'ContentBlockNode';
+import Entity from 'DraftEntity';
+import EditorState from 'EditorState';
+import SelectionState from 'SelectionState';
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
-const invariant = require('invariant');
+import getSampleStateForTesting from 'getSampleStateForTesting';
+import invariant from 'invariant';
 
 const {editorState, contentState, selectionState} = getSampleStateForTesting();
 

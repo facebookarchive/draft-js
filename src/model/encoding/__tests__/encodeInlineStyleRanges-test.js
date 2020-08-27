@@ -11,22 +11,20 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
-const SampleDraftInlineStyle = require('SampleDraftInlineStyle');
-
-const createCharacterList = require('createCharacterList');
-const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
-const Immutable = require('immutable');
-
-const {
+import ContentBlock from 'ContentBlock';
+import {
   BOLD,
   BOLD_ITALIC,
-  BOLD_UNDERLINE,
   BOLD_ITALIC_UNDERLINE,
+  BOLD_UNDERLINE,
   ITALIC,
   ITALIC_UNDERLINE,
   NONE,
-} = SampleDraftInlineStyle;
+} from 'SampleDraftInlineStyle';
+
+import createCharacterList from 'createCharacterList';
+import encodeInlineStyleRanges from 'encodeInlineStyleRanges';
+import Immutable from 'immutable';
 
 const {List, OrderedSet, Repeat} = Immutable;
 

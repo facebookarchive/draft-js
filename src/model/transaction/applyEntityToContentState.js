@@ -14,10 +14,10 @@
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-const applyEntityToContentBlock = require('applyEntityToContentBlock');
-const Immutable = require('immutable');
+import applyEntityToContentBlock from 'applyEntityToContentBlock';
+import Immutable from 'immutable';
 
-function applyEntityToContentState(
+export default function applyEntityToContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   entityKey: ?string,
@@ -45,5 +45,3 @@ function applyEntityToContentState(
     selectionAfter: selectionState,
   });
 }
-
-module.exports = applyEntityToContentState;

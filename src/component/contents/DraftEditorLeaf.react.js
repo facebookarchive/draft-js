@@ -15,13 +15,12 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 
-const DraftEditorTextNode = require('DraftEditorTextNode.react');
-const React = require('React');
+import DraftEditorTextNode from 'DraftEditorTextNode.react';
+import * as React from 'React';
 
-const invariant = require('invariant');
-const isHTMLBRElement = require('isHTMLBRElement');
-const setDraftEditorSelection = require('setDraftEditorSelection')
-  .setDraftEditorSelection;
+import invariant from 'invariant';
+import isHTMLBRElement from 'isHTMLBRElement';
+import {setDraftEditorSelection} from 'setDraftEditorSelection';
 
 type CSSStyleObject = {[property: string]: string | number, ...};
 

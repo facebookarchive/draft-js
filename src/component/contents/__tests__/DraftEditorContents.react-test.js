@@ -12,12 +12,15 @@
 
 jest.mock('generateRandomKey');
 
-const Editor = require('DraftEditor.react');
-const EditorState = require('EditorState');
-const RichUtils = require('RichTextEditorUtil');
+import DraftEditor from 'DraftEditor.react';
+import EditorState from 'EditorState';
+import * as React from 'React';
+import RichTextEditorUtil from 'RichTextEditorUtil';
 
-const React = require('react');
-const ReactTestRenderer = require('react-test-renderer');
+import ReactTestRenderer from 'react-test-renderer';
+
+const Editor = DraftEditor;
+const RichUtils = RichTextEditorUtil;
 
 test('defaults to "unstyled" block type for unknown block types', () => {
   const CUSTOM_BLOCK_TYPE = 'CUSTOM_BLOCK_TYPE';

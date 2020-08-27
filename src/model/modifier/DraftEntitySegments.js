@@ -14,93 +14,66 @@
 import type {DraftRange} from 'DraftRange';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 
-/**
- * Identify the range to delete from a segmented entity.
- *
- * Rules:
- *
- *  Example: 'John F. Kennedy'
- *
- *   - Deletion from within any non-whitespace (i.e. ['John', 'F.', 'Kennedy'])
- *     will return the range of that text.
- *
- *       'John F. Kennedy' -> 'John F.'
- *                  ^
- *
- *   - Forward deletion of whitespace will remove the following section:
- *
- *       'John F. Kennedy' -> 'John Kennedy'
- *            ^
- *
- *   - Backward deletion of whitespace will remove the previous section:
- *
- *       'John F. Kennedy' -> 'F. Kennedy'
- *            ^
- */
-const DraftEntitySegments = {
-  getRemovalRange: function(
-    selectionStart: number,
-    selectionEnd: number,
-    text: string,
-    entityStart: number,
-    direction: DraftRemovalDirection,
-  ): DraftRange {
-    let segments = text.split(' ');
-    segments = segments.map((/*string*/ segment, /*number*/ ii) => {
-      if (direction === 'forward') {
-        if (ii > 0) {
-          return ' ' + segment;
-        }
-      } else if (ii < segments.length - 1) {
-        return segment + ' ';
+export function getRemovalRange(
+  selectionStart: number,
+  selectionEnd: number,
+  text: string,
+  entityStart: number,
+  direction: DraftRemovalDirection,
+): DraftRange {
+  let segments = text.split(' ');
+  segments = segments.map((/*string*/ segment, /*number*/ ii) => {
+    if (direction === 'forward') {
+      if (ii > 0) {
+        return ' ' + segment;
       }
-      return segment;
-    });
+    } else if (ii < segments.length - 1) {
+      return segment + ' ';
+    }
+    return segment;
+  });
 
-    let segmentStart = entityStart;
-    let segmentEnd;
-    let segment;
-    let removalStart: any = null;
-    let removalEnd: any = null;
+  let segmentStart = entityStart;
+  let segmentEnd;
+  let segment;
+  let removalStart: any = null;
+  let removalEnd: any = null;
 
-    for (let jj = 0; jj < segments.length; jj++) {
-      segment = segments[jj];
-      segmentEnd = segmentStart + segment.length;
+  for (let jj = 0; jj < segments.length; jj++) {
+    segment = segments[jj];
+    segmentEnd = segmentStart + segment.length;
 
-      // Our selection overlaps this segment.
-      if (selectionStart < segmentEnd && segmentStart < selectionEnd) {
-        if (removalStart !== null) {
-          removalEnd = segmentEnd;
-        } else {
-          removalStart = segmentStart;
-          removalEnd = segmentEnd;
-        }
-      } else if (removalStart !== null) {
-        break;
+    // Our selection overlaps this segment.
+    if (selectionStart < segmentEnd && segmentStart < selectionEnd) {
+      if (removalStart !== null) {
+        removalEnd = segmentEnd;
+      } else {
+        removalStart = segmentStart;
+        removalEnd = segmentEnd;
       }
-
-      segmentStart = segmentEnd;
+    } else if (removalStart !== null) {
+      break;
     }
 
-    const entityEnd = entityStart + text.length;
-    const atStart = removalStart === entityStart;
-    const atEnd = removalEnd === entityEnd;
+    segmentStart = segmentEnd;
+  }
 
-    if ((!atStart && atEnd) || (atStart && !atEnd)) {
-      if (direction === 'forward') {
-        if (removalEnd !== entityEnd) {
-          removalEnd++;
-        }
-      } else if (removalStart !== entityStart) {
-        removalStart--;
+  const entityEnd = entityStart + text.length;
+  const atStart = removalStart === entityStart;
+  const atEnd = removalEnd === entityEnd;
+
+  if ((!atStart && atEnd) || (atStart && !atEnd)) {
+    if (direction === 'forward') {
+      if (removalEnd !== entityEnd) {
+        removalEnd++;
       }
+    } else if (removalStart !== entityStart) {
+      removalStart--;
     }
+  }
 
-    return {
-      start: removalStart,
-      end: removalEnd,
-    };
-  },
-};
-
-module.exports = DraftEntitySegments;
+  return {
+    start: removalStart,
+    end: removalEnd,
+  };
+}

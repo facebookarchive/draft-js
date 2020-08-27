@@ -11,7 +11,7 @@
 
 'use strict';
 
-const decodeEntityRanges = require('decodeEntityRanges');
+import decodeEntityRanges from 'decodeEntityRanges';
 
 test('must decode when no entities present', () => {
   const decoded = decodeEntityRanges(' '.repeat(20), []);

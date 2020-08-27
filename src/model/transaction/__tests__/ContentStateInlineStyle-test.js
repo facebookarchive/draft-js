@@ -11,9 +11,9 @@
 
 'use strict';
 
-const ContentStateInlineStyle = require('ContentStateInlineStyle');
+import * as ContentStateInlineStyle from 'ContentStateInlineStyle';
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
+import getSampleStateForTesting from 'getSampleStateForTesting';
 
 const {contentState, selectionState} = getSampleStateForTesting();
 

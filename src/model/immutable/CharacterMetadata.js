@@ -13,7 +13,8 @@
 
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-const {Map, OrderedSet, Record} = require('immutable');
+import immutable from 'immutable';
+const {Map, OrderedSet, Record} = immutable;
 
 // Immutable.map is typed such that the value for every key in the map
 // must be the same type
@@ -41,7 +42,7 @@ const defaultRecord: CharacterMetadataConfig = {
 
 const CharacterMetadataRecord = (Record(defaultRecord): any);
 
-class CharacterMetadata extends CharacterMetadataRecord {
+export default class CharacterMetadata extends CharacterMetadataRecord {
   getStyle(): DraftInlineStyle {
     return this.get('style');
   }
@@ -127,5 +128,3 @@ let pool: Map<Map<any, any>, CharacterMetadata> = Map([
 ]);
 
 CharacterMetadata.EMPTY = EMPTY;
-
-module.exports = CharacterMetadata;

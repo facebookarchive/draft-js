@@ -11,11 +11,11 @@
 
 'use strict';
 
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import EditorState from 'EditorState';
 
-const onBlur = require('editOnBlur');
+import onBlur from 'editOnBlur';
 
 const getEditorState = (text: string = 'Arsenal') => {
   return EditorState.createWithContent(

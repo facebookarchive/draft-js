@@ -13,14 +13,12 @@
 
 import type {EntityRange} from 'EntityRange';
 
-const UnicodeUtils = require('UnicodeUtils');
-
-const {substr} = UnicodeUtils;
+import {substr} from 'UnicodeUtils';
 
 /**
  * Convert to native JavaScript string lengths to determine ranges.
  */
-function decodeEntityRanges(
+export default function decodeEntityRanges(
   text: string,
   ranges: Array<EntityRange>,
 ): Array<?string> {
@@ -38,5 +36,3 @@ function decodeEntityRanges(
   }
   return entities;
 }
-
-module.exports = decodeEntityRanges;

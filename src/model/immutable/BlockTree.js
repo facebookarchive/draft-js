@@ -16,9 +16,9 @@ import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 
-const findRangesImmutable = require('findRangesImmutable');
-const getOwnObjectValues = require('getOwnObjectValues');
-const Immutable = require('immutable');
+import findRangesImmutable from 'findRangesImmutable';
+import getOwnObjectValues from 'getOwnObjectValues';
+import Immutable from 'immutable';
 
 const {List, Repeat, Record} = Immutable;
 
@@ -64,7 +64,7 @@ const defaultDecoratorRange: DecoratorRangeType = {
 
 const DecoratorRange = (Record(defaultDecoratorRange): any);
 
-const BlockTree = {
+export default {
   /**
    * Generate a block tree for a given ContentBlock/decorator pair.
    */
@@ -145,5 +145,3 @@ function generateLeaves(
 function areEqual(a: any, b: any): boolean {
   return a === b;
 }
-
-module.exports = BlockTree;

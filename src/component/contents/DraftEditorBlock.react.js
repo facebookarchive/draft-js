@@ -20,21 +20,21 @@ import type SelectionState from 'SelectionState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 import type {List} from 'immutable';
 
-const DraftEditorLeaf = require('DraftEditorLeaf.react');
-const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
-const Scroll = require('Scroll');
-const Style = require('Style');
-const UnicodeBidi = require('UnicodeBidi');
-const UnicodeBidiDirection = require('UnicodeBidiDirection');
+import DraftEditorLeaf from 'DraftEditorLeaf.react';
+import * as DraftOffsetKey from 'DraftOffsetKey';
+import * as React from 'React';
+import * as Scroll from 'Scroll';
+import Style from 'Style';
+import * as UnicodeBidi from 'UnicodeBidi';
+import * as UnicodeBidiDirection from 'UnicodeBidiDirection';
 
-const cx = require('cx');
-const getElementPosition = require('getElementPosition');
-const getScrollPosition = require('getScrollPosition');
-const getViewportDimensions = require('getViewportDimensions');
-const invariant = require('invariant');
-const isHTMLElement = require('isHTMLElement');
-const nullthrows = require('nullthrows');
+import cx from 'cx';
+import getElementPosition from 'getElementPosition';
+import getScrollPosition from 'getScrollPosition';
+import getViewportDimensions from 'getViewportDimensions';
+import invariant from 'invariant';
+import isHTMLElement from 'isHTMLElement';
+import nullthrows from 'nullthrows';
 
 const SCROLL_BUFFER = 10;
 
@@ -72,7 +72,7 @@ const isBlockOnSelectionEdge = (
  * A `DraftEditorBlock` is able to render a given `ContentBlock` to its
  * appropriate decorator and inline style components.
  */
-class DraftEditorBlock extends React.Component<Props> {
+export default class DraftEditorBlock extends React.Component<Props> {
   _node: ?HTMLDivElement;
 
   shouldComponentUpdate(nextProps: Props): boolean {
@@ -251,5 +251,3 @@ class DraftEditorBlock extends React.Component<Props> {
     );
   }
 }
-
-module.exports = DraftEditorBlock;

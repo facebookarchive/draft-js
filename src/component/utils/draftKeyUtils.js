@@ -13,10 +13,6 @@
 
 'use strict';
 
-function notEmptyKey(key: ?string): boolean %checks {
+export function notEmptyKey(key: ?string): boolean %checks {
   return key != null && key != '';
 }
-
-module.exports = {
-  notEmptyKey,
-};

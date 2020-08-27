@@ -15,13 +15,13 @@ import type {BlockMap} from 'BlockMap';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
-const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
+import randomizeBlockMapKeys from 'randomizeBlockMapKeys';
+import removeEntitiesAtEdges from 'removeEntitiesAtEdges';
 
-const getContentStateFragment = (
+export default function getContentStateFragment(
   contentState: ContentState,
   selectionState: SelectionState,
-): BlockMap => {
+): BlockMap {
   const startKey = selectionState.getStartKey();
   const startOffset = selectionState.getStartOffset();
   const endKey = selectionState.getEndKey();
@@ -69,6 +69,4 @@ const getContentStateFragment = (
       return block;
     }),
   );
-};
-
-module.exports = getContentStateFragment;
+}

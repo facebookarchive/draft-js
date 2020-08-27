@@ -21,10 +21,10 @@ import type {BlockNode, BlockNodeConfig, BlockNodeKey} from 'BlockNode';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 
-const CharacterMetadata = require('CharacterMetadata');
+import CharacterMetadata from 'CharacterMetadata';
 
-const findRangesImmutable = require('findRangesImmutable');
-const Immutable = require('immutable');
+import findRangesImmutable from 'findRangesImmutable';
+import Immutable from 'immutable';
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
@@ -77,7 +77,7 @@ const decorateCharacterList = (
   return config;
 };
 
-class ContentBlockNode extends (Record(defaultRecord): any)
+export default class ContentBlockNode extends (Record(defaultRecord): any)
   implements BlockNode {
   constructor(props: ContentBlockNodeConfig = defaultRecord) {
     /* eslint-disable-next-line constructor-super */
@@ -162,5 +162,3 @@ class ContentBlockNode extends (Record(defaultRecord): any)
     );
   }
 }
-
-module.exports = ContentBlockNode;

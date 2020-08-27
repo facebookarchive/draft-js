@@ -13,9 +13,9 @@
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 
-const CharacterMetadata = require('CharacterMetadata');
+import CharacterMetadata from 'CharacterMetadata';
 
-function applyEntityToContentBlock(
+export default function applyEntityToContentBlock(
   contentBlock: BlockNodeRecord,
   startArg: number,
   end: number,
@@ -32,5 +32,3 @@ function applyEntityToContentBlock(
   }
   return contentBlock.set('characterList', characterList);
 }
-
-module.exports = applyEntityToContentBlock;

@@ -20,10 +20,10 @@ import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 import type {Set} from 'immutable';
 
-const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
-const UnicodeBidi = require('UnicodeBidi');
-const UnicodeBidiDirection = require('UnicodeBidiDirection');
+import * as DraftOffsetKey from 'DraftOffsetKey';
+import * as React from 'React';
+import * as UnicodeBidi from 'UnicodeBidi';
+import * as UnicodeBidiDirection from 'UnicodeBidiDirection';
 
 type Props = {
   block: BlockNodeRecord,
@@ -37,7 +37,7 @@ type Props = {
   ...
 };
 
-class DraftEditorDecoratedLeaves extends React.Component<Props> {
+export default class DraftEditorDecoratedLeaves extends React.Component<Props> {
   render(): React.Node {
     const {
       block,
@@ -86,5 +86,3 @@ class DraftEditorDecoratedLeaves extends React.Component<Props> {
     );
   }
 }
-
-module.exports = DraftEditorDecoratedLeaves;

@@ -11,15 +11,15 @@
 
 'use strict';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+import * as DraftModifier from 'DraftModifier';
+import EditorState from 'EditorState';
 
-function keyCommandInsertNewline(editorState: EditorState): EditorState {
+export default function keyCommandInsertNewline(
+  editorState: EditorState,
+): EditorState {
   const contentState = DraftModifier.splitBlock(
     editorState.getCurrentContent(),
     editorState.getSelection(),
   );
   return EditorState.push(editorState, contentState, 'split-block');
 }
-
-module.exports = keyCommandInsertNewline;

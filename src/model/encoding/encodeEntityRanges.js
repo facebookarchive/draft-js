@@ -14,15 +14,13 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {EntityRange} from 'EntityRange';
 
-const DraftStringKey = require('DraftStringKey');
-const UnicodeUtils = require('UnicodeUtils');
-
-const {strlen} = UnicodeUtils;
+import {stringify} from 'DraftStringKey';
+import {strlen} from 'UnicodeUtils';
 
 /**
  * Convert to UTF-8 character counts for storage.
  */
-function encodeEntityRanges(
+export default function encodeEntityRanges(
   block: BlockNodeRecord,
   storageMap: Object,
 ): Array<EntityRange> {
@@ -36,11 +34,9 @@ function encodeEntityRanges(
         offset: strlen(text.slice(0, start)),
         length: strlen(text.slice(start, end)),
         // Encode the key as a number for range storage.
-        key: Number(storageMap[DraftStringKey.stringify(key)]),
+        key: Number(storageMap[stringify(key)]),
       });
     },
   );
   return encoded;
 }
-
-module.exports = encodeEntityRanges;

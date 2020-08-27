@@ -15,14 +15,15 @@
 // events.
 jest.useFakeTimers();
 
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const EditorState = require('EditorState');
-const SelectionState = require('SelectionState');
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import EditorState from 'EditorState';
+import SelectionState from 'SelectionState';
 
-const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
-const editOnCompositionStart = require('editOnCompositionStart');
-const {Map} = require('immutable');
+import convertFromHTMLToContentBlocks from 'convertFromHTMLToContentBlocks';
+import editOnCompositionStart from 'editOnCompositionStart';
+import immutable from 'immutable';
+const {Map} = immutable;
 
 jest.mock('DOMObserver', () => {
   function DOMObserver() {}
@@ -88,7 +89,8 @@ function withGlobalGetSelectionAs(getSelectionValue, callback) {
 
 beforeEach(() => {
   jest.resetModules();
-  compositionHandler = require('DraftEditorCompositionHandler');
+  compositionHandler = require('DraftEditorCompositionHandler')
+    .DraftEditorCompositionHandler;
   editor = {
     _latestEditorState: EditorState.createEmpty(),
     _onCompositionStart: compositionHandler.onCompositionStart,

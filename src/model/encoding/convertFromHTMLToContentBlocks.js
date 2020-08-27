@@ -16,22 +16,25 @@ import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {EntityMap} from 'EntityMap';
 
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEntity = require('DraftEntity');
-const URI = require('URI');
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlock from 'ContentBlock';
+import ContentBlockNode from 'ContentBlockNode';
+import DefaultDraftBlockRenderMap from 'DefaultDraftBlockRenderMap';
+import DraftEntity from 'DraftEntity';
+import URI from 'URI';
 
-const cx = require('cx');
-const generateRandomKey = require('generateRandomKey');
-const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
-const gkx = require('gkx');
-const {List, Map, OrderedSet} = require('immutable');
-const isHTMLAnchorElement = require('isHTMLAnchorElement');
-const isHTMLBRElement = require('isHTMLBRElement');
-const isHTMLElement = require('isHTMLElement');
-const isHTMLImageElement = require('isHTMLImageElement');
+import cx from 'cx';
+import generateRandomKey from 'generateRandomKey';
+import getSafeBodyFromHTML from 'getSafeBodyFromHTML';
+import gkx from 'gkx';
+import immutable from 'immutable';
+
+const {List, Map, OrderedSet} = immutable;
+
+import isHTMLAnchorElement from 'isHTMLAnchorElement';
+import isHTMLBRElement from 'isHTMLBRElement';
+import isHTMLElement from 'isHTMLElement';
+import isHTMLImageElement from 'isHTMLImageElement';
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
@@ -775,7 +778,7 @@ class ContentBlocksBuilder {
  * Converts an HTML string to an array of ContentBlocks and an EntityMap
  * suitable to initialize the internal state of a Draftjs component.
  */
-const convertFromHTMLToContentBlocks = (
+export default function convertFromHTMLToContentBlocks(
   html: string,
   DOMBuilder: Function = getSafeBodyFromHTML,
   blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap,
@@ -783,7 +786,7 @@ const convertFromHTMLToContentBlocks = (
   contentBlocks: ?Array<BlockNodeRecord>,
   entityMap: EntityMap,
   ...
-} => {
+} {
   // Be ABSOLUTELY SURE that the dom builder you pass here won't execute
   // arbitrary code in whatever environment you're running this in. For an
   // example of how we try to do this in-browser, see getSafeBodyFromHTML.
@@ -817,6 +820,4 @@ const convertFromHTMLToContentBlocks = (
   return new ContentBlocksBuilder(blockTypeMap, disambiguate)
     .addDOMNode(safeBody)
     .getContentBlocks();
-};
-
-module.exports = convertFromHTMLToContentBlocks;
+}

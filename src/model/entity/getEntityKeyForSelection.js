@@ -15,14 +15,14 @@ import type ContentState from 'ContentState';
 import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
 
-const {notEmptyKey} = require('draftKeyUtils');
+import {notEmptyKey} from 'draftKeyUtils';
 
 /**
  * Return the entity key that should be used when inserting text for the
  * specified target selection, only if the entity is `MUTABLE`. `IMMUTABLE`
  * and `SEGMENTED` entities should not be used for insertion behavior.
  */
-function getEntityKeyForSelection(
+export default function getEntityKeyForSelection(
   contentState: ContentState,
   targetSelection: SelectionState,
 ): ?string {
@@ -64,5 +64,3 @@ function filterKey(entityMap: EntityMap, entityKey: ?string): ?string {
   }
   return null;
 }
-
-module.exports = getEntityKeyForSelection;

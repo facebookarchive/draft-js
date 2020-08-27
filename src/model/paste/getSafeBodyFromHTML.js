@@ -11,9 +11,9 @@
 
 'use strict';
 
-const UserAgent = require('UserAgent');
+import UserAgent from 'UserAgent';
 
-const invariant = require('invariant');
+import invariant from 'invariant';
 
 const isOldIE = UserAgent.isBrowser('IE <= 9');
 
@@ -21,7 +21,7 @@ const isOldIE = UserAgent.isBrowser('IE <= 9');
 // https://developer.mozilla.org/en-US/docs/Web/API/DOMImplementation.createHTMLDocument
 // https://developer.mozilla.org/en-US/Add-ons/Code_snippets/HTML_to_DOM
 
-function getSafeBodyFromHTML(html: string): ?Element {
+export default function getSafeBodyFromHTML(html: string): ?Element {
   let doc;
   let root = null;
   // Provides a safe context
@@ -37,5 +37,3 @@ function getSafeBodyFromHTML(html: string): ?Element {
   }
   return root;
 }
-
-module.exports = getSafeBodyFromHTML;

@@ -14,7 +14,7 @@
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type {DraftRange} from 'DraftRange';
 
-const invariant = require('invariant');
+import invariant from 'invariant';
 
 /**
  * Obtain the start and end positions of the range that has the
@@ -24,7 +24,7 @@ const invariant = require('invariant');
  * method searches for the first instance of the entity key and returns
  * the subsequent range.
  */
-function getRangesForDraftEntity(
+export default function getRangesForDraftEntity(
   block: BlockNodeRecord,
   key: string,
 ): Array<DraftRange> {
@@ -40,5 +40,3 @@ function getRangesForDraftEntity(
 
   return ranges;
 }
-
-module.exports = getRangesForDraftEntity;

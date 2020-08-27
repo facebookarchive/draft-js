@@ -10,9 +10,9 @@
 
 'use strict';
 
-const getDraftEditorSelection = require('getDraftEditorSelection');
-const getSampleSelectionMocksForTesting = require('getSampleSelectionMocksForTesting');
-const getSampleSelectionMocksForTestingNestedBlocks = require('getSampleSelectionMocksForTestingNestedBlocks');
+import getDraftEditorSelection from 'getDraftEditorSelection';
+import getSampleSelectionMocksForTesting from 'getSampleSelectionMocksForTesting';
+import getSampleSelectionMocksForTestingNestedBlocks from 'getSampleSelectionMocksForTestingNestedBlocks';
 
 let editorState = null;
 let root = null;

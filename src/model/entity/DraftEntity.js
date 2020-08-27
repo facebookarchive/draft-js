@@ -12,11 +12,11 @@
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
 
-const DraftEntityInstance = require('DraftEntityInstance');
+import DraftEntityInstance from 'DraftEntityInstance';
 
-const Immutable = require('immutable');
-const invariant = require('invariant');
-const uuid = require('uuid');
+import Immutable from 'immutable';
+import invariant from 'invariant';
+import uuid from 'uuid';
 
 const {Map} = Immutable;
 
@@ -270,4 +270,4 @@ const DraftEntity: DraftEntityMapObject = {
   },
 };
 
-module.exports = DraftEntity;
+export default DraftEntity;

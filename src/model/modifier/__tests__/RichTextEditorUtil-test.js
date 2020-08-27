@@ -8,13 +8,13 @@
  * @format
  */
 
-const AtomicBlockUtils = require('AtomicBlockUtils');
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const RichTextEditorUtil = require('RichTextEditorUtil');
-const SelectionState = require('SelectionState');
+import * as AtomicBlockUtils from 'AtomicBlockUtils';
+import * as DraftModifier from 'DraftModifier';
+import EditorState from 'EditorState';
+import RichTextEditorUtil from 'RichTextEditorUtil';
+import SelectionState from 'SelectionState';
 
-const getSampleStateForTesting = require('getSampleStateForTesting');
+import getSampleStateForTesting from 'getSampleStateForTesting';
 
 const {editorState, selectionState} = getSampleStateForTesting();
 const {

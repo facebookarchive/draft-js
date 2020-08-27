@@ -14,7 +14,7 @@
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
-const warning = require('warning');
+import warning from 'warning';
 
 /**
  * Given a collapsed selection, move the focus `maxDistance` forward within
@@ -24,7 +24,7 @@ const warning = require('warning');
  * This function is not Unicode-aware, so surrogate pairs will be treated
  * as having length 2.
  */
-function moveSelectionForward(
+export default function moveSelectionForward(
   editorState: EditorState,
   maxDistance: number,
 ): SelectionState {
@@ -52,5 +52,3 @@ function moveSelectionForward(
 
   return selection.merge({focusKey, focusOffset});
 }
-
-module.exports = moveSelectionForward;

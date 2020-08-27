@@ -10,16 +10,16 @@
 
 'use strict';
 
-const CharacterMetadata = require('CharacterMetadata');
-const ContentBlock = require('ContentBlock');
-const ContentState = require('ContentState');
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
-const RichTextEditorUtil = require('RichTextEditorUtil');
-const {BOLD, ITALIC} = require('SampleDraftInlineStyle');
-const SelectionState = require('SelectionState');
+import CharacterMetadata from 'CharacterMetadata';
+import ContentBlock from 'ContentBlock';
+import ContentState from 'ContentState';
+import * as DraftModifier from 'DraftModifier';
+import EditorState from 'EditorState';
+import RichTextEditorUtil from 'RichTextEditorUtil';
+import {BOLD, ITALIC} from 'SampleDraftInlineStyle';
+import SelectionState from 'SelectionState';
 
-const Immutable = require('immutable');
+import Immutable from 'immutable';
 
 const {List, Repeat} = Immutable;
 

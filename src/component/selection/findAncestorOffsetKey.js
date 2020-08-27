@@ -11,12 +11,12 @@
 
 'use strict';
 
-const getCorrectDocumentFromNode = require('getCorrectDocumentFromNode');
-const getSelectionOffsetKeyForNode = require('getSelectionOffsetKeyForNode');
+import getCorrectDocumentFromNode from 'getCorrectDocumentFromNode';
+import getSelectionOffsetKeyForNode from 'getSelectionOffsetKeyForNode';
 /**
  * Get the key from the node's nearest offset-aware ancestor.
  */
-function findAncestorOffsetKey(node: Node): ?string {
+export default function findAncestorOffsetKey(node: Node): ?string {
   let searchNode = node;
   while (
     searchNode &&
@@ -30,5 +30,3 @@ function findAncestorOffsetKey(node: Node): ?string {
   }
   return null;
 }
-
-module.exports = findAncestorOffsetKey;

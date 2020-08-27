@@ -16,9 +16,7 @@ import type DraftEditor from 'DraftEditor.react';
 /**
  * A `dragstart` event has begun within the text editor component.
  */
-function editOnDragStart(editor: DraftEditor): void {
+export default function editOnDragStart(editor: DraftEditor): void {
   editor._internalDrag = true;
   editor.setMode('drag');
 }
-
-module.exports = editOnDragStart;

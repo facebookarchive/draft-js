@@ -13,13 +13,13 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const EditorState = require('EditorState');
+import EditorState from 'EditorState';
 
 /**
  * The user has begun using an IME input system. Switching to `composite` mode
  * allows handling composition input and disables other edit behavior.
  */
-function editOnCompositionStart(
+export default function editOnCompositionStart(
   editor: DraftEditor,
   e: SyntheticEvent<>,
 ): void {
@@ -30,5 +30,3 @@ function editOnCompositionStart(
   // Allow composition handler to interpret the compositionstart event
   editor._onCompositionStart(e);
 }
-
-module.exports = editOnCompositionStart;

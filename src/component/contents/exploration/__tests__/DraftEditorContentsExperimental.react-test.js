@@ -10,17 +10,19 @@
 
 'use strict';
 
-const ContentBlockNode = require('ContentBlockNode');
-const ContentState = require('ContentState');
-const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEditorContents = require('DraftEditorContentsExperimental.react');
-const EditorState = require('EditorState');
-const React = require('React');
-const SelectionState = require('SelectionState');
+import ContentBlockNode from 'ContentBlockNode';
+import ContentState from 'ContentState';
+import DefaultDraftBlockRenderMap from 'DefaultDraftBlockRenderMap';
+import DraftEditorContentsExperimental from 'DraftEditorContentsExperimental.react';
+import EditorState from 'EditorState';
+import * as React from 'React';
+import SelectionState from 'SelectionState';
 
-const TestHelper = require('_DraftTestHelper');
-const Immutable = require('immutable');
-const ReactTestRenderer = require('react-test-renderer');
+import {transformSnapshotProps} from '_DraftTestHelper';
+import Immutable from 'immutable';
+import ReactTestRenderer from 'react-test-renderer';
+
+const DraftEditorContents = DraftEditorContentsExperimental;
 
 const {List} = Immutable;
 
@@ -63,9 +65,7 @@ const assertDraftEditorContentsRendering = props => {
     <DraftEditorContents {...childProps} />,
   );
 
-  expect(
-    TestHelper.transformSnapshotProps(blockNode.toJSON()),
-  ).toMatchSnapshot();
+  expect(transformSnapshotProps(blockNode.toJSON())).toMatchSnapshot();
 };
 
 test('renders ContentBlockNode', () => {

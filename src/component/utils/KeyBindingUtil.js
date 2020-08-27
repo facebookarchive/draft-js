@@ -11,37 +11,31 @@
 
 'use strict';
 
-const UserAgent = require('UserAgent');
+import UserAgent from 'UserAgent';
 
-const isSoftNewlineEvent = require('isSoftNewlineEvent');
+import isSoftNewlineEventImport from 'isSoftNewlineEvent';
 
 const isOSX = UserAgent.isPlatform('Mac OS X');
 
-const KeyBindingUtil = {
-  /**
-   * Check whether the ctrlKey modifier is *not* being used in conjunction with
-   * the altKey modifier. If they are combined, the result is an `altGraph`
-   * key modifier, which should not be handled by this set of key bindings.
-   */
-  isCtrlKeyCommand: function(e: SyntheticKeyboardEvent<>): boolean {
-    return !!e.ctrlKey && !e.altKey;
-  },
+/**
+ * Check whether the ctrlKey modifier is *not* being used in conjunction with
+ * the altKey modifier. If they are combined, the result is an `altGraph`
+ * key modifier, which should not be handled by this set of key bindings.
+ */
+export function isCtrlKeyCommand(e: SyntheticKeyboardEvent<>): boolean {
+  return !!e.ctrlKey && !e.altKey;
+}
 
-  isOptionKeyCommand: function(e: SyntheticKeyboardEvent<>): boolean {
-    return isOSX && e.altKey;
-  },
+export function isOptionKeyCommand(e: SyntheticKeyboardEvent<>): boolean {
+  return isOSX && e.altKey;
+}
 
-  usesMacOSHeuristics: function(): boolean {
-    return isOSX;
-  },
+export function usesMacOSHeuristics(): boolean {
+  return isOSX;
+}
 
-  hasCommandModifier: function(e: SyntheticKeyboardEvent<>): boolean {
-    return isOSX
-      ? !!e.metaKey && !e.altKey
-      : KeyBindingUtil.isCtrlKeyCommand(e);
-  },
+export function hasCommandModifier(e: SyntheticKeyboardEvent<>): boolean {
+  return isOSX ? !!e.metaKey && !e.altKey : isCtrlKeyCommand(e);
+}
 
-  isSoftNewlineEvent,
-};
-
-module.exports = KeyBindingUtil;
+export const isSoftNewlineEvent = isSoftNewlineEventImport;

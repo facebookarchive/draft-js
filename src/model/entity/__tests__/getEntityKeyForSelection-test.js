@@ -9,8 +9,8 @@
  * @format
  */
 
-const getEntityKeyForSelection = require('getEntityKeyForSelection');
-const getSampleStateForTesting = require('getSampleStateForTesting');
+import getEntityKeyForSelection from 'getEntityKeyForSelection';
+import getSampleStateForTesting from 'getSampleStateForTesting';
 
 const {contentState, selectionState} = getSampleStateForTesting();
 

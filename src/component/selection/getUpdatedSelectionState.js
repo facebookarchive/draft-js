@@ -14,11 +14,11 @@
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 
-const DraftOffsetKey = require('DraftOffsetKey');
+import * as DraftOffsetKey from 'DraftOffsetKey';
 
-const nullthrows = require('nullthrows');
+import nullthrows from 'nullthrows';
 
-function getUpdatedSelectionState(
+export default function getUpdatedSelectionState(
   editorState: EditorState,
   anchorKey: string,
   anchorOffset: number,
@@ -109,5 +109,3 @@ function getUpdatedSelectionState(
     isBackward,
   });
 }
-
-module.exports = getUpdatedSelectionState;

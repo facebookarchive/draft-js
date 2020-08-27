@@ -18,11 +18,11 @@ import type {DataObjectForLink, RichTextUtils} from 'RichTextUtils';
 import type SelectionState from 'SelectionState';
 import type URI from 'URI';
 
-const DraftModifier = require('DraftModifier');
-const EditorState = require('EditorState');
+import * as DraftModifier from 'DraftModifier';
+import EditorState from 'EditorState';
 
-const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState');
-const nullthrows = require('nullthrows');
+import adjustBlockDepthForContentState from 'adjustBlockDepthForContentState';
+import nullthrows from 'nullthrows';
 
 const RichTextEditorUtil: RichTextUtils = {
   currentBlockContainsLink: function(editorState: EditorState): boolean {
@@ -370,4 +370,4 @@ const RichTextEditorUtil: RichTextUtils = {
   },
 };
 
-module.exports = RichTextEditorUtil;
+export default RichTextEditorUtil;

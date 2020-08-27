@@ -12,10 +12,10 @@
 
 jest.mock('generateRandomKey');
 
-const DraftPasteProcessor = require('DraftPasteProcessor');
+import * as DraftPasteProcessor from 'DraftPasteProcessor';
 
-const Immutable = require('immutable');
-const mockUUID = require('mockUUID');
+import Immutable from 'immutable';
+import mockUUID from 'mockUUID';
 
 const {OrderedSet, Map} = Immutable;
 

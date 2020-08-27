@@ -13,20 +13,20 @@
 
 import type DraftEditor from 'DraftEditor.react';
 
-const UserAgent = require('UserAgent');
+import UserAgent from 'UserAgent';
 
-const onBeforeInput = require('editOnBeforeInput');
-const onBlur = require('editOnBlur');
-const onCompositionStart = require('editOnCompositionStart');
-const onCopy = require('editOnCopy');
-const onCut = require('editOnCut');
-const onDragOver = require('editOnDragOver');
-const onDragStart = require('editOnDragStart');
-const onFocus = require('editOnFocus');
-const onInput = require('editOnInput');
-const onKeyDown = require('editOnKeyDown');
-const onPaste = require('editOnPaste');
-const onSelect = require('editOnSelect');
+import onBeforeInput from 'editOnBeforeInput';
+import onBlur from 'editOnBlur';
+import onCompositionStart from 'editOnCompositionStart';
+import onCopy from 'editOnCopy';
+import onCut from 'editOnCut';
+import onDragOver from 'editOnDragOver';
+import onDragStart from 'editOnDragStart';
+import onFocus from 'editOnFocus';
+import onInput from 'editOnInput';
+import onKeyDown from 'editOnKeyDown';
+import onPaste from 'editOnPaste';
+import onSelect from 'editOnSelect';
 
 const isChrome = UserAgent.isBrowser('Chrome');
 const isFirefox = UserAgent.isBrowser('Firefox');
@@ -34,7 +34,7 @@ const isFirefox = UserAgent.isBrowser('Firefox');
 const selectionHandler: (e: DraftEditor) => void =
   isChrome || isFirefox ? onSelect : e => {};
 
-const DraftEditorEditHandler = {
+export const DraftEditorEditHandler = {
   onBeforeInput,
   onBlur,
   onCompositionStart,
@@ -54,5 +54,3 @@ const DraftEditorEditHandler = {
   onMouseUp: selectionHandler,
   onKeyUp: selectionHandler,
 };
-
-module.exports = DraftEditorEditHandler;

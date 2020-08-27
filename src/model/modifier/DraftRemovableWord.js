@@ -11,7 +11,7 @@
 
 'use strict';
 
-const TokenizeUtil = require('TokenizeUtil');
+import TokenizeUtil from 'TokenizeUtil';
 
 const punctuation = TokenizeUtil.getPunctuation();
 
@@ -62,14 +62,10 @@ function getRemovableWord(text: string, isBackward: boolean): string {
   return matches ? matches[0] : text;
 }
 
-const DraftRemovableWord = {
-  getBackward: function(text: string): string {
-    return getRemovableWord(text, true);
-  },
+export function getBackward(text: string): string {
+  return getRemovableWord(text, true);
+}
 
-  getForward: function(text: string): string {
-    return getRemovableWord(text, false);
-  },
-};
-
-module.exports = DraftRemovableWord;
+export function getForward(text: string): string {
+  return getRemovableWord(text, false);
+}

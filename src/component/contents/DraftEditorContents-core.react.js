@@ -17,16 +17,18 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
-const DraftEditorBlock = require('DraftEditorBlock.react');
-const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
+import DraftEditorBlock from 'DraftEditorBlock.react';
+import {encode} from 'DraftOffsetKey';
+import * as React from 'React';
 
-const cx = require('cx');
-const joinClasses: (
-  className?: ?string,
-  ...classes: Array<?string>
-) => string = require('joinClasses');
-const nullthrows = require('nullthrows');
+import cx from 'cx';
+import joinClasses from 'joinClasses';
+import nullthrows from 'nullthrows';
+
+// const joinClasses: (
+//   className?: ?string,
+//   ...classes: Array<?string>
+// ) => string = require('joinClasses');
 
 type Props = {
   blockRenderMap: DraftBlockRenderMap,
@@ -166,7 +168,7 @@ class DraftEditorContents extends React.Component<Props> {
       const direction = textDirectionality
         ? textDirectionality
         : directionMap.get(key);
-      const offsetKey = DraftOffsetKey.encode(key, 0, 0);
+      const offsetKey = encode(key, 0, 0);
       const componentProps = {
         contentState: content,
         block,

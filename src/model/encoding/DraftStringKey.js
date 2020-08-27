@@ -11,14 +11,10 @@
 
 'use strict';
 
-const DraftStringKey = {
-  stringify: function(key: ?string): string {
-    return '_' + String(key);
-  },
+export function stringify(key: ?string): string {
+  return '_' + String(key);
+}
 
-  unstringify: function(key: string): string {
-    return key.slice(1);
-  },
-};
-
-module.exports = DraftStringKey;
+export function unstringify(key: string): string {
+  return key.slice(1);
+}

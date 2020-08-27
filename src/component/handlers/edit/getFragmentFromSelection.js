@@ -14,9 +14,11 @@
 import type {BlockMap} from 'BlockMap';
 import type EditorState from 'EditorState';
 
-const getContentStateFragment = require('getContentStateFragment');
+import getContentStateFragment from 'getContentStateFragment';
 
-function getFragmentFromSelection(editorState: EditorState): ?BlockMap {
+export default function getFragmentFromSelection(
+  editorState: EditorState,
+): ?BlockMap {
   const selectionState = editorState.getSelection();
 
   if (selectionState.isCollapsed()) {
@@ -28,5 +30,3 @@ function getFragmentFromSelection(editorState: EditorState): ?BlockMap {
     selectionState,
   );
 }
-
-module.exports = getFragmentFromSelection;

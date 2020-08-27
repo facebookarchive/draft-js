@@ -15,13 +15,13 @@ import type {DOMDerivedSelection} from 'DOMDerivedSelection';
 import type {SelectionObject} from 'DraftDOMTypes';
 import type EditorState from 'EditorState';
 
-const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
+import getDraftEditorSelectionWithNodes from 'getDraftEditorSelectionWithNodes';
 
 /**
  * Convert the current selection range to an anchor/focus pair of offset keys
  * and values that can be interpreted by components.
  */
-function getDraftEditorSelection(
+export default function getDraftEditorSelection(
   editorState: EditorState,
   root: HTMLElement,
 ): DOMDerivedSelection {
@@ -57,5 +57,3 @@ function getDraftEditorSelection(
     focusOffset,
   );
 }
-
-module.exports = getDraftEditorSelection;

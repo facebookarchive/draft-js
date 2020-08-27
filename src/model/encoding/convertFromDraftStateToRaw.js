@@ -16,13 +16,13 @@ import type ContentState from 'ContentState';
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
-const ContentBlock = require('ContentBlock');
-const ContentBlockNode = require('ContentBlockNode');
-const DraftStringKey = require('DraftStringKey');
+import ContentBlock from 'ContentBlock';
+import ContentBlockNode from 'ContentBlockNode';
+import * as DraftStringKey from 'DraftStringKey';
 
-const encodeEntityRanges = require('encodeEntityRanges');
-const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
-const invariant = require('invariant');
+import encodeEntityRanges from 'encodeEntityRanges';
+import encodeInlineStyleRanges from 'encodeInlineStyleRanges';
+import invariant from 'invariant';
 
 const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
   return {
@@ -131,9 +131,9 @@ const encodeRawEntityMap = (
   };
 };
 
-const convertFromDraftStateToRaw = (
+export default function convertFromDraftStateToRaw(
   contentState: ContentState,
-): RawDraftContentState => {
+): RawDraftContentState {
   let rawDraftContentState = {
     entityMap: {},
     blocks: [],
@@ -146,6 +146,4 @@ const convertFromDraftStateToRaw = (
   rawDraftContentState = encodeRawEntityMap(contentState, rawDraftContentState);
 
   return rawDraftContentState;
-};
-
-module.exports = convertFromDraftStateToRaw;
+}
