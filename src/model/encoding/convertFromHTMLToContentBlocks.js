@@ -176,10 +176,7 @@ const isValidAnchor = (node: Node) => {
     // Just checking whether we can actually create a URI
     const _ = new URI(anchorNode.href);
     return true;
-    // We need our catch statements to have arguments, else
-    // UglifyJS (which we use for our OSS builds) will crash.
-    // eslint-disable-next-line fb-www/no-unused-catch-bindings
-  } catch (_) {
+  } catch {
     return false;
   }
 };

@@ -35,6 +35,7 @@
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
+    "@babel/plugin-proposal-optional-catch-binding": "^7.10.4",
     "fbjs": "^2.0.0",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.1"
@@ -84,7 +85,7 @@
     "webpack-stream": "5.2.1"
   },
   "devEngines": {
-    "node": "10.x || 12.x || 13.x",
+    "node": "10.x || 12.x || 14.x",
     "npm": "2.x || 3.x || 5.x || 6.x"
   },
   "jest": {
