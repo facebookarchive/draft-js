@@ -1,0 +1,72 @@
+import React from 'react';
+import {Editor, EditorState} from 'draft-js';
+import {Map} from 'immutable';
+import BlockComponent from "./BlockComponent";
+import ModalTable from "./Table/ModalTable";
+import createTable from "./Table/modifiers/createTable";
+import './RichTextEditor.css';
+import './Table/Table.css';
+
+function MyEditor() {
+	const [editorState, setEditorState] = React.useState(
+		EditorState.createEmpty()
+	);
+	const [tableEdits, setTableEdits] = React.useState(Map());
+
+	const editor = React.useRef(null);
+
+	const blockRenderer = (block) => {
+		if (block.getType() === 'atomic') {
+			return {
+				component: BlockComponent,
+				editable: false,
+				props: {
+					onStartEdit: (blockKey) => {
+						setTableEdits(tableEdits.set(blockKey, true))
+					},
+					onFinishEdit: (blockKey) => {
+						setTableEdits(tableEdits.remove(blockKey))
+					},
+				},
+			}
+		}
+		return null
+	}
+
+	const handleChange = (editorState) => {
+		setEditorState(editorState)
+	}
+
+	const insertTable = () => {
+		setTableEdits(Map())
+		setEditorState(createTable(editorState))
+	}
+
+	const focusEditor = () => {
+		editor.current.focus();
+	}
+
+	React.useEffect(() => {
+		focusEditor()
+	}, []);
+
+	return (
+		<div className="RichEditor-root">
+			<ModalTable
+				onClick={insertTable}
+				buttonLabel="Table"
+			/>
+			<div className='RichEditor-editor' onClick={focusEditor}>
+				<Editor
+					blockRendererFn={blockRenderer}
+					ref={editor}
+					editorState={editorState}
+					onChange={handleChange}
+					readOnly={tableEdits.count()}
+				/>
+			</div>
+		</div>
+	);
+}
+
+export default MyEditor

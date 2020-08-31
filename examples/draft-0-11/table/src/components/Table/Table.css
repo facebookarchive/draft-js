@@ -1,0 +1,31 @@
+.hover-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.hover-table caption {
+    caption-side: top;
+    text-align: center;
+}
+
+.hover-table th {
+    text-align: center;
+    border: #999999 1px solid;
+    background-color: #5a6268;
+}
+
+.hover-table td {
+    padding: 7px;
+    border: #999999 1px solid;
+    text-align: center;
+}
+
+/* Define the default color for all the table rows */
+.hover-table tr {
+    background: #6c757d;
+}
+
+/* Define the hover highlight color for the table row */
+.hover-table tr:hover {
+    background-color: #5a6268;
+}
