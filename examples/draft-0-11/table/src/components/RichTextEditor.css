@@ -22,6 +22,12 @@
     padding: 15px;
 }
 
+.public-DraftEditorPlaceholder-root {
+    color: #9197a3;
+    position: absolute;
+    z-index: 1;
+}
+
 .RichEditor-editor .public-DraftEditor-content {
     min-height: 100px;
 }

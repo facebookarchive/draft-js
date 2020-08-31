@@ -38,7 +38,6 @@ function MyEditor() {
 	}
 
 	const insertTable = () => {
-		setTableEdits(Map())
 		setEditorState(createTable(editorState))
 	}
 
@@ -50,18 +49,29 @@ function MyEditor() {
 		focusEditor()
 	}, []);
 
+	// If the user changes block type before entering any text, we can
+	// either style the placeholder or hide it. Let's just hide it now.
+	let className = 'RichEditor-editor'
+	const contentState = editorState.getCurrentContent()
+	if (!contentState.hasText()) {
+		if (contentState.getBlockMap().first().getType() !== 'unstyled') {
+			className += ' RichEditor-hidePlaceholder'
+		}
+	}
+
 	return (
 		<div className="RichEditor-root">
 			<ModalTable
 				onClick={insertTable}
 				buttonLabel="Table"
 			/>
-			<div className='RichEditor-editor' onClick={focusEditor}>
+			<div className={className} onClick={focusEditor}>
 				<Editor
 					blockRendererFn={blockRenderer}
 					ref={editor}
 					editorState={editorState}
 					onChange={handleChange}
+					placeholder="Double click table to edit it..."
 					readOnly={tableEdits.count()}
 				/>
 			</div>
