@@ -1,36 +1,41 @@
-# Run the server
+# Draft.js website
 
-The first time, get all the dependencies loaded via
+This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator.
 
-```
-npm install
-```
-
-Then, run the server via
+### Installation
 
 ```
-npm start
-Open http://localhost:8080/index.html
+$ yarn
 ```
 
-Anytime you change the contents, just refresh the page and it's going to be updated
-
-# Publish the website
-
-First setup your environment by having two folders, one `draft` and one `draft-gh-pages`. The publish script expects those exact names.
+### Local Development
 
 ```
-cd ../../
-git clone git@github.com:facebook/draft-js.git draft-gh-pages
-cd draft-gh-pages
-git checkout origin/gh-pages
-git checkout -b gh-pages
-git push --set-upstream origin gh-pages
-cd ../draft-js/website
+$ yarn start
 ```
 
-Then, after you've done changes, just run the command and it'll automatically build the static version of the site and publish it to gh-pages.
+This command starts a local development server and open up a browser window. Most changes are reflected live without having to restart the server.
+
+### Formatting Docs
+
+If you have changed any documentation, before submitting your PR, please run the following command from the root of the directory to use Prettier to format the documentation.
 
 ```
-./publish.sh
+$ yarn format-docs
 ```
+
+### Build
+
+```
+$ yarn build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+### Deployment
+
+```
+$ GIT_USER=<Your GitHub username> USE_SSH=true yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.

@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftModifier
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -20,22 +18,22 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {DraftRemovalDirection} from 'DraftRemovalDirection';
 import type SelectionState from 'SelectionState';
 import type {Map} from 'immutable';
+import type {BlockDataMergeBehavior} from 'insertFragmentIntoContentState';
 
-var CharacterMetadata = require('CharacterMetadata');
-var ContentStateInlineStyle = require('ContentStateInlineStyle');
-const DraftFeatureFlags = require('DraftFeatureFlags');
-var Immutable = require('immutable');
+const CharacterMetadata = require('CharacterMetadata');
+const ContentStateInlineStyle = require('ContentStateInlineStyle');
 
-var applyEntityToContentState = require('applyEntityToContentState');
-var getCharacterRemovalRange = require('getCharacterRemovalRange');
-var getContentStateFragment = require('getContentStateFragment');
-var insertFragmentIntoContentState = require('insertFragmentIntoContentState');
-var insertTextIntoContentState = require('insertTextIntoContentState');
-var invariant = require('invariant');
-var modifyBlockForContentState = require('modifyBlockForContentState');
-var removeEntitiesAtEdges = require('removeEntitiesAtEdges');
-var removeRangeFromContentState = require('removeRangeFromContentState');
-var splitBlockInContentState = require('splitBlockInContentState');
+const applyEntityToContentState = require('applyEntityToContentState');
+const getCharacterRemovalRange = require('getCharacterRemovalRange');
+const getContentStateFragment = require('getContentStateFragment');
+const Immutable = require('immutable');
+const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
+const insertTextIntoContentState = require('insertTextIntoContentState');
+const invariant = require('invariant');
+const modifyBlockForContentState = require('modifyBlockForContentState');
+const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
+const removeRangeFromContentState = require('removeRangeFromContentState');
+const splitBlockInContentState = require('splitBlockInContentState');
 
 const {OrderedSet} = Immutable;
 
@@ -49,7 +47,7 @@ const {OrderedSet} = Immutable;
  *
  * These functions encapsulate some of the most common transaction sequences.
  */
-var DraftModifier = {
+const DraftModifier = {
   replaceText: function(
     contentState: ContentState,
     rangeToReplace: SelectionState,
@@ -57,13 +55,13 @@ var DraftModifier = {
     inlineStyle?: DraftInlineStyle,
     entityKey?: ?string,
   ): ContentState {
-    var withoutEntities = removeEntitiesAtEdges(contentState, rangeToReplace);
-    var withoutText = removeRangeFromContentState(
+    const withoutEntities = removeEntitiesAtEdges(contentState, rangeToReplace);
+    const withoutText = removeRangeFromContentState(
       withoutEntities,
       rangeToReplace,
     );
 
-    var character = CharacterMetadata.create({
+    const character = CharacterMetadata.create({
       style: inlineStyle || OrderedSet(),
       entity: entityKey || null,
     });
@@ -101,9 +99,9 @@ var DraftModifier = {
     removalRange: SelectionState,
     targetRange: SelectionState,
   ): ContentState {
-    var movedFragment = getContentStateFragment(contentState, removalRange);
+    const movedFragment = getContentStateFragment(contentState, removalRange);
 
-    var afterRemoval = DraftModifier.removeRange(
+    const afterRemoval = DraftModifier.removeRange(
       contentState,
       removalRange,
       'backward',
@@ -120,14 +118,19 @@ var DraftModifier = {
     contentState: ContentState,
     targetRange: SelectionState,
     fragment: BlockMap,
+    mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
   ): ContentState {
-    var withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
-    var withoutText = removeRangeFromContentState(withoutEntities, targetRange);
+    const withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
+    const withoutText = removeRangeFromContentState(
+      withoutEntities,
+      targetRange,
+    );
 
     return insertFragmentIntoContentState(
       withoutText,
       withoutText.getSelectionAfter(),
       fragment,
+      mergeBlockData,
     );
   },
 
@@ -170,32 +173,17 @@ var DraftModifier = {
         return removeRangeFromContentState(contentState, adjustedRemovalRange);
       }
     }
-    let adjustedRemovalRange = rangeToRemove;
-    if (DraftFeatureFlags.draft_segmented_entities_behavior) {
-      // Adjust the selection to properly delete segemented and immutable
-      // entities
-      adjustedRemovalRange = getCharacterRemovalRange(
-        contentState.getEntityMap(),
-        startBlock,
-        endBlock,
-        rangeToRemove,
-        removalDirection,
-      );
-    }
 
-    var withoutEntities = removeEntitiesAtEdges(
-      contentState,
-      adjustedRemovalRange,
-    );
-    return removeRangeFromContentState(withoutEntities, adjustedRemovalRange);
+    const withoutEntities = removeEntitiesAtEdges(contentState, rangeToRemove);
+    return removeRangeFromContentState(withoutEntities, rangeToRemove);
   },
 
   splitBlock: function(
     contentState: ContentState,
     selectionState: SelectionState,
   ): ContentState {
-    var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
-    var withoutText = removeRangeFromContentState(
+    const withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
+    const withoutText = removeRangeFromContentState(
       withoutEntities,
       selectionState,
     );
@@ -265,7 +253,7 @@ var DraftModifier = {
     selectionState: SelectionState,
     entityKey: ?string,
   ): ContentState {
-    var withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
+    const withoutEntities = removeEntitiesAtEdges(contentState, selectionState);
     return applyEntityToContentState(
       withoutEntities,
       selectionState,

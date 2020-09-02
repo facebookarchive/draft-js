@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftEditorBlockNode.react
  * @format
  * @flow
+ * @emails oncall+draft_js
  *
  * This file is a fork of DraftEditorBlock.react.js and DraftEditorContents.react.js
  *
@@ -23,22 +21,22 @@ import type ContentState from 'ContentState';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
+import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorNode = require('DraftEditorNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const EditorState = require('EditorState');
-const Immutable = require('immutable');
 const React = require('React');
-const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
 const Style = require('Style');
 
 const getElementPosition = require('getElementPosition');
 const getScrollPosition = require('getScrollPosition');
 const getViewportDimensions = require('getViewportDimensions');
+const Immutable = require('immutable');
 const invariant = require('invariant');
+const isHTMLElement = require('isHTMLElement');
 
 const SCROLL_BUFFER = 10;
 
@@ -67,6 +65,7 @@ type Props = {
   selection: SelectionState,
   startIndent?: boolean,
   tree: List<any>,
+  ...
 };
 
 /**
@@ -102,7 +101,7 @@ const applyWrapperElementToSiblings = (
 ): Array<React.Node> => {
   const wrappedSiblings = [];
 
-  // we check back until we find a sibbling that does not have same wrapper
+  // we check back until we find a sibling that does not have same wrapper
   for (const sibling: any of nodes.reverse()) {
     if (sibling.type !== Element) {
       break;
@@ -177,12 +176,14 @@ const getElementPropsConfig = (
   offsetKey: string,
   blockStyleFn: BlockStyleFn,
   customConfig: *,
+  ref: null | {|current: null | Element|},
 ): Object => {
   let elementProps: Object = {
     'data-block': true,
     'data-editor': editorKey,
     'data-offset-key': offsetKey,
     key: block.getKey(),
+    ref,
   };
   const customClass = blockStyleFn(block);
 
@@ -202,9 +203,11 @@ const getElementPropsConfig = (
 };
 
 class DraftEditorBlockNode extends React.Component<Props> {
+  wrapperRef: {|current: null | Element|} = React.createRef<Element>();
+
   shouldComponentUpdate(nextProps: Props): boolean {
     const {block, direction, tree} = this.props;
-    const isContainerNode = !block.getChildKeys.isEmpty();
+    const isContainerNode = !block.getChildKeys().isEmpty();
     const blockHasChanged =
       block !== nextProps.block ||
       tree !== nextProps.tree ||
@@ -236,7 +239,11 @@ class DraftEditorBlockNode extends React.Component<Props> {
       return;
     }
 
-    const blockNode = ReactDOM.findDOMNode(this);
+    const blockNode = this.wrapperRef.current;
+    if (!blockNode) {
+      // This Block Node was rendered without a wrapper element.
+      return;
+    }
     const scrollParent = Style.getScrollParent(blockNode);
     const scrollPosition = getScrollPosition(scrollParent);
     let scrollDelta;
@@ -253,11 +260,9 @@ class DraftEditorBlockNode extends React.Component<Props> {
         );
       }
     } else {
-      invariant(
-        blockNode instanceof HTMLElement,
-        'blockNode is not an HTMLElement',
-      );
-      const blockBottom = blockNode.offsetHeight + blockNode.offsetTop;
+      invariant(isHTMLElement(blockNode), 'blockNode is not an HTMLElement');
+      const htmlBlockNode: HTMLElement = (blockNode: any);
+      const blockBottom = htmlBlockNode.offsetHeight + htmlBlockNode.offsetTop;
       const scrollBottom = scrollParent.offsetHeight + scrollPosition.y;
       scrollDelta = blockBottom - scrollBottom;
       if (scrollDelta > 0) {
@@ -305,6 +310,7 @@ class DraftEditorBlockNode extends React.Component<Props> {
           offsetKey,
           blockStyleFn,
           customConfig,
+          null,
         );
         const childProps = {
           ...this.props,
@@ -341,21 +347,32 @@ class DraftEditorBlockNode extends React.Component<Props> {
     const blockKey = block.getKey();
     const offsetKey = DraftOffsetKey.encode(blockKey, 0, 0);
 
-    const blockNode = (
-      <DraftEditorNode
-        block={block}
-        children={children}
-        contentState={contentState}
-        customStyleFn={customStyleFn}
-        customStyleMap={customStyleMap}
-        decorator={decorator}
-        direction={direction}
-        forceSelection={forceSelection}
-        hasSelection={isBlockOnSelectionEdge(selection, blockKey)}
-        selection={selection}
-        tree={tree}
-      />
-    );
+    const customConfig = getCustomRenderConfig(block, blockRendererFn);
+    const Component = customConfig.CustomComponent;
+    const blockNode =
+      Component != null ? (
+        <Component
+          {...this.props}
+          tree={editorState.getBlockTree(blockKey)}
+          blockProps={customConfig.customProps}
+          offsetKey={offsetKey}
+          block={block}
+        />
+      ) : (
+        <DraftEditorNode
+          block={block}
+          children={children}
+          contentState={contentState}
+          customStyleFn={customStyleFn}
+          customStyleMap={customStyleMap}
+          decorator={decorator}
+          direction={direction}
+          forceSelection={forceSelection}
+          hasSelection={isBlockOnSelectionEdge(selection, blockKey)}
+          selection={selection}
+          tree={tree}
+        />
+      );
 
     if (block.getParentKey()) {
       return blockNode;
@@ -367,7 +384,8 @@ class DraftEditorBlockNode extends React.Component<Props> {
       editorKey,
       offsetKey,
       blockStyleFn,
-      getCustomRenderConfig(block, blockRendererFn),
+      customConfig,
+      this.wrapperRef,
     );
 
     // root block nodes needs to be wrapped

@@ -1,10 +1,6 @@
 ---
 id: advanced-topics-inline-styles
 title: Complex Inline Styles
-layout: docs
-category: Advanced Topics
-next: advanced-topics-nested-lists
-permalink: docs/advanced-topics-inline-styles.html
 ---
 
 Within your editor, you may wish to provide a wide variety of inline style
@@ -16,11 +12,11 @@ The [Rich Editor](http://github.com/facebook/draft-js/tree/master/examples/draft
 [Colorful Editor](http://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/color)
 examples demonstrate complex inline style behavior in action.
 
-### Model
+## Model
 
 Within the Draft model, inline styles are represented at the character level,
 using an immutable `OrderedSet` to define the list of styles to be applied to
-each character. These styles are identified by string. (See [CharacterMetadata](/docs/api-reference-character-metadata.html)
+each character. These styles are identified by string. (See [CharacterMetadata](/docs/api-reference-character-metadata)
 for details.)
 
 For example, consider the text "Hello **world**". The first six characters of
@@ -35,18 +31,18 @@ In essence, our styles are:
 [
   [], // H
   [], // e
-  ...
+  // ...
   ['BOLD'], // w
   ['BOLD'], // o
   // etc.
-]
+];
 ```
 
-### Overlapping Styles
+## Overlapping Styles
 
 Now let's say that we wish to make the middle range of characters italic as well:
-"He_llo **wo**_**rld**". This operation can be performed via the
-[Modifier](/docs/api-reference-modifier.html) API.
+He*llo* ***wo*rld**. This operation can be performed via the
+[Modifier](/docs/api-reference-modifier) API.
 
 The end result will accommodate the overlap by including `'ITALIC'` in the
 relevant `OrderedSet` objects as well.
@@ -56,22 +52,22 @@ relevant `OrderedSet` objects as well.
   [], // H
   [], // e
   ['ITALIC'], // l
-  ...
+  // ...
   ['BOLD', 'ITALIC'], // w
   ['BOLD', 'ITALIC'], // o
   ['BOLD'], // r
   // etc.
-]
+];
 ```
 
 When determining how to render inline-styled text, Draft will identify
 contiguous ranges of identically styled characters and render those characters
 together in styled `span` nodes.
 
-### Mapping a style string to CSS
+## Mapping a style string to CSS
 
 By default, `Editor` provides support for a basic list of inline styles:
-`'BOLD'`, `'ITALIC'`, `'UNDERLINE'`, and `'CODE'`. These are mapped to simple CSS
+`'BOLD'`, `'ITALIC'`, `'UNDERLINE'`, and `'CODE'`. These are mapped to plain CSS
 style objects, which are used to apply styles to the relevant ranges.
 
 For your editor, you may define custom style strings to include with these

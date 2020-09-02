@@ -1,10 +1,6 @@
 ---
 id: quickstart-api-basics
 title: API Basics
-layout: docs
-category: Quick Start
-next: quickstart-rich-styling
-permalink: docs/quickstart-api-basics.html
 ---
 
 This document provides an overview of the basics of the `Draft` API. A
@@ -15,7 +11,7 @@ is also available to follow along.
 
 The `Editor` React component is built as a controlled ContentEditable component,
 with the goal of providing a top-level API modeled on the familiar React
-*controlled input* API.
+_controlled input_ API.
 
 As a brief refresher, controlled inputs involve two key pieces:
 
@@ -23,20 +19,16 @@ As a brief refresher, controlled inputs involve two key pieces:
 2. An _onChange_ prop function to receive updates to the input
 
 This approach allows the component that composes the input to have strict
-control over the state of the input, while still allowing updates to the DOM
-to provide information about the text that the user has written.
+control over the state of the input, while still allowing updates to the DOM to
+provide information about the text that the user has written.
 
 ```js
-class MyInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: ''};
-    this.onChange = (evt) => this.setState({value: evt.target.value});
-  }
-  render() {
-    return <input value={this.state.value} onChange={this.onChange} />;
-  }
-}
+const MyInput = () => {
+  const [value, setValue] = useState('');
+  const onChange = (evt) => setValue(evt.target.value);
+
+  return <input value={value} onChange={onChange} />;
+};
 ```
 
 The top-level component can maintain control over the input state via this
@@ -46,14 +38,14 @@ The top-level component can maintain control over the input state via this
 
 In a React rich text scenario, however, there are two clear problems:
 
-1. A string of plaintext is insufficient to represent the complex state of
-a rich editor.
+1. A string of plaintext is insufficient to represent the complex state of a
+   rich editor.
 2. There is no such `onChange` event available for a ContentEditable element.
 
 State is therefore represented as a single immutable
-[EditorState](/docs/api-reference-editor-state.html) object, and
-`onChange` is implemented within the `Editor` core to provide this state
-value to the top level.
+[EditorState](/docs/api-reference-editor-state) object, and `onChange` is
+implemented within the `Editor` core to provide this state value to the top
+level.
 
 The `EditorState` object is a complete snapshot of the state of the editor,
 including contents, cursor, and undo/redo history. All changes to content and
@@ -63,17 +55,15 @@ this remains efficient due to data persistence across immutable objects.
 ```js
 import {Editor, EditorState} from 'draft-js';
 
-class MyEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {editorState: EditorState.createEmpty()};
-    this.onChange = (editorState) => this.setState({editorState});
-  }
-  render() {
-    return <Editor editorState={this.state.editorState} onChange={this.onChange} />;
-  }
-}
+const MyInput = () => {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty(),
+  );
+
+  return <Editor editorState={editorState} onChange={setEditorState} />;
+};
 ```
 
 For any edits or selection changes that occur in the editor DOM, your `onChange`
-handler will execute with the latest `EditorState` object based on those changes.
+handler will execute with the latest `EditorState` object based on those
+changes.

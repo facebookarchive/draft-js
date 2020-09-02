@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule SampleDraftInlineStyle
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -16,14 +14,18 @@
 const {OrderedSet} = require('immutable');
 
 module.exports = {
-  BOLD: OrderedSet.of('BOLD'),
-  BOLD_ITALIC: OrderedSet.of('BOLD', 'ITALIC'),
-  BOLD_ITALIC_UNDERLINE: OrderedSet.of('BOLD', 'ITALIC', 'UNDERLINE'),
-  BOLD_UNDERLINE: OrderedSet.of('BOLD', 'UNDERLINE'),
-  CODE: OrderedSet.of('CODE'),
-  ITALIC: OrderedSet.of('ITALIC'),
-  ITALIC_UNDERLINE: OrderedSet.of('ITALIC', 'UNDERLINE'),
-  NONE: OrderedSet(),
-  STRIKETHROUGH: OrderedSet.of('STRIKETHROUGH'),
-  UNDERLINE: OrderedSet.of('UNDERLINE'),
+  BOLD: (OrderedSet.of('BOLD'): OrderedSet<string>),
+  BOLD_ITALIC: (OrderedSet.of('BOLD', 'ITALIC'): OrderedSet<string>),
+  BOLD_ITALIC_UNDERLINE: (OrderedSet.of(
+    'BOLD',
+    'ITALIC',
+    'UNDERLINE',
+  ): OrderedSet<string>),
+  BOLD_UNDERLINE: (OrderedSet.of('BOLD', 'UNDERLINE'): OrderedSet<string>),
+  CODE: (OrderedSet.of('CODE'): OrderedSet<string>),
+  ITALIC: (OrderedSet.of('ITALIC'): OrderedSet<string>),
+  ITALIC_UNDERLINE: (OrderedSet.of('ITALIC', 'UNDERLINE'): OrderedSet<string>),
+  NONE: (OrderedSet(): OrderedSet<string>),
+  STRIKETHROUGH: (OrderedSet.of('STRIKETHROUGH'): OrderedSet<string>),
+  UNDERLINE: (OrderedSet.of('UNDERLINE'): OrderedSet<string>),
 };

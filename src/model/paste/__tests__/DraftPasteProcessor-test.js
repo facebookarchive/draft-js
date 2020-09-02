@@ -1,25 +1,25 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
  * @format
  */
 
 'use strict';
 
-jest.disableAutomock();
-
 jest.mock('generateRandomKey');
 
 const DraftPasteProcessor = require('DraftPasteProcessor');
-const Immutable = require('immutable');
 
-const CUSTOM_BLOCK_MAP = Immutable.Map({
+const Immutable = require('immutable');
+const mockUUID = require('mockUUID');
+
+const {OrderedSet, Map} = Immutable;
+
+const CUSTOM_BLOCK_MAP = Map({
   'header-one': {
     element: 'h1',
   },
@@ -49,13 +49,41 @@ const CUSTOM_BLOCK_MAP = Immutable.Map({
   },
 });
 
+const EMPTY_CHAR_METADATA = OrderedSet();
+
+const toggleExperimentalTreeDataSupport = enabled => {
+  jest.doMock('gkx', () => name => {
+    return name === 'draft_tree_data_support' ? enabled : false;
+  });
+};
+
+const assertDraftPasteProcessorProcessText = (
+  textBlocks,
+  experimentalTreeDataSupport = false,
+) => {
+  toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
+  const contentBlocks = DraftPasteProcessor.processText(
+    textBlocks,
+    EMPTY_CHAR_METADATA,
+    'unstyled',
+  );
+  expect(contentBlocks.map(block => block.toJS())).toMatchSnapshot();
+};
+
 const assertDraftPasteProcessorProcessHTML = (
   html,
   blockMap = CUSTOM_BLOCK_MAP,
+  experimentalTreeDataSupport = false,
 ) => {
+  toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
   const {contentBlocks} = DraftPasteProcessor.processHTML(html, blockMap);
   expect(contentBlocks.map(block => block.toJS())).toMatchSnapshot();
 };
+
+beforeEach(() => {
+  jest.resetModules();
+  jest.mock('uuid', () => mockUUID);
+});
 
 test('must identify italics text', () => {
   assertDraftPasteProcessorProcessHTML(`
@@ -291,4 +319,25 @@ test('must preserve list formatting', () => {
       <li>what</li>
     </ul>
   `);
+});
+
+test('must create nested elements when experimentalTreeDataSupport is enabled', () => {
+  assertDraftPasteProcessorProcessHTML(
+    `
+    <blockquote>
+      <h2>Heading inside blockquote</h2>
+      <p><em>some</em> <strong>text</strong></p>
+    </blockquote>
+  `,
+    CUSTOM_BLOCK_MAP,
+    true,
+  );
+});
+
+test('must create ContentBlocks when experimentalTreeDataSupport is disabled while processing text', () => {
+  assertDraftPasteProcessorProcessText(['Alpha', 'Beta', 'Charlie']);
+});
+
+test('must create ContentBlockNodes when experimentalTreeDataSupport is enabled while processing text', () => {
+  assertDraftPasteProcessorProcessText(['Alpha', 'Beta', 'Charlie'], true);
 });

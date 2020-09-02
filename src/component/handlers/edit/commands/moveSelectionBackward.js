@@ -1,20 +1,20 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule moveSelectionBackward
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
 import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
+
+const warning = require('warning');
 
 /**
  * Given a collapsed selection, move the focus `maxDistance` backward within
@@ -28,21 +28,26 @@ function moveSelectionBackward(
   editorState: EditorState,
   maxDistance: number,
 ): SelectionState {
-  var selection = editorState.getSelection();
-  var content = editorState.getCurrentContent();
-  var key = selection.getStartKey();
-  var offset = selection.getStartOffset();
+  const selection = editorState.getSelection();
+  // Should eventually make this an invariant
+  warning(
+    selection.isCollapsed(),
+    'moveSelectionBackward should only be called with a collapsed SelectionState',
+  );
+  const content = editorState.getCurrentContent();
+  const key = selection.getStartKey();
+  const offset = selection.getStartOffset();
 
-  var focusKey = key;
-  var focusOffset = 0;
+  let focusKey = key;
+  let focusOffset = 0;
 
   if (maxDistance > offset) {
-    var keyBefore = content.getKeyBefore(key);
+    const keyBefore = content.getKeyBefore(key);
     if (keyBefore == null) {
       focusKey = key;
     } else {
       focusKey = keyBefore;
-      var blockBefore = content.getBlockForKey(keyBefore);
+      const blockBefore = content.getBlockForKey(keyBefore);
       focusOffset = blockBefore.getText().length;
     }
   } else {

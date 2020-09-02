@@ -1,15 +1,11 @@
 ---
 id: advanced-topics-entities
 title: Entities
-layout: docs
-category: Advanced Topics
-next: v0-10-api-migration
-permalink: docs/advanced-topics-entities.html
 ---
 
 This article discusses the Entity system, which Draft uses for annotating
 ranges of text with metadata. Entities introduce levels of richness beyond
-styled text. Links, mentions, and embedded content can all be implemented 
+styled text. Links, mentions, and embedded content can all be implemented
 using entities.
 
 In the Draft repository, the
@@ -19,13 +15,13 @@ and
 provide live code examples to help clarify how entities can be used, as well
 as their built-in behavior.
 
-The [Entity API Reference](/docs/api-reference-entity.html) provides
+The [Entity API Reference](/docs/api-reference-entity) provides
 details on the static methods to be used when creating, retrieving, or updating
 entity objects.
 
 For information about recent changes to the Entity API, and examples of how to
 update your application,
-[see our v0.10 API Migration Guide](/docs/v0-10-api-migration.html#content).
+[see our v0.10 API Migration Guide](/docs/v0-10-api-migration#content).
 
 ## Introduction
 
@@ -33,23 +29,23 @@ An entity is an object that represents metadata for a range of text within a
 Draft editor. It has three properties:
 
 - **type**: A string that indicates what kind of entity it is, e.g. `'LINK'`,
-`'MENTION'`, `'PHOTO'`.
+  `'MENTION'`, `'PHOTO'`.
 - **mutability**: Not to be confused with immutability a la `immutable-js`, this
-property denotes the behavior of a range of text annotated with this entity
-object when editing the text range within the editor. This is addressed in
-greater detail below.
+  property denotes the behavior of a range of text annotated with this entity
+  object when editing the text range within the editor. This is addressed in
+  greater detail below.
 - **data**: An optional object containing metadata for the entity. For instance,
-a `'LINK'` entity might contain a `data` object that contains the `href` value
-for that link.
+  a `'LINK'` entity might contain a `data` object that contains the `href` value
+  for that link.
 
-All entities are stored in the ContentState record. The entites  are referenced
+All entities are stored in the ContentState record. The entities are referenced
 by key within `ContentState` and React components used to decorate annotated
 ranges. (We are currently deprecating a previous API for accessing Entities; see
 issue
 [#839](https://github.com/facebook/draft-js/issues/839).)
 
-Using [decorators](/docs/advanced-topics-decorators.html) or
-[custom block components](/docs/advanced-topics-block-components.html), you can
+Using [decorators](/docs/advanced-topics-decorators) or
+[custom block components](/docs/advanced-topics-block-components), you can
 add rich rendering to your editor based on entity metadata.
 
 ## Creating and Retrieving Entities
@@ -62,17 +58,18 @@ content. For instance, the `Modifier` module contains an `applyEntity` method:
 
 ```js
 const contentState = editorState.getCurrentContent();
-const contentStateWithEntity = contentState.createEntity(
-  'LINK',
-  'MUTABLE',
-  {url: 'http://www.zombo.com'}
-);
+const contentStateWithEntity = contentState.createEntity('LINK', 'MUTABLE', {
+  url: 'http://www.zombo.com',
+});
 const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
 const contentStateWithLink = Modifier.applyEntity(
   contentStateWithEntity,
   selectionState,
-  entityKey
+  entityKey,
 );
+const newEditorState = EditorState.push(editorState, {
+  currentContent: contentStateWithLink,
+});
 ```
 
 For a given range of text, then, you can extract its associated entity key by using
@@ -80,12 +77,13 @@ the `getEntityAt()` method on a `ContentBlock` object, passing in the target
 offset value.
 
 ```js
+const contentState = editorState.getCurrentContent();
 const blockWithLinkAtBeginning = contentState.getBlockForKey('...');
 const linkKey = blockWithLinkAtBeginning.getEntityAt(0);
-const contentState = editorState.getCurrentContent();
 const linkInstance = contentState.getEntity(linkKey);
 const {url} = linkInstance.getData();
 ```
+
 ## "Mutability"
 
 Entities may have one of three "mutability" values. The difference between them
@@ -101,10 +99,9 @@ confusion around naming.)_
 This text cannot be altered without removing the entity annotation
 from the text. Entities with this mutability type are effectively atomic.
 
-For instance, in a Facebook input, add a mention for a Page (i.e. Barack Obama).
+For instance, in a Facebook input, add a mention for a Page (e.g. Barack Obama).
 Then, either add a character within the mentioned text, or try to delete a character.
-Note that when adding characters, the entity is removed, and when deleting character,
-the entire entity is removed.
+Note that when adding or deleting characters, the entity is removed.
 
 This mutability value is useful in cases where the text absolutely must match
 its relevant metadata, and may not be altered.

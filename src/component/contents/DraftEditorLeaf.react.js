@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftEditorLeaf.react
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -18,42 +16,43 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
-var React = require('React');
-var ReactDOM = require('ReactDOM');
+const React = require('React');
 
 const invariant = require('invariant');
-var setDraftEditorSelection = require('setDraftEditorSelection');
+const isHTMLBRElement = require('isHTMLBRElement');
+const setDraftEditorSelection = require('setDraftEditorSelection')
+  .setDraftEditorSelection;
+
+type CSSStyleObject = {[property: string]: string | number, ...};
+
+type CustomStyleMap = {[name: string]: CSSStyleObject, ...};
+type CustomStyleFn = (
+  style: DraftInlineStyle,
+  block: BlockNodeRecord,
+) => ?CSSStyleObject;
 
 type Props = {
   // The block that contains this leaf.
   block: BlockNodeRecord,
-
   // Mapping of style names to CSS declarations.
-  customStyleMap: Object,
-
+  customStyleMap: CustomStyleMap,
   // Function that maps style names to CSS style objects.
-  customStyleFn: Function,
-
+  customStyleFn: CustomStyleFn,
   // Whether to force the DOM selection after render.
   forceSelection: boolean,
-
   // Whether this leaf is the last in its block. Used for a DOM hack.
   isLast: boolean,
-
   offsetKey: string,
-
   // The current `SelectionState`, used to represent a selection range in the
   // editor
   selection: ?SelectionState,
-
   // The offset of this string within its block.
   start: number,
-
   // The set of style(s) names to apply to the node.
   styleSet: DraftInlineStyle,
-
   // The full text to be rendered within this node.
   text: string,
+  ...
 };
 
 /**
@@ -96,7 +95,7 @@ class DraftEditorLeaf extends React.Component<Props> {
     // Determine the appropriate target node for selection. If the child
     // is not a text node, it is a <br /> spacer. In this case, use the
     // <span> itself as the selection target.
-    const node = ReactDOM.findDOMNode(this);
+    const node = this.leaf;
     invariant(node, 'Missing node');
     const child = node.firstChild;
     invariant(child, 'Missing child');
@@ -104,7 +103,7 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     if (child.nodeType === Node.TEXT_NODE) {
       targetNode = child;
-    } else if (child.tagName === 'BR') {
+    } else if (isHTMLBRElement(child)) {
       targetNode = node;
     } else {
       targetNode = child.firstChild;
@@ -115,13 +114,13 @@ class DraftEditorLeaf extends React.Component<Props> {
   }
 
   shouldComponentUpdate(nextProps: Props): boolean {
-    const leafNode = ReactDOM.findDOMNode(this.leaf);
+    const leafNode = this.leaf;
     invariant(leafNode, 'Missing leafNode');
-    return (
+    const shouldUpdate =
       leafNode.textContent !== nextProps.text ||
       nextProps.styleSet !== this.props.styleSet ||
-      nextProps.forceSelection
-    );
+      nextProps.forceSelection;
+    return shouldUpdate;
   }
 
   componentDidUpdate(): void {

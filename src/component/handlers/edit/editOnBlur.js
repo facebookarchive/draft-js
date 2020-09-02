@@ -1,18 +1,17 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule editOnBlur
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
+import type {SelectionObject} from 'DraftDOMTypes';
 import type DraftEditor from 'DraftEditor.react';
 
 const EditorState = require('EditorState');
@@ -20,7 +19,7 @@ const EditorState = require('EditorState');
 const containsNode = require('containsNode');
 const getActiveElement = require('getActiveElement');
 
-function editOnBlur(editor: DraftEditor, e: SyntheticEvent<>): void {
+function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
   // In a contentEditable element, when you select a range and then click
   // another active element, this does trigger a `blur` event but will not
   // remove the DOM selection from the contenteditable.
@@ -29,9 +28,15 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<>): void {
   // We therefore force the issue to be certain, checking whether the active
   // element is `body` to force it when blurring occurs within the window (as
   // opposed to clicking to another tab or window).
-  if (getActiveElement() === document.body) {
-    const selection = global.getSelection();
-    const editorNode = editor.refs.editor;
+  const {ownerDocument} = e.currentTarget;
+  if (
+    // This ESLint rule conflicts with `sketchy-null-bool` flow check
+    // eslint-disable-next-line no-extra-boolean-cast
+    !Boolean(editor.props.preserveSelectionOnBlur) &&
+    getActiveElement(ownerDocument) === ownerDocument.body
+  ) {
+    const selection: SelectionObject = ownerDocument.defaultView.getSelection();
+    const editorNode = editor.editor;
     if (
       selection.rangeCount === 1 &&
       containsNode(editorNode, selection.anchorNode) &&
@@ -41,13 +46,13 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<>): void {
     }
   }
 
-  var editorState = editor._latestEditorState;
-  var currentSelection = editorState.getSelection();
+  const editorState = editor._latestEditorState;
+  const currentSelection = editorState.getSelection();
   if (!currentSelection.getHasFocus()) {
     return;
   }
 
-  var selection = currentSelection.set('hasFocus', false);
+  const selection = currentSelection.set('hasFocus', false);
   editor.props.onBlur && editor.props.onBlur(e);
   editor.update(EditorState.acceptSelection(editorState, selection));
 }

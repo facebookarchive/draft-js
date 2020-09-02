@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule BlockTree
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -18,51 +16,65 @@ import type CharacterMetadata from 'CharacterMetadata';
 import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 
-var Immutable = require('immutable');
+const findRangesImmutable = require('findRangesImmutable');
+const getOwnObjectValues = require('getOwnObjectValues');
+const Immutable = require('immutable');
 
-var emptyFunction = require('emptyFunction');
-var findRangesImmutable = require('findRangesImmutable');
+const {List, Repeat, Record} = Immutable;
 
-var {List, Repeat, Record} = Immutable;
+const returnTrue = function() {
+  return true;
+};
 
-var returnTrue = emptyFunction.thatReturnsTrue;
-
-var FINGERPRINT_DELIMITER = '-';
-
-var defaultLeafRange: {
+const defaultLeafRange: {
   start: ?number,
   end: ?number,
+  ...
 } = {
   start: null,
   end: null,
 };
 
-var LeafRange = Record(defaultLeafRange);
+const LeafRange = (Record(defaultLeafRange): any);
 
-var defaultDecoratorRange: {
+export type DecoratorRangeRawType = {
   start: ?number,
   end: ?number,
   decoratorKey: ?string,
+  // $FlowFixMe[value-as-type]
+  leaves: ?Array<LeafRange>,
+  ...
+};
+
+type DecoratorRangeType = {
+  start: ?number,
+  end: ?number,
+  decoratorKey: ?string,
+  // $FlowFixMe[value-as-type]
   leaves: ?List<LeafRange>,
-} = {
+  ...
+};
+
+const defaultDecoratorRange: DecoratorRangeType = {
   start: null,
   end: null,
   decoratorKey: null,
   leaves: null,
 };
 
-var DecoratorRange = Record(defaultDecoratorRange);
+const DecoratorRange = (Record(defaultDecoratorRange): any);
 
-var BlockTree = {
+const BlockTree = {
   /**
    * Generate a block tree for a given ContentBlock/decorator pair.
    */
-  generate: function(
+  generate(
     contentState: ContentState,
     block: BlockNodeRecord,
     decorator: ?DraftDecoratorType,
+    // $FlowFixMe[value-as-type]
   ): List<DecoratorRange> {
-    var textLength = block.getLength();
+    const textLength = block.getLength();
     if (!textLength) {
       return List.of(
         new DecoratorRange({
@@ -74,12 +86,12 @@ var BlockTree = {
       );
     }
 
-    var leafSets = [];
-    var decorations = decorator
+    const leafSets = [];
+    const decorations = decorator
       ? decorator.getDecorations(block, contentState)
       : List(Repeat(null, textLength));
 
-    var chars = block.getCharacterList();
+    const chars = block.getCharacterList();
 
     findRangesImmutable(decorations, areEqual, returnTrue, (start, end) => {
       leafSets.push(
@@ -95,22 +107,17 @@ var BlockTree = {
     return List(leafSets);
   },
 
-  /**
-   * Create a string representation of the given tree map. This allows us
-   * to rapidly determine whether a tree has undergone a significant
-   * structural change.
-   */
-  getFingerprint: function(tree: List<DecoratorRange>): string {
-    return tree
-      .map(leafSet => {
-        var decoratorKey = leafSet.get('decoratorKey');
-        var fingerprintString =
-          decoratorKey !== null
-            ? decoratorKey + '.' + (leafSet.get('end') - leafSet.get('start'))
-            : '';
-        return '' + fingerprintString + '.' + leafSet.get('leaves').size;
-      })
-      .join(FINGERPRINT_DELIMITER);
+  // $FlowFixMe[value-as-type]
+  fromJS({leaves, ...other}: DecoratorRangeRawType): DecoratorRange {
+    return new DecoratorRange({
+      ...other,
+      leaves:
+        leaves != null
+          ? List(
+              Array.isArray(leaves) ? leaves : getOwnObjectValues(leaves),
+            ).map(leaf => LeafRange(leaf))
+          : null,
+    });
   },
 };
 
@@ -120,9 +127,10 @@ var BlockTree = {
 function generateLeaves(
   characters: List<CharacterMetadata>,
   offset: number,
+  // $FlowFixMe[value-as-type]
 ): List<LeafRange> {
-  var leaves = [];
-  var inlineStyles = characters.map(c => c.getStyle()).toList();
+  const leaves = [];
+  const inlineStyles = characters.map(c => c.getStyle()).toList();
   findRangesImmutable(inlineStyles, areEqual, returnTrue, (start, end) => {
     leaves.push(
       new LeafRange({

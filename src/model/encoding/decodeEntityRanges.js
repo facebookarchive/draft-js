@@ -1,37 +1,37 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule decodeEntityRanges
  * @format
- * @flow
+ * @flow strict
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var UnicodeUtils = require('UnicodeUtils');
+import type {EntityRange} from 'EntityRange';
 
-var {substr} = UnicodeUtils;
+const UnicodeUtils = require('UnicodeUtils');
+
+const {substr} = UnicodeUtils;
 
 /**
  * Convert to native JavaScript string lengths to determine ranges.
  */
 function decodeEntityRanges(
   text: string,
-  ranges: Array<Object>,
+  ranges: Array<EntityRange>,
 ): Array<?string> {
-  var entities = Array(text.length).fill(null);
+  const entities = Array(text.length).fill(null);
   if (ranges) {
     ranges.forEach(range => {
       // Using Unicode-enabled substrings converted to JavaScript lengths,
       // fill the output array with entity keys.
-      var start = substr(text, 0, range.offset).length;
-      var end = start + substr(text, range.offset, range.length).length;
-      for (var ii = start; ii < end; ii++) {
+      const start = substr(text, 0, range.offset).length;
+      const end = start + substr(text, range.offset, range.length).length;
+      for (let ii = start; ii < end; ii++) {
         entities[ii] = range.key;
       }
     });

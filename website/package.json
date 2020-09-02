@@ -1,28 +1,28 @@
 {
   "scripts": {
-    "start": "node server/server.js",
-    "postinstall": "npm install .."
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy"
   },
   "dependencies": {
-    "compression": "1.2.2",
-    "connect": "3.3.3",
-    "errorhandler": "1.3.0",
-    "fbjs": "^0.8.7",
-    "fs.extra": "*",
-    "glob": "*",
-    "immutable": "^3.7.6",
-    "mkdirp": "*",
-    "morgan": "1.5.0",
-    "object-assign": "^2.0.0",
-    "optimist": "0.6.0",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
-    "react-page-middleware": "git://github.com/facebookarchive/react-page-middleware.git",
-    "request": "*",
-    "serve-favicon": "2.2.0",
-    "serve-static": "1.7.1"
+    "@docusaurus/core": "^2.0.0-alpha.48",
+    "@docusaurus/preset-classic": "^2.0.0-alpha.48",
+    "classnames": "^2.2.6",
+    "draft-js": "0.11.5",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
   },
-  "devDependencies": {
-    "bluebird": "^3.3.1"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

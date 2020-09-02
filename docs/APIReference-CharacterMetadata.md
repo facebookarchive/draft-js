@@ -1,15 +1,11 @@
 ---
 id: api-reference-character-metadata
 title: CharacterMetadata
-layout: docs
-category: API Reference
-next: api-reference-entity
-permalink: docs/api-reference-character-metadata.html
 ---
 
 `CharacterMetadata` is an Immutable
-[Record](http://facebook.github.io/immutable-js/docs/#/Record/Record) that
-represents inline style and entity information for a single character.
+[Record](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Record) 
+that represents inline style and entity information for a single character.
 
 `CharacterMetadata` objects are aggressively pooled and shared. If two characters
 have the same inline style and entity, they are represented with the same
@@ -25,12 +21,12 @@ operations are already implemented and available via utility modules. The getter
 methods, however, may come in handy at render time.
 
 See the API reference on
-[ContentBlock](/docs/api-reference-content-block.html#representing-styles-and-entities)
+[ContentBlock](/docs/api-reference-content-block#representing-styles-and-entities)
 for information on how `CharacterMetadata` is used within `ContentBlock`.
 
 ## Overview
 
-*Static Methods*
+_Static Methods_
 
 <ul class="apiIndex">
   <li>
@@ -55,7 +51,7 @@ for information on how `CharacterMetadata` is used within `ContentBlock`.
   </li>
 </ul>
 
-*Methods*
+_Methods_
 
 <ul class="apiIndex">
   <li>
@@ -80,11 +76,12 @@ for information on how `CharacterMetadata` is used within `ContentBlock`.
 Under the hood, these methods will utilize pooling to return a matching object,
 or return a new object if none exists.
 
-### create
+### `create()`
 
-```
+```js
 static create(config?: CharacterMetadataConfig): CharacterMetadata
 ```
+
 Generates a `CharacterMetadata` object from the provided configuration. This
 function should be used in lieu of a constructor.
 
@@ -93,29 +90,31 @@ configuration already exists. If so, the pooled object will be returned.
 Otherwise, a new `CharacterMetadata` will be pooled for this configuration,
 and returned.
 
-### applyStyle
+### `applyStyle()`
 
-```
+```js
 static applyStyle(
   record: CharacterMetadata,
   style: string
 ): CharacterMetadata
 ```
+
 Apply an inline style to this `CharacterMetadata`.
 
-### removeStyle
+### `removeStyle()`
 
-```
+```js
 static removeStyle(
   record: CharacterMetadata,
   style: string
 ): CharacterMetadata
 ```
+
 Remove an inline style from this `CharacterMetadata`.
 
-### applyEntity
+### `applyEntity()`
 
-```
+```js
 static applyEntity(
   record: CharacterMetadata,
   entityKey: ?string
@@ -127,26 +126,29 @@ Apply an entity key -- or provide `null` to remove an entity key -- on this
 
 ## Methods
 
-### getStyle
+### `getStyle()`
 
-```
+```js
 getStyle(): DraftInlineStyle
 ```
+
 Returns the `DraftInlineStyle` for this character, an `OrderedSet` of strings
 that represents the inline style to apply for the character at render time.
 
-### hasStyle
+### `hasStyle()`
 
-```
+```js
 hasStyle(style: string): boolean
 ```
+
 Returns whether this character has the specified style.
 
-### getEntity
+### `getEntity()`
 
-```
+```js
 getEntity(): ?string
 ```
+
 Returns the entity key (if any) for this character, as mapped to the global set of
 entities tracked by the [`Entity`](https://github.com/facebook/draft-js/blob/master/src/model/entity/DraftEntity.js)
 module.

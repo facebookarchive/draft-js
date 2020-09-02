@@ -1,15 +1,13 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule DraftEditor.react
  * @format
  * @flow
  * @preventMunge
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -25,20 +23,22 @@ const DraftEditorCompositionHandler = require('DraftEditorCompositionHandler');
 const DraftEditorContents = require('DraftEditorContents.react');
 const DraftEditorDragHandler = require('DraftEditorDragHandler');
 const DraftEditorEditHandler = require('DraftEditorEditHandler');
+const flushControlled = require('DraftEditorFlushControlled');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
+const DraftEffects = require('DraftEffects');
 const EditorState = require('EditorState');
 const React = require('React');
-const ReactDOM = require('ReactDOM');
 const Scroll = require('Scroll');
 const Style = require('Style');
 const UserAgent = require('UserAgent');
 
 const cx = require('cx');
-const emptyFunction = require('emptyFunction');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getScrollPosition = require('getScrollPosition');
+const gkx = require('gkx');
 const invariant = require('invariant');
+const isHTMLElement = require('isHTMLElement');
 const nullthrows = require('nullthrows');
 
 const isIE = UserAgent.isBrowser('IE');
@@ -57,9 +57,75 @@ const handlerMap = {
   render: null,
 };
 
-type State = {
-  contentsKey: number,
-};
+type State = {contentsKey: number, ...};
+
+let didInitODS = false;
+
+class UpdateDraftEditorFlags extends React.Component<{
+  editor: DraftEditor,
+  editorState: EditorState,
+  ...
+}> {
+  render(): React.Node {
+    return null;
+  }
+  componentDidMount(): mixed {
+    this._update();
+  }
+  componentDidUpdate(): mixed {
+    this._update();
+  }
+  _update() {
+    const editor = this.props.editor;
+    /**
+     * Sometimes a render triggers a 'focus' or other event, and that will
+     * schedule a second render pass.
+     * In order to make sure the second render pass gets the latest editor
+     * state, we update it here.
+     * Example:
+     * render #1
+     * +
+     * |
+     * | cWU -> Nothing ... latestEditorState = STALE_STATE :(
+     * |
+     * | render -> this.props.editorState = FRESH_STATE
+     * | +         *and* set latestEditorState = FRESH_STATE
+     *   |
+     * | |
+     * | +--> triggers 'focus' event, calling 'handleFocus' with latestEditorState
+     * |                                                +
+     * |                                                |
+     * +>cdU -> latestEditorState = FRESH_STATE         | the 'handleFocus' call schedules render #2
+     *                                                  | with latestEditorState, which is FRESH_STATE
+     *                                                  |
+     * render #2 <--------------------------------------+
+     * +
+     * |
+     * | cwU -> nothing updates
+     * |
+     * | render -> this.props.editorState = FRESH_STATE which was passed in above
+     * |
+     * +>cdU fires and resets latestEditorState = FRESH_STATE
+     * ---
+     * Note that if we don't set latestEditorState in 'render' in the above
+     * diagram, then STALE_STATE gets passed to render #2.
+     */
+    editor._latestEditorState = this.props.editorState;
+
+    /**
+     * The reason we set this 'blockSelectEvents' flag is that  IE will fire a
+     * 'selectionChange' event when we programmatically change the selection,
+     * meaning it would trigger a new select event while we are in the middle
+     * of updating.
+     * We found that the 'selection.addRange' was what triggered the stray
+     * selectionchange event in IE.
+     * To be clear - we have not been able to reproduce specific bugs related
+     * to this stray selection event, but have recorded logs that some
+     * conditions do cause it to get bumped into during editOnSelect.
+     */
+    editor._blockSelectEvents = true;
+  }
+}
 
 /**
  * `DraftEditor` is the root editor component. It composes a `contentEditable`
@@ -68,9 +134,14 @@ type State = {
  */
 class DraftEditor extends React.Component<DraftEditorProps, State> {
   static defaultProps: DraftEditorDefaultProps = {
+    ariaDescribedBy: '{{editor_id_placeholder}}',
     blockRenderMap: DefaultDraftBlockRenderMap,
-    blockRendererFn: emptyFunction.thatReturnsNull,
-    blockStyleFn: emptyFunction.thatReturns(''),
+    blockRendererFn: function() {
+      return null;
+    },
+    blockStyleFn: function() {
+      return '';
+    },
     keyBindingFn: getDefaultKeyBinding,
     readOnly: false,
     spellCheck: false,
@@ -161,6 +232,27 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     this.getEditorKey = () => this._editorKey;
 
+    if (__DEV__) {
+      [
+        'onDownArrow',
+        'onEscape',
+        'onLeftArrow',
+        'onRightArrow',
+        'onTab',
+        'onUpArrow',
+      ].forEach(propName => {
+        if (props.hasOwnProperty(propName)) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `Supplying an \`${propName}\` prop to \`DraftEditor\` has ` +
+              'been deprecated. If your handler needs access to the keyboard ' +
+              'event, supply a custom `keyBindingFn` prop that falls back to ' +
+              'the default one (eg. https://is.gd/wHKQ3W).',
+          );
+        }
+      });
+    }
+
     // See `restoreEditorDOM()`.
     this.state = {contentsKey: 0};
   }
@@ -171,13 +263,32 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * editor mode, if any has been specified.
    */
   _buildHandler(eventName: string): Function {
+    // Wrap event handlers in `flushControlled`. In sync mode, this is
+    // effectively a no-op. In async mode, this ensures all updates scheduled
+    // inside the handler are flushed before React yields to the browser.
     return e => {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
-        method && method(this, e);
+        if (method) {
+          if (flushControlled) {
+            flushControlled(() => method(this, e));
+          } else {
+            method(this, e);
+          }
+        }
       }
     };
   }
+
+  _handleEditorContainerRef: (HTMLElement | null) => void = (
+    node: HTMLElement | null,
+  ): void => {
+    this.editorContainer = node;
+    // Instead of having a direct ref on the child, we'll grab it here.
+    // This is safe as long as the rendered structure is static (which it is).
+    // This lets the child support ref={props.editorRef} without merging refs.
+    this.editor = node !== null ? (node: any).firstChild : null;
+  };
 
   _showPlaceholder(): boolean {
     return (
@@ -187,26 +298,53 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     );
   }
 
-  _renderPlaceholder(): ?React.Element<any> {
+  _renderPlaceholder(): React.Node {
     if (this._showPlaceholder()) {
-      return (
-        /* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
-         * error when upgrading Flow's support for React. Common errors found
-         * when upgrading Flow's React support are documented at
-         * https://fburl.com/eq7bs81w */
-        <DraftEditorPlaceholder
-          text={nullthrows(this.props.placeholder)}
-          editorState={this.props.editorState}
-          textAlignment={this.props.textAlignment}
-          accessibilityID={this._placeholderAccessibilityID}
-        />
-      );
+      const placeHolderProps = {
+        text: nullthrows(this.props.placeholder),
+        editorState: this.props.editorState,
+        textAlignment: this.props.textAlignment,
+        accessibilityID: this._placeholderAccessibilityID,
+      };
+
+      /* $FlowFixMe[incompatible-type] (>=0.112.0 site=www,mobile) This comment
+       * suppresses an error found when Flow v0.112 was deployed. To see the
+       * error delete this comment and run Flow. */
+      return <DraftEditorPlaceholder {...placeHolderProps} />;
     }
     return null;
   }
 
+  /**
+   * returns ariaDescribedBy prop with '{{editor_id_placeholder}}' replaced with
+   * the DOM id of the placeholder (if it exists)
+   * @returns aria-describedby attribute value
+   */
+  _renderARIADescribedBy(): ?string {
+    const describedBy = this.props.ariaDescribedBy || '';
+    const placeholderID = this._showPlaceholder()
+      ? this._placeholderAccessibilityID
+      : '';
+    return (
+      describedBy.replace('{{editor_id_placeholder}}', placeholderID) ||
+      undefined
+    );
+  }
+
   render(): React.Node {
-    const {readOnly, textAlignment} = this.props;
+    const {
+      blockRenderMap,
+      blockRendererFn,
+      blockStyleFn,
+      customStyleFn,
+      customStyleMap,
+      editorState,
+      preventScroll,
+      readOnly,
+      textAlignment,
+      textDirectionality,
+    } = this.props;
+
     const rootClass = cx({
       'DraftEditor/root': true,
       'DraftEditor/alignLeft': textAlignment === 'left',
@@ -225,28 +363,47 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     // The aria-expanded and aria-haspopup properties should only be rendered
     // for a combobox.
+    /* $FlowFixMe[prop-missing] (>=0.68.0 site=www,mobile) This comment
+     * suppresses an error found when Flow v0.68 was deployed. To see the error
+     * delete this comment and run Flow. */
     const ariaRole = this.props.role || 'textbox';
     const ariaExpanded =
       ariaRole === 'combobox' ? !!this.props.ariaExpanded : null;
+
+    const editorContentsProps = {
+      blockRenderMap,
+      blockRendererFn,
+      blockStyleFn,
+      customStyleMap: {
+        ...DefaultDraftInlineStyle,
+        ...customStyleMap,
+      },
+      customStyleFn,
+      editorKey: this._editorKey,
+      editorState,
+      preventScroll,
+      textDirectionality,
+    };
 
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
         <div
           className={cx('DraftEditor/editorContainer')}
-          ref={ref => (this.editorContainer = ref)}>
+          ref={this._handleEditorContainerRef}>
+          {/* Note: _handleEditorContainerRef assumes this div won't move: */}
           <div
             aria-activedescendant={
               readOnly ? null : this.props.ariaActiveDescendantID
             }
             aria-autocomplete={readOnly ? null : this.props.ariaAutoComplete}
             aria-controls={readOnly ? null : this.props.ariaControls}
-            aria-describedby={
-              this._showPlaceholder() ? this._placeholderAccessibilityID : null
-            }
+            aria-describedby={this._renderARIADescribedBy()}
             aria-expanded={readOnly ? null : ariaExpanded}
             aria-label={this.props.ariaLabel}
+            aria-labelledby={this.props.ariaLabelledBy}
             aria-multiline={this.props.ariaMultiline}
+            aria-owns={readOnly ? null : this.props.ariaOwneeID}
             autoCapitalize={this.props.autoCapitalize}
             autoComplete={this.props.autoComplete}
             autoCorrect={this.props.autoCorrect}
@@ -280,29 +437,20 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onMouseUp={this._onMouseUp}
             onPaste={this._onPaste}
             onSelect={this._onSelect}
-            ref={ref => (this.editor = ref)}
+            ref={this.props.editorRef}
             role={readOnly ? null : ariaRole}
             spellCheck={allowSpellCheck && this.props.spellCheck}
             style={contentStyle}
             suppressContentEditableWarning
             tabIndex={this.props.tabIndex}>
-            {/* $FlowFixMe(>=0.53.0 site=www,mobile) This comment suppresses an
-              * error when upgrading Flow's support for React. Common errors
-              * found when upgrading Flow's React support are documented at
-              * https://fburl.com/eq7bs81w */}
+            {/*
+              Needs to come earlier in the tree as a sibling (not ancestor) of
+              all DraftEditorLeaf nodes so it's first in postorder traversal.
+            */}
+            <UpdateDraftEditorFlags editor={this} editorState={editorState} />
             <DraftEditorContents
-              blockRenderMap={this.props.blockRenderMap}
-              blockRendererFn={this.props.blockRendererFn}
-              blockStyleFn={this.props.blockStyleFn}
-              customStyleMap={{
-                ...DefaultDraftInlineStyle,
-                ...this.props.customStyleMap,
-              }}
-              customStyleFn={this.props.customStyleFn}
-              editorKey={this._editorKey}
-              editorState={this.props.editorState}
+              {...editorContentsProps}
               key={'contents' + this.state.contentsKey}
-              textDirectionality={this.props.textDirectionality}
             />
           </div>
         </div>
@@ -311,6 +459,11 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   }
 
   componentDidMount(): void {
+    this._blockSelectEvents = false;
+    if (!didInitODS && gkx('draft_ods_enabled')) {
+      didInitODS = true;
+      DraftEffects.initODS();
+    }
     this.setMode('edit');
 
     /**
@@ -321,24 +474,19 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
      * ie9-beta-minor-change-list.aspx
      */
     if (isIE) {
-      document.execCommand('AutoUrlDetect', false, false);
+      // editor can be null after mounting
+      // https://stackoverflow.com/questions/44074747/componentdidmount-called-before-ref-callback
+      if (!this.editor) {
+        global.execCommand('AutoUrlDetect', false, false);
+      } else {
+        this.editor.ownerDocument.execCommand('AutoUrlDetect', false, false);
+      }
     }
-  }
-
-  /**
-   * Prevent selection events from affecting the current editor state. This
-   * is mostly intended to defend against IE, which fires off `selectionchange`
-   * events regardless of whether the selection is set via the browser or
-   * programmatically. We only care about selection events that occur because
-   * of browser interaction, not re-renders and forced selections.
-   */
-  componentWillUpdate(nextProps: DraftEditorProps): void {
-    this._blockSelectEvents = true;
-    this._latestEditorState = nextProps.editorState;
   }
 
   componentDidUpdate(): void {
     this._blockSelectEvents = false;
+    this._latestEditorState = this.props.editorState;
     this._latestCommittedEditorState = this.props.editorState;
   }
 
@@ -351,10 +499,12 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * a specified scroll position (for cases like `cut` behavior where it should
    * be restored to a known position).
    */
-  focus = (scrollPosition?: DraftScrollPosition): void => {
+  focus: (scrollPosition?: DraftScrollPosition) => void = (
+    scrollPosition?: DraftScrollPosition,
+  ): void => {
     const {editorState} = this.props;
     const alreadyHasFocus = editorState.getSelection().getHasFocus();
-    const editorNode = ReactDOM.findDOMNode(this.editor);
+    const editorNode = this.editor;
 
     if (!editorNode) {
       // once in a while people call 'focus' in a setTimeout, and the node has
@@ -365,10 +515,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     const scrollParent = Style.getScrollParent(editorNode);
     const {x, y} = scrollPosition || getScrollPosition(scrollParent);
 
-    invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
-    );
+    invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
+
     editorNode.focus();
 
     // Restore scroll position
@@ -389,12 +537,12 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     }
   };
 
-  blur = (): void => {
-    const editorNode = ReactDOM.findDOMNode(this.editor);
-    invariant(
-      editorNode instanceof HTMLElement,
-      'editorNode is not an HTMLElement',
-    );
+  blur: () => void = (): void => {
+    const editorNode = this.editor;
+    if (!editorNode) {
+      return;
+    }
+    invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
     editorNode.blur();
   };
 
@@ -405,11 +553,33 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * handler module to ensure that DOM events are managed appropriately for
    * the active mode.
    */
-  setMode = (mode: DraftEditorModes): void => {
-    this._handler = handlerMap[mode];
+  setMode: DraftEditorModes => void = (mode: DraftEditorModes): void => {
+    const {onPaste, onCut, onCopy} = this.props;
+    const editHandler = {...handlerMap.edit};
+
+    if (onPaste) {
+      /* $FlowFixMe[incompatible-type] (>=0.117.0 site=www,mobile) This comment
+       * suppresses an error found when Flow v0.117 was deployed. To see the
+       * error delete this comment and run Flow. */
+      editHandler.onPaste = onPaste;
+    }
+
+    if (onCut) {
+      editHandler.onCut = onCut;
+    }
+
+    if (onCopy) {
+      editHandler.onCopy = onCopy;
+    }
+
+    const handler = {
+      ...handlerMap,
+      edit: editHandler,
+    };
+    this._handler = handler[mode];
   };
 
-  exitCurrentMode = (): void => {
+  exitCurrentMode: () => void = (): void => {
     this.setMode('edit');
   };
 
@@ -422,7 +592,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * reconciliation occurs on a version of the DOM that is synchronized with
    * our EditorState.
    */
-  restoreEditorDOM = (scrollPosition?: DraftScrollPosition): void => {
+  restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void = (
+    scrollPosition?: DraftScrollPosition,
+  ): void => {
     this.setState({contentsKey: this.state.contentsKey + 1}, () => {
       this.focus(scrollPosition);
     });
@@ -433,7 +605,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * Set the clipboard state for a cut/copy event.
    */
-  setClipboard = (clipboard: ?BlockMap): void => {
+  setClipboard: (?BlockMap) => void = (clipboard: ?BlockMap): void => {
     this._clipboard = clipboard;
   };
 
@@ -442,7 +614,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * Retrieve the clipboard state for a cut/copy event.
    */
-  getClipboard = (): ?BlockMap => {
+  getClipboard: () => ?BlockMap = (): ?BlockMap => {
     return this._clipboard;
   };
 
@@ -455,7 +627,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * an `onChange` prop to receive state updates passed along from this
    * function.
    */
-  update = (editorState: EditorState): void => {
+  update: EditorState => void = (editorState: EditorState): void => {
     this._latestEditorState = editorState;
     this.props.onChange(editorState);
   };
@@ -465,14 +637,14 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * a dragged element enters and leaves the editor (or any of its children),
    * to determine when the dragged element absolutely leaves the editor.
    */
-  onDragEnter = (): void => {
+  onDragEnter: () => void = (): void => {
     this._dragCount++;
   };
 
   /**
    * See `onDragEnter()`.
    */
-  onDragLeave = (): void => {
+  onDragLeave: () => void = (): void => {
     this._dragCount--;
     if (this._dragCount === 0) {
       this.exitCurrentMode();

@@ -1,18 +1,15 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
 'use strict';
-
-jest.disableAutomock();
 
 const SelectionState = require('SelectionState');
 
@@ -34,8 +31,8 @@ const selectBlock = new SelectionState({
 const selectAdjacentBlocks = new SelectionState({
   anchorKey: initialBlock.getKey(),
   anchorOffset: 0,
-  focusKey: secondBlock.getKey(),
-  focusOffset: secondBlock.getLength(),
+  focusKey: secondBlock?.getKey(),
+  focusOffset: secondBlock?.getLength(),
 });
 
 const assertApplyEntityToContentState = (

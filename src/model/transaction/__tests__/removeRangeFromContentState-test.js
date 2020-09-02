@@ -1,27 +1,82 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+ui_infra
+ * @emails oncall+draft_js
+ * @flow strict-local
  * @format
  */
 
 'use strict';
 
-jest.disableAutomock();
+const BlockMapBuilder = require('BlockMapBuilder');
+const ContentBlockNode = require('ContentBlockNode');
+const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
+const Immutable = require('immutable');
 const removeRangeFromContentState = require('removeRangeFromContentState');
+
+const {List} = Immutable;
 
 const {contentState, selectionState} = getSampleStateForTesting();
 
-const assertRemoveRangeFromContentState = selection => {
+const contentBlockNodes = [
+  new ContentBlockNode({
+    key: 'A',
+    nextSibling: 'B',
+    text: 'Alpha',
+  }),
+  new ContentBlockNode({
+    key: 'B',
+    prevSibling: 'A',
+    nextSibling: 'G',
+    children: List(['C', 'F']),
+  }),
+  new ContentBlockNode({
+    parent: 'B',
+    key: 'C',
+    nextSibling: 'F',
+    children: List(['D', 'E']),
+  }),
+  new ContentBlockNode({
+    parent: 'C',
+    key: 'D',
+    nextSibling: 'E',
+    text: 'Delta',
+  }),
+  new ContentBlockNode({
+    parent: 'C',
+    key: 'E',
+    prevSibling: 'D',
+    text: 'Elephant',
+  }),
+  new ContentBlockNode({
+    parent: 'B',
+    key: 'F',
+    prevSibling: 'C',
+    text: 'Fire',
+  }),
+  new ContentBlockNode({
+    key: 'G',
+    prevSibling: 'B',
+    text: 'Gorila',
+  }),
+];
+const treeSelectionState = SelectionState.createEmpty('A');
+const treeContentState = contentState.set(
+  'blockMap',
+  BlockMapBuilder.createFromArray(contentBlockNodes),
+);
+
+const assertRemoveRangeFromContentState = (
+  selection,
+  content = contentState,
+) => {
   expect(
-    removeRangeFromContentState(contentState, selection)
+    removeRangeFromContentState(content, selection)
       .getBlockMap()
       .toJS(),
   ).toMatchSnapshot();
@@ -153,5 +208,67 @@ test('must remove blocks entirely within the selection', () => {
       focusKey: 'c',
       focusOffset: 3,
     }),
+  );
+});
+
+test('must remove E and F entirely when selection is from end of D to end of F on nested blocks', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'D',
+      focusKey: 'F',
+      anchorOffset: contentBlockNodes[3].getLength(),
+      focusOffset: contentBlockNodes[5].getLength(),
+    }),
+    treeContentState,
+  );
+});
+
+test('must preserve B and C since E has not been removed', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'A',
+      focusKey: 'D',
+      anchorOffset: contentBlockNodes[0].getLength(),
+      focusOffset: contentBlockNodes[3].getLength(),
+    }),
+    treeContentState,
+  );
+});
+
+test('must remove B and all its children', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'A',
+      focusKey: 'F',
+      anchorOffset: contentBlockNodes[0].getLength(),
+      focusOffset: contentBlockNodes[5].getLength(),
+    }),
+    treeContentState,
+  );
+});
+
+test('must retain B since F has not been removed', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'A',
+      focusKey: 'E',
+      anchorOffset: contentBlockNodes[0].getLength(),
+      focusOffset: contentBlockNodes[4].getLength(),
+    }),
+    treeContentState,
+  );
+});
+
+// Simulates having collapsed selection at start of Elephant and hitting backspace
+// We expect Elephant will be merged with previous block, Delta
+test('must merge D and E when deleting range from end of D to start of E', () => {
+  assertRemoveRangeFromContentState(
+    treeSelectionState.merge({
+      anchorKey: 'D',
+      focusKey: 'E',
+      anchorOffset: contentBlockNodes[3].getLength(), // end of D
+      focusOffset: 0, // start of E
+    }),
+    treeContentState,
   );
 });

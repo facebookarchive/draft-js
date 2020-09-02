@@ -1,38 +1,43 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule keyCommandBackspaceToStartOfLine
  * @format
- * @flow
+ * @flow strict-local
+ * @emails oncall+draft_js
  */
 
 'use strict';
 
-var EditorState = require('EditorState');
+import type {SelectionObject} from 'DraftDOMTypes';
 
-var expandRangeToStartOfLine = require('expandRangeToStartOfLine');
-var getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
-var moveSelectionBackward = require('moveSelectionBackward');
-var removeTextWithStrategy = require('removeTextWithStrategy');
+const EditorState = require('EditorState');
+
+const expandRangeToStartOfLine = require('expandRangeToStartOfLine');
+const getDraftEditorSelectionWithNodes = require('getDraftEditorSelectionWithNodes');
+const moveSelectionBackward = require('moveSelectionBackward');
+const removeTextWithStrategy = require('removeTextWithStrategy');
 
 function keyCommandBackspaceToStartOfLine(
   editorState: EditorState,
+  e: SyntheticKeyboardEvent<HTMLElement>,
 ): EditorState {
-  var afterRemoval = removeTextWithStrategy(
+  const afterRemoval = removeTextWithStrategy(
     editorState,
     strategyState => {
       const selection = strategyState.getSelection();
       if (selection.isCollapsed() && selection.getAnchorOffset() === 0) {
         return moveSelectionBackward(strategyState, 1);
       }
-
-      var domSelection = global.getSelection();
-      var range = domSelection.getRangeAt(0);
+      const {ownerDocument} = e.currentTarget;
+      const domSelection: SelectionObject = ownerDocument.defaultView.getSelection();
+      // getRangeAt can technically throw if there's no selection, but we know
+      // there is one here because text editor has focus (the cursor is a
+      // selection of length 0). Therefore, we don't need to wrap this in a
+      // try-catch block.
+      let range = domSelection.getRangeAt(0);
       range = expandRangeToStartOfLine(range);
 
       return getDraftEditorSelectionWithNodes(

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`addFocusToSelection sets a new focus on the selection if selection.extend is unsupported 1`] = `
+Selection {
+  "focusNode": Washington,
+  "focusOffset": 0,
+  "range": Range {
+    "endOffset": 3,
+    "node": Washington,
+    "startOffset": 0,
+  },
+  "rangeCount": 1,
+}
+`;
+
+exports[`addFocusToSelection the range is not updated if rangeCount is 0 1`] = `
+Selection {
+  "focusNode": null,
+  "focusOffset": 0,
+  "range": null,
+  "rangeCount": 0,
+}
+`;

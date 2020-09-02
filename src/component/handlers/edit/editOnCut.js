@@ -1,14 +1,12 @@
 /**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) Facebook, Inc. and its affiliates.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  *
- * @providesModule editOnCut
  * @format
  * @flow
+ * @emails oncall+draft_js
  */
 
 'use strict';
@@ -21,6 +19,7 @@ const Style = require('Style');
 
 const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
+const isNode = require('isInstanceOfNode');
 
 /**
  * On `cut` events, native behavior is allowed to occur so that the system
@@ -34,6 +33,8 @@ const getScrollPosition = require('getScrollPosition');
 function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   const editorState = editor._latestEditorState;
   const selection = editorState.getSelection();
+  const element = e.target;
+  let scrollPosition;
 
   // No selection, so there's nothing to cut.
   if (selection.isCollapsed()) {
@@ -43,9 +44,10 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Track the current scroll position so that it can be forced back in place
   // after the editor regains control of the DOM.
-  // $FlowFixMe e.target should be an instanceof Node
-  const scrollParent = Style.getScrollParent(e.target);
-  const {x, y} = getScrollPosition(scrollParent);
+  if (isNode(element)) {
+    const node: Node = (element: any);
+    scrollPosition = getScrollPosition(Style.getScrollParent(node));
+  }
 
   const fragment = getFragmentFromSelection(editorState);
   editor.setClipboard(fragment);
@@ -55,7 +57,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Let native `cut` behavior occur, then recover control.
   setTimeout(() => {
-    editor.restoreEditorDOM({x, y});
+    editor.restoreEditorDOM(scrollPosition);
     editor.exitCurrentMode();
     editor.update(removeFragment(editorState));
   }, 0);
