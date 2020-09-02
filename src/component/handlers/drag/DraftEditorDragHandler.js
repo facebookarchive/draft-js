@@ -151,13 +151,6 @@ const DraftEditorDragHandler = {
     }
     endDrag(editor);
   },
-
-  /**
-   * Handle on drag over event.
-   */
-  onDragOver: function onDragOver(editor: DraftEditor, e: Object): void {
-    e.preventDefault();
-  }
 };
 
 function endDrag(editor) {
