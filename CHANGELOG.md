@@ -4,6 +4,42 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.11.7 (Aug 13th, 2020)
+
+### Added
+
+* Allow aria-describedby overriding (Jeff Dickey in 8b8b9c00)
+* Add support to create editor state using text string (Abhishek Pandya in fc9395fe)
+
+### Changed
+* Update readme to suggest building with yarn (#2527) (Kevin Chavez in 54213a13)
+* Update build, static analysis deps (+ upgrade to fbjs 2.0.0) (#2541) (Kevin Chavez in 5e92a32f)
+* Tex example: Update babel to v7 + other deps (#2533) (Kevin Chavez in ce94ecf3)
+* Update package.json (#2490) (Michaël De Boey in b79082f9)
+* Update media.html (#2452) (fay in a8f44b15)
+* Upgrade dependencies in playground example (#2534) (Kevin Chavez in f6bf4ed3)
+* feat(docs): Update README.md (#2523) (Darsh Shah in e0fc33eb)
+* adds highlight in docs (#2469) (Tunde Thomas in cef61910)
+* Update QuickStart-API-Basics.md (#2491) (Michaël De Boey in 170fe23a)
+* Update .travis.yml (#2495) (Michaël De Boey in 3eb391e7)
+* Update link to Record in docs (#2418) (Rounak Agarwal in 6a55c383)
+* Update link to Immutable Map in docs (#2530) (Rounak Agarwal in 31dde91a)
+* Upgrade browserify and babel deps in universal example (#2532) (Kevin Chavez in 1c8815a1)
+* Upgrade eslint, flow, jest (#2531) (Kevin Chavez in ccd0470b)
+* Fix the build by adding an argument to catch statement (Kevin Chavez in 5482c902)
+* Conditionally invokes URI.tryParseURI in OSS code (Claudio Procida in 36de6f1f)
+* formatPastedText prop (Laura González in 9a9ccbd5)
+* fix pasting invalid links (Frank Thompson in 862a5b2b)
+* chore(dependabot): adds examples directories separately (#2505) (Claudio Procida in fb0eb34c)
+* style(website): Removes desaturation (#2504) (Claudio Procida in 2b8edb18)
+* Fixes links accessibility by adding underlines (#2497) (R Nabors in 5e17cc24)
+* add codes to suppressions in www (Daniel Sainati in 8457ebba)
+* update comments in mobile to support error codes (Daniel Sainati in fb728fde)
+* Use object shorthand in DraftEditorCompositionHandler (Kevin Chavez in d949433d)
+* Force the selection when composition is resolved (#2094) (Robbert Brak in 3be4d372)
+* fix(security): Upgrades Docusaurus to address CVE-2020-7662 (#2457) (Claudio Procida in a08a8fa5)
+
+
 ## 0.11.6 (June 4th, 2020)
 
 ### Added

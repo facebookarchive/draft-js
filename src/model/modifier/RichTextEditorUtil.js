@@ -193,13 +193,9 @@ const RichTextEditorUtil: RichTextUtils = {
   onTab: function(
     event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
-    maxDepth: number,
   ): EditorState {
     const selection = editorState.getSelection();
     const key = selection.getAnchorKey();
-    if (key !== selection.getFocusKey()) {
-      return editorState;
-    }
 
     const content = editorState.getCurrentContent();
     const block = content.getBlockForKey(key);
@@ -210,16 +206,10 @@ const RichTextEditorUtil: RichTextUtils = {
 
     event.preventDefault();
 
-    const depth = block.getDepth();
-    if (!event.shiftKey && depth === maxDepth) {
-      return editorState;
-    }
-
     const withAdjustment = adjustBlockDepthForContentState(
       content,
       selection,
       event.shiftKey ? -1 : 1,
-      maxDepth,
     );
 
     return EditorState.push(editorState, withAdjustment, 'adjust-depth');

@@ -114,6 +114,7 @@ const defaultRecord: EditorStateRecordType = {
 const EditorStateRecord = (Record(defaultRecord): any);
 
 class EditorState {
+  // $FlowFixMe[value-as-type]
   _immutable: EditorStateRecord;
 
   static createEmpty(decorator?: ?DraftDecoratorType): EditorState {
@@ -587,6 +588,7 @@ class EditorState {
   /**
    * Not for public consumption.
    */
+  // $FlowFixMe[value-as-type]
   constructor(immutable: EditorStateRecord) {
     this._immutable = immutable;
   }
@@ -594,6 +596,7 @@ class EditorState {
   /**
    * Not for public consumption.
    */
+  // $FlowFixMe[value-as-type]
   getImmutable(): EditorStateRecord {
     return this._immutable;
   }

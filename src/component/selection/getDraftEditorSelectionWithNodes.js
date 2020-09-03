@@ -167,7 +167,11 @@ function getPointForNonTextNode(
   // wrapper.
   if (editorRoot === node) {
     node = node.firstChild;
-    invariant(isElement(node), 'Invalid DraftEditorContents node.');
+    invariant(
+      isElement(node),
+      'Invalid DraftEditorContents node. Expected element but instead got a node with type of %s.',
+      [node?.nodeType],
+    );
     const castedNode: Element = (node: any);
 
     // assignment only added for flow :/
