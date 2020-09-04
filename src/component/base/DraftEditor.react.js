@@ -595,9 +595,20 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void = (
     scrollPosition?: DraftScrollPosition,
   ): void => {
-    this.setState({contentsKey: this.state.contentsKey + 1}, () => {
-      this.focus(scrollPosition);
-    });
+    // Wrap event handlers in `flushControlled`. In sync mode, this is
+    // effectively a no-op. In async mode, this ensures all updates scheduled
+    // inside the handler are flushed before React yields to the browser.
+    if (flushControlled) {
+      flushControlled(() =>
+        this.setState({contentsKey: this.state.contentsKey + 1}, () => {
+          this.focus(scrollPosition);
+        }),
+      );
+    } else {
+      this.setState({contentsKey: this.state.contentsKey + 1}, () => {
+        this.focus(scrollPosition);
+      });
+    }
   };
 
   /**
