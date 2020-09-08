@@ -35,7 +35,7 @@ by matching the Draft block render map with the matched tag.
 ## Configuring block render map
 
 Draft's default block render map can be overwritten by passing an
-[Immutable Map](http://facebook.github.io/immutable-js/docs/#/Map) to
+[Immutable Map](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Map) to
 the editor blockRender props.
 
 _example of overwriting default block render map:_

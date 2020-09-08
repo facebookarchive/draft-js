@@ -32,7 +32,6 @@ export type RichTextUtils = {
   onTab: (
     event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
-    maxDepth: number,
   ) => EditorState,
   toggleBlockType: (
     editorState: EditorState,

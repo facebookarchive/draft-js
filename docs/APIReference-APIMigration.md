@@ -19,7 +19,7 @@ This API improvement unlocks the path for many benefits that will be available i
 
 Here is a quick list of what has been changed and how to update your application:
 
-### Creating an entity
+### Creating an Entity
 
 **Old Syntax**
 
@@ -52,7 +52,7 @@ const entityInstance = contentState.getEntity(entityKey);
 // entityKey is a string key associated with that entity when it was created
 ```
 
-### Decorator Strategy arguments change
+### Decorator strategy arguments change
 
 **Old Syntax**
 
@@ -128,4 +128,4 @@ function findLinkEntities(contentBlock, callback, contentState) {
 
 ## More Information
 
-For more information see the [updated examples](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0).
+See the [updated examples](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0).

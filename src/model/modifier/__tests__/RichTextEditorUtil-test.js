@@ -181,8 +181,8 @@ describe('onTab on list block', () => {
       .getCurrentContent()
       .getFirstBlock()
       .getDepth();
-  const addTab = (contentState, maxDepth = 2) =>
-    onTab({preventDefault: () => {}}, contentState, maxDepth);
+  const addTab = contentState =>
+    onTab({preventDefault: () => {}}, contentState);
 
   test('increases the depth of unordered-list-item', () => {
     const contentState = editorState.getCurrentContent();

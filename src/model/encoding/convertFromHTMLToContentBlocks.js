@@ -161,14 +161,24 @@ const isValidAnchor = (node: Node) => {
     return false;
   }
   const anchorNode: HTMLAnchorElement = (node: any);
-  return (
-    !!anchorNode.href &&
-    URI.tryParseURI(anchorNode.href) != null &&
-    (anchorNode.protocol === 'http:' ||
-      anchorNode.protocol === 'https:' ||
-      anchorNode.protocol === 'mailto:' ||
-      anchorNode.protocol === 'tel:')
-  );
+
+  if (
+    !anchorNode.href ||
+    (anchorNode.protocol !== 'http:' &&
+      anchorNode.protocol !== 'https:' &&
+      anchorNode.protocol !== 'mailto:' &&
+      anchorNode.protocol !== 'tel:')
+  ) {
+    return false;
+  }
+
+  try {
+    // Just checking whether we can actually create a URI
+    const _ = new URI(anchorNode.href);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 /**
@@ -619,15 +629,8 @@ class ContentBlocksBuilder {
     );
 
     // The child text node cannot just have a space or return as content (since
-    // we strip those out), unless the image is for presentation only.
-    // See https://github.com/facebook/draft-js/issues/231 for some context.
-    if (gkx('draftjs_fix_paste_for_img')) {
-      if (image.getAttribute('role') !== 'presentation') {
-        this._appendText('\ud83d\udcf7', style);
-      }
-    } else {
-      this._appendText('\ud83d\udcf7', style);
-    }
+    // we strip those out)
+    this._appendText('\ud83d\udcf7', style);
 
     this.currentEntity = null;
   }
