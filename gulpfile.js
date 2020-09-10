@@ -76,7 +76,7 @@ var COPYRIGHT_HEADER = `/**
  */
 `;
 
-const buildDist = function(opts) {
+const buildDist = opts => {
   const webpackOpts = {
     externals: {
       immutable: {
