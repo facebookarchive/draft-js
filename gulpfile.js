@@ -7,27 +7,27 @@
 
 'use strict';
 
-var packageData = require('./package.json');
-var moduleMap = require('./scripts/module-map');
-var fbjsConfigurePreset = require('babel-preset-fbjs/configure');
-var del = require('del');
-var gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
-var gulp = require('gulp');
-var babel = require('gulp-babel');
-var cleanCSS = require('gulp-clean-css');
-var concatCSS = require('gulp-concat-css');
-var derequire = require('gulp-derequire');
-var flatten = require('gulp-flatten');
-var header = require('gulp-header');
-var gulpif = require('gulp-if');
-var rename = require('gulp-rename');
-var gulpUtil = require('gulp-util');
-var StatsPlugin = require('stats-webpack-plugin');
-var through = require('through2');
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-var webpackStream = require('webpack-stream');
+const packageData = require('./package.json');
+const moduleMap = require('./scripts/module-map');
+const fbjsConfigurePreset = require('babel-preset-fbjs/configure');
+const del = require('del');
+const gulpCheckDependencies = require('fbjs-scripts/gulp/check-dependencies');
+const gulp = require('gulp');
+const babel = require('gulp-babel');
+const cleanCSS = require('gulp-clean-css');
+const concatCSS = require('gulp-concat-css');
+const derequire = require('gulp-derequire');
+const flatten = require('gulp-flatten');
+const header = require('gulp-header');
+const gulpif = require('gulp-if');
+const rename = require('gulp-rename');
+const gulpUtil = require('gulp-util');
+const StatsPlugin = require('stats-webpack-plugin');
+const through = require('through2');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpackStream = require('webpack-stream');
 
-var paths = {
+const paths = {
   dist: 'dist',
   lib: 'lib',
   src: [
@@ -38,7 +38,7 @@ var paths = {
   css: ['src/**/*.css'],
 };
 
-var babelOptsJS = {
+const babelOptsJS = {
   presets: [
     fbjsConfigurePreset({
       stripDEV: true,
@@ -52,7 +52,7 @@ var babelOptsJS = {
   ],
 };
 
-var babelOptsFlow = {
+const babelOptsFlow = {
   presets: [
     fbjsConfigurePreset({
       target: 'flow',
@@ -62,6 +62,7 @@ var babelOptsFlow = {
   plugins: [
     require('@babel/plugin-proposal-nullish-coalescing-operator'),
     require('@babel/plugin-proposal-optional-chaining'),
+    require('@babel/plugin-proposal-optional-catch-binding'),
   ],
 };
 
@@ -75,8 +76,8 @@ var COPYRIGHT_HEADER = `/**
  */
 `;
 
-var buildDist = function(opts) {
-  var webpackOpts = {
+const buildDist = opts => {
+  const webpackOpts = {
     externals: {
       immutable: {
         root: 'Immutable',
@@ -130,153 +131,131 @@ var buildDist = function(opts) {
   return wpStream;
 };
 
-gulp.task(
-  'clean',
-  gulp.series(function() {
-    return del([paths.dist, paths.lib]);
-  }),
-);
+/**************** Tasks *****************/
 
-gulp.task(
-  'modules',
-  gulp.series(function() {
-    return gulp
-      .src(paths.src)
-      .pipe(babel(babelOptsJS))
-      .pipe(flatten())
-      .pipe(gulp.dest(paths.lib));
-  }),
-);
-
-gulp.task(
-  'flow',
-  gulp.series(function() {
-    return gulp
-      .src(paths.src)
-      .pipe(babel(babelOptsFlow))
-      .pipe(flatten())
-      .pipe(rename({extname: '.js.flow'}))
-      .pipe(gulp.dest(paths.lib));
-  }),
-);
-
-gulp.task(
-  'css',
-  gulp.series(function() {
-    return (
-      gulp
-        .src(paths.css)
-        .pipe(
-          through.obj(function(file, encoding, callback) {
-            var contents = file.contents.toString();
-            var replaced = contents.replace(
-              // Regex based on MakeHasteCssModuleTransform: ignores comments,
-              // strings, and URLs
-              /\/\*.*?\*\/|'(?:\\.|[^'])*'|"(?:\\.|[^"])*"|url\([^)]*\)|(\.(?:public\/)?[\w-]*\/{1,2}[\w-]+)/g,
-              function(match, cls) {
-                if (cls) {
-                  return cls.replace(/\//g, '-');
-                } else {
-                  return match;
-                }
-              },
-            );
-            replaced = replaced.replace(
-              // MakeHasteCssVariablesTransform
-              /\bvar\(([\w-]+)\)/g,
-              function(match, name) {
-                var vars = {
-                  'fig-secondary-text': '#9197a3',
-                  'fig-light-20': '#bdc1c9',
-                };
-                if (vars[name]) {
-                  return vars[name];
-                } else {
-                  throw new Error('Unknown CSS variable ' + name);
-                }
-              },
-            );
-            file.contents = Buffer.from(replaced);
-            callback(null, file);
-          }),
-        )
-        .pipe(concatCSS('Draft.css'))
-        // Avoid rewriting rules *just in case*, just compress
-        .pipe(cleanCSS({advanced: false}))
-        .pipe(header(COPYRIGHT_HEADER, {version: packageData.version}))
-        .pipe(gulp.dest(paths.dist))
-    );
-  }),
-);
-
-gulp.task(
-  'dist',
-  gulp.series('modules', 'css', function() {
-    var opts = {
-      debug: true,
-      output: 'Draft.js',
-    };
-    return gulp
-      .src('./lib/Draft.js')
-      .pipe(buildDist(opts))
-      .pipe(derequire())
+// Builds the CSS
+exports.css = function css() {
+  return (
+    gulp
+      .src(paths.css)
       .pipe(
-        gulpif(
-          '*.js',
-          header(COPYRIGHT_HEADER, {version: packageData.version}),
-        ),
+        through.obj(function(file, encoding, callback) {
+          const contents = file.contents.toString();
+          let replaced = contents.replace(
+            // Regex based on MakeHasteCssModuleTransform: ignores comments,
+            // strings, and URLs
+            /\/\*.*?\*\/|'(?:\\.|[^'])*'|"(?:\\.|[^"])*"|url\([^)]*\)|(\.(?:public\/)?[\w-]*\/{1,2}[\w-]+)/g,
+            function(match, cls) {
+              if (cls) {
+                return cls.replace(/\//g, '-');
+              } else {
+                return match;
+              }
+            },
+          );
+          replaced = replaced.replace(
+            // MakeHasteCssVariablesTransform
+            /\bvar\(([\w-]+)\)/g,
+            function(match, name) {
+              const vars = {
+                'fig-secondary-text': '#9197a3',
+                'fig-light-20': '#bdc1c9',
+              };
+              if (vars[name]) {
+                return vars[name];
+              } else {
+                throw new Error('Unknown CSS variable ' + name);
+              }
+            },
+          );
+          file.contents = Buffer.from(replaced);
+          callback(null, file);
+        }),
       )
-      .pipe(gulp.dest(paths.dist));
-  }),
-);
+      .pipe(concatCSS('Draft.css'))
+      // Avoid rewriting rules *just in case*, just compress
+      .pipe(cleanCSS({advanced: false}))
+      .pipe(header(COPYRIGHT_HEADER, {version: packageData.version}))
+      .pipe(gulp.dest(paths.dist))
+  );
+};
 
-gulp.task(
-  'dist:min',
-  gulp.series('modules', function() {
-    var opts = {
-      debug: false,
-      output: 'Draft.min.js',
-    };
-    return gulp
-      .src('./lib/Draft.js')
-      .pipe(buildDist(opts))
-      .pipe(
-        gulpif(
-          '*.js',
-          header(COPYRIGHT_HEADER, {version: packageData.version}),
-        ),
-      )
-      .pipe(gulp.dest(paths.dist));
-  }),
-);
+// Cleans artifacts
+exports.clean = function clean() {
+  return del([paths.dist, paths.lib]);
+};
 
-gulp.task(
-  'check-dependencies',
-  gulp.series(function() {
-    return gulp.src('package.json').pipe(gulpCheckDependencies());
-  }),
-);
+// Transforms modules
+exports.modules = function modules() {
+  return gulp
+    .src(paths.src)
+    .pipe(babel(babelOptsJS))
+    .pipe(flatten())
+    .pipe(gulp.dest(paths.lib));
+};
 
-gulp.task(
-  'watch',
-  gulp.series(function() {
-    gulp.watch(paths.src, gulp.parallel('modules'));
-  }),
-);
+// Outputs built flow files
+exports.flow = function flow() {
+  return gulp
+    .src(paths.src)
+    .pipe(babel(babelOptsFlow))
+    .pipe(flatten())
+    .pipe(rename({extname: '.js.flow'}))
+    .pipe(gulp.dest(paths.lib));
+};
 
-gulp.task(
-  'dev',
-  gulp.series(function() {
-    gulp.watch(paths.src, gulp.parallel('dist'));
-  }),
-);
+// Builds for development
+exports.dist = gulp.series(exports.modules, exports.css, function outputDist() {
+  return gulp
+    .src('./lib/Draft.js')
+    .pipe(
+      buildDist({
+        debug: true,
+        output: 'Draft.js',
+      }),
+    )
+    .pipe(derequire())
+    .pipe(
+      gulpif('*.js', header(COPYRIGHT_HEADER, {version: packageData.version})),
+    )
+    .pipe(gulp.dest(paths.dist));
+});
 
-gulp.task(
-  'default',
-  gulp.series(
-    'check-dependencies',
-    'clean',
-    gulp.parallel('modules', 'flow'),
-    gulp.parallel('dist', 'dist:min'),
-  ),
+// Builds for production
+exports.dist_min = gulp.series(exports.modules, function outputDistMin() {
+  return gulp
+    .src('./lib/Draft.js')
+    .pipe(
+      buildDist({
+        debug: false,
+        output: 'Draft.min.js',
+      }),
+    )
+    .pipe(
+      gulpif('*.js', header(COPYRIGHT_HEADER, {version: packageData.version})),
+    )
+    .pipe(gulp.dest(paths.dist));
+});
+
+// Checks for "wrong" dependencies (file://, for example).
+exports.check_dependencies = function check_dependencies() {
+  return gulp.src('package.json').pipe(gulpCheckDependencies());
+};
+
+// Watches to build modules
+exports.watch = function watch() {
+  gulp.watch(paths.src, exports.modules);
+};
+
+// Watches to build dev artifact
+exports.dev = function dev() {
+  gulp.watch(paths.src, exports.dist);
+};
+
+// Builds everything
+exports.default = gulp.series(
+  exports.check_dependencies,
+  exports.clean,
+  gulp.parallel(exports.modules, exports.flow),
+  gulp.parallel(exports.dist, exports.dist_min),
 );
