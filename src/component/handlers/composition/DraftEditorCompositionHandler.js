@@ -100,11 +100,18 @@ const DraftEditorCompositionHandler = {
    */
   onKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     if (!stillComposing) {
-      // If a keydown event is received after compositionend but before the
-      // 20ms timer expires (ex: type option-E then backspace, or type A then
-      // backspace in 2-Set Korean), we should immediately resolve the
-      // composition and reinterpret the key press in edit mode.
-      DraftEditorCompositionHandler.resolveComposition(editor);
+      // This check was added in D23734060. Seemingly, we should be checking
+      // to see if the resolved flag is false here, otherwise the below
+      // comment doesn't make sense. With this change, it should prevent
+      // over-firing the resolveComposition() method, which might help fix
+      // some existing IME issues.
+      if (!resolved) {
+        // If a keydown event is received after compositionend but before the
+        // 20ms timer expires (ex: type option-E then backspace, or type A then
+        // backspace in 2-Set Korean), we should immediately resolve the
+        // composition and reinterpret the key press in edit mode.
+        DraftEditorCompositionHandler.resolveComposition(editor);
+      }
       editor._onKeyDown(e);
       return;
     }
