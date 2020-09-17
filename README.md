@@ -119,7 +119,7 @@ import {Editor, EditorState} from 'draft-js';
 
 function MyEditor() {
   const [editorState, setEditorState] = React.useState(
-    EditorState.createEmpty()
+    () => EditorState.createEmpty()
   );
 
   const editor = React.useRef(null);
