@@ -155,7 +155,11 @@ class EditorState {
     const {currentContent, decorator} = config;
     const recordConfig = {
       ...config,
-      treeMap: generateNewTreeMap(currentContent, decorator),
+      treeMap: generateNewTreeMap(
+        currentContent,
+        decorator,
+        /* inCompositionMode= */ false,
+      ),
       directionMap: EditorBidiService.getDirectionMap(currentContent),
     };
     return new EditorState(new EditorStateRecord(recordConfig));
@@ -225,9 +229,14 @@ class EditorState {
             treeMap,
             decorator,
             existingDecorator,
+            editorState.isInCompositionMode(),
           );
         } else {
-          newTreeMap = generateNewTreeMap(newContent, decorator);
+          newTreeMap = generateNewTreeMap(
+            newContent,
+            decorator,
+            editorState.isInCompositionMode(),
+          );
         }
 
         state.merge({
@@ -626,10 +635,13 @@ function updateSelection(
 function generateNewTreeMap(
   contentState: ContentState,
   decorator?: ?DraftDecoratorType,
+  inCompositionMode: boolean,
 ): OrderedMap<string, List<any>> {
   return contentState
     .getBlockMap()
-    .map(block => BlockTree.generate(contentState, block, decorator))
+    .map(block =>
+      BlockTree.generate(contentState, block, decorator, inCompositionMode),
+    )
     .toOrderedMap();
 }
 
@@ -649,11 +661,14 @@ function regenerateTreeForNewBlocks(
     .set('entityMap', newEntityMap);
   const prevBlockMap = contentState.getBlockMap();
   const prevTreeMap = editorState.getImmutable().get('treeMap');
+  const inCompositionMode = editorState.isInCompositionMode();
   return prevTreeMap.merge(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(contentState, block, decorator)),
+      .map(block =>
+        BlockTree.generate(contentState, block, decorator, inCompositionMode),
+      ),
   );
 }
 
@@ -671,17 +686,20 @@ function regenerateTreeForNewDecorator(
   previousTreeMap: OrderedMap<string, List<any>>,
   decorator: DraftDecoratorType,
   existingDecorator: DraftDecoratorType,
+  inCompositionMode: boolean,
 ): OrderedMap<string, List<any>> {
   return previousTreeMap.merge(
     blockMap
       .toSeq()
       .filter(block => {
         return (
-          decorator.getDecorations(block, content) !==
-          existingDecorator.getDecorations(block, content)
+          decorator.getDecorations(block, content, inCompositionMode) !==
+          existingDecorator.getDecorations(block, content, inCompositionMode)
         );
       })
-      .map(block => BlockTree.generate(content, block, decorator)),
+      .map(block =>
+        BlockTree.generate(content, block, decorator, inCompositionMode),
+      ),
   );
 }
 

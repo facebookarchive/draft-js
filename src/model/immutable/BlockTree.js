@@ -72,6 +72,7 @@ const BlockTree = {
     contentState: ContentState,
     block: BlockNodeRecord,
     decorator: ?DraftDecoratorType,
+    inCompositionMode: boolean,
     // $FlowFixMe[value-as-type]
   ): List<DecoratorRange> {
     const textLength = block.getLength();
@@ -88,7 +89,7 @@ const BlockTree = {
 
     const leafSets = [];
     const decorations = decorator
-      ? decorator.getDecorations(block, contentState)
+      ? decorator.getDecorations(block, contentState, inCompositionMode)
       : List(Repeat(null, textLength));
 
     const chars = block.getCharacterList();

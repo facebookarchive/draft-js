@@ -28,6 +28,7 @@ export type DraftDecoratorType = {
   getDecorations(
     block: BlockNodeRecord,
     contentState: ContentState,
+    inCompositionMode: boolean,
   ): List<?string>,
   /**
    * Given a decorator key, return the component to use when rendering
