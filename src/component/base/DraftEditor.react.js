@@ -136,10 +136,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   static defaultProps: DraftEditorDefaultProps = {
     ariaDescribedBy: '{{editor_id_placeholder}}',
     blockRenderMap: DefaultDraftBlockRenderMap,
-    blockRendererFn: function() {
+    blockRendererFn() {
       return null;
     },
-    blockStyleFn: function() {
+    blockStyleFn() {
       return '';
     },
     keyBindingFn: getDefaultKeyBinding,

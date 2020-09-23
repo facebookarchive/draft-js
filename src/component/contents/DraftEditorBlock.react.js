@@ -213,7 +213,7 @@ class DraftEditorBlock extends React.Component<Props> {
         const commonProps: DraftDecoratorComponentProps = {
           contentState: this.props.contentState,
           decoratedText,
-          dir: dir,
+          dir,
           start,
           end,
           blockKey,
