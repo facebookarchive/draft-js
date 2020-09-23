@@ -57,14 +57,13 @@ const handlerMap = {
   render: null,
 };
 
-type State = {contentsKey: number, ...};
+type State = {contentsKey: number};
 
 let didInitODS = false;
 
 class UpdateDraftEditorFlags extends React.Component<{
   editor: DraftEditor,
   editorState: EditorState,
-  ...
 }> {
   render(): React.Node {
     return null;
@@ -152,7 +151,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _clipboard: ?BlockMap;
   _handler: ?Object;
   _dragCount: number;
-  _internalDrag: boolean;
+  _internalDrag: boolean = false;
   _editorKey: string;
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
@@ -196,6 +195,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   update: (editorState: EditorState) => void;
   onDragEnter: () => void;
   onDragLeave: () => void;
+
+  // See `restoreEditorDOM()`.
+  state: State = {contentsKey: 0};
 
   constructor(props: DraftEditorProps) {
     super(props);
@@ -242,7 +244,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         'onUpArrow',
       ].forEach(propName => {
         if (props.hasOwnProperty(propName)) {
-          // eslint-disable-next-line no-console
+          // eslint-disable-next-line fb-www/no-console
           console.warn(
             `Supplying an \`${propName}\` prop to \`DraftEditor\` has ` +
               'been deprecated. If your handler needs access to the keyboard ' +
@@ -252,9 +254,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         }
       });
     }
-
-    // See `restoreEditorDOM()`.
-    this.state = {contentsKey: 0};
   }
 
   /**
@@ -499,6 +498,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * a specified scroll position (for cases like `cut` behavior where it should
    * be restored to a known position).
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   focus: (scrollPosition?: DraftScrollPosition) => void = (
     scrollPosition?: DraftScrollPosition,
   ): void => {
@@ -537,6 +537,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     }
   };
 
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   blur: () => void = (): void => {
     const editorNode = this.editor;
     if (!editorNode) {
@@ -553,6 +554,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * handler module to ensure that DOM events are managed appropriately for
    * the active mode.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   setMode: DraftEditorModes => void = (mode: DraftEditorModes): void => {
     const {onPaste, onCut, onCopy} = this.props;
     const editHandler = {...handlerMap.edit};
@@ -579,6 +581,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this._handler = handler[mode];
   };
 
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   exitCurrentMode: () => void = (): void => {
     this.setMode('edit');
   };
@@ -592,6 +595,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * reconciliation occurs on a version of the DOM that is synchronized with
    * our EditorState.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void = (
     scrollPosition?: DraftScrollPosition,
   ): void => {
@@ -616,6 +620,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * Set the clipboard state for a cut/copy event.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   setClipboard: (?BlockMap) => void = (clipboard: ?BlockMap): void => {
     this._clipboard = clipboard;
   };
@@ -625,6 +630,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * Retrieve the clipboard state for a cut/copy event.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   getClipboard: () => ?BlockMap = (): ?BlockMap => {
     return this._clipboard;
   };
@@ -638,6 +644,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * an `onChange` prop to receive state updates passed along from this
    * function.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   update: EditorState => void = (editorState: EditorState): void => {
     const onChange = this.props.onChange;
     this._latestEditorState = editorState;
