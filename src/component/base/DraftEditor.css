@@ -15,6 +15,12 @@
 .public/DraftEditor/content {
   height: inherit;
   text-align: initial;
+  outline: 'none';
+  /* fix parent-draggable Safari bug. #1326 */
+  user-select: text;
+  -webkit-user-select: text;
+  white-space: pre-wrap;
+  word-wrap:break-word;
 }
 
 .public/DraftEditor/content[contenteditable="true"] {
@@ -48,6 +54,10 @@
 .DraftEditor/alignLeft .public/DraftEditorPlaceholder/root {
   left: 0;
   text-align: left;
+}
+
+.public/DraftEditorPlaceholder/inner {
+  white-space: pre-wrap;
 }
 
 .DraftEditor/alignCenter .public/DraftStyleDefault/block {
