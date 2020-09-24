@@ -22,7 +22,6 @@ export type DraftDecoratorStrategy = (
   block: BlockNodeRecord,
   callback: (start: number, end: number) => void,
   contentState: ContentState,
-  inCompositionMode: boolean,
 ) => void;
 
 /**
