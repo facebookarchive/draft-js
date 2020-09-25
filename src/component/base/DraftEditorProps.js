@@ -45,6 +45,7 @@ export type DraftEditorProps = {
   // styling and formatting when re-applying styles.
   editorKey?: string,
   placeholder?: string,
+  placeholderClassName?: string,
   // Specify whether text alignment should be forced in a direction
   // regardless of input characters.
   textAlignment?: DraftTextAlignment,

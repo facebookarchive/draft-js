@@ -17,10 +17,12 @@ import type EditorState from 'EditorState';
 const React = require('React');
 
 const cx = require('cx');
+const joinClasses = require('joinClasses');
 const shallowEqual = require('shallowEqual');
 
 type Props = {
   accessibilityID: string,
+  className?: string,
   editorState: EditorState,
   text: string,
   textAlignment: DraftTextAlignment,
@@ -45,23 +47,23 @@ class DraftEditorPlaceholder extends React.Component<Props> {
   }
 
   render(): React.Node {
-    const hasFocus = this.props.editorState.getSelection().getHasFocus();
-
-    const className = cx({
-      'public/DraftEditorPlaceholder/root': true,
-      'public/DraftEditorPlaceholder/hasFocus': hasFocus,
-    });
-
-    const contentStyle = {
-      whiteSpace: 'pre-wrap',
-    };
-
     return (
-      <div className={className}>
+      <div
+        className={cx({
+          'public/DraftEditorPlaceholder/root': true,
+          'public/DraftEditorPlaceholder/hasFocus': this.props.editorState
+            .getSelection()
+            .getHasFocus(),
+        })}>
         <div
-          className={cx('public/DraftEditorPlaceholder/inner')}
+          className={joinClasses(
+            cx('public/DraftEditorPlaceholder/inner'),
+            this.props.className,
+          )}
           id={this.props.accessibilityID}
-          style={contentStyle}>
+          style={{
+            whiteSpace: 'pre-wrap',
+          }}>
           {this.props.text}
         </div>
       </div>

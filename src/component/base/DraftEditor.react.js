@@ -300,10 +300,11 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _renderPlaceholder(): React.Node {
     if (this._showPlaceholder()) {
       const placeHolderProps = {
-        text: nullthrows(this.props.placeholder),
-        editorState: this.props.editorState,
-        textAlignment: this.props.textAlignment,
         accessibilityID: this._placeholderAccessibilityID,
+        className: this.props.placeholderClassName,
+        editorState: this.props.editorState,
+        text: nullthrows(this.props.placeholder),
+        textAlignment: this.props.textAlignment,
       };
 
       /* $FlowFixMe[incompatible-type] (>=0.112.0 site=www,mobile) This comment
