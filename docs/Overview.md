@@ -22,7 +22,7 @@ npm install draft-js react react-dom
 yarn add draft-js react react-dom
 ```
 
-Draft.js uses some modern ECMAScript features which are not available to IE11 and not part of create-react-app's default babel config. If you're running into problems out-of-the-box try installing a shim or polyfill alongside Draft.
+Draft.js uses some modern ECMAScript features which are neither available in IE11 nor a part of create-react-app's default babel config. If you're running into unusual problems, try installing a shim or polyfill along with Draft.
 
 ```sh
 npm install draft-js react react-dom babel-polyfill
@@ -35,9 +35,9 @@ Learn more about [using a shim with Draft](/docs/advanced-topics-issues-and-pitf
 ## API Changes Notice
 
 Before getting started, please be aware that we recently changed the API of
-Entity storage in Draft. The latest version, `v0.10.0`, supports both the old
+Entity storage in Draft. The latest version `v0.10.0` supports both the old
 and new API. Following that up will be `v0.11.0` which will remove the old API.
-If you are interested in helping out, or tracking the progress, please follow
+If you are interested in helping out or tracking the progress, please follow
 [issue 839](https://github.com/facebook/draft-js/issues/839).
 
 ## Usage
@@ -92,4 +92,4 @@ Because Draft.js supports unicode, you must have the following meta tag in the `
 
 `Draft.css` should be included when rendering the editor. Learn more about [why](/docs/advanced-topics-issues-and-pitfalls#missing-draftcss).
 
-Next, let's go into the basics of the API and learn what else you can do with Draft.js.
+Next, let's go through the basics of the API and learn what else you can do with Draft.js.
