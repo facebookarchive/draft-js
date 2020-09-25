@@ -152,11 +152,12 @@ const DraftEditorCompositionHandler = {
       return;
     }
 
+    const lastEditorState = editor._latestEditorState;
     const mutations = nullthrows(domObserver).stopAndFlushMutations();
     domObserver = null;
     resolved = true;
 
-    let editorState = EditorState.set(editor._latestEditorState, {
+    let editorState = EditorState.set(lastEditorState, {
       inCompositionMode: false,
     });
 
@@ -226,9 +227,14 @@ const DraftEditorCompositionHandler = {
 
     // When we apply the text changes to the ContentState, the selection always
     // goes to the end of the field, but it should just stay where it is
-    // after compositionEnd.
+    // after compositionEnd. We also apply this to the last editor state, rather
+    // than the new editor state in order to avoid problems that might come from
+    // race conditions around calculating ranges from mutations when processing
+    // the mutations above. If the ranges are off, for example, using mentions
+    // in IME mode, then the selection will move the cursor to an invalid range.
+    // See D23905960 for more context:
     const documentSelection = getDraftEditorSelection(
-      editorState,
+      lastEditorState,
       getContentEditableContainer(editor),
     );
     const compositionEndSelectionState = documentSelection.selectionState;
