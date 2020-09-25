@@ -17,6 +17,7 @@ import type EditorState from 'EditorState';
 const React = require('React');
 
 const cx = require('cx');
+const shallowEqual = require('shallowEqual');
 
 type Props = {
   accessibilityID: string,
@@ -34,10 +35,12 @@ type Props = {
  */
 class DraftEditorPlaceholder extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
+    const {editorState, ...otherProps} = this.props;
+    const {editorState: nextEditorState, ...nextOtherProps} = nextProps;
     return (
-      this.props.text !== nextProps.text ||
-      this.props.editorState.getSelection().getHasFocus() !==
-        nextProps.editorState.getSelection().getHasFocus()
+      editorState.getSelection().getHasFocus() !==
+        nextEditorState.getSelection().getHasFocus() ||
+      shallowEqual(otherProps, nextOtherProps)
     );
   }
 
