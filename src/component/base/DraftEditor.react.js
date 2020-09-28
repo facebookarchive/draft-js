@@ -177,7 +177,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _onKeyDown: Function;
   _onKeyPress: Function;
   _onKeyUp: Function;
-  _onMouseDown: Function;
   _onMouseUp: Function;
   _onPaste: Function;
   _onSelect: Function;
@@ -227,7 +226,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this._onKeyDown = this._buildHandler('onKeyDown');
     this._onKeyPress = this._buildHandler('onKeyPress');
     this._onKeyUp = this._buildHandler('onKeyUp');
-    this._onMouseDown = this._buildHandler('onMouseDown');
     this._onMouseUp = this._buildHandler('onMouseUp');
     this._onPaste = this._buildHandler('onPaste');
     this._onSelect = this._buildHandler('onSelect');
