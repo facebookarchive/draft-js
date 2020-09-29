@@ -52,7 +52,7 @@
     "babel-eslint": "^10.1.0",
     "babel-preset-fbjs": "^3.3.0",
     "cross-env": "^7.0.2",
-    "del": "^5.1.0",
+    "del": "^6.0.0",
     "es6-shim": "^0.35.5",
     "eslint": "^7.8.1",
     "eslint-config-fbjs": "^3.1.1",
