@@ -11,7 +11,7 @@
     "react-app-polyfill": "^1.0.6",
     "react-codemirror2": "^7.2.1",
     "react-dom": "^16.13.1",
-    "react-json-tree": "^0.11.2",
+    "react-json-tree": "^0.13.0",
     "react-panelgroup": "^1.0.12",
     "react-scripts": "3.4.1"
   },
