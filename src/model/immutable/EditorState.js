@@ -31,7 +31,7 @@ const {OrderedSet, Record, Stack, OrderedMap, List} = Immutable;
 // When configuring an editor, the user can chose to provide or not provide
 // basically all keys. `currentContent` varies, so this type doesn't include it.
 // (See the types defined below.)
-type BaseEditorStateConfig = {|
+type BaseEditorStateConfig = {
   allowUndo?: boolean,
   decorator?: ?DraftDecoratorType,
   directionMap?: ?OrderedMap<string, string>,
@@ -44,9 +44,9 @@ type BaseEditorStateConfig = {|
   selection?: ?SelectionState,
   treeMap?: ?OrderedMap<string, List<any>>,
   undoStack?: Stack<ContentState>,
-|};
+};
 
-type BaseEditorStateRawConfig = {|
+type BaseEditorStateRawConfig = {
   allowUndo?: boolean,
   decorator?: ?DraftDecoratorType,
   directionMap?: ?{...},
@@ -59,24 +59,24 @@ type BaseEditorStateRawConfig = {|
   selection?: ?{...},
   treeMap?: ?Map<string, Array<DecoratorRangeRawType>>,
   undoStack?: Array<ContentStateRawType>,
-|};
+};
 
 // When crating an editor, we want currentContent to be set.
-type EditorStateCreationConfigType = {|
+type EditorStateCreationConfigType = {
   ...BaseEditorStateConfig,
   currentContent: ContentState,
-|};
+};
 
-type EditorStateCreationConfigRawType = {|
+type EditorStateCreationConfigRawType = {
   ...BaseEditorStateRawConfig,
   currentContent: ContentStateRawType,
-|};
+};
 
 // When using EditorState.set(...), currentContent is optional
-type EditorStateChangeConfigType = {|
+type EditorStateChangeConfigType = {
   ...BaseEditorStateConfig,
   currentContent?: ?ContentState,
-|};
+};
 
 type EditorStateRecordType = {
   allowUndo: boolean,

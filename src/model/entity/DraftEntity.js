@@ -96,7 +96,7 @@ const DraftEntity: DraftEntityMapObject = {
    * We need this to support the new API, as part of transitioning to put Entity
    * storage in contentState.
    */
-  getLastCreatedEntityKey: function(): string {
+  getLastCreatedEntityKey(): string {
     logWarning(
       'DraftEntity.getLastCreatedEntityKey',
       'contentState.getLastCreatedEntityKey',
@@ -114,7 +114,7 @@ const DraftEntity: DraftEntityMapObject = {
    * be used to track the entity's usage in a ContentBlock, and for
    * retrieving data about the entity at render time.
    */
-  create: function(
+  create(
     type: DraftEntityType,
     mutability: DraftEntityMutability,
     data?: Object,
@@ -130,7 +130,7 @@ const DraftEntity: DraftEntityMapObject = {
    * Add an existing DraftEntityInstance to the DraftEntity map. This is
    * useful when restoring instances from the server.
    */
-  add: function(instance: DraftEntityInstance): string {
+  add(instance: DraftEntityInstance): string {
     logWarning('DraftEntity.add', 'contentState.addEntity');
     return DraftEntity.__add(instance);
   },
@@ -141,7 +141,7 @@ const DraftEntity: DraftEntityMapObject = {
    * ---
    * Retrieve the entity corresponding to the supplied key string.
    */
-  get: function(key: string): DraftEntityInstance {
+  get(key: string): DraftEntityInstance {
     logWarning('DraftEntity.get', 'contentState.getEntity');
     return DraftEntity.__get(key);
   },
@@ -169,7 +169,7 @@ const DraftEntity: DraftEntityMapObject = {
    * instance, this method will merge your data updates and return a new
    * instance.
    */
-  mergeData: function(
+  mergeData(
     key: string,
     toMerge: {[key: string]: any, ...},
   ): DraftEntityInstance {
@@ -183,7 +183,7 @@ const DraftEntity: DraftEntityMapObject = {
    * ---
    * Completely replace the data for a given instance.
    */
-  replaceData: function(
+  replaceData(
     key: string,
     newData: {[key: string]: any, ...},
   ): DraftEntityInstance {
@@ -211,7 +211,7 @@ const DraftEntity: DraftEntityMapObject = {
    * be used to track the entity's usage in a ContentBlock, and for
    * retrieving data about the entity at render time.
    */
-  __create: function(
+  __create(
     type: DraftEntityType,
     mutability: DraftEntityMutability,
     data?: Object,
@@ -234,7 +234,7 @@ const DraftEntity: DraftEntityMapObject = {
   /**
    * Retrieve the entity corresponding to the supplied key string.
    */
-  __get: function(key: string): DraftEntityInstance {
+  __get(key: string): DraftEntityInstance {
     const instance = instances.get(key);
     invariant(!!instance, 'Unknown DraftEntity key: %s.', key);
     return instance;
@@ -245,7 +245,7 @@ const DraftEntity: DraftEntityMapObject = {
    * instance, this method will merge your data updates and return a new
    * instance.
    */
-  __mergeData: function(
+  __mergeData(
     key: string,
     toMerge: {[key: string]: any, ...},
   ): DraftEntityInstance {
@@ -259,7 +259,7 @@ const DraftEntity: DraftEntityMapObject = {
   /**
    * Completely replace the data for a given instance.
    */
-  __replaceData: function(
+  __replaceData(
     key: string,
     newData: {[key: string]: any, ...},
   ): DraftEntityInstance {
