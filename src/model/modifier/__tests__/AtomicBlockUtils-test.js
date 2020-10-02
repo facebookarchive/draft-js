@@ -31,9 +31,9 @@ const initialBlock = contentState.getBlockMap().first();
 const ENTITY_KEY = Entity.create('TOKEN', 'MUTABLE');
 const CHARACTER = ' ';
 
+/* eslint-disable-next-line */
 const getInvariantViolation = msg => {
   try {
-    /* eslint-disable-next-line */
     invariant(false, msg);
   } catch (e) {
     return e;
