@@ -18,6 +18,7 @@ import type {ContentStateRawType} from 'ContentStateRawType';
 import type DraftEntityInstance from 'DraftEntityInstance';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
+import type {EntityMap} from 'EntityMap';
 import type {Map} from 'immutable';
 
 const BlockMapBuilder = require('BlockMapBuilder');
@@ -60,7 +61,7 @@ const ContentBlockNodeRecord = gkx('draft_tree_data_support')
   : ContentBlock;
 
 class ContentState extends ContentStateRecord {
-  getEntityMap(): any {
+  getEntityMap(): EntityMap {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity;
   }
