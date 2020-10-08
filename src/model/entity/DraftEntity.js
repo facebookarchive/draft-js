@@ -18,9 +18,9 @@ const Immutable = require('immutable');
 const invariant = require('invariant');
 const uuid = require('uuid');
 
-const {Map} = Immutable;
+const {OrderedMap} = Immutable;
 
-let instances: Map<string, DraftEntityInstance> = Map();
+let instances: OrderedMap<string, DraftEntityInstance> = OrderedMap();
 let instanceKey: string = uuid();
 
 /**
@@ -53,8 +53,10 @@ export type DraftEntityMapObject = {
     key: string,
     newData: {[key: string]: any, ...},
   ) => DraftEntityInstance,
-  __loadWithEntities: (entities: Map<string, DraftEntityInstance>) => void,
-  __getAll: () => Map<string, DraftEntityInstance>,
+  __loadWithEntities: (
+    entities: OrderedMap<string, DraftEntityInstance>,
+  ) => void,
+  __getAll: () => OrderedMap<string, DraftEntityInstance>,
   __getLastCreatedEntityKey: () => string,
   __create: (
     type: DraftEntityType,
@@ -149,14 +151,14 @@ const DraftEntity: DraftEntityMapObject = {
   /**
    * Get all the entities in the content state.
    */
-  __getAll(): Map<string, DraftEntityInstance> {
+  __getAll(): OrderedMap<string, DraftEntityInstance> {
     return instances;
   },
 
   /**
    * Load the entity map with the given set of entities.
    */
-  __loadWithEntities(entities: Map<string, DraftEntityInstance>): void {
+  __loadWithEntities(entities: OrderedMap<string, DraftEntityInstance>): void {
     instances = entities;
     instanceKey = uuid();
   },

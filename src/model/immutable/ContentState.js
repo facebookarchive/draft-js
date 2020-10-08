@@ -19,7 +19,6 @@ import type DraftEntityInstance from 'DraftEntityInstance';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
 import type {EntityMap} from 'EntityMap';
-import type {Map} from 'immutable';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -188,11 +187,11 @@ class ContentState extends ContentStateRecord {
     return DraftEntity.__get(key);
   }
 
-  getAllEntities(): Map<string, DraftEntityInstance> {
+  getAllEntities(): OrderedMap<string, DraftEntityInstance> {
     return DraftEntity.__getAll();
   }
 
-  loadWithEntities(entities: Map<string, DraftEntityInstance>): void {
+  loadWithEntities(entities: OrderedMap<string, DraftEntityInstance>): void {
     return DraftEntity.__loadWithEntities(entities);
   }
 
