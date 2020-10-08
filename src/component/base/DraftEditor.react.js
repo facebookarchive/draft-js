@@ -385,6 +385,11 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       textDirectionality,
     };
 
+    const contentClassName =
+      this.props.contentClassName != null
+        ? this.props.contentClassName + ' '
+        : '';
+
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
@@ -407,14 +412,18 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             autoCapitalize={this.props.autoCapitalize}
             autoComplete={this.props.autoComplete}
             autoCorrect={this.props.autoCorrect}
-            className={cx({
-              // Chrome's built-in translation feature mutates the DOM in ways
-              // that Draft doesn't expect (ex: adding <font> tags inside
-              // DraftEditorLeaf spans) and causes problems. We add notranslate
-              // here which makes its autotranslation skip over this subtree.
-              notranslate: !readOnly,
-              'public/DraftEditor/content': true,
-            })}
+            className={
+              // eslint-disable-next-line fb-www/cx-concat
+              contentClassName +
+              cx({
+                // Chrome's built-in translation feature mutates the DOM in ways
+                // that Draft doesn't expect (ex: adding <font> tags inside
+                // DraftEditorLeaf spans) and causes problems. We add notranslate
+                // here which makes its autotranslation skip over this subtree.
+                notranslate: !readOnly,
+                'public/DraftEditor/content': true,
+              })
+            }
             contentEditable={!readOnly}
             data-testid={this.props.webDriverTestID}
             onBeforeInput={this._onBeforeInput}

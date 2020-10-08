@@ -182,6 +182,7 @@ export type DraftEditorProps = {
   onPaste?: (DraftEditor, SyntheticClipboardEvent<>) => void | Promise<void>,
   onCut?: (DraftEditor, SyntheticClipboardEvent<>) => void,
   onCopy?: (DraftEditor, SyntheticClipboardEvent<>) => void,
+  contentClassName?: string,
   ...
 };
 
