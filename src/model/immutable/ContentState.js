@@ -50,7 +50,23 @@ const defaultRecord: ContentStateRecordType = {
   selectionAfter: null,
 };
 
-const ContentStateRecord = (Record(defaultRecord): any);
+// Immutable 3 typedefs are not good, so ContentState ends up
+// subclassing `any`. Define a rudimentary type for the
+// supercalss here instead.
+declare class ContentStateRecordHelper {
+  constructor(args: any): ContentState;
+  get(key: string): any;
+  merge(args: any): any;
+  set(key: string, value: any): ContentState;
+  setIn(keyPath: Array<string>, value: any): ContentState;
+  equals(other: ContentState): boolean;
+  mergeDeep(other: any): ContentState;
+  isEmpty(): boolean;
+}
+
+const ContentStateRecord: typeof ContentStateRecordHelper = (Record(
+  defaultRecord,
+): any);
 
 /* $FlowFixMe[signature-verification-failure] Supressing a `signature-
  * verification-failure` error here. TODO: T65949050 Clean up the branch for
