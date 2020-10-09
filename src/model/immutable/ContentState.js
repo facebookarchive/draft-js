@@ -207,8 +207,11 @@ class ContentState extends ContentStateRecord {
     return DraftEntity.__getAll();
   }
 
-  loadWithEntities(entities: OrderedMap<string, DraftEntityInstance>): void {
-    return DraftEntity.__loadWithEntities(entities);
+  setEntityMap(
+    entityMap: OrderedMap<string, DraftEntityInstance>,
+  ): ContentState {
+    DraftEntity.__loadWithEntities(entityMap);
+    return this;
   }
 
   static createFromBlockArray(
