@@ -25,6 +25,7 @@ const selectionOnEntity = selectionState.merge({
 });
 
 const setEntityMutability = (mutability, content = contentState) => {
+  // $FlowFixMe error encountered when strong-typing ContentState.getEntityMap
   content.getEntityMap().__get = () => ({
     getMutability: () => mutability,
   });

@@ -23,7 +23,7 @@ const {OrderedMap} = Immutable;
 let bidiService;
 
 const EditorBidiService = {
-  getDirectionMap: function(
+  getDirectionMap(
     content: ContentState,
     prevBidiMap: ?OrderedMap<any, any>,
   ): OrderedMap<any, any> {

@@ -18,7 +18,7 @@ import type {ContentStateRawType} from 'ContentStateRawType';
 import type DraftEntityInstance from 'DraftEntityInstance';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
-import type {Map} from 'immutable';
+import type {EntityMap} from 'EntityMap';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -50,7 +50,23 @@ const defaultRecord: ContentStateRecordType = {
   selectionAfter: null,
 };
 
-const ContentStateRecord = (Record(defaultRecord): any);
+// Immutable 3 typedefs are not good, so ContentState ends up
+// subclassing `any`. Define a rudimentary type for the
+// supercalss here instead.
+declare class ContentStateRecordHelper {
+  constructor(args: any): ContentState;
+  get(key: string): any;
+  merge(args: any): any;
+  set(key: string, value: any): ContentState;
+  setIn(keyPath: Array<string>, value: any): ContentState;
+  equals(other: ContentState): boolean;
+  mergeDeep(other: any): ContentState;
+  isEmpty(): boolean;
+}
+
+const ContentStateRecord: typeof ContentStateRecordHelper = (Record(
+  defaultRecord,
+): any);
 
 /* $FlowFixMe[signature-verification-failure] Supressing a `signature-
  * verification-failure` error here. TODO: T65949050 Clean up the branch for
@@ -60,7 +76,7 @@ const ContentBlockNodeRecord = gkx('draft_tree_data_support')
   : ContentBlock;
 
 class ContentState extends ContentStateRecord {
-  getEntityMap(): any {
+  getEntityMap(): EntityMap {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity;
   }
@@ -187,12 +203,15 @@ class ContentState extends ContentStateRecord {
     return DraftEntity.__get(key);
   }
 
-  getAllEntities(): Map<string, DraftEntityInstance> {
+  getAllEntities(): OrderedMap<string, DraftEntityInstance> {
     return DraftEntity.__getAll();
   }
 
-  loadWithEntities(entities: Map<string, DraftEntityInstance>): void {
-    return DraftEntity.__loadWithEntities(entities);
+  setEntityMap(
+    entityMap: OrderedMap<string, DraftEntityInstance>,
+  ): ContentState {
+    DraftEntity.__loadWithEntities(entityMap);
+    return this;
   }
 
   static createFromBlockArray(
