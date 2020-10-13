@@ -35,7 +35,7 @@
     "test-ci": "cross-env NODE_ENV=test npm run lint && npm run flow && npm run test"
   },
   "dependencies": {
-    "fbjs": "^2.0.0",
+    "fbjs": "^3.0.0",
     "immutable": "~3.7.4",
     "object-assign": "^4.1.1"
   },
