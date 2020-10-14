@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -23,36 +23,36 @@ const isHTMLBRElement = require('isHTMLBRElement');
 const setDraftEditorSelection = require('setDraftEditorSelection')
   .setDraftEditorSelection;
 
+type CSSStyleObject = {[property: string]: string | number, ...};
+
+type CustomStyleMap = {[name: string]: CSSStyleObject, ...};
+type CustomStyleFn = (
+  style: DraftInlineStyle,
+  block: BlockNodeRecord,
+) => ?CSSStyleObject;
+
 type Props = {
   // The block that contains this leaf.
   block: BlockNodeRecord,
-
   // Mapping of style names to CSS declarations.
-  customStyleMap: Object,
-
+  customStyleMap: CustomStyleMap,
   // Function that maps style names to CSS style objects.
-  customStyleFn: Function,
-
+  customStyleFn: CustomStyleFn,
   // Whether to force the DOM selection after render.
   forceSelection: boolean,
-
   // Whether this leaf is the last in its block. Used for a DOM hack.
   isLast: boolean,
-
   offsetKey: string,
-
   // The current `SelectionState`, used to represent a selection range in the
   // editor
   selection: ?SelectionState,
-
   // The offset of this string within its block.
   start: number,
-
   // The set of style(s) names to apply to the node.
   styleSet: DraftInlineStyle,
-
   // The full text to be rendered within this node.
   text: string,
+  ...
 };
 
 /**

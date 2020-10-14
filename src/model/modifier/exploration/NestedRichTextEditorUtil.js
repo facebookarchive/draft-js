@@ -156,7 +156,7 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       }
     }
 
-    // if we have a next sibbling we should not allow the normal backspace
+    // if we have a next sibling we should not allow the normal backspace
     // behaviour of moving this text into its parent
     // if (currentBlock.getPrevSiblingKey()) {
     //  return editorState;
@@ -251,7 +251,7 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
         const entity = v.getEntity();
-        return !!entity && entityMap.__get(entity).getType() === 'LINK';
+        return !!entity && contentState.getEntity(entity).getType() === 'LINK';
       });
   },
 
@@ -291,7 +291,6 @@ const NestedRichTextEditorUtil: RichTextUtils = {
   onTab: (
     event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
-    maxDepth: number,
   ): EditorState => {
     const selection = editorState.getSelection();
     const key = selection.getAnchorKey();
@@ -307,11 +306,6 @@ const NestedRichTextEditorUtil: RichTextUtils = {
     }
 
     event.preventDefault();
-
-    const depth = block.getDepth();
-    if (!event.shiftKey && depth === maxDepth) {
-      return editorState;
-    }
 
     // implement nested tree behaviour for onTab
     let blockMap = editorState.getCurrentContent().getBlockMap();
@@ -367,7 +361,6 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       content,
       selection,
       event.shiftKey ? -1 : 1,
-      maxDepth,
     );
 
     return EditorState.push(editorState, withAdjustment, 'adjust-depth');

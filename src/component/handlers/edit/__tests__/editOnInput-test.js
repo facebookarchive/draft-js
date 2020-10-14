@@ -62,7 +62,7 @@ test('restoreEditorDOM and keyCommandPlainBackspace are NOT called when the `inp
       currentTarget: editorNode,
     };
 
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-call]
     onInput(editor, inputEvent);
 
     expect(require('keyCommandPlainBackspace')).toHaveBeenCalledTimes(0);
@@ -94,10 +94,10 @@ test('restoreEditorDOM and keyCommandPlainBackspace are called when backspace is
       currentTarget: editorNode,
     };
 
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-call]
     onInput(editor, inputEvent);
 
-    // $FlowExpectedError
+    // $FlowExpectedError[prop-missing]
     const newEditorState = require('keyCommandPlainBackspace').mock.results[0]
       .value;
     expect(require('keyCommandPlainBackspace')).toHaveBeenCalledWith(

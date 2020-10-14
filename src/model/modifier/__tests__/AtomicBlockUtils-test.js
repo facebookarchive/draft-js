@@ -13,20 +13,24 @@
 
 jest.mock('generateRandomKey');
 
+const mockUUID = require('mockUUID');
+jest.mock('uuid', () => mockUUID);
 const AtomicBlockUtils = require('AtomicBlockUtils');
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
-const Entity = require('DraftEntity');
 const EditorState = require('EditorState');
 const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const invariant = require('invariant');
 
-const {editorState, contentState, selectionState} = getSampleStateForTesting();
+const sampleStateForTesting = getSampleStateForTesting();
+const {editorState, selectionState} = sampleStateForTesting;
+let {contentState} = sampleStateForTesting;
 
+contentState = contentState.createEntity('TOKEN', 'MUTABLE');
 const initialBlock = contentState.getBlockMap().first();
-const ENTITY_KEY = Entity.create('TOKEN', 'MUTABLE');
+const ENTITY_KEY = contentState.getLastCreatedEntityKey();
 const CHARACTER = ' ';
 
 const getInvariantViolation = msg => {
@@ -84,6 +88,7 @@ const assertMoveAtomicBlock = (
 
 beforeEach(() => {
   jest.resetModules();
+  jest.mock('uuid', () => mockUUID);
 });
 
 test('must insert atomic at start of block with collapsed seletion', () => {

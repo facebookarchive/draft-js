@@ -15,7 +15,7 @@
  * @format
  */
 
-import React, {Component} from 'react';
+import React from 'react';
 import './DraftJsPlaygroundContainer.css';
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import 'codemirror/lib/codemirror.css';
@@ -28,6 +28,7 @@ import {convertToHTML} from 'draft-convert';
 import PanelGroup from 'react-panelgroup';
 import gkx from 'draft-js/lib/gkx';
 import convertFromHTMLModern from 'draft-js/lib/convertFromHTMLToContentBlocks';
+import Immutable from 'immutable';
 
 import {
   ContentState,
@@ -92,13 +93,14 @@ const BASE_CONTENT = {
   html: baseHtmlContent,
 };
 
-class DraftJsPlaygroundContainer extends Component {
-  constructor(props: Props) {
+class DraftJsPlaygroundContainer extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       mode: 'rawContent',
       editorState: EditorState.createEmpty(),
       codeMirrorValue: BASE_CONTENT['rawContent'],
+      showAllState: false,
     };
   }
 
@@ -133,13 +135,11 @@ class DraftJsPlaygroundContainer extends Component {
 
   _setHTMLContent(html) {
     const parsedHtml = fromHTML(html);
-
     if (!parsedHtml) {
       return;
     }
 
     const {contentBlocks, entityMap} = parsedHtml;
-
     if (!contentBlocks) {
       return;
     }
@@ -160,7 +160,6 @@ class DraftJsPlaygroundContainer extends Component {
 
   setContent = () => {
     const {mode, codeMirrorValue} = this.state;
-
     if (mode === 'html') {
       this._setHTMLContent(codeMirrorValue);
     } else {
@@ -192,7 +191,7 @@ class DraftJsPlaygroundContainer extends Component {
   };
 
   render() {
-    const {editorState, mode, codeMirrorValue} = this.state;
+    const {editorState, mode, codeMirrorValue, showAllState} = this.state;
 
     return (
       <div className="container">
@@ -224,7 +223,7 @@ class DraftJsPlaygroundContainer extends Component {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://draftjs.org/docs/overview.html#content">
+                  href="https://draftjs.org/docs/getting-started">
                   Docs
                 </a>
               </li>
@@ -293,10 +292,42 @@ class DraftJsPlaygroundContainer extends Component {
               </div>
             </PanelGroup>
             <div className="playground-raw-preview">
+              <select
+                style={{flexShrink: 0, width: '11em'}}
+                onChange={e =>
+                  this.setState({showAllState: e.target.value === 'all'})
+                }>
+                <option value="content">Current Content</option>
+                <option value="all">All State</option>
+              </select>
+              {this.state.showAllState && (
+                <small style={{marginTop: 8, color: 'grey'}}>
+                  Not all this state is accessible via the Draft.js API. Some is
+                  internal and shouldn't be directly changed by editors. Use
+                  this view when developing Draft.js itself.
+                </small>
+              )}
               <JSONTree
                 shouldExpandNode={this.shouldExpandNode}
                 theme={theme}
-                data={editorState.getCurrentContent()}
+                data={
+                  showAllState
+                    ? editorState._immutable
+                    : editorState.getCurrentContent()
+                }
+                getItemString={(type, data, itemType, itemString) => {
+                  return (
+                    <span
+                      title={data.constructor.name}
+                      style={{
+                        color: Immutable.Iterable.isIterable(data)
+                          ? '#E85351'
+                          : 'gray',
+                      }}>
+                      {itemString}
+                    </span>
+                  );
+                }}
               />
             </div>
           </PanelGroup>

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow
+ * @flow strict-local
  * @emails oncall+draft_js
  */
 
@@ -22,7 +22,7 @@ const SelectionState = require('SelectionState');
 const Immutable = require('immutable');
 
 const {BOLD, ITALIC} = SampleDraftInlineStyle;
-const ENTITY_KEY = '1';
+const ENTITY_KEY = '2';
 
 const BLOCKS = [
   new ContentBlock({
@@ -88,16 +88,16 @@ const contentState = new ContentState({
   entityMap: Immutable.OrderedMap(),
   selectionBefore: selectionState,
   selectionAfter: selectionState,
-}).createEntity({
-  type: 'IMAGE',
-  mutability: 'IMMUTABLE',
-  data: null,
-});
+}).createEntity('IMAGE', 'IMMUTABLE', null);
 
 let editorState = EditorState.createWithContent(contentState);
 editorState = EditorState.forceSelection(editorState, selectionState);
 
-const getSampleStateForTesting = (): Object => {
+const getSampleStateForTesting = (): {
+  editorState: EditorState,
+  contentState: ContentState,
+  selectionState: SelectionState,
+} => {
   return {editorState, contentState, selectionState};
 };
 

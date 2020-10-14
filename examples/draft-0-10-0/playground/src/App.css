@@ -157,6 +157,9 @@
 
 .playground-raw-preview {
   padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
 }
 
 /**
@@ -169,10 +172,6 @@
 .playground-raw-preview ul {
   /** sad :( but seems to not be a way to overwrite that by configuration */
   background: var(--main-background) !important;
-}
-
-.RichEditor-editor {
-  padding: 10px 20px;
 }
 
 /**

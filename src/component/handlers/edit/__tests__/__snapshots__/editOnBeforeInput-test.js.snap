@@ -6,15 +6,11 @@ Immutable.Record {
     "__add": [Function],
     "__create": [Function],
     "__get": [Function],
+    "__getAll": [Function],
     "__getLastCreatedEntityKey": [Function],
+    "__loadWithEntities": [Function],
     "__mergeData": [Function],
     "__replaceData": [Function],
-    "add": [Function],
-    "create": [Function],
-    "get": [Function],
-    "getLastCreatedEntityKey": [Function],
-    "mergeData": [Function],
-    "replaceData": [Function],
   },
   "blockMap": Immutable.OrderedMap {
     "a": Immutable.Record {

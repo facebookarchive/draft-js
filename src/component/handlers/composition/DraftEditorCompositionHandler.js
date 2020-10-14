@@ -18,12 +18,15 @@ const DraftModifier = require('DraftModifier');
 const DraftOffsetKey = require('DraftOffsetKey');
 const EditorState = require('EditorState');
 const Keys = require('Keys');
+const UserAgent = require('UserAgent');
 
 const editOnSelect = require('editOnSelect');
 const getContentEditableContainer = require('getContentEditableContainer');
 const getDraftEditorSelection = require('getDraftEditorSelection');
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const nullthrows = require('nullthrows');
+
+const isIE = UserAgent.isBrowser('IE');
 
 /**
  * Millisecond delay to allow `compositionstart` to fire again upon
@@ -59,7 +62,7 @@ const DraftEditorCompositionHandler = {
    * A `compositionstart` event has fired while we're still in composition
    * mode. Continue the current composition session to prevent a re-render.
    */
-  onCompositionStart: function(editor: DraftEditor): void {
+  onCompositionStart(editor: DraftEditor): void {
     stillComposing = true;
     startDOMObserver(editor);
   },
@@ -78,7 +81,7 @@ const DraftEditorCompositionHandler = {
    * twice could break the DOM, we only use the first event. Example: Arabic
    * Google Input Tools on Windows 8.1 fires `compositionend` three times.
    */
-  onCompositionEnd: function(editor: DraftEditor): void {
+  onCompositionEnd(editor: DraftEditor): void {
     resolved = false;
     stillComposing = false;
     setTimeout(() => {
@@ -95,13 +98,20 @@ const DraftEditorCompositionHandler = {
    * the arrow keys are used to commit, prevent default so that the cursor
    * doesn't move, otherwise it will jump back noticeably on re-render.
    */
-  onKeyDown: function(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
+  onKeyDown(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     if (!stillComposing) {
-      // If a keydown event is received after compositionend but before the
-      // 20ms timer expires (ex: type option-E then backspace, or type A then
-      // backspace in 2-Set Korean), we should immediately resolve the
-      // composition and reinterpret the key press in edit mode.
-      DraftEditorCompositionHandler.resolveComposition(editor);
+      // This check was added in D23734060. Seemingly, we should be checking
+      // to see if the resolved flag is false here, otherwise the below
+      // comment doesn't make sense. With this change, it should prevent
+      // over-firing the resolveComposition() method, which might help fix
+      // some existing IME issues.
+      if (!resolved) {
+        // If a keydown event is received after compositionend but before the
+        // 20ms timer expires (ex: type option-E then backspace, or type A then
+        // backspace in 2-Set Korean), we should immediately resolve the
+        // composition and reinterpret the key press in edit mode.
+        DraftEditorCompositionHandler.resolveComposition(editor);
+      }
       editor._onKeyDown(e);
       return;
     }
@@ -116,7 +126,7 @@ const DraftEditorCompositionHandler = {
    * characters that we do not want. `preventDefault` allows the composition
    * to be committed while preventing the extra characters.
    */
-  onKeyPress: function(editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
+  onKeyPress(_editor: DraftEditor, e: SyntheticKeyboardEvent<>): void {
     if (e.which === Keys.RETURN) {
       e.preventDefault();
     }
@@ -137,16 +147,17 @@ const DraftEditorCompositionHandler = {
    * Resetting innerHTML will move focus to the beginning of the editor,
    * so we update to force it back to the correct place.
    */
-  resolveComposition: function(editor: DraftEditor): void {
+  resolveComposition(editor: DraftEditor): void {
     if (stillComposing) {
       return;
     }
 
+    const lastEditorState = editor._latestEditorState;
     const mutations = nullthrows(domObserver).stopAndFlushMutations();
     domObserver = null;
     resolved = true;
 
-    let editorState = EditorState.set(editor._latestEditorState, {
+    let editorState = EditorState.set(lastEditorState, {
       inCompositionMode: false,
     });
 
@@ -216,19 +227,28 @@ const DraftEditorCompositionHandler = {
 
     // When we apply the text changes to the ContentState, the selection always
     // goes to the end of the field, but it should just stay where it is
-    // after compositionEnd.
+    // after compositionEnd. We also apply this to the last editor state, rather
+    // than the new editor state in order to avoid problems that might come from
+    // race conditions around calculating ranges from mutations when processing
+    // the mutations above. If the ranges are off, for example, using mentions
+    // in IME mode, then the selection will move the cursor to an invalid range.
+    // See D23905960 for more context:
     const documentSelection = getDraftEditorSelection(
-      editorState,
+      lastEditorState,
       getContentEditableContainer(editor),
     );
     const compositionEndSelectionState = documentSelection.selectionState;
 
     editor.restoreEditorDOM();
 
-    const editorStateWithUpdatedSelection = EditorState.acceptSelection(
-      editorState,
-      compositionEndSelectionState,
-    );
+    // See:
+    // - https://github.com/facebook/draft-js/issues/2093
+    // - https://github.com/facebook/draft-js/pull/2094
+    // Apply this fix only in IE for now. We can test it in
+    // other browsers in the future to ensure no regressions
+    const editorStateWithUpdatedSelection = isIE
+      ? EditorState.forceSelection(editorState, compositionEndSelectionState)
+      : EditorState.acceptSelection(editorState, compositionEndSelectionState);
 
     editor.update(
       EditorState.push(

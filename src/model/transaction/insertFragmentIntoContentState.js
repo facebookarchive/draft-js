@@ -56,6 +56,11 @@ const updateExistingBlock = (
       break;
   }
 
+  let type = targetBlock.getType();
+  if (text && type === 'unstyled') {
+    type = fragmentBlock.getType();
+  }
+
   const newBlock = targetBlock.merge({
     text:
       text.slice(0, targetOffset) +
@@ -66,6 +71,7 @@ const updateExistingBlock = (
       fragmentBlock.getCharacterList(),
       targetOffset,
     ),
+    type,
     data,
   });
 

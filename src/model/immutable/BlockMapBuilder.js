@@ -19,7 +19,7 @@ const Immutable = require('immutable');
 const {OrderedMap} = Immutable;
 
 const BlockMapBuilder = {
-  createFromArray: function(blocks: Array<BlockNodeRecord>): BlockMap {
+  createFromArray(blocks: Array<BlockNodeRecord>): BlockMap {
     return OrderedMap(blocks.map(block => [block.getKey(), block]));
   },
 };

@@ -17,12 +17,16 @@ import type EditorState from 'EditorState';
 const React = require('React');
 
 const cx = require('cx');
+const joinClasses = require('joinClasses');
+const shallowEqual = require('shallowEqual');
 
 type Props = {
   accessibilityID: string,
+  className?: string,
   editorState: EditorState,
   text: string,
   textAlignment: DraftTextAlignment,
+  ...
 };
 
 /**
@@ -33,31 +37,33 @@ type Props = {
  */
 class DraftEditorPlaceholder extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
+    const {editorState, ...otherProps} = this.props;
+    const {editorState: nextEditorState, ...nextOtherProps} = nextProps;
     return (
-      this.props.text !== nextProps.text ||
-      this.props.editorState.getSelection().getHasFocus() !==
-        nextProps.editorState.getSelection().getHasFocus()
+      editorState.getSelection().getHasFocus() !==
+        nextEditorState.getSelection().getHasFocus() ||
+      shallowEqual(otherProps, nextOtherProps)
     );
   }
 
   render(): React.Node {
-    const hasFocus = this.props.editorState.getSelection().getHasFocus();
-
-    const className = cx({
-      'public/DraftEditorPlaceholder/root': true,
-      'public/DraftEditorPlaceholder/hasFocus': hasFocus,
-    });
-
-    const contentStyle = {
-      whiteSpace: 'pre-wrap',
-    };
-
     return (
-      <div className={className}>
+      <div
+        className={cx({
+          'public/DraftEditorPlaceholder/root': true,
+          'public/DraftEditorPlaceholder/hasFocus': this.props.editorState
+            .getSelection()
+            .getHasFocus(),
+        })}>
         <div
-          className={cx('public/DraftEditorPlaceholder/inner')}
+          className={joinClasses(
+            cx('public/DraftEditorPlaceholder/inner'),
+            this.props.className,
+          )}
           id={this.props.accessibilityID}
-          style={contentStyle}>
+          style={{
+            whiteSpace: 'pre-wrap',
+          }}>
           {this.props.text}
         </div>
       </div>

@@ -37,10 +37,13 @@ function getSelectionForEvent(
   let offset: ?number = null;
 
   const eventTargetDocument = getCorrectDocumentFromNode(event.currentTarget);
-  /* $FlowFixMe(>=0.68.0 site=www,mobile) This comment suppresses an error
-   * found when Flow v0.68 was deployed. To see the error delete this comment
-   * and run Flow. */
+  /* $FlowFixMe[prop-missing] (>=0.68.0 site=www,mobile) This comment
+   * suppresses an error found when Flow v0.68 was deployed. To see the error
+   * delete this comment and run Flow. */
   if (typeof eventTargetDocument.caretRangeFromPoint === 'function') {
+    /* $FlowFixMe[incompatible-use] (>=0.68.0 site=www,mobile) This comment
+     * suppresses an error found when Flow v0.68 was deployed. To see the error
+     * delete this comment and run Flow. */
     const dropRange = eventTargetDocument.caretRangeFromPoint(event.x, event.y);
     node = dropRange.startContainer;
     offset = dropRange.startOffset;
@@ -68,7 +71,7 @@ const DraftEditorDragHandler = {
   /**
    * Drag originating from input terminated.
    */
-  onDragEnd: function(editor: DraftEditor): void {
+  onDragEnd(editor: DraftEditor): void {
     editor.exitCurrentMode();
     endDrag(editor);
   },
@@ -76,7 +79,7 @@ const DraftEditorDragHandler = {
   /**
    * Handle data being dropped.
    */
-  onDrop: function(editor: DraftEditor, e: Object): void {
+  onDrop(editor: DraftEditor, e: Object): void {
     const data = new DataTransfer(e.nativeEvent.dataTransfer);
 
     const editorState: EditorState = editor._latestEditorState;
@@ -93,8 +96,6 @@ const DraftEditorDragHandler = {
       return;
     }
 
-    /* $FlowFixMe This comment suppresses an error found DataTransfer was typed.
-     * getFiles() returns an array of <Files extends Blob>, not Blob */
     const files: Array<Blob> = (data.getFiles(): any);
     if (files.length > 0) {
       if (
@@ -104,6 +105,9 @@ const DraftEditorDragHandler = {
         return;
       }
 
+      /* $FlowFixMe[incompatible-call] This comment suppresses an error found
+       * DataTransfer was typed. getFiles() returns an array of <Files extends
+       * Blob>, not Blob */
       getTextContentFromFiles(files, fileText => {
         fileText &&
           editor.update(

@@ -18,6 +18,13 @@ const {Map, OrderedSet, Record} = require('immutable');
 // Immutable.map is typed such that the value for every key in the map
 // must be the same type
 type CharacterMetadataConfigValueType = DraftInlineStyle | ?string;
+type CharacterMetadataConfigRawValueType = Array<string> | ?string;
+
+export type CharacterMetadataRawConfig = {
+  style?: CharacterMetadataConfigRawValueType,
+  entity?: CharacterMetadataConfigRawValueType,
+  ...
+};
 
 type CharacterMetadataConfig = {
   style?: CharacterMetadataConfigValueType,
@@ -101,6 +108,16 @@ class CharacterMetadata extends CharacterMetadataRecord {
     const newCharacter = new CharacterMetadata(configMap);
     pool = pool.set(configMap, newCharacter);
     return newCharacter;
+  }
+
+  static fromJS({
+    style,
+    entity,
+  }: CharacterMetadataRawConfig): CharacterMetadata {
+    return new CharacterMetadata({
+      style: Array.isArray(style) ? OrderedSet(style) : style,
+      entity: Array.isArray(entity) ? OrderedSet(entity) : entity,
+    });
   }
 }
 

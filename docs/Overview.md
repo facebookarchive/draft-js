@@ -22,7 +22,7 @@ npm install draft-js react react-dom
 yarn add draft-js react react-dom
 ```
 
-Draft.js uses some modern ecmascript features which are not available to IE11 and not part of create-react-app's default babel config. If you're running into problems out-of-the-box try installing a shim or polyfill alongside Draft.
+Draft.js uses some modern ECMAScript features which are not available to IE11 and not part of create-react-app's default babel config. If you're running into problems out-of-the-box try installing a shim or polyfill alongside Draft.
 
 ```sh
 npm install draft-js react react-dom babel-polyfill
@@ -46,6 +46,7 @@ If you are interested in helping out, or tracking the progress, please follow
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState} from 'draft-js';
+import 'draft-js/dist/Draft.css';
 
 class MyEditor extends React.Component {
   constructor(props) {
@@ -70,10 +71,11 @@ Since the release of React 16.8, you can use [Hooks](https://reactjs.org/docs/ho
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState} from 'draft-js';
+import 'draft-js/dist/Draft.css';
 
 function MyEditor() {
   const [editorState, setEditorState] = React.useState(
-    EditorState.createEmpty(),
+    () => EditorState.createEmpty(),
   );
 
   return <Editor editorState={editorState} onChange={setEditorState} />;

@@ -73,8 +73,8 @@ class DOMObserver {
     if (this.observer) {
       this.observer.observe(this.container, DOM_OBSERVER_OPTIONS);
     } else {
-      /* $FlowFixMe(>=0.68.0 site=www,mobile) This event type is not defined
-       * by Flow's standard library */
+      /* $FlowFixMe[incompatible-call] (>=0.68.0 site=www,mobile) This event
+       * type is not defined by Flow's standard library */
       this.container.addEventListener(
         'DOMCharacterDataModified',
         this.onCharData,
@@ -88,8 +88,8 @@ class DOMObserver {
       this.registerMutations(observer.takeRecords());
       observer.disconnect();
     } else {
-      /* $FlowFixMe(>=0.68.0 site=www,mobile) This event type is not defined
-       * by Flow's standard library */
+      /* $FlowFixMe[incompatible-call] (>=0.68.0 site=www,mobile) This event
+       * type is not defined by Flow's standard library */
       this.container.removeEventListener(
         'DOMCharacterDataModified',
         this.onCharData,

@@ -67,7 +67,7 @@ test('editor removes selection on blur (default behaviour)', () => {
       editor: editorNode,
     };
 
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-call]
     onBlur(editor, getBlurEvent(editorNode));
 
     expect(globalSelection.removeAllRanges).toHaveBeenCalledTimes(1);
@@ -97,7 +97,7 @@ test('editor preserves selection on blur', () => {
       editor: editorNode,
     };
 
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-call]
     onBlur(editor, getBlurEvent(editorNode));
 
     expect(globalSelection.removeAllRanges).toHaveBeenCalledTimes(0);

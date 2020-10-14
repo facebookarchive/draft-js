@@ -12,11 +12,22 @@
 'use strict';
 
 import type CharacterMetadata from 'CharacterMetadata';
+import type {CharacterMetadataRawConfig} from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {List, Map} from 'immutable';
 
 export type BlockNodeKey = string;
+
+export type BlockNodeRawConfig = {
+  characterList?: Array<CharacterMetadataRawConfig>,
+  data?: Map<any, any>,
+  depth?: number,
+  key?: BlockNodeKey,
+  text?: string,
+  type?: DraftBlockType,
+  ...
+};
 
 export type BlockNodeConfig = {
   characterList?: List<CharacterMetadata>,

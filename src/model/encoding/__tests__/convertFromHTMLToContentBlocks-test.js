@@ -20,6 +20,7 @@ const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 const cx = require('cx');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
+const mockUUID = require('mockUUID');
 
 const DEFAULT_CONFIG = {
   DOMBuilder: getSafeBodyFromHTML,
@@ -62,23 +63,21 @@ const toggleExperimentalTreeDataSupport = enabled => {
     if (name === 'draft_tree_data_support') {
       return enabled;
     }
-    if (name === 'draftjs_fix_paste_for_img') {
-      return true;
-    }
     return false;
   });
 };
 
 beforeEach(() => {
   jest.resetModules();
+  jest.mock('uuid', () => mockUUID);
 });
 
 const convertFromHTML = (html_string, config) => {
+  /* $FlowFixMe[cannot-spread-inexact] (>=0.122.0 site=www) This comment
+   * suppresses an error found when Flow v0.122.0 was deployed. To see the
+   * error, delete this comment and run Flow. */
   const options = {
     ...DEFAULT_CONFIG,
-    /* $FlowFixMe(>=0.111.0) This comment suppresses an error found when Flow
-     * v0.111.0 was deployed. To see the error, delete this comment and run
-     * Flow. */
     ...config,
   };
 
@@ -182,13 +181,6 @@ test('img with data protocol should be correctly parsed', () => {
     `<img src="${IMAGE_DATA_URL}">`,
   );
   expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
-});
-
-test('img with role presentation should not be rendered', () => {
-  const blocks = convertFromHTMLToContentBlocks(
-    `<img src="${IMAGE_DATA_URL}" role="presentation">`,
-  );
-  expect(blocks?.contentBlocks).toMatchSnapshot();
 });
 
 test('line break should be correctly parsed - single <br>', () => {
@@ -557,6 +549,24 @@ test('Should import two blockquotes without extra line breaks', () => {
         <span>Second</span>
       </div>
     </blockquote>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should recognize preformatted blocks', () => {
+  const html_string = `
+    <meta charset='utf-8'><span style="font-family: system-ui, -apple-system, system-ui, &quot;.SFNSText-Regular&quot;, sans-serif; font-variant-ligatures: normal; white-space: pre-wrap; display: inline !important;">following some pre </span><span style="font-family: Menlo, Consolas, Monaco, monospace; white-space: pre-line;">some_code_stuff</span>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should recognize preformatted blocks mixed other styles', () => {
+  const html_string = `
+    <meta charset='utf-8'><span style="font-family: system-ui, -apple-system, system-ui, &quot;.SFNSText-Regular&quot;, sans-serif; font-size: 14px; font-weight: 400; white-space: pre-wrap; display: inline !important;">example </span><span style="font-weight: 600; font-family: Menlo, Consolas, Monaco, monospace; white-space: pre-line;">bold</span><span style="font-family: Menlo, Consolas, Monaco, monospace; white-space: pre-line; font-weight: 400;"> and code</span>
   `;
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: false,

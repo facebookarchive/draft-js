@@ -12,11 +12,12 @@
 'use strict';
 
 import type {BlockMap} from 'BlockMap';
+import type {DecoratorRangeRawType} from 'BlockTree';
+import type {ContentStateRawType} from 'ContentStateRawType';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {EditorChangeType} from 'EditorChangeType';
 import type {EntityMap} from 'EntityMap';
-import type {List, OrderedMap} from 'immutable';
 
 const BlockTree = require('BlockTree');
 const ContentState = require('ContentState');
@@ -25,7 +26,57 @@ const SelectionState = require('SelectionState');
 
 const Immutable = require('immutable');
 
-const {OrderedSet, Record, Stack} = Immutable;
+const {OrderedSet, Record, Stack, OrderedMap, List} = Immutable;
+
+// When configuring an editor, the user can chose to provide or not provide
+// basically all keys. `currentContent` varies, so this type doesn't include it.
+// (See the types defined below.)
+type BaseEditorStateConfig = {
+  allowUndo?: boolean,
+  decorator?: ?DraftDecoratorType,
+  directionMap?: ?OrderedMap<string, string>,
+  forceSelection?: boolean,
+  inCompositionMode?: boolean,
+  inlineStyleOverride?: ?DraftInlineStyle,
+  lastChangeType?: ?EditorChangeType,
+  nativelyRenderedContent?: ?ContentState,
+  redoStack?: Stack<ContentState>,
+  selection?: ?SelectionState,
+  treeMap?: ?OrderedMap<string, List<any>>,
+  undoStack?: Stack<ContentState>,
+};
+
+type BaseEditorStateRawConfig = {
+  allowUndo?: boolean,
+  decorator?: ?DraftDecoratorType,
+  directionMap?: ?{...},
+  forceSelection?: boolean,
+  inCompositionMode?: boolean,
+  inlineStyleOverride?: ?Array<String>,
+  lastChangeType?: ?EditorChangeType,
+  nativelyRenderedContent?: ?ContentStateRawType,
+  redoStack?: Array<ContentStateRawType>,
+  selection?: ?{...},
+  treeMap?: ?Map<string, Array<DecoratorRangeRawType>>,
+  undoStack?: Array<ContentStateRawType>,
+};
+
+// When crating an editor, we want currentContent to be set.
+type EditorStateCreationConfigType = {
+  ...BaseEditorStateConfig,
+  currentContent: ContentState,
+};
+
+type EditorStateCreationConfigRawType = {
+  ...BaseEditorStateRawConfig,
+  currentContent: ContentStateRawType,
+};
+
+// When using EditorState.set(...), currentContent is optional
+type EditorStateChangeConfigType = {
+  ...BaseEditorStateConfig,
+  currentContent?: ?ContentState,
+};
 
 type EditorStateRecordType = {
   allowUndo: boolean,
@@ -63,11 +114,19 @@ const defaultRecord: EditorStateRecordType = {
 const EditorStateRecord = (Record(defaultRecord): any);
 
 class EditorState {
+  // $FlowFixMe[value-as-type]
   _immutable: EditorStateRecord;
 
   static createEmpty(decorator?: ?DraftDecoratorType): EditorState {
+    return this.createWithText('', decorator);
+  }
+
+  static createWithText(
+    text: string,
+    decorator?: ?DraftDecoratorType,
+  ): EditorState {
     return EditorState.createWithContent(
-      ContentState.createFromText(''),
+      ContentState.createFromText(text),
       decorator,
     );
   }
@@ -92,7 +151,7 @@ class EditorState {
     });
   }
 
-  static create(config: Object): EditorState {
+  static create(config: EditorStateCreationConfigType): EditorState {
     const {currentContent, decorator} = config;
     const recordConfig = {
       ...config,
@@ -102,7 +161,49 @@ class EditorState {
     return new EditorState(new EditorStateRecord(recordConfig));
   }
 
-  static set(editorState: EditorState, put: Object): EditorState {
+  static fromJS(config: EditorStateCreationConfigRawType): EditorState {
+    return new EditorState(
+      new EditorStateRecord({
+        ...config,
+        directionMap:
+          config.directionMap != null
+            ? OrderedMap(config.directionMap)
+            : config.directionMap,
+        inlineStyleOverride:
+          config.inlineStyleOverride != null
+            ? OrderedSet(config.inlineStyleOverride)
+            : config.inlineStyleOverride,
+        nativelyRenderedContent:
+          config.nativelyRenderedContent != null
+            ? ContentState.fromJS(config.nativelyRenderedContent)
+            : config.nativelyRenderedContent,
+        redoStack:
+          config.redoStack != null
+            ? Stack(config.redoStack.map(v => ContentState.fromJS(v)))
+            : config.redoStack,
+        selection:
+          config.selection != null
+            ? new SelectionState(config.selection)
+            : config.selection,
+        treeMap:
+          config.treeMap != null
+            ? OrderedMap(config.treeMap).map(v =>
+                List(v).map(v => BlockTree.fromJS(v)),
+              )
+            : config.treeMap,
+        undoStack:
+          config.undoStack != null
+            ? Stack(config.undoStack.map(v => ContentState.fromJS(v)))
+            : config.undoStack,
+        currentContent: ContentState.fromJS(config.currentContent),
+      }),
+    );
+  }
+
+  static set(
+    editorState: EditorState,
+    put: EditorStateChangeConfigType,
+  ): EditorState {
     const map = editorState.getImmutable().withMutations(state => {
       const existingDecorator = state.get('decorator');
       let decorator = existingDecorator;
@@ -115,7 +216,7 @@ class EditorState {
       const newContent = put.currentContent || editorState.getCurrentContent();
 
       if (decorator !== existingDecorator) {
-        const treeMap: OrderedMap<any, any> = state.get('treeMap');
+        const treeMap: OrderedMap<string, any> = state.get('treeMap');
         let newTreeMap;
         if (decorator && existingDecorator) {
           newTreeMap = regenerateTreeForNewDecorator(
@@ -487,6 +588,7 @@ class EditorState {
   /**
    * Not for public consumption.
    */
+  // $FlowFixMe[value-as-type]
   constructor(immutable: EditorStateRecord) {
     this._immutable = immutable;
   }
@@ -494,6 +596,7 @@ class EditorState {
   /**
    * Not for public consumption.
    */
+  // $FlowFixMe[value-as-type]
   getImmutable(): EditorStateRecord {
     return this._immutable;
   }

@@ -53,6 +53,7 @@ type Props = {
   selection: SelectionState,
   startIndent?: boolean,
   tree: List<any>,
+  ...
 };
 
 /**
@@ -212,8 +213,7 @@ class DraftEditorBlock extends React.Component<Props> {
         const commonProps: DraftDecoratorComponentProps = {
           contentState: this.props.contentState,
           decoratedText,
-          dir: dir,
-          key: decoratorOffsetKey,
+          dir,
           start,
           end,
           blockKey,
@@ -222,7 +222,10 @@ class DraftEditorBlock extends React.Component<Props> {
         };
 
         return (
-          <DecoratorComponent {...decoratorProps} {...commonProps}>
+          <DecoratorComponent
+            {...decoratorProps}
+            {...commonProps}
+            key={decoratorOffsetKey}>
             {leaves}
           </DecoratorComponent>
         );

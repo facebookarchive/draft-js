@@ -3,7 +3,9 @@ id: api-reference-selection-state
 title: SelectionState
 ---
 
-`SelectionState` is an Immutable [Record](http://facebook.github.io/immutable-js/docs/#/Record/Record) that represents a selection range in the editor.
+`SelectionState` is an Immutable 
+[Record](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Record) 
+that represents a selection range in the editor.
 
 The most common use for the `SelectionState` object is via `EditorState.getSelection()`,
 which provides the `SelectionState` currently being rendered in the editor.
@@ -137,7 +139,7 @@ _Methods_
 
 _Properties_
 
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record) to
+> Use [Immutable Map API](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Map) to
 > set properties.
 >
 > **Example**
@@ -308,7 +310,7 @@ Returns a serialized version of the `SelectionState`. Useful for debugging.
 
 ## Properties
 
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Record/Record) to
+> Use [Immutable Map API](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Map) to
 > set properties.
 
 ```js
