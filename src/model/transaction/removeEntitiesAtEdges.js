@@ -13,7 +13,6 @@
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
-import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
 import type {List} from 'immutable';
 
@@ -27,14 +26,13 @@ function removeEntitiesAtEdges(
   selectionState: SelectionState,
 ): ContentState {
   const blockMap = contentState.getBlockMap();
-  const entityMap = contentState.getEntityMap();
 
   const updatedBlocks = {};
 
   const startKey = selectionState.getStartKey();
   const startOffset = selectionState.getStartOffset();
   const startBlock = blockMap.get(startKey);
-  const updatedStart = removeForBlock(entityMap, startBlock, startOffset);
+  const updatedStart = removeForBlock(contentState, startBlock, startOffset);
 
   if (updatedStart !== startBlock) {
     updatedBlocks[startKey] = updatedStart;
@@ -47,7 +45,7 @@ function removeEntitiesAtEdges(
     endBlock = updatedStart;
   }
 
-  const updatedEnd = removeForBlock(entityMap, endBlock, endOffset);
+  const updatedEnd = removeForBlock(contentState, endBlock, endOffset);
 
   if (updatedEnd !== endBlock) {
     updatedBlocks[endKey] = updatedEnd;
@@ -106,7 +104,7 @@ function getRemovalRange(
 }
 
 function removeForBlock(
-  entityMap: EntityMap,
+  contentState: ContentState,
   block: BlockNodeRecord,
   offset: number,
 ): BlockNodeRecord {
@@ -117,7 +115,7 @@ function removeForBlock(
   const entityAfterCursor = charAfter ? charAfter.getEntity() : undefined;
 
   if (entityAfterCursor && entityAfterCursor === entityBeforeCursor) {
-    const entity = entityMap.__get(entityAfterCursor);
+    const entity = contentState.getEntity(entityAfterCursor);
     if (entity.getMutability() !== 'MUTABLE') {
       let {start, end} = getRemovalRange(chars, entityAfterCursor, offset);
       let current;
