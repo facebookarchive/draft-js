@@ -113,31 +113,25 @@ Since the release of React 16.8, you can use [Hooks](https://reactjs.org/docs/ho
 
 
 ```js
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState} from 'draft-js';
 
 function MyEditor() {
-  const [editorState, setEditorState] = React.useState(
-    EditorState.createEmpty()
-  );
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-  const editor = React.useRef(null);
+  const editor = useRef(null);
 
-  function focusEditor() {
-    editor.current.focus();
-  }
-
-  React.useEffect(() => {
-    focusEditor()
-  }, []);
+  useEffect(() => {
+    if (editor.current) editor.current.focus();
+  }, [editor]);
 
   return (
     <div onClick={focusEditor}>
       <Editor
         ref={editor}
         editorState={editorState}
-        onChange={editorState => setEditorState(editorState)}
+        onChange={value => setEditorState(value)}
       />
     </div>
   );
