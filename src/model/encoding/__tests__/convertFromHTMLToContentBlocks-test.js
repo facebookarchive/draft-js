@@ -156,9 +156,7 @@ test('img with http protocol should have camera emoji content', () => {
   const entityMap = blocks?.entityMap;
   expect(entityMap).not.toBe(null);
   if (entityMap != null) {
-    expect(
-      entityMap.__get(entityMap.__getLastCreatedEntityKey()).mutability,
-    ).toBe('IMMUTABLE');
+    expect(entityMap.last().mutability).toBe('IMMUTABLE');
   }
 });
 
@@ -170,9 +168,7 @@ test('img with https protocol should have camera emoji content', () => {
   const entityMap = blocks?.entityMap;
   expect(entityMap).not.toBe(null);
   if (entityMap != null) {
-    expect(
-      entityMap.__get(entityMap.__getLastCreatedEntityKey()).mutability,
-    ).toBe('IMMUTABLE');
+    expect(entityMap.last().mutability).toBe('IMMUTABLE');
   }
 });
 

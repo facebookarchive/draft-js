@@ -11,6 +11,9 @@ Immutable.Record {
     "__loadWithEntities": [Function],
     "__mergeData": [Function],
     "__replaceData": [Function],
+    "get": [Function],
+    "last": [Function],
+    "set": [Function],
   },
   "blockMap": Immutable.OrderedMap {
     "a": Immutable.Record {

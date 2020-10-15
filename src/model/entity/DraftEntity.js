@@ -57,7 +57,11 @@ export type DraftEntityMapObject = {
     key: string,
     newData: {[key: string]: any, ...},
   ) => DraftEntityInstance,
-  ...
+
+  // Temporary public API for gk'd deprecation
+  get: (key: string) => DraftEntityInstance,
+  set: (key: string, value: DraftEntityInstance) => DraftEntityMapObject,
+  last: () => DraftEntityInstance,
 };
 
 /**
@@ -136,6 +140,19 @@ const DraftEntity: DraftEntityMapObject = {
     const instance = instances.get(key);
     invariant(!!instance, 'Unknown DraftEntity key: %s.', key);
     return instance;
+  },
+
+  get(key: string): DraftEntityInstance {
+    return DraftEntity.__get(key);
+  },
+
+  set(key: string, newInstance: DraftEntityInstance): DraftEntityMapObject {
+    instances = instances.set(key, newInstance);
+    return DraftEntity;
+  },
+
+  last(): DraftEntityInstance {
+    return instances.last();
   },
 
   /**
