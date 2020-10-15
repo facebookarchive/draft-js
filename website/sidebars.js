@@ -1,4 +1,4 @@
-{
+module.exports = {
   "docs": {
     "Quick Start": [
       "getting-started",
@@ -37,4 +37,4 @@
       "api-reference-modifier"
     ]
   }
-}
+};
