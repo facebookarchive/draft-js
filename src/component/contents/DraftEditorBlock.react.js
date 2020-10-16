@@ -43,7 +43,7 @@ type Props = {
   blockProps?: Object,
   blockStyleFn: (block: BlockNodeRecord) => string,
   contentState: ContentState,
-  customStyleFn: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
+  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
   customStyleMap: Object,
   decorator: ?DraftDecoratorType,
   direction: BidiDirection,
