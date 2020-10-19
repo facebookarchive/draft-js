@@ -25,6 +25,7 @@ const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
 const nullthrows = require('nullthrows');
 
 const isGecko = UserAgent.isEngine('Gecko');
+const isIE = UserAgent.isBrowser('IE');
 
 const DOUBLE_NEWLINE = '\n\n';
 
@@ -59,10 +60,12 @@ function onInputType(inputType: string, editorState: EditorState): EditorState {
  * when an `input` change leads to a DOM/model mismatch, the change should be
  * due to a spellcheck change, and we can incorporate it into our model.
  */
-function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
-  if (editor._pendingStateFromBeforeInput !== undefined) {
-    editor.update(editor._pendingStateFromBeforeInput);
-    editor._pendingStateFromBeforeInput = undefined;
+function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
+  if (isIE) {
+    if (editor._pendingStateFromBeforeInput !== undefined) {
+      editor.update(editor._pendingStateFromBeforeInput);
+      editor._pendingStateFromBeforeInput = undefined;
+    }
   }
   // at this point editor is not null for sure (after input)
   const castedEditorElement: HTMLElement = (editor.editor: any);
@@ -136,7 +139,7 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     /* $FlowFixMe[prop-missing] inputType is only defined on a draft of a
      * standard. https://w3c.github.io/input-events/#dom-inputevent-inputtype
      */
-    const {inputType} = e.nativeEvent;
+    const inputType = event ? event.nativeEvent.inputType : undefined;
     if (inputType) {
       const newEditorState = onInputType(inputType, editorState);
       if (newEditorState !== editorState) {
