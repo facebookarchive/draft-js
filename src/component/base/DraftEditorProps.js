@@ -106,6 +106,7 @@ export type DraftEditorProps = {
   ariaLabelledBy?: string,
   ariaMultiline?: boolean,
   ariaOwneeID?: string,
+  ariaRequired?: boolean,
   webDriverTestID?: string,
   /**
    * Cancelable event handlers, handled from the top level down. A handler
