@@ -243,17 +243,31 @@ function editOnBeforeInput(
     return;
   }
 
-  // We made it all the way! Let the native event occur, so the browser does its
-  // thing and inserts the char.
+  newEditorState = EditorState.set(newEditorState, {
+    nativelyRenderedContent: newEditorState.getCurrentContent(),
+  });
+
+  // We have newEditorState, but we just don't want to call "editor.update"
+  // just yet. So let's store this state updated with our change to be consumed
+  // later, after the native event occurs and the browser inserts the char.
+  // After that, when we rerender, the text we see in the DOM will already have
+  // been inserted properly.
   //
-  // To allow user onChange handlers to change the inserted text, we wait until
-  // the text is actually inserted before we actually update our state. That way
-  // when we rerender, the text we see in the DOM will already have been
-  // inserted properly.
+  editor._pendingStateFromBeforeInput = newEditorState;
   //
-  // Above we do this if we prevent the native event, since there will be no
-  // input event (because we preventDefault). Otherwise, it will happen in the
-  // "input" event, which fires once the text is inserted.
+  // Part of the reason to do this is because browsers seem to change their
+  // behaviour if you preventDefault(). For example, on macOS the browser seems
+  // to believe it's no longer in a contenteditable and will change the
+  // Touch Bar on a MacBook to stop showing text suggestions.
+  //
+  // Later (presumably after we render), it realizes "hold up, I am in a content
+  // editable, silly me" and shows the suggestions again. But in the meantime
+  // what we get is flickering between suggestions and no suggestions. We
+  // should probably report this to Apple.
+  //
+  // Anyway, above we update our editor state if we prevent the native event, since
+  // there will be no input event after we preventDefault. Otherwise, we will
+  // do so in the "input" event, which fires once the text is inserted.
   //
   // There is one exception however: IE (what a surprise!). IE doesn't fire
   // input events (and React doesn't polyfill them), so we never get to see
@@ -266,11 +280,6 @@ function editOnBeforeInput(
   // browser fired both the beforeInput and input events). Calling our usual
   // input handler does the trick.
   if (isIE) {
-    newEditorState = EditorState.set(newEditorState, {
-      nativelyRenderedContent: newEditorState.getCurrentContent(),
-    });
-
-    editor._pendingStateFromBeforeInput = newEditorState;
     setImmediate(() => {
       editOnInput(editor, null);
     });

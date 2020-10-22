@@ -61,12 +61,14 @@ function onInputType(inputType: string, editorState: EditorState): EditorState {
  * due to a spellcheck change, and we can incorporate it into our model.
  */
 function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
-  if (isIE) {
-    if (editor._pendingStateFromBeforeInput !== undefined) {
-      editor.update(editor._pendingStateFromBeforeInput);
-      editor._pendingStateFromBeforeInput = undefined;
-    }
+  // This will happen for most simple insertions. The new state is already
+  // computed. Let's just call "editor.update". Things should match nicely so
+  // this function will exit below where we check "domText === modelText".
+  if (editor._pendingStateFromBeforeInput !== undefined) {
+    editor.update(editor._pendingStateFromBeforeInput);
+    editor._pendingStateFromBeforeInput = undefined;
   }
+
   // at this point editor is not null for sure (after input)
   const castedEditorElement: HTMLElement = (editor.editor: any);
   const domSelection: SelectionObject = castedEditorElement.ownerDocument.defaultView.getSelection();
