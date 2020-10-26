@@ -222,7 +222,6 @@ const DraftEditorCompositionHandler = {
       // updated and multiple mutations are correctly applied.
       editorState = EditorState.set(editorState, {
         currentContent: contentState,
-        lastChangeType: 'insert-characters',
       });
     });
 
