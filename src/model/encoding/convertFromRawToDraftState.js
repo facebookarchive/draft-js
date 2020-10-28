@@ -36,9 +36,11 @@ const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 const {List, Map, OrderedMap} = Immutable;
 
+type EntityKeyMap = {[key: number]: number};
+
 const decodeBlockNodeConfig = (
   block: RawDraftContentBlock,
-  entityMap: *,
+  entityKeyMap: EntityKeyMap,
 ): BlockNodeConfig => {
   const {key, type, data, text, depth} = block;
 
@@ -48,7 +50,7 @@ const decodeBlockNodeConfig = (
     type: type || 'unstyled',
     key: key || generateRandomKey(),
     data: Map(data),
-    characterList: decodeCharacterList(block, entityMap),
+    characterList: decodeCharacterList(block, entityKeyMap),
   };
 
   return blockNodeConfig;
@@ -56,7 +58,7 @@ const decodeBlockNodeConfig = (
 
 const decodeCharacterList = (
   block: RawDraftContentBlock,
-  entityMap: *,
+  entityKeyMap: EntityKeyMap,
 ): List<CharacterMetadata> => {
   const {
     text,
@@ -73,8 +75,8 @@ const decodeCharacterList = (
     decodeEntityRanges(
       text,
       entityRanges
-        .filter(range => entityMap.hasOwnProperty(range.key))
-        .map(range => ({...range, key: entityMap[range.key]})),
+        .filter(range => entityKeyMap.hasOwnProperty(range.key))
+        .map(range => ({...range, key: entityKeyMap[range.key]})),
     ),
   );
 };
@@ -196,12 +198,12 @@ const decodeContentBlockNodes = (
 
 const decodeContentBlocks = (
   blocks: Array<RawDraftContentBlock>,
-  entityMap: *,
+  entityKeyMap: EntityKeyMap,
 ): BlockMap => {
   return OrderedMap(
     blocks.map((block: RawDraftContentBlock) => {
       const contentBlock = new ContentBlock(
-        decodeBlockNodeConfig(block, entityMap),
+        decodeBlockNodeConfig(block, entityKeyMap),
       );
       return [contentBlock.getKey(), contentBlock];
     }),
@@ -210,7 +212,7 @@ const decodeContentBlocks = (
 
 const decodeRawBlocks = (
   rawState: RawDraftContentState,
-  entityMap: *,
+  entityKeyMap: EntityKeyMap,
 ): BlockMap => {
   const isTreeRawBlock = rawState.blocks.find(
     block => Array.isArray(block.children) && block.children.length > 0,
@@ -225,11 +227,11 @@ const decodeRawBlocks = (
       isTreeRawBlock
         ? DraftTreeAdapter.fromRawTreeStateToRawState(rawState).blocks
         : rawBlocks,
-      entityMap,
+      entityKeyMap,
     );
   }
 
-  const blockMap = decodeContentBlockNodes(rawBlocks, entityMap);
+  const blockMap = decodeContentBlockNodes(rawBlocks, entityKeyMap);
   // in dev mode, check that the tree invariants are met
   if (__DEV__) {
     invariant(
@@ -240,20 +242,22 @@ const decodeRawBlocks = (
   return blockMap;
 };
 
-const decodeRawEntityMap = (rawState: RawDraftContentState): * => {
-  let contentState = ContentState.createFromText('');
-
+const decodeRawEntityMap = (
+  contentStateArg: ContentState,
+  rawState: RawDraftContentState,
+): {entityKeyMap: EntityKeyMap, contentState: ContentState} => {
   const {entityMap: rawEntityMap} = rawState;
-  const entityMap = {};
+  const entityKeyMap = {};
+  let contentState = contentStateArg;
 
   Object.keys(rawEntityMap).forEach(rawEntityKey => {
     const {type, mutability, data} = rawEntityMap[rawEntityKey];
     contentState = contentState.createEntity(type, mutability, data || {});
     // get the key reference to created entity
-    entityMap[rawEntityKey] = contentState.getLastCreatedEntityKey();
+    entityKeyMap[rawEntityKey] = contentState.getLastCreatedEntityKey();
   });
 
-  return entityMap;
+  return {entityKeyMap, contentState};
 };
 
 const convertFromRawToDraftState = (
@@ -262,10 +266,13 @@ const convertFromRawToDraftState = (
   invariant(Array.isArray(rawState.blocks), 'invalid RawDraftContentState');
 
   // decode entities
-  const entityMap = decodeRawEntityMap(rawState);
+  const {contentState, entityKeyMap} = decodeRawEntityMap(
+    ContentState.createFromText(''),
+    rawState,
+  );
 
   // decode blockMap
-  const blockMap = decodeRawBlocks(rawState, entityMap);
+  const blockMap = decodeRawBlocks(rawState, entityKeyMap);
 
   // create initial selection
   const selectionState = blockMap.isEmpty()
@@ -274,7 +281,7 @@ const convertFromRawToDraftState = (
 
   return new ContentState({
     blockMap,
-    entityMap,
+    entityMap: contentState.getEntityMap(),
     selectionBefore: selectionState,
     selectionAfter: selectionState,
   });

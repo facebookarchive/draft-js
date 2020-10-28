@@ -5,12 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @emails oncall+draft_js
+ * @flow
  * @format
  */
 
 'use strict';
 
 jest.mock('generateRandomKey');
+
+import type {RawDraftContentState} from 'RawDraftContentState';
 
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const mockUUID = require('mockUUID');
@@ -21,7 +24,7 @@ const toggleExperimentalTreeDataSupport = enabled => {
   });
 };
 
-const assertDraftState = rawState => {
+const assertDraftState = (rawState: RawDraftContentState) => {
   expect(
     convertFromRawToDraftState(rawState)
       .getBlockMap()
@@ -37,13 +40,34 @@ beforeEach(() => {
 test('must map falsey block types to default value of unstyled', () => {
   const rawState = {
     blocks: [
-      {key: 'A', text: 'AAAA'},
-      {key: 'B', text: 'BBBB', type: null},
-      {key: 'C', text: 'CCCC', type: undefined},
+      {
+        key: 'A',
+        text: 'AAAA',
+        depth: 0,
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
+      {
+        key: 'B',
+        text: 'BBBB',
+        type: null,
+        depth: 0,
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
+      {
+        key: 'C',
+        text: 'CCCC',
+        type: undefined,
+        depth: 0,
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
     ],
     entityMap: {},
   };
 
+  //$FlowFixMe looks like the whole point of the test is to verify something prevented by flow? Let it be for now.
   assertDraftState(rawState);
 });
 
@@ -99,12 +123,8 @@ test('must be able to convert from styled blocks and entities mapped raw state',
     entityMap: {
       '0': {
         data: {},
-        mutability: undefined,
-        type: {
-          data: null,
-          mutability: 'IMMUTABLE',
-          type: 'IMAGE',
-        },
+        mutability: 'IMMUTABLE',
+        type: 'IMAGE',
       },
     },
   };
@@ -118,19 +138,46 @@ test('must convert from raw tree draft to raw content state when experimentalTre
       {
         key: 'A',
         text: '',
+        entityRanges: [],
+        inlineStyleRanges: [],
+        type: 'unstyled',
+        depth: 0,
         children: [
           {
             key: 'B',
             text: '',
+            entityRanges: [],
+            inlineStyleRanges: [],
+            type: 'unstyled',
+            depth: 0,
             children: [
-              {key: 'C', text: 'left block', children: []},
-              {key: 'D', text: 'right block', children: []},
+              {
+                key: 'C',
+                text: 'left block',
+                entityRanges: [],
+                inlineStyleRanges: [],
+                type: 'unstyled',
+                depth: 0,
+                children: [],
+              },
+              {
+                key: 'D',
+                text: 'right block',
+                entityRanges: [],
+                inlineStyleRanges: [],
+                type: 'unstyled',
+                depth: 0,
+                children: [],
+              },
             ],
           },
           {
             key: 'E',
             type: 'header-one',
             text: 'This is a tree based document!',
+            entityRanges: [],
+            inlineStyleRanges: [],
+            depth: 0,
             children: [],
           },
         ],
@@ -149,19 +196,46 @@ test('convert from raw tree draft content state', () => {
       {
         key: 'A',
         text: '',
+        entityRanges: [],
+        depth: 0,
+        inlineStyleRanges: [],
+        type: 'unstyled',
         children: [
           {
             key: 'B',
             text: '',
+            entityRanges: [],
+            depth: 0,
+            inlineStyleRanges: [],
+            type: 'unstyled',
             children: [
-              {key: 'C', text: 'left block', children: []},
-              {key: 'D', text: 'right block', children: []},
+              {
+                key: 'C',
+                text: 'left block',
+                entityRanges: [],
+                depth: 0,
+                inlineStyleRanges: [],
+                type: 'unstyled',
+                children: [],
+              },
+              {
+                key: 'D',
+                text: 'right block',
+                entityRanges: [],
+                depth: 0,
+                inlineStyleRanges: [],
+                type: 'unstyled',
+                children: [],
+              },
             ],
           },
           {
             key: 'E',
             type: 'header-one',
             text: 'This is a tree based document!',
+            entityRanges: [],
+            depth: 0,
+            inlineStyleRanges: [],
             children: [],
           },
         ],
@@ -177,9 +251,30 @@ test('must be able to convert from raw state to tree state when experimentalTree
   toggleExperimentalTreeDataSupport(true);
   const rawState = {
     blocks: [
-      {key: 'A', text: 'AAAA'},
-      {key: 'B', text: 'BBBB'},
-      {key: 'C', text: 'CCCC'},
+      {
+        key: 'A',
+        text: 'AAAA',
+        entityRanges: [],
+        type: 'unstyled',
+        inlineStyleRanges: [],
+        depth: 0,
+      },
+      {
+        key: 'B',
+        text: 'BBBB',
+        entityRanges: [],
+        type: 'unstyled',
+        inlineStyleRanges: [],
+        depth: 0,
+      },
+      {
+        key: 'C',
+        text: 'CCCC',
+        entityRanges: [],
+        type: 'unstyled',
+        inlineStyleRanges: [],
+        depth: 0,
+      },
     ],
     entityMap: {},
   };
@@ -191,13 +286,29 @@ test('must be able to convert content blocks that have list with depth from raw 
   toggleExperimentalTreeDataSupport(true);
   const rawState = {
     blocks: [
-      {key: 'A', type: 'ordered-list-item', depth: 0, text: ''},
-      {key: 'B', type: 'ordered-list-item', depth: 1, text: ''},
+      {
+        key: 'A',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: '',
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
+      {
+        key: 'B',
+        type: 'ordered-list-item',
+        depth: 1,
+        text: '',
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
       {
         key: 'C',
         type: 'ordered-list-item',
         depth: 2,
         text: 'deeply nested list',
+        entityRanges: [],
+        inlineStyleRanges: [],
       },
     ],
     entityMap: {},
@@ -209,14 +320,30 @@ test('must be able to convert content blocks that have list with depth from raw 
 test('ignore empty children array', () => {
   const rawState = {
     blocks: [
-      {key: 'A', type: 'ordered-list-item', depth: 0, text: 'A'},
-      {key: 'B', type: 'ordered-list-item', depth: 0, text: 'B'},
+      {
+        key: 'A',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'A',
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
+      {
+        key: 'B',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'B',
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
       {
         key: 'C',
         type: 'ordered-list-item',
         depth: 0,
         text: 'C',
         children: [],
+        entityRanges: [],
+        inlineStyleRanges: [],
       },
     ],
     entityMap: {},
@@ -228,14 +355,30 @@ test('ignore empty children array', () => {
 test('ignore empty children array for tree conversion 1', () => {
   const rawState = {
     blocks: [
-      {key: 'A', type: 'ordered-list-item', depth: 0, text: 'A'},
-      {key: 'B', type: 'ordered-list-item', depth: 0, text: 'B'},
+      {
+        key: 'A',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'A',
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
+      {
+        key: 'B',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'B',
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
       {
         key: 'C',
         type: 'ordered-list-item',
         depth: 0,
         text: 'C',
         children: [],
+        entityRanges: [],
+        inlineStyleRanges: [],
       },
     ],
     entityMap: {},
@@ -247,14 +390,30 @@ test('ignore empty children array for tree conversion 2', () => {
   toggleExperimentalTreeDataSupport(true);
   const rawState = {
     blocks: [
-      {key: 'A', type: 'ordered-list-item', depth: 0, text: 'A'},
-      {key: 'B', type: 'ordered-list-item', depth: 0, text: 'B'},
+      {
+        key: 'A',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'A',
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
+      {
+        key: 'B',
+        type: 'ordered-list-item',
+        depth: 0,
+        text: 'B',
+        entityRanges: [],
+        inlineStyleRanges: [],
+      },
       {
         key: 'C',
         type: 'ordered-list-item',
         depth: 0,
         text: 'C',
         children: [],
+        entityRanges: [],
+        inlineStyleRanges: [],
       },
     ],
     entityMap: {},

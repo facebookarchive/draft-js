@@ -25,21 +25,20 @@ const adjustBlockDepthForContentState = require('adjustBlockDepthForContentState
 const nullthrows = require('nullthrows');
 
 const RichTextEditorUtil: RichTextUtils = {
-  currentBlockContainsLink: function(editorState: EditorState): boolean {
+  currentBlockContainsLink(editorState: EditorState): boolean {
     const selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
-    const entityMap = contentState.getEntityMap();
     return contentState
       .getBlockForKey(selection.getAnchorKey())
       .getCharacterList()
       .slice(selection.getStartOffset(), selection.getEndOffset())
       .some(v => {
         const entity = v.getEntity();
-        return !!entity && entityMap.__get(entity).getType() === 'LINK';
+        return !!entity && contentState.getEntity(entity).getType() === 'LINK';
       });
   },
 
-  getCurrentBlockType: function(editorState: EditorState): DraftBlockType {
+  getCurrentBlockType(editorState: EditorState): DraftBlockType {
     const selection = editorState.getSelection();
     return editorState
       .getCurrentContent()
@@ -47,11 +46,11 @@ const RichTextEditorUtil: RichTextUtils = {
       .getType();
   },
 
-  getDataObjectForLinkURL: function(uri: URI): DataObjectForLink {
+  getDataObjectForLinkURL(uri: URI): DataObjectForLink {
     return {url: uri.toString()};
   },
 
-  handleKeyCommand: function(
+  handleKeyCommand(
     editorState: EditorState,
     command: DraftEditorCommand | string,
     eventTimeStamp: ?number,
@@ -79,7 +78,7 @@ const RichTextEditorUtil: RichTextUtils = {
     }
   },
 
-  insertSoftNewline: function(editorState: EditorState): EditorState {
+  insertSoftNewline(editorState: EditorState): EditorState {
     const contentState = DraftModifier.insertText(
       editorState.getCurrentContent(),
       editorState.getSelection(),
@@ -104,7 +103,7 @@ const RichTextEditorUtil: RichTextUtils = {
    * For collapsed selections at the start of styled blocks, backspace should
    * just remove the existing style.
    */
-  onBackspace: function(editorState: EditorState): ?EditorState {
+  onBackspace(editorState: EditorState): ?EditorState {
     const selection = editorState.getSelection();
     if (
       !selection.isCollapsed() ||
@@ -150,7 +149,7 @@ const RichTextEditorUtil: RichTextUtils = {
     return null;
   },
 
-  onDelete: function(editorState: EditorState): ?EditorState {
+  onDelete(editorState: EditorState): ?EditorState {
     const selection = editorState.getSelection();
     if (!selection.isCollapsed()) {
       return null;
@@ -190,7 +189,7 @@ const RichTextEditorUtil: RichTextUtils = {
     return null;
   },
 
-  onTab: function(
+  onTab(
     event: SyntheticKeyboardEvent<>,
     editorState: EditorState,
   ): EditorState {
@@ -215,7 +214,7 @@ const RichTextEditorUtil: RichTextUtils = {
     return EditorState.push(editorState, withAdjustment, 'adjust-depth');
   },
 
-  toggleBlockType: function(
+  toggleBlockType(
     editorState: EditorState,
     blockType: DraftBlockType,
   ): EditorState {
@@ -264,7 +263,7 @@ const RichTextEditorUtil: RichTextUtils = {
     );
   },
 
-  toggleCode: function(editorState: EditorState): EditorState {
+  toggleCode(editorState: EditorState): EditorState {
     const selection = editorState.getSelection();
     const anchorKey = selection.getAnchorKey();
     const focusKey = selection.getFocusKey();
@@ -282,7 +281,7 @@ const RichTextEditorUtil: RichTextUtils = {
    * internal state. If it is not collapsed, apply the change directly
    * to the document state.
    */
-  toggleInlineStyle: function(
+  toggleInlineStyle(
     editorState: EditorState,
     inlineStyle: string,
   ): EditorState {
@@ -325,7 +324,7 @@ const RichTextEditorUtil: RichTextUtils = {
     return EditorState.push(editorState, newContent, 'change-inline-style');
   },
 
-  toggleLink: function(
+  toggleLink(
     editorState: EditorState,
     targetSelection: SelectionState,
     entityKey: ?string,
@@ -343,7 +342,7 @@ const RichTextEditorUtil: RichTextUtils = {
    * When a collapsed cursor is at the start of a styled block, changes block
    * type to 'unstyled'. Returns null if selection does not meet that criteria.
    */
-  tryToRemoveBlockStyle: function(editorState: EditorState): ?ContentState {
+  tryToRemoveBlockStyle(editorState: EditorState): ?ContentState {
     const selection = editorState.getSelection();
     const offset = selection.getAnchorOffset();
     if (selection.isCollapsed() && offset === 0) {

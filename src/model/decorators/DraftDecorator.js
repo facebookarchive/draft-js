@@ -53,7 +53,7 @@ export type DraftDecorator = {
  */
 export type DraftDecoratorComponentProps = {
   blockKey: BlockNodeKey,
-  children?: Array<React.Node>,
+  children?: Array<React.MixedElement>,
   contentState: ContentState,
   decoratedText: string,
   dir: ?HTMLDir,
@@ -68,5 +68,4 @@ export type DraftDecoratorComponentProps = {
   entityKey: ?string,
   offsetKey: string,
   start: number,
-  ...
 };
