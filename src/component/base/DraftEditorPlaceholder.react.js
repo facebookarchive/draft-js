@@ -49,7 +49,6 @@ class DraftEditorPlaceholder extends React.Component<Props> {
     const innerClassName =
       // We can't use joinClasses since the fbjs flow definition is wrong. Using
       // cx to concatenate is rising issues with haste internally.
-      // eslint-disable-next-line fb-www/cx-concat
       cx('public/DraftEditorPlaceholder/inner') +
       (this.props.className != null ? ` ${this.props.className}` : '');
 
