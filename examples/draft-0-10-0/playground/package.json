@@ -13,7 +13,7 @@
     "react-dom": "^16.13.1",
     "react-json-tree": "^0.13.0",
     "react-panelgroup": "^1.0.12",
-    "react-scripts": "3.4.3"
+    "react-scripts": "4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
