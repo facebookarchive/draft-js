@@ -13,7 +13,7 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
-    "@babel/node": "^7.8.7",
+    "@babel/node": "^7.12.1",
     "@babel/preset-react": "^7.9.1",
     "babelify": "^10.0.0",
     "browserify": "^16.5.0"
