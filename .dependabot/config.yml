@@ -1,14 +1,26 @@
-version: 1
-update_configs:
-  - package_manager: "javascript"
-    directory: "/examples/draft-0-10-0/playground"
-    update_schedule: "monthly"
-  - package_manager: "javascript"
-    directory: "/examples/draft-0-10-0/tex"
-    update_schedule: "monthly"
-  - package_manager: "javascript"
-    directory: "/examples/draft-0-10-0/universal"
-    update_schedule: "monthly"
-  - package_manager: "javascript"
-    directory: "/"
-    update_schedule: "weekly"
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    ignore:
+      - dependency-name: '*'
+  - package-ecosystem: 'npm'
+    directory: '/examples/draft-0-10-0/playground'
+    schedule:
+      interval: monthly"
+    ignore:
+      - dependency-name: '*'
+  - package-ecosystem: 'npm'
+    directory: '/examples/draft-0-10-0/tex'
+    schedule:
+      interval: 'monthly'
+    ignore:
+      - dependency-name: '*'
+  - package-ecosystem: 'npm'
+    directory: '/examples/draft-0-10-0/universal'
+    schedule:
+      interval: 'monthly'
+    ignore:
+      - dependency-name: '*'
