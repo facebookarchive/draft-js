@@ -41,7 +41,7 @@ class DraftEditorPlaceholder extends React.Component<Props> {
     return (
       editorState.getSelection().getHasFocus() !==
         nextEditorState.getSelection().getHasFocus() ||
-      shallowEqual(otherProps, nextOtherProps)
+      !shallowEqual(otherProps, nextOtherProps)
     );
   }
 
