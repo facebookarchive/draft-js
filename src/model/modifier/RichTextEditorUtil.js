@@ -62,6 +62,11 @@ const RichTextEditorUtil: RichTextUtils = {
         return RichTextEditorUtil.toggleInlineStyle(editorState, 'ITALIC');
       case 'underline':
         return RichTextEditorUtil.toggleInlineStyle(editorState, 'UNDERLINE');
+      case 'strikethrough':
+        return RichTextEditorUtil.toggleInlineStyle(
+          editorState,
+          'STRIKETHROUGH',
+        );
       case 'code':
         return RichTextEditorUtil.toggleCode(editorState);
       case 'backspace':
