@@ -146,7 +146,7 @@ class DraftEditorContents extends React.Component<Props> {
 
     const blocksAsArray = content.getBlocksAsArray();
     const processedBlocks = [];
-
+    const alreadyEncounteredDepth = new Set();
     let currentDepth = null;
     let lastWrapperTemplate = null;
 
@@ -202,12 +202,15 @@ class DraftEditorContents extends React.Component<Props> {
         const shouldResetCount =
           lastWrapperTemplate !== wrapperTemplate ||
           currentDepth === null ||
-          depth > currentDepth;
+          depth > currentDepth ||
+          (depth < currentDepth && !alreadyEncounteredDepth.has(depth));
         className = joinClasses(
           className,
           getListItemClasses(blockType, depth, shouldResetCount, direction),
         );
       }
+
+      alreadyEncounteredDepth.add(depth);
 
       const Component = CustomComponent || DraftEditorBlock;
       let childProps = {
