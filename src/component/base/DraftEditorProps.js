@@ -106,6 +106,13 @@ export type DraftEditorProps = {
   ariaLabelledBy?: string,
   ariaMultiline?: boolean,
   ariaOwneeID?: string,
+  /**
+   * aria-required attribute. Boolean value that indicates that whether an
+   * element is required to submit (true) or not. While HTML5 does have a
+   * `required` attribute now, some browsers don't support it yet and it only
+   * applies to input elements in either case.
+   */
+  ariaRequired?: string,
   webDriverTestID?: string,
   /**
    * Cancelable event handlers, handled from the top level down. A handler
