@@ -50,6 +50,23 @@ class CompositeDraftDecorator {
     this._decorators = decorators.slice();
   }
 
+  /**
+   * Returns true if this CompositeDraftDecorator has the same decorators as
+   * the given array. This does a reference check, so the decorators themselves
+   * have to be the same objects.
+   */
+  isCompositionOfDecorators(arr: $ReadOnlyArray<DraftDecorator>): boolean {
+    if (this._decorators.length !== arr.length) {
+      return false;
+    }
+    for (let ii = 0; ii < arr.length; ii++) {
+      if (this._decorators[ii] !== arr[ii]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   getDecorations(
     block: BlockNodeRecord,
     contentState: ContentState,
