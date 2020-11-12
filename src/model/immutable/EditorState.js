@@ -477,15 +477,14 @@ class EditorState {
       mustBecomeBoundary(editorState, changeType)
     ) {
       undoStack = undoStack.push(currentContent);
-      newContent = newContent.set('selectionBefore', selection);
+      newContent = newContent.setSelectionBefore(selection);
     } else if (
       changeType === 'insert-characters' ||
       changeType === 'backspace-character' ||
       changeType === 'delete-character'
     ) {
       // Preserve the previous selection.
-      newContent = newContent.set(
-        'selectionBefore',
+      newContent = newContent.setSelectionBefore(
         currentContent.getSelectionBefore(),
       );
     }

@@ -214,6 +214,18 @@ class ContentState extends ContentStateRecord {
     return this;
   }
 
+  setSelectionBefore(selection: SelectionState): ContentState {
+    return this.set('selectionBefore', selection);
+  }
+
+  setSelectionAfter(selection: SelectionState): ContentState {
+    return this.set('selectionAfter', selection);
+  }
+
+  setBlockMap(blockMap: BlockMap): ContentState {
+    return this.set('blockMap', blockMap);
+  }
+
   static createFromBlockArray(
     // TODO: update flow type when we completely deprecate the old entity API
     blocks:
