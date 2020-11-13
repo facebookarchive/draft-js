@@ -595,8 +595,7 @@ test('must be able to insert atomic block when experimentalTreeDataSupport is en
   assertInsertAtomicBlock(
     EditorState.forceSelection(
       EditorState.createWithContent(
-        contentState.set(
-          'blockMap',
+        contentState.setBlockMap(
           BlockMapBuilder.createFromArray([
             new ContentBlockNode({
               text: 'first block',
@@ -618,8 +617,7 @@ test('must be able to move atomic block when experimentalTreeDataSupport is enab
   const resultEditor = assertInsertAtomicBlock(
     EditorState.forceSelection(
       EditorState.createWithContent(
-        contentState.set(
-          'blockMap',
+        contentState.setBlockMap(
           BlockMapBuilder.createFromArray([
             new ContentBlockNode({
               text: 'first block',

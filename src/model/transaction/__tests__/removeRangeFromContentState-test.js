@@ -66,8 +66,7 @@ const contentBlockNodes = [
   }),
 ];
 const treeSelectionState = SelectionState.createEmpty('A');
-const treeContentState = contentState.set(
-  'blockMap',
+const treeContentState = contentState.setBlockMap(
   BlockMapBuilder.createFromArray(contentBlockNodes),
 );
 

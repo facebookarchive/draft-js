@@ -101,7 +101,7 @@ test('must remove for non-collapsed cursor on multiple entities', () => {
   const block = sampleContentState.getBlockForKey('b');
   const newBlock = applyEntityToContentBlock(block, 3, 5, '456');
   const newBlockMap = sampleContentState.getBlockMap().set('b', newBlock);
-  let newContent = sampleContentState.set('blockMap', newBlockMap);
+  let newContent = sampleContentState.setBlockMap(newBlockMap);
   newContent = ensureEntityWithMutability(newContent, '456', 'IMMUTABLE');
 
   assertRemoveEntitiesAtEdges(
@@ -122,7 +122,7 @@ test('must ignore an entity that is entirely within the selection', () => {
   newBlock = applyEntityToContentBlock(newBlock, 4, 5, null);
 
   const newBlockMap = sampleContentState.getBlockMap().set('b', newBlock);
-  const newContent = sampleContentState.set('blockMap', newBlockMap);
+  const newContent = sampleContentState.setBlockMap(newBlockMap);
 
   assertRemoveEntitiesAtEdges(
     selectionOnEntity.merge({
@@ -161,7 +161,7 @@ test('must remove entities at both ends of selection', () => {
   const len = cBlock.getLength();
   const modifiedC = applyEntityToContentBlock(cBlock, 0, len, '456');
   const newBlockMap = sampleContentState.getBlockMap().set('c', modifiedC);
-  let newContent = sampleContentState.set('blockMap', newBlockMap);
+  let newContent = sampleContentState.setBlockMap(newBlockMap);
   newContent = ensureEntityWithMutability(newContent, '456', 'IMMUTABLE');
 
   assertRemoveEntitiesAtEdges(
