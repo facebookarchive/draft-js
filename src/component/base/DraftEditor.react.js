@@ -444,6 +444,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onKeyDown={this._onKeyDown}
             onKeyPress={this._onKeyPress}
             onKeyUp={this._onKeyUp}
+            onMouseDown={this._onMouseDown}
             onMouseUp={this._onMouseUp}
             onPaste={this._onPaste}
             onSelect={this._onSelect}
