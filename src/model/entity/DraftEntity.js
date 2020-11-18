@@ -117,9 +117,11 @@ const DraftEntity: DraftEntityMapObject = {
     type: DraftEntityType,
     mutability: DraftEntityMutability,
     data?: Object,
+    key?: string,
   ): string {
     return DraftEntity.__add(
       new DraftEntityInstance({type, mutability, data: data || {}}),
+      key,
     );
   },
 
@@ -127,8 +129,8 @@ const DraftEntity: DraftEntityMapObject = {
    * Add an existing DraftEntityInstance to the DraftEntity map. This is
    * useful when restoring instances from the server.
    */
-  __add(instance: DraftEntityInstance): string {
-    instanceKey = uuid();
+  __add(instance: DraftEntityInstance, key?: string): string {
+    instanceKey = key || uuid();
     instances = instances.set(instanceKey, instance);
     return instanceKey;
   },
