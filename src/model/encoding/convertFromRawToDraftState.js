@@ -67,7 +67,6 @@ const decodeCharacterList = (
   } = block;
 
   const entityRanges = rawEntityRanges || [];
-  console.log('entityRanges',entityRanges,entityKeyMap)
   const inlineStyleRanges = rawInlineStyleRanges || [];
 
   // Translate entity range keys to the DraftEntity map.

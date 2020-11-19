@@ -80,7 +80,6 @@ const encodeRawBlocks = (
       character => character.getEntity() !== null,
       start => {
         const entityKey = block.getEntityAt(start);
-        console.log(contentState.getEntity(entityKey))
         // Stringify to maintain order of otherwise numeric keys.
         const stringifiedEntityKey = DraftStringKey.stringify(entityKey);
         // This makes this function resilient to two entities
@@ -94,7 +93,6 @@ const encodeRawBlocks = (
         // real entity, at this stage we just need to map back the entity
         // key used by the BlockNode
         entityMap[stringifiedEntityKey] = (`${entityStorageKey}`: any);
-        console.log('entityMap',entityMap)
         entityStorageKey++;
       },
     );
