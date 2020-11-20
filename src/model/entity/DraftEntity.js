@@ -139,7 +139,7 @@ const DraftEntity: DraftEntityMapObject = {
    * Retrieve the entity corresponding to the supplied key string.
    */
   __get(key: string): DraftEntityInstance {
-    const instance = instances.get(key);
+    const instance = instances.get(key.toString());
     invariant(!!instance, 'Unknown DraftEntity key: %s.', key);
     return instance;
   },
