@@ -1,5 +1,4 @@
 static/
-lib/
 build/
 node_modules
 website/src/docs/
