@@ -118,7 +118,7 @@ const encodeRawEntityMap = (
 
   Object.keys(entityMap).forEach((key, index) => {
     const entity = contentState.getEntity(DraftStringKey.unstringify(key));
-    rawEntityMap[index] = {
+    rawEntityMap[DraftStringKey.unstringify(key)] = {
       type: entity.getType(),
       mutability: entity.getMutability(),
       data: entity.getData(),

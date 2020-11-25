@@ -446,6 +446,12 @@ class ContentBlocksBuilder {
       }
 
       let blockType = this.blockTypeMap.get(nodeName);
+
+      // 图片、分割线、表格都拷贝失败，在这里过滤掉
+      if (blockType === 'atomic') {
+        continue;
+      }
+
       if (blockType !== undefined) {
         // 'block' type node means we need to create a block config
         // with the text accumulated so far (if any)
@@ -460,7 +466,7 @@ class ContentBlocksBuilder {
 
         if (typeof blockType !== 'string') {
           blockType =
-            this.disambiguate(nodeName, this.wrapper) ||
+            this.disambiguate(nodeName, this.wrapper, node) ||
             blockType[0] ||
             'unstyled';
         }
@@ -805,8 +811,11 @@ const convertFromHTMLToContentBlocks = (
 
   // Select the proper block type for the cases where the blockRenderMap
   // uses multiple block types for the same html tag.
-  const disambiguate = (tag: string, wrapper: ?string): ?string => {
+  const disambiguate = (tag: string, wrapper: ?string, node): ?string => {
     if (tag === 'li') {
+      if (node && node.classList && node.classList.contains('checkable-list-item')) {
+        return 'checkable-list-item';
+      }
       return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
     }
     return null;
