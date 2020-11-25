@@ -32,6 +32,7 @@ const isHTMLAnchorElement = require('isHTMLAnchorElement');
 const isHTMLBRElement = require('isHTMLBRElement');
 const isHTMLElement = require('isHTMLElement');
 const isHTMLImageElement = require('isHTMLImageElement');
+const convertToRaw = require("./convertFromDraftStateToRaw")
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
@@ -211,16 +212,32 @@ function isHTMLFileElement(node) {
   }
   return isElement(node) && node.title === 'file-entity';
 }
+
+function isHTMLTableElement(node) {
+  if (!node || !node.ownerDocument) {
+    return false;
+  }
+  return isElement(node) && node.tagName === 'TABLE';
+}
+
+
 /**
  * Return true if the provided HTML Element can be used to build a
  * Draftjs-compatible file.
  */
 var isValidFile = function isValidFile(node) {
-  if(!isHTMLFileElement(node)) {
+  if(!isHTMLTableElement(node)) {
     return false
   }
   var fileNode = node;
   return !!(fileNode.dataset.bucketname && fileNode.dataset.objectkey);
+}
+
+var isValidTable = function isValidTable(node) {
+  if(!isHTMLTableElement(node)) {
+    return false
+  }
+  return true;
 }
 
 /**
@@ -474,11 +491,12 @@ class ContentBlocksBuilder {
 
       let blockType = this.blockTypeMap.get(nodeName);
 
-      // 图片、分割线、表格都拷贝失败，在这里过滤掉
-      if (blockType === 'atomic') {
-        continue;
-      }
-      
+      // 图片、分割线、表格都拷贝失败，在这里过滤掉 
+      // - 此处不需要再过滤
+      // if (blockType === 'atomic') {
+      //   continue;
+      // }
+
       if (blockType !== undefined) {
         // 'block' type node means we need to create a block config
         // with the text accumulated so far (if any)
@@ -539,6 +557,11 @@ class ContentBlocksBuilder {
 
       if (isValidFile(node)) {
         this._addFileNode(node, style);
+        continue;
+      }
+
+      if (isValidTable(node)) {
+        this._addTableNode(node, style)
         continue;
       }
 
@@ -706,6 +729,94 @@ class ContentBlocksBuilder {
   this.currentEntity = null;
 }
 
+/**
+ * Add Table Node
+ */
+_addTableNode(tableRoot, style) {
+  function generateUUID() {
+    var str = Math.random().toString(36).substr(3);
+    str += Date.now().toString(16).substr(4);
+    return str;
+  }
+  const trList = tableRoot.querySelectorAll('tr');
+  const colList = tableRoot.querySelectorAll('col');
+  const row = (tableRoot.dataset.rows && Number(tableRoot.dataset.rows)) || trList.length;
+  const column = (tableRoot.dataset.cols && Number(tableRoot.dataset.cols)) || colList.length;
+  const rowsId = [];
+  const colsId = [];
+  const combine = [];
+  const columnWidth = {};
+  const cell = {};
+  Array(row)
+    .fill(0)
+    .forEach((_, index) => {
+      console.log(row);
+      const rowId = `rowId-${generateUUID()}`;
+      rowsId.push(rowId);
+      cell[rowId] = {};
+      const trRoot = trList[index];
+      const tdList = trRoot.querySelectorAll('.brick-table-td');
+      Array(column)
+        .fill(0)
+        .forEach((_, indexCol) => {
+          if (index === 0) {
+            const colId = `colId-${generateUUID()}`;
+            columnWidth[colId] = colList[indexCol].width ? Number(colList[indexCol].width) : 100;
+            colsId.push(colId);
+          }
+          const tdRoot = tdList[indexCol];
+          const cellId = `cellId-${generateUUID()}`;
+          const rowspan = tdRoot ? tdRoot.rowSpan || null : 0;
+          const colspan = tdRoot ? tdRoot.colSpan || null : 0;
+          if (rowspan !== null && colspan !== null && (rowspan > 1 || colspan > 1)) {
+            combine.push({
+              minRow: index,
+              minCol: indexCol,
+              maxRow: rowspan - 1 + index,
+              maxCol: colspan - 1 + indexCol,
+            });
+          }
+          let editorState = null;
+          if (tdRoot) {
+            const blocksFromHTML = convertFromHTMLToContentBlocks(
+              tdList[indexCol].querySelector('.DraftEditor-root').outerHTML,
+            );
+            if (blocksFromHTML.contentBlocks.length) {
+              const contentState = ContentState.createFromBlockArray(
+                blocksFromHTML.contentBlocks,
+                blocksFromHTML.entityMap,
+              );
+              editorState = convertToRaw(contentState);
+            } else {
+              editorState = convertToRaw(EditorState.createEmpty().getCurrentContent());
+            }
+          } else {
+            editorState = convertToRaw(EditorState.createEmpty().getCurrentContent());
+          }
+          cell[rowId][colsId[indexCol]] = {
+            cellId,
+            rowspan,
+            colspan,
+            editorState,
+          };
+        });
+    });
+  this.contentState = this.contentState.createEntity('TABLE', 'IMMUTABLE', {
+    row: Number(row),
+    column: Number(column),
+    rowsId,
+    colsId,
+    cell,
+    combine,
+    columnWidth,
+  });
+  this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
+  // we strip those out)
+
+  this._appendText("\uD83D\uDCF7", style);
+
+  this.currentEntity = null;
+}
   /**
    * Add the content of an HTML 'a' node to the internal state. Child nodes
    * (if any) are converted to Block Configs and appended to the provided
