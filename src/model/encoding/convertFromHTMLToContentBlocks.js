@@ -196,6 +196,33 @@ const isValidImage = (node: Node): boolean => {
   );
 };
 
+
+function isElement(node) {
+  if (!node || !node.ownerDocument) {
+    return false;
+  }
+  return node.nodeType === Node.ELEMENT_NODE;
+}
+
+
+function isHTMLFileElement(node) {
+  if (!node || !node.ownerDocument) {
+    return false;
+  }
+  return isElement(node) && node.title === 'file-entity';
+}
+/**
+ * Return true if the provided HTML Element can be used to build a
+ * Draftjs-compatible file.
+ */
+var isValidFile = function isValidFile(node) {
+  if(!isHTMLFileElement(node)) {
+    return false
+  }
+  var fileNode = node;
+  return !!(fileNode.dataset.bucketname && fileNode.dataset.objectkey);
+}
+
 /**
  * Try to guess the inline style of an HTML element based on its css
  * styles (font-weight, font-style and text-decoration).
@@ -451,7 +478,7 @@ class ContentBlocksBuilder {
       if (blockType === 'atomic') {
         continue;
       }
-
+      
       if (blockType !== undefined) {
         // 'block' type node means we need to create a block config
         // with the text accumulated so far (if any)
@@ -510,6 +537,11 @@ class ContentBlocksBuilder {
         continue;
       }
 
+      if (isValidFile(node)) {
+        this._addFileNode(node, style);
+        continue;
+      }
+
       if (isValidImage(node)) {
         this._addImgNode(node, style);
         continue;
@@ -520,6 +552,8 @@ class ContentBlocksBuilder {
         continue;
       }
 
+
+      
       let newStyle = style;
       if (HTMLTagToRawInlineStyleMap.has(nodeName)) {
         newStyle = newStyle.add(HTMLTagToRawInlineStyleMap.get(nodeName));
@@ -640,6 +674,37 @@ class ContentBlocksBuilder {
 
     this.currentEntity = null;
   }
+
+  /** 
+   Add file Block
+  */
+ 
+ _addFileNode(node, style) {
+  if (!isHTMLFileElement(node)) {
+    return;
+  }
+
+  var entityConfig = {};
+  var entityAttrMap = {
+    'bucketname': 'bucketName',
+    'objectkey': 'objectKey',
+  }
+  fileAttr.forEach(function (attr) {
+    var fileAttribute = node.dataset[attr]
+
+    if (fileAttribute) {
+      entityConfig[entityAttrMap[attr] || attr] = fileAttribute;
+    }
+  })
+
+  this.contentState = this.contentState.createEntity('FILE', 'IMMUTABLE', entityConfig);
+  this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
+  // we strip those out)
+
+  this._appendText("\uD83D\uDCF7", style);
+
+  this.currentEntity = null;
+}
 
   /**
    * Add the content of an HTML 'a' node to the internal state. Child nodes
