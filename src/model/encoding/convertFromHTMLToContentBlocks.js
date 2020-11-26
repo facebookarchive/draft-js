@@ -61,7 +61,7 @@ const notBoldValues = [
 
 const anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
 const imgAttr = ['alt', 'className', 'height', 'src', 'width'];
-
+const fileAttr = ['type', 'objectkey', 'bucketname', 'name', 'size']
 const knownListItemDepthClasses = {
   [cx('public/DraftStyleDefault/depth0')]: 0,
   [cx('public/DraftStyleDefault/depth1')]: 1,
@@ -676,11 +676,13 @@ class ContentBlocksBuilder {
     }
     const image: HTMLImageElement = (node: any);
     const entityConfig = {};
-
+    var entityAttrMap = {
+      'src': 'url'
+    }
     imgAttr.forEach(attr => {
       const imageAttribute = image.getAttribute(attr);
       if (imageAttribute) {
-        entityConfig[attr] = imageAttribute;
+        entityConfig[entityAttrMap[attr] || attr] = imageAttribute;
       }
     });
 
