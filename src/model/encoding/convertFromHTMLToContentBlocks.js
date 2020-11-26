@@ -32,7 +32,7 @@ const isHTMLAnchorElement = require('isHTMLAnchorElement');
 const isHTMLBRElement = require('isHTMLBRElement');
 const isHTMLElement = require('isHTMLElement');
 const isHTMLImageElement = require('isHTMLImageElement');
-const convertToRaw = require("./convertFromDraftStateToRaw")
+const convertToRaw = require("convertFromDraftStateToRaw")
 const EditorState = require('EditorState')
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
