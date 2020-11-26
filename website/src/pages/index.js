@@ -32,14 +32,15 @@ function Home() {
   return (
     <Layout permalink="/" description={siteConfig.tagline}>
       <div className={styles.blm}>
-        Black Lives Matter.{' '}
+        <span>Black Lives Matter.&nbsp;
         <a
           target="_blank"
           rel="noopener"
           rel="noreferrer"
           href="https://support.eji.org/give/153413/#!/donation/checkout">
-          Support&nbsp;the&nbsp;Equal&nbsp;Justice&nbsp;Initiative.
+          Support the Equal Justice Initiative.
         </a>
+        </span>
       </div>
       <div className="hero hero--primary shadow--lw">
         <div className="container">

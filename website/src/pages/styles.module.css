@@ -6,9 +6,14 @@
  */
 
 .blm {
+  align-items: center;
+  display: flex;
   font-size: 20px;
-  height: 80px;
+  justify-content: center;
   padding: 20px;
+}
+
+.blm span {
   text-align: center;
 }
 
@@ -20,9 +25,5 @@
 
   .hideOnTabletAndSmaller {
     display: none;
-  }
-
-  .blm {
-    height: 70px;
   }
 }
