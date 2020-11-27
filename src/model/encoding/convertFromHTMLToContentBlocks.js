@@ -683,6 +683,14 @@ class ContentBlocksBuilder {
       const imageAttribute = image.getAttribute(attr);
       if (imageAttribute) {
         entityConfig[entityAttrMap[attr] || attr] = imageAttribute;
+      } else {
+        // 对图片宽高度多一层获取
+        if (attr === 'width' || attr === 'height') {
+          const attribute = image[attr]
+          if (attr) {
+            entityConfig[attr] = attribute
+          }
+        }
       }
     });
 
@@ -909,14 +917,27 @@ _addTableNode(tableRoot, style) {
    */
   _toFlatContentBlocks(blockConfigs: Array<ContentBlockConfig>) {
     const cleanConfigs = this._hoistContainersInBlockConfigs(blockConfigs);
+    // 再atomic前后加入一个空白block，以防block互相吞并
+    if (cleanConfigs.size) {
+      if (cleanConfigs.get(0).type === 'atomic') {
+        cleanConfigs = cleanConfigs.unshift(this._makeBlockConfig())
+      }
+      if (cleanConfigs.get(cleanConfigs.size - 1).type === 'atomic') {
+        cleanConfigs = cleanConfigs.push(this._makeBlockConfig())
+      }
+    }
     cleanConfigs.forEach(config => {
       const {text, characterList} = this._extractTextFromBlockConfigs(
         config.childConfigs,
       );
+      
+      // 原子块不需要插入text
+      const nextText = config.type === 'atomic' ? '' : text
+
       this.contentBlocks.push(
         new ContentBlock({
           ...config,
-          text: config.text + text,
+          text: config.text + nextText,
           characterList: config.characterList.concat(characterList),
         }),
       );

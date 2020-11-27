@@ -57,13 +57,10 @@ const updateExistingBlock = (
   }
 
   let type = targetBlock.getType();
-  //此处必须将type变成插入的block的type类型
-  if (type === 'unstyled') {
+  //
+  if (text && type === 'unstyled') {
     type = fragmentBlock.getType();
   }
-  // if (text && type === 'unstyled') {
-  //   type = fragmentBlock.getType();
-  // }
 
   const newBlock = targetBlock.merge({
     text:
