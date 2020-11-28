@@ -50,14 +50,11 @@ const updateExistingBlock = (contentState: ContentState, selectionState: Selecti
       break;
   }
 
-  let type = targetBlock.getType(); //此处必须将type变成插入的block的type类型
+  let type = targetBlock.getType(); //
 
-  if (type === 'unstyled') {
+  if (text && type === 'unstyled') {
     type = fragmentBlock.getType();
-  } // if (text && type === 'unstyled') {
-  //   type = fragmentBlock.getType();
-  // }
-
+  }
 
   const newBlock = targetBlock.merge({
     text: text.slice(0, targetOffset) + fragmentBlock.getText() + text.slice(targetOffset),

@@ -37,6 +37,7 @@ function getDraftEditorSelection(editorState: EditorState, root: HTMLElement): D
     while (newAnchorNode.nodeType !== 1 && newAnchorNode.parentNode) {
       newAnchorNode = newAnchorNode.parentNode;
     }
+
     editorRoot = newAnchorNode.closest('.public-DraftEditor-content');
   }
 
