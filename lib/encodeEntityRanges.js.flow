@@ -26,7 +26,7 @@ const {
 
 function encodeEntityRanges(block: BlockNodeRecord, storageMap: Object): Array<EntityRange> {
   const encoded = [];
-  block.findEntityRanges(character => !!character.getEntity(), (
+  block.findEntityRanges(character => character.getEntity() != null, (
   /*number*/
   start,
   /*number*/

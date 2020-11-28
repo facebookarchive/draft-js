@@ -28,7 +28,7 @@ function encodeEntityRanges(
 ): Array<EntityRange> {
   const encoded = [];
   block.findEntityRanges(
-    character => !!character.getEntity(),
+    character => character.getEntity() != null,
     (/*number*/ start, /*number*/ end) => {
       const text = block.getText();
       const key = block.getEntityAt(start);
