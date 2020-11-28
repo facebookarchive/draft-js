@@ -32,8 +32,8 @@ const isHTMLAnchorElement = require('isHTMLAnchorElement');
 const isHTMLBRElement = require('isHTMLBRElement');
 const isHTMLElement = require('isHTMLElement');
 const isHTMLImageElement = require('isHTMLImageElement');
-const convertToRaw = require("convertFromDraftStateToRaw")
-const EditorState = require('EditorState')
+const convertToRaw = require('convertFromDraftStateToRaw');
+const EditorState = require('EditorState');
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 const NBSP = '&nbsp;';
@@ -61,7 +61,7 @@ const notBoldValues = [
 
 const anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
 const imgAttr = ['alt', 'className', 'height', 'src', 'width'];
-const fileAttr = ['type', 'objectkey', 'bucketname', 'name', 'size']
+const fileAttr = ['type', 'objectkey', 'bucketname', 'name', 'size'];
 const knownListItemDepthClasses = {
   [cx('public/DraftStyleDefault/depth0')]: 0,
   [cx('public/DraftStyleDefault/depth1')]: 1,
@@ -197,14 +197,12 @@ const isValidImage = (node: Node): boolean => {
   );
 };
 
-
 function isElement(node) {
   if (!node || !node.ownerDocument) {
     return false;
   }
   return node.nodeType === Node.ELEMENT_NODE;
 }
-
 
 function isHTMLFileElement(node) {
   if (!node || !node.ownerDocument) {
@@ -220,25 +218,24 @@ function isHTMLTableElement(node) {
   return isElement(node) && node.tagName === 'TABLE';
 }
 
-
 /**
  * Return true if the provided HTML Element can be used to build a
  * Draftjs-compatible file.
  */
 var isValidFile = function isValidFile(node) {
-  if(!isHTMLTableElement(node)) {
-    return false
+  if (!isHTMLTableElement(node)) {
+    return false;
   }
   var fileNode = node;
   return !!(fileNode.dataset.bucketname && fileNode.dataset.objectkey);
-}
+};
 
 var isValidTable = function isValidTable(node) {
-  if(!isHTMLTableElement(node)) {
-    return false
+  if (!isHTMLTableElement(node)) {
+    return false;
   }
   return true;
-}
+};
 
 /**
  * Try to guess the inline style of an HTML element based on its css
@@ -491,7 +488,7 @@ class ContentBlocksBuilder {
 
       let blockType = this.blockTypeMap.get(nodeName);
 
-      // 图片、分割线、表格都拷贝失败，在这里过滤掉 
+      // 图片、分割线、表格都拷贝失败，在这里过滤掉
       // - 此处不需要再过滤
       // if (blockType === 'atomic') {
       //   continue;
@@ -561,7 +558,7 @@ class ContentBlocksBuilder {
       }
 
       if (isValidTable(node)) {
-        this._addTableNode(node, style)
+        this._addTableNode(node, style);
         continue;
       }
 
@@ -575,8 +572,6 @@ class ContentBlocksBuilder {
         continue;
       }
 
-
-      
       let newStyle = style;
       if (HTMLTagToRawInlineStyleMap.has(nodeName)) {
         newStyle = newStyle.add(HTMLTagToRawInlineStyleMap.get(nodeName));
@@ -677,8 +672,8 @@ class ContentBlocksBuilder {
     const image: HTMLImageElement = (node: any);
     const entityConfig = {};
     var entityAttrMap = {
-      'src': 'url'
-    }
+      src: 'url',
+    };
     imgAttr.forEach(attr => {
       const imageAttribute = image.getAttribute(attr);
       if (imageAttribute) {
@@ -686,9 +681,9 @@ class ContentBlocksBuilder {
       } else {
         // 对图片宽高度多一层获取
         if (attr === 'width' || attr === 'height') {
-          const attribute = image[attr]
+          const attribute = image[attr];
           if (attr) {
-            entityConfig[attr] = attribute
+            entityConfig[attr] = attribute;
           }
         }
       }
@@ -711,122 +706,144 @@ class ContentBlocksBuilder {
   /** 
    Add file Block
   */
- 
- _addFileNode(node, style) {
-  if (!isHTMLFileElement(node)) {
-    return;
-  }
 
-  var entityConfig = {};
-  var entityAttrMap = {
-    'bucketname': 'bucketName',
-    'objectkey': 'objectKey',
-  }
-  fileAttr.forEach(function (attr) {
-    var fileAttribute = node.dataset[attr]
-
-    if (fileAttribute) {
-      entityConfig[entityAttrMap[attr] || attr] = fileAttribute;
+  _addFileNode(node, style) {
+    if (!isHTMLFileElement(node)) {
+      return;
     }
-  })
 
-  this.contentState = this.contentState.createEntity('FILE', 'IMMUTABLE', entityConfig);
-  this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
-  // we strip those out)
+    var entityConfig = {};
+    var entityAttrMap = {
+      bucketname: 'bucketName',
+      objectkey: 'objectKey',
+    };
+    fileAttr.forEach(function(attr) {
+      var fileAttribute = node.dataset[attr];
 
-  this._appendText("\uD83D\uDCF7", style);
-
-  this.currentEntity = null;
-}
-
-/**
- * Add Table Node
- */
-_addTableNode(tableRoot, style) {
-  function generateUUID() {
-    var str = Math.random().toString(36).substr(3);
-    str += Date.now().toString(16).substr(4);
-    return str;
-  }
-  const trList = tableRoot.querySelectorAll('tr');
-  const colList = tableRoot.querySelectorAll('col');
-  const row = (tableRoot.dataset.rows && Number(tableRoot.dataset.rows)) || trList.length;
-  const column = (tableRoot.dataset.cols && Number(tableRoot.dataset.cols)) || colList.length;
-  const rowsId = [];
-  const colsId = [];
-  const combine = [];
-  const columnWidth = {};
-  const cell = {};
-  Array(row)
-    .fill(0)
-    .forEach((_, index) => {
-      console.log(row);
-      const rowId = `rowId-${generateUUID()}`;
-      rowsId.push(rowId);
-      cell[rowId] = {};
-      const trRoot = trList[index];
-      const tdList = trRoot.querySelectorAll('.brick-table-td');
-      Array(column)
-        .fill(0)
-        .forEach((_, indexCol) => {
-          if (index === 0) {
-            const colId = `colId-${generateUUID()}`;
-            columnWidth[colId] = colList[indexCol].width ? Number(colList[indexCol].width) : 100;
-            colsId.push(colId);
-          }
-          const tdRoot = tdList[indexCol];
-          const cellId = `cellId-${generateUUID()}`;
-          const rowspan = tdRoot ? tdRoot.rowSpan || null : 0;
-          const colspan = tdRoot ? tdRoot.colSpan || null : 0;
-          if (rowspan !== null && colspan !== null && (rowspan > 1 || colspan > 1)) {
-            combine.push({
-              minRow: index,
-              minCol: indexCol,
-              maxRow: rowspan - 1 + index,
-              maxCol: colspan - 1 + indexCol,
-            });
-          }
-          let editorState = null;
-          if (tdRoot) {
-            const blocksFromHTML = convertFromHTMLToContentBlocks(
-              tdList[indexCol].querySelector('.DraftEditor-root').outerHTML,
-            );
-            if (blocksFromHTML.contentBlocks.length) {
-              const contentState = ContentState.createFromBlockArray(
-                blocksFromHTML.contentBlocks,
-                blocksFromHTML.entityMap,
-              );
-              editorState = convertToRaw(contentState);
-            } else {
-              editorState = convertToRaw(EditorState.createEmpty().getCurrentContent());
-            }
-          } else {
-            editorState = convertToRaw(EditorState.createEmpty().getCurrentContent());
-          }
-          cell[rowId][colsId[indexCol]] = {
-            cellId,
-            rowspan,
-            colspan,
-            editorState,
-          };
-        });
+      if (fileAttribute) {
+        entityConfig[entityAttrMap[attr] || attr] = fileAttribute;
+      }
     });
-  this.contentState = this.contentState.createEntity('TABLE', 'IMMUTABLE', {
-    row: Number(row),
-    column: Number(column),
-    rowsId,
-    colsId,
-    cell,
-    combine,
-    columnWidth,
-  });
-  this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
-  // we strip those out)
 
-  this._appendText("\uD83D\uDCF7", style);
+    this.contentState = this.contentState.createEntity(
+      'FILE',
+      'IMMUTABLE',
+      entityConfig,
+    );
+    this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
+    // we strip those out)
 
-  this.currentEntity = null;
-}
+    this._appendText('\uD83D\uDCF7', style);
+
+    this.currentEntity = null;
+  }
+
+  /**
+   * Add Table Node
+   */
+  _addTableNode(tableRoot, style) {
+    function generateUUID() {
+      var str = Math.random()
+        .toString(36)
+        .substr(3);
+      str += Date.now()
+        .toString(16)
+        .substr(4);
+      return str;
+    }
+    const trList = tableRoot.querySelectorAll('tr');
+    const colList = tableRoot.querySelectorAll('col');
+    const row =
+      (tableRoot.dataset.rows && Number(tableRoot.dataset.rows)) ||
+      trList.length;
+    const column =
+      (tableRoot.dataset.cols && Number(tableRoot.dataset.cols)) ||
+      colList.length;
+    const rowsId = [];
+    const colsId = [];
+    const combine = [];
+    const columnWidth = {};
+    const cell = {};
+    Array(row)
+      .fill(0)
+      .forEach((_, index) => {
+        console.log(row);
+        const rowId = `rowId-${generateUUID()}`;
+        rowsId.push(rowId);
+        cell[rowId] = {};
+        const trRoot = trList[index];
+        const tdList = trRoot.querySelectorAll('.brick-table-td');
+        Array(column)
+          .fill(0)
+          .forEach((_, indexCol) => {
+            if (index === 0) {
+              const colId = `colId-${generateUUID()}`;
+              columnWidth[colId] = colList[indexCol].width
+                ? Number(colList[indexCol].width)
+                : 100;
+              colsId.push(colId);
+            }
+            const tdRoot = tdList[indexCol];
+            const cellId = `cellId-${generateUUID()}`;
+            const rowspan = tdRoot ? tdRoot.rowSpan || null : 0;
+            const colspan = tdRoot ? tdRoot.colSpan || null : 0;
+            if (
+              rowspan !== null &&
+              colspan !== null &&
+              (rowspan > 1 || colspan > 1)
+            ) {
+              combine.push({
+                minRow: index,
+                minCol: indexCol,
+                maxRow: rowspan - 1 + index,
+                maxCol: colspan - 1 + indexCol,
+              });
+            }
+            let editorState = null;
+            if (tdRoot) {
+              const blocksFromHTML = convertFromHTMLToContentBlocks(
+                tdList[indexCol].querySelector('.DraftEditor-root').outerHTML,
+              );
+              if (blocksFromHTML.contentBlocks.length) {
+                const contentState = ContentState.createFromBlockArray(
+                  blocksFromHTML.contentBlocks,
+                  blocksFromHTML.entityMap,
+                );
+                editorState = convertToRaw(contentState);
+              } else {
+                editorState = convertToRaw(
+                  EditorState.createEmpty().getCurrentContent(),
+                );
+              }
+            } else {
+              editorState = convertToRaw(
+                EditorState.createEmpty().getCurrentContent(),
+              );
+            }
+            cell[rowId][colsId[indexCol]] = {
+              cellId,
+              rowspan,
+              colspan,
+              editorState,
+            };
+          });
+      });
+    this.contentState = this.contentState.createEntity('TABLE', 'IMMUTABLE', {
+      row: Number(row),
+      column: Number(column),
+      rowsId,
+      colsId,
+      cell,
+      combine,
+      columnWidth,
+    });
+    this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
+    // we strip those out)
+
+    this._appendText('\uD83D\uDCF7', style);
+
+    this.currentEntity = null;
+  }
   /**
    * Add the content of an HTML 'a' node to the internal state. Child nodes
    * (if any) are converted to Block Configs and appended to the provided
@@ -916,23 +933,23 @@ _addTableNode(tableRoot, style) {
    * text content.
    */
   _toFlatContentBlocks(blockConfigs: Array<ContentBlockConfig>) {
-    const cleanConfigs = this._hoistContainersInBlockConfigs(blockConfigs);
+    let cleanConfigs = this._hoistContainersInBlockConfigs(blockConfigs);
     // 再atomic前后加入一个空白block，以防block互相吞并
     if (cleanConfigs.size) {
       if (cleanConfigs.get(0).type === 'atomic') {
-        cleanConfigs = cleanConfigs.unshift(this._makeBlockConfig())
+        cleanConfigs = cleanConfigs.unshift(this._makeBlockConfig());
       }
       if (cleanConfigs.get(cleanConfigs.size - 1).type === 'atomic') {
-        cleanConfigs = cleanConfigs.push(this._makeBlockConfig())
+        cleanConfigs = cleanConfigs.push(this._makeBlockConfig());
       }
     }
     cleanConfigs.forEach(config => {
       const {text, characterList} = this._extractTextFromBlockConfigs(
         config.childConfigs,
       );
-      
+
       // 原子块不需要插入text
-      const nextText = config.type === 'atomic' ? '' : text
+      const nextText = config.type === 'atomic' ? '' : text;
 
       this.contentBlocks.push(
         new ContentBlock({
@@ -1012,7 +1029,11 @@ const convertFromHTMLToContentBlocks = (
   // uses multiple block types for the same html tag.
   const disambiguate = (tag: string, wrapper: ?string, node): ?string => {
     if (tag === 'li') {
-      if (node && node.classList && node.classList.contains('checkable-list-item')) {
+      if (
+        node &&
+        node.classList &&
+        node.classList.contains('checkable-list-item')
+      ) {
         return 'checkable-list-item';
       }
       return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';

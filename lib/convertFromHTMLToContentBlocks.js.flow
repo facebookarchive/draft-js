@@ -490,7 +490,7 @@ class ContentBlocksBuilder {
         continue;
       }
 
-      let blockType = this.blockTypeMap.get(nodeName); // 图片、分割线、表格都拷贝失败，在这里过滤掉 
+      let blockType = this.blockTypeMap.get(nodeName); // 图片、分割线、表格都拷贝失败，在这里过滤掉
       // - 此处不需要再过滤
       // if (blockType === 'atomic') {
       //   continue;
@@ -668,7 +668,7 @@ class ContentBlocksBuilder {
     const image: HTMLImageElement = (node: any);
     const entityConfig = {};
     var entityAttrMap = {
-      'src': 'url'
+      src: 'url'
     };
     imgAttr.forEach(attr => {
       const imageAttribute = image.getAttribute(attr);
@@ -706,8 +706,8 @@ class ContentBlocksBuilder {
 
     var entityConfig = {};
     var entityAttrMap = {
-      'bucketname': 'bucketName',
-      'objectkey': 'objectKey'
+      bucketname: 'bucketName',
+      objectkey: 'objectKey'
     };
     fileAttr.forEach(function (attr) {
       var fileAttribute = node.dataset[attr];
@@ -720,7 +720,7 @@ class ContentBlocksBuilder {
     this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
     // we strip those out)
 
-    this._appendText("\uD83D\uDCF7", style);
+    this._appendText('\uD83D\uDCF7', style);
 
     this.currentEntity = null;
   }
@@ -808,7 +808,7 @@ class ContentBlocksBuilder {
     this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
     // we strip those out)
 
-    this._appendText("\uD83D\uDCF7", style);
+    this._appendText('\uD83D\uDCF7', style);
 
     this.currentEntity = null;
   }
@@ -889,7 +889,7 @@ class ContentBlocksBuilder {
 
 
   _toFlatContentBlocks(blockConfigs: Array<ContentBlockConfig>) {
-    const cleanConfigs = this._hoistContainersInBlockConfigs(blockConfigs); // 再atomic前后加入一个空白block，以防block互相吞并
+    let cleanConfigs = this._hoistContainersInBlockConfigs(blockConfigs); // 再atomic前后加入一个空白block，以防block互相吞并
 
 
     if (cleanConfigs.size) {
