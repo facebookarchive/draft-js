@@ -681,8 +681,10 @@ class ContentBlocksBuilder {
       } else {
         // 对图片宽高度多一层获取
         if (attr === 'width' || attr === 'height') {
-          const attribute = image[attr];
-          if (attr) {
+          var attribute =
+            image[attr] ||
+            (image.style[attr] && image.style[attr].replace('px', ''));
+          if (attribute) {
             entityConfig[attr] = attribute;
           }
         }
@@ -948,13 +950,10 @@ class ContentBlocksBuilder {
         config.childConfigs,
       );
 
-      // 原子块不需要插入text
-      const nextText = config.type === 'atomic' ? '' : text;
-
       this.contentBlocks.push(
         new ContentBlock({
           ...config,
-          text: config.text + nextText,
+          text: config.text + text,
           characterList: config.characterList.concat(characterList),
         }),
       );
@@ -977,6 +976,9 @@ class ContentBlocksBuilder {
     let characterList = List();
     for (let i = 0; i <= l; i++) {
       const config = blockConfigs[i];
+      if (config.text === '📷') {
+        config.text = '\n';
+      }
       text += config.text;
       characterList = characterList.concat(config.characterList);
       if (text !== '' && config.type !== 'unstyled') {

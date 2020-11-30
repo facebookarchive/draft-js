@@ -678,9 +678,9 @@ class ContentBlocksBuilder {
       } else {
         // 对图片宽高度多一层获取
         if (attr === 'width' || attr === 'height') {
-          const attribute = image[attr];
+          var attribute = image[attr] || image.style[attr] && image.style[attr].replace('px', '');
 
-          if (attr) {
+          if (attribute) {
             entityConfig[attr] = attribute;
           }
         }
@@ -906,12 +906,10 @@ class ContentBlocksBuilder {
       const {
         text,
         characterList
-      } = this._extractTextFromBlockConfigs(config.childConfigs); // 原子块不需要插入text
+      } = this._extractTextFromBlockConfigs(config.childConfigs);
 
-
-      const nextText = config.type === 'atomic' ? '' : text;
       this.contentBlocks.push(new ContentBlock({ ...config,
-        text: config.text + nextText,
+        text: config.text + text,
         characterList: config.characterList.concat(characterList)
       }));
     });
@@ -933,6 +931,11 @@ class ContentBlocksBuilder {
 
     for (let i = 0; i <= l; i++) {
       const config = blockConfigs[i];
+
+      if (config.text === '📷') {
+        config.text = '\n';
+      }
+
       text += config.text;
       characterList = characterList.concat(config.characterList);
 
