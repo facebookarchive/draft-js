@@ -7,7 +7,7 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^8.2.2",
     "draft-js": "file:../../../",
     "express": "^4.17.1",
     "immutable": "^3.7.4",
