@@ -49,6 +49,7 @@ const RESOLVE_DELAY = 20;
 let resolved = false;
 let stillComposing = false;
 let domObserver = null;
+let isSelectionCrossBlock = false;
 
 function startDOMObserver(editor: DraftEditor) {
   if (!domObserver) {
@@ -64,6 +65,12 @@ const DraftEditorCompositionHandler = {
    */
   onCompositionStart(editor: DraftEditor): void {
     stillComposing = true;
+    const selection = getDraftEditorSelection(
+      editor._latestEditorState,
+      getContentEditableContainer(editor),
+    ).selectionState;
+    isSelectionCrossBlock =
+      selection.getAnchorKey() !== selection.getFocusKey();
     startDOMObserver(editor);
   },
 
@@ -252,8 +259,7 @@ const DraftEditorCompositionHandler = {
 
     const anchorKey = compositionEndSelectionState.getAnchorKey();
     const focusKey = compositionEndSelectionState.getFocusKey();
-
-    anchorKey === focusKey
+    anchorKey === focusKey && !isSelectionCrossBlock
       ? editor.restoreBlockDOM(anchorKey)
       : editor.restoreEditorDOM();
 
