@@ -27,7 +27,7 @@ let clipboard: ?BlockMap = null;
  * and paste behavior. For instance, Ctrl+K (cut) and Ctrl+Y (paste).
  */
 const SecondaryClipboard = {
-  cut: function(editorState: EditorState): EditorState {
+  cut: function (editorState: EditorState): EditorState {
     const content = editorState.getCurrentContent();
     const selection = editorState.getSelection();
     let targetRange: ?SelectionState = null;
@@ -67,7 +67,7 @@ const SecondaryClipboard = {
     return EditorState.push(editorState, afterRemoval, 'remove-range');
   },
 
-  paste: function(editorState: EditorState): EditorState {
+  paste: function (editorState: EditorState): EditorState {
     if (!clipboard) {
       return editorState;
     }

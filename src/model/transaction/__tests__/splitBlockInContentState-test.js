@@ -114,10 +114,7 @@ test('must split within a block', () => {
 });
 
 test('must split at the end of a block', () => {
-  const SPLIT_OFFSET = contentState
-    .getBlockMap()
-    .first()
-    .getLength();
+  const SPLIT_OFFSET = contentState.getBlockMap().first().getLength();
 
   assertSplitBlockInContentState(
     selectionState.merge({

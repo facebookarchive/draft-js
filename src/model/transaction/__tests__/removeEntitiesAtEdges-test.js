@@ -48,9 +48,7 @@ const assertRemoveEntitiesAtEdges = (
 ) => {
   const contentState = ensureEntityWithMutability(content, '2', mutability);
   expect(
-    removeEntitiesAtEdges(contentState, selection)
-      .getBlockMap()
-      .toJS(),
+    removeEntitiesAtEdges(contentState, selection).getBlockMap().toJS(),
   ).toMatchSnapshot();
 };
 

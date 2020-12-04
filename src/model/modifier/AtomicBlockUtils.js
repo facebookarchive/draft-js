@@ -35,7 +35,7 @@ const ContentBlockRecord = experimentalTreeDataSupport
 const {List, Repeat} = Immutable;
 
 const AtomicBlockUtils = {
-  insertAtomicBlock: function(
+  insertAtomicBlock: function (
     editorState: EditorState,
     entityKey: string,
     character: string,
@@ -105,7 +105,7 @@ const AtomicBlockUtils = {
     return EditorState.push(editorState, newContent, 'insert-fragment');
   },
 
-  moveAtomicBlock: function(
+  moveAtomicBlock: function (
     editorState: EditorState,
     atomicBlock: BlockNodeRecord,
     targetRange: SelectionState,
