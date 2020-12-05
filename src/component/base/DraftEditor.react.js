@@ -613,18 +613,16 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     scrollPosition?: DraftScrollPosition,
   ) => void = (key: string, scrollPosition?: DraftScrollPosition): void => {
     const {blockKeyMap} = this.state;
-    requestAnimationFrame(() =>
-      this.setState(
-        {
-          blockKeyMap: blockKeyMap.set(
-            key,
-            blockKeyMap.has(key) ? blockKeyMap.get(key) + 1 : 1,
-          ),
-        },
-        () => {
-          this.focus(scrollPosition);
-        },
-      ),
+    this.setState(
+      {
+        blockKeyMap: blockKeyMap.set(
+          key,
+          blockKeyMap.has(key) ? blockKeyMap.get(key) + 1 : 1,
+        ),
+      },
+      () => {
+        this.focus(scrollPosition);
+      },
     );
   };
 
