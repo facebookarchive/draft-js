@@ -55,7 +55,7 @@ const defaultRecord: ContentStateRecordType = {
 // supercalss here instead.
 declare class ContentStateRecordHelper {
   constructor(args: any): ContentState;
-  get(key: string): any;
+  // get(key: string): any;
   merge(args: any): any;
   // set(key: string, value: any): ContentState;
   setIn(keyPath: Array<string>, value: any): ContentState;
