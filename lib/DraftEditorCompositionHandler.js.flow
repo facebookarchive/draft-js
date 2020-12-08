@@ -57,6 +57,7 @@ const RESOLVE_DELAY = 20;
 let resolved = false;
 let stillComposing = false;
 let domObserver = null;
+let isSelectionCrossBlock = false;
 
 function startDOMObserver(editor: DraftEditor) {
   if (!domObserver) {
@@ -72,6 +73,8 @@ const DraftEditorCompositionHandler = {
    */
   onCompositionStart(editor: DraftEditor): void {
     stillComposing = true;
+    const selection = getDraftEditorSelection(editor._latestEditorState, getContentEditableContainer(editor)).selectionState;
+    isSelectionCrossBlock = selection.getAnchorKey() !== selection.getFocusKey();
     startDOMObserver(editor);
   },
 
@@ -229,14 +232,17 @@ const DraftEditorCompositionHandler = {
     // See D23905960 for more context:
 
     const documentSelection = getDraftEditorSelection(lastEditorState, getContentEditableContainer(editor));
-    const compositionEndSelectionState = documentSelection.selectionState;
-    editor.restoreEditorDOM(); // See:
+    const compositionEndSelectionState = documentSelection.selectionState; // editor.restoreEditorDOM();
+    // See:
     // - https://github.com/facebook/draft-js/issues/2093
     // - https://github.com/facebook/draft-js/pull/2094
     // Apply this fix only in IE for now. We can test it in
     // other browsers in the future to ensure no regressions
 
     const editorStateWithUpdatedSelection = isIE ? EditorState.forceSelection(editorState, compositionEndSelectionState) : EditorState.acceptSelection(editorState, compositionEndSelectionState);
+    const anchorKey = compositionEndSelectionState.getAnchorKey();
+    const focusKey = compositionEndSelectionState.getFocusKey();
+    anchorKey === focusKey && !isSelectionCrossBlock ? editor.restoreBlockDOM(anchorKey) : editor.restoreEditorDOM();
     editor.update(EditorState.push(editorStateWithUpdatedSelection, contentState, 'insert-characters'));
   }
 
