@@ -17,6 +17,7 @@ import type {EntityMap} from 'EntityMap';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
+const ContentState = require('ContentState');
 const DataTransfer = require('DataTransfer');
 const DraftModifier = require('DraftModifier');
 const DraftPasteProcessor = require('DraftPasteProcessor');
@@ -219,13 +220,14 @@ function insertFragment(
     editorState.getSelection(),
     fragment,
   );
-  // TODO: merge the entity map once we stop using DraftEntity
-  // like this:
-  // const mergedEntityMap = newContent.getEntityMap().merge(entityMap);
+
+  const newEntityMap = entityMap
+    ? ContentState.mergeEntityMaps(newContent.getAllEntities(), entityMap)
+    : newContent.getAllEntities();
 
   return EditorState.push(
     editorState,
-    newContent.set('entityMap', entityMap),
+    newContent.setEntityMap(newEntityMap),
     'insert-fragment',
   );
 }

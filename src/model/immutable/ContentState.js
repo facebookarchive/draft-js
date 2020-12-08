@@ -57,7 +57,7 @@ declare class ContentStateRecordHelper {
   constructor(args: any): ContentState;
   get(key: string): any;
   merge(args: any): any;
-  set(key: string, value: any): ContentState;
+  // set(key: string, value: any): ContentState;
   setIn(keyPath: Array<string>, value: any): ContentState;
   equals(other: ContentState): boolean;
   mergeDeep(other: any): ContentState;
@@ -82,15 +82,15 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlockMap(): BlockMap {
-    return this.get('blockMap');
+    return (this: any).get('blockMap');
   }
 
   getSelectionBefore(): SelectionState {
-    return this.get('selectionBefore');
+    return (this: any).get('selectionBefore');
   }
 
   getSelectionAfter(): SelectionState {
-    return this.get('selectionAfter');
+    return (this: any).get('selectionAfter');
   }
 
   getBlockForKey(key: string): BlockNodeRecord {
@@ -214,16 +214,29 @@ class ContentState extends ContentStateRecord {
     return this;
   }
 
+  static mergeEntityMaps(
+    to: OrderedMap<string, DraftEntityInstance>,
+    from: EntityMap,
+  ): OrderedMap<string, DraftEntityInstance> {
+    return to.merge(from.__getAll());
+  }
+
+  // TODO: when EntityMap is moved into content state this and `setEntityMap`
+  // Will be the exact same. Merge them then.
+  replaceEntityMap(entityMap: EntityMap): ContentState {
+    return this.setEntityMap(entityMap.__getAll());
+  }
+
   setSelectionBefore(selection: SelectionState): ContentState {
-    return this.set('selectionBefore', selection);
+    return (this: any).set('selectionBefore', selection);
   }
 
   setSelectionAfter(selection: SelectionState): ContentState {
-    return this.set('selectionAfter', selection);
+    return (this: any).set('selectionAfter', selection);
   }
 
   setBlockMap(blockMap: BlockMap): ContentState {
-    return this.set('blockMap', blockMap);
+    return (this: any).set('blockMap', blockMap);
   }
 
   static createFromBlockArray(
