@@ -160,6 +160,9 @@ class DraftEditorLeaf extends React.Component<Props> {
     }
 
     const {customStyleMap, customStyleFn, offsetKey, styleSet} = this.props;
+
+    const className = styleSet.map(styleName => `style-${styleName}`).join(' ');
+
     let styleObj = styleSet.reduce((map, styleName) => {
       const mergedStyles = {};
       const style = customStyleMap[styleName];
@@ -181,6 +184,7 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     return (
       <span
+        className={className}
         data-offset-key={offsetKey}
         ref={ref => (this.leaf = ref)}
         style={styleObj}>
