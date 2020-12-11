@@ -753,12 +753,14 @@ class ContentBlocksBuilder {
         .substr(4);
       return str;
     }
-    const trList = tableRoot.querySelectorAll('tr');
+    const trList = [...tableRoot.querySelectorAll('tr')].map(trRoot => [
+      ...trRoot.querySelectorAll('.brick-table-td'),
+    ]);
     const colList = tableRoot.querySelectorAll('col');
     const row =
       (tableRoot.dataset.rows && Number(tableRoot.dataset.rows)) ||
       trList.length;
-    const column =
+    let column =
       (tableRoot.dataset.cols && Number(tableRoot.dataset.cols)) ||
       colList.length;
     const rowsId = [];
@@ -768,77 +770,101 @@ class ContentBlocksBuilder {
     const cell = {};
     Array(row)
       .fill(0)
-      .forEach((_, index) => {
-        console.log(row);
-        const rowId = `rowId-${generateUUID()}`;
+      .forEach(function(_, index) {
+        const rowId = 'rowId-'.concat(generateUUID());
         rowsId.push(rowId);
         cell[rowId] = {};
-        const trRoot = trList[index];
-        const tdList = trRoot.querySelectorAll('.brick-table-td');
-        Array(column)
-          .fill(0)
-          .forEach((_, indexCol) => {
-            if (index === 0) {
-              const colId = `colId-${generateUUID()}`;
-              columnWidth[colId] = colList[indexCol].width
-                ? Number(colList[indexCol].width)
-                : 100;
-              colsId.push(colId);
-            }
-            const tdRoot = tdList[indexCol];
-            const cellId = `cellId-${generateUUID()}`;
-            const rowspan = tdRoot ? tdRoot.rowSpan || null : 0;
-            const colspan = tdRoot ? tdRoot.colSpan || null : 0;
-            if (
-              rowspan !== null &&
-              colspan !== null &&
-              (rowspan > 1 || colspan > 1)
-            ) {
-              combine.push({
-                minRow: index,
-                minCol: indexCol,
-                maxRow: rowspan - 1 + index,
-                maxCol: colspan - 1 + indexCol,
-              });
-            }
-            let editorState = null;
-            if (tdRoot) {
-              const blocksFromHTML = convertFromHTMLToContentBlocks(
-                tdList[indexCol].querySelector('.DraftEditor-root').outerHTML,
-              );
-              if (blocksFromHTML.contentBlocks.length) {
-                const contentState = ContentState.createFromBlockArray(
-                  blocksFromHTML.contentBlocks,
-                  blocksFromHTML.entityMap,
+        const tdList = trList[index];
+
+        for (var indexCol = 0; indexCol < column; indexCol++) {
+          if (index === 0) {
+            var colId = 'colId-'.concat(generateUUID());
+            columnWidth[colId] = colList[indexCol].width
+              ? Number(colList[indexCol].width)
+              : 100;
+            colsId.push(colId);
+          }
+          let tdRoot = null;
+
+          tdRoot = tdList[indexCol];
+
+          if (
+            tdRoot &&
+            tdRoot.rowSpan &&
+            tdRoot.colSpan &&
+            (tdRoot.rowSpan > 1 || tdRoot.colSpan > 1)
+          ) {
+            for (let i = 0; i < tdRoot.rowSpan; i++) {
+              if (i === 0) {
+                trList[index + i].splice(
+                  indexCol,
+                  1,
+                  trList[index + i][indexCol],
+                  ...Array(tdRoot.colSpan - 1).fill(null),
                 );
-                editorState = convertToRaw(contentState);
               } else {
-                editorState = convertToRaw(
-                  EditorState.createEmpty().getCurrentContent(),
+                trList[index + i].splice(
+                  indexCol,
+                  1,
+                  ...Array(tdRoot.colSpan).fill(null),
+                  trList[index + i][indexCol],
                 );
               }
+            }
+          }
+
+          const cellId = 'cellId-'.concat(generateUUID());
+
+          const rowspan = tdRoot ? tdRoot.rowSpan || null : 0;
+          const colspan = tdRoot ? tdRoot.colSpan || null : 0;
+
+          if (
+            rowspan !== null &&
+            colspan !== null &&
+            (rowspan > 1 || colspan > 1)
+          ) {
+            combine.push({
+              key: `cbId-${generateUUID()}`,
+              firstRowId: rowId,
+              firstColId: colsId[indexCol],
+              minRow: index,
+              minCol: indexCol,
+              maxRow: rowspan - 1 + index,
+              maxCol: colspan - 1 + indexCol,
+            });
+          }
+          let editorState = null;
+
+          if (tdRoot) {
+            const blocksFromHTML = convertFromHTMLToContentBlocks(
+              tdList[indexCol].querySelector('.DraftEditor-root').outerHTML,
+            );
+
+            if (blocksFromHTML.contentBlocks.length) {
+              const contentState = ContentState.createFromBlockArray(
+                blocksFromHTML.contentBlocks,
+                blocksFromHTML.entityMap,
+              );
+              editorState = convertToRaw(contentState);
             } else {
               editorState = convertToRaw(
                 EditorState.createEmpty().getCurrentContent(),
               );
             }
-            cell[rowId][colsId[indexCol]] = {
-              cellId,
-              rowspan,
-              colspan,
-              editorState,
-            };
-          });
+          } else {
+            editorState = convertToRaw(
+              EditorState.createEmpty().getCurrentContent(),
+            );
+          }
+
+          cell[rowId][colsId[indexCol]] = {
+            cellId: cellId,
+            rowspan: rowspan,
+            colspan: colspan,
+            editorState: editorState,
+          };
+        }
       });
-    this.contentState = this.contentState.createEntity('TABLE', 'IMMUTABLE', {
-      row: Number(row),
-      column: Number(column),
-      rowsId,
-      colsId,
-      cell,
-      combine,
-      columnWidth,
-    });
     this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
     // we strip those out)
 
