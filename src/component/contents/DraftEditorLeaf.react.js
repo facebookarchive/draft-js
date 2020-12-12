@@ -109,8 +109,24 @@ class DraftEditorLeaf extends React.Component<Props> {
       targetNode = child.firstChild;
       invariant(targetNode, 'Missing targetNode');
     }
-
-    setDraftEditorSelection(selection, targetNode, blockKey, start, end);
+    // 多editor情况下先判断关标在不在当前editor所在区域
+    const windowSelection = window.getSelection();
+    let anchorNode = windowSelection.anchorNode
+    let newTargetNode = targetNode
+    if (!anchorNode) {
+      return
+    }
+    while(anchorNode.nodeType !== 1 && anchorNode.parentNode) {
+      anchorNode = anchorNode.parentNode
+    }
+    while(newTargetNode.nodeType !== 1 && newTargetNode.parentNode) {
+      newTargetNode = newTargetNode.parentNode
+    }
+    const editorRoot = anchorNode.closest('.DraftEditor-root')
+    const targetRoot = newTargetNode.closest('.DraftEditor-root')
+    if (editorRoot === targetRoot) {
+      setDraftEditorSelection(selection, targetNode, blockKey, start, end);
+    }
   }
 
   shouldComponentUpdate(nextProps: Props): boolean {
@@ -144,6 +160,9 @@ class DraftEditorLeaf extends React.Component<Props> {
     }
 
     const {customStyleMap, customStyleFn, offsetKey, styleSet} = this.props;
+
+    const className = styleSet.map(styleName => `style-${styleName}`).join(' ');
+
     let styleObj = styleSet.reduce((map, styleName) => {
       const mergedStyles = {};
       const style = customStyleMap[styleName];
@@ -165,6 +184,7 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     return (
       <span
+        className={className}
         data-offset-key={offsetKey}
         ref={ref => (this.leaf = ref)}
         style={styleObj}>

@@ -76,7 +76,7 @@ const decodeCharacterList = (
       text,
       entityRanges
         .filter(range => entityKeyMap.hasOwnProperty(range.key))
-        .map(range => ({...range, key: entityKeyMap[range.key]})),
+        .map(range => ({...range, key: range.key})),
     ),
   );
 };
@@ -252,9 +252,14 @@ const decodeRawEntityMap = (
 
   Object.keys(rawEntityMap).forEach(rawEntityKey => {
     const {type, mutability, data} = rawEntityMap[rawEntityKey];
-    contentState = contentState.createEntity(type, mutability, data || {});
+    contentState = contentState.createEntity(
+      type,
+      mutability,
+      data || {},
+      rawEntityKey,
+    );
     // get the key reference to created entity
-    entityKeyMap[rawEntityKey] = contentState.getLastCreatedEntityKey();
+    entityKeyMap[rawEntityKey] = rawEntityKey;
   });
 
   return {entityKeyMap, contentState};

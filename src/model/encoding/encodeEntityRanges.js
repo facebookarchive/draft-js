@@ -28,7 +28,7 @@ function encodeEntityRanges(
 ): Array<EntityRange> {
   const encoded = [];
   block.findEntityRanges(
-    character => !!character.getEntity(),
+    character => character.getEntity() != null,
     (/*number*/ start, /*number*/ end) => {
       const text = block.getText();
       const key = block.getEntityAt(start);
@@ -36,7 +36,7 @@ function encodeEntityRanges(
         offset: strlen(text.slice(0, start)),
         length: strlen(text.slice(start, end)),
         // Encode the key as a number for range storage.
-        key: Number(storageMap[DraftStringKey.stringify(key)]),
+        key: key,
       });
     },
   );

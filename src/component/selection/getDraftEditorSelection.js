@@ -34,19 +34,31 @@ function getDraftEditorSelection(
     rangeCount,
   } = selection;
 
+  let newAnchorNode = anchorNode
+  let editorRoot = null
+  if (newAnchorNode) {
+    while(newAnchorNode.nodeType !== 1 && newAnchorNode.parentNode) {
+      newAnchorNode = newAnchorNode.parentNode
+    }
+    editorRoot = newAnchorNode.closest('.public-DraftEditor-content')
+  }
+
+
   if (
     // No active selection.
     rangeCount === 0 ||
     // No selection, ever. As in, the user hasn't selected anything since
     // opening the document.
     anchorNode == null ||
-    focusNode == null
+    focusNode == null || editorRoot === null || editorRoot !== root
   ) {
     return {
       selectionState: editorState.getSelection().set('hasFocus', false),
       needsRecovery: false,
     };
   }
+
+
 
   return getDraftEditorSelectionWithNodes(
     editorState,

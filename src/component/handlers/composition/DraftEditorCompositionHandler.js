@@ -49,6 +49,7 @@ const RESOLVE_DELAY = 20;
 let resolved = false;
 let stillComposing = false;
 let domObserver = null;
+let isSelectionCrossBlock = false;
 
 function startDOMObserver(editor: DraftEditor) {
   if (!domObserver) {
@@ -64,6 +65,12 @@ const DraftEditorCompositionHandler = {
    */
   onCompositionStart(editor: DraftEditor): void {
     stillComposing = true;
+    const selection = getDraftEditorSelection(
+      editor._latestEditorState,
+      getContentEditableContainer(editor),
+    ).selectionState;
+    isSelectionCrossBlock =
+      selection.getAnchorKey() !== selection.getFocusKey();
     startDOMObserver(editor);
   },
 
@@ -239,7 +246,7 @@ const DraftEditorCompositionHandler = {
     );
     const compositionEndSelectionState = documentSelection.selectionState;
 
-    editor.restoreEditorDOM();
+    // editor.restoreEditorDOM();
 
     // See:
     // - https://github.com/facebook/draft-js/issues/2093
@@ -249,6 +256,12 @@ const DraftEditorCompositionHandler = {
     const editorStateWithUpdatedSelection = isIE
       ? EditorState.forceSelection(editorState, compositionEndSelectionState)
       : EditorState.acceptSelection(editorState, compositionEndSelectionState);
+
+    const anchorKey = compositionEndSelectionState.getAnchorKey();
+    const focusKey = compositionEndSelectionState.getFocusKey();
+    anchorKey === focusKey && !isSelectionCrossBlock
+      ? editor.restoreBlockDOM(anchorKey)
+      : editor.restoreEditorDOM();
 
     editor.update(
       EditorState.push(

@@ -57,6 +57,7 @@ const updateExistingBlock = (
   }
 
   let type = targetBlock.getType();
+  //
   if (text && type === 'unstyled') {
     type = fragmentBlock.getType();
   }
