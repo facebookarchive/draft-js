@@ -753,9 +753,14 @@ class ContentBlocksBuilder {
         .substr(4);
       return str;
     }
-    const trList = [...tableRoot.querySelectorAll('tr')].map(trRoot => [
-      ...trRoot.querySelectorAll('.brick-table-td'),
-    ]);
+    const trList = Array.prototype.slice
+      .call(tableRoot.querySelectorAll('tr'), 0)
+      .map(trRoot =>
+        Array.prototype.slice.call(
+          trRoot.querySelectorAll('.brick-table-td'),
+          0,
+        ),
+      );
     const colList = tableRoot.querySelectorAll('col');
     const row =
       (tableRoot.dataset.rows && Number(tableRoot.dataset.rows)) ||
@@ -796,19 +801,41 @@ class ContentBlocksBuilder {
           ) {
             for (let i = 0; i < tdRoot.rowSpan; i++) {
               if (i === 0) {
-                trList[index + i].splice(
-                  indexCol,
-                  1,
-                  trList[index + i][indexCol],
-                  ...Array(tdRoot.colSpan - 1).fill(null),
-                );
+                for (let j = 1; j < tdRoot.colSpan; j++) {
+                  if (trList[index + i][indexCol + j]) {
+                    if (
+                      trList[index + i][indexCol + j].colSpan !== 0 ||
+                      trList[index + i][indexCol + j].rowSpan !== 0
+                    ) {
+                      trList[index + i].splice(
+                        [indexCol + j],
+                        1,
+                        null,
+                        trList[index + i][indexCol + j],
+                      );
+                    }
+                  } else {
+                    trList[index + i].push(null);
+                  }
+                }
               } else {
-                trList[index + i].splice(
-                  indexCol,
-                  1,
-                  ...Array(tdRoot.colSpan).fill(null),
-                  trList[index + i][indexCol],
-                );
+                for (let j = 0; j < tdRoot.colSpan; j++) {
+                  if (trList[index + i][indexCol + j]) {
+                    if (
+                      trList[index + i][indexCol + j].colSpan !== 0 ||
+                      trList[index + i][indexCol + j].rowSpan !== 0
+                    ) {
+                      trList[index + i].splice(
+                        [indexCol + j],
+                        1,
+                        null,
+                        trList[index + i][indexCol + j],
+                      );
+                    }
+                  } else {
+                    trList[index + i].push(null);
+                  }
+                }
               }
             }
           }
