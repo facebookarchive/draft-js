@@ -736,36 +736,50 @@ class ContentBlocksBuilder {
       return str;
     }
 
-    const trList = tableRoot.querySelectorAll('tr');
+    const trList = [...tableRoot.querySelectorAll('tr')].map(trRoot => [...trRoot.querySelectorAll('.brick-table-td')]);
     const colList = tableRoot.querySelectorAll('col');
     const row = tableRoot.dataset.rows && Number(tableRoot.dataset.rows) || trList.length;
-    const column = tableRoot.dataset.cols && Number(tableRoot.dataset.cols) || colList.length;
+    let column = tableRoot.dataset.cols && Number(tableRoot.dataset.cols) || colList.length;
     const rowsId = [];
     const colsId = [];
     const combine = [];
     const columnWidth = {};
     const cell = {};
-    Array(row).fill(0).forEach((_, index) => {
-      console.log(row);
-      const rowId = `rowId-${generateUUID()}`;
+    Array(row).fill(0).forEach(function (_, index) {
+      const rowId = 'rowId-'.concat(generateUUID());
       rowsId.push(rowId);
       cell[rowId] = {};
-      const trRoot = trList[index];
-      const tdList = trRoot.querySelectorAll('.brick-table-td');
-      Array(column).fill(0).forEach((_, indexCol) => {
+      const tdList = trList[index];
+
+      for (var indexCol = 0; indexCol < column; indexCol++) {
         if (index === 0) {
-          const colId = `colId-${generateUUID()}`;
+          var colId = 'colId-'.concat(generateUUID());
           columnWidth[colId] = colList[indexCol].width ? Number(colList[indexCol].width) : 100;
           colsId.push(colId);
         }
 
-        const tdRoot = tdList[indexCol];
-        const cellId = `cellId-${generateUUID()}`;
+        let tdRoot = null;
+        tdRoot = tdList[indexCol];
+
+        if (tdRoot && tdRoot.rowSpan && tdRoot.colSpan && (tdRoot.rowSpan > 1 || tdRoot.colSpan > 1)) {
+          for (let i = 0; i < tdRoot.rowSpan; i++) {
+            if (i === 0) {
+              trList[index + i].splice(indexCol, 1, trList[index + i][indexCol], ...Array(tdRoot.colSpan - 1).fill(null));
+            } else {
+              trList[index + i].splice(indexCol, 1, ...Array(tdRoot.colSpan).fill(null), trList[index + i][indexCol]);
+            }
+          }
+        }
+
+        const cellId = 'cellId-'.concat(generateUUID());
         const rowspan = tdRoot ? tdRoot.rowSpan || null : 0;
         const colspan = tdRoot ? tdRoot.colSpan || null : 0;
 
         if (rowspan !== null && colspan !== null && (rowspan > 1 || colspan > 1)) {
           combine.push({
+            key: `cbId-${generateUUID()}`,
+            firstRowId: rowId,
+            firstColId: colsId[indexCol],
             minRow: index,
             minCol: indexCol,
             maxRow: rowspan - 1 + index,
@@ -789,12 +803,12 @@ class ContentBlocksBuilder {
         }
 
         cell[rowId][colsId[indexCol]] = {
-          cellId,
-          rowspan,
-          colspan,
-          editorState
+          cellId: cellId,
+          rowspan: rowspan,
+          colspan: colspan,
+          editorState: editorState
         };
-      });
+      }
     });
     this.contentState = this.contentState.createEntity('TABLE', 'IMMUTABLE', {
       row: Number(row),
