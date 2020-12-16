@@ -376,6 +376,21 @@ class ContentBlocksBuilder {
     this.contentBlocks = [];
   }
 
+  trimBlockConfigs(blockConfigs: Array<ContentBlockConfig>): void {
+    for (const block of blockConfigs) {
+      if (block.type !== 'code-block' && block.text.length) {
+        const trimmedLength = block.text.length - block.text.trimLeft().length;
+        if (trimmedLength) {
+          block.text = block.text.trimLeft();
+          block.characterList = block.characterList.splice(0, trimmedLength);
+        }
+      }
+      if (block.type !== 'code-block' && block.childConfigs.length) {
+        this.trimBlockConfigs(block.childConfigs);
+      }
+    }
+  }
+
   /**
    * Add an HTMLElement to the ContentBlocksBuilder
    */
@@ -391,6 +406,8 @@ class ContentBlocksBuilder {
     if (this.currentText !== '') {
       this.blockConfigs.push(this._makeBlockConfig());
     }
+
+    this.trimBlockConfigs(this.blockConfigs);
 
     // for chaining
     return this;
@@ -608,7 +625,9 @@ class ContentBlocksBuilder {
    */
   _trimCurrentText() {
     const l = this.currentText.length;
-    let begin = l - this.currentText.trimLeft().length;
+    // 需要保留代码块的样式，等最后再去掉
+    // let begin = l - this.currentText.trimLeft().length;
+    let begin = 0;
     let end = this.currentText.trimRight().length;
 
     // We should not trim whitespaces for which an entity is defined.
