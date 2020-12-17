@@ -3570,7 +3570,11 @@ Array [
 ]
 `;
 
+exports[`img with alt text should have alt text as placeholder 1`] = `"facebook website"`;
+
 exports[`img with data protocol should be correctly parsed 1`] = `"\\ud83d\\udcf7"`;
+
+exports[`img with empty alt text should have camera emoji content 1`] = `"\\ud83d\\udcf7"`;
 
 exports[`img with http protocol should have camera emoji content 1`] = `"\\ud83d\\udcf7"`;
 
