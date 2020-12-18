@@ -223,7 +223,7 @@ function isHTMLTableElement(node) {
  * Draftjs-compatible file.
  */
 var isValidFile = function isValidFile(node) {
-  if (!isHTMLTableElement(node)) {
+  if (!isHTMLFileElement(node)) {
     return false;
   }
   var fileNode = node;
@@ -1058,7 +1058,7 @@ class ContentBlocksBuilder {
     for (let i = 0; i <= l; i++) {
       const config = blockConfigs[i];
       if (config.text === '📷') {
-        config.text = '\n';
+        config.text = ' ';
       }
       text += config.text;
       characterList = characterList.concat(config.characterList);
