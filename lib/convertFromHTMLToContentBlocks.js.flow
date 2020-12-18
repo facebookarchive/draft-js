@@ -228,7 +228,7 @@ function isHTMLTableElement(node) {
 
 
 var isValidFile = function isValidFile(node) {
-  if (!isHTMLTableElement(node)) {
+  if (!isHTMLFileElement(node)) {
     return false;
   }
 
@@ -983,7 +983,7 @@ class ContentBlocksBuilder {
       const config = blockConfigs[i];
 
       if (config.text === '📷') {
-        config.text = '\n';
+        config.text = ' ';
       }
 
       text += config.text;
