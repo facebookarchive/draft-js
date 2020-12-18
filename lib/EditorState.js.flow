@@ -593,9 +593,10 @@ function getInlineStyleForCollapsedSelection(content: ContentState, selection: S
   if (startBlock.getLength()) {
     return startBlock.getInlineStyleAt(0);
   } // Otherwise, look upward in the document to find the closest character.
+  // return lookUpwardForInlineStyle(content, startKey);
 
 
-  return lookUpwardForInlineStyle(content, startKey);
+  return OrderedSet();
 }
 
 function getInlineStyleForNonCollapsedSelection(content: ContentState, selection: SelectionState): DraftInlineStyle {
