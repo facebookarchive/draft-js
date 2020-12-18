@@ -20,6 +20,9 @@ const isElement = require('isElement');
 function getSelectionOffsetKeyForNode(node: Node): ?string {
   if (isElement(node)) {
     const castedNode: Element = (node: any);
+    if (castedNode.getAttribute('data-contents')) {
+      return null;
+    }
     const offsetKey = castedNode.getAttribute('data-offset-key');
     if (offsetKey) {
       return offsetKey;
