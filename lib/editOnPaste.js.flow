@@ -148,7 +148,6 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
         if (contentBlocks) {
           const htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
-          console.log('htmlMap', htmlMap.toJS(), entityMap);
           editor.update(insertFragment(editor._latestEditorState, htmlMap, entityMap));
           return;
         }
