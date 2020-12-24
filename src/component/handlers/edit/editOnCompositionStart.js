@@ -24,6 +24,7 @@ function editOnCompositionStart(
   e: SyntheticEvent<>,
 ): void {
   editor.setMode('composite');
+
   editor.update(
     EditorState.set(editor._latestEditorState, {inCompositionMode: true}),
   );
