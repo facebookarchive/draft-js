@@ -260,7 +260,6 @@ const styleFromNodeAttributes = (node: Node, style: DraftInlineStyle): DraftInli
   const textDecoration = htmlElement.style.textDecoration;
   const color = htmlElement.style.color;
   const bgcolor = htmlElement.style['background-color'];
-  console.log(htmlElement.style);
   return style.withMutations(style => {
     if (boldValues.indexOf(fontWeight) >= 0) {
       style.add('BOLD');
@@ -369,7 +368,6 @@ class ContentBlocksBuilder {
     this.clear();
     this.blockTypeMap = blockTypeMap;
     this.disambiguate = disambiguate;
-    console.log(blockTypeMap);
   }
   /**
    * Clear the internal state of the ContentBlocksBuilder
