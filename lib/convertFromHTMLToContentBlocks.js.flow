@@ -258,6 +258,9 @@ const styleFromNodeAttributes = (node: Node, style: DraftInlineStyle): DraftInli
   const fontWeight = htmlElement.style.fontWeight;
   const fontStyle = htmlElement.style.fontStyle;
   const textDecoration = htmlElement.style.textDecoration;
+  const color = htmlElement.style.color;
+  const bgcolor = htmlElement.style['background-color'];
+  console.log(htmlElement.style);
   return style.withMutations(style => {
     if (boldValues.indexOf(fontWeight) >= 0) {
       style.add('BOLD');
@@ -282,6 +285,14 @@ const styleFromNodeAttributes = (node: Node, style: DraftInlineStyle): DraftInli
     if (textDecoration === 'none') {
       style.remove('UNDERLINE');
       style.remove('STRIKETHROUGH');
+    }
+
+    if (color) {
+      style.add(`color-${color.replace(/\s/g, '')}`);
+    }
+
+    if (bgcolor) {
+      style.add(`bgcolor-${bgcolor.replace(/\s/g, '')}`);
     }
   });
 };
@@ -358,6 +369,7 @@ class ContentBlocksBuilder {
     this.clear();
     this.blockTypeMap = blockTypeMap;
     this.disambiguate = disambiguate;
+    console.log(blockTypeMap);
   }
   /**
    * Clear the internal state of the ContentBlocksBuilder
@@ -990,7 +1002,7 @@ class ContentBlocksBuilder {
       characterList = characterList.concat(config.characterList);
 
       if (text !== '' && config.type !== 'unstyled') {
-        text += '\n';
+        // text += '\n';
         characterList = characterList.push(characterList.last());
       }
 
@@ -1036,11 +1048,31 @@ const convertFromHTMLToContentBlocks = (html: string, DOMBuilder: Function = get
 
   const disambiguate = (tag: string, wrapper: ?string, node): ?string => {
     if (tag === 'li') {
-      if (node && node.classList && node.classList.contains('checkable-list-item')) {
-        return 'checkable-list-item';
-      }
+      const blockType = ['multi'];
 
-      return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
+      if (node && node.classList) {
+        if (node.classList.contains('h1')) {
+          blockType.push('h1');
+        } else if (node.classList.contains('h2')) {
+          blockType.push('h2');
+        } else if (node.classList.contains('h3')) {
+          blockType.push('h3');
+        } else if (node.classList.contains('h4')) {
+          blockType.push('h4');
+        } else if (node.classList.contains('h5')) {
+          blockType.push('h5');
+        }
+
+        if (node.classList.contains('ol-item')) {
+          blockType.push('ol');
+        } else if (node.classList.contains('ck-item')) {
+          blockType.push('ck');
+        } else {
+          blockType.push('ul');
+        }
+
+        return blockType.join('-');
+      }
     }
 
     return null;

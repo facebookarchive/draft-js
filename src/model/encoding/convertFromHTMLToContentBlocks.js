@@ -105,6 +105,7 @@ type BlockTypeMap = Map<string, string | Array<string>>;
  *     li: ['ordered-list-item', 'unordered-list-item'],
  *   })
  */
+
 const buildBlockTypeMap = (
   blockRenderMap: DraftBlockRenderMap,
 ): BlockTypeMap => {
@@ -253,6 +254,8 @@ const styleFromNodeAttributes = (
   const fontWeight = htmlElement.style.fontWeight;
   const fontStyle = htmlElement.style.fontStyle;
   const textDecoration = htmlElement.style.textDecoration;
+  const color = htmlElement.style.color;
+  const bgcolor = htmlElement.style['background-color'];
 
   return style.withMutations(style => {
     if (boldValues.indexOf(fontWeight) >= 0) {
@@ -276,6 +279,12 @@ const styleFromNodeAttributes = (
     if (textDecoration === 'none') {
       style.remove('UNDERLINE');
       style.remove('STRIKETHROUGH');
+    }
+    if (color) {
+      style.add(`color-${color.replace(/\s/g, '')}`);
+    }
+    if (bgcolor) {
+      style.add(`bgcolor-${bgcolor.replace(/\s/g, '')}`);
     }
   });
 };
@@ -1063,7 +1072,7 @@ class ContentBlocksBuilder {
       text += config.text;
       characterList = characterList.concat(config.characterList);
       if (text !== '' && config.type !== 'unstyled') {
-        text += '\n';
+        // text += '\n';
         characterList = characterList.push(characterList.last());
       }
       const children = this._extractTextFromBlockConfigs(config.childConfigs);
@@ -1112,15 +1121,30 @@ const convertFromHTMLToContentBlocks = (
   // uses multiple block types for the same html tag.
   const disambiguate = (tag: string, wrapper: ?string, node): ?string => {
     if (tag === 'li') {
-      if (
-        node &&
-        node.classList &&
-        node.classList.contains('checkable-list-item')
-      ) {
-        return 'checkable-list-item';
+      const blockType = ['multi'];
+      if (node && node.classList) {
+        if (node.classList.contains('h1')) {
+          blockType.push('h1');
+        } else if (node.classList.contains('h2')) {
+          blockType.push('h2');
+        } else if (node.classList.contains('h3')) {
+          blockType.push('h3');
+        } else if (node.classList.contains('h4')) {
+          blockType.push('h4');
+        } else if (node.classList.contains('h5')) {
+          blockType.push('h5');
+        }
+        if (node.classList.contains('ol-item')) {
+          blockType.push('ol');
+        } else if (node.classList.contains('ck-item')) {
+          blockType.push('ck');
+        } else {
+          blockType.push('ul');
+        }
+        return blockType.join('-');
       }
-      return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
     }
+
     return null;
   };
 
