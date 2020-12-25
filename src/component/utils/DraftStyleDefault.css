@@ -44,6 +44,7 @@
 .public/DraftStyleDefault/ol {
   margin: 16px 0;
   padding: 0;
+  position: relative;
 }
 
 /**
@@ -108,7 +109,7 @@
  */
 .public/DraftStyleDefault/unorderedListItem {
   list-style-type: square;
-  position: relative;
+  
 }
 
 .public/DraftStyleDefault/unorderedListItem.public/DraftStyleDefault/depth0 {
@@ -125,7 +126,6 @@
  */
 .public/DraftStyleDefault/orderedListItem {
   list-style-type: none;
-  position: relative;
 }
 
 /* @noflip */
