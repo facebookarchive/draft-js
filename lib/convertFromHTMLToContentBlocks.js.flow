@@ -1046,31 +1046,11 @@ const convertFromHTMLToContentBlocks = (html: string, DOMBuilder: Function = get
 
   const disambiguate = (tag: string, wrapper: ?string, node): ?string => {
     if (tag === 'li') {
-      const blockType = ['multi'];
-
-      if (node && node.classList) {
-        if (node.classList.contains('h1')) {
-          blockType.push('h1');
-        } else if (node.classList.contains('h2')) {
-          blockType.push('h2');
-        } else if (node.classList.contains('h3')) {
-          blockType.push('h3');
-        } else if (node.classList.contains('h4')) {
-          blockType.push('h4');
-        } else if (node.classList.contains('h5')) {
-          blockType.push('h5');
-        }
-
-        if (node.classList.contains('ol-item')) {
-          blockType.push('ol');
-        } else if (node.classList.contains('ck-item')) {
-          blockType.push('ck');
-        } else {
-          blockType.push('ul');
-        }
-
-        return blockType.join('-');
+      if (node && node.classList && node.classList.contains('checkable-list-item')) {
+        return 'checkable-list-item';
       }
+
+      return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
     }
 
     return null;
