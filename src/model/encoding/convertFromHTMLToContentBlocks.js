@@ -781,11 +781,6 @@ class ContentBlocksBuilder {
         .substr(4);
       return str;
     }
-<<<<<<< HEAD
-    const trList = [...tableRoot.querySelectorAll('tr')].map(trRoot => [
-      ...trRoot.querySelectorAll('.brick-table-td'),
-    ]);
-=======
     const trList = Array.prototype.slice
       .call(tableRoot.querySelectorAll('tr'), 0)
       .map(trRoot =>
@@ -794,7 +789,6 @@ class ContentBlocksBuilder {
           0,
         ),
       );
->>>>>>> 71e97205816f220f5b69cb3d561496d0ba51fae8
     const colList = tableRoot.querySelectorAll('col');
     const row =
       (tableRoot.dataset.rows && Number(tableRoot.dataset.rows)) ||
@@ -835,21 +829,6 @@ class ContentBlocksBuilder {
           ) {
             for (let i = 0; i < tdRoot.rowSpan; i++) {
               if (i === 0) {
-<<<<<<< HEAD
-                trList[index + i].splice(
-                  indexCol,
-                  1,
-                  trList[index + i][indexCol],
-                  ...Array(tdRoot.colSpan - 1).fill(null),
-                );
-              } else {
-                trList[index + i].splice(
-                  indexCol,
-                  1,
-                  ...Array(tdRoot.colSpan).fill(null),
-                  trList[index + i][indexCol],
-                );
-=======
                 for (let j = 1; j < tdRoot.colSpan; j++) {
                   if (trList[index + i][indexCol + j]) {
                     if (
@@ -885,7 +864,6 @@ class ContentBlocksBuilder {
                     trList[index + i].push(null);
                   }
                 }
->>>>>>> 71e97205816f220f5b69cb3d561496d0ba51fae8
               }
             }
           }
@@ -1143,28 +1121,14 @@ const convertFromHTMLToContentBlocks = (
   // uses multiple block types for the same html tag.
   const disambiguate = (tag: string, wrapper: ?string, node): ?string => {
     if (tag === 'li') {
-      const blockType = ['multi'];
-      if (node && node.classList) {
-        if (node.classList.contains('h1')) {
-          blockType.push('h1');
-        } else if (node.classList.contains('h2')) {
-          blockType.push('h2');
-        } else if (node.classList.contains('h3')) {
-          blockType.push('h3');
-        } else if (node.classList.contains('h4')) {
-          blockType.push('h4');
-        } else if (node.classList.contains('h5')) {
-          blockType.push('h5');
-        }
-        if (node.classList.contains('ol-item')) {
-          blockType.push('ol');
-        } else if (node.classList.contains('ck-item')) {
-          blockType.push('ck');
-        } else {
-          blockType.push('ul');
-        }
-        return blockType.join('-');
+      if (
+        node &&
+        node.classList &&
+        node.classList.contains('checkable-list-item')
+      ) {
+        return 'checkable-list-item';
       }
+      return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
     }
 
     return null;

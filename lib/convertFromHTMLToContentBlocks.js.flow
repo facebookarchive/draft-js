@@ -228,7 +228,7 @@ function isHTMLTableElement(node) {
 
 
 var isValidFile = function isValidFile(node) {
-  if (!isHTMLTableElement(node)) {
+  if (!isHTMLFileElement(node)) {
     return false;
   }
 
@@ -258,6 +258,8 @@ const styleFromNodeAttributes = (node: Node, style: DraftInlineStyle): DraftInli
   const fontWeight = htmlElement.style.fontWeight;
   const fontStyle = htmlElement.style.fontStyle;
   const textDecoration = htmlElement.style.textDecoration;
+  const color = htmlElement.style.color;
+  const bgcolor = htmlElement.style['background-color'];
   return style.withMutations(style => {
     if (boldValues.indexOf(fontWeight) >= 0) {
       style.add('BOLD');
@@ -282,6 +284,14 @@ const styleFromNodeAttributes = (node: Node, style: DraftInlineStyle): DraftInli
     if (textDecoration === 'none') {
       style.remove('UNDERLINE');
       style.remove('STRIKETHROUGH');
+    }
+
+    if (color) {
+      style.add(`color-${color.replace(/\s/g, '')}`);
+    }
+
+    if (bgcolor) {
+      style.add(`bgcolor-${bgcolor.replace(/\s/g, '')}`);
     }
   });
 };
@@ -375,6 +385,23 @@ class ContentBlocksBuilder {
     this.wrapper = null;
     this.contentBlocks = [];
   }
+
+  trimBlockConfigs(blockConfigs: Array<ContentBlockConfig>): void {
+    for (const block of blockConfigs) {
+      if (block.type !== 'code-block' && block.text.length) {
+        const trimmedLength = block.text.length - block.text.trimLeft().length;
+
+        if (trimmedLength) {
+          block.text = block.text.trimLeft();
+          block.characterList = block.characterList.splice(0, trimmedLength);
+        }
+      }
+
+      if (block.type !== 'code-block' && block.childConfigs.length) {
+        this.trimBlockConfigs(block.childConfigs);
+      }
+    }
+  }
   /**
    * Add an HTMLElement to the ContentBlocksBuilder
    */
@@ -391,8 +418,9 @@ class ContentBlocksBuilder {
 
     if (this.currentText !== '') {
       this.blockConfigs.push(this._makeBlockConfig());
-    } // for chaining
+    }
 
+    this.trimBlockConfigs(this.blockConfigs); // for chaining
 
     return this;
   }
@@ -607,8 +635,10 @@ class ContentBlocksBuilder {
 
 
   _trimCurrentText() {
-    const l = this.currentText.length;
-    let begin = l - this.currentText.trimLeft().length;
+    const l = this.currentText.length; // 需要保留代码块的样式，等最后再去掉
+    // let begin = l - this.currentText.trimLeft().length;
+
+    let begin = 0;
     let end = this.currentText.trimRight().length; // We should not trim whitespaces for which an entity is defined.
 
     let entity = this.characterList.findEntry(characterMetadata => characterMetadata.getEntity() !== null);
@@ -736,7 +766,7 @@ class ContentBlocksBuilder {
       return str;
     }
 
-    const trList = [...tableRoot.querySelectorAll('tr')].map(trRoot => [...trRoot.querySelectorAll('.brick-table-td')]);
+    const trList = Array.prototype.slice.call(tableRoot.querySelectorAll('tr'), 0).map(trRoot => Array.prototype.slice.call(trRoot.querySelectorAll('.brick-table-td'), 0));
     const colList = tableRoot.querySelectorAll('col');
     const row = tableRoot.dataset.rows && Number(tableRoot.dataset.rows) || trList.length;
     let column = tableRoot.dataset.cols && Number(tableRoot.dataset.cols) || colList.length;
@@ -764,9 +794,25 @@ class ContentBlocksBuilder {
         if (tdRoot && tdRoot.rowSpan && tdRoot.colSpan && (tdRoot.rowSpan > 1 || tdRoot.colSpan > 1)) {
           for (let i = 0; i < tdRoot.rowSpan; i++) {
             if (i === 0) {
-              trList[index + i].splice(indexCol, 1, trList[index + i][indexCol], ...Array(tdRoot.colSpan - 1).fill(null));
+              for (let j = 1; j < tdRoot.colSpan; j++) {
+                if (trList[index + i][indexCol + j]) {
+                  if (trList[index + i][indexCol + j].colSpan !== 0 || trList[index + i][indexCol + j].rowSpan !== 0) {
+                    trList[index + i].splice([indexCol + j], 1, null, trList[index + i][indexCol + j]);
+                  }
+                } else {
+                  trList[index + i].push(null);
+                }
+              }
             } else {
-              trList[index + i].splice(indexCol, 1, ...Array(tdRoot.colSpan).fill(null), trList[index + i][indexCol]);
+              for (let j = 0; j < tdRoot.colSpan; j++) {
+                if (trList[index + i][indexCol + j]) {
+                  if (trList[index + i][indexCol + j].colSpan !== 0 || trList[index + i][indexCol + j].rowSpan !== 0) {
+                    trList[index + i].splice([indexCol + j], 1, null, trList[index + i][indexCol + j]);
+                  }
+                } else {
+                  trList[index + i].push(null);
+                }
+              }
             }
           }
         }
@@ -947,14 +993,14 @@ class ContentBlocksBuilder {
       const config = blockConfigs[i];
 
       if (config.text === '📷') {
-        config.text = '\n';
+        config.text = ' ';
       }
 
       text += config.text;
       characterList = characterList.concat(config.characterList);
 
       if (text !== '' && config.type !== 'unstyled') {
-        text += '\n';
+        // text += '\n';
         characterList = characterList.push(characterList.last());
       }
 
