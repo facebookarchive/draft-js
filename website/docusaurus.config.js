@@ -29,14 +29,14 @@ module.exports = {
     }
   }]],
   themeConfig: {
-    disableDarkMode: true,
+    // disableDarkMode: true,
     navbar: {
       title: 'Draft.js',
       logo: {
         alt: 'Draft.js Logo',
         src: 'img/draftjs-logo.svg'
       },
-      links: [{
+      items: [{
         to: 'docs/getting-started',
         label: 'Docs',
         position: 'right'

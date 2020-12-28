@@ -724,7 +724,8 @@ function getInlineStyleForCollapsedSelection(
   }
 
   // Otherwise, look upward in the document to find the closest character.
-  return lookUpwardForInlineStyle(content, startKey);
+  // return lookUpwardForInlineStyle(content, startKey);
+  return OrderedSet();
 }
 
 function getInlineStyleForNonCollapsedSelection(
