@@ -50,7 +50,9 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
 
   const selection = currentSelection.set('hasFocus', false);
   editor.props.onBlur && editor.props.onBlur(e);
-  editor.update(EditorState.acceptSelection(editorState, selection));
+  editor.update(EditorState.set(EditorState.acceptSelection(editorState, selection), {
+    lastChangeType: null
+  }));
 }
 
 module.exports = editOnBlur;

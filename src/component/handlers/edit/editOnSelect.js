@@ -56,7 +56,7 @@ function editOnSelect(editor: DraftEditor): void {
         updatedSelectionState,
       );
     }
-    editor.update(editorState);
+    editor.update(EditorState.set(editorState, {lastChangeType: null}));
   }
 }
 
