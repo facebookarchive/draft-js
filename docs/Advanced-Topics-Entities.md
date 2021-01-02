@@ -136,7 +136,7 @@ while the latter completely swaps in the new data object.
 
 ## Using Entities for Rich Content
 
-The next article in this section covers the usage of decorator objects, which
+Upcoming article [decorators](/docs/advanced-topics-decorators) covers the usage of decorator objects, which
 can be used to retrieve entities for rendering purposes.
 
 The [link editor example](https://github.com/facebook/draft-js/tree/master/examples/draft-0-10-0/link)
