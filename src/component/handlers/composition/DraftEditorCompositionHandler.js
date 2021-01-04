@@ -166,6 +166,7 @@ const DraftEditorCompositionHandler = {
 
     let editorState = EditorState.set(lastEditorState, {
       inCompositionMode: false,
+      lastChangeType: null,
     });
 
     editor.exitCurrentMode();
@@ -289,6 +290,7 @@ const DraftEditorCompositionHandler = {
       // updated and multiple mutations are correctly applied.
       editorState = EditorState.set(editorState, {
         currentContent: contentState,
+        lastChangeType: 'insert-characters',
       });
     });
 
