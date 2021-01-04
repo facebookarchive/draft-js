@@ -195,6 +195,13 @@ class DraftEditorContents extends React.Component<Props> {
         key
       };
 
+      if (blockType === 'unstyled') {
+        childProps = { ...childProps,
+          'data-block-type': blockType,
+          'data-block-roof': true
+        };
+      }
+
       if (customEditable !== undefined) {
         childProps = { ...childProps,
           contentEditable: customEditable,
