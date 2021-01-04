@@ -229,6 +229,13 @@ class DraftEditorContents extends React.Component<Props> {
         'data-offset-key': offsetKey,
         key,
       };
+      if (blockType === 'unstyled') {
+        childProps = {
+          ...childProps,
+          'data-block-type': blockType,
+          'data-block-roof': true,
+        };
+      }
       if (customEditable !== undefined) {
         childProps = {
           ...childProps,
