@@ -34,6 +34,12 @@ const isFirefox = UserAgent.isBrowser('Firefox');
 const selectionHandler: (e: DraftEditor) => void =
   isChrome || isFirefox ? onSelect : e => {};
 
+const keyDownHandler = isChrome ? (...args) => {
+      onSelect(...args);
+      onKeyDown(...args);
+    }
+  : onKeyDown;
+
 const DraftEditorEditHandler = {
   onBeforeInput,
   onBlur,
@@ -44,7 +50,7 @@ const DraftEditorEditHandler = {
   onDragStart,
   onFocus,
   onInput,
-  onKeyDown,
+  onKeyDown: keyDownHandler,
   onPaste,
   onSelect,
   // In certain cases, contenteditable on chrome does not fire the onSelect
