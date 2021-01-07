@@ -146,6 +146,7 @@ export type DraftEditorProps = {
     text: string,
     html?: string,
     editorState: EditorState,
+    isInternalPaste: boolean,
   ) => DraftHandleValue,
   handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
   // Handle dropped files
