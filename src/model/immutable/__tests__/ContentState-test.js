@@ -64,13 +64,20 @@ test('key fetching must succeed or fail properly', () => {
   const firstKey = MULTI_BLOCK[0].key;
   const secondKey = MULTI_BLOCK[1].key;
 
+  // $FlowFixMe[incompatible-call]
   expect(singleBlock.getKeyAfter(key)).toMatchSnapshot();
+  // $FlowFixMe[incompatible-call]
   expect(singleBlock.getKeyBefore(key)).toMatchSnapshot();
+  // $FlowFixMe[incompatible-call]
   expect(singleBlock.getKeyAfter(key)).toMatchSnapshot();
 
+  // $FlowFixMe[incompatible-call]
   expect(multiBlock.getKeyBefore(firstKey)).toMatchSnapshot();
+  // $FlowFixMe[incompatible-call]
   expect(multiBlock.getKeyAfter(firstKey)).toMatchSnapshot();
+  // $FlowFixMe[incompatible-call]
   expect(multiBlock.getKeyBefore(secondKey)).toMatchSnapshot();
+  // $FlowFixMe[incompatible-call]
   expect(multiBlock.getKeyAfter(secondKey)).toMatchSnapshot();
 });
 

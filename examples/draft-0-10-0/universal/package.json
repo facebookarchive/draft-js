@@ -11,12 +11,12 @@
     "react-dom": "file:../../../node_modules/react-dom"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/node": "^7.8.7",
-    "@babel/preset-react": "^7.9.1",
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-react": "^7.12.10",
     "babelify": "^10.0.0",
-    "browserify": "^16.5.0"
+    "browserify": "^17.0.0"
   },
   "scripts": {
     "build": "browserify client.js -t babelify -o static/bundle.js",
