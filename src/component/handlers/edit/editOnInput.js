@@ -136,6 +136,11 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
     domText = domText.slice(0, -1);
   }
 
+  /* $FlowFixMe[prop-missing] inputType is only defined on a draft of a
+   * standard. https://w3c.github.io/input-events/#dom-inputevent-inputtype
+   */
+  const inputType = event ? event.nativeEvent.inputType : undefined;
+
   // No change -- the DOM is up to date. Nothing to do here.
   if (domText === modelText) {
     // This can be buggy for some Android keyboards because they don't fire
@@ -145,10 +150,6 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
     // Newest versions of Android support the dom-inputevent-inputtype
     // and we can use the `inputType` to properly apply the state changes.
 
-    /* $FlowFixMe[prop-missing] inputType is only defined on a draft of a
-     * standard. https://w3c.github.io/input-events/#dom-inputevent-inputtype
-     */
-    const inputType = event ? event.nativeEvent.inputType : undefined;
     if (inputType) {
       const newEditorState = onInputType(inputType, editorState);
       if (newEditorState !== editorState) {
@@ -162,7 +163,6 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
     // This part of code is responsible for case when space button triggers
     // previous character erasure. This issue was described here
     // https://github.com/facebook/draft-js/issues/2091
-    const inputType = event ? event.nativeEvent.inputType : undefined;
     if (inputType) {
       if (inputType === 'deleteContentBackward') {
         domText = modelText;
