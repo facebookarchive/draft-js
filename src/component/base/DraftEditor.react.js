@@ -62,8 +62,8 @@ type State = {contentsKey: number};
 let didInitODS = false;
 
 const contentEditableFix = domElement => {
-  let closestCEBlock = null;
-  let farthestCEBlock = null;
+  let closestCEBlock;
+  let farthestCEBlock;
 
   let currentElement = domElement;
 
