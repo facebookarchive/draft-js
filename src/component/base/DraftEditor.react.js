@@ -61,6 +61,38 @@ type State = {contentsKey: number};
 
 let didInitODS = false;
 
+const contentEditableFix = domElement => {
+  let closestCEBlock = null;
+  let farthestCEBlock = null;
+
+  let currentElement = domElement;
+
+  do {
+    if (['true', 'false'].includes(currentElement.contentEditable)) {
+      if (!closestCEBlock) {
+        closestCEBlock = currentElement;
+      }
+      farthestCEBlock = currentElement;
+    }
+
+    currentElement = currentElement.parentNode;
+  } while (currentElement && currentElement.parentNode);
+
+  if (
+    closestCEBlock &&
+    farthestCEBlock &&
+    closestCEBlock.contentEditable === 'false' &&
+    farthestCEBlock.contentEditable === 'true'
+  ) {
+    farthestCEBlock.contentEditable = 'false';
+    setTimeout(() => {
+      farthestCEBlock.contentEditable = 'true';
+    }, 50);
+  }
+
+  return {closest: closestCEBlock, farthest: farthestCEBlock};
+};
+
 class UpdateDraftEditorFlags extends React.Component<{
   editor: DraftEditor,
   editorState: EditorState,
@@ -269,6 +301,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       if (!this.props.readOnly) {
         const method = this._handler && this._handler[eventName];
         if (method) {
+          if (e.target) {
+            contentEditableFix(e.target);
+          }
+
           if (flushControlled) {
             flushControlled(() => method(this, e));
           } else {
