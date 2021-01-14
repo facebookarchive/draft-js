@@ -653,7 +653,7 @@ function regenerateTreeForNewBlocks(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(contentState, block, decorator)),
+      .map(block => BlockTree.generate(contentState, block, decorator, newBlockMap)),
   );
 }
 
