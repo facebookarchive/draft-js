@@ -38,7 +38,7 @@ const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 
 const NBSP = '&nbsp;';
 const SPACE = ' ';
-
+const multiBlockReg = /multi-(h[\d])?-?([\w]+)?/;
 // used for replacing characters in HTML
 const REGEX_CR = new RegExp('\r', 'g');
 const REGEX_LF = new RegExp('\n', 'g');
@@ -126,7 +126,6 @@ const buildBlockTypeMap = (
       }
     });
   });
-
   return Map(blockTypeMap);
 };
 
@@ -359,11 +358,11 @@ class ContentBlocksBuilder {
 
   // Map HTML tags to draftjs block types and disambiguation function
   blockTypeMap: BlockTypeMap;
-  disambiguate: (string, ?string) => ?string;
+  disambiguate: (string, ?string, ?any) => ?string;
 
   constructor(
     blockTypeMap: BlockTypeMap,
-    disambiguate: (string, ?string) => ?string,
+    disambiguate: (string, ?string, ?any) => ?string,
   ): void {
     this.clear();
     this.blockTypeMap = blockTypeMap;
@@ -387,14 +386,14 @@ class ContentBlocksBuilder {
 
   trimBlockConfigs(blockConfigs: Array<ContentBlockConfig>): void {
     for (const block of blockConfigs) {
-      if (block.type !== 'code-block' && block.text.length) {
+      if (!['code-block', 'atomic'].includes(block.type) && block.text.length) {
         const trimmedLength = block.text.length - block.text.trimLeft().length;
         if (trimmedLength) {
           block.text = block.text.trimLeft();
           block.characterList = block.characterList.splice(0, trimmedLength);
         }
       }
-      if (block.type !== 'code-block' && block.childConfigs.length) {
+      if (!['atomic'].includes(block.type) && block.childConfigs.length) {
         this.trimBlockConfigs(block.childConfigs);
       }
     }
@@ -456,7 +455,7 @@ class ContentBlocksBuilder {
     const block = {
       key,
       type: this.currentBlockType,
-      text: this.currentText,
+      text: config.type === 'atomic' ? ' ' : this.currentText,
       characterList: this.characterList,
       depth: this.currentDepth,
       parent: null,
@@ -466,6 +465,7 @@ class ContentBlocksBuilder {
       childConfigs: [],
       ...config,
     };
+    console.log(block);
     this.characterList = List();
     this.currentBlockType = 'unstyled';
     this.currentText = '';
@@ -531,7 +531,6 @@ class ContentBlocksBuilder {
         const wasCurrentDepth = this.currentDepth;
         const wasWrapper = this.wrapper;
         this.wrapper = nodeName === 'pre' ? 'pre' : this.wrapper;
-
         if (typeof blockType !== 'string') {
           blockType =
             this.disambiguate(nodeName, this.wrapper, node) ||
@@ -542,8 +541,7 @@ class ContentBlocksBuilder {
         if (
           !experimentalTreeDataSupport &&
           isHTMLElement(node) &&
-          (blockType === 'unordered-list-item' ||
-            blockType === 'ordered-list-item')
+          multiBlockReg.test(blockType)
         ) {
           const htmlElement: HTMLElement = (node: any);
           this.currentDepth = getListItemDepth(htmlElement, this.currentDepth);
@@ -638,7 +636,7 @@ class ContentBlocksBuilder {
     // let begin = l - this.currentText.trimLeft().length;
     let begin = 0;
     let end = this.currentText.trimRight().length;
-
+    this.currentText = this.currentText.replaceAll('📷', '');
     // We should not trim whitespaces for which an entity is defined.
     let entity = this.characterList.findEntry(
       characterMetadata => characterMetadata.getEntity() !== null,
@@ -1066,9 +1064,6 @@ class ContentBlocksBuilder {
     let characterList = List();
     for (let i = 0; i <= l; i++) {
       const config = blockConfigs[i];
-      if (config.text === '📷') {
-        config.text = ' ';
-      }
       text += config.text;
       characterList = characterList.concat(config.characterList);
       if (text !== '' && config.type !== 'unstyled') {
@@ -1119,7 +1114,7 @@ const convertFromHTMLToContentBlocks = (
 
   // Select the proper block type for the cases where the blockRenderMap
   // uses multiple block types for the same html tag.
-  const disambiguate = (tag: string, wrapper: ?string, node): ?string => {
+  const disambiguate = (tag: string, wrapper: ?string, node: ?any): ?string => {
     if (tag === 'li') {
       const blockType = ['multi'];
       if (node && node.classList) {
@@ -1144,10 +1139,20 @@ const convertFromHTMLToContentBlocks = (
         return blockType.join('-');
       }
     }
-
+    if (tag === 'h1') {
+      return 'multi-h1';
+    }
+    if (tag === 'h2') {
+      return 'multi-h2';
+    }
+    if (tag === 'h3') {
+      return 'multi-h3';
+    }
+    if (tag === 'h4') {
+      return 'multi-h4';
+    }
     return null;
   };
-
   return new ContentBlocksBuilder(blockTypeMap, disambiguate)
     .addDOMNode(safeBody)
     .getContentBlocks();

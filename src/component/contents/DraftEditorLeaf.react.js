@@ -111,19 +111,19 @@ class DraftEditorLeaf extends React.Component<Props> {
     }
     // 多editor情况下先判断关标在不在当前editor所在区域
     const windowSelection = window.getSelection();
-    let anchorNode = windowSelection.anchorNode
-    let newTargetNode = targetNode
+    let anchorNode = windowSelection.anchorNode;
+    let newTargetNode = targetNode;
     if (!anchorNode) {
-      return
+      return;
     }
-    while(anchorNode.nodeType !== 1 && anchorNode.parentNode) {
-      anchorNode = anchorNode.parentNode
+    while (anchorNode.nodeType !== 1 && anchorNode.parentNode) {
+      anchorNode = anchorNode.parentNode;
     }
-    while(newTargetNode.nodeType !== 1 && newTargetNode.parentNode) {
-      newTargetNode = newTargetNode.parentNode
+    while (newTargetNode.nodeType !== 1 && newTargetNode.parentNode) {
+      newTargetNode = newTargetNode.parentNode;
     }
-    const editorRoot = anchorNode.closest('.DraftEditor-root')
-    const targetRoot = newTargetNode.closest('.DraftEditor-root')
+    const editorRoot = anchorNode.closest('.DraftEditor-root');
+    const targetRoot = newTargetNode.closest('.DraftEditor-root');
     if (editorRoot === targetRoot) {
       setDraftEditorSelection(selection, targetNode, blockKey, start, end);
     }
