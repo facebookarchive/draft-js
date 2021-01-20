@@ -64,6 +64,7 @@ const DraftEditorCompositionHandler = {
    * mode. Continue the current composition session to prevent a re-render.
    */
   onCompositionStart(editor: DraftEditor): void {
+    console.log('onCompositionStart');
     stillComposing = true;
     const selection = getDraftEditorSelection(
       editor._latestEditorState,
@@ -91,6 +92,7 @@ const DraftEditorCompositionHandler = {
   onCompositionEnd(editor: DraftEditor): void {
     resolved = false;
     stillComposing = false;
+    console.log('onCompositionEnd');
     setTimeout(() => {
       if (!resolved) {
         DraftEditorCompositionHandler.resolveComposition(editor);
@@ -118,6 +120,9 @@ const DraftEditorCompositionHandler = {
         // backspace in 2-Set Korean), we should immediately resolve the
         // composition and reinterpret the key press in edit mode.
         DraftEditorCompositionHandler.resolveComposition(editor);
+        return;
+      } else {
+        resolved = false;
       }
       editor._onKeyDown(e);
       return;
@@ -160,7 +165,8 @@ const DraftEditorCompositionHandler = {
     }
 
     const lastEditorState = editor._latestEditorState;
-    const mutations = nullthrows(domObserver).stopAndFlushMutations();
+    const mutations =
+      domObserver && nullthrows(domObserver).stopAndFlushMutations();
     domObserver = null;
     resolved = true;
 
@@ -171,7 +177,7 @@ const DraftEditorCompositionHandler = {
 
     editor.exitCurrentMode();
 
-    if (!mutations.size) {
+    if (!mutations || !mutations.size) {
       editor.update(editorState);
       return;
     }
