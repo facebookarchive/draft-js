@@ -64,7 +64,6 @@ const DraftEditorCompositionHandler = {
    * mode. Continue the current composition session to prevent a re-render.
    */
   onCompositionStart(editor: DraftEditor): void {
-    console.log('onCompositionStart');
     stillComposing = true;
     const selection = getDraftEditorSelection(
       editor._latestEditorState,
@@ -92,7 +91,6 @@ const DraftEditorCompositionHandler = {
   onCompositionEnd(editor: DraftEditor): void {
     resolved = false;
     stillComposing = false;
-    console.log('onCompositionEnd');
     setTimeout(() => {
       if (!resolved) {
         DraftEditorCompositionHandler.resolveComposition(editor);
