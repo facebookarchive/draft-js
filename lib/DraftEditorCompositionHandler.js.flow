@@ -204,10 +204,12 @@ const DraftEditorCompositionHandler = {
         decoratorKey,
         leafKey
       } = DraftOffsetKey.decode(offsetKey);
+      const block = editorState.getBlockTree(blockKey);
+      if (!block) return;
       const {
         start,
         end
-      } = editorState.getBlockTree(blockKey).getIn([decoratorKey, 'leaves', leafKey]);
+      } = block.getIn([decoratorKey, 'leaves', leafKey]);
       const selection = editorState.getSelection();
       const replacementRange = selection.merge({
         anchorKey: blockKey,
