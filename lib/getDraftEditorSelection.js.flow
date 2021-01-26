@@ -22,6 +22,8 @@ const getDraftEditorSelectionWithNodes = require("./getDraftEditorSelectionWithN
 
 
 function getDraftEditorSelection(editorState: EditorState, root: HTMLElement): DOMDerivedSelection {
+  var _anchorNode$classList, _focusNode$classList;
+
   const selection: SelectionObject = root.ownerDocument.defaultView.getSelection();
   const {
     anchorNode,
@@ -47,6 +49,14 @@ function getDraftEditorSelection(editorState: EditorState, root: HTMLElement): D
   anchorNode == null || focusNode == null || editorRoot === null || editorRoot !== root) {
     return {
       selectionState: editorState.getSelection().set('hasFocus', false),
+      needsRecovery: false
+    };
+  } // 特殊处理代码块的选中
+
+
+  if (((_anchorNode$classList = anchorNode.classList) === null || _anchorNode$classList === void 0 ? void 0 : _anchorNode$classList.contains('not-display-enter')) && ((_focusNode$classList = focusNode.classList) === null || _focusNode$classList === void 0 ? void 0 : _focusNode$classList.contains('not-display-enter'))) {
+    return {
+      selectionState: editorState.getSelection(),
       needsRecovery: false
     };
   }
