@@ -60,6 +60,17 @@ function getDraftEditorSelection(
 
 
 
+  // 特殊处理代码块的选中
+  if (
+    anchorNode.classList?.contains('not-display-enter') &&
+    focusNode.classList?.contains('not-display-enter')
+  ) {
+    return {
+      selectionState: editorState.getSelection(),
+      needsRecovery: false,
+    };
+  }
+
   return getDraftEditorSelectionWithNodes(
     editorState,
     root,
