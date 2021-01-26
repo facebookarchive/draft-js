@@ -122,6 +122,9 @@ const DraftEditorCompositionHandler = {
         // backspace in 2-Set Korean), we should immediately resolve the
         // composition and reinterpret the key press in edit mode.
         DraftEditorCompositionHandler.resolveComposition(editor);
+        return;
+      } else {
+        resolved = false;
       }
 
       editor._onKeyDown(e);
@@ -167,7 +170,7 @@ const DraftEditorCompositionHandler = {
     }
 
     const lastEditorState = editor._latestEditorState;
-    const mutations = nullthrows(domObserver).stopAndFlushMutations();
+    const mutations = domObserver && nullthrows(domObserver).stopAndFlushMutations();
     domObserver = null;
     resolved = true;
     let editorState = EditorState.set(lastEditorState, {
@@ -176,7 +179,7 @@ const DraftEditorCompositionHandler = {
     });
     editor.exitCurrentMode();
 
-    if (!mutations.size) {
+    if (!mutations || !mutations.size) {
       editor.update(editorState);
       return;
     } // TODO, check if Facebook still needs this flag or if it could be removed.
