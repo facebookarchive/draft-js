@@ -59,8 +59,8 @@ const notBoldValues = [
   '400',
 ];
 
-const anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
-const imgAttr = ['alt', 'className', 'height', 'src', 'width'];
+const anchorAttr = ['class', 'href', 'rel', 'target', 'title'];
+const imgAttr = ['alt', 'class', 'height', 'src', 'width'];
 
 const knownListItemDepthClasses = {
   [cx('public/DraftStyleDefault/depth0')]: 0,
