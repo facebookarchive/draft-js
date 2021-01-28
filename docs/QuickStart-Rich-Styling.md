@@ -77,6 +77,7 @@ function MyEditor() {
   const [editorState, setEditorState] = React.useState(() =>
     EditorState.createEmpty()
   );
+  
   function handleKeyCommand(command) {
     const newState = RichUtils.handleKeyCommand(editorState, command);
 
@@ -87,10 +88,7 @@ function MyEditor() {
 
     return "not-handled";
   }
-
-  function _onBoldClick() {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
-  }
+  
   return (
     <Editor
       editorState={editorState}
@@ -154,7 +152,7 @@ function MyEditor() {
   }
   return (
     <div>
-      <button onClick={_onBoldClick>Bold</button>
+      <button onClick={_onBoldClick}>Bold</button>
       <Editor
         editorState={editorState}
         handleKeyCommand={handleKeyCommand}
