@@ -74,12 +74,7 @@ class DraftJsRichEditorExample extends React.Component {
     let className = 'RichEditor-editor';
     const contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
-      if (
-        contentState
-          .getBlockMap()
-          .first()
-          .getType() !== 'unstyled'
-      ) {
+      if (contentState.getBlockMap().first().getType() !== 'unstyled') {
         className += ' RichEditor-hidePlaceholder';
       }
     }
