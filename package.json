@@ -83,7 +83,7 @@
     "stats-webpack-plugin": "^0.7.0",
     "through2": "^4.0.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack-stream": "6.1.0"
+    "webpack-stream": "6.1.2"
   },
   "devEngines": {
     "node": "10.x || 12.x || 14.x",

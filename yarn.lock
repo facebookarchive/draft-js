@@ -8742,14 +8742,7 @@ supports-color@^6.0.0:
   dependencies:
     has-flag "^3.0.0"
 
-supports-color@^7.0.0, supports-color@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-7.1.0.tgz#68e32591df73e25ad1c4b49108a2ec507962bfd1"
-  integrity sha512-oRSIpR8pxT1Wr2FquTNnGet79b3BWljqOuoW/h4oBhxJ/HUbX5nX6JSruTkvXDCFMwDPvsaTTbvMLKZWSy0R5g==
-  dependencies:
-    has-flag "^4.0.0"
-
-supports-color@^7.2.0:
+supports-color@^7.0.0, supports-color@^7.1.0, supports-color@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-7.2.0.tgz#1b7dcdcb32b8138801b3e478ba6a51caa89648da"
   integrity sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
@@ -9667,10 +9660,10 @@ webpack-sources@^1.4.0, webpack-sources@^1.4.1:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack-stream@6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/webpack-stream/-/webpack-stream-6.1.0.tgz#047348e36793432f329c7b5ff13e6e9b6872c152"
-  integrity sha512-kFMnDzFTzyvVmn4ajaj0xEJavvYizd3I/KmQ6C5aUstcAkNwZUidxkk/uEaEPSydaAn66v8ZcP1+bhKSshNJUQ==
+webpack-stream@6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/webpack-stream/-/webpack-stream-6.1.2.tgz#ee90bc07d0ff937239d75ed22aa728072c9e7ee1"
+  integrity sha512-Bpbsrix1cmWRN705JEg69ErgNAEOpQBvtuWKFW3ZCrLddoPPK6oVpQn4svxNdfedqMLlWA3GLOLvw4c7u63GqA==
   dependencies:
     fancy-log "^1.3.3"
     lodash.clone "^4.3.2"
