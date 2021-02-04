@@ -50,14 +50,15 @@ class DOMObserver {
   constructor(container: HTMLElement) {
     this.container = container;
     this.mutations = Map();
+    this.mustReset = false;
     const containerWindow = getWindowForNode(container);
     const MutationObserver = containerWindow.MutationObserver;
     if (MutationObserver && !USE_CHAR_DATA) {
-      this.observer = new MutationObserver(mutations =>
+      this.observer = new MutationObserver((mutations) =>
         this.registerMutations(mutations),
       );
     } else {
-      this.onCharData = e => {
+      this.onCharData = (e) => {
         invariant(
           e.target instanceof Node,
           'Expected target to be an instance of Node',
@@ -98,7 +99,7 @@ class DOMObserver {
     }
     const mutations = this.mutations;
     this.mutations = Map();
-    return mutations;
+    return {mutations, mustReset: this.mustReset};
   }
 
   registerMutations(mutations: Array<MutationRecord>): void {
@@ -108,7 +109,7 @@ class DOMObserver {
   }
 
   getMutationTextContent(mutation: MutationRecordT): ?string {
-    const {type, target, removedNodes} = mutation;
+    const {type, target, addedNodes, removedNodes} = mutation;
     if (type === 'characterData') {
       // When `textContent` is '', there is a race condition that makes
       // getting the offsetKey from the target not possible.
@@ -124,7 +125,11 @@ class DOMObserver {
         return target.textContent;
       }
     } else if (type === 'childList') {
-      if (removedNodes && removedNodes.length) {
+      if (addedNodes && addedNodes.length) {
+        // This mutation is creating a new node, meaning it's starting
+        // in a new line and the editor must be reset
+        this.mustReset = true;
+      } else if (removedNodes && removedNodes.length) {
         // `characterData` events won't happen or are ignored when
         // removing the last character of a leaf node, what happens
         // instead is a `childList` event with a `removedNodes` array.

@@ -1,7 +1,7 @@
 {
-  "name": "draft-js",
+  "name": "draft-js-composition-fix",
   "description": "A React framework for building text editors.",
-  "version": "0.11.7",
+  "version": "0.0.1",
   "keywords": [
     "draftjs",
     "editor",
