@@ -162,8 +162,15 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
                 characterList: block.getCharacterList().map(c => CharacterMetadata.create())
               });
             });
-          }
+          } // 如果粘贴的内容包含代码块，则把charList清空
 
+
+          contentBlocks = contentBlocks.map(block => {
+            if (block.type !== 'code-block') return block;
+            return block.merge({
+              characterList: block.getCharacterList().map(c => CharacterMetadata.create())
+            });
+          });
           const htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
           editor.update(insertFragment(editor._latestEditorState, htmlMap, entityMap));
           return;

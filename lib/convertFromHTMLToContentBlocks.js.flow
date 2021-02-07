@@ -487,6 +487,8 @@ class ContentBlocksBuilder {
     const blockConfigs = [];
 
     for (let i = 0; i < nodes.length; i++) {
+      var _node$classList, _node$classList2;
+
       const node = nodes[i];
       const nodeName = node.nodeName.toLowerCase();
 
@@ -523,6 +525,11 @@ class ContentBlocksBuilder {
       // if (blockType === 'atomic') {
       //   continue;
       // }
+      // 代码块把工具栏/占坑符过滤掉
+
+      if (((_node$classList = node.classList) === null || _node$classList === void 0 ? void 0 : _node$classList.contains('brick-code-block-toolbar')) || ((_node$classList2 = node.classList) === null || _node$classList2 === void 0 ? void 0 : _node$classList2.contains('not-display-enter'))) {
+        continue;
+      }
 
       if (blockType !== undefined) {
         // 'block' type node means we need to create a block config
