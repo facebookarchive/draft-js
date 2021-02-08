@@ -354,8 +354,8 @@ const RichTextEditorUtil: RichTextUtils = {
       if (
         type === 'code-block' &&
         blockBefore &&
-        blockBefore.getType() === 'code-block' &&
-        blockBefore.getLength() !== 0
+        blockBefore.getType() === 'code-block' /* &&
+        blockBefore.getLength() !== 0 */
       ) {
         return null;
       }

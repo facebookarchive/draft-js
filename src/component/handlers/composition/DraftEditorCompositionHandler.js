@@ -118,6 +118,9 @@ const DraftEditorCompositionHandler = {
         // backspace in 2-Set Korean), we should immediately resolve the
         // composition and reinterpret the key press in edit mode.
         DraftEditorCompositionHandler.resolveComposition(editor);
+        return;
+      } else {
+        resolved = false;
       }
       editor._onKeyDown(e);
       return;
@@ -160,7 +163,8 @@ const DraftEditorCompositionHandler = {
     }
 
     const lastEditorState = editor._latestEditorState;
-    const mutations = nullthrows(domObserver).stopAndFlushMutations();
+    const mutations =
+      domObserver && nullthrows(domObserver).stopAndFlushMutations();
     domObserver = null;
     resolved = true;
 
@@ -171,7 +175,7 @@ const DraftEditorCompositionHandler = {
 
     editor.exitCurrentMode();
 
-    if (!mutations.size) {
+    if (!mutations || !mutations.size) {
       editor.update(editorState);
       return;
     }
@@ -198,10 +202,9 @@ const DraftEditorCompositionHandler = {
       const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
         offsetKey,
       );
-
-      const {start, end} = editorState
-        .getBlockTree(blockKey)
-        .getIn([decoratorKey, 'leaves', leafKey]);
+      const block = editorState.getBlockTree(blockKey);
+      if (!block) return;
+      const {start, end} = block.getIn([decoratorKey, 'leaves', leafKey]);
 
       const selection = editorState.getSelection();
 

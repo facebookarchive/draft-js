@@ -67,7 +67,7 @@ const BlockTree = {
   /**
    * Generate a block tree for a given ContentBlock/decorator pair.
    */
-  generate(contentState: ContentState, block: BlockNodeRecord, decorator: ?DraftDecoratorType) // $FlowFixMe[value-as-type]
+  generate(contentState: ContentState, block: BlockNodeRecord, decorator: ?DraftDecoratorType, newBlockMap: ?BlockMap) // $FlowFixMe[value-as-type]
   : List<DecoratorRange> {
     const textLength = block.getLength();
 
@@ -84,7 +84,7 @@ const BlockTree = {
     }
 
     const leafSets = [];
-    const decorations = decorator ? decorator.getDecorations(block, contentState) : List(Repeat(null, textLength));
+    const decorations = decorator ? decorator.getDecorations(block, contentState, newBlockMap) : List(Repeat(null, textLength));
     const chars = block.getCharacterList();
     findRangesImmutable(decorations, areEqual, returnTrue, (start, end) => {
       leafSets.push(new DecoratorRange({

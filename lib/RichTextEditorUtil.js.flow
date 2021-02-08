@@ -266,9 +266,12 @@ const RichTextEditorUtil: RichTextUtils = {
       const type = block.getType();
       const blockBefore = content.getBlockBefore(key);
 
-      if (type === 'code-block' && blockBefore && blockBefore.getType() === 'code-block' && blockBefore.getLength() !== 0) {
-        return null;
-      }
+      if (type === 'code-block' && blockBefore && blockBefore.getType() === 'code-block'
+      /* &&
+      blockBefore.getLength() !== 0 */
+      ) {
+          return null;
+        }
 
       if (type !== 'unstyled') {
         return DraftModifier.setBlockType(content, selection, 'unstyled');

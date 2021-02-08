@@ -549,7 +549,7 @@ function regenerateTreeForNewBlocks(editorState: EditorState, newBlockMap: Block
   const contentState = editorState.getCurrentContent().set('entityMap', newEntityMap);
   const prevBlockMap = contentState.getBlockMap();
   const prevTreeMap = editorState.getImmutable().get('treeMap');
-  return prevTreeMap.merge(newBlockMap.toSeq().filter((block, key) => block !== prevBlockMap.get(key)).map(block => BlockTree.generate(contentState, block, decorator)));
+  return prevTreeMap.merge(newBlockMap.toSeq().filter((block, key) => block !== prevBlockMap.get(key)).map(block => BlockTree.generate(contentState, block, decorator, newBlockMap)));
 }
 /**
  * Generate tree map objects for a new decorator object, preserving any

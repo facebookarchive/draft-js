@@ -21,6 +21,28 @@ const getFragmentFromSelection = require('getFragmentFromSelection');
 const getScrollPosition = require('getScrollPosition');
 const isNode = require('isInstanceOfNode');
 
+function _isNodeScrollable(element, name) {
+  var overflow = Style.get(element, name);
+  return overflow === 'auto' || overflow === 'scroll';
+}
+
+function getScrollParent(node) {
+  if (!node) {
+    return null;
+  }
+  var ownerDocument = node.ownerDocument;
+  while (node && node !== ownerDocument.body) {
+    // 代码块需要支持滚动
+    if (!node.dataset.ignoreScrollParent && (_isNodeScrollable(node, 'overflow') || _isNodeScrollable(node, 'overflowY') || _isNodeScrollable(node, 'overflowX'))) {
+      return node;
+    }
+
+    node = node.parentNode;
+  }
+
+  return ownerDocument.defaultView || ownerDocument.parentWindow;
+}
+
 /**
  * On `cut` events, native behavior is allowed to occur so that the system
  * clipboard is set properly. This means that we need to take steps to recover
@@ -46,7 +68,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   // after the editor regains control of the DOM.
   if (isNode(element)) {
     const node: Node = (element: any);
-    scrollPosition = getScrollPosition(Style.getScrollParent(node));
+    scrollPosition = getScrollPosition(getScrollParent(node));
   }
 
   const fragment = getFragmentFromSelection(editorState);
