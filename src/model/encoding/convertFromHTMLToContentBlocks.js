@@ -521,7 +521,10 @@ class ContentBlocksBuilder {
       // }
 
       // 代码块把工具栏/占坑符过滤掉
-      if (node.classList?.contains('brick-code-block-toolbar') || node.classList?.contains('not-display-enter')) {
+      if (
+        node.classList?.contains('brick-code-block-toolbar') ||
+        node.classList?.contains('not-display-enter')
+      ) {
         continue;
       }
 
@@ -1123,6 +1126,9 @@ const convertFromHTMLToContentBlocks = (
     if (tag === 'li') {
       const blockType = ['multi'];
       if (node && node.classList) {
+        if (node.classList.contains('qu')) {
+          blockType.push('qu');
+        }
         if (node.classList.contains('h1')) {
           blockType.push('h1');
         } else if (node.classList.contains('h2')) {
@@ -1143,6 +1149,9 @@ const convertFromHTMLToContentBlocks = (
         }
         return blockType.join('-');
       }
+    }
+    if (tag === 'blockquote') {
+      return 'multi-qu';
     }
     if (tag === 'h1') {
       return 'multi-h1';

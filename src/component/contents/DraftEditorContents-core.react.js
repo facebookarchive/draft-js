@@ -220,10 +220,9 @@ class DraftEditorContents extends React.Component<Props> {
           getListItemClasses(blockType, depth, shouldResetCount, direction),
         );
       }
-
       const Component = CustomComponent || DraftEditorBlock;
       let childProps = {
-        className,
+        className: className.trim(),
         'data-block': true,
         'data-editor': editorKey,
         'data-offset-key': offsetKey,

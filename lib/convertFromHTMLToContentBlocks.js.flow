@@ -1054,6 +1054,10 @@ const convertFromHTMLToContentBlocks = (html: string, DOMBuilder: Function = get
       const blockType = ['multi'];
 
       if (node && node.classList) {
+        if (node.classList.contains('qu')) {
+          blockType.push('qu');
+        }
+
         if (node.classList.contains('h1')) {
           blockType.push('h1');
         } else if (node.classList.contains('h2')) {
@@ -1076,6 +1080,10 @@ const convertFromHTMLToContentBlocks = (html: string, DOMBuilder: Function = get
 
         return blockType.join('-');
       }
+    }
+
+    if (tag === 'blockquote') {
+      return 'multi-qu';
     }
 
     if (tag === 'h1') {

@@ -181,7 +181,6 @@ class DraftEditorLeaf extends React.Component<Props> {
       const newStyles = customStyleFn(styleSet, block);
       styleObj = Object.assign(styleObj, newStyles);
     }
-
     return (
       <span
         className={className}
