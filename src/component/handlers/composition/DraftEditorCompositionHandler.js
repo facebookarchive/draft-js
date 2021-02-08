@@ -240,7 +240,7 @@ const DraftEditorCompositionHandler = {
     );
     const compositionEndSelectionState = documentSelection.selectionState;
 
-    if (mustReset || mutations.size > 1) editor.restoreEditorDOM();
+    if (mustReset) editor.restoreEditorDOM();
 
     // See:
     // - https://github.com/facebook/draft-js/issues/2093
