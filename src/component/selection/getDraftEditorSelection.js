@@ -26,7 +26,7 @@ function getDraftEditorSelection(
   root: HTMLElement,
 ): DOMDerivedSelection {
   const selection: SelectionObject = root.ownerDocument.defaultView.getSelection();
-  const {
+  let {
     anchorNode,
     anchorOffset,
     focusNode,
@@ -67,6 +67,20 @@ function getDraftEditorSelection(
       selectionState: editorState.getSelection(),
       needsRecovery: false,
     };
+  }
+
+  // 全选时，可能某一侧是代码块，这里只需要处理focusNode的after
+  if (!selection.isCollapsed && focusNode.parentNode?.classList?.contains('not-display-enter')) {
+    const node = focusNode.parentNode;
+    if (node?.classList?.contains('not-display-enter--after')) {
+      const textNodes = node.previousElementSibling?.querySelectorAll(
+        'code:last-child span[data-text]',
+      );
+      if (textNodes.length) {
+        focusNode = textNodes[textNodes.length - 1];
+        focusOffset = focusNode.innerText.length;
+      }
+    }
   }
 
   return getDraftEditorSelectionWithNodes(
