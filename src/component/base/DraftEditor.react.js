@@ -187,7 +187,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _onMouseUp: Function;
   _onPaste: Function;
   _onSelect: Function;
-
+  editorRef: React.RefObject;
   editor: ?HTMLElement;
   editorContainer: ?HTMLElement;
   focus: () => void;
@@ -238,9 +238,8 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this._onMouseUp = this._buildHandler('onMouseUp');
     this._onPaste = this._buildHandler('onPaste');
     this._onSelect = this._buildHandler('onSelect');
-
     this.getEditorKey = () => this._editorKey;
-
+    this.editorRef = React.createRef();
     if (__DEV__) {
       [
         'onDownArrow',
@@ -471,6 +470,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             <DraftEditorContents
               {...editorContentsProps}
               key={'contents' + this.state.contentsKey}
+              ref={this.editorRef}
             />
           </div>
         </div>
@@ -485,7 +485,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       DraftEffects.initODS();
     }
     this.setMode('edit');
-
+    console.log(this.editorRef);
     /**
      * IE has a hardcoded "feature" that attempts to convert link text into
      * anchors in contentEditable DOM. This breaks the editor's expectations of
@@ -603,24 +603,83 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this.setMode('edit');
   };
 
+  restoreFiber: (key: string) => void = (key: string): void => {
+    console.log(this.props.editorRef);
+  };
   /**
    * Used via `this.restoreBlockDOM()`.
    * Force a complete re-render of the DraftEditorBlock in DraftEditorContents
    * Search for a block with the specified block key and re-render it.
    */
   restoreBlockDOM: (
-    key: string,
+    offsetKeyList: string[],
+    deleteKey: string[],
+    emptyKey: string[],
     scrollPosition?: DraftScrollPosition,
-  ) => void = (key: string, scrollPosition?: DraftScrollPosition): void => {
+  ) => void = (
+    offsetKeyList: string[],
+    deleteKey: string[],
+    emptyKey: string[],
+    scrollPosition?: DraftScrollPosition,
+  ): void => {
     const {blockKeyMap} = this.state;
+    const newBlockKeyMap = blockKeyMap;
+    offsetKeyList.forEach(key => {
+      blockKeyMap.set(key, blockKeyMap.has(key) ? blockKeyMap.get(key) + 1 : 1);
+    });
+    var deleteFiberByKey = function(root, deleteKey, isDeleteEmpty) {
+      if (deleteKey.includes(root.key)) {
+        deleteKey = deleteKey.filter(key => key !== root.key);
+        return true;
+      }
+      if (deleteKey.length) {
+        if (root.sibling) {
+          if (deleteFiberByKey(root.sibling, deleteKey, isDeleteEmpty)) {
+            if (isDeleteEmpty) {
+              console.log(root.sibling.child);
+              let emptyFiber = root.sibling.child;
+              while (emptyFiber.child) {
+                emptyFiber = emptyFiber.child;
+              }
+              emptyFiber.return.child = null;
+            } else {
+              if (root.sibling.sibling) {
+                root.sibling = root.sibling.sibling;
+              } else {
+                root.sibling = null;
+              }
+            }
+          }
+        }
+        if (root.child) {
+          if (deleteFiberByKey(root.child, deleteKey, isDeleteEmpty)) {
+            if (isDeleteEmpty) {
+              console.log(root.child.child);
+              let emptyFiber = root.child.child;
+              while (emptyFiber.child) {
+                emptyFiber = emptyFiber.child;
+              }
+              emptyFiber.return.child = null;
+            } else {
+              root.child = null;
+            }
+          }
+        }
+      }
+      return false;
+    };
+    const fiberRoot = document.getElementById('root')._reactRootContainer
+      ._internalRoot.current;
+    if (emptyKey) {
+      deleteFiberByKey(fiberRoot, emptyKey, true);
+    }
     this.setState(
       {
-        blockKeyMap: blockKeyMap.set(
-          key,
-          blockKeyMap.has(key) ? blockKeyMap.get(key) + 1 : 1,
-        ),
+        blockKeyMap: newBlockKeyMap,
       },
       () => {
+        console.log(deleteKey);
+        deleteFiberByKey(fiberRoot, deleteKey);
         this.focus(scrollPosition);
       },
     );
