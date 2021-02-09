@@ -23,7 +23,7 @@ const {Map} = Immutable;
 
 type MutationRecordT =
   | MutationRecord
-  | {type: 'characterData', target: Node, removedNodes?: void};
+  | {type: 'characterData', target: Node, addedNodes?: void, removedNodes?: void};
 
 // Heavily based on Prosemirror's DOMObserver https://github.com/ProseMirror/prosemirror-view/blob/master/src/domobserver.js
 
@@ -41,6 +41,7 @@ class DOMObserver {
   observer: ?MutationObserver;
   container: HTMLElement;
   mutations: Map<string, string>;
+  mutationAtLeafStart: boolean;
   onCharData: ?({
     target: EventTarget,
     type: string,
@@ -54,11 +55,11 @@ class DOMObserver {
     const containerWindow = getWindowForNode(container);
     const MutationObserver = containerWindow.MutationObserver;
     if (MutationObserver && !USE_CHAR_DATA) {
-      this.observer = new MutationObserver((mutations) =>
+      this.observer = new MutationObserver(mutations =>
         this.registerMutations(mutations),
       );
     } else {
-      this.onCharData = (e) => {
+      this.onCharData = e => {
         invariant(
           e.target instanceof Node,
           'Expected target to be an instance of Node',
