@@ -129,8 +129,8 @@ class DOMObserver {
       }
     } else if (type === 'childList') {
       if (addedNodes && addedNodes.length) {
-        // This mutation is creating a new node, meaning it's starting
-        // in a new line and the editor must be reset
+        // This mutation is creating a new node, meaning it's happening
+        // at the beginning of a leaf, so we must force a re-render.
         this.mutationAtLeafStart = true;
       } else if (removedNodes && removedNodes.length) {
         // `characterData` events won't happen or are ignored when
