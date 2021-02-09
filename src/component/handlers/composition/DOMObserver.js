@@ -50,7 +50,7 @@ class DOMObserver {
   constructor(container: HTMLElement) {
     this.container = container;
     this.mutations = Map();
-    this.mustReset = false;
+    this.mutationAtLeafStart = false;
     const containerWindow = getWindowForNode(container);
     const MutationObserver = containerWindow.MutationObserver;
     if (MutationObserver && !USE_CHAR_DATA) {
@@ -98,8 +98,10 @@ class DOMObserver {
       );
     }
     const mutations = this.mutations;
+    const mutationAtLeafStart = this.mutationAtLeafStart;
     this.mutations = Map();
-    return {mutations, mustReset: this.mustReset};
+    this.mutationAtLeafStart = false;
+    return {mutations, mutationAtLeafStart};
   }
 
   registerMutations(mutations: Array<MutationRecord>): void {
@@ -128,7 +130,7 @@ class DOMObserver {
       if (addedNodes && addedNodes.length) {
         // This mutation is creating a new node, meaning it's starting
         // in a new line and the editor must be reset
-        this.mustReset = true;
+        this.mutationAtLeafStart = true;
       } else if (removedNodes && removedNodes.length) {
         // `characterData` events won't happen or are ignored when
         // removing the last character of a leaf node, what happens
