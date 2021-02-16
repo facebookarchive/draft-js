@@ -67,6 +67,10 @@ class CompositeDraftDecorator {
     return true;
   }
 
+  getDecorators(): $ReadOnlyArray<DraftDecorator> {
+    return this._decorators;
+  }
+
   getDecorations(
     block: BlockNodeRecord,
     contentState: ContentState,
