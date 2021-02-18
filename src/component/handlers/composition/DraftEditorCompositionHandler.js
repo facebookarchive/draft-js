@@ -154,7 +154,7 @@ const DraftEditorCompositionHandler = {
 
     const lastEditorState = editor._latestEditorState;
     const observerMutations = nullthrows(domObserver).stopAndFlushMutations();
-    const {mutations, mutationAtLeafStart} = observerMutations;
+    const {mutations, hasMutationAtLeafStart} = observerMutations;
     let entityKey = null;
     domObserver = null;
     resolved = true;
@@ -238,7 +238,7 @@ const DraftEditorCompositionHandler = {
     );
     const compositionEndSelectionState = documentSelection.selectionState;
 
-    const mustReset = mutationAtLeafStart || entityKey !== null;
+    const mustReset = hasMutationAtLeafStart || entityKey !== null;
     if (mustReset) editor.restoreEditorDOM();
 
     // See:

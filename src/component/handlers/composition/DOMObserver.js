@@ -41,7 +41,7 @@ class DOMObserver {
   observer: ?MutationObserver;
   container: HTMLElement;
   mutations: Map<string, string>;
-  mutationAtLeafStart: boolean;
+  hasMutationAtLeafStart: boolean;
   onCharData: ?({
     target: EventTarget,
     type: string,
@@ -51,7 +51,7 @@ class DOMObserver {
   constructor(container: HTMLElement) {
     this.container = container;
     this.mutations = Map();
-    this.mutationAtLeafStart = false;
+    this.hasMutationAtLeafStart = false;
     const containerWindow = getWindowForNode(container);
     const MutationObserver = containerWindow.MutationObserver;
     if (MutationObserver && !USE_CHAR_DATA) {
@@ -99,10 +99,10 @@ class DOMObserver {
       );
     }
     const mutations = this.mutations;
-    const mutationAtLeafStart = this.mutationAtLeafStart;
+    const hasMutationAtLeafStart = this.hasMutationAtLeafStart;
     this.mutations = Map();
-    this.mutationAtLeafStart = false;
-    return {mutations, mutationAtLeafStart};
+    this.hasMutationAtLeafStart = false;
+    return {mutations, hasMutationAtLeafStart};
   }
 
   registerMutations(mutations: Array<MutationRecord>): void {
@@ -131,7 +131,7 @@ class DOMObserver {
       if (addedNodes && addedNodes.length) {
         // This mutation is creating a new node, meaning it's happening
         // at the beginning of a leaf, so we must force a re-render.
-        this.mutationAtLeafStart = true;
+        this.hasMutationAtLeafStart = true;
       } else if (removedNodes && removedNodes.length) {
         // `characterData` events won't happen or are ignored when
         // removing the last character of a leaf node, what happens
