@@ -561,12 +561,6 @@ class ContentBlocksBuilder {
 
       let blockType = this.blockTypeMap.get(nodeName);
 
-      // 图片、分割线、表格都拷贝失败，在这里过滤掉
-      // - 此处不需要再过滤
-      // if (blockType === 'atomic') {
-      //   continue;
-      // }
-
       // 代码块把工具栏/占坑符过滤掉
       if (
         node.classList?.contains('brick-code-block-toolbar') ||
@@ -603,16 +597,29 @@ class ContentBlocksBuilder {
           this.currentDepth = getListItemDepth(htmlElement, this.currentDepth);
         }
 
+        // vscode 是monospace, 但是font-family属性格式是错的
+        const isVscode = node.getAttribute('style')?.includes('monospace')
+
         const childConfigs = this._toBlockConfigs(
           Array.from(node.childNodes),
           style,
-          options,
+          { ...options, isCodeBlock: options.isCodeBlock || isVscode },
         );
         this._trimCurrentText();
 
         // 如果在pre里面，拆分换行为多个段落
         if (this.wrapper === 'pre'){
-          childConfigs.push(...this.makeBlockListByCurrentText({ type: blockType }));
+          // 有道云笔记是yne-bulb-block="code"
+          childConfigs.push(...this.makeBlockListByCurrentText({
+            type: node.getAttribute('yne-bulb-block')==='code' ? 'code-block' : blockType,
+          }));
+        }
+
+        if (isVscode) {
+          childConfigs.forEach(c => {
+            c.type = 'code-block';
+            console.log({ ...c });
+          })
         }
 
         const key = generateRandomKey();
@@ -674,8 +681,10 @@ class ContentBlocksBuilder {
         ...this._toBlockConfigs(Array.from(node.childNodes), newStyle, options),
       );
 
-      // idea是font-family: monospace, 有道云笔记是div + white-space: pre-wrap, vscode是div + white-space: pre + monospace
-      if (nodeName === 'pre' && node.style.fontFamily.includes('monospace')) {
+      // idea是pre + monospace, 有道云笔记是div + pre-wrap, vscode是div + white-space: pre + monospace
+      if (
+        nodeName === 'pre' && node.style.fontFamily.includes('monospace')
+      ) {
         this.wrapper = 'pre';
       }
     }
