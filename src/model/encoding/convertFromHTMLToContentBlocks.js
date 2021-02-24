@@ -561,11 +561,6 @@ class ContentBlocksBuilder {
 
       let blockType = this.blockTypeMap.get(nodeName);
 
-      // 飞书的style是white-space: pre
-      if (node.style?.whiteSpace === 'pre' && node.dataset?.lineIndex) {
-        blockType = 'code-block'
-      } 
-
       // 代码块把工具栏/占坑符过滤掉
       if (
         node.classList?.contains('brick-code-block-toolbar') ||
@@ -579,7 +574,7 @@ class ContentBlocksBuilder {
         // with the text accumulated so far (if any)
         this._trimCurrentText();
         if (this.currentText !== '') {
-          blockConfigs.push(this._makeBlockConfig());
+          blockConfigs.push(...this.makeBlockListByCurrentText());
         }
 
         const wasCurrentDepth = this.currentDepth;
