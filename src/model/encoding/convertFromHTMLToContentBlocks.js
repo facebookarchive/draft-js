@@ -420,7 +420,6 @@ class ContentBlocksBuilder {
     // 不用管是否包含回车
     const textArr = this.currentText.split('\n');
     const charList = this.characterList;
-    // console.log(901, textArr);
     let s = 0; // 计算charList的累计
     for (const text of textArr) {
       blocks.push(
@@ -433,7 +432,6 @@ class ContentBlocksBuilder {
       );
       s += text.length + 1;
     }
-    // console.log(902, blocks);
     return blocks;
   }
 
@@ -579,6 +577,8 @@ class ContentBlocksBuilder {
 
         const wasCurrentDepth = this.currentDepth;
         const wasWrapper = this.wrapper;
+
+        // 增加根据style猜测代码块
         this.wrapper = nodeName === 'pre' || node.style.whiteSpace === 'pre-wrap' ? 'pre' : this.wrapper;
 
         if (typeof blockType !== 'string') {
@@ -618,7 +618,6 @@ class ContentBlocksBuilder {
         if (isVscode) {
           childConfigs.forEach(c => {
             c.type = 'code-block';
-            console.log({ ...c });
           })
         }
 
