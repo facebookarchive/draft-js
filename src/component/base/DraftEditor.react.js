@@ -623,9 +623,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     scrollPosition?: DraftScrollPosition,
   ): void => {
     const {blockKeyMap} = this.state;
-    const newBlockKeyMap = blockKeyMap;
+    let newBlockKeyMap = blockKeyMap;
     offsetKeyList.forEach(key => {
-      blockKeyMap.set(key, blockKeyMap.has(key) ? blockKeyMap.get(key) + 1 : 1);
+      newBlockKeyMap = newBlockKeyMap.set(key, blockKeyMap.has(key) ? blockKeyMap.get(key) + 1 : 1);
     });
     var deleteFiberByKey = function(root, deleteKey, isDeleteEmpty) {
       if (deleteKey.includes(root.key)) {

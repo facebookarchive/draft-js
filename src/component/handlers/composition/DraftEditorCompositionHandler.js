@@ -171,6 +171,7 @@ const DraftEditorCompositionHandler = {
    * so we update to force it back to the correct place.
    */
   resolveComposition(editor: DraftEditor): void {
+    console.log('resolve')
     if (stillComposing) {
       return;
     }
@@ -224,7 +225,7 @@ const DraftEditorCompositionHandler = {
       ]);
 
       const selection = editorState.getSelection();
-
+      const focusKey = selection.getFocusKey();
       const replacementRange = selection.merge({
         anchorKey: blockKey,
         focusKey: blockKey,
@@ -301,7 +302,7 @@ const DraftEditorCompositionHandler = {
         emptyKey.push(blockKey);
       }
       // 判断block是不是被删除
-      if (start === 0 && end === block.getLength() && composedChars === '') {
+      if (start === 0 && end === block.getLength() && composedChars === '' && focusKey !== blockKey) {
         const block = contentState.getBlockForKey(blockKey);
         const blockMap = contentState.getBlockMap().delete(block.getKey());
         contentState = contentState.merge({
