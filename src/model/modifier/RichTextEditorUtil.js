@@ -255,7 +255,6 @@ const RichTextEditorUtil: RichTextUtils = {
       content.getBlockForKey(startKey).getType() === blockType
         ? 'unstyled'
         : blockType;
-
     return EditorState.push(
       editorState,
       DraftModifier.setBlockType(content, target, typeToSet),
