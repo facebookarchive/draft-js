@@ -405,7 +405,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             aria-controls={readOnly ? null : this.props.ariaControls}
             aria-describedby={this._renderARIADescribedBy()}
             aria-expanded={readOnly ? null : ariaExpanded}
-            aria-label={this.props.ariaLabel}
+            aria-label={this.props.ariaLabel ?? this.props.placeholder}
             aria-labelledby={this.props.ariaLabelledBy}
             aria-multiline={this.props.ariaMultiline}
             aria-owns={readOnly ? null : this.props.ariaOwneeID}
