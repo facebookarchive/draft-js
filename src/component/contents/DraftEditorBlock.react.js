@@ -240,6 +240,7 @@ class DraftEditorBlock extends React.Component<Props> {
       'public/DraftStyleDefault/ltr': direction === 'LTR',
       'public/DraftStyleDefault/rtl': direction === 'RTL',
     });
+
     return (
       <div
         data-offset-key={offsetKey}

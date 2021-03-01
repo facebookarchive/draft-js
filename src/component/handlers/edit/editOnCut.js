@@ -33,12 +33,7 @@ function getScrollParent(node) {
   var ownerDocument = node.ownerDocument;
   while (node && node !== ownerDocument.body) {
     // 代码块需要支持滚动
-    if (
-      !node.dataset.ignoreScrollParent &&
-      (_isNodeScrollable(node, 'overflow') ||
-        _isNodeScrollable(node, 'overflowY') ||
-        _isNodeScrollable(node, 'overflowX'))
-    ) {
+    if (!node.dataset.ignoreScrollParent && (_isNodeScrollable(node, 'overflow') || _isNodeScrollable(node, 'overflowY') || _isNodeScrollable(node, 'overflowX'))) {
       return node;
     }
 
@@ -84,7 +79,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Let native `cut` behavior occur, then recover control.
   setTimeout(() => {
-    // editor.restoreEditorDOM(scrollPosition);
+    editor.restoreEditorDOM(scrollPosition);
     editor.exitCurrentMode();
     editor.update(removeFragment(editorState));
   }, 0);

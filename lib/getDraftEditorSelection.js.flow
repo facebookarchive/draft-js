@@ -22,10 +22,10 @@ const getDraftEditorSelectionWithNodes = require("./getDraftEditorSelectionWithN
 
 
 function getDraftEditorSelection(editorState: EditorState, root: HTMLElement): DOMDerivedSelection {
-  var _anchorNode$classList, _focusNode$classList, _focusNode$parentNode, _focusNode$parentNode2;
+  var _anchorNode$classList, _focusNode$classList;
 
   const selection: SelectionObject = root.ownerDocument.defaultView.getSelection();
-  let {
+  const {
     anchorNode,
     anchorOffset,
     focusNode,
@@ -59,24 +59,6 @@ function getDraftEditorSelection(editorState: EditorState, root: HTMLElement): D
       selectionState: editorState.getSelection(),
       needsRecovery: false
     };
-  } // 全选时，可能某一侧是代码块，这里只需要处理focusNode的after
-
-
-  if (!selection.isCollapsed && ((_focusNode$parentNode = focusNode.parentNode) === null || _focusNode$parentNode === void 0 ? void 0 : (_focusNode$parentNode2 = _focusNode$parentNode.classList) === null || _focusNode$parentNode2 === void 0 ? void 0 : _focusNode$parentNode2.contains('not-display-enter'))) {
-    var _node$classList;
-
-    const node = focusNode.parentNode;
-
-    if (node === null || node === void 0 ? void 0 : (_node$classList = node.classList) === null || _node$classList === void 0 ? void 0 : _node$classList.contains('not-display-enter--after')) {
-      var _node$previousElement;
-
-      const textNodes = (_node$previousElement = node.previousElementSibling) === null || _node$previousElement === void 0 ? void 0 : _node$previousElement.querySelectorAll('code:last-child span[data-text]');
-
-      if (textNodes.length) {
-        focusNode = textNodes[textNodes.length - 1];
-        focusOffset = focusNode.innerText.length;
-      }
-    }
   }
 
   return getDraftEditorSelectionWithNodes(editorState, root, anchorNode, anchorOffset, focusNode, focusOffset);

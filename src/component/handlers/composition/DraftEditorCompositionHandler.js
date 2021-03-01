@@ -50,10 +50,7 @@ let resolved = false;
 let stillComposing = false;
 let domObserver = null;
 let isSelectionCrossBlock = false;
-let offsetKeyList = [];
-let observerKeyList = []
-let deleteKey = [];
-let emptyKey = [];
+
 function startDOMObserver(editor: DraftEditor) {
   if (!domObserver) {
     domObserver = new DOMObserver(getContentEditableContainer(editor));
@@ -74,18 +71,6 @@ const DraftEditorCompositionHandler = {
     ).selectionState;
     isSelectionCrossBlock =
       selection.getAnchorKey() !== selection.getFocusKey();
-    let lastKey = selection.getAnchorKey();
-    const content = editor._latestEditorState.getCurrentContent();
-    observerKeyList.push(lastKey);
-    while (isSelectionCrossBlock && typeof lastKey === 'string') {
-      lastKey = content.getKeyAfter(lastKey);
-      console.log(lastKey)
-      observerKeyList.push(lastKey);
-      if (lastKey === selection.getFocusKey()) {
-        lastKey = null;
-      }
-    }
-
     startDOMObserver(editor);
   },
 
@@ -173,7 +158,6 @@ const DraftEditorCompositionHandler = {
    * so we update to force it back to the correct place.
    */
   resolveComposition(editor: DraftEditor): void {
-    console.log('resolve')
     if (stillComposing) {
       return;
     }
@@ -214,20 +198,15 @@ const DraftEditorCompositionHandler = {
     // }
 
     let contentState = editorState.getCurrentContent();
-    const selection = editorState.getSelection();
-    const focusKey = selection.getFocusKey();
-
     mutations.forEach((composedChars, offsetKey) => {
       const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
         offsetKey,
       );
-      const immuTableBlock = editorState.getBlockTree(blockKey);
-      if (!immuTableBlock || !observerKeyList.includes(blockKey)) return;
-      const {start, end} = immuTableBlock.getIn([
-        decoratorKey,
-        'leaves',
-        leafKey,
-      ]);
+      const block = editorState.getBlockTree(blockKey);
+      if (!block) return;
+      const {start, end} = block.getIn([decoratorKey, 'leaves', leafKey]);
+
+      const selection = editorState.getSelection();
 
       const replacementRange = selection.merge({
         anchorKey: blockKey,
@@ -246,14 +225,14 @@ const DraftEditorCompositionHandler = {
         .getInlineStyleAt(start);
 
       let replaced = false;
-      const block = contentState.getBlockForKey(blockKey);
+
       // 处理entity边缘问题
       if (
         !editorState.isInCompositionMode() &&
         selection.isCollapsed() &&
         entityKey
       ) {
-        if (block.getType() === 'atomic') return;
+        const block = contentState.getBlockForKey(blockKey);
         const prevText = block.getText().substring(start, end);
         let diffChars = composedChars.substr(prevText.length);
         if (
@@ -300,21 +279,7 @@ const DraftEditorCompositionHandler = {
           replaced = true;
         }
       }
-      // 判断是不是空段落插入
-      if (block.getLength() === 0 && composedChars) {
-        emptyKey.push(blockKey);
-      }
-      // 判断block是不是被删除
-      if (start === 0 && end === block.getLength() && composedChars === '' && focusKey !== blockKey) {
-        const block = contentState.getBlockForKey(blockKey);
-        const blockMap = contentState.getBlockMap().delete(block.getKey());
-        contentState = contentState.merge({
-          blockMap,
-        });
-        deleteKey.push(blockKey);
-        observerKeyList = observerKeyList.filter(key => key !== blockKey)
-      } else if (!replaced) {
-        offsetKeyList.push(blockKey)
+      if (!replaced) {
         contentState = DraftModifier.replaceText(
           contentState,
           replacementRange,
@@ -357,21 +322,12 @@ const DraftEditorCompositionHandler = {
       ? EditorState.forceSelection(editorState, compositionEndSelectionState)
       : EditorState.acceptSelection(editorState, compositionEndSelectionState);
 
-    observerKeyList.forEach(key => {
-      if (!offsetKeyList.includes(key)) {
-        const block = contentState.getBlockForKey(key);
-        const blockMap = contentState.getBlockMap().delete(block.getKey());
-        contentState = contentState.merge({
-          blockMap,
-        });
-        deleteKey.push(key)
-      }
-    })
-    editor.restoreBlockDOM(offsetKeyList, deleteKey, emptyKey);
-    offsetKeyList = [];
-    deleteKey = [];
-    emptyKey = [];
-    observerKeyList = [];
+    const anchorKey = compositionEndSelectionState.getAnchorKey();
+    const focusKey = compositionEndSelectionState.getFocusKey();
+    anchorKey === focusKey && !isSelectionCrossBlock
+      ? editor.restoreBlockDOM(anchorKey)
+      : editor.restoreEditorDOM();
+
     editor.update(
       EditorState.push(
         editorStateWithUpdatedSelection,

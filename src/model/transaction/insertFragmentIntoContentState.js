@@ -89,7 +89,6 @@ const updateExistingBlock = (
   });
 };
 
-const inheritBlockType = ['blockquote', 'code-block', '-ck', '-ul', '-ol'];
 /**
  * Appends text/characterList from the fragment first block to
  * target block.
@@ -106,35 +105,15 @@ const updateHead = (
   const headText = text.slice(0, targetOffset);
   const headCharacters = chars.slice(0, targetOffset);
   const appendToHead = fragment.first();
-  const blockType = block.getType();
-  const type =
-    headText || inheritBlockType.some(type => blockType.includes(type))
-      ? blockType
-      : appendToHead.getType();
+
   return block.merge({
     text: headText + appendToHead.getText(),
     characterList: headCharacters.concat(appendToHead.getCharacterList()),
-    // type: headText ? block.getType() : appendToHead.getType(),
-    type: type,
+    type: headText ? block.getType() : appendToHead.getType(),
     data: appendToHead.getData(),
   });
 };
 
-const updateMid = (
-  block: BlockNodeRecord,
-  targetOffset: number,
-  fragmentBlock: ContentBlockNode,
-): BlockNodeRecord => {
-  // Modify head portion of block.
-  const appendToHead = fragmentBlock;
-  const blockType = block.getType();
-  const type = inheritBlockType.some(type => blockType.includes(type))
-    ? blockType
-    : appendToHead.getType();
-  return appendToHead.merge({
-    type: type,
-  });
-};
 /**
  * Appends offset text/characterList from the target block to the last
  * fragment block.
@@ -147,17 +126,14 @@ const updateTail = (
   // Modify tail portion of block.
   const text = block.getText();
   const chars = block.getCharacterList();
-  const blockType = block.getType();
+
   // Modify head portion of block.
   const blockSize = text.length;
   const tailText = text.slice(targetOffset, blockSize);
   const tailCharacters = chars.slice(targetOffset, blockSize);
   const prependToTail = fragment.last();
-  const type = inheritBlockType.some(type => blockType.includes(type))
-    ? blockType
-    : prependToTail.getType();
+
   return prependToTail.merge({
-    type: type,
     text: prependToTail.getText() + tailText,
     characterList: prependToTail.getCharacterList().concat(tailCharacters),
     data: prependToTail.getData(),
@@ -290,6 +266,7 @@ const insertFragment = (
       newBlockArr.push(block);
       return;
     }
+
     if (shouldNotUpdateFromFragmentBlock) {
       newBlockArr.push(block);
     } else {
@@ -302,9 +279,7 @@ const insertFragment = (
       // head since its contents have already been merged with the target block otherwise we include
       // the whole fragment
       .slice(shouldNotUpdateFromFragmentBlock ? 0 : 1, fragmentSize - 1)
-      .forEach(fragmentBlock => {
-        newBlockArr.push(updateMid(block, targetOffset, fragmentBlock));
-      });
+      .forEach(fragmentBlock => newBlockArr.push(fragmentBlock));
 
     // update tail
     newBlockArr.push(updateTail(block, targetOffset, fragment));
