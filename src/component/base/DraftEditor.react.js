@@ -628,9 +628,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       newBlockKeyMap = newBlockKeyMap.set(key, blockKeyMap.has(key) ? blockKeyMap.get(key) + 1 : 1);
     });
     var deleteFiberByKey = function(root, deleteKey, isDeleteEmpty) {
+      let res = false
       if (deleteKey.includes(root.key)) {
         deleteKey = deleteKey.filter(key => key !== root.key);
-        return true;
+        res = true
       }
       if (deleteKey.length) {
         if (root.sibling) {
@@ -666,20 +667,23 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
           }
         }
       }
-      return false;
+
+      return res;
     };
     const fiberRoot = document.getElementById('root')._reactRootContainer
       ._internalRoot.current;
-    if (emptyKey) {
+      
+    if (emptyKey.length) {
       deleteFiberByKey(fiberRoot, emptyKey, true);
+    }
+    if (deleteKey.length) {
+      deleteFiberByKey(fiberRoot, deleteKey, false);
     }
     this.setState(
       {
         blockKeyMap: newBlockKeyMap,
       },
       () => {
-        console.log(deleteKey);
-        deleteFiberByKey(fiberRoot, deleteKey);
         this.focus(scrollPosition);
       },
     );
