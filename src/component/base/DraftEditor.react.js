@@ -57,14 +57,13 @@ const handlerMap = {
   render: null,
 };
 
-type State = {contentsKey: number, ...};
+type State = {contentsKey: number};
 
 let didInitODS = false;
 
 class UpdateDraftEditorFlags extends React.Component<{
   editor: DraftEditor,
   editorState: EditorState,
-  ...
 }> {
   render(): React.Node {
     return null;
@@ -136,10 +135,10 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   static defaultProps: DraftEditorDefaultProps = {
     ariaDescribedBy: '{{editor_id_placeholder}}',
     blockRenderMap: DefaultDraftBlockRenderMap,
-    blockRendererFn: function() {
+    blockRendererFn() {
       return null;
     },
-    blockStyleFn: function() {
+    blockStyleFn() {
       return '';
     },
     keyBindingFn: getDefaultKeyBinding,
@@ -152,7 +151,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _clipboard: ?BlockMap;
   _handler: ?Object;
   _dragCount: number;
-  _internalDrag: boolean;
+  _internalDrag: boolean = false;
   _editorKey: string;
   _placeholderAccessibilityID: string;
   _latestEditorState: EditorState;
@@ -196,6 +195,9 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   update: (editorState: EditorState) => void;
   onDragEnter: () => void;
   onDragLeave: () => void;
+
+  // See `restoreEditorDOM()`.
+  state: State = {contentsKey: 0};
 
   constructor(props: DraftEditorProps) {
     super(props);
@@ -242,7 +244,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         'onUpArrow',
       ].forEach(propName => {
         if (props.hasOwnProperty(propName)) {
-          // eslint-disable-next-line no-console
+          // eslint-disable-next-line fb-www/no-console
           console.warn(
             `Supplying an \`${propName}\` prop to \`DraftEditor\` has ` +
               'been deprecated. If your handler needs access to the keyboard ' +
@@ -252,9 +254,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         }
       });
     }
-
-    // See `restoreEditorDOM()`.
-    this.state = {contentsKey: 0};
   }
 
   /**
@@ -301,10 +300,11 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _renderPlaceholder(): React.Node {
     if (this._showPlaceholder()) {
       const placeHolderProps = {
-        text: nullthrows(this.props.placeholder),
-        editorState: this.props.editorState,
-        textAlignment: this.props.textAlignment,
         accessibilityID: this._placeholderAccessibilityID,
+        className: this.props.placeholderClassName,
+        editorState: this.props.editorState,
+        text: nullthrows(this.props.placeholder),
+        textAlignment: this.props.textAlignment,
       };
 
       /* $FlowFixMe[incompatible-type] (>=0.112.0 site=www,mobile) This comment
@@ -385,6 +385,11 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       textDirectionality,
     };
 
+    const contentClassName =
+      this.props.contentClassName != null
+        ? this.props.contentClassName + ' '
+        : '';
+
     return (
       <div className={rootClass}>
         {this._renderPlaceholder()}
@@ -404,17 +409,22 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             aria-labelledby={this.props.ariaLabelledBy}
             aria-multiline={this.props.ariaMultiline}
             aria-owns={readOnly ? null : this.props.ariaOwneeID}
+            aria-required={this.props.ariaRequired}
             autoCapitalize={this.props.autoCapitalize}
             autoComplete={this.props.autoComplete}
             autoCorrect={this.props.autoCorrect}
-            className={cx({
-              // Chrome's built-in translation feature mutates the DOM in ways
-              // that Draft doesn't expect (ex: adding <font> tags inside
-              // DraftEditorLeaf spans) and causes problems. We add notranslate
-              // here which makes its autotranslation skip over this subtree.
-              notranslate: !readOnly,
-              'public/DraftEditor/content': true,
-            })}
+            className={
+              // eslint-disable-next-line fb-www/cx-concat
+              contentClassName +
+              cx({
+                // Chrome's built-in translation feature mutates the DOM in ways
+                // that Draft doesn't expect (ex: adding <font> tags inside
+                // DraftEditorLeaf spans) and causes problems. We add notranslate
+                // here which makes its autotranslation skip over this subtree.
+                notranslate: !readOnly,
+                'public/DraftEditor/content': true,
+              })
+            }
             contentEditable={!readOnly}
             data-testid={this.props.webDriverTestID}
             onBeforeInput={this._onBeforeInput}
@@ -434,6 +444,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onKeyDown={this._onKeyDown}
             onKeyPress={this._onKeyPress}
             onKeyUp={this._onKeyUp}
+            onMouseDown={this._onMouseDown}
             onMouseUp={this._onMouseUp}
             onPaste={this._onPaste}
             onSelect={this._onSelect}
@@ -499,6 +510,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * a specified scroll position (for cases like `cut` behavior where it should
    * be restored to a known position).
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   focus: (scrollPosition?: DraftScrollPosition) => void = (
     scrollPosition?: DraftScrollPosition,
   ): void => {
@@ -517,7 +529,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
 
-    editorNode.focus();
+    editorNode.focus({preventScroll: true});
 
     // Restore scroll position
     if (scrollParent === window) {
@@ -537,6 +549,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     }
   };
 
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   blur: () => void = (): void => {
     const editorNode = this.editor;
     if (!editorNode) {
@@ -553,6 +566,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * handler module to ensure that DOM events are managed appropriately for
    * the active mode.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   setMode: DraftEditorModes => void = (mode: DraftEditorModes): void => {
     const {onPaste, onCut, onCopy} = this.props;
     const editHandler = {...handlerMap.edit};
@@ -579,6 +593,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     this._handler = handler[mode];
   };
 
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   exitCurrentMode: () => void = (): void => {
     this.setMode('edit');
   };
@@ -592,6 +607,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * reconciliation occurs on a version of the DOM that is synchronized with
    * our EditorState.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void = (
     scrollPosition?: DraftScrollPosition,
   ): void => {
@@ -616,6 +632,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * Set the clipboard state for a cut/copy event.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   setClipboard: (?BlockMap) => void = (clipboard: ?BlockMap): void => {
     this._clipboard = clipboard;
   };
@@ -625,6 +642,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    *
    * Retrieve the clipboard state for a cut/copy event.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   getClipboard: () => ?BlockMap = (): ?BlockMap => {
     return this._clipboard;
   };
@@ -638,6 +656,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
    * an `onChange` prop to receive state updates passed along from this
    * function.
    */
+  // eslint-disable-next-line fb-www/extra-arrow-initializer
   update: EditorState => void = (editorState: EditorState): void => {
     const onChange = this.props.onChange;
     this._latestEditorState = editorState;

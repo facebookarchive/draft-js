@@ -19,8 +19,8 @@ import type {EntityMap} from 'EntityMap';
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
+const ContentState = require('ContentState');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEntity = require('DraftEntity');
 const URI = require('URI');
 
 const cx = require('cx');
@@ -34,6 +34,7 @@ const isHTMLElement = require('isHTMLElement');
 const isHTMLImageElement = require('isHTMLImageElement');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
+const allowPastingAltText = gkx('draftjs_paste_emojis');
 
 const NBSP = '&nbsp;';
 const SPACE = ' ';
@@ -305,7 +306,7 @@ class ContentBlocksBuilder {
   contentBlocks: Array<BlockNodeRecord> = [];
 
   // Entity map use to store links and images found in the HTML nodes
-  entityMap: EntityMap = DraftEntity;
+  contentState: ContentState = ContentState.createFromText('');
 
   // Map HTML tags to draftjs block types and disambiguation function
   blockTypeMap: BlockTypeMap;
@@ -330,7 +331,7 @@ class ContentBlocksBuilder {
     this.currentDepth = 0;
     this.currentEntity = null;
     this.currentText = '';
-    this.entityMap = DraftEntity;
+    this.contentState = ContentState.createFromText('');
     this.wrapper = null;
     this.contentBlocks = [];
   }
@@ -373,7 +374,7 @@ class ContentBlocksBuilder {
     }
     return {
       contentBlocks: this.contentBlocks,
-      entityMap: this.entityMap,
+      entityMap: this.contentState.getEntityMap(),
     };
   }
 
@@ -621,17 +622,21 @@ class ContentBlocksBuilder {
       }
     });
 
-    // TODO: T15530363 update this when we remove DraftEntity entirely
-    this.currentEntity = this.entityMap.__create(
+    this.contentState = this.contentState.createEntity(
       'IMAGE',
       'IMMUTABLE',
       entityConfig,
     );
+    this.currentEntity = this.contentState.getLastCreatedEntityKey();
 
     // The child text node cannot just have a space or return as content (since
     // we strip those out)
-    this._appendText('\ud83d\udcf7', style);
-
+    const alt = image.getAttribute('alt');
+    if (allowPastingAltText && alt != null && alt.length > 0) {
+      this._appendText(alt, style);
+    } else {
+      this._appendText('\ud83d\udcf7', style);
+    }
     this.currentEntity = null;
   }
 
@@ -661,12 +666,13 @@ class ContentBlocksBuilder {
     });
 
     entityConfig.url = new URI(anchor.href).toString();
-    // TODO: T15530363 update this when we remove DraftEntity completely
-    this.currentEntity = this.entityMap.__create(
+
+    this.contentState = this.contentState.createEntity(
       'LINK',
       'MUTABLE',
       entityConfig || {},
     );
+    this.currentEntity = this.contentState.getLastCreatedEntityKey();
 
     blockConfigs.push(
       ...this._toBlockConfigs(Array.from(node.childNodes), style),

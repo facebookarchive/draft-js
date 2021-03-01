@@ -56,6 +56,7 @@ export type DraftEditorCommand =
   | 'bold'
   | 'italic'
   | 'underline'
+  | 'strikethrough'
   | 'code'
 
   /**

@@ -43,7 +43,7 @@ type Props = {
   blockProps?: Object,
   blockStyleFn: (block: BlockNodeRecord) => string,
   contentState: ContentState,
-  customStyleFn: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
+  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
   customStyleMap: Object,
   decorator: ?DraftDecoratorType,
   direction: BidiDirection,
@@ -213,7 +213,7 @@ class DraftEditorBlock extends React.Component<Props> {
         const commonProps: DraftDecoratorComponentProps = {
           contentState: this.props.contentState,
           decoratedText,
-          dir: dir,
+          dir,
           start,
           end,
           blockKey,

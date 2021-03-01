@@ -17,9 +17,11 @@ import type EditorState from 'EditorState';
 const React = require('React');
 
 const cx = require('cx');
+const shallowEqual = require('shallowEqual');
 
 type Props = {
   accessibilityID: string,
+  className?: string,
   editorState: EditorState,
   text: string,
   textAlignment: DraftTextAlignment,
@@ -34,31 +36,37 @@ type Props = {
  */
 class DraftEditorPlaceholder extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props): boolean {
+    const {editorState, ...otherProps} = this.props;
+    const {editorState: nextEditorState, ...nextOtherProps} = nextProps;
     return (
-      this.props.text !== nextProps.text ||
-      this.props.editorState.getSelection().getHasFocus() !==
-        nextProps.editorState.getSelection().getHasFocus()
+      editorState.getSelection().getHasFocus() !==
+        nextEditorState.getSelection().getHasFocus() ||
+      !shallowEqual(otherProps, nextOtherProps)
     );
   }
 
   render(): React.Node {
-    const hasFocus = this.props.editorState.getSelection().getHasFocus();
-
-    const className = cx({
-      'public/DraftEditorPlaceholder/root': true,
-      'public/DraftEditorPlaceholder/hasFocus': hasFocus,
-    });
-
-    const contentStyle = {
-      whiteSpace: 'pre-wrap',
-    };
+    const innerClassName =
+      // We can't use joinClasses since the fbjs flow definition is wrong. Using
+      // cx to concatenate is rising issues with haste internally.
+      // eslint-disable-next-line fb-www/cx-concat
+      cx('public/DraftEditorPlaceholder/inner') +
+      (this.props.className != null ? ` ${this.props.className}` : '');
 
     return (
-      <div className={className}>
+      <div
+        className={cx({
+          'public/DraftEditorPlaceholder/root': true,
+          'public/DraftEditorPlaceholder/hasFocus': this.props.editorState
+            .getSelection()
+            .getHasFocus(),
+        })}>
         <div
-          className={cx('public/DraftEditorPlaceholder/inner')}
+          className={innerClassName}
           id={this.props.accessibilityID}
-          style={contentStyle}>
+          style={{
+            whiteSpace: 'pre-wrap',
+          }}>
           {this.props.text}
         </div>
       </div>

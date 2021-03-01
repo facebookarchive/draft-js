@@ -42,7 +42,7 @@ const SCROLL_BUFFER = 10;
 
 const {List} = Immutable;
 
-// we should harden up the bellow flow types to make them more strict
+// we should harden up the below flow types to make them more strict
 type CustomRenderConfig = Object;
 type DraftRenderConfig = Object;
 type BlockRenderFn = (block: BlockNodeRecord) => ?Object;

@@ -27,8 +27,7 @@ const Immutable = require('immutable');
 
 const {contentState} = getSampleStateForTesting();
 
-const treeContentState = contentState.set(
-  'blockMap',
+const treeContentState = contentState.setBlockMap(
   BlockMapBuilder.createFromArray([
     new ContentBlockNode({
       key: 'A',

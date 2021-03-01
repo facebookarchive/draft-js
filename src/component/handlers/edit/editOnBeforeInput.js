@@ -18,6 +18,7 @@ const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const UserAgent = require('UserAgent');
 
+const editOnInput = require('editOnInput');
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
@@ -34,6 +35,7 @@ const setImmediate = require('setImmediate');
 const FF_QUICKFIND_CHAR = "'";
 const FF_QUICKFIND_LINK_CHAR = '/';
 const isFirefox = UserAgent.isBrowser('Firefox');
+const isIE = UserAgent.isBrowser('IE');
 
 function mustPreventDefaultForCharacter(character: string): boolean {
   return (
@@ -81,9 +83,14 @@ function editOnBeforeInput(
   editor: DraftEditor,
   e: SyntheticInputEvent<HTMLElement>,
 ): void {
-  if (editor._pendingStateFromBeforeInput !== undefined) {
-    editor.update(editor._pendingStateFromBeforeInput);
-    editor._pendingStateFromBeforeInput = undefined;
+  // We need this here in case this beforeInput fires before our
+  // immediate below had a chance to fire in IE (say, the user is
+  // typing fast).
+  if (isIE) {
+    if (editor._pendingStateFromBeforeInput !== undefined) {
+      editor.update(editor._pendingStateFromBeforeInput);
+      editor._pendingStateFromBeforeInput = undefined;
+    }
   }
 
   const editorState = editor._latestEditorState;
@@ -236,21 +243,47 @@ function editOnBeforeInput(
     return;
   }
 
-  // We made it all the way! Let the browser do its thing and insert the char.
   newEditorState = EditorState.set(newEditorState, {
     nativelyRenderedContent: newEditorState.getCurrentContent(),
   });
-  // The native event is allowed to occur. To allow user onChange handlers to
-  // change the inserted text, we wait until the text is actually inserted
-  // before we actually update our state. That way when we rerender, the text
-  // we see in the DOM will already have been inserted properly.
+
+  // We have newEditorState, but we just don't want to call "editor.update"
+  // just yet. So let's store this state updated with our change to be consumed
+  // later, after the native event occurs and the browser inserts the char.
+  // After that, when we rerender, the text we see in the DOM will already have
+  // been inserted properly.
+  //
   editor._pendingStateFromBeforeInput = newEditorState;
-  setImmediate(() => {
-    if (editor._pendingStateFromBeforeInput !== undefined) {
-      editor.update(editor._pendingStateFromBeforeInput);
-      editor._pendingStateFromBeforeInput = undefined;
-    }
-  });
+  //
+  // Part of the reason to do this is because browsers seem to change their
+  // behaviour if you preventDefault(). For example, on macOS the browser seems
+  // to believe it's no longer in a contenteditable and will change the
+  // Touch Bar on a MacBook to stop showing text suggestions.
+  //
+  // Later (presumably after we render), it realizes "hold up, I am in a content
+  // editable, silly me" and shows the suggestions again. But in the meantime
+  // what we get is flickering between suggestions and no suggestions. We
+  // should probably report this to Apple.
+  //
+  // Anyway, above we update our editor state if we prevent the native event, since
+  // there will be no input event after we preventDefault. Otherwise, we will
+  // do so in the "input" event, which fires once the text is inserted.
+  //
+  // There is one exception however: IE (what a surprise!). IE doesn't fire
+  // input events (and React doesn't polyfill them), so we never get to see
+  // how the text changed and we never get to call editor.update (which triggers
+  // onChange).
+  //
+  // To get around this, we schedule an immediate to call our usual input
+  // handler. It's important that this be an immediate so that no other random
+  // tasks from the web page get on the way (mimicking what would happen if the
+  // browser fired both the beforeInput and input events). Calling our usual
+  // input handler does the trick.
+  if (isIE) {
+    setImmediate(() => {
+      editOnInput(editor, null);
+    });
+  }
 }
 
 module.exports = editOnBeforeInput;

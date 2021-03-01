@@ -5,14 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow strict
- * @emails oncall+draft_js
+ * @flow
  */
 
-'use strict';
-
-export type DraftOffsetKeyPath = {
-  blockKey: string,
-  decoratorKey: number,
-  leafKey: number,
-};
+declare type Window = any;
