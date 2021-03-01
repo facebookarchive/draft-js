@@ -37,7 +37,7 @@ const updateExistingBlock = (
   fragmentBlock: BlockNodeRecord,
   targetKey: string,
   targetOffset: number,
-  mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
+  mergeBlockData?: BlockDataMergeBehavior = 'MERGE_OLD_DATA_TO_NEW_DATA',
 ): ContentState => {
   const targetBlock = blockMap.get(targetKey);
   const text = targetBlock.getText();
@@ -57,6 +57,7 @@ const updateExistingBlock = (
   }
 
   let type = targetBlock.getType();
+  //
   if (text && type === 'unstyled') {
     type = fragmentBlock.getType();
   }
@@ -312,7 +313,7 @@ const insertFragmentIntoContentState = (
   contentState: ContentState,
   selectionState: SelectionState,
   fragmentBlockMap: BlockMap,
-  mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
+  mergeBlockData?: BlockDataMergeBehavior = 'MERGE_OLD_DATA_TO_NEW_DATA',
 ): ContentState => {
   invariant(
     selectionState.isCollapsed(),

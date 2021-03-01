@@ -32,7 +32,8 @@ const isHTMLAnchorElement = require('isHTMLAnchorElement');
 const isHTMLBRElement = require('isHTMLBRElement');
 const isHTMLElement = require('isHTMLElement');
 const isHTMLImageElement = require('isHTMLImageElement');
-
+const convertToRaw = require('convertFromDraftStateToRaw');
+const EditorState = require('EditorState');
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 const allowPastingAltText = gkx('draftjs_paste_emojis');
 
@@ -61,7 +62,7 @@ const notBoldValues = [
 
 const anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
 const imgAttr = ['alt', 'className', 'height', 'src', 'width'];
-
+const fileAttr = ['type', 'objectkey', 'bucketname', 'name', 'size'];
 const knownListItemDepthClasses = {
   [cx('public/DraftStyleDefault/depth0')]: 0,
   [cx('public/DraftStyleDefault/depth1')]: 1,
@@ -105,6 +106,7 @@ type BlockTypeMap = Map<string, string | Array<string>>;
  *     li: ['ordered-list-item', 'unordered-list-item'],
  *   })
  */
+
 const buildBlockTypeMap = (
   blockRenderMap: DraftBlockRenderMap,
 ): BlockTypeMap => {
@@ -197,6 +199,46 @@ const isValidImage = (node: Node): boolean => {
   );
 };
 
+function isElement(node) {
+  if (!node || !node.ownerDocument) {
+    return false;
+  }
+  return node.nodeType === Node.ELEMENT_NODE;
+}
+
+function isHTMLFileElement(node) {
+  if (!node || !node.ownerDocument) {
+    return false;
+  }
+  return isElement(node) && node.title === 'file-entity';
+}
+
+function isHTMLTableElement(node) {
+  if (!node || !node.ownerDocument) {
+    return false;
+  }
+  return isElement(node) && node.tagName === 'TABLE';
+}
+
+/**
+ * Return true if the provided HTML Element can be used to build a
+ * Draftjs-compatible file.
+ */
+var isValidFile = function isValidFile(node) {
+  if (!isHTMLFileElement(node)) {
+    return false;
+  }
+  var fileNode = node;
+  return !!(fileNode.dataset.bucketname && fileNode.dataset.objectkey);
+};
+
+var isValidTable = function isValidTable(node) {
+  if (!isHTMLTableElement(node)) {
+    return false;
+  }
+  return true;
+};
+
 /**
  * Try to guess the inline style of an HTML element based on its css
  * styles (font-weight, font-style and text-decoration).
@@ -213,6 +255,8 @@ const styleFromNodeAttributes = (
   const fontWeight = htmlElement.style.fontWeight;
   const fontStyle = htmlElement.style.fontStyle;
   const textDecoration = htmlElement.style.textDecoration;
+  const color = htmlElement.style.color;
+  const bgcolor = htmlElement.style['background-color'];
 
   return style.withMutations(style => {
     if (boldValues.indexOf(fontWeight) >= 0) {
@@ -236,6 +280,12 @@ const styleFromNodeAttributes = (
     if (textDecoration === 'none') {
       style.remove('UNDERLINE');
       style.remove('STRIKETHROUGH');
+    }
+    if (color) {
+      style.add(`color-${color.replace(/\s/g, '')}`);
+    }
+    if (bgcolor) {
+      style.add(`bgcolor-${bgcolor.replace(/\s/g, '')}`);
     }
   });
 };
@@ -336,6 +386,21 @@ class ContentBlocksBuilder {
     this.contentBlocks = [];
   }
 
+  trimBlockConfigs(blockConfigs: Array<ContentBlockConfig>): void {
+    for (const block of blockConfigs) {
+      if (block.type !== 'code-block' && block.text.length) {
+        const trimmedLength = block.text.length - block.text.trimLeft().length;
+        if (trimmedLength) {
+          block.text = block.text.trimLeft();
+          block.characterList = block.characterList.splice(0, trimmedLength);
+        }
+      }
+      if (block.type !== 'code-block' && block.childConfigs.length) {
+        this.trimBlockConfigs(block.childConfigs);
+      }
+    }
+  }
+
   /**
    * Add an HTMLElement to the ContentBlocksBuilder
    */
@@ -351,6 +416,8 @@ class ContentBlocksBuilder {
     if (this.currentText !== '') {
       this.blockConfigs.push(this._makeBlockConfig());
     }
+
+    this.trimBlockConfigs(this.blockConfigs);
 
     // for chaining
     return this;
@@ -447,6 +514,18 @@ class ContentBlocksBuilder {
       }
 
       let blockType = this.blockTypeMap.get(nodeName);
+
+      // 图片、分割线、表格都拷贝失败，在这里过滤掉
+      // - 此处不需要再过滤
+      // if (blockType === 'atomic') {
+      //   continue;
+      // }
+
+      // 代码块把工具栏/占坑符过滤掉
+      if (node.classList?.contains('brick-code-block-toolbar') || node.classList?.contains('not-display-enter')) {
+        continue;
+      }
+
       if (blockType !== undefined) {
         // 'block' type node means we need to create a block config
         // with the text accumulated so far (if any)
@@ -461,7 +540,7 @@ class ContentBlocksBuilder {
 
         if (typeof blockType !== 'string') {
           blockType =
-            this.disambiguate(nodeName, this.wrapper) ||
+            this.disambiguate(nodeName, this.wrapper, node) ||
             blockType[0] ||
             'unstyled';
         }
@@ -502,6 +581,16 @@ class ContentBlocksBuilder {
 
       if (nodeName === 'br') {
         this._addBreakNode(node, style);
+        continue;
+      }
+
+      if (isValidFile(node)) {
+        this._addFileNode(node, style);
+        continue;
+      }
+
+      if (isValidTable(node)) {
+        this._addTableNode(node, style);
         continue;
       }
 
@@ -551,7 +640,9 @@ class ContentBlocksBuilder {
    */
   _trimCurrentText() {
     const l = this.currentText.length;
-    let begin = l - this.currentText.trimLeft().length;
+    // 需要保留代码块的样式，等最后再去掉
+    // let begin = l - this.currentText.trimLeft().length;
+    let begin = 0;
     let end = this.currentText.trimRight().length;
 
     // We should not trim whitespaces for which an entity is defined.
@@ -614,11 +705,23 @@ class ContentBlocksBuilder {
     }
     const image: HTMLImageElement = (node: any);
     const entityConfig = {};
-
+    var entityAttrMap = {
+      src: 'url',
+    };
     imgAttr.forEach(attr => {
       const imageAttribute = image.getAttribute(attr);
       if (imageAttribute) {
-        entityConfig[attr] = imageAttribute;
+        entityConfig[entityAttrMap[attr] || attr] = imageAttribute;
+      } else {
+        // 对图片宽高度多一层获取
+        if (attr === 'width' || attr === 'height') {
+          var attribute =
+            image[attr] ||
+            (image.style[attr] && image.style[attr].replace('px', ''));
+          if (attribute) {
+            entityConfig[attr] = attribute;
+          }
+        }
       }
     });
 
@@ -640,6 +743,209 @@ class ContentBlocksBuilder {
     this.currentEntity = null;
   }
 
+  /** 
+   Add file Block
+  */
+
+  _addFileNode(node, style) {
+    if (!isHTMLFileElement(node)) {
+      return;
+    }
+
+    var entityConfig = {};
+    var entityAttrMap = {
+      bucketname: 'bucketName',
+      objectkey: 'objectKey',
+    };
+    fileAttr.forEach(function(attr) {
+      var fileAttribute = node.dataset[attr];
+
+      if (fileAttribute) {
+        entityConfig[entityAttrMap[attr] || attr] = fileAttribute;
+      }
+    });
+
+    this.contentState = this.contentState.createEntity(
+      'FILE',
+      'IMMUTABLE',
+      entityConfig,
+    );
+    this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
+    // we strip those out)
+
+    this._appendText('\uD83D\uDCF7', style);
+
+    this.currentEntity = null;
+  }
+
+  /**
+   * Add Table Node
+   */
+  _addTableNode(tableRoot, style) {
+    function generateUUID() {
+      var str = Math.random()
+        .toString(36)
+        .substr(3);
+      str += Date.now()
+        .toString(16)
+        .substr(4);
+      return str;
+    }
+    const trList = Array.prototype.slice
+      .call(tableRoot.querySelectorAll('tr'), 0)
+      .map(trRoot =>
+        Array.prototype.slice.call(
+          trRoot.querySelectorAll('.brick-table-td'),
+          0,
+        ),
+      );
+    const colList = tableRoot.querySelectorAll('col');
+    const row =
+      (tableRoot.dataset.rows && Number(tableRoot.dataset.rows)) ||
+      trList.length;
+    let column =
+      (tableRoot.dataset.cols && Number(tableRoot.dataset.cols)) ||
+      colList.length;
+    const rowsId = [];
+    const colsId = [];
+    const combine = [];
+    const columnWidth = {};
+    const cell = {};
+    Array(row)
+      .fill(0)
+      .forEach(function(_, index) {
+        const rowId = 'rowId-'.concat(generateUUID());
+        rowsId.push(rowId);
+        cell[rowId] = {};
+        const tdList = trList[index];
+
+        for (var indexCol = 0; indexCol < column; indexCol++) {
+          if (index === 0) {
+            var colId = 'colId-'.concat(generateUUID());
+            columnWidth[colId] = colList[indexCol].width
+              ? Number(colList[indexCol].width)
+              : 100;
+            colsId.push(colId);
+          }
+          let tdRoot = null;
+
+          tdRoot = tdList[indexCol];
+
+          if (
+            tdRoot &&
+            tdRoot.rowSpan &&
+            tdRoot.colSpan &&
+            (tdRoot.rowSpan > 1 || tdRoot.colSpan > 1)
+          ) {
+            for (let i = 0; i < tdRoot.rowSpan; i++) {
+              if (i === 0) {
+                for (let j = 1; j < tdRoot.colSpan; j++) {
+                  if (trList[index + i][indexCol + j]) {
+                    if (
+                      trList[index + i][indexCol + j].colSpan !== 0 ||
+                      trList[index + i][indexCol + j].rowSpan !== 0
+                    ) {
+                      trList[index + i].splice(
+                        [indexCol + j],
+                        1,
+                        null,
+                        trList[index + i][indexCol + j],
+                      );
+                    }
+                  } else {
+                    trList[index + i].push(null);
+                  }
+                }
+              } else {
+                for (let j = 0; j < tdRoot.colSpan; j++) {
+                  if (trList[index + i][indexCol + j]) {
+                    if (
+                      trList[index + i][indexCol + j].colSpan !== 0 ||
+                      trList[index + i][indexCol + j].rowSpan !== 0
+                    ) {
+                      trList[index + i].splice(
+                        [indexCol + j],
+                        1,
+                        null,
+                        trList[index + i][indexCol + j],
+                      );
+                    }
+                  } else {
+                    trList[index + i].push(null);
+                  }
+                }
+              }
+            }
+          }
+
+          const cellId = 'cellId-'.concat(generateUUID());
+
+          const rowspan = tdRoot ? tdRoot.rowSpan || null : 0;
+          const colspan = tdRoot ? tdRoot.colSpan || null : 0;
+
+          if (
+            rowspan !== null &&
+            colspan !== null &&
+            (rowspan > 1 || colspan > 1)
+          ) {
+            combine.push({
+              key: `cbId-${generateUUID()}`,
+              firstRowId: rowId,
+              firstColId: colsId[indexCol],
+              minRow: index,
+              minCol: indexCol,
+              maxRow: rowspan - 1 + index,
+              maxCol: colspan - 1 + indexCol,
+            });
+          }
+          let editorState = null;
+
+          if (tdRoot) {
+            const blocksFromHTML = convertFromHTMLToContentBlocks(
+              tdList[indexCol].querySelector('.DraftEditor-root').outerHTML,
+            );
+
+            if (blocksFromHTML.contentBlocks.length) {
+              const contentState = ContentState.createFromBlockArray(
+                blocksFromHTML.contentBlocks,
+                blocksFromHTML.entityMap,
+              );
+              editorState = convertToRaw(contentState);
+            } else {
+              editorState = convertToRaw(
+                EditorState.createEmpty().getCurrentContent(),
+              );
+            }
+          } else {
+            editorState = convertToRaw(
+              EditorState.createEmpty().getCurrentContent(),
+            );
+          }
+
+          cell[rowId][colsId[indexCol]] = {
+            cellId: cellId,
+            rowspan: rowspan,
+            colspan: colspan,
+            editorState: editorState,
+          };
+        }
+      });
+    this.contentState = this.contentState.createEntity('TABLE', 'IMMUTABLE', {
+      row: Number(row),
+      column: Number(column),
+      rowsId,
+      colsId,
+      cell,
+      combine,
+      columnWidth,
+    });
+    this.currentEntity = this.contentState.getLastCreatedEntityKey(); // The child text node cannot just have a space or return as content (since
+    // we strip those out)
+
+    this._appendText('\uD83D\uDCF7', style);
+
+    this.currentEntity = null;
+  }
   /**
    * Add the content of an HTML 'a' node to the internal state. Child nodes
    * (if any) are converted to Block Configs and appended to the provided
@@ -729,11 +1035,21 @@ class ContentBlocksBuilder {
    * text content.
    */
   _toFlatContentBlocks(blockConfigs: Array<ContentBlockConfig>) {
-    const cleanConfigs = this._hoistContainersInBlockConfigs(blockConfigs);
+    let cleanConfigs = this._hoistContainersInBlockConfigs(blockConfigs);
+    // 再atomic前后加入一个空白block，以防block互相吞并
+    if (cleanConfigs.size) {
+      if (cleanConfigs.get(0).type === 'atomic') {
+        cleanConfigs = cleanConfigs.unshift(this._makeBlockConfig());
+      }
+      if (cleanConfigs.get(cleanConfigs.size - 1).type === 'atomic') {
+        cleanConfigs = cleanConfigs.push(this._makeBlockConfig());
+      }
+    }
     cleanConfigs.forEach(config => {
       const {text, characterList} = this._extractTextFromBlockConfigs(
         config.childConfigs,
       );
+
       this.contentBlocks.push(
         new ContentBlock({
           ...config,
@@ -760,10 +1076,13 @@ class ContentBlocksBuilder {
     let characterList = List();
     for (let i = 0; i <= l; i++) {
       const config = blockConfigs[i];
+      if (config.text === '📷') {
+        config.text = ' ';
+      }
       text += config.text;
       characterList = characterList.concat(config.characterList);
       if (text !== '' && config.type !== 'unstyled') {
-        text += '\n';
+        // text += '\n';
         characterList = characterList.push(characterList.last());
       }
       const children = this._extractTextFromBlockConfigs(config.childConfigs);
@@ -810,10 +1129,18 @@ const convertFromHTMLToContentBlocks = (
 
   // Select the proper block type for the cases where the blockRenderMap
   // uses multiple block types for the same html tag.
-  const disambiguate = (tag: string, wrapper: ?string): ?string => {
+  const disambiguate = (tag: string, wrapper: ?string, node): ?string => {
     if (tag === 'li') {
+      if (
+        node &&
+        node.classList &&
+        node.classList.contains('checkable-list-item')
+      ) {
+        return 'checkable-list-item';
+      }
       return wrapper === 'ol' ? 'ordered-list-item' : 'unordered-list-item';
     }
+
     return null;
   };
 

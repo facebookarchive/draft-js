@@ -185,8 +185,34 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
         editor.props.blockRenderMap,
       );
       if (htmlFragment) {
-        const {contentBlocks, entityMap} = htmlFragment;
+        let {contentBlocks, entityMap} = htmlFragment;
         if (contentBlocks) {
+          const selection = editor._latestEditorState.getSelection();
+          const contentState = editor._latestEditorState.getCurrentContent();
+          const startBlock = contentState.getBlockForKey(
+            selection.getStartKey(),
+          );
+          if (startBlock?.getType() === 'code-block') {
+            // 如果是在code-block里粘贴，把粘贴的内容设成code-block，并且把characterList清空
+            contentBlocks = contentBlocks.map(block => {
+              if (block.type === 'atomic') return block;
+              return block.merge({
+                type: 'code-block',
+                characterList: block
+                  .getCharacterList()
+                  .map(c => CharacterMetadata.create()),
+              });
+            });
+          }
+
+          // 如果粘贴的内容包含代码块，则把charList清空
+          contentBlocks = contentBlocks.map(block => {
+            if (block.type !== 'code-block') return block;
+            return block.merge({
+              characterList: block.getCharacterList().map(c => CharacterMetadata.create()),
+            })
+          })
+
           const htmlMap = BlockMapBuilder.createFromArray(contentBlocks);
           editor.update(
             insertFragment(editor._latestEditorState, htmlMap, entityMap),

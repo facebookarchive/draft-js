@@ -42,7 +42,7 @@ var rawContent = {
     {
       text: ' ',
       type: 'atomic',
-      entityRanges: [{offset: 0, length: 1, key: 'first'}],
+      entityRanges: [{offset: 0, length: 1, key: '5052b6fe-21a5-4dd1-b80c-d4257c7a8a61'}],
     },
     {
       text: 'You can also insert a new TeX block at the cursor location.',
@@ -51,7 +51,7 @@ var rawContent = {
   ],
 
   entityMap: {
-    first: {
+    '5052b6fe-21a5-4dd1-b80c-d4257c7a8a61': {
       type: 'TOKEN',
       mutability: 'IMMUTABLE',
       data: {

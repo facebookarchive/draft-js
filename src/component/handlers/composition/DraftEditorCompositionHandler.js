@@ -49,6 +49,7 @@ const RESOLVE_DELAY = 20;
 let resolved = false;
 let stillComposing = false;
 let domObserver = null;
+let isSelectionCrossBlock = false;
 
 function startDOMObserver(editor: DraftEditor) {
   if (!domObserver) {
@@ -64,6 +65,12 @@ const DraftEditorCompositionHandler = {
    */
   onCompositionStart(editor: DraftEditor): void {
     stillComposing = true;
+    const selection = getDraftEditorSelection(
+      editor._latestEditorState,
+      getContentEditableContainer(editor),
+    ).selectionState;
+    isSelectionCrossBlock =
+      selection.getAnchorKey() !== selection.getFocusKey();
     startDOMObserver(editor);
   },
 
@@ -111,6 +118,9 @@ const DraftEditorCompositionHandler = {
         // backspace in 2-Set Korean), we should immediately resolve the
         // composition and reinterpret the key press in edit mode.
         DraftEditorCompositionHandler.resolveComposition(editor);
+        return;
+      } else {
+        resolved = false;
       }
       editor._onKeyDown(e);
       return;
@@ -153,17 +163,19 @@ const DraftEditorCompositionHandler = {
     }
 
     const lastEditorState = editor._latestEditorState;
-    const mutations = nullthrows(domObserver).stopAndFlushMutations();
+    const mutations =
+      domObserver && nullthrows(domObserver).stopAndFlushMutations();
     domObserver = null;
     resolved = true;
 
     let editorState = EditorState.set(lastEditorState, {
       inCompositionMode: false,
+      lastChangeType: null,
     });
 
     editor.exitCurrentMode();
 
-    if (!mutations.size) {
+    if (!mutations || !mutations.size) {
       editor.update(editorState);
       return;
     }
@@ -190,12 +202,13 @@ const DraftEditorCompositionHandler = {
       const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
         offsetKey,
       );
+      const block = editorState.getBlockTree(blockKey);
+      if (!block) return;
+      const {start, end} = block.getIn([decoratorKey, 'leaves', leafKey]);
 
-      const {start, end} = editorState
-        .getBlockTree(blockKey)
-        .getIn([decoratorKey, 'leaves', leafKey]);
+      const selection = editorState.getSelection();
 
-      const replacementRange = editorState.getSelection().merge({
+      const replacementRange = selection.merge({
         anchorKey: blockKey,
         focusKey: blockKey,
         anchorOffset: start,
@@ -211,17 +224,76 @@ const DraftEditorCompositionHandler = {
         .getBlockForKey(blockKey)
         .getInlineStyleAt(start);
 
-      contentState = DraftModifier.replaceText(
-        contentState,
-        replacementRange,
-        composedChars,
-        currentStyle,
-        entityKey,
-      );
+      let replaced = false;
+
+      // 处理entity边缘问题
+      if (
+        !editorState.isInCompositionMode() &&
+        selection.isCollapsed() &&
+        entityKey
+      ) {
+        const block = contentState.getBlockForKey(blockKey);
+        const prevText = block.getText().substring(start, end);
+        let diffChars = composedChars.substr(prevText.length);
+        if (
+          composedChars.startsWith(prevText) &&
+          composedChars.length > prevText.length &&
+          selection.getAnchorOffset() === end + diffChars.length // 避免 "测测" 中间输入 "测" 时误判
+        ) {
+          const nextReplacementRange = editorState.getSelection().merge({
+            anchorKey: blockKey,
+            focusKey: blockKey,
+            anchorOffset: end,
+            focusOffset: end,
+            isBackward: false,
+          });
+          contentState = DraftModifier.replaceText(
+            contentState,
+            nextReplacementRange,
+            diffChars,
+            currentStyle,
+            null,
+          );
+          replaced = true;
+        } else if (
+          composedChars.endsWith(prevText) &&
+          composedChars.length > prevText.length &&
+          start === 0 &&
+          selection.getAnchorOffset() === diffChars.length
+        ) {
+          diffChars = composedChars.substr(0, diffChars.length);
+          const nextReplacementRange = editorState.getSelection().merge({
+            anchorKey: blockKey,
+            focusKey: blockKey,
+            anchorOffset: start,
+            focusOffset: start,
+            isBackward: false,
+          });
+          contentState = DraftModifier.replaceText(
+            contentState,
+            nextReplacementRange,
+            diffChars,
+            currentStyle,
+            null,
+          );
+          replaced = true;
+        }
+      }
+      if (!replaced) {
+        contentState = DraftModifier.replaceText(
+          contentState,
+          replacementRange,
+          composedChars,
+          currentStyle,
+          entityKey,
+        );
+      }
+
       // We need to update the editorState so the leaf node ranges are properly
       // updated and multiple mutations are correctly applied.
       editorState = EditorState.set(editorState, {
         currentContent: contentState,
+        lastChangeType: 'insert-characters',
       });
     });
 
@@ -239,7 +311,7 @@ const DraftEditorCompositionHandler = {
     );
     const compositionEndSelectionState = documentSelection.selectionState;
 
-    editor.restoreEditorDOM();
+    // editor.restoreEditorDOM();
 
     // See:
     // - https://github.com/facebook/draft-js/issues/2093
@@ -249,6 +321,12 @@ const DraftEditorCompositionHandler = {
     const editorStateWithUpdatedSelection = isIE
       ? EditorState.forceSelection(editorState, compositionEndSelectionState)
       : EditorState.acceptSelection(editorState, compositionEndSelectionState);
+
+    const anchorKey = compositionEndSelectionState.getAnchorKey();
+    const focusKey = compositionEndSelectionState.getFocusKey();
+    anchorKey === focusKey && !isSelectionCrossBlock
+      ? editor.restoreBlockDOM(anchorKey)
+      : editor.restoreEditorDOM();
 
     editor.update(
       EditorState.push(

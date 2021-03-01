@@ -118,7 +118,7 @@ const DraftModifier = {
     contentState: ContentState,
     targetRange: SelectionState,
     fragment: BlockMap,
-    mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
+    mergeBlockData?: BlockDataMergeBehavior = 'MERGE_OLD_DATA_TO_NEW_DATA',
   ): ContentState {
     const withoutEntities = removeEntitiesAtEdges(contentState, targetRange);
     const withoutText = removeRangeFromContentState(

@@ -646,7 +646,7 @@ function regenerateTreeForNewBlocks(
     newBlockMap
       .toSeq()
       .filter((block, key) => block !== prevBlockMap.get(key))
-      .map(block => BlockTree.generate(contentState, block, decorator)),
+      .map(block => BlockTree.generate(contentState, block, decorator, newBlockMap)),
   );
 }
 
@@ -717,7 +717,8 @@ function getInlineStyleForCollapsedSelection(
   }
 
   // Otherwise, look upward in the document to find the closest character.
-  return lookUpwardForInlineStyle(content, startKey);
+  // return lookUpwardForInlineStyle(content, startKey);
+  return OrderedSet();
 }
 
 function getInlineStyleForNonCollapsedSelection(
