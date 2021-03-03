@@ -39,6 +39,7 @@ const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 const NBSP = '&nbsp;';
 const SPACE = ' ';
 const multiBlockReg = /multi-(h[\d])?-?([\w]+)?/;
+
 // used for replacing characters in HTML
 const REGEX_CR = new RegExp('\r', 'g');
 const REGEX_LF = new RegExp('\n', 'g');
@@ -386,14 +387,14 @@ class ContentBlocksBuilder {
 
   trimBlockConfigs(blockConfigs: Array<ContentBlockConfig>): void {
     for (const block of blockConfigs) {
-      if (!['code-block', 'atomic'].includes(block.type) && block.text.length) {
+      if (!['code-block'].includes(block.type) && block.text.length) {
         const trimmedLength = block.text.length - block.text.trimLeft().length;
         if (trimmedLength) {
-          block.text = block.text.trimLeft();
+          block.text = block.text.trimLeft().replaceAll('\uD83D\uDCF7', ' ');
           block.characterList = block.characterList.splice(0, trimmedLength);
         }
       }
-      if (!['atomic'].includes(block.type) && block.childConfigs.length) {
+      if (!['code-block'].includes(block.type) && block.childConfigs.length) {
         this.trimBlockConfigs(block.childConfigs);
       }
     }
@@ -455,7 +456,7 @@ class ContentBlocksBuilder {
     const block = {
       key,
       type: this.currentBlockType,
-      text: config.type === 'atomic' ? ' ' : this.currentText,
+      text: this.currentText,
       characterList: this.characterList,
       depth: this.currentDepth,
       parent: null,
@@ -633,8 +634,6 @@ class ContentBlocksBuilder {
     this.characterList = this.characterList.push(
       ...Array(text.length).fill(characterMetadata),
     );
-    console.log(text)
-    console.log(this.characterList)
   }
 
   /**
@@ -646,7 +645,6 @@ class ContentBlocksBuilder {
     // let begin = l - this.currentText.trimLeft().length;
     let begin = 0;
     let end = this.currentText.trimRight().length;
-    this.currentText = this.currentText.replaceAll('📷', '');
     // We should not trim whitespaces for which an entity is defined.
     let entity = this.characterList.findEntry(
       characterMetadata => characterMetadata.getEntity() !== null,
@@ -657,7 +655,6 @@ class ContentBlocksBuilder {
       .reverse()
       .findEntry(characterMetadata => characterMetadata.getEntity() !== null);
     end = entity !== undefined ? Math.max(end, l - entity[0]) : end;
-    console.log(this.currentText)
     if (begin > end) {
       this.currentText = '';
       this.characterList = List();
