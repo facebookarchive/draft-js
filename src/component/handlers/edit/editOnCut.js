@@ -84,7 +84,7 @@ function editOnCut(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
   // Let native `cut` behavior occur, then recover control.
   setTimeout(() => {
-    // editor.restoreEditorDOM(scrollPosition);
+    editor.restoreEditorDOM(scrollPosition);
     editor.exitCurrentMode();
     editor.update(removeFragment(editorState));
   }, 0);

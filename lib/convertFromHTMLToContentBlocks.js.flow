@@ -472,7 +472,6 @@ class ContentBlocksBuilder {
       childConfigs: [],
       ...config
     };
-    console.log(block);
     this.characterList = List();
     this.currentBlockType = 'unstyled';
     this.currentText = '';
@@ -637,6 +636,8 @@ class ContentBlocksBuilder {
       entity: this.currentEntity
     });
     this.characterList = this.characterList.push(...Array(text.length).fill(characterMetadata));
+    console.log(text);
+    console.log(this.characterList);
   }
   /**
    * Trim the text in the internal buffer.
@@ -655,6 +656,7 @@ class ContentBlocksBuilder {
     begin = entity !== undefined ? Math.min(begin, entity[0]) : begin;
     entity = this.characterList.reverse().findEntry(characterMetadata => characterMetadata.getEntity() !== null);
     end = entity !== undefined ? Math.max(end, l - entity[0]) : end;
+    console.log(this.currentText);
 
     if (begin > end) {
       this.currentText = '';

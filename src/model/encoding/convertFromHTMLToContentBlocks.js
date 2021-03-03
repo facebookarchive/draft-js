@@ -465,7 +465,6 @@ class ContentBlocksBuilder {
       childConfigs: [],
       ...config,
     };
-    console.log(block);
     this.characterList = List();
     this.currentBlockType = 'unstyled';
     this.currentText = '';
@@ -625,6 +624,7 @@ class ContentBlocksBuilder {
    * Append a string of text to the internal buffer.
    */
   _appendText(text: string, style: DraftInlineStyle) {
+
     this.currentText += text;
     const characterMetadata = CharacterMetadata.create({
       style,
@@ -633,6 +633,8 @@ class ContentBlocksBuilder {
     this.characterList = this.characterList.push(
       ...Array(text.length).fill(characterMetadata),
     );
+    console.log(text)
+    console.log(this.characterList)
   }
 
   /**
@@ -655,7 +657,7 @@ class ContentBlocksBuilder {
       .reverse()
       .findEntry(characterMetadata => characterMetadata.getEntity() !== null);
     end = entity !== undefined ? Math.max(end, l - entity[0]) : end;
-
+    console.log(this.currentText)
     if (begin > end) {
       this.currentText = '';
       this.characterList = List();
@@ -1045,7 +1047,6 @@ class ContentBlocksBuilder {
       const {text, characterList} = this._extractTextFromBlockConfigs(
         config.childConfigs,
       );
-
       this.contentBlocks.push(
         new ContentBlock({
           ...config,
