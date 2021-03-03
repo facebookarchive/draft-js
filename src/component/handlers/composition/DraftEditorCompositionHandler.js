@@ -367,6 +367,9 @@ const DraftEditorCompositionHandler = {
         deleteKey.push(key)
       }
     })
+    contentState = contentState.merge({
+      selectionAfter: compositionEndSelectionState
+    });
     editor.restoreBlockDOM(offsetKeyList, deleteKey, emptyKey);
     offsetKeyList = [];
     deleteKey = [];

@@ -442,7 +442,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
     }
 
     this.setMode('edit');
-    console.log(this.editorRef);
     /**
      * IE has a hardcoded "feature" that attempts to convert link text into
      * anchors in contentEditable DOM. This breaks the editor's expectations of
