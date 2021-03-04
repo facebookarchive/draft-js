@@ -77,8 +77,9 @@ function getDraftEditorSelection(
         'code:last-child span[data-text]',
       );
       if (textNodes.length) {
-        focusNode = textNodes[textNodes.length - 1];
-        focusOffset = focusNode.innerText.length;
+        const n = textNodes[textNodes.length - 1]
+        focusNode = n.childNodes.length ? n.childNodes[n.childNodes.length - 1] : n;
+        focusOffset = n.innerText.length;
       }
     }
   }

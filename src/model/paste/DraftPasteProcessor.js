@@ -38,6 +38,7 @@ const DraftPasteProcessor = {
   processHTML(
     html: string,
     blockRenderMap?: DraftBlockRenderMap,
+    options?: any,
   ): ?{
     contentBlocks: ?Array<BlockNodeRecord>,
     entityMap: EntityMap,
@@ -47,6 +48,7 @@ const DraftPasteProcessor = {
       html,
       getSafeBodyFromHTML,
       blockRenderMap,
+      options,
     );
   },
 

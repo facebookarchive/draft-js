@@ -164,19 +164,25 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
 
     // If there is html paste data, try to parse that.
     if (html) {
+
+      const selection = editor._latestEditorState.getSelection();
+      const contentState = editor._latestEditorState.getCurrentContent();
+      const startBlock = contentState.getBlockForKey(
+        selection.getStartKey(),
+      );
+
+      const isCodeBlock = startBlock?.getType() === 'code-block'
+
       const htmlFragment = DraftPasteProcessor.processHTML(
         html,
         editor.props.blockRenderMap,
+        { isCodeBlock, customStyleMap: editor.props.customStyleMap },
       );
       if (htmlFragment) {
         let {contentBlocks, entityMap} = htmlFragment;
         if (contentBlocks) {
-          const selection = editor._latestEditorState.getSelection();
-          const contentState = editor._latestEditorState.getCurrentContent();
-          const startBlock = contentState.getBlockForKey(
-            selection.getStartKey(),
-          );
-          if (startBlock?.getType() === 'code-block') {
+          
+          if (isCodeBlock) {
             // 如果是在code-block里粘贴，把粘贴的内容设成code-block，并且把characterList清空
             contentBlocks = contentBlocks.map(block => {
               if (block.type === 'atomic') return block;
