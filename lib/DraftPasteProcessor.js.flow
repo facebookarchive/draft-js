@@ -39,12 +39,12 @@ const {
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
 const ContentBlockRecord = experimentalTreeDataSupport ? ContentBlockNode : ContentBlock;
 const DraftPasteProcessor = {
-  processHTML(html: string, blockRenderMap?: DraftBlockRenderMap): ?{
+  processHTML(html: string, blockRenderMap?: DraftBlockRenderMap, options?: any): ?{
     contentBlocks: ?Array<BlockNodeRecord>,
     entityMap: EntityMap,
     ...
   } {
-    return convertFromHTMLToContentBlocks(html, getSafeBodyFromHTML, blockRenderMap);
+    return convertFromHTMLToContentBlocks(html, getSafeBodyFromHTML, blockRenderMap, options);
   },
 
   processText(textBlocks: Array<string>, character: CharacterMetadata, type: DraftBlockType): Array<BlockNodeRecord> {
