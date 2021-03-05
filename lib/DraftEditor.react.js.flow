@@ -562,9 +562,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   exitCurrentMode: () => void = (): void => {
     this.setMode('edit');
   };
-  restoreFiber: (key: string) => void = (key: string): void => {
-    console.log(this.props.editorRef);
-  };
+  restoreFiber: (key: string) => void = (key: string): void => {};
   /**
    * Used via `this.restoreBlockDOM()`.
    * Force a complete re-render of the DraftEditorBlock in DraftEditorContents
@@ -592,7 +590,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         if (root.sibling) {
           if (deleteFiberByKey(root.sibling, deleteKey, isDeleteEmpty)) {
             if (isDeleteEmpty) {
-              console.log(root.sibling.child);
               let emptyFiber = root.sibling.child;
 
               while (emptyFiber.child) {
@@ -613,7 +610,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         if (root.child) {
           if (deleteFiberByKey(root.child, deleteKey, isDeleteEmpty)) {
             if (isDeleteEmpty) {
-              console.log(root.child.child);
               let emptyFiber = root.child.child;
 
               while (emptyFiber.child) {

@@ -603,7 +603,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   };
 
   restoreFiber: (key: string) => void = (key: string): void => {
-    console.log(this.props.editorRef);
+
   };
   /**
    * Used via `this.restoreBlockDOM()`.
@@ -636,7 +636,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         if (root.sibling) {
           if (deleteFiberByKey(root.sibling, deleteKey, isDeleteEmpty)) {
             if (isDeleteEmpty) {
-              console.log(root.sibling.child);
               let emptyFiber = root.sibling.child;
               while (emptyFiber.child) {
                 emptyFiber = emptyFiber.child;
@@ -654,7 +653,6 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         if (root.child) {
           if (deleteFiberByKey(root.child, deleteKey, isDeleteEmpty)) {
             if (isDeleteEmpty) {
-              console.log(root.child.child);
               let emptyFiber = root.child.child;
               while (emptyFiber.child) {
                 emptyFiber = emptyFiber.child;

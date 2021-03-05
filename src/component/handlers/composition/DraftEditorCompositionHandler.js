@@ -79,7 +79,6 @@ const DraftEditorCompositionHandler = {
     observerKeyList.push(lastKey);
     while (isSelectionCrossBlock && typeof lastKey === 'string') {
       lastKey = content.getKeyAfter(lastKey);
-      console.log(lastKey)
       observerKeyList.push(lastKey);
       if (lastKey === selection.getFocusKey()) {
         lastKey = null;
@@ -173,7 +172,6 @@ const DraftEditorCompositionHandler = {
    * so we update to force it back to the correct place.
    */
   resolveComposition(editor: DraftEditor): void {
-    console.log('resolve')
     if (stillComposing) {
       return;
     }
@@ -359,7 +357,6 @@ const DraftEditorCompositionHandler = {
     const editorStateWithUpdatedSelection = isIE
       ? EditorState.forceSelection(editorState, compositionEndSelectionState)
       : EditorState.acceptSelection(editorState, compositionEndSelectionState);
-    console.log(observerKeyList)
     observerKeyList.forEach(key => {
       if (!offsetKeyList.includes(key)) {
         const block = contentState.getBlockForKey(key);
