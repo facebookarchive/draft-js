@@ -79,7 +79,6 @@ const DraftEditorCompositionHandler = {
     observerKeyList.push(lastKey);
     while (isSelectionCrossBlock && typeof lastKey === 'string') {
       lastKey = content.getKeyAfter(lastKey);
-      console.log(lastKey)
       observerKeyList.push(lastKey);
       if (lastKey === selection.getFocusKey()) {
         lastKey = null;
@@ -173,7 +172,6 @@ const DraftEditorCompositionHandler = {
    * so we update to force it back to the correct place.
    */
   resolveComposition(editor: DraftEditor): void {
-    console.log('resolve')
     if (stillComposing) {
       return;
     }
@@ -218,6 +216,7 @@ const DraftEditorCompositionHandler = {
     const focusKey = selection.getFocusKey();
 
     mutations.forEach((composedChars, offsetKey) => {
+
       const {blockKey, decoratorKey, leafKey} = DraftOffsetKey.decode(
         offsetKey,
       );
@@ -276,6 +275,7 @@ const DraftEditorCompositionHandler = {
             null,
           );
           replaced = true;
+          offsetKeyList.push(blockKey)
         } else if (
           composedChars.endsWith(prevText) &&
           composedChars.length > prevText.length &&
@@ -298,6 +298,7 @@ const DraftEditorCompositionHandler = {
             null,
           );
           replaced = true;
+          offsetKeyList.push(blockKey)
         }
       }
       // 判断是不是空段落插入
@@ -356,7 +357,6 @@ const DraftEditorCompositionHandler = {
     const editorStateWithUpdatedSelection = isIE
       ? EditorState.forceSelection(editorState, compositionEndSelectionState)
       : EditorState.acceptSelection(editorState, compositionEndSelectionState);
-
     observerKeyList.forEach(key => {
       if (!offsetKeyList.includes(key)) {
         const block = contentState.getBlockForKey(key);

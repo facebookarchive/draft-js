@@ -250,11 +250,14 @@ var isValidTable = function isValidTable(node) {
  */
 
 
-const styleFromNodeAttributes = (node: Node, style: DraftInlineStyle): DraftInlineStyle => {
+const styleFromNodeAttributes = (node: Node, style: DraftInlineStyle, options: any = {}): DraftInlineStyle => {
   if (!isHTMLElement(node)) {
     return style;
   }
 
+  const {
+    customStyleMap
+  } = options;
   const htmlElement: HTMLElement = (node: any);
   const fontWeight = htmlElement.style.fontWeight;
   const fontStyle = htmlElement.style.fontStyle;
@@ -285,14 +288,23 @@ const styleFromNodeAttributes = (node: Node, style: DraftInlineStyle): DraftInli
     if (textDecoration === 'none') {
       style.remove('UNDERLINE');
       style.remove('STRIKETHROUGH');
-    }
+    } // 只有customStyleMap里面的颜色才加上，减少inlineStyleMap的大小
+
 
     if (color) {
-      style.add(`color-${color.replace(/\s/g, '')}`);
+      const s = `color-${color.replace(/\s/g, '')}`;
+
+      if (customStyleMap[s]) {
+        style.add(s);
+      }
     }
 
     if (bgcolor) {
-      style.add(`bgcolor-${bgcolor.replace(/\s/g, '')}`);
+      const s = `bgcolor-${bgcolor.replace(/\s/g, '')}`;
+
+      if (customStyleMap[s]) {
+        style.add(s);
+      }
     }
   });
 };
@@ -387,9 +399,13 @@ class ContentBlocksBuilder {
     this.contentBlocks = [];
   }
 
-  trimBlockConfigs(blockConfigs: Array<ContentBlockConfig>): void {
+  trimBlockConfigs(blockConfigs: Array<ContentBlockConfig>, options?: any = {}): void {
+    const {
+      isCodeBlock
+    } = options;
+
     for (const block of blockConfigs) {
-      if (!['code-block'].includes(block.type) && block.text.length) {
+      if (!['code-block'].includes(block.type) && !isCodeBlock && block.text.length) {
         const trimmedLength = block.text.length - block.text.trimLeft().length;
 
         if (trimmedLength) {
@@ -398,30 +414,57 @@ class ContentBlocksBuilder {
         }
       }
 
-      if (!['code-block'].includes(block.type) && block.childConfigs.length) {
-        this.trimBlockConfigs(block.childConfigs);
+      if (!['code-block'].includes(block.type) && !isCodeBlock && block.childConfigs.length) {
+        this.trimBlockConfigs(block.childConfigs, options);
       }
     }
+  }
+
+  makeBlockListByCurrentText(defaultConfig = {}) {
+    // 把currentText里面的回车拆分段落
+    const blocks = [];
+
+    this._trimCurrentText(); // 啥都没有，不用管
+
+
+    if (!this.currentText) return blocks; // 不用管是否包含回车
+
+    const textArr = this.currentText.split('\n');
+    const charList = this.characterList;
+    let s = 0; // 计算charList的累计
+
+    for (const text of textArr) {
+      blocks.push(this._makeBlockConfig({
+        key: generateRandomKey(),
+        text,
+        characterList: charList.slice(s, s + text.length),
+        ...defaultConfig
+      }));
+      s += text.length + 1;
+    }
+
+    return blocks;
   }
   /**
    * Add an HTMLElement to the ContentBlocksBuilder
    */
 
 
-  addDOMNode(node: Node): ContentBlocksBuilder {
+  addDOMNode(node: Node, options?: any): ContentBlocksBuilder {
     this.contentBlocks = [];
     this.currentDepth = 0; // Converts the HTML node to block config
 
-    this.blockConfigs.push(...this._toBlockConfigs([node], OrderedSet())); // There might be some left over text in the builder's
+    this.blockConfigs.push(...this._toBlockConfigs([node], OrderedSet(), options)); // There might be some left over text in the builder's
     // internal state, if so make a ContentBlock out of it.
+    // this._trimCurrentText();
+    // if (this.currentText !== '') {
+    //   this.blockConfigs.push(this._makeBlockConfig());
+    // }
 
-    this._trimCurrentText();
-
-    if (this.currentText !== '') {
-      this.blockConfigs.push(this._makeBlockConfig());
-    }
-
-    this.trimBlockConfigs(this.blockConfigs); // for chaining
+    this.blockConfigs.push(...this.makeBlockListByCurrentText({
+      type: this.wrapper === 'pre' ? 'code-block' : 'unstyled'
+    }));
+    this.trimBlockConfigs(this.blockConfigs, options); // for chaining
 
     return this;
   }
@@ -484,7 +527,7 @@ class ContentBlocksBuilder {
    */
 
 
-  _toBlockConfigs(nodes: Array<Node>, style: DraftInlineStyle): Array<ContentBlockConfig> {
+  _toBlockConfigs(nodes: Array<Node>, style: DraftInlineStyle, options?: any = {}): Array<ContentBlockConfig> {
     const blockConfigs = [];
 
     for (let i = 0; i < nodes.length; i++) {
@@ -515,35 +558,41 @@ class ContentBlocksBuilder {
           }
         }
 
-        blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes), style));
+        blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes), style, options));
+
+        if (nodeName === 'body') {
+          // 在退出body前，把剩余的text扔到当前的blockConfigs里面
+          blockConfigs.push(...this.makeBlockListByCurrentText({
+            type: this.wrapper === 'pre' ? 'code-block' : 'unstyled'
+          }));
+        }
+
         this.currentDepth = wasCurrentDepth;
         this.wrapper = wasWrapper;
         continue;
       }
 
-      let blockType = this.blockTypeMap.get(nodeName); // 图片、分割线、表格都拷贝失败，在这里过滤掉
-      // - 此处不需要再过滤
-      // if (blockType === 'atomic') {
-      //   continue;
-      // }
-      // 代码块把工具栏/占坑符过滤掉
+      let blockType = this.blockTypeMap.get(nodeName); // 代码块把工具栏/占坑符过滤掉
 
       if (((_node$classList = node.classList) === null || _node$classList === void 0 ? void 0 : _node$classList.contains('brick-code-block-toolbar')) || ((_node$classList2 = node.classList) === null || _node$classList2 === void 0 ? void 0 : _node$classList2.contains('not-display-enter'))) {
         continue;
       }
 
       if (blockType !== undefined) {
+        var _node$getAttribute;
+
         // 'block' type node means we need to create a block config
         // with the text accumulated so far (if any)
         this._trimCurrentText();
 
         if (this.currentText !== '') {
-          blockConfigs.push(this._makeBlockConfig());
+          blockConfigs.push(...this.makeBlockListByCurrentText());
         }
 
         const wasCurrentDepth = this.currentDepth;
-        const wasWrapper = this.wrapper;
-        this.wrapper = nodeName === 'pre' ? 'pre' : this.wrapper;
+        const wasWrapper = this.wrapper; // 增加根据style猜测代码块
+
+        this.wrapper = nodeName === 'pre' || node.style.whiteSpace === 'pre-wrap' ? 'pre' : this.wrapper;
 
         if (typeof blockType !== 'string') {
           blockType = this.disambiguate(nodeName, this.wrapper, node) || blockType[0] || 'unstyled';
@@ -552,13 +601,36 @@ class ContentBlocksBuilder {
         if (!experimentalTreeDataSupport && isHTMLElement(node) && multiBlockReg.test(blockType)) {
           const htmlElement: HTMLElement = (node: any);
           this.currentDepth = getListItemDepth(htmlElement, this.currentDepth);
+        } // vscode 是monospace, 但是font-family属性格式是错的
+
+
+        const isVscode = (_node$getAttribute = node.getAttribute('style')) === null || _node$getAttribute === void 0 ? void 0 : _node$getAttribute.includes('monospace');
+
+        const childConfigs = this._toBlockConfigs(Array.from(node.childNodes), style, { ...options,
+          isCodeBlock: options.isCodeBlock || isVscode
+        });
+
+        this._trimCurrentText(); // 如果在pre里面，拆分换行为多个段落
+
+
+        if (this.wrapper === 'pre') {
+          // 有道云笔记是yne-bulb-block="code"
+          childConfigs.push(...this.makeBlockListByCurrentText({
+            type: node.getAttribute('yne-bulb-block') === 'code' ? 'code-block' : blockType
+          }));
         }
 
-        const key = generateRandomKey();
+        if (isVscode) {
+          childConfigs.forEach(c => {
+            c.type = 'code-block';
+          });
+        }
 
-        const childConfigs = this._toBlockConfigs(Array.from(node.childNodes), style);
+        const key = generateRandomKey(); // 如果currentText存在\n，只能把它替换成空格，让用户自己手动换行
 
-        this._trimCurrentText();
+        if (this.currentText.includes('\n')) {
+          this.currentText.replace(/\n/g, ' ');
+        }
 
         blockConfigs.push(this._makeBlockConfig({
           key,
@@ -571,7 +643,7 @@ class ContentBlocksBuilder {
       }
 
       if (nodeName === '#text') {
-        this._addTextNode(node, style);
+        this._addTextNode(node, style, options);
 
         continue;
       }
@@ -601,7 +673,7 @@ class ContentBlocksBuilder {
       }
 
       if (isValidAnchor(node)) {
-        this._addAnchorNode(node, blockConfigs, style);
+        this._addAnchorNode(node, blockConfigs, style, options);
 
         continue;
       }
@@ -612,14 +684,18 @@ class ContentBlocksBuilder {
         newStyle = newStyle.add(HTMLTagToRawInlineStyleMap.get(nodeName));
       }
 
-      newStyle = styleFromNodeAttributes(node, newStyle);
+      newStyle = styleFromNodeAttributes(node, newStyle, options);
       const inlineStyle = detectInlineStyle(node);
 
       if (inlineStyle != null) {
         newStyle = newStyle.add(inlineStyle);
       }
 
-      blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes), newStyle));
+      blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes), newStyle, options)); // idea是pre + monospace, 有道云笔记是div + pre-wrap, vscode是div + white-space: pre + monospace
+
+      if (nodeName === 'pre' && node.style.fontFamily.includes('monospace')) {
+        this.wrapper = 'pre';
+      }
     }
 
     return blockConfigs;
@@ -667,16 +743,19 @@ class ContentBlocksBuilder {
    */
 
 
-  _addTextNode(node: Node, style: DraftInlineStyle) {
+  _addTextNode(node: Node, style: DraftInlineStyle, options = {}) {
+    const {
+      isCodeBlock
+    } = options;
     let text = node.textContent;
     const trimmedText = text.trim(); // If we are not in a pre block and the trimmed content is empty,
     // normalize to a single space.
 
-    if (trimmedText === '' && this.wrapper !== 'pre') {
+    if (trimmedText === '' && this.wrapper !== 'pre' && !isCodeBlock) {
       text = ' ';
     }
 
-    if (this.wrapper !== 'pre') {
+    if (this.wrapper !== 'pre' && !isCodeBlock) {
       // Trim leading line feed, which is invisible in HTML
       text = text.replace(REGEX_LEADING_LF, ''); // Can't use empty string because MSWord
 
@@ -906,7 +985,7 @@ class ContentBlocksBuilder {
     entityConfig.url = new URI(anchor.href).toString();
     this.contentState = this.contentState.createEntity('LINK', 'MUTABLE', entityConfig || {});
     this.currentEntity = this.contentState.getLastCreatedEntityKey();
-    blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes), style));
+    blockConfigs.push(...this._toBlockConfigs(Array.from(node.childNodes), style, options));
     this.currentEntity = null;
   }
   /**
@@ -1026,7 +1105,7 @@ class ContentBlocksBuilder {
  */
 
 
-const convertFromHTMLToContentBlocks = (html: string, DOMBuilder: Function = getSafeBodyFromHTML, blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap): ?{
+const convertFromHTMLToContentBlocks = (html: string, DOMBuilder: Function = getSafeBodyFromHTML, blockRenderMap?: DraftBlockRenderMap = DefaultDraftBlockRenderMap, options?: any = {}): ?{
   contentBlocks: ?Array<BlockNodeRecord>,
   entityMap: EntityMap,
   ...
@@ -1103,7 +1182,7 @@ const convertFromHTMLToContentBlocks = (html: string, DOMBuilder: Function = get
     return null;
   };
 
-  return new ContentBlocksBuilder(blockTypeMap, disambiguate).addDOMNode(safeBody).getContentBlocks();
+  return new ContentBlocksBuilder(blockTypeMap, disambiguate).addDOMNode(safeBody, options).getContentBlocks();
 };
 
 module.exports = convertFromHTMLToContentBlocks;

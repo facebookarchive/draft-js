@@ -73,8 +73,9 @@ function getDraftEditorSelection(editorState: EditorState, root: HTMLElement): D
       const textNodes = (_node$previousElement = node.previousElementSibling) === null || _node$previousElement === void 0 ? void 0 : _node$previousElement.querySelectorAll('code:last-child span[data-text]');
 
       if (textNodes.length) {
-        focusNode = textNodes[textNodes.length - 1];
-        focusOffset = focusNode.innerText.length;
+        const n = textNodes[textNodes.length - 1];
+        focusNode = n.childNodes.length ? n.childNodes[n.childNodes.length - 1] : n;
+        focusOffset = n.innerText.length;
       }
     }
   }
