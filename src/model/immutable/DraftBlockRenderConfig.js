@@ -11,7 +11,7 @@
 
 'use strict';
 
-import type React from 'React';
+import * as React from 'react';
 
 export type DraftBlockRenderConfig = {
   element: string,
