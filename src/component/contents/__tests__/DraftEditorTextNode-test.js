@@ -18,9 +18,10 @@ const TEST_A = 'Hello';
 const TEST_B = ' World!';
 
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
-const React = require('React');
 const ReactDOM = require('ReactDOM');
 const UserAgent = require('UserAgent');
+
+const React = require('react');
 
 let container;
 

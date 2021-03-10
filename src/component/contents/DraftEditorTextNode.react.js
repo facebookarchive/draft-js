@@ -11,11 +11,11 @@
 
 'use strict';
 
-const React = require('React');
 const UserAgent = require('UserAgent');
 
 const invariant = require('invariant');
 const isElement = require('isElement');
+const React = require('react');
 
 // In IE, spans with <br> tags render as two newlines. By rendering a span
 // with only a newline character, we can be sure to render a single line.

@@ -27,7 +27,6 @@ const flushControlled = require('DraftEditorFlushControlled');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
 const DraftEffects = require('DraftEffects');
 const EditorState = require('EditorState');
-const React = require('React');
 const Scroll = require('Scroll');
 const Style = require('Style');
 const UserAgent = require('UserAgent');
@@ -40,6 +39,7 @@ const gkx = require('gkx');
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
 const nullthrows = require('nullthrows');
+const React = require('react');
 
 const isIE = UserAgent.isBrowser('IE');
 

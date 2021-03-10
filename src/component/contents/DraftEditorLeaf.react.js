@@ -16,10 +16,10 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
-const React = require('React');
 
 const invariant = require('invariant');
 const isHTMLBRElement = require('isHTMLBRElement');
+const React = require('react');
 const setDraftEditorSelection = require('setDraftEditorSelection')
   .setDraftEditorSelection;
 

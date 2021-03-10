@@ -14,9 +14,8 @@
 import type {DraftTextAlignment} from 'DraftTextAlignment';
 import type EditorState from 'EditorState';
 
-const React = require('React');
-
 const cx = require('cx');
+const React = require('react');
 const shallowEqual = require('shallowEqual');
 
 type Props = {
