@@ -98,6 +98,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
     };
 
     // Fill in unspecified properties, if necessary.
+    // $FlowFixMe[incompatible-call]
     const configMap = Map(defaultConfig).merge(config);
 
     const existing: ?CharacterMetadata = pool.get(configMap);

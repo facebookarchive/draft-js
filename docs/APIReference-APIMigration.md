@@ -9,7 +9,9 @@ The Draft.js v0.10 release includes a change to the API for managing
 that the methods which were previously accessed on `DraftEntity` are now moved
 to the `ContentState` record.
 
-This API improvement unlocks the path for many benefits that will be available in v0.11:
+The old API was set to be permanently removed in v0.11, but will now be removed in v0.12. Make sure to migrate over!
+
+This API improvement unlocks the path for many benefits that will be available in v0.12:
 
 - DraftEntity instances and storage will be immutable.
 - DraftEntity will no longer be globally accessible.

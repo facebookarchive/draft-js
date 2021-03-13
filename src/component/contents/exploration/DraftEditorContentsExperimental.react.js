@@ -24,9 +24,9 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
 
 const nullthrows = require('nullthrows');
+const React = require('react');
 
 type Props = {
   blockRenderMap: DraftBlockRenderMap,

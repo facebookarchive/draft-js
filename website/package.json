@@ -9,7 +9,9 @@
     "@docusaurus/core": "^2.0.0-alpha.48",
     "@docusaurus/preset-classic": "^2.0.0-alpha.48",
     "classnames": "^2.2.6",
+    "docusaurus-plugin-internaldocs-fb": "^0.5.2",
     "draft-js": "0.11.5",
+    "internaldocs-fb-helpers": "^1.1.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
   },

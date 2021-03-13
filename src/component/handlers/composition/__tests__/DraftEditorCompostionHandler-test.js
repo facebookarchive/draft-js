@@ -68,7 +68,7 @@ function getEditorStateFromHTML(html: string) {
           blocksFromHTML.contentBlocks || [],
           blocksFromHTML.entityMap,
         )
-      : ContentState.createEmpty();
+      : ContentState.createFromText('');
   return EditorState.createWithContent(state);
 }
 

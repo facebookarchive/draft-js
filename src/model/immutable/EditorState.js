@@ -31,7 +31,7 @@ const {OrderedSet, Record, Stack, OrderedMap, List} = Immutable;
 // When configuring an editor, the user can chose to provide or not provide
 // basically all keys. `currentContent` varies, so this type doesn't include it.
 // (See the types defined below.)
-type BaseEditorStateConfig = {|
+type BaseEditorStateConfig = {
   allowUndo?: boolean,
   decorator?: ?DraftDecoratorType,
   directionMap?: ?OrderedMap<string, string>,
@@ -44,9 +44,9 @@ type BaseEditorStateConfig = {|
   selection?: ?SelectionState,
   treeMap?: ?OrderedMap<string, List<any>>,
   undoStack?: Stack<ContentState>,
-|};
+};
 
-type BaseEditorStateRawConfig = {|
+type BaseEditorStateRawConfig = {
   allowUndo?: boolean,
   decorator?: ?DraftDecoratorType,
   directionMap?: ?{...},
@@ -59,24 +59,24 @@ type BaseEditorStateRawConfig = {|
   selection?: ?{...},
   treeMap?: ?Map<string, Array<DecoratorRangeRawType>>,
   undoStack?: Array<ContentStateRawType>,
-|};
+};
 
 // When crating an editor, we want currentContent to be set.
-type EditorStateCreationConfigType = {|
+type EditorStateCreationConfigType = {
   ...BaseEditorStateConfig,
   currentContent: ContentState,
-|};
+};
 
-type EditorStateCreationConfigRawType = {|
+type EditorStateCreationConfigRawType = {
   ...BaseEditorStateRawConfig,
   currentContent: ContentStateRawType,
-|};
+};
 
 // When using EditorState.set(...), currentContent is optional
-type EditorStateChangeConfigType = {|
+type EditorStateChangeConfigType = {
   ...BaseEditorStateConfig,
   currentContent?: ?ContentState,
-|};
+};
 
 type EditorStateRecordType = {
   allowUndo: boolean,
@@ -138,10 +138,7 @@ class EditorState {
     if (contentState.getBlockMap().count() === 0) {
       return EditorState.createEmpty(decorator);
     }
-    const firstKey = contentState
-      .getBlockMap()
-      .first()
-      .getKey();
+    const firstKey = contentState.getBlockMap().first().getKey();
     return EditorState.create({
       currentContent: contentState,
       undoStack: Stack(),
@@ -346,10 +343,7 @@ class EditorState {
   }
 
   isSelectionAtStartOfContent(): boolean {
-    const firstKey = this.getCurrentContent()
-      .getBlockMap()
-      .first()
-      .getKey();
+    const firstKey = this.getCurrentContent().getBlockMap().first().getKey();
     return this.getSelection().hasEdgeWithin(firstKey, 0, 0);
   }
 
@@ -477,15 +471,14 @@ class EditorState {
       mustBecomeBoundary(editorState, changeType)
     ) {
       undoStack = undoStack.push(currentContent);
-      newContent = newContent.set('selectionBefore', selection);
+      newContent = newContent.setSelectionBefore(selection);
     } else if (
       changeType === 'insert-characters' ||
       changeType === 'backspace-character' ||
       changeType === 'delete-character'
     ) {
       // Preserve the previous selection.
-      newContent = newContent.set(
-        'selectionBefore',
+      newContent = newContent.setSelectionBefore(
         currentContent.getSelectionBefore(),
       );
     }
@@ -646,7 +639,7 @@ function regenerateTreeForNewBlocks(
 ): OrderedMap<string, List<any>> {
   const contentState = editorState
     .getCurrentContent()
-    .set('entityMap', newEntityMap);
+    .replaceEntityMap(newEntityMap);
   const prevBlockMap = contentState.getBlockMap();
   const prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(

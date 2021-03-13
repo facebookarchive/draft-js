@@ -77,7 +77,8 @@ const decorateCharacterList = (
   return config;
 };
 
-class ContentBlockNode extends (Record(defaultRecord): any)
+class ContentBlockNode
+  extends (Record(defaultRecord): any)
   implements BlockNode {
   constructor(props: ContentBlockNodeConfig = defaultRecord) {
     /* eslint-disable-next-line constructor-super */
