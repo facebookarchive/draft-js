@@ -58,7 +58,6 @@ script:
 notifications:
   email:
     recipients:
-      - claudio.procida@gmail.com
       - mr.kev@me.com
     on_success: change # send a notification when the build status changes
     on_failure: change # always send a notification
