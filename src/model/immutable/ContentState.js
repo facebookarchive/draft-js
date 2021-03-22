@@ -182,7 +182,7 @@ class ContentState extends ContentStateRecord {
 
   replaceEntityData(
     key: string,
-    newData: {[key: string]: any, ...},
+    newData: interface {[key: string]: any},
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
     DraftEntity.__replaceData(key, newData);
