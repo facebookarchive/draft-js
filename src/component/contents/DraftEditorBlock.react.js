@@ -22,7 +22,6 @@ import type {List} from 'immutable';
 
 const DraftEditorLeaf = require('DraftEditorLeaf.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
 const Scroll = require('Scroll');
 const Style = require('Style');
 const UnicodeBidi = require('UnicodeBidi');
@@ -35,6 +34,7 @@ const getViewportDimensions = require('getViewportDimensions');
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
 const nullthrows = require('nullthrows');
+const React = require('react');
 
 const SCROLL_BUFFER = 10;
 

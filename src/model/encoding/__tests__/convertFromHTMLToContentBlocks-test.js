@@ -60,6 +60,9 @@ const normalizeBlock = block => {
 
 const toggleExperimentalTreeDataSupport = enabled => {
   jest.doMock('gkx', () => name => {
+    if (name === 'draftjs_paste_emojis') {
+      return true;
+    }
     if (name === 'draft_tree_data_support') {
       return enabled;
     }
@@ -163,6 +166,30 @@ test('img with http protocol should have camera emoji content', () => {
 test('img with https protocol should have camera emoji content', () => {
   const blocks = convertFromHTMLToContentBlocks(
     '<img src="https://www.facebook.com">',
+  );
+  expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
+  const entityMap = blocks?.entityMap;
+  expect(entityMap).not.toBe(null);
+  if (entityMap != null) {
+    expect(entityMap.last().mutability).toBe('IMMUTABLE');
+  }
+});
+
+test('img with alt text should have alt text as placeholder', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    '<img alt="facebook website" src="https://www.facebook.com">',
+  );
+  expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
+  const entityMap = blocks?.entityMap;
+  expect(entityMap).not.toBe(null);
+  if (entityMap != null) {
+    expect(entityMap.last().mutability).toBe('IMMUTABLE');
+  }
+});
+
+test('img with empty alt text should have camera emoji content', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    '<img alt="" src="https://www.facebook.com">',
   );
   expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
   const entityMap = blocks?.entityMap;

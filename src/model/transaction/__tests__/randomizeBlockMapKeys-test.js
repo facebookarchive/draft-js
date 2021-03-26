@@ -85,7 +85,7 @@ test('must be able to randomize keys for ContentBlockNodes BlockMap and update r
 
 /**
  * This could occur when extracting a fragment from a partial selection
- * the bellow case could happen when selecting blocks D to G from blockMap like:
+ * the below case could happen when selecting blocks D to G from blockMap like:
  *
  *
  * A

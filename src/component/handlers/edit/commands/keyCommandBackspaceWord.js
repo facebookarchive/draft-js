@@ -33,10 +33,7 @@ function keyCommandBackspaceWord(editorState: EditorState): EditorState {
       }
       const key = selection.getStartKey();
       const content = strategyState.getCurrentContent();
-      const text = content
-        .getBlockForKey(key)
-        .getText()
-        .slice(0, offset);
+      const text = content.getBlockForKey(key).getText().slice(0, offset);
       const toRemove = DraftRemovableWord.getBackward(text);
       return moveSelectionBackward(strategyState, toRemove.length || 1);
     },

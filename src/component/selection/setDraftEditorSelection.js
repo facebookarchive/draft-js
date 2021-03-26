@@ -273,7 +273,7 @@ function addFocusToSelection(
       }
     } catch (e) {
       DraftJsDebugLogging.logSelectionStateFailure({
-        anonymizedDom: getAnonymizedEditorDOM(node, function(n) {
+        anonymizedDom: getAnonymizedEditorDOM(node, function (n) {
           const labels = [];
           if (n === activeElement) {
             labels.push('active element');
@@ -290,7 +290,7 @@ function addFocusToSelection(
           {
             activeElementName: activeElement ? activeElement.nodeName : null,
             nodeIsFocus: node === selection.focusNode,
-            nodeWasFocus: nodeWasFocus,
+            nodeWasFocus,
             selectionRangeCount: selection.rangeCount,
             selectionAnchorNodeName: selection.anchorNode
               ? selection.anchorNode.nodeName

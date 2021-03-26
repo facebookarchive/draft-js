@@ -15,8 +15,8 @@ jest.mock('generateRandomKey');
 
 const DraftEditor = require('DraftEditor.react');
 const EditorState = require('EditorState');
-const React = require('React');
 
+const React = require('react');
 // $FlowFixMe[cannot-resolve-module]
 const ReactShallowRenderer = require('react-test-renderer/shallow');
 

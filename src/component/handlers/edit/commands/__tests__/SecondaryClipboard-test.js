@@ -112,10 +112,7 @@ const assertCutOperation = (
       SelectionState.createEmpty(content[0].key).merge(selection),
     ),
   );
-  const expected = result
-    .getCurrentContent()
-    .getBlockMap()
-    .toJS();
+  const expected = result.getCurrentContent().getBlockMap().toJS();
 
   expect(expected).toMatchSnapshot();
 };

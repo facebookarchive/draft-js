@@ -26,10 +26,9 @@ export type CharacterMetadataRawConfig = {
   ...
 };
 
-type CharacterMetadataConfig = {
+type CharacterMetadataConfig = interface {
   style?: CharacterMetadataConfigValueType,
   entity?: CharacterMetadataConfigValueType,
-  ...
 };
 
 const EMPTY_SET = OrderedSet();

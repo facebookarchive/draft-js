@@ -19,7 +19,6 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
 
 const cx = require('cx');
 const joinClasses: (
@@ -27,6 +26,7 @@ const joinClasses: (
   ...classes: Array<?string>
 ) => string = require('joinClasses');
 const nullthrows = require('nullthrows');
+const React = require('react');
 
 type Props = {
   blockRenderMap: DraftBlockRenderMap,

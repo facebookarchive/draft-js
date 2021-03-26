@@ -25,7 +25,6 @@ const keyCommandPlainBackspace = require('keyCommandPlainBackspace');
 const nullthrows = require('nullthrows');
 
 const isGecko = UserAgent.isEngine('Gecko');
-const isIE = UserAgent.isBrowser('IE');
 
 const DOUBLE_NEWLINE = '\n\n';
 
@@ -183,7 +182,13 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
 
   let anchorOffset, focusOffset, startOffset, endOffset;
 
-  if (isGecko) {
+  const isDeleteWordForward =
+    // $FlowFixMe[prop-missing] Flow doesn't know if can be an InputEvent w/ inputType
+    event?.nativeEvent?.inputType === 'deleteWordForward';
+
+  // Adjust our selection if appropriate. If we're deleting the word forward, we
+  // don't do this, since we want to stay at the same offset.
+  if (isGecko && !isDeleteWordForward) {
     // Firefox selection does not change while the context menu is open, so
     // we preserve the anchor and focus values of the DOM selection.
     anchorOffset = domSelection.anchorOffset;
@@ -192,7 +197,7 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
     endOffset = startOffset + Math.abs(anchorOffset - focusOffset);
     anchorOffset = startOffset;
     focusOffset = endOffset;
-  } else {
+  } else if (!isDeleteWordForward) {
     // Browsers other than Firefox may adjust DOM selection while the context
     // menu is open, and Safari autocorrect is prone to providing an inaccurate
     // DOM selection. Don't trust it. Instead, use our existing SelectionState

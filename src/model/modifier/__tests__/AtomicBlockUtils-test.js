@@ -50,11 +50,7 @@ const toggleExperimentalTreeDataSupport = enabled => {
 
 const assertAtomic = state => {
   expect(
-    state
-      .getCurrentContent()
-      .getBlockMap()
-      .toIndexedSeq()
-      .toJS(),
+    state.getCurrentContent().getBlockMap().toIndexedSeq().toJS(),
   ).toMatchSnapshot();
 };
 
@@ -124,10 +120,7 @@ test('must move atomic at start of block with collapsed selection', () => {
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
   const firstBlock = resultContent.getBlockMap().first();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
 
   assertMoveAtomicBlock(
     atomicBlock,
@@ -144,10 +137,7 @@ test('must move atomic at end of block with collapsed selection', () => {
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
   const lastBlock = resultContent.getBlockMap().last();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
 
   // Move atomic block at end of the last block
   assertMoveAtomicBlock(
@@ -166,14 +156,8 @@ test('must move atomic inbetween block with collapsed selection', () => {
   // Insert atomic block at the first position
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
-  const thirdBlock = resultContent
-    .getBlockMap()
-    .skip(2)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
+  const thirdBlock = resultContent.getBlockMap().skip(2).first();
 
   // Move atomic block inbetween the split parts of the third block
   assertMoveAtomicBlock(
@@ -193,10 +177,7 @@ test('must move atomic before block with collapsed selection', () => {
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
   const firstBlock = resultContent.getBlockMap().first();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
 
   // Move atomic block before the first block
   assertMoveAtomicBlock(
@@ -213,10 +194,7 @@ test('must move atomic after block with collapsed selection', () => {
   // Insert atomic block at the first position
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
   const lastBlock = resultContent.getBlockMap().last();
 
   // Move atomic block after the last block
@@ -243,14 +221,8 @@ test("mustn't move atomic next to itself with collapsed selection", () => {
   );
   const resultContent = resultEditor.getCurrentContent();
   const beforeAtomicBlock = resultContent.getBlockMap().first();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
-  const afterAtomicBlock = resultContent
-    .getBlockMap()
-    .skip(2)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
+  const afterAtomicBlock = resultContent.getBlockMap().skip(2).first();
 
   // Move atomic block above itself by moving it after preceding block by
   // replacement
@@ -399,10 +371,7 @@ test('must insert atomic at end of block', () => {
 });
 
 test('must insert atomic for cross-block selection', () => {
-  const originalThirdBlock = contentState
-    .getBlockMap()
-    .skip(2)
-    .first();
+  const originalThirdBlock = contentState.getBlockMap().skip(2).first();
   assertInsertAtomicBlock(
     EditorState.forceSelection(
       editorState,
@@ -419,10 +388,7 @@ test('must move atomic at start of block', () => {
   // Insert atomic block at the first position
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
   const lastBlock = resultContent.getBlockMap().last();
 
   // Move atomic block at start of the last block
@@ -442,10 +408,7 @@ test('must move atomic at end of block', () => {
   // Insert atomic block at the first position
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
   const lastBlock = resultContent.getBlockMap().last();
 
   // Move atomic block at end of the last block
@@ -465,14 +428,8 @@ test('must move atomic inbetween block', () => {
   // Insert atomic block at the first position
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
-  const thirdBlock = resultContent
-    .getBlockMap()
-    .skip(2)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
+  const thirdBlock = resultContent.getBlockMap().skip(2).first();
 
   // Move atomic block inbetween the split parts of the third block
   assertMoveAtomicBlock(
@@ -492,10 +449,7 @@ test('must move atomic before block', () => {
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
   const firstBlock = resultContent.getBlockMap().first();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
   const lastBlock = resultContent.getBlockMap().last();
 
   // Move atomic block before the first block
@@ -517,10 +471,7 @@ test('must move atomic after block', () => {
   const resultEditor = assertInsertAtomicBlock();
   const resultContent = resultEditor.getCurrentContent();
   const firstBlock = resultContent.getBlockMap().first();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
   const lastBlock = resultContent.getBlockMap().last();
 
   // Move atomic block after the last block
@@ -550,14 +501,8 @@ test("mustn't move atomic next to itself", () => {
   );
   const resultContent = resultEditor.getCurrentContent();
   const beforeAtomicBlock = resultContent.getBlockMap().first();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
-  const afterAtomicBlock = resultContent
-    .getBlockMap()
-    .skip(2)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
+  const afterAtomicBlock = resultContent.getBlockMap().skip(2).first();
 
   // Move atomic block above itself by moving it after preceding block by
   // replacement
@@ -635,10 +580,7 @@ test('must be able to move atomic block when experimentalTreeDataSupport is enab
 
   const resultContent = resultEditor.getCurrentContent();
   const lastBlock = resultContent.getBlockMap().last();
-  const atomicBlock = resultContent
-    .getBlockMap()
-    .skip(1)
-    .first();
+  const atomicBlock = resultContent.getBlockMap().skip(1).first();
 
   // Move atomic block at end of the last block
   assertMoveAtomicBlock(

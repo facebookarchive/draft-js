@@ -14,6 +14,7 @@
 
 [libs]
 ../node_modules/fbjs/flow/lib
+./flowlib/
 
 [options]
 module.system=haste

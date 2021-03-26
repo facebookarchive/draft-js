@@ -63,11 +63,11 @@ function getRemovableWord(text: string, isBackward: boolean): string {
 }
 
 const DraftRemovableWord = {
-  getBackward: function(text: string): string {
+  getBackward: function (text: string): string {
     return getRemovableWord(text, true);
   },
 
-  getForward: function(text: string): string {
+  getForward: function (text: string): string {
     return getRemovableWord(text, false);
   },
 };
