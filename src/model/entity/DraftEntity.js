@@ -183,6 +183,13 @@ const DraftEntity: DraftEntityMapObject = {
     instances = instances.set(key, newInstance);
     return newInstance;
   },
+
+  /**
+   * Clear all Draft entities
+   */
+  clear: function(): void {
+    instances = instances.clear();
+  },
 };
 
 module.exports = DraftEntity;

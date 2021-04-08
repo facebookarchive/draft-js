@@ -118,6 +118,12 @@ class CharacterMetadata extends CharacterMetadataRecord {
       entity: Array.isArray(entity) ? OrderedSet(entity) : entity,
     });
   }
+
+  static clear(): void {
+    pool = Map([
+      [Map(defaultRecord), EMPTY],
+    ]);
+  }
 }
 
 const EMPTY = new CharacterMetadata();
