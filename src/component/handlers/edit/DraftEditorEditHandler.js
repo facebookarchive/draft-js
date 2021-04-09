@@ -30,9 +30,10 @@ const onSelect = require('editOnSelect');
 
 const isChrome = UserAgent.isBrowser('Chrome');
 const isFirefox = UserAgent.isBrowser('Firefox');
+const isAndroid = UserAgent.isPlatform('Android');
 
 const selectionHandler: (e: DraftEditor) => void =
-  isChrome || isFirefox ? onSelect : e => {};
+  isChrome || isFirefox || isAndroid ? onSelect : e => {};
 
 const DraftEditorEditHandler = {
   onBeforeInput,
