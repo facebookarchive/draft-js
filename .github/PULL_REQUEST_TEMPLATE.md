@@ -19,6 +19,6 @@ Thanks for contributing to Draft.js!
 
 [...]
 
-#### Test Plan**
+#### Test Plan
 
 [...]
