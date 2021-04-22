@@ -15,13 +15,11 @@
  * @format
  */
 
-import React from 'react';
+import './DraftJsRichEditorExample.css';
 import {Editor, RichUtils, getDefaultKeyBinding} from 'draft-js';
-
 import gkx from 'draft-js/lib/gkx';
 import NestedRichTextEditorUtil from 'draft-js/lib/NestedRichTextEditorUtil';
-
-import './DraftJsRichEditorExample.css';
+import React from 'react';
 
 const RichTextUtils = gkx('draft_tree_data_support')
   ? NestedRichTextEditorUtil
@@ -39,7 +37,7 @@ class DraftJsRichEditorExample extends React.Component {
     return false;
   };
 
-  mapKeyToEditorCommand = e => {
+  mapKeyToEditorCommand = (e) => {
     if (e.keyCode === 9 /* TAB */) {
       const newEditorState = RichTextUtils.onTab(
         e,
@@ -54,13 +52,13 @@ class DraftJsRichEditorExample extends React.Component {
     return getDefaultKeyBinding(e);
   };
 
-  toggleBlockType = blockType => {
+  toggleBlockType = (blockType) => {
     this.props.onChange(
       RichTextUtils.toggleBlockType(this.props.editorState, blockType),
     );
   };
 
-  toggleInlineStyle = inlineStyle => {
+  toggleInlineStyle = (inlineStyle) => {
     this.props.onChange(
       RichTextUtils.toggleInlineStyle(this.props.editorState, inlineStyle),
     );
@@ -137,7 +135,7 @@ function StyleButton({active, style, label, onToggle}) {
   return (
     <span
       className={className}
-      onMouseDown={e => {
+      onMouseDown={(e) => {
         e.preventDefault();
         onToggle(style);
       }}>
@@ -169,7 +167,7 @@ function BlockStyleControls(props) {
 
   return (
     <div className="RichEditor-controls">
-      {BLOCK_TYPES.map(type => (
+      {BLOCK_TYPES.map((type) => (
         <StyleButton
           key={type.label}
           active={type.style === blockType}
@@ -194,7 +192,7 @@ function InlineStyleControls(props) {
 
   return (
     <div className="RichEditor-controls">
-      {INLINE_STYLES.map(type => (
+      {INLINE_STYLES.map((type) => (
         <StyleButton
           key={type.label}
           active={currentStyle.has(type.style)}
