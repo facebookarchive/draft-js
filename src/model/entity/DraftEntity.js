@@ -23,19 +23,6 @@ const {OrderedMap} = Immutable;
 let instances: OrderedMap<string, DraftEntityInstance> = OrderedMap();
 let instanceKey: string = uuid();
 
-/**
- * Temporary utility for generating the warnings
- */
-function logWarning(oldMethodCall: string, newMethodCall: string): void {
-  console.warn(
-    'WARNING: ' +
-      oldMethodCall +
-      ' will be deprecated soon!\nPlease use "' +
-      newMethodCall +
-      '" instead.',
-  );
-}
-
 export type DraftEntityMapObject = {
   __loadWithEntities: (
     entities: OrderedMap<string, DraftEntityInstance>,
