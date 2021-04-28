@@ -15,6 +15,7 @@ import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
 const CharacterMetadata = require('CharacterMetadata');
+
 const {Map} = require('immutable');
 
 const ContentStateInlineStyle = {
