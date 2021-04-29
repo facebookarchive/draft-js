@@ -23,7 +23,7 @@ const {Map} = Immutable;
 
 type MutationRecordT =
   | MutationRecord
-  | {type: 'characterData', target: Node, removedNodes?: void};
+  | {type: 'characterData', target: Node, addedNodes?: void, removedNodes?: void};
 
 // Heavily based on Prosemirror's DOMObserver https://github.com/ProseMirror/prosemirror-view/blob/master/src/domobserver.js
 
@@ -41,6 +41,7 @@ class DOMObserver {
   observer: ?MutationObserver;
   container: HTMLElement;
   mutations: Map<string, string>;
+  hasMutationAtLeafStart: boolean;
   onCharData: ?({
     target: EventTarget,
     type: string,
@@ -50,6 +51,7 @@ class DOMObserver {
   constructor(container: HTMLElement) {
     this.container = container;
     this.mutations = Map();
+    this.hasMutationAtLeafStart = false;
     const containerWindow = getWindowForNode(container);
     const MutationObserver = containerWindow.MutationObserver;
     if (MutationObserver && !USE_CHAR_DATA) {
@@ -97,8 +99,10 @@ class DOMObserver {
       );
     }
     const mutations = this.mutations;
+    const hasMutationAtLeafStart = this.hasMutationAtLeafStart;
     this.mutations = Map();
-    return mutations;
+    this.hasMutationAtLeafStart = false;
+    return {mutations, hasMutationAtLeafStart};
   }
 
   registerMutations(mutations: Array<MutationRecord>): void {
@@ -108,7 +112,7 @@ class DOMObserver {
   }
 
   getMutationTextContent(mutation: MutationRecordT): ?string {
-    const {type, target, removedNodes} = mutation;
+    const {type, target, addedNodes, removedNodes} = mutation;
     if (type === 'characterData') {
       // When `textContent` is '', there is a race condition that makes
       // getting the offsetKey from the target not possible.
@@ -124,7 +128,11 @@ class DOMObserver {
         return target.textContent;
       }
     } else if (type === 'childList') {
-      if (removedNodes && removedNodes.length) {
+      if (addedNodes && addedNodes.length) {
+        // This mutation is creating a new node, meaning it's happening
+        // at the beginning of a leaf, so we must force a re-render.
+        this.hasMutationAtLeafStart = true;
+      } else if (removedNodes && removedNodes.length) {
         // `characterData` events won't happen or are ignored when
         // removing the last character of a leaf node, what happens
         // instead is a `childList` event with a `removedNodes` array.

@@ -153,7 +153,9 @@ const DraftEditorCompositionHandler = {
     }
 
     const lastEditorState = editor._latestEditorState;
-    const mutations = nullthrows(domObserver).stopAndFlushMutations();
+    const observerMutations = nullthrows(domObserver).stopAndFlushMutations();
+    const {mutations, hasMutationAtLeafStart} = observerMutations;
+    let entityKey = null;
     domObserver = null;
     resolved = true;
 
@@ -203,10 +205,7 @@ const DraftEditorCompositionHandler = {
         isBackward: false,
       });
 
-      const entityKey = getEntityKeyForSelection(
-        contentState,
-        replacementRange,
-      );
+      entityKey = getEntityKeyForSelection(contentState, replacementRange);
       const currentStyle = contentState
         .getBlockForKey(blockKey)
         .getInlineStyleAt(start);
@@ -239,7 +238,8 @@ const DraftEditorCompositionHandler = {
     );
     const compositionEndSelectionState = documentSelection.selectionState;
 
-    editor.restoreEditorDOM();
+    const mustReset = hasMutationAtLeafStart || entityKey !== null;
+    if (mustReset) editor.restoreEditorDOM();
 
     // See:
     // - https://github.com/facebook/draft-js/issues/2093

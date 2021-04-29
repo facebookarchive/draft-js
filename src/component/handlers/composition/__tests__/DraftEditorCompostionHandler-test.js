@@ -29,7 +29,7 @@ jest.mock('DOMObserver', () => {
   DOMObserver.prototype.start = jest.fn();
   DOMObserver.prototype.stopAndFlushMutations = jest
     .fn()
-    .mockReturnValue(Map({}));
+    .mockReturnValue({mutations: Map({})});
   return DOMObserver;
 });
 jest.mock('getContentEditableContainer');
@@ -119,9 +119,9 @@ test('Can handle a single mutation', () => {
   withGlobalGetSelectionAs({}, () => {
     editor._latestEditorState = getEditorState({blockkey0: ''});
     const mutations = Map({'blockkey0-0-0': '\u79c1'});
-    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
+    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue({
       mutations,
-    );
+    });
     // $FlowExpectedError[incompatible-use]
     // $FlowExpectedError[incompatible-call]
     compositionHandler.onCompositionStart(editor);
@@ -144,9 +144,9 @@ test('Can handle mutations in multiple blocks', () => {
       'blockkey0-0-0': 'reactjs',
       'blockkey1-0-0': 'draftjs',
     });
-    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
+    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue({
       mutations,
-    );
+    });
     // $FlowExpectedError[incompatible-use]
     // $FlowExpectedError[incompatible-call]
     compositionHandler.onCompositionStart(editor);
@@ -174,9 +174,9 @@ test('Can handle mutations in the same block in multiple leaf nodes', () => {
       [`${blockKey}-0-1`]: 'draftbb',
       [`${blockKey}-0-2`]: ' graphqlccc',
     });
-    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
+    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue({
       mutations,
-    );
+    });
     // $FlowExpectedError[incompatible-use]
     // $FlowExpectedError[incompatible-call]
     compositionHandler.onCompositionStart(editor);
