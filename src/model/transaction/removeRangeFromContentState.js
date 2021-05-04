@@ -342,7 +342,11 @@ const removeRangeFromContentState = (
       .concat(endBlock.getCharacterList().slice(endOffset));
   }
 
-  const modifiedStart = startBlock.merge({
+  const leaveEndBlock =
+    startOffset === 0 && endOffset !== endBlock.getText().length;
+  const blockToLeave = leaveEndBlock ? endBlock : startBlock;
+  const modifiedKey = leaveEndBlock ? endKey : startKey;
+  const modifiedBlock = blockToLeave.merge({
     text:
       startBlock.getText().slice(0, startOffset) +
       endBlock.getText().slice(endOffset),
@@ -366,7 +370,7 @@ const removeRangeFromContentState = (
         .filter((_, k) => parentAncestors.indexOf(k) === -1)
         .concat(Map([[endKey, null]]))
         .map((_, k) => {
-          return k === startKey ? modifiedStart : null;
+          return k === modifiedKey ? modifiedBlock : null;
         });
   let updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
 
@@ -384,9 +388,9 @@ const removeRangeFromContentState = (
     blockMap: updatedBlockMap,
     selectionBefore: selectionState,
     selectionAfter: selectionState.merge({
-      anchorKey: startKey,
+      anchorKey: modifiedKey,
       anchorOffset: startOffset,
-      focusKey: startKey,
+      focusKey: modifiedKey,
       focusOffset: startOffset,
       isBackward: false,
     }),

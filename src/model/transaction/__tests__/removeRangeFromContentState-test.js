@@ -117,14 +117,12 @@ test('must remove to the end of the block', () => {
 });
 
 test('must remove from the start of A to the start of B', () => {
-  // Block B is removed. Its contents replace the contents of block A,
-  // while the `type` of block A is preserved.
+  // Block A is removed.
   assertRemoveRangeFromContentState(selectionState.set('focusKey', 'b'));
 });
 
 test('must remove from the start of A to within B', () => {
-  // A slice of block B contents replace the contents of block A,
-  // while the `type` of block A is preserved. Block B is removed.
+  // A slice of block B is removed. Block A is removed.
   assertRemoveRangeFromContentState(
     selectionState.merge({
       focusKey: 'b',
