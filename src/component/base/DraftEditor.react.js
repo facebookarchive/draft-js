@@ -378,6 +378,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
         ...DefaultDraftInlineStyle,
         ...customStyleMap,
       },
+      customCssClassMap: this.props.customCssClassMap || {},
       customStyleFn,
       editorKey: this._editorKey,
       editorState,

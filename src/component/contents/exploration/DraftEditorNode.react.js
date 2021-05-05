@@ -36,6 +36,7 @@ type Props = {
   contentState: ContentState,
   customStyleFn: Function,
   customStyleMap: Object,
+  customCssClassMap: Object,
   decorator: ?DraftDecoratorType,
   direction: BidiDirection,
   forceSelection: boolean,
@@ -52,6 +53,7 @@ class DraftEditorNode extends React.Component<Props> {
       contentState,
       customStyleFn,
       customStyleMap,
+      customCssClassMap,
       decorator,
       direction,
       forceSelection,
@@ -87,6 +89,7 @@ class DraftEditorNode extends React.Component<Props> {
                   text={text.slice(start, end)}
                   styleSet={block.getInlineStyleAt(start)}
                   customStyleMap={customStyleMap}
+                  customCssClassMap={customCssClassMap}
                   customStyleFn={customStyleFn}
                   isLast={decoratorKey === lastLeafSet && jj === lastLeaf}
                 />

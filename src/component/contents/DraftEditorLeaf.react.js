@@ -19,13 +19,14 @@ const DraftEditorTextNode = require('DraftEditorTextNode.react');
 
 const invariant = require('invariant');
 const isHTMLBRElement = require('isHTMLBRElement');
-const React = require('react');
+const React = require('React');
 const setDraftEditorSelection = require('setDraftEditorSelection')
   .setDraftEditorSelection;
 
 type CSSStyleObject = {[property: string]: string | number, ...};
 
 type CustomStyleMap = {[name: string]: CSSStyleObject, ...};
+type CustomCssClassMap = {[name: string]: string, ...};
 type CustomStyleFn = (
   style: DraftInlineStyle,
   block: BlockNodeRecord,
@@ -36,6 +37,8 @@ type Props = {
   block: BlockNodeRecord,
   // Mapping of style names to CSS declarations.
   customStyleMap: CustomStyleMap,
+  // Mapping of CSS classes for this element
+  customCssClassMap: CustomCssClassMap,
   // Function that maps style names to CSS style objects.
   customStyleFn?: CustomStyleFn,
   // Whether to force the DOM selection after render.
@@ -65,6 +68,9 @@ type Props = {
  * maintain the selection state.
  */
 class DraftEditorLeaf extends React.Component<Props> {
+  static defaultProps = {
+    customCssClassMap: {},
+  };
   /**
    * By making individual leaf instances aware of their context within
    * the text of the editor, we can set our selection range more
@@ -143,8 +149,16 @@ class DraftEditorLeaf extends React.Component<Props> {
       text += '\n';
     }
 
-    const {customStyleMap, customStyleFn, offsetKey, styleSet} = this.props;
+    const cssClasses = [];
+    const {
+      customStyleMap,
+      customCssClassMap,
+      customStyleFn,
+      offsetKey,
+      styleSet,
+    } = this.props;
     let styleObj = styleSet.reduce((map, styleName) => {
+      cssClasses.push(customCssClassMap[styleName]);
       const mergedStyles = {};
       const style = customStyleMap[styleName];
 
@@ -163,10 +177,12 @@ class DraftEditorLeaf extends React.Component<Props> {
       styleObj = Object.assign(styleObj, newStyles);
     }
 
+    const className = cssClasses.join(' ');
     return (
       <span
         data-offset-key={offsetKey}
         ref={ref => (this.leaf = ref)}
+        className={className}
         style={styleObj}>
         <DraftEditorTextNode>{text}</DraftEditorTextNode>
       </span>

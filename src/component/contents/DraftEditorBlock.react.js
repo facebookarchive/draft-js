@@ -45,6 +45,7 @@ type Props = {
   contentState: ContentState,
   customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
   customStyleMap: Object,
+  customCssClassMap: Object,
   decorator: ?DraftDecoratorType,
   direction: BidiDirection,
   forceSelection: boolean,
@@ -173,6 +174,7 @@ class DraftEditorBlock extends React.Component<Props> {
                 text={text.slice(start, end)}
                 styleSet={block.getInlineStyleAt(start)}
                 customStyleMap={this.props.customStyleMap}
+                customCssClassMap={this.props.customCssClassMap}
                 customStyleFn={this.props.customStyleFn}
                 isLast={ii === lastLeafSet && jj === lastLeaf}
               />

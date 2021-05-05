@@ -174,6 +174,8 @@ export type DraftEditorProps = {
   // Provide a map of inline style names corresponding to CSS style objects
   // that will be rendered for matching ranges.
   customStyleMap?: Object,
+  // Provide a map of CSS classes to apply in in each style a node has
+  customCssClassMap?: Object,
   // Provide a function that will construct CSS style objects given inline
   // style names.
   customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,

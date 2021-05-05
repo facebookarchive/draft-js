@@ -14,9 +14,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <!DOCTYPE html> <html>
   <head>
     <meta charset="utf-8" />
-    <title>Draft • Rich Text</title>
+    <title>Draft • Custom CSS classes</title>
     <link rel="stylesheet" href="../../../dist/Draft.css" />
     <link rel="stylesheet" href="RichEditor.css" />
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <style>
       #target { width: 600px; }
     </style>
@@ -32,12 +33,17 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <script type="text/babel">
       'use strict';
 
-      const {Editor, EditorState, RichUtils, getDefaultKeyBinding} = Draft;
+      const {Editor, ContentState, convertFromHTML, EditorState, RichUtils, getDefaultKeyBinding} = Draft;
 
       class RichEditorExample extends React.Component {
         constructor(props) {
           super(props);
-          this.state = {editorState: EditorState.createEmpty()};
+          const blocksFromHTML = convertFromHTML("Hello <strong>Red</strong>. This color is set with a TailwindCSS class")
+          const initialContent = ContentState.createFromBlockArray(
+            blocksFromHTML.contentBlocks,
+            blocksFromHTML.entityMap
+          )
+          this.state = {editorState: EditorState.createWithContent(initialContent)};
 
           this.focus = () => this.refs.editor.focus();
           this.onChange = (editorState) => this.setState({editorState});
@@ -117,6 +123,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 <Editor
                   blockStyleFn={getBlockStyle}
                   customStyleMap={styleMap}
+                  customCssClassMap={customCssClassMap}
                   editorState={editorState}
                   handleKeyCommand={this.handleKeyCommand}
                   keyBindingFn={this.mapKeyToEditorCommand}
@@ -139,6 +146,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           fontSize: 16,
           padding: 2,
         },
+      };
+      const customCssClassMap = {
+        BOLD: 'text-red-600'
       };
 
       function getBlockStyle(block) {
