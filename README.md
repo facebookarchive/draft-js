@@ -67,9 +67,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Editor, EditorState} from 'draft-js';
 
-function MyEditor() {
-
-  
+class MyEditor extends React.Component { 
   constructor(props) {
     super(props);
     this.state = {editorState: EditorState.createEmpty()};
@@ -161,7 +159,7 @@ Further examples of how Draft.js can be used are provided in the `/examples` dir
 
 ### Building Draft.js
 
-Draft.js is built with [Yarn](https://classic.yarnpkg.com/en/) v1. Using other package managers mgiht work, but is not officially supported.
+Draft.js is built with [Yarn](https://classic.yarnpkg.com/en/) v1. Using other package managers might work, but is not officially supported.
 
 To clone and build, run:
 
@@ -169,7 +167,7 @@ To clone and build, run:
 git clone https://github.com/facebook/draft-js.git
 cd draft-js
 yarn install
-yarn run build
+yarn build
 ```
 
 ### Examples
