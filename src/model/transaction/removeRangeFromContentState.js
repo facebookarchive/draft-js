@@ -80,14 +80,15 @@ const getNextDelimitersBlockKeys = (
   }
 
   let nextDelimiter = getNextDelimiterBlockKey(block, blockMap);
-  while (nextDelimiter && blockMap.get(nextDelimiter)) {
-    const block = blockMap.get(nextDelimiter);
+  let nextBlock = blockMap.get(nextDelimiter || '');
+  while (nextDelimiter && nextBlock) {
     nextDelimiters.push(nextDelimiter);
 
     // we do not need to keep checking all root node siblings, just the first occurence
-    nextDelimiter = block.getParentKey()
-      ? getNextDelimiterBlockKey(block, blockMap)
+    nextDelimiter = nextBlock.getParentKey()
+      ? getNextDelimiterBlockKey(nextBlock, blockMap)
       : null;
+    nextBlock = blockMap.get(nextDelimiter || '');
   }
 
   return nextDelimiters;
@@ -267,8 +268,8 @@ const updateBlockMapLinks = (
       // last child of deleted parent should point to next sibling
       transformBlock(
         startBlock.getChildKeys().find(key => {
-          const block = (blockMap.get(key): ContentBlockNode);
-          return block.getNextSiblingKey() === null;
+          const block = blockMap.get(key);
+          return block && block.getNextSiblingKey() === null;
         }),
         blocks,
         block =>

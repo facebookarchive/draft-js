@@ -26,7 +26,7 @@ const DraftTreeInvariants = {
     const parentKey = block.getParentKey();
     if (parentKey != null) {
       const parent = blockMap.get(parentKey);
-      if (!parent.getChildKeys().includes(key)) {
+      if (!parent || !parent.getChildKeys().includes(key)) {
         warning(true, 'Tree is missing parent -> child pointer on %s', key);
         return false;
       }
@@ -34,7 +34,7 @@ const DraftTreeInvariants = {
 
     // is its children's parent
     const children = block.getChildKeys().map(k => blockMap.get(k));
-    if (!children.every(c => c.getParentKey() === key)) {
+    if (!children.every(c => c && c.getParentKey() === key)) {
       warning(true, 'Tree is missing child -> parent pointer on %s', key);
       return false;
     }
@@ -43,7 +43,7 @@ const DraftTreeInvariants = {
     const prevSiblingKey = block.getPrevSiblingKey();
     if (prevSiblingKey != null) {
       const prevSibling = blockMap.get(prevSiblingKey);
-      if (prevSibling.getNextSiblingKey() !== key) {
+      if (!prevSibling || prevSibling.getNextSiblingKey() !== key) {
         warning(
           true,
           "Tree is missing nextSibling pointer on %s's prevSibling",
@@ -57,7 +57,7 @@ const DraftTreeInvariants = {
     const nextSiblingKey = block.getNextSiblingKey();
     if (nextSiblingKey != null) {
       const nextSibling = blockMap.get(nextSiblingKey);
-      if (nextSibling.getPrevSiblingKey() !== key) {
+      if (!nextSibling || nextSibling.getPrevSiblingKey() !== key) {
         warning(
           true,
           "Tree is missing prevSibling pointer on %s's nextSibling",
@@ -115,7 +115,7 @@ const DraftTreeInvariants = {
         }
         const children = childKeys.map(k => blockMap.get(k));
         const firstNode = children.find(
-          block => block.getPrevSiblingKey() == null,
+          block => block && block.getPrevSiblingKey() == null,
         );
         if (firstNode == null) {
           warning(true, '%s has no first child', currentKey);

@@ -62,8 +62,8 @@ const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
             }
           }
 
-          if (parentKey && blockMapState.get(parentKey)) {
-            const parentBlock = blockMapState.get(parentKey);
+          const parentBlock = blockMapState.get(parentKey || '');
+          if (parentKey && parentBlock) {
             const parentChildrenList = parentBlock.getChildKeys();
             blockMapState.setIn(
               [parentKey, 'children'],
@@ -84,7 +84,7 @@ const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
               );
             }
 
-            lastRootBlock = blockMapState.get(oldKey);
+            lastRootBlock = blockMapState.get(oldKey) || lastRootBlock;
           }
 
           childrenKeys.forEach(childKey => {

@@ -272,8 +272,8 @@ const updateAsSiblingsChild = (
   }
   // remove the node as a child of its current parent
   const parentKey = block.getParentKey();
-  if (parentKey != null) {
-    const parent = newBlockMap.get(parentKey);
+  const parent = newBlockMap.get(parentKey || '');
+  if (parentKey != null && parent != null) {
     newBlockMap = newBlockMap.set(
       parentKey,
       parent.merge({
@@ -384,9 +384,9 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
 
   // For both cases, also link to parent's parent
   const grandparentKey = parent.getParentKey();
-  if (grandparentKey != null) {
-    const grandparentInsertPosition = newBlockMap
-      .get(grandparentKey)
+  const grandparent = newBlockMap.get(grandparentKey || '');
+  if (grandparentKey != null && grandparent != null) {
+    const grandparentInsertPosition = grandparent
       .getChildKeys()
       .findIndex(n => n === parentKey);
     newBlockMap = updateParentChild(

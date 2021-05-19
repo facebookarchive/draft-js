@@ -24,10 +24,13 @@ function applyEntityToContentBlock(
   let start = startArg;
   let characterList = contentBlock.getCharacterList();
   while (start < end) {
-    characterList = characterList.set(
-      start,
-      CharacterMetadata.applyEntity(characterList.get(start), entityKey),
-    );
+    const current = characterList.get(start);
+    if (current != null) {
+      characterList = characterList.set(
+        start,
+        CharacterMetadata.applyEntity(current, entityKey),
+      );
+    }
     start++;
   }
   return contentBlock.set('characterList', characterList);

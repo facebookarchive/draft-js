@@ -487,10 +487,10 @@ const onUntab = (blockMap: BlockMap, block: ContentBlockNode): BlockMap => {
   const key = block.getKey();
   const parentKey = block.getParentKey();
   const nextSiblingKey = block.getNextSiblingKey();
-  if (parentKey == null) {
+  const parent = blockMap.get(parentKey || '');
+  if (parentKey == null || parent == null) {
     return blockMap;
   }
-  const parent = blockMap.get(parentKey);
   const existingChildren = parent.getChildKeys();
   const blockIndex = existingChildren.indexOf(key);
   if (blockIndex === 0 || blockIndex === existingChildren.count() - 1) {
@@ -577,7 +577,11 @@ const onUntab = (blockMap: BlockMap, block: ContentBlockNode): BlockMap => {
       parent != null // parent may have been deleted
         ? parent.getPrevSiblingKey()
         : null;
-    if (prevSiblingKey != null && parent.getChildKeys().count() > 0) {
+    if (
+      prevSiblingKey != null &&
+      parent != null &&
+      parent.getChildKeys().count() > 0
+    ) {
       const prevSibling = blockMap.get(prevSiblingKey);
       if (prevSibling != null && prevSibling.getChildKeys().count() > 0) {
         blockMap = DraftTreeOperations.mergeBlocks(blockMap, prevSiblingKey);

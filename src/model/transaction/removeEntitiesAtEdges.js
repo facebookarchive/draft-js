@@ -121,7 +121,12 @@ function removeForBlock(
       let current;
       while (start < end) {
         current = chars.get(start);
-        chars = chars.set(start, CharacterMetadata.applyEntity(current, null));
+        if (current != null) {
+          chars = chars.set(
+            start,
+            CharacterMetadata.applyEntity(current, null),
+          );
+        }
         start++;
       }
       return block.set('characterList', chars);
