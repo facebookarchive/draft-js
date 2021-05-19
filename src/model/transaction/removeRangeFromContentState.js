@@ -355,18 +355,21 @@ const removeRangeFromContentState = (
     endOffset === 0 &&
     endBlock.getParentKey() === startKey &&
     endBlock.getPrevSiblingKey() == null;
-  const newBlocks = shouldDeleteParent
-    ? Map([[startKey, null]])
-    : blockMap
-        .toSeq()
-        .skipUntil((_, k) => k === startKey)
-        .takeUntil((_, k) => k === endKey)
-        .filter((_, k) => parentAncestors.indexOf(k) === -1)
-        .concat(Map([[endKey, null]]))
-        .map((_, k) => {
-          return k === startKey ? modifiedStart : null;
-        });
-  let updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
+  let updatedBlockMap: BlockMap;
+  if (shouldDeleteParent) {
+    updatedBlockMap = blockMap.delete(startKey);
+  } else {
+    const newBlocks = blockMap
+      .toSeq()
+      .skipUntil((_, k) => k === startKey)
+      .takeUntil((_, k) => k === endKey)
+      .filter((_, k) => parentAncestors.indexOf(k) === -1)
+      .concat(Map([[endKey, null]]))
+      .map((_, k) => {
+        return k === startKey ? modifiedStart : null;
+      });
+    updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
+  }
 
   // Only update tree block pointers if the range is across blocks
   if (isExperimentalTreeBlock && startBlock !== endBlock) {
