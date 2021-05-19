@@ -19,7 +19,7 @@ const CharacterMetadata = require('CharacterMetadata');
 const {Map} = require('immutable');
 
 const ContentStateInlineStyle = {
-  add: function (
+  add: function(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,
@@ -27,7 +27,7 @@ const ContentStateInlineStyle = {
     return modifyInlineStyle(contentState, selectionState, inlineStyle, true);
   },
 
-  remove: function (
+  remove: function(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,

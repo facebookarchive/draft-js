@@ -86,7 +86,7 @@ const getNextDelimitersBlockKeys = (
     const block = blockMap.get(nextDelimiter);
     nextDelimiters.push(nextDelimiter);
 
-    // we do not need to keep checking all root node siblings, just the first occurance
+    // we do not need to keep checking all root node siblings, just the first occurence
     nextDelimiter = block.getParentKey()
       ? getNextDelimiterBlockKey(block, blockMap)
       : null;
@@ -306,7 +306,7 @@ const removeRangeFromContentState = (
   let parentAncestors = [];
 
   if (isExperimentalTreeBlock) {
-    const endBlockchildrenKeys = endBlock.getChildKeys();
+    const endBlockChildrenKeys = endBlock.getChildKeys();
     const endBlockAncestors = getAncestorsKeys(endKey, blockMap);
 
     // endBlock has unselected siblings so we can not remove its ancestors parents
@@ -315,7 +315,7 @@ const removeRangeFromContentState = (
     }
 
     // endBlock has children so can not remove this block or any of its ancestors
-    if (!endBlockchildrenKeys.isEmpty()) {
+    if (!endBlockChildrenKeys.isEmpty()) {
       parentAncestors = parentAncestors.concat(
         endBlockAncestors.concat([endKey]),
       );

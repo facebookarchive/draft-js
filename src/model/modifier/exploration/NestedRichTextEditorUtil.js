@@ -244,7 +244,6 @@ const NestedRichTextEditorUtil: RichTextUtils = {
   currentBlockContainsLink: (editorState: EditorState): boolean => {
     const selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
-    const entityMap = contentState.getEntityMap();
     return contentState
       .getBlockForKey(selection.getAnchorKey())
       .getCharacterList()

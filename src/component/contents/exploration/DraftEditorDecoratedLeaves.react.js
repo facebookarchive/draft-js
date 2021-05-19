@@ -18,7 +18,7 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {BidiDirection} from 'UnicodeBidiDirection';
-import type {Set} from 'immutable';
+import type {Map} from 'immutable';
 
 const DraftOffsetKey = require('DraftOffsetKey');
 const UnicodeBidi = require('UnicodeBidi');
@@ -34,7 +34,7 @@ type Props = {
   decoratorKey: string,
   direction: BidiDirection,
   text: string,
-  leafSet: Set<any>,
+  leafSet: Map<string, any>,
   ...
 };
 
