@@ -220,7 +220,7 @@ const updateAsSiblingsChild = (
   invariant(newParentKey != null, 'sibling is null');
   const newParent = blockMap.get(newParentKey);
   invariant(
-    newParent !== null && newParent.getText() === '',
+    newParent != null && newParent.getText() === '',
     'parent must be a valid node',
   );
   let newBlockMap = blockMap;
@@ -309,7 +309,7 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
   }
 
   let parent = blockMap.get(parentKey);
-  invariant(parent !== null, 'parent must exist in block map');
+  invariant(parent != null, 'parent must exist in block map');
   let newBlockMap = blockMap;
   const childIndex = parent.getChildKeys().indexOf(key);
   invariant(
@@ -453,7 +453,7 @@ const mergeBlocks = (blockMap: BlockMap, key: string): BlockMap => {
   verifyTree(blockMap);
   // current block must be a non-leaf
   const block = blockMap.get(key);
-  invariant(block !== null, 'block must exist in block map');
+  invariant(block != null, 'block must exist in block map');
   invariant(block.getChildKeys().count() > 0, 'block must be a non-leaf');
   // next block must exist & be a non-leaf
   const nextBlockKey = block.getNextSiblingKey();
