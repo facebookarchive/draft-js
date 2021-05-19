@@ -21,6 +21,7 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
+const UnicodeBidiDirection = require('UnicodeBidiDirection');
 
 const cx = require('cx');
 const joinClasses: (
@@ -167,7 +168,7 @@ class DraftEditorContents extends React.Component<Props> {
 
       const direction = textDirectionality
         ? textDirectionality
-        : directionMap.get(key);
+        : directionMap.get(key, UnicodeBidiDirection.LTR);
       const offsetKey = DraftOffsetKey.encode(key, 0, 0);
       const componentProps = {
         contentState: content,
