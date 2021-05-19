@@ -189,15 +189,12 @@ const updateBlockMapLinks = (
       blockMapState.setIn([targetKey, 'nextSibling'], headKey);
       blockMapState.setIn([headKey, 'prevSibling'], targetKey);
     } else {
-      // update the target block that had the fragment head contents merged into it
-      blockMapState.setIn(
-        [targetKey, 'nextSibling'],
-        fragmentHeadBlock.getNextSiblingKey(),
-      );
-      blockMapState.setIn(
-        [fragmentHeadBlock.getNextSiblingKey(), 'prevSibling'],
-        targetKey,
-      );
+      const nextSiblingKey = fragmentHeadBlock.getNextSiblingKey();
+      if (nextSiblingKey != null) {
+        // update the target block that had the fragment head contents merged into it
+        blockMapState.setIn([targetKey, 'nextSibling'], nextSiblingKey);
+        blockMapState.setIn([nextSiblingKey, 'prevSibling'], targetKey);
+      }
     }
 
     // update the last root block fragment
