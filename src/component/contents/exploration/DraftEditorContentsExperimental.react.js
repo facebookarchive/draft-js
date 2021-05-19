@@ -17,11 +17,13 @@
 'use strict';
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEditorBlockNode = require('DraftEditorBlockNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
 
@@ -142,9 +144,11 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
         tree: editorState.getBlockTree(blockKey),
       };
 
+      const unstyledConfig: DraftBlockRenderConfig =
+        blockRenderMap.get('unstyled') ||
+        (DefaultDraftBlockRenderMap.get('unstyled'): any);
       const configForType =
-        blockRenderMap.get(nodeBlock.getType()) ||
-        blockRenderMap.get('unstyled');
+        blockRenderMap.get(nodeBlock.getType()) || unstyledConfig;
       const wrapperTemplate = configForType.wrapper;
       processedBlocks.push({
         /* $FlowFixMe[incompatible-type] (>=0.112.0 site=www,mobile) This
