@@ -93,19 +93,16 @@ const DraftTreeInvariants = {
    */
   isConnectedTree(blockMap: BlockMap): boolean {
     // exactly one node has no previous sibling + no parent
-    const eligibleFirstNodes = blockMap
-      .toArray()
-      .filter(
-        block =>
-          block.getParentKey() == null && block.getPrevSiblingKey() == null,
-      );
-    if (eligibleFirstNodes.length !== 1) {
+    const eligibleFirstNodes = blockMap.filter(
+      block =>
+        block.getParentKey() == null && block.getPrevSiblingKey() == null,
+    );
+    if (eligibleFirstNodes.size !== 1) {
       warning(true, 'Tree is not connected. More or less than one first node');
       return false;
     }
-    const firstNode = eligibleFirstNodes.shift();
     let nodesSeen = 0;
-    let currentKey = firstNode.getKey();
+    let currentKey = eligibleFirstNodes.first().getKey();
     const visitedStack = [];
     while (currentKey != null) {
       const currentNode = blockMap.get(currentKey);
@@ -153,9 +150,10 @@ const DraftTreeInvariants = {
    * Checks that the block map is a connected tree with valid blocks
    */
   isValidTree(blockMap: BlockMap): boolean {
-    const blocks = blockMap.toArray();
     if (
-      !blocks.every(block => DraftTreeInvariants.isValidBlock(block, blockMap))
+      !blockMap.every(block =>
+        DraftTreeInvariants.isValidBlock(block, blockMap),
+      )
     ) {
       return false;
     }
