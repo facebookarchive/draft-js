@@ -277,9 +277,9 @@ class ContentState extends ContentStateRecord {
   static fromJS(state: ContentStateRawType): ContentState {
     return new ContentState({
       ...state,
-      blockMap: OrderedMap(state.blockMap).map(
-        ContentState.createContentBlockFromJS,
-      ),
+      blockMap: state.blockMap
+        ? OrderedMap(state.blockMap).map(ContentState.createContentBlockFromJS)
+        : OrderedMap(),
       selectionBefore: new SelectionState(state.selectionBefore),
       selectionAfter: new SelectionState(state.selectionAfter),
     });
