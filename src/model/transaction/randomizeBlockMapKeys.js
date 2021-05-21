@@ -101,7 +101,7 @@ const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
         });
       })
       .toArray()
-      .map(block => [
+      .map(([_, block]) => [
         newKeysRef[block.getKey()],
         block.set('key', newKeysRef[block.getKey()]),
       ]),
@@ -110,7 +110,7 @@ const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
 
 const randomizeContentBlockKeys = (blockMap: BlockMap): BlockMap => {
   return OrderedMap(
-    blockMap.toArray().map(block => {
+    blockMap.toArray().map(([_, block]) => {
       const key = generateRandomKey();
       return [key, block.set('key', key)];
     }),
