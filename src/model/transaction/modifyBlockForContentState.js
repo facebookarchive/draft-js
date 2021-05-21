@@ -15,9 +15,8 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-const Immutable = require('immutable');
-
-const {Map} = Immutable;
+const {Map} = require('immutable');
+const invariant = require('invariant');
 
 function modifyBlockForContentState(
   contentState: ContentState,
@@ -27,11 +26,14 @@ function modifyBlockForContentState(
   const startKey = selectionState.getStartKey();
   const endKey = selectionState.getEndKey();
   const blockMap = contentState.getBlockMap();
+  const endBlock = blockMap.get(endKey);
+  invariant(endBlock != null, 'selection end must exist in block map');
+
   const newBlocks = blockMap
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
-    .concat(Map([[endKey, blockMap.get(endKey)]]))
+    .concat(Map([[endKey, endBlock]]))
     .map(operation);
 
   return contentState.merge({

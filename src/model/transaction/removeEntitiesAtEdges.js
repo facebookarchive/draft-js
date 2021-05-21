@@ -32,6 +32,7 @@ function removeEntitiesAtEdges(
   const startKey = selectionState.getStartKey();
   const startOffset = selectionState.getStartOffset();
   const startBlock = blockMap.get(startKey);
+  invariant(startBlock != null, 'selection start must exist in block map');
   const updatedStart = removeForBlock(contentState, startBlock, startOffset);
 
   if (updatedStart !== startBlock) {
@@ -45,6 +46,7 @@ function removeEntitiesAtEdges(
     endBlock = updatedStart;
   }
 
+  invariant(endBlock != null, 'selection end must exist in block map');
   const updatedEnd = removeForBlock(contentState, endBlock, endOffset);
 
   if (updatedEnd !== endBlock) {
@@ -121,7 +123,12 @@ function removeForBlock(
       let current;
       while (start < end) {
         current = chars.get(start);
-        chars = chars.set(start, CharacterMetadata.applyEntity(current, null));
+        if (current != null) {
+          chars = chars.set(
+            start,
+            CharacterMetadata.applyEntity(current, null),
+          );
+        }
         start++;
       }
       return block.set('characterList', chars);

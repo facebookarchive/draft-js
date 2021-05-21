@@ -17,9 +17,10 @@ import type SelectionState from 'SelectionState';
 const CharacterMetadata = require('CharacterMetadata');
 
 const {Map} = require('immutable');
+const invariant = require('invariant');
 
 const ContentStateInlineStyle = {
-  add: function (
+  add: function(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,
@@ -27,7 +28,7 @@ const ContentStateInlineStyle = {
     return modifyInlineStyle(contentState, selectionState, inlineStyle, true);
   },
 
-  remove: function (
+  remove: function(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,
@@ -47,11 +48,13 @@ function modifyInlineStyle(
   const startOffset = selectionState.getStartOffset();
   const endKey = selectionState.getEndKey();
   const endOffset = selectionState.getEndOffset();
+  const endBlock = blockMap.get(endKey);
+  invariant(endBlock != null, 'selection end block must exist');
 
   const newBlocks = blockMap
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
-    .concat(Map([[endKey, blockMap.get(endKey)]]))
+    .concat(Map([[endKey, endBlock]]))
     .map((block, blockKey) => {
       let sliceStart;
       let sliceEnd;
@@ -68,12 +71,14 @@ function modifyInlineStyle(
       let current;
       while (sliceStart < sliceEnd) {
         current = chars.get(sliceStart);
-        chars = chars.set(
-          sliceStart,
-          addOrRemove
-            ? CharacterMetadata.applyStyle(current, inlineStyle)
-            : CharacterMetadata.removeStyle(current, inlineStyle),
-        );
+        if (current != null) {
+          chars = chars.set(
+            sliceStart,
+            addOrRemove
+              ? CharacterMetadata.applyStyle(current, inlineStyle)
+              : CharacterMetadata.removeStyle(current, inlineStyle),
+          );
+        }
         sliceStart++;
       }
 

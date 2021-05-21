@@ -18,6 +18,7 @@
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftDecoratorType} from 'DraftDecoratorType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
@@ -25,6 +26,7 @@ import type EditorState from 'EditorState';
 import type SelectionState from 'SelectionState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEditorNode = require('DraftEditorNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
 const Scroll = require('Scroll');
@@ -134,12 +136,14 @@ const getDraftRenderConfig = (
   block: BlockNodeRecord,
   blockRenderMap: DraftBlockRenderMap,
 ): DraftRenderConfig => {
+  const unstyledConfig: DraftBlockRenderConfig =
+    blockRenderMap.get('unstyled') ||
+    (DefaultDraftBlockRenderMap.get('unstyled'): any);
   const configForType =
-    blockRenderMap.get(block.getType()) || blockRenderMap.get('unstyled');
+    blockRenderMap.get(block.getType()) || unstyledConfig;
 
   const wrapperTemplate = configForType.wrapper;
-  const Element =
-    configForType.element || blockRenderMap.get('unstyled').element;
+  const Element = configForType.element || unstyledConfig.element;
 
   return {
     Element,

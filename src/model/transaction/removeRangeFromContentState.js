@@ -19,9 +19,8 @@ import type SelectionState from 'SelectionState';
 const ContentBlockNode = require('ContentBlockNode');
 
 const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
-const Immutable = require('immutable');
-
-const {List, Map} = Immutable;
+const {List, Map} = require('immutable');
+const invariant = require('invariant');
 
 const transformBlock = (
   key: ?string,
@@ -82,14 +81,15 @@ const getNextDelimitersBlockKeys = (
   }
 
   let nextDelimiter = getNextDelimiterBlockKey(block, blockMap);
-  while (nextDelimiter && blockMap.get(nextDelimiter)) {
-    const block = blockMap.get(nextDelimiter);
+  let nextBlock = blockMap.get(nextDelimiter || '');
+  while (nextDelimiter && nextBlock) {
     nextDelimiters.push(nextDelimiter);
 
-    // we do not need to keep checking all root node siblings, just the first occurance
-    nextDelimiter = block.getParentKey()
-      ? getNextDelimiterBlockKey(block, blockMap)
+    // we do not need to keep checking all root node siblings, just the first occurence
+    nextDelimiter = nextBlock.getParentKey()
+      ? getNextDelimiterBlockKey(nextBlock, blockMap)
       : null;
+    nextBlock = blockMap.get(nextDelimiter || '');
   }
 
   return nextDelimiters;
@@ -106,13 +106,12 @@ const getNextValidSibling = (
 
   // note that we need to make sure we refer to the original block since this
   // function is called within a withMutations
-  let nextValidSiblingKey = originalBlockMap
-    .get(block.getKey())
-    .getNextSiblingKey();
+  const originalBlock = originalBlockMap.get(block.getKey());
+  let nextValidSiblingKey = originalBlock?.getNextSiblingKey();
 
   while (nextValidSiblingKey && !blockMap.get(nextValidSiblingKey)) {
     nextValidSiblingKey =
-      originalBlockMap.get(nextValidSiblingKey).getNextSiblingKey() || null;
+      originalBlockMap.get(nextValidSiblingKey)?.getNextSiblingKey() || null;
   }
 
   return nextValidSiblingKey;
@@ -129,13 +128,12 @@ const getPrevValidSibling = (
 
   // note that we need to make sure we refer to the original block since this
   // function is called within a withMutations
-  let prevValidSiblingKey = originalBlockMap
-    .get(block.getKey())
-    .getPrevSiblingKey();
+  const originalBlock = originalBlockMap.get(block.getKey());
+  let prevValidSiblingKey = originalBlock?.getPrevSiblingKey();
 
   while (prevValidSiblingKey && !blockMap.get(prevValidSiblingKey)) {
     prevValidSiblingKey =
-      originalBlockMap.get(prevValidSiblingKey).getPrevSiblingKey() || null;
+      originalBlockMap.get(prevValidSiblingKey)?.getPrevSiblingKey() || null;
   }
 
   return prevValidSiblingKey;
@@ -257,6 +255,7 @@ const updateBlockMapLinks = (
       });
       if (newParentKey != null) {
         const newParent = blockMap.get(newParentKey);
+        invariant(newParent != null, 'new parent must exist in block map');
         transformBlock(newParentKey, blocks, block =>
           block.merge({
             children: newParent
@@ -269,8 +268,8 @@ const updateBlockMapLinks = (
       // last child of deleted parent should point to next sibling
       transformBlock(
         startBlock.getChildKeys().find(key => {
-          const block = (blockMap.get(key): ContentBlockNode);
-          return block.getNextSiblingKey() === null;
+          const block = blockMap.get(key);
+          return block && block.getNextSiblingKey() === null;
         }),
         blocks,
         block =>
@@ -298,6 +297,8 @@ const removeRangeFromContentState = (
 
   const startBlock = blockMap.get(startKey);
   const endBlock = blockMap.get(endKey);
+  invariant(startBlock != null, 'selection start must exist in block map');
+  invariant(endBlock != null, 'selection end must exist in block map');
 
   // we assume that ContentBlockNode and ContentBlocks are not mixed together
   const isExperimentalTreeBlock = startBlock instanceof ContentBlockNode;
@@ -306,7 +307,7 @@ const removeRangeFromContentState = (
   let parentAncestors = [];
 
   if (isExperimentalTreeBlock) {
-    const endBlockchildrenKeys = endBlock.getChildKeys();
+    const endBlockChildrenKeys = endBlock.getChildKeys();
     const endBlockAncestors = getAncestorsKeys(endKey, blockMap);
 
     // endBlock has unselected siblings so we can not remove its ancestors parents
@@ -315,7 +316,7 @@ const removeRangeFromContentState = (
     }
 
     // endBlock has children so can not remove this block or any of its ancestors
-    if (!endBlockchildrenKeys.isEmpty()) {
+    if (!endBlockChildrenKeys.isEmpty()) {
       parentAncestors = parentAncestors.concat(
         endBlockAncestors.concat([endKey]),
       );
@@ -357,18 +358,21 @@ const removeRangeFromContentState = (
     endOffset === 0 &&
     endBlock.getParentKey() === startKey &&
     endBlock.getPrevSiblingKey() == null;
-  const newBlocks = shouldDeleteParent
-    ? Map([[startKey, null]])
-    : blockMap
-        .toSeq()
-        .skipUntil((_, k) => k === startKey)
-        .takeUntil((_, k) => k === endKey)
-        .filter((_, k) => parentAncestors.indexOf(k) === -1)
-        .concat(Map([[endKey, null]]))
-        .map((_, k) => {
-          return k === startKey ? modifiedStart : null;
-        });
-  let updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
+  let updatedBlockMap: BlockMap;
+  if (shouldDeleteParent) {
+    updatedBlockMap = blockMap.delete(startKey);
+  } else {
+    const newBlocks = blockMap
+      .toSeq()
+      .skipUntil((_, k) => k === startKey)
+      .takeUntil((_, k) => k === endKey)
+      .filter((_, k) => parentAncestors.indexOf(k) === -1)
+      .concat(Map([[endKey, null]]))
+      .map((_, k) => {
+        return k === startKey ? modifiedStart : null;
+      });
+    updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
+  }
 
   // Only update tree block pointers if the range is across blocks
   if (isExperimentalTreeBlock && startBlock !== endBlock) {

@@ -516,8 +516,9 @@ class ContentBlocksBuilder {
       }
 
       let newStyle = style;
-      if (HTMLTagToRawInlineStyleMap.has(nodeName)) {
-        newStyle = newStyle.add(HTMLTagToRawInlineStyleMap.get(nodeName));
+      const rawInlineStyle = HTMLTagToRawInlineStyleMap.get(nodeName);
+      if (rawInlineStyle != null) {
+        newStyle = newStyle.add(rawInlineStyle);
       }
       newStyle = styleFromNodeAttributes(node, newStyle);
       const inlineStyle = detectInlineStyle(node);

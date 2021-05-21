@@ -12,13 +12,16 @@
 'use strict';
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {DraftBlockRenderMap} from 'DraftBlockRenderMap';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type EditorState from 'EditorState';
 import type {BidiDirection} from 'UnicodeBidiDirection';
 
+const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
+const UnicodeBidiDirection = require('UnicodeBidiDirection');
 
 const cx = require('cx');
 const joinClasses: (
@@ -165,7 +168,7 @@ class DraftEditorContents extends React.Component<Props> {
 
       const direction = textDirectionality
         ? textDirectionality
-        : directionMap.get(key);
+        : directionMap.get(key, UnicodeBidiDirection.LTR);
       const offsetKey = DraftOffsetKey.encode(key, 0, 0);
       const componentProps = {
         contentState: content,
@@ -183,12 +186,13 @@ class DraftEditorContents extends React.Component<Props> {
         tree: editorState.getBlockTree(key),
       };
 
-      const configForType =
-        blockRenderMap.get(blockType) || blockRenderMap.get('unstyled');
+      const unstyledConfig: DraftBlockRenderConfig =
+        blockRenderMap.get('unstyled') ||
+        (DefaultDraftBlockRenderMap.get('unstyled'): any);
+      const configForType = blockRenderMap.get(blockType) || unstyledConfig;
       const wrapperTemplate = configForType.wrapper;
 
-      const Element =
-        configForType.element || blockRenderMap.get('unstyled').element;
+      const Element = configForType.element || unstyledConfig.element;
 
       const depth = block.getDepth();
       let className = '';
