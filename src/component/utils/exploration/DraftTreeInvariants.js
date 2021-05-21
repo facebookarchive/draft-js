@@ -106,6 +106,10 @@ const DraftTreeInvariants = {
     const visitedStack = [];
     while (currentKey != null) {
       const currentNode = blockMap.get(currentKey);
+      if (currentNode == null) {
+        warning(true, '%s block should exist in block map', currentKey);
+        return false;
+      }
       const childKeys = currentNode.getChildKeys();
       const nextSiblingKey = currentNode.getNextSiblingKey();
       // if the node has children, add parent's next sibling to stack and go to children
