@@ -369,6 +369,7 @@ const removeRangeFromContentState = (
       .filter((_, k) => parentAncestors.indexOf(k) === -1)
       .concat(Map([[endKey, null]]))
       .map((_, k) => {
+        // $FlowFixMe[incompatible-return] flow expects a consistent value type
         return k === startKey ? modifiedStart : null;
       });
     updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
