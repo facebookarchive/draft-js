@@ -22,8 +22,9 @@ function adjustBlockDepthForContentState(
 ): ContentState {
   const startKey = selectionState.getStartKey();
   const endKey = selectionState.getEndKey();
-  let blockMap = contentState.getBlockMap();
-  const blocks = blockMap
+  const blockMap = contentState.getBlockMap();
+
+  const newBlocks = blockMap
     .toSeq()
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
@@ -37,10 +38,8 @@ function adjustBlockDepthForContentState(
       return block.set('depth', depth);
     });
 
-  blockMap = blockMap.merge(blocks);
-
   return contentState.merge({
-    blockMap,
+    blockMap: blockMap.merge(newBlocks),
     selectionBefore: selectionState,
     selectionAfter: selectionState,
   });

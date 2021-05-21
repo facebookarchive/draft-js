@@ -19,9 +19,7 @@ import type SelectionState from 'SelectionState';
 const ContentBlockNode = require('ContentBlockNode');
 
 const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
-const Immutable = require('immutable');
-
-const {List, Map} = Immutable;
+const {List, Map} = require('immutable');
 
 const transformBlock = (
   key: ?string,

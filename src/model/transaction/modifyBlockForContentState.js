@@ -15,9 +15,7 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
-const Immutable = require('immutable');
-
-const {Map} = Immutable;
+const {Map} = require('immutable');
 
 function modifyBlockForContentState(
   contentState: ContentState,
