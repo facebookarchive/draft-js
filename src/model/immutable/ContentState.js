@@ -91,6 +91,7 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlockForKey(key: string): BlockNodeRecord {
+    /* $FlowFixMe[incompatible-type] OrderedMap#get() can return undefined */
     const block: BlockNodeRecord = this.getBlockMap().get(key);
     return block;
   }
