@@ -115,7 +115,7 @@ test('test adding a sibling', () => {
       parent: null,
     }),
     X: newBlockMap.get('X').merge({
-      children: ['B'],
+      children: Immutable.List(['B']),
     }),
   });
   expect(newBlockMap).toMatchSnapshot();

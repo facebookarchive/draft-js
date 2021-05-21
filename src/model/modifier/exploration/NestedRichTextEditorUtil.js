@@ -168,15 +168,12 @@ const NestedRichTextEditorUtil: RichTextUtils = {
     );
 
     if (withoutBlockStyle) {
+      const blockMap = withoutBlockStyle.getBlockMap();
+      const blockType = blockMap.get(currentBlock.getKey())?.getType();
       return EditorState.push(
         editorState,
         withoutBlockStyle,
-        withoutBlockStyle
-          .getBlockMap()
-          .get(currentBlock.getKey())
-          .getType() === 'unstyled'
-          ? 'change-block-type'
-          : 'adjust-depth',
+        blockType === 'unstyled' ? 'change-block-type' : 'adjust-depth',
       );
     }
 
@@ -244,7 +241,6 @@ const NestedRichTextEditorUtil: RichTextUtils = {
   currentBlockContainsLink: (editorState: EditorState): boolean => {
     const selection = editorState.getSelection();
     const contentState = editorState.getCurrentContent();
-    const entityMap = contentState.getEntityMap();
     return contentState
       .getBlockForKey(selection.getAnchorKey())
       .getCharacterList()
@@ -471,9 +467,11 @@ const NestedRichTextEditorUtil: RichTextUtils = {
           depth > 0
         ) {
           let newBlockMap = onUntab(content.getBlockMap(), block);
+          const newBlock = newBlockMap.get(key);
+          invariant(newBlock != null, 'block must exist in new block map');
           newBlockMap = newBlockMap.set(
             key,
-            newBlockMap.get(key).merge({depth: depth - 1}),
+            newBlock.merge({depth: depth - 1}),
           );
           return content.merge({blockMap: newBlockMap});
         }
@@ -488,10 +486,10 @@ const onUntab = (blockMap: BlockMap, block: ContentBlockNode): BlockMap => {
   const key = block.getKey();
   const parentKey = block.getParentKey();
   const nextSiblingKey = block.getNextSiblingKey();
-  if (parentKey == null) {
+  const parent = blockMap.get(parentKey || '');
+  if (parentKey == null || parent == null) {
     return blockMap;
   }
-  const parent = blockMap.get(parentKey);
   const existingChildren = parent.getChildKeys();
   const blockIndex = existingChildren.indexOf(key);
   if (blockIndex === 0 || blockIndex === existingChildren.count() - 1) {
@@ -527,13 +525,12 @@ const onUntab = (blockMap: BlockMap, block: ContentBlockNode): BlockMap => {
         ? block.merge({parent: newBlock.getKey()})
         : block,
     );
+    const nextSibling = blockMap.get(nextSiblingKey);
+    invariant(nextSibling != null, 'block must have a next sibling here');
     // update the next/previous pointers for the children at the split
     blockMap = blockMap
       .set(key, block.merge({nextSibling: null}))
-      .set(
-        nextSiblingKey,
-        blockMap.get(nextSiblingKey).merge({prevSibling: null}),
-      );
+      .set(nextSiblingKey, nextSibling.merge({prevSibling: null}));
     const parentNextSiblingKey = parent.getNextSiblingKey();
     if (parentNextSiblingKey != null) {
       blockMap = DraftTreeOperations.updateSibling(
@@ -558,8 +555,11 @@ const onUntab = (blockMap: BlockMap, block: ContentBlockNode): BlockMap => {
     while (parent != null) {
       const children = parent.getChildKeys();
       const firstChildKey = children.first();
-      invariant(firstChildKey != null, 'parent must have at least one child');
-      const firstChild = blockMap.get(firstChildKey);
+      const firstChild = blockMap.get(firstChildKey || '');
+      invariant(
+        firstChildKey != null && firstChild != null,
+        'parent must have at least one child',
+      );
       if (firstChild.getChildKeys().count() === 0) {
         break;
       } else {
@@ -578,7 +578,11 @@ const onUntab = (blockMap: BlockMap, block: ContentBlockNode): BlockMap => {
       parent != null // parent may have been deleted
         ? parent.getPrevSiblingKey()
         : null;
-    if (prevSiblingKey != null && parent.getChildKeys().count() > 0) {
+    if (
+      prevSiblingKey != null &&
+      parent != null &&
+      parent.getChildKeys().count() > 0
+    ) {
       const prevSibling = blockMap.get(prevSiblingKey);
       if (prevSibling != null && prevSibling.getChildKeys().count() > 0) {
         blockMap = DraftTreeOperations.mergeBlocks(blockMap, prevSiblingKey);

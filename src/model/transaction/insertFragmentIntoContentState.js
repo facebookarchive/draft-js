@@ -40,6 +40,7 @@ const updateExistingBlock = (
   mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
 ): ContentState => {
   const targetBlock = blockMap.get(targetKey);
+  invariant(targetBlock != null, 'target block must exist in block map');
   const text = targetBlock.getText();
   const chars = targetBlock.getCharacterList();
   const finalKey = targetKey;
@@ -189,15 +190,12 @@ const updateBlockMapLinks = (
       blockMapState.setIn([targetKey, 'nextSibling'], headKey);
       blockMapState.setIn([headKey, 'prevSibling'], targetKey);
     } else {
-      // update the target block that had the fragment head contents merged into it
-      blockMapState.setIn(
-        [targetKey, 'nextSibling'],
-        fragmentHeadBlock.getNextSiblingKey(),
-      );
-      blockMapState.setIn(
-        [fragmentHeadBlock.getNextSiblingKey(), 'prevSibling'],
-        targetKey,
-      );
+      const nextSiblingKey = fragmentHeadBlock.getNextSiblingKey();
+      if (nextSiblingKey != null) {
+        // update the target block that had the fragment head contents merged into it
+        blockMapState.setIn([targetKey, 'nextSibling'], nextSiblingKey);
+        blockMapState.setIn([nextSiblingKey, 'prevSibling'], targetKey);
+      }
     }
 
     // update the last root block fragment
@@ -222,6 +220,7 @@ const updateBlockMapLinks = (
     // update targetBlock parent child links
     if (targetParentKey) {
       const targetParent = blockMap.get(targetParentKey);
+      invariant(targetParent != null, 'target parent must exist in block map');
       const originalTargetParentChildKeys = targetParent.getChildKeys();
 
       const targetBlockIndex = originalTargetParentChildKeys.indexOf(targetKey);
@@ -252,6 +251,7 @@ const insertFragment = (
   const newBlockArr = [];
   const fragmentSize = fragment.size;
   const target = blockMap.get(targetKey);
+  invariant(target != null, 'target block must exist in block map');
   const head = fragment.first();
   const tail = fragment.last();
   const finalOffset = tail.getLength();

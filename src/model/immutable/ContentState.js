@@ -91,6 +91,7 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlockForKey(key: string): BlockNodeRecord {
+    /* $FlowFixMe[incompatible-type] OrderedMap#get() can return undefined */
     const block: BlockNodeRecord = this.getBlockMap().get(key);
     return block;
   }
@@ -128,7 +129,9 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlocksAsArray(): Array<BlockNodeRecord> {
-    return this.getBlockMap().toArray();
+    return this.getBlockMap()
+      .toIndexedSeq()
+      .toArray();
   }
 
   getFirstBlock(): BlockNodeRecord {
@@ -277,9 +280,9 @@ class ContentState extends ContentStateRecord {
   static fromJS(state: ContentStateRawType): ContentState {
     return new ContentState({
       ...state,
-      blockMap: OrderedMap(state.blockMap).map(
-        ContentState.createContentBlockFromJS,
-      ),
+      blockMap: state.blockMap
+        ? OrderedMap(state.blockMap).map(ContentState.createContentBlockFromJS)
+        : OrderedMap(),
       selectionBefore: new SelectionState(state.selectionBefore),
       selectionAfter: new SelectionState(state.selectionAfter),
     });
