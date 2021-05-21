@@ -32,6 +32,7 @@ function removeEntitiesAtEdges(
   const startKey = selectionState.getStartKey();
   const startOffset = selectionState.getStartOffset();
   const startBlock = blockMap.get(startKey);
+  invariant(startBlock != null, 'selection start must exist in block map');
   const updatedStart = removeForBlock(contentState, startBlock, startOffset);
 
   if (updatedStart !== startBlock) {
@@ -45,6 +46,7 @@ function removeEntitiesAtEdges(
     endBlock = updatedStart;
   }
 
+  invariant(endBlock != null, 'selection end must exist in block map');
   const updatedEnd = removeForBlock(contentState, endBlock, endOffset);
 
   if (updatedEnd !== endBlock) {

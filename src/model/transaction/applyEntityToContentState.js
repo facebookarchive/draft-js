@@ -16,6 +16,7 @@ import type SelectionState from 'SelectionState';
 
 const applyEntityToContentBlock = require('applyEntityToContentBlock');
 const {OrderedMap} = require('immutable');
+const invariant = require('invariant');
 
 function applyEntityToContentState(
   contentState: ContentState,
@@ -27,12 +28,14 @@ function applyEntityToContentState(
   const startOffset = selectionState.getStartOffset();
   const endKey = selectionState.getEndKey();
   const endOffset = selectionState.getEndOffset();
+  const endBlock = blockMap.get(endKey);
+  invariant(endBlock != null, 'selection end must exist in block map');
 
   const newBlocks = blockMap
     .skipUntil((_, k) => k === startKey)
     .takeUntil((_, k) => k === endKey)
     .toOrderedMap()
-    .merge(OrderedMap([[endKey, blockMap.get(endKey)]]))
+    .merge(OrderedMap([[endKey, endBlock]]))
     .map((block, blockKey) => {
       const sliceStart = blockKey === startKey ? startOffset : 0;
       const sliceEnd = blockKey === endKey ? endOffset : block.getLength();

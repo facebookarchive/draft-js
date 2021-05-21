@@ -20,6 +20,7 @@ const ContentBlockNode = require('ContentBlockNode');
 
 const getNextDelimiterBlockKey = require('getNextDelimiterBlockKey');
 const {List, Map} = require('immutable');
+const invariant = require('invariant');
 
 const transformBlock = (
   key: ?string,
@@ -254,6 +255,7 @@ const updateBlockMapLinks = (
       });
       if (newParentKey != null) {
         const newParent = blockMap.get(newParentKey);
+        invariant(newParent != null, 'new parent must exist in block map');
         transformBlock(newParentKey, blocks, block =>
           block.merge({
             children: newParent
@@ -295,6 +297,8 @@ const removeRangeFromContentState = (
 
   const startBlock = blockMap.get(startKey);
   const endBlock = blockMap.get(endKey);
+  invariant(startBlock != null, 'selection start must exist in block map');
+  invariant(endBlock != null, 'selection end must exist in block map');
 
   // we assume that ContentBlockNode and ContentBlocks are not mixed together
   const isExperimentalTreeBlock = startBlock instanceof ContentBlockNode;

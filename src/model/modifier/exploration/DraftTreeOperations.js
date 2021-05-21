@@ -68,14 +68,24 @@ const updateParentChild = (
   // link new child as next sibling to the correct existing child
   if (position > 0) {
     prevSiblingKey = existingChildren.get(position - 1);
-    newBlocks[prevSiblingKey] = blockMap.get(prevSiblingKey).merge({
+    const prevSiblingBlock = blockMap.get(prevSiblingKey || '');
+    invariant(
+      prevSiblingKey != null && prevSiblingBlock != null,
+      'child should have a previous sibling if position is greater than 0',
+    );
+    newBlocks[prevSiblingKey] = prevSiblingBlock.merge({
       nextSibling: childKey,
     });
   }
   // link new child as previous sibling to the correct existing child
   if (position < existingChildren.count()) {
     nextSiblingKey = existingChildren.get(position);
-    newBlocks[nextSiblingKey] = blockMap.get(nextSiblingKey).merge({
+    const nextSibling = blockMap.get(nextSiblingKey || '');
+    invariant(
+      nextSiblingKey != null && nextSibling != null,
+      'child should have a next sibling if position is less than children size',
+    );
+    newBlocks[nextSiblingKey] = nextSibling.merge({
       prevSibling: childKey,
     });
   }
@@ -218,7 +228,7 @@ const updateAsSiblingsChild = (
       ? block.getPrevSiblingKey()
       : block.getNextSiblingKey();
   invariant(newParentKey != null, 'sibling is null');
-  const newParent = blockMap.get(newParentKey);
+  let newParent = blockMap.get(newParentKey);
   invariant(
     newParent != null && newParent.getText() === '',
     'parent must be a valid node',
@@ -231,19 +241,25 @@ const updateAsSiblingsChild = (
       if (prevSibling != null) {
         newBlockMap = updateSibling(newBlockMap, prevSibling, newParentKey);
       } else {
+        newParent = newBlockMap.get(newParentKey);
+        invariant(newParent != null, 'updated parent must exist in block map');
         newBlockMap = newBlockMap.set(
           newParentKey,
-          newBlockMap.get(newParentKey).merge({prevSibling: null}),
+          newParent.merge({prevSibling: null}),
         );
       }
       // we also need to flip the order of the sibling & block in the ordered map
       // for this case
+      newParent = newBlockMap.get(newParentKey);
+      invariant(newParent != null, 'updated parent must exist in block map');
+      const newBlock = newBlockMap.get(key);
+      invariant(newBlock != null, 'updated block must exist in block map');
       newBlockMap = newBlockMap
         .takeUntil(block => block.getKey() === key)
         .concat(
           Immutable.OrderedMap([
-            [newParentKey, newBlockMap.get(newParentKey)],
-            [key, newBlockMap.get(key)],
+            [newParentKey, newParent],
+            [key, newBlock],
           ]),
         )
         .concat(
@@ -263,9 +279,11 @@ const updateAsSiblingsChild = (
       if (nextSibling != null) {
         newBlockMap = updateSibling(newBlockMap, newParentKey, nextSibling);
       } else {
+        newParent = newBlockMap.get(newParentKey);
+        invariant(newParent != null, 'updated parent must exist in block map');
         newBlockMap = newBlockMap.set(
           newParentKey,
-          newBlockMap.get(newParentKey).merge({nextSibling: null}),
+          newParent.merge({nextSibling: null}),
         );
       }
       break;
@@ -327,6 +345,7 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
     }
     // remove as parent's child
     parent = newBlockMap.get(parentKey);
+    invariant(parent != null, 'parent must exist in new block map');
     newBlockMap = newBlockMap.set(
       parentKey,
       parent.merge({
@@ -334,22 +353,31 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
       }),
     );
     parent = newBlockMap.get(parentKey);
+    invariant(parent != null, 'parent must exist in new block map');
     // remove as previous sibling of parent's children
     if (parent.getChildKeys().count() > 0) {
       const firstChildKey = parent.getChildKeys().first();
       const firstChild = newBlockMap.get(firstChildKey);
+      invariant(
+        firstChildKey != null && firstChild != null,
+        'parent must have a first child',
+      );
       newBlockMap = newBlockMap.set(
         firstChildKey,
         firstChild.merge({prevSibling: null}),
       );
     }
+    const newBlock = newBlockMap.get(key);
+    invariant(newBlock != null, 'updated block must exist in block map');
+    const newParent = newBlockMap.get(parentKey);
+    invariant(newParent != null, 'updated parent must exist in block map');
     // add the node just before its former parent in the block map
     newBlockMap = newBlockMap
       .takeUntil(block => block.getKey() === parentKey)
       .concat(
         Immutable.OrderedMap([
-          [key, newBlockMap.get(key)],
-          [parentKey, newBlockMap.get(parentKey)],
+          [key, newBlock],
+          [parentKey, newParent],
         ]),
       )
       .concat(newBlockMap.skipUntil(block => block.getKey() === key).slice(1));
@@ -364,6 +392,7 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
     }
     // remove as parent's child
     parent = newBlockMap.get(parentKey);
+    invariant(parent != null, 'parent must exist in new block map');
     newBlockMap = newBlockMap.set(
       parentKey,
       parent.merge({
@@ -371,10 +400,15 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
       }),
     );
     parent = newBlockMap.get(parentKey);
+    invariant(parent != null, 'parent must exist in new block map');
     // remove as next sibling of parent's children
     if (parent.getChildKeys().count() > 0) {
       const lastChildKey = parent.getChildKeys().last();
       const lastChild = newBlockMap.get(lastChildKey);
+      invariant(
+        lastChildKey != null && lastChild != null,
+        'parent must have a last child',
+      );
       newBlockMap = newBlockMap.set(
         lastChildKey,
         lastChild.merge({nextSibling: null}),
@@ -398,14 +432,14 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
         : grandparentInsertPosition + 1,
     );
   } else {
-    newBlockMap = newBlockMap.set(
-      key,
-      newBlockMap.get(key).merge({parent: null}),
-    );
+    const block = newBlockMap.get(key);
+    invariant(block != null, 'block must exist in new block map');
+    newBlockMap = newBlockMap.set(key, block.merge({parent: null}));
   }
 
   // Delete parent if it has no children
   parent = newBlockMap.get(parentKey);
+  invariant(parent != null, 'parent must exist in new block map');
   if (parent.getChildKeys().count() === 0) {
     const prevSiblingKey = parent.getPrevSiblingKey();
     const nextSiblingKey = parent.getNextSiblingKey();
@@ -413,19 +447,33 @@ const moveChildUp = (blockMap: BlockMap, key: string): BlockMap => {
       newBlockMap = updateSibling(newBlockMap, prevSiblingKey, nextSiblingKey);
     }
     if (prevSiblingKey == null && nextSiblingKey != null) {
+      const nextSibling = newBlockMap.get(nextSiblingKey);
+      invariant(
+        nextSibling != null,
+        'next sibling must exist in map if nextSiblingKey exists',
+      );
       newBlockMap = newBlockMap.set(
         nextSiblingKey,
-        newBlockMap.get(nextSiblingKey).merge({prevSibling: null}),
+        nextSibling.merge({prevSibling: null}),
       );
     }
     if (nextSiblingKey == null && prevSiblingKey != null) {
+      const prevSibling = newBlockMap.get(prevSiblingKey);
+      invariant(
+        prevSibling != null,
+        'previous sibling must exist in map if prevSiblingKey exists',
+      );
       newBlockMap = newBlockMap.set(
         prevSiblingKey,
-        newBlockMap.get(prevSiblingKey).merge({nextSibling: null}),
+        prevSibling.merge({nextSibling: null}),
       );
     }
     if (grandparentKey != null) {
       const grandparent = newBlockMap.get(grandparentKey);
+      invariant(
+        grandparent != null,
+        'grandparent must exist in map if grandparentKey exists',
+      );
       const oldChildren = grandparent.getChildKeys();
       newBlockMap = newBlockMap.set(
         grandparentKey,
@@ -475,24 +523,33 @@ const mergeBlocks = (blockMap: BlockMap, key: string): BlockMap => {
   );
   newBlockMap = newBlockMap.merge(
     Immutable.OrderedMap(
-      childKeys.map((k, i) => [
-        k,
-        blockMap.get(k).merge({
-          parent: key,
-          prevSibling: i - 1 < 0 ? null : childKeys.get(i - 1),
-          nextSibling:
-            i + 1 === childKeys.count() ? null : childKeys.get(i + 1),
-        }),
-      ]),
+      childKeys.map((k, i) => {
+        const block = blockMap.get(k);
+        invariant(block != null, 'child must exist in block map');
+        return [
+          k,
+          block.merge({
+            parent: key,
+            prevSibling: i - 1 < 0 ? null : childKeys.get(i - 1),
+            nextSibling:
+              i + 1 === childKeys.count() ? null : childKeys.get(i + 1),
+          }),
+        ];
+      }),
     ),
   );
   newBlockMap = newBlockMap.delete(nextBlockKey);
 
   const nextNextBlockKey = nextBlock.getNextSiblingKey();
   if (nextNextBlockKey != null) {
+    const nextNextBlock = blockMap.get(nextNextBlockKey);
+    invariant(
+      nextNextBlock != null,
+      'next next block must exist in block map if nextNextBlockKey exists',
+    );
     newBlockMap = newBlockMap.set(
       nextNextBlockKey,
-      blockMap.get(nextNextBlockKey).merge({prevSibling: key}),
+      nextNextBlock.merge({prevSibling: key}),
     );
   }
   verifyTree(newBlockMap);

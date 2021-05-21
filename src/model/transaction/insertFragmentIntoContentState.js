@@ -40,6 +40,7 @@ const updateExistingBlock = (
   mergeBlockData?: BlockDataMergeBehavior = 'REPLACE_WITH_NEW_DATA',
 ): ContentState => {
   const targetBlock = blockMap.get(targetKey);
+  invariant(targetBlock != null, 'target block must exist in block map');
   const text = targetBlock.getText();
   const chars = targetBlock.getCharacterList();
   const finalKey = targetKey;
@@ -219,6 +220,7 @@ const updateBlockMapLinks = (
     // update targetBlock parent child links
     if (targetParentKey) {
       const targetParent = blockMap.get(targetParentKey);
+      invariant(targetParent != null, 'target parent must exist in block map');
       const originalTargetParentChildKeys = targetParent.getChildKeys();
 
       const targetBlockIndex = originalTargetParentChildKeys.indexOf(targetKey);
@@ -249,6 +251,7 @@ const insertFragment = (
   const newBlockArr = [];
   const fragmentSize = fragment.size;
   const target = blockMap.get(targetKey);
+  invariant(target != null, 'target block must exist in block map');
   const head = fragment.first();
   const tail = fragment.last();
   const finalOffset = tail.getLength();
