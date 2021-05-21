@@ -10,6 +10,10 @@
  */
 
 function getCorrectDocumentFromNode(node: ?Node): Document {
+  if (node && node.nodeType === 9) {
+    // $FlowIgnore if nodeType is 9, node is a Document node
+    return (node: any);
+  }
   if (!node || !node.ownerDocument) {
     return document;
   }
