@@ -105,13 +105,12 @@ const getNextValidSibling = (
 
   // note that we need to make sure we refer to the original block since this
   // function is called within a withMutations
-  let nextValidSiblingKey = originalBlockMap
-    .get(block.getKey())
-    .getNextSiblingKey();
+  const originalBlock = originalBlockMap.get(block.getKey());
+  let nextValidSiblingKey = originalBlock?.getNextSiblingKey();
 
   while (nextValidSiblingKey && !blockMap.get(nextValidSiblingKey)) {
     nextValidSiblingKey =
-      originalBlockMap.get(nextValidSiblingKey).getNextSiblingKey() || null;
+      originalBlockMap.get(nextValidSiblingKey)?.getNextSiblingKey() || null;
   }
 
   return nextValidSiblingKey;
@@ -128,13 +127,12 @@ const getPrevValidSibling = (
 
   // note that we need to make sure we refer to the original block since this
   // function is called within a withMutations
-  let prevValidSiblingKey = originalBlockMap
-    .get(block.getKey())
-    .getPrevSiblingKey();
+  const originalBlock = originalBlockMap.get(block.getKey());
+  let prevValidSiblingKey = originalBlock?.getPrevSiblingKey();
 
   while (prevValidSiblingKey && !blockMap.get(prevValidSiblingKey)) {
     prevValidSiblingKey =
-      originalBlockMap.get(prevValidSiblingKey).getPrevSiblingKey() || null;
+      originalBlockMap.get(prevValidSiblingKey)?.getPrevSiblingKey() || null;
   }
 
   return prevValidSiblingKey;
