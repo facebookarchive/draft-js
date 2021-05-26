@@ -11,8 +11,9 @@
 
 'use strict';
 
-import type CharacterMetadata from 'CharacterMetadata';
-import type {CharacterMetadataRawConfig} from 'CharacterMetadata';
+import type CharacterMetadata, {
+  CharacterMetadataRawConfig,
+} from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {List, Map} from 'immutable';
