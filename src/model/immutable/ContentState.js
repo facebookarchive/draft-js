@@ -185,6 +185,8 @@ class ContentState extends ContentStateRecord {
     newData: interface {[key: string]: any},
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
+    /* $FlowFixMe[class-object-subtyping] added when improving typing for this
+     * parameters */
     DraftEntity.__replaceData(key, newData);
     return this;
   }

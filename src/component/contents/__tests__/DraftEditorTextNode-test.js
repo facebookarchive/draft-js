@@ -152,12 +152,14 @@ test('must skip updates if text already matches DOM, non-IE', function () {
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
   // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
+  // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   expect(stub.render.mock.calls.length).toBe(0);
 
   // Sanity check that updating is performed when appropriate.
   renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
   // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
+  // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   expect(stub.render.mock.calls.length).toBe(1);
 });
 
@@ -172,12 +174,14 @@ test('must skip updates if text already matches DOM, IE', function () {
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
   // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
+  // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   expect(stub.render.mock.calls.length).toBe(0);
 
   // Sanity check that updating is performed when appropriate.
   renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
   // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
+  // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   expect(stub.render.mock.calls.length).toBe(1);
 });
 
