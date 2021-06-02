@@ -171,10 +171,8 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       return EditorState.push(
         editorState,
         withoutBlockStyle,
-        withoutBlockStyle
-          .getBlockMap()
-          .get(currentBlock.getKey())
-          .getType() === 'unstyled'
+        withoutBlockStyle.getBlockMap().get(currentBlock.getKey()).getType() ===
+          'unstyled'
           ? 'change-block-type'
           : 'adjust-depth',
       );
@@ -354,7 +352,7 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       blockMap = onUntab(blockMap, block);
     }
     content = editorState.getCurrentContent().merge({
-      blockMap: blockMap,
+      blockMap,
     });
 
     const withAdjustment = adjustBlockDepthForContentState(
