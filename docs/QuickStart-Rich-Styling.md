@@ -68,6 +68,38 @@ class MyEditor extends React.Component {
 }
 ```
 
+Using react-hooks and typescript
+
+```ts
+import React, { useState } from 'react';
+import { Editor, EditorState, RichUtils } from 'draft-js';
+
+const MyEditor = () => {
+  const [editorState, setEditorState] = useState<EditorState>(() =>
+    EditorState.createEmpty()
+  );
+
+  const handleKeyCommand = (command: string, editorState: EditorState): 'handled' | 'not-handled' => {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+
+    if (newState) {
+      setEditorState(newState);
+      return 'handled';
+    }
+
+    return 'not-handled';
+  };
+
+  return (
+    <Editor
+      editorState={editorState}
+      handleKeyCommand={handleKeyCommand}
+      onChange={setEditorState}
+    />
+  );
+};
+```
+
 > `handleKeyCommand`
 >
 > The `command` argument supplied to `handleKeyCommand` is a string value, the
