@@ -26,9 +26,7 @@ const toggleExperimentalTreeDataSupport = enabled => {
 
 const assertDraftState = (rawState: RawDraftContentState) => {
   expect(
-    convertFromRawToDraftState(rawState)
-      .getBlockMap()
-      .toJS(),
+    convertFromRawToDraftState(rawState).getBlockMap().toJS(),
   ).toMatchSnapshot();
 };
 
