@@ -16,10 +16,10 @@ import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type SelectionState from 'SelectionState';
 
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
-const React = require('React');
 
 const invariant = require('invariant');
 const isHTMLBRElement = require('isHTMLBRElement');
+const React = require('react');
 const setDraftEditorSelection = require('setDraftEditorSelection')
   .setDraftEditorSelection;
 
@@ -37,7 +37,7 @@ type Props = {
   // Mapping of style names to CSS declarations.
   customStyleMap: CustomStyleMap,
   // Function that maps style names to CSS style objects.
-  customStyleFn: CustomStyleFn,
+  customStyleFn?: CustomStyleFn,
   // Whether to force the DOM selection after render.
   forceSelection: boolean,
   // Whether this leaf is the last in its block. Used for a DOM hack.

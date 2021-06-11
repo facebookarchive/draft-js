@@ -3270,6 +3270,11 @@ eslint-plugin-babel@^5.3.1:
   dependencies:
     eslint-rule-composer "^0.3.0"
 
+eslint-plugin-fb-www@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-fb-www/-/eslint-plugin-fb-www-1.0.3.tgz#3d3934c0711c22a880c83486d5262db3a74857cb"
+  integrity sha512-X5H/nA9ZB4SfXWri+9/QBeK++oRJuA0J/lvvOp0k5SMBuQ+AVopRx7QjNN2fhSPMh2kxn1wumEaAH/W6moUcyw==
+
 eslint-plugin-flowtype@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-flowtype/-/eslint-plugin-flowtype-5.2.0.tgz#a4bef5dc18f9b2bdb41569a4ab05d73805a3d261"

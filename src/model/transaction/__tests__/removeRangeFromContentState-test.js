@@ -66,8 +66,7 @@ const contentBlockNodes = [
   }),
 ];
 const treeSelectionState = SelectionState.createEmpty('A');
-const treeContentState = contentState.set(
-  'blockMap',
+const treeContentState = contentState.setBlockMap(
   BlockMapBuilder.createFromArray(contentBlockNodes),
 );
 
@@ -76,17 +75,12 @@ const assertRemoveRangeFromContentState = (
   content = contentState,
 ) => {
   expect(
-    removeRangeFromContentState(content, selection)
-      .getBlockMap()
-      .toJS(),
+    removeRangeFromContentState(content, selection).getBlockMap().toJS(),
   ).toMatchSnapshot();
 };
 
 const initialBlock = contentState.getBlockMap().first();
-const secondBlock = contentState
-  .getBlockMap()
-  .skip(1)
-  .first();
+const secondBlock = contentState.getBlockMap().skip(1).first();
 const selectionWithinA = selectionState.set('anchorOffset', 3);
 const selectionFromEndOfA = selectionState.merge({
   anchorOffset: initialBlock.getLength(),
@@ -117,10 +111,7 @@ test('must remove to the end of the block', () => {
   assertRemoveRangeFromContentState(
     selectionState.merge({
       anchorOffset: 3,
-      focusOffset: contentState
-        .getBlockMap()
-        .first()
-        .getLength(),
+      focusOffset: contentState.getBlockMap().first().getLength(),
     }),
   );
 });

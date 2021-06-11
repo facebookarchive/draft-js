@@ -74,6 +74,7 @@ function encodeInlineStyleRanges(
     .toSet()
     .map(style => getEncodedInlinesForType(block, styleList, style));
 
+  // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   return Array.prototype.concat.apply(EMPTY_ARRAY, ranges.toJS());
 }
 

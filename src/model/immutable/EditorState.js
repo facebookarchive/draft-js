@@ -138,10 +138,7 @@ class EditorState {
     if (contentState.getBlockMap().count() === 0) {
       return EditorState.createEmpty(decorator);
     }
-    const firstKey = contentState
-      .getBlockMap()
-      .first()
-      .getKey();
+    const firstKey = contentState.getBlockMap().first().getKey();
     return EditorState.create({
       currentContent: contentState,
       undoStack: Stack(),
@@ -346,10 +343,7 @@ class EditorState {
   }
 
   isSelectionAtStartOfContent(): boolean {
-    const firstKey = this.getCurrentContent()
-      .getBlockMap()
-      .first()
-      .getKey();
+    const firstKey = this.getCurrentContent().getBlockMap().first().getKey();
     return this.getSelection().hasEdgeWithin(firstKey, 0, 0);
   }
 
@@ -477,15 +471,14 @@ class EditorState {
       mustBecomeBoundary(editorState, changeType)
     ) {
       undoStack = undoStack.push(currentContent);
-      newContent = newContent.set('selectionBefore', selection);
+      newContent = newContent.setSelectionBefore(selection);
     } else if (
       changeType === 'insert-characters' ||
       changeType === 'backspace-character' ||
       changeType === 'delete-character'
     ) {
       // Preserve the previous selection.
-      newContent = newContent.set(
-        'selectionBefore',
+      newContent = newContent.setSelectionBefore(
         currentContent.getSelectionBefore(),
       );
     }
@@ -646,7 +639,7 @@ function regenerateTreeForNewBlocks(
 ): OrderedMap<string, List<any>> {
   const contentState = editorState
     .getCurrentContent()
-    .set('entityMap', newEntityMap);
+    .replaceEntityMap(newEntityMap);
   const prevBlockMap = contentState.getBlockMap();
   const prevTreeMap = editorState.getImmutable().get('treeMap');
   return prevTreeMap.merge(

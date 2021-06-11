@@ -27,7 +27,6 @@ const flushControlled = require('DraftEditorFlushControlled');
 const DraftEditorPlaceholder = require('DraftEditorPlaceholder.react');
 const DraftEffects = require('DraftEffects');
 const EditorState = require('EditorState');
-const React = require('React');
 const Scroll = require('Scroll');
 const Style = require('Style');
 const UserAgent = require('UserAgent');
@@ -40,6 +39,7 @@ const gkx = require('gkx');
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
 const nullthrows = require('nullthrows');
+const React = require('react');
 
 const isIE = UserAgent.isBrowser('IE');
 
@@ -405,10 +405,11 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             aria-controls={readOnly ? null : this.props.ariaControls}
             aria-describedby={this._renderARIADescribedBy()}
             aria-expanded={readOnly ? null : ariaExpanded}
-            aria-label={this.props.ariaLabel}
+            aria-label={this.props.ariaLabel ?? this.props.placeholder}
             aria-labelledby={this.props.ariaLabelledBy}
             aria-multiline={this.props.ariaMultiline}
             aria-owns={readOnly ? null : this.props.ariaOwneeID}
+            aria-required={this.props.ariaRequired}
             autoCapitalize={this.props.autoCapitalize}
             autoComplete={this.props.autoComplete}
             autoCorrect={this.props.autoCorrect}
@@ -443,6 +444,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
             onKeyDown={this._onKeyDown}
             onKeyPress={this._onKeyPress}
             onKeyUp={this._onKeyUp}
+            onMouseDown={this._onMouseDown}
             onMouseUp={this._onMouseUp}
             onPaste={this._onPaste}
             onSelect={this._onSelect}
@@ -527,7 +529,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
     invariant(isHTMLElement(editorNode), 'editorNode is not an HTMLElement');
 
-    editorNode.focus();
+    editorNode.focus({preventScroll: true});
 
     // Restore scroll position
     if (scrollParent === window) {

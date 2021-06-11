@@ -18,6 +18,7 @@ function adjustBlockDepthForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   adjustment: number,
+  maxDepth?: number,
 ): ContentState {
   const startKey = selectionState.getStartKey();
   const endKey = selectionState.getEndKey();
@@ -30,6 +31,9 @@ function adjustBlockDepthForContentState(
     .map(block => {
       let depth = block.getDepth() + adjustment;
       depth = Math.max(0, depth);
+      if (maxDepth != null) {
+        depth = Math.min(depth, maxDepth);
+      }
       return block.set('depth', depth);
     });
 

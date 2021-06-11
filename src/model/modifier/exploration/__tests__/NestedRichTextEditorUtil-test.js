@@ -125,10 +125,7 @@ const assertNestedUtilOperation = (
 
   const expected =
     result instanceof EditorState
-      ? result
-          .getCurrentContent()
-          .getBlockMap()
-          .toJS()
+      ? result.getCurrentContent().getBlockMap().toJS()
       : result;
 
   expect(expected).toMatchSnapshot();

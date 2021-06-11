@@ -34,6 +34,7 @@ const isHTMLElement = require('isHTMLElement');
 const isHTMLImageElement = require('isHTMLImageElement');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
+const allowPastingAltText = gkx('draftjs_paste_emojis');
 
 const NBSP = '&nbsp;';
 const SPACE = ' ';
@@ -630,8 +631,12 @@ class ContentBlocksBuilder {
 
     // The child text node cannot just have a space or return as content (since
     // we strip those out)
-    this._appendText('\ud83d\udcf7', style);
-
+    const alt = image.getAttribute('alt');
+    if (allowPastingAltText && alt != null && alt.length > 0) {
+      this._appendText(alt, style);
+    } else {
+      this._appendText('\ud83d\udcf7', style);
+    }
     this.currentEntity = null;
   }
 

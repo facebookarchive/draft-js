@@ -23,7 +23,7 @@ const {Map} = Immutable;
 
 type MutationRecordT =
   | MutationRecord
-  | {|type: 'characterData', target: Node, removedNodes?: void|};
+  | {type: 'characterData', target: Node, removedNodes?: void};
 
 // Heavily based on Prosemirror's DOMObserver https://github.com/ProseMirror/prosemirror-view/blob/master/src/domobserver.js
 
@@ -51,8 +51,9 @@ class DOMObserver {
     this.container = container;
     this.mutations = Map();
     const containerWindow = getWindowForNode(container);
-    if (containerWindow.MutationObserver && !USE_CHAR_DATA) {
-      this.observer = new containerWindow.MutationObserver(mutations =>
+    const MutationObserver = containerWindow.MutationObserver;
+    if (MutationObserver && !USE_CHAR_DATA) {
+      this.observer = new MutationObserver(mutations =>
         this.registerMutations(mutations),
       );
     } else {

@@ -5,14 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @flow strict
+ * @flow
  */
 
-'use strict';
-
-module.exports = function (name: string) {
-  if (typeof window !== 'undefined' && window.__DRAFT_GKX) {
-    return !!window.__DRAFT_GKX[name];
-  }
-  return false;
-};
+declare type Window = any;

@@ -47,7 +47,7 @@ function keyCommandPlainDelete(editorState: EditorState): EditorState {
 
   return EditorState.push(
     editorState,
-    afterRemoval.set('selectionBefore', selection),
+    afterRemoval.setSelectionBefore(selection),
     selection.isCollapsed() ? 'delete-character' : 'remove-range',
   );
 }
