@@ -46,7 +46,7 @@ function keyCommandPlainBackspace(editorState: EditorState): EditorState {
   const selection = editorState.getSelection();
   return EditorState.push(
     editorState,
-    afterRemoval.set('selectionBefore', selection),
+    afterRemoval.setSelectionBefore(selection),
     selection.isCollapsed() ? 'backspace-character' : 'remove-range',
   );
 }

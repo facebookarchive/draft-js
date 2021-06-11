@@ -21,8 +21,8 @@ const DefaultDraftInlineStyle = require('DefaultDraftInlineStyle');
 const DraftEditor = require('DraftEditor.react');
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftEntity = require('DraftEntity');
-const DraftModifier = require('DraftModifier');
 const DraftEntityInstance = require('DraftEntityInstance');
+const DraftModifier = require('DraftModifier');
 const EditorState = require('EditorState');
 const KeyBindingUtil = require('KeyBindingUtil');
 const RawDraftContentState = require('RawDraftContentState');
@@ -30,12 +30,11 @@ const RichTextEditorUtil = require('RichTextEditorUtil');
 const SelectionState = require('SelectionState');
 
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
+const convertFromHTML = require('convertFromHTMLToContentBlocks');
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const generateRandomKey = require('generateRandomKey');
 const getDefaultKeyBinding = require('getDefaultKeyBinding');
 const getVisibleSelectionRect = require('getVisibleSelectionRect');
-
-const convertFromHTML = require('convertFromHTMLToContentBlocks');
 
 const DraftPublic = {
   Editor: DraftEditor,

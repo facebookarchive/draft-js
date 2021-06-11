@@ -383,6 +383,7 @@ const removeRangeFromContentState = (
         .map((_, k) => {
           return k === startKey ? modifiedStart : null;
         });
+  // $FlowFixMe[incompatible-call] added when improving typing for this parameters
   let updatedBlockMap = blockMap.merge(newBlocks).filter(block => !!block);
 
   // Only update tree block pointers if the range is across blocks

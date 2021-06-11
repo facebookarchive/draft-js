@@ -157,6 +157,9 @@
 
 .playground-raw-preview {
   padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
 }
 
 /**

@@ -28,6 +28,7 @@ function getSafeBodyFromHTML(html: string): ?Element {
   if (
     !isOldIE &&
     document.implementation &&
+    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     document.implementation.createHTMLDocument
   ) {
     doc = document.implementation.createHTMLDocument('foo');

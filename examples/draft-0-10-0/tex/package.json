@@ -4,21 +4,21 @@
     "start": "babel-node ./server.js"
   },
   "dependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.1.0",
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-react": "^7.12.7",
+    "babel-loader": "^8.2.2",
     "draft-js": "file:../../../",
     "express": "^4.17.1",
-    "immutable": "^3.7.4",
+    "immutable": "^3.8.2",
     "katex": "^0.7.0",
     "react": "file:../../../node_modules/react",
     "react-dom": "file:../../../node_modules/react-dom",
-    "webpack": "^4.44.0",
+    "webpack": "^5.10.0",
     "webpack-dev-server": "^3.11.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/node": "^7.0.0"
+    "@babel/cli": "^7.12.8",
+    "@babel/node": "^7.12.6"
   }
 }

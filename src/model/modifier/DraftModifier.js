@@ -48,7 +48,7 @@ const {OrderedSet} = Immutable;
  * These functions encapsulate some of the most common transaction sequences.
  */
 const DraftModifier = {
-  replaceText: function(
+  replaceText(
     contentState: ContentState,
     rangeToReplace: SelectionState,
     text: string,
@@ -74,7 +74,7 @@ const DraftModifier = {
     );
   },
 
-  insertText: function(
+  insertText(
     contentState: ContentState,
     targetRange: SelectionState,
     text: string,
@@ -94,7 +94,7 @@ const DraftModifier = {
     );
   },
 
-  moveText: function(
+  moveText(
     contentState: ContentState,
     removalRange: SelectionState,
     targetRange: SelectionState,
@@ -114,7 +114,7 @@ const DraftModifier = {
     );
   },
 
-  replaceWithFragment: function(
+  replaceWithFragment(
     contentState: ContentState,
     targetRange: SelectionState,
     fragment: BlockMap,
@@ -134,7 +134,7 @@ const DraftModifier = {
     );
   },
 
-  removeRange: function(
+  removeRange(
     contentState: ContentState,
     rangeToRemove: SelectionState,
     removalDirection: DraftRemovalDirection,
@@ -178,7 +178,7 @@ const DraftModifier = {
     return removeRangeFromContentState(withoutEntities, rangeToRemove);
   },
 
-  splitBlock: function(
+  splitBlock(
     contentState: ContentState,
     selectionState: SelectionState,
   ): ContentState {
@@ -194,7 +194,7 @@ const DraftModifier = {
     );
   },
 
-  applyInlineStyle: function(
+  applyInlineStyle(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,
@@ -206,7 +206,7 @@ const DraftModifier = {
     );
   },
 
-  removeInlineStyle: function(
+  removeInlineStyle(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,
@@ -218,7 +218,7 @@ const DraftModifier = {
     );
   },
 
-  setBlockType: function(
+  setBlockType(
     contentState: ContentState,
     selectionState: SelectionState,
     blockType: DraftBlockType,
@@ -228,7 +228,7 @@ const DraftModifier = {
     );
   },
 
-  setBlockData: function(
+  setBlockData(
     contentState: ContentState,
     selectionState: SelectionState,
     blockData: Map<any, any>,
@@ -238,7 +238,7 @@ const DraftModifier = {
     );
   },
 
-  mergeBlockData: function(
+  mergeBlockData(
     contentState: ContentState,
     selectionState: SelectionState,
     blockData: Map<any, any>,
@@ -248,7 +248,7 @@ const DraftModifier = {
     );
   },
 
-  applyEntity: function(
+  applyEntity(
     contentState: ContentState,
     selectionState: SelectionState,
     entityKey: ?string,

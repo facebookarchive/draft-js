@@ -109,7 +109,7 @@ const assertRemoveTextOperation = (
   const result = operation(
     EditorState.forceSelection(
       EditorState.createWithContent(
-        contentState.set('blockMap', BlockMapBuilder.createFromArray(content)),
+        contentState.setBlockMap(BlockMapBuilder.createFromArray(content)),
       ),
       SelectionState.createEmpty(content[0].key).merge(selection),
     ),

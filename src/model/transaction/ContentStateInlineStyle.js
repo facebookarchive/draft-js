@@ -15,10 +15,11 @@ import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
 const CharacterMetadata = require('CharacterMetadata');
+
 const {Map} = require('immutable');
 
 const ContentStateInlineStyle = {
-  add: function(
+  add(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,
@@ -26,7 +27,7 @@ const ContentStateInlineStyle = {
     return modifyInlineStyle(contentState, selectionState, inlineStyle, true);
   },
 
-  remove: function(
+  remove(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,

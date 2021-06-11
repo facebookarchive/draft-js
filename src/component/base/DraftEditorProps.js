@@ -45,6 +45,7 @@ export type DraftEditorProps = {
   // styling and formatting when re-applying styles.
   editorKey?: string,
   placeholder?: string,
+  placeholderClassName?: string,
   // Specify whether text alignment should be forced in a direction
   // regardless of input characters.
   textAlignment?: DraftTextAlignment,
@@ -105,6 +106,13 @@ export type DraftEditorProps = {
   ariaLabelledBy?: string,
   ariaMultiline?: boolean,
   ariaOwneeID?: string,
+  /**
+   * aria-required attribute. Boolean value that indicates that whether an
+   * element is required to submit (true) or not. While HTML5 does have a
+   * `required` attribute now, some browsers don't support it yet and it only
+   * applies to input elements in either case.
+   */
+  ariaRequired?: string,
   webDriverTestID?: string,
   /**
    * Cancelable event handlers, handled from the top level down. A handler
@@ -138,6 +146,7 @@ export type DraftEditorProps = {
     text: string,
     html?: string,
     editorState: EditorState,
+    isInternalPaste: boolean,
   ) => DraftHandleValue,
   handlePastedFiles?: (files: Array<Blob>) => DraftHandleValue,
   // Handle dropped files
@@ -181,6 +190,7 @@ export type DraftEditorProps = {
   onPaste?: (DraftEditor, SyntheticClipboardEvent<>) => void | Promise<void>,
   onCut?: (DraftEditor, SyntheticClipboardEvent<>) => void,
   onCopy?: (DraftEditor, SyntheticClipboardEvent<>) => void,
+  contentClassName?: string,
   ...
 };
 

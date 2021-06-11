@@ -23,10 +23,10 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 const DraftEditorDecoratedLeaves = require('DraftEditorDecoratedLeaves.react');
 const DraftEditorLeaf = require('DraftEditorLeaf.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const Immutable = require('immutable');
-const React = require('React');
 
 const cx = require('cx');
+const Immutable = require('immutable');
+const React = require('react');
 
 const {List} = Immutable;
 

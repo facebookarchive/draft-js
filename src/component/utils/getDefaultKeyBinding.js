@@ -84,6 +84,8 @@ function getDefaultKeyBinding(
       return hasCommandModifier(e) ? 'underline' : null;
     case 87: // W
       return isOSX && isCtrlKeyCommand(e) ? 'backspace-word' : null;
+    case 88: // X
+      return hasCommandModifier(e) && e.shiftKey ? 'strikethrough' : null;
     case 89: // Y
       if (isCtrlKeyCommand(e)) {
         return isOSX ? 'secondary-paste' : 'redo';

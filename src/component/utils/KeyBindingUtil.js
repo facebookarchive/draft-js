@@ -23,19 +23,19 @@ const KeyBindingUtil = {
    * the altKey modifier. If they are combined, the result is an `altGraph`
    * key modifier, which should not be handled by this set of key bindings.
    */
-  isCtrlKeyCommand: function(e: SyntheticKeyboardEvent<>): boolean {
+  isCtrlKeyCommand(e: SyntheticKeyboardEvent<>): boolean {
     return !!e.ctrlKey && !e.altKey;
   },
 
-  isOptionKeyCommand: function(e: SyntheticKeyboardEvent<>): boolean {
+  isOptionKeyCommand(e: SyntheticKeyboardEvent<>): boolean {
     return isOSX && e.altKey;
   },
 
-  usesMacOSHeuristics: function(): boolean {
+  usesMacOSHeuristics(): boolean {
     return isOSX;
   },
 
-  hasCommandModifier: function(e: SyntheticKeyboardEvent<>): boolean {
+  hasCommandModifier(e: SyntheticKeyboardEvent<>): boolean {
     return isOSX
       ? !!e.metaKey && !e.altKey
       : KeyBindingUtil.isCtrlKeyCommand(e);
