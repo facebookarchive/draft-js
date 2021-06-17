@@ -60,10 +60,7 @@ export type DraftEditorProps = {
   blockStyleFn: (block: BlockNodeRecord) => string,
   // If supplied, a ref which will be passed to the contenteditable.
   // Currently, only object refs are supported.
-  editorRef?: ?(
-    | {|current: null | HTMLElement|}
-    | ((HTMLElement | null) => void)
-  ),
+  editorRef?: ?({current: null | HTMLElement} | ((HTMLElement | null) => void)),
   // A function that accepts a synthetic key event and returns
   // the matching DraftEditorCommand constant, or a custom string,
   // or null if no command should be invoked.
