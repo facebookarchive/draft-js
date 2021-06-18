@@ -19,6 +19,7 @@ const React = require('react');
 const shallowEqual = require('shallowEqual');
 
 type Props = {
+  ariaHidden?: boolean,
   accessibilityID: string,
   className?: string,
   editorState: EditorState,
@@ -54,6 +55,7 @@ class DraftEditorPlaceholder extends React.Component<Props> {
 
     return (
       <div
+        aria-hidden={this.props.ariaHidden}
         className={cx({
           'public/DraftEditorPlaceholder/root': true,
           'public/DraftEditorPlaceholder/hasFocus': this.props.editorState

@@ -126,6 +126,8 @@ class UpdateDraftEditorFlags extends React.Component<{
   }
 }
 
+const EDITOR_ID_PLACEHOLDER = '{{editor_id_placeholder}}';
+
 /**
  * `DraftEditor` is the root editor component. It composes a `contentEditable`
  * div, and provides a wide variety of useful function props for managing the
@@ -133,7 +135,7 @@ class UpdateDraftEditorFlags extends React.Component<{
  */
 class DraftEditor extends React.Component<DraftEditorProps, State> {
   static defaultProps: DraftEditorDefaultProps = {
-    ariaDescribedBy: '{{editor_id_placeholder}}',
+    ariaDescribedBy: EDITOR_ID_PLACEHOLDER,
     blockRenderMap: DefaultDraftBlockRenderMap,
     blockRendererFn() {
       return null;
@@ -300,6 +302,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _renderPlaceholder(): React.Node {
     if (this._showPlaceholder()) {
       const placeHolderProps = {
+        ariaHidden: this.props.placeholderAriaHidden,
         accessibilityID: this._placeholderAccessibilityID,
         className: this.props.placeholderClassName,
         editorState: this.props.editorState,
@@ -316,18 +319,20 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   }
 
   /**
-   * returns ariaDescribedBy prop with '{{editor_id_placeholder}}' replaced with
+   * returns ariaDescribedBy prop with EDITOR_ID_PLACEHOLDER replaced with
    * the DOM id of the placeholder (if it exists)
    * @returns aria-describedby attribute value
    */
   _renderARIADescribedBy(): ?string {
     const describedBy = this.props.ariaDescribedBy || '';
+    if (this.props.placeholderAriaHidden) {
+      return describedBy === EDITOR_ID_PLACEHOLDER ? undefined : describedBy;
+    }
     const placeholderID = this._showPlaceholder()
       ? this._placeholderAccessibilityID
       : '';
     return (
-      describedBy.replace('{{editor_id_placeholder}}', placeholderID) ||
-      undefined
+      describedBy.replace(EDITOR_ID_PLACEHOLDER, placeholderID) || undefined
     );
   }
 
