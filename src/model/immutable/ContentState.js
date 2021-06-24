@@ -280,6 +280,7 @@ class ContentState extends ContentStateRecord {
     return new ContentState({
       ...state,
       blockMap: OrderedMap(state.blockMap).map(
+        // $FlowFixMe[method-unbinding]
         ContentState.createContentBlockFromJS,
       ),
       selectionBefore: new SelectionState(state.selectionBefore),
