@@ -14,7 +14,7 @@
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
-    "@babel/preset-react": "^7.12.10",
+    "@babel/preset-react": "^7.14.5",
     "babelify": "^10.0.0",
     "browserify": "^17.0.0"
   },
