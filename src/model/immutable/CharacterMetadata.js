@@ -26,10 +26,9 @@ export type CharacterMetadataRawConfig = {
   ...
 };
 
-type CharacterMetadataConfig = {
+type CharacterMetadataConfig = interface {
   style?: CharacterMetadataConfigValueType,
   entity?: CharacterMetadataConfigValueType,
-  ...
 };
 
 const EMPTY_SET = OrderedSet();
@@ -98,6 +97,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
     };
 
     // Fill in unspecified properties, if necessary.
+    // $FlowFixMe[incompatible-call] added when improving typing for this parameters
     const configMap = Map(defaultConfig).merge(config);
 
     const existing: ?CharacterMetadata = pool.get(configMap);
@@ -123,6 +123,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
 
 const EMPTY = new CharacterMetadata();
 let pool: Map<Map<any, any>, CharacterMetadata> = Map([
+  // $FlowFixMe[incompatible-call] added when improving typing for this parameters
   [Map(defaultRecord), EMPTY],
 ]);
 

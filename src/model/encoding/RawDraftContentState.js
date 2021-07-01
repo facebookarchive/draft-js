@@ -25,6 +25,5 @@ import type {RawDraftEntity} from 'RawDraftEntity';
  */
 export type RawDraftContentState = {
   blocks: Array<RawDraftContentBlock>,
-  entityMap: {[key: string]: RawDraftEntity, ...},
-  ...
+  entityMap: {[key: string]: RawDraftEntity},
 };

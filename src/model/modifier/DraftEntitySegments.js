@@ -38,7 +38,7 @@ import type {DraftRemovalDirection} from 'DraftRemovalDirection';
  *            ^
  */
 const DraftEntitySegments = {
-  getRemovalRange: function(
+  getRemovalRange(
     selectionStart: number,
     selectionEnd: number,
     text: string,

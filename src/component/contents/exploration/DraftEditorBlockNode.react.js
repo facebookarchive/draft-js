@@ -27,7 +27,6 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorNode = require('DraftEditorNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
 const Scroll = require('Scroll');
 const Style = require('Style');
 
@@ -37,12 +36,13 @@ const getViewportDimensions = require('getViewportDimensions');
 const Immutable = require('immutable');
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
+const React = require('react');
 
 const SCROLL_BUFFER = 10;
 
 const {List} = Immutable;
 
-// we should harden up the bellow flow types to make them more strict
+// we should harden up the below flow types to make them more strict
 type CustomRenderConfig = Object;
 type DraftRenderConfig = Object;
 type BlockRenderFn = (block: BlockNodeRecord) => ?Object;

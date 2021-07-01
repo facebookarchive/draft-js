@@ -29,10 +29,7 @@ function keyCommandDeleteWord(editorState: EditorState): EditorState {
       const offset = selection.getStartOffset();
       const key = selection.getStartKey();
       const content = strategyState.getCurrentContent();
-      const text = content
-        .getBlockForKey(key)
-        .getText()
-        .slice(offset);
+      const text = content.getBlockForKey(key).getText().slice(offset);
       const toRemove = DraftRemovableWord.getForward(text);
 
       // If there are no words in front of the cursor, remove the newline.

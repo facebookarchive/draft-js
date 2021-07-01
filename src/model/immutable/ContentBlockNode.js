@@ -77,46 +77,56 @@ const decorateCharacterList = (
   return config;
 };
 
-class ContentBlockNode extends (Record(defaultRecord): any)
+class ContentBlockNode
+  extends (Record(defaultRecord): any)
   implements BlockNode {
   constructor(props: ContentBlockNodeConfig = defaultRecord) {
     /* eslint-disable-next-line constructor-super */
     super(decorateCharacterList(props));
   }
 
+  // $FlowFixMe[method-unbinding]
   getKey(): BlockNodeKey {
     return this.get('key');
   }
 
+  // $FlowFixMe[method-unbinding]
   getType(): DraftBlockType {
     return this.get('type');
   }
 
+  // $FlowFixMe[method-unbinding]
   getText(): string {
     return this.get('text');
   }
 
+  // $FlowFixMe[method-unbinding]
   getCharacterList(): List<CharacterMetadata> {
     return this.get('characterList');
   }
 
+  // $FlowFixMe[method-unbinding]
   getLength(): number {
     return this.getText().length;
   }
 
+  // $FlowFixMe[method-unbinding]
   getDepth(): number {
     return this.get('depth');
   }
 
+  // $FlowFixMe[method-unbinding]
   getData(): Map<any, any> {
     return this.get('data');
   }
 
+  // $FlowFixMe[method-unbinding]
   getInlineStyleAt(offset: number): DraftInlineStyle {
     const character = this.getCharacterList().get(offset);
     return character ? character.getStyle() : EMPTY_SET;
   }
 
+  // $FlowFixMe[method-unbinding]
   getEntityAt(offset: number): ?string {
     const character = this.getCharacterList().get(offset);
     return character ? character.getEntity() : null;
@@ -138,6 +148,7 @@ class ContentBlockNode extends (Record(defaultRecord): any)
     return this.get('nextSibling');
   }
 
+  // $FlowFixMe[method-unbinding]
   findStyleRanges(
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
@@ -150,6 +161,7 @@ class ContentBlockNode extends (Record(defaultRecord): any)
     );
   }
 
+  // $FlowFixMe[method-unbinding]
   findEntityRanges(
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,

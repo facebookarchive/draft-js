@@ -22,7 +22,7 @@ const Immutable = require('immutable');
 
 const {List, Repeat, Record} = Immutable;
 
-const returnTrue = function() {
+const returnTrue = function () {
   return true;
 };
 
