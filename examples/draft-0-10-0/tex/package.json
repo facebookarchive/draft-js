@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
-    "@babel/node": "^7.12.6"
+    "@babel/node": "^7.14.7"
   }
 }
