@@ -176,7 +176,7 @@ const getElementPropsConfig = (
   offsetKey: string,
   blockStyleFn: BlockStyleFn,
   customConfig: *,
-  ref: null | {|current: null | Element|},
+  ref: null | {current: null | Element},
 ): Object => {
   let elementProps: Object = {
     'data-block': true,
@@ -203,7 +203,7 @@ const getElementPropsConfig = (
 };
 
 class DraftEditorBlockNode extends React.Component<Props> {
-  wrapperRef: {|current: null | Element|} = React.createRef<Element>();
+  wrapperRef: {current: null | Element} = React.createRef<Element>();
 
   shouldComponentUpdate(nextProps: Props): boolean {
     const {block, direction, tree} = this.props;
