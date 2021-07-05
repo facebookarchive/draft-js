@@ -75,7 +75,7 @@
     "gulp-if": "^3.0.0",
     "gulp-rename": "^2.0.0",
     "gulp-util": "^3.0.8",
-    "jest": "^26.4.2",
+    "jest": "^27.0.6",
     "prettier": "1.19.1",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
