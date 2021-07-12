@@ -364,6 +364,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
       WebkitUserSelect: 'text',
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
+      overflowY: 'auto',
     };
 
     // The aria-expanded and aria-haspopup properties should only be rendered
