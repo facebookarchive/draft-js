@@ -10,10 +10,12 @@
  */
 
 'use strict';
-
 import type {BlockMap} from 'BlockMap';
 import type {BlockNodeConfig} from 'BlockNode';
 import type CharacterMetadata from 'CharacterMetadata';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {EntityRange} from 'EntityRange';
+import type {InlineStyleRange} from 'InlineStyleRange';
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
@@ -94,10 +96,38 @@ const addKeyIfMissing = (block: RawDraftContentBlock): RawDraftContentBlock => {
  * construct their links.
  */
 const updateNodeStack = (
-  stack: Array<*>,
-  nodes: Array<*>,
+  stack: Array<
+    | any
+    | {
+        children?: Array<RawDraftContentBlock>,
+        data?: any,
+        depth: ?number,
+        entityRanges: ?Array<EntityRange>,
+        inlineStyleRanges: ?Array<InlineStyleRange>,
+        key: ?string,
+        parentRef: ContentBlockNode,
+        text: string,
+        type: DraftBlockType,
+        ...
+      },
+  >,
+  nodes: Array<any>,
   parentRef: ContentBlockNode,
-): Array<*> => {
+): Array<
+  | any
+  | {
+      children?: Array<RawDraftContentBlock>,
+      data?: any,
+      depth: ?number,
+      entityRanges: ?Array<EntityRange>,
+      inlineStyleRanges: ?Array<InlineStyleRange>,
+      key: ?string,
+      parentRef: ContentBlockNode,
+      text: string,
+      type: DraftBlockType,
+      ...
+    },
+> => {
   const nodesWithParentRef = nodes.map(block => {
     return {
       ...block,
@@ -117,7 +147,7 @@ const updateNodeStack = (
  */
 const decodeContentBlockNodes = (
   blocks: Array<RawDraftContentBlock>,
-  entityMap: *,
+  entityMap: EntityKeyMap,
 ): BlockMap => {
   return (
     blocks

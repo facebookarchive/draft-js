@@ -95,7 +95,7 @@ const shouldNotAddWrapperElement = (
 };
 
 const applyWrapperElementToSiblings = (
-  wrapperTemplate: *,
+  wrapperTemplate: any,
   Element: string,
   nodes: Array<React.Node>,
 ): Array<React.Node> => {
@@ -175,7 +175,7 @@ const getElementPropsConfig = (
   editorKey: string,
   offsetKey: string,
   blockStyleFn: BlockStyleFn,
-  customConfig: *,
+  customConfig: CustomRenderConfig,
   ref: null | {current: null | Element},
 ): Object => {
   let elementProps: Object = {

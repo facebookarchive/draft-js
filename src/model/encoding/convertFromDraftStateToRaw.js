@@ -10,11 +10,11 @@
  */
 
 'use strict';
-
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
+import type {RawDraftEntity} from 'RawDraftEntity';
 
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
@@ -24,7 +24,10 @@ const encodeEntityRanges = require('encodeEntityRanges');
 const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 const invariant = require('invariant');
 
-const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
+const createRawBlock = (
+  block: BlockNodeRecord,
+  entityStorageMap: {[key: string]: RawDraftEntity},
+) => {
   return {
     key: block.getKey(),
     text: block.getText(),
@@ -38,9 +41,9 @@ const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
 
 const insertRawBlock = (
   block: BlockNodeRecord,
-  entityMap: *,
+  entityMap: {[key: string]: RawDraftEntity},
   rawBlocks: Array<RawDraftContentBlock>,
-  blockCacheRef: *,
+  blockCacheRef: {...},
 ) => {
   if (block instanceof ContentBlock) {
     rawBlocks.push(createRawBlock(block, entityMap));
