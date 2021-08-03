@@ -96,6 +96,7 @@ beforeEach(() => {
     setMode: jest.fn(),
     restoreEditorDOM: jest.fn(),
     exitCurrentMode: jest.fn(),
+    restoreBlockDOM: jest.fn(),
     update: jest.fn(state => (editor._latestEditorState = state)),
   };
 });
