@@ -243,7 +243,7 @@ class DraftEditorContents extends React.Component<Props> {
       const child = React.createElement(
         Element,
         childProps,
-        <Component {...componentProps} key={key} />,
+        <Component {...componentProps} />,
       );
 
       processedBlocks.push({
