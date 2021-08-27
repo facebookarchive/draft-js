@@ -54,7 +54,6 @@ Object {
     "characterList": Array [],
     "children": Array [
       "D",
-      "E",
     ],
     "data": Object {},
     "depth": 0,
@@ -92,56 +91,11 @@ Object {
     "data": Object {},
     "depth": 0,
     "key": "D",
-    "nextSibling": "E",
+    "nextSibling": null,
     "parent": "C",
     "prevSibling": null,
     "text": "Delta",
     "type": "header-two",
-  },
-  "E": Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "E",
-    "nextSibling": null,
-    "parent": "C",
-    "prevSibling": "D",
-    "text": "Elephant",
-    "type": "unstyled",
   },
   "F": Object {
     "characterList": Array [
@@ -541,7 +495,6 @@ Object {
     "characterList": Array [],
     "children": Array [
       "C",
-      "F",
     ],
     "data": Object {},
     "depth": 0,
@@ -561,7 +514,7 @@ Object {
     "data": Object {},
     "depth": 0,
     "key": "C",
-    "nextSibling": "F",
+    "nextSibling": null,
     "parent": "B",
     "prevSibling": null,
     "text": "",
@@ -634,6 +587,22 @@ Object {
         "entity": null,
         "style": Array [],
       },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
     ],
     "children": Array [],
     "data": Object {},
@@ -642,37 +611,8 @@ Object {
     "nextSibling": null,
     "parent": "C",
     "prevSibling": "D",
-    "text": "Elephant",
+    "text": "ElephantFire",
     "type": "unstyled",
-  },
-  "F": Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "F",
-    "nextSibling": null,
-    "parent": "B",
-    "prevSibling": "C",
-    "text": "Fire",
-    "type": "code-block",
   },
   "G": Object {
     "characterList": Array [
@@ -799,7 +739,6 @@ Object {
     "characterList": Array [],
     "children": Array [
       "C",
-      "F",
     ],
     "data": Object {},
     "depth": 0,
@@ -819,7 +758,7 @@ Object {
     "data": Object {},
     "depth": 0,
     "key": "C",
-    "nextSibling": "F",
+    "nextSibling": null,
     "parent": "B",
     "prevSibling": null,
     "text": "",
@@ -892,6 +831,22 @@ Object {
         "entity": null,
         "style": Array [],
       },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
     ],
     "children": Array [],
     "data": Object {},
@@ -900,37 +855,8 @@ Object {
     "nextSibling": null,
     "parent": "C",
     "prevSibling": "D",
-    "text": "Elephant",
+    "text": "ElephantFire",
     "type": "unstyled",
-  },
-  "F": Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {},
-    "depth": 0,
-    "key": "F",
-    "nextSibling": null,
-    "parent": "B",
-    "prevSibling": "C",
-    "text": "Fire",
-    "type": "code-block",
   },
   "G": Object {
     "characterList": Array [
