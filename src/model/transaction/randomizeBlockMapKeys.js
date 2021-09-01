@@ -10,8 +10,8 @@
  */
 
 'use strict';
-
 import type {BlockMap} from 'BlockMap';
+import type {BlockNodeKey} from 'BlockNode';
 
 const ContentBlockNode = require('ContentBlockNode');
 
@@ -21,7 +21,7 @@ const Immutable = require('immutable');
 const {OrderedMap} = Immutable;
 
 const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
-  const newKeysRef = {};
+  const newKeysRef: {[BlockNodeKey]: string} = {};
 
   // we keep track of root blocks in order to update subsequent sibling links
   let lastRootBlock: ContentBlockNode;

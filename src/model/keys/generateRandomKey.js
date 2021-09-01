@@ -11,7 +11,7 @@
 
 'use strict';
 
-const seenKeys = {};
+const seenKeys: {[string]: boolean} = {};
 const MULTIPLIER = Math.pow(2, 24);
 
 function generateRandomKey(): string {

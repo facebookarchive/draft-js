@@ -277,7 +277,7 @@ const decodeRawEntityMap = (
   rawState: RawDraftContentState,
 ): {entityKeyMap: EntityKeyMap, contentState: ContentState} => {
   const {entityMap: rawEntityMap} = rawState;
-  const entityKeyMap = {};
+  const entityKeyMap: {[string]: string} = {};
   let contentState = contentStateArg;
 
   Object.keys(rawEntityMap).forEach(rawEntityKey => {
@@ -287,6 +287,7 @@ const decodeRawEntityMap = (
     entityKeyMap[rawEntityKey] = contentState.getLastCreatedEntityKey();
   });
 
+  // $FlowFixMe[incompatible-return]
   return {entityKeyMap, contentState};
 };
 

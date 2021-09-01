@@ -108,7 +108,7 @@ type BlockTypeMap = Map<string, string | Array<string>>;
 const buildBlockTypeMap = (
   blockRenderMap: DraftBlockRenderMap,
 ): BlockTypeMap => {
-  const blockTypeMap = {};
+  const blockTypeMap: {[string]: any | Array<any | string>} = {};
 
   blockRenderMap.mapKeys((blockType, desc) => {
     const elements = [desc.element];
