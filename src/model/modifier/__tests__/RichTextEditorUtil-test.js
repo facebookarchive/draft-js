@@ -177,10 +177,7 @@ describe('onTab on list block', () => {
   const changeBlockType = setListItem =>
     EditorState.push(editorState, setListItem, 'change-block-type');
   const getFirstBlockDepth = contentState =>
-    contentState
-      .getCurrentContent()
-      .getFirstBlock()
-      .getDepth();
+    contentState.getCurrentContent().getFirstBlock().getDepth();
   const addTab = contentState =>
     onTab({preventDefault: () => {}}, contentState);
 
