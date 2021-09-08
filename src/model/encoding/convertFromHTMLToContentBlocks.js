@@ -613,7 +613,7 @@ class ContentBlocksBuilder {
       return;
     }
     const image: HTMLImageElement = (node: any);
-    const entityConfig = {};
+    const entityConfig: {[string]: string} = {};
 
     imgAttr.forEach(attr => {
       const imageAttribute = image.getAttribute(attr);
@@ -656,7 +656,7 @@ class ContentBlocksBuilder {
       return;
     }
     const anchor: HTMLAnchorElement = (node: any);
-    const entityConfig = {};
+    const entityConfig: {[string]: string} = {};
 
     anchorAttr.forEach(attr => {
       const anchorAttribute = anchor.getAttribute(attr);
