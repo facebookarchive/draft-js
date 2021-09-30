@@ -48,7 +48,7 @@ const REGEX_CARRIAGE = new RegExp('&#13;?', 'g');
 const REGEX_ZWS = new RegExp('&#8203;?', 'g');
 
 // https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight
-const boldValues = ['bold', 'bolder', '500', '600', '700', '800', '900'];
+const boldValues = ['bold', 'bolder', '600', '700', '800', '900'];
 const notBoldValues = [
   'light',
   'lighter',
@@ -57,6 +57,7 @@ const notBoldValues = [
   '200',
   '300',
   '400',
+  '500',
 ];
 
 const anchorAttr = ['className', 'href', 'rel', 'target', 'title'];
