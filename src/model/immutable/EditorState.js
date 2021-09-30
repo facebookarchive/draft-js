@@ -138,7 +138,10 @@ class EditorState {
     if (contentState.getBlockMap().count() === 0) {
       return EditorState.createEmpty(decorator);
     }
-    const firstKey = contentState.getBlockMap().first().getKey();
+    const firstKey = contentState
+      .getBlockMap()
+      .first()
+      .getKey();
     return EditorState.create({
       currentContent: contentState,
       undoStack: Stack(),
@@ -343,7 +346,10 @@ class EditorState {
   }
 
   isSelectionAtStartOfContent(): boolean {
-    const firstKey = this.getCurrentContent().getBlockMap().first().getKey();
+    const firstKey = this.getCurrentContent()
+      .getBlockMap()
+      .first()
+      .getKey();
     return this.getSelection().hasEdgeWithin(firstKey, 0, 0);
   }
 
