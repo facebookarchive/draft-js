@@ -171,8 +171,10 @@ const NestedRichTextEditorUtil: RichTextUtils = {
       return EditorState.push(
         editorState,
         withoutBlockStyle,
-        withoutBlockStyle.getBlockMap().get(currentBlock.getKey()).getType() ===
-          'unstyled'
+        withoutBlockStyle
+          .getBlockMap()
+          .get(currentBlock.getKey())
+          .getType() === 'unstyled'
           ? 'change-block-type'
           : 'adjust-depth',
       );
