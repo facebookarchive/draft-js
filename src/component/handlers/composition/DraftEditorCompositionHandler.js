@@ -191,15 +191,21 @@ const DraftEditorCompositionHandler = {
         offsetKey,
       );
 
-      const {start, end} = editorState
+      const {start} = editorState
         .getBlockTree(blockKey)
         .getIn([decoratorKey, 'leaves', leafKey]);
+
+      const selection = editorState.getSelection();
+      const selectionStart = selection.getStartOffset();
+      const selectionEnd = selection.getEndOffset();
+
+      composedChars = composedChars.slice(selectionStart - start);
 
       const replacementRange = editorState.getSelection().merge({
         anchorKey: blockKey,
         focusKey: blockKey,
-        anchorOffset: start,
-        focusOffset: end,
+        anchorOffset: selectionStart,
+        focusOffset: selectionEnd,
         isBackward: false,
       });
 
