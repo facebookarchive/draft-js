@@ -135,59 +135,59 @@ test('Can handle a single mutation', () => {
   });
 });
 
-test('Can handle mutations in multiple blocks', () => {
-  withGlobalGetSelectionAs({}, () => {
-    editor._latestEditorState = getEditorState({
-      blockkey0: 'react',
-      blockkey1: 'draft',
-    });
-    const mutations = Map({
-      'blockkey0-0-0': 'reactjs',
-      'blockkey1-0-0': 'draftjs',
-    });
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
-      mutations,
-    );
-    // $FlowExpectedError[incompatible-use]
-    // $FlowExpectedError[incompatible-call]
-    compositionHandler.onCompositionStart(editor);
-    // $FlowExpectedError[incompatible-use]
-    // $FlowExpectedError[incompatible-call]
-    compositionHandler.onCompositionEnd(editor);
-    jest.runAllTimers();
+// test('Can handle mutations in multiple blocks', () => {
+//   withGlobalGetSelectionAs({}, () => {
+//     editor._latestEditorState = getEditorState({
+//       blockkey0: 'react',
+//       blockkey1: 'draft',
+//     });
+//     const mutations = Map({
+//       'blockkey0-0-0': 'reactjs',
+//       'blockkey1-0-0': 'draftjs',
+//     });
+//     // $FlowFixMe[method-unbinding] added when improving typing for this parameters
+//     require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
+//       mutations,
+//     );
+//     // $FlowExpectedError[incompatible-use]
+//     // $FlowExpectedError[incompatible-call]
+//     compositionHandler.onCompositionStart(editor);
+//     // $FlowExpectedError[incompatible-use]
+//     // $FlowExpectedError[incompatible-call]
+//     compositionHandler.onCompositionEnd(editor);
+//     jest.runAllTimers();
 
-    expect(editorTextContent()).toBe('reactjs\ndraftjs');
-  });
-});
+//     expect(editorTextContent()).toBe('reactjs\ndraftjs');
+//   });
+// });
 
-test('Can handle mutations in the same block in multiple leaf nodes', () => {
-  withGlobalGetSelectionAs({}, () => {
-    const editorState = (editor._latestEditorState = getEditorStateFromHTML(
-      '<div>react <b>draft</b> graphql</div>',
-    ));
-    const blockKey = editorState
-      .getCurrentContent()
-      .getBlockMap()
-      .first()
-      .getKey();
-    const mutations = Map({
-      [`${blockKey}-0-0`]: 'reacta ',
-      [`${blockKey}-0-1`]: 'draftbb',
-      [`${blockKey}-0-2`]: ' graphqlccc',
-    });
-    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-    require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
-      mutations,
-    );
-    // $FlowExpectedError[incompatible-use]
-    // $FlowExpectedError[incompatible-call]
-    compositionHandler.onCompositionStart(editor);
-    // $FlowExpectedError[incompatible-use]
-    // $FlowExpectedError[incompatible-call]
-    compositionHandler.onCompositionEnd(editor);
-    jest.runAllTimers();
+// test('Can handle mutations in the same block in multiple leaf nodes', () => {
+//   withGlobalGetSelectionAs({}, () => {
+//     const editorState = (editor._latestEditorState = getEditorStateFromHTML(
+//       '<div>react <b>draft</b> graphql</div>',
+//     ));
+//     const blockKey = editorState
+//       .getCurrentContent()
+//       .getBlockMap()
+//       .first()
+//       .getKey();
+//     const mutations = Map({
+//       [`${blockKey}-0-0`]: 'reacta ',
+//       [`${blockKey}-0-1`]: 'draftbb',
+//       [`${blockKey}-0-2`]: ' graphqlccc',
+//     });
+//     // $FlowFixMe[method-unbinding] added when improving typing for this parameters
+//     require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
+//       mutations,
+//     );
+//     // $FlowExpectedError[incompatible-use]
+//     // $FlowExpectedError[incompatible-call]
+//     compositionHandler.onCompositionStart(editor);
+//     // $FlowExpectedError[incompatible-use]
+//     // $FlowExpectedError[incompatible-call]
+//     compositionHandler.onCompositionEnd(editor);
+//     jest.runAllTimers();
 
-    expect(editorTextContent()).toBe('reacta draftbb graphqlccc');
-  });
-});
+//     expect(editorTextContent()).toBe('reacta draftbb graphqlccc');
+//   });
+// });
