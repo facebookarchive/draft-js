@@ -107,7 +107,7 @@ class DraftJsPlaygroundContainer extends React.Component {
     this.setContent();
   }
 
-  onChange = (editorState) => {
+  onChange = editorState => {
     this.setState({editorState});
   };
 
@@ -173,13 +173,13 @@ class DraftJsPlaygroundContainer extends React.Component {
     });
   };
 
-  updateCodeMirror = (codeMirrorValue) => {
+  updateCodeMirror = codeMirrorValue => {
     this.setState({codeMirrorValue});
   };
 
   shouldExpandNode = (keyName, data, level) => {
     return ['blockMap', 'root'].some(
-      (defaultVisibleNode) => keyName[0] === defaultVisibleNode,
+      defaultVisibleNode => keyName[0] === defaultVisibleNode,
     );
   };
 
@@ -276,7 +276,7 @@ class DraftJsPlaygroundContainer extends React.Component {
                   onBeforeChange={(editor, data, codeMirrorValue) =>
                     this.updateCodeMirror(codeMirrorValue)
                   }
-                  ref={(input) => {
+                  ref={input => {
                     this.markupinput = input;
                   }}
                   options={{
@@ -293,7 +293,7 @@ class DraftJsPlaygroundContainer extends React.Component {
             <div className="playground-raw-preview">
               <select
                 style={{flexShrink: 0, width: '11em'}}
-                onChange={(e) =>
+                onChange={e =>
                   this.setState({showAllState: e.target.value === 'all'})
                 }>
                 <option value="content">Current Content</option>

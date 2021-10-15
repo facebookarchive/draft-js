@@ -163,9 +163,8 @@ const NestedRichTextEditorUtil: RichTextUtils = {
     // }
 
     // If that doesn't succeed, try to remove the current block style.
-    const withoutBlockStyle = NestedRichTextEditorUtil.tryToRemoveBlockStyle(
-      editorState,
-    );
+    const withoutBlockStyle =
+      NestedRichTextEditorUtil.tryToRemoveBlockStyle(editorState);
 
     if (withoutBlockStyle) {
       return EditorState.push(
@@ -202,12 +201,10 @@ const NestedRichTextEditorUtil: RichTextUtils = {
     const isSelectionCollapsed = selection.isCollapsed();
     const isMultiBlockSelection =
       selection.getAnchorKey() !== selection.getFocusKey();
-    const isUnsupportedNestingBlockType = NESTING_DISABLED_TYPES.includes(
-      blockType,
-    );
-    const isCurrentBlockOfUnsupportedNestingBlockType = NESTING_DISABLED_TYPES.includes(
-      currentBlock.getType(),
-    );
+    const isUnsupportedNestingBlockType =
+      NESTING_DISABLED_TYPES.includes(blockType);
+    const isCurrentBlockOfUnsupportedNestingBlockType =
+      NESTING_DISABLED_TYPES.includes(currentBlock.getType());
 
     // we don't allow this operations to avoid corrupting the document data model
     // to make sure that non nested blockTypes wont inherit children

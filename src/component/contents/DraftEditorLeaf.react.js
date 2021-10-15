@@ -20,8 +20,8 @@ const DraftEditorTextNode = require('DraftEditorTextNode.react');
 const invariant = require('invariant');
 const isHTMLBRElement = require('isHTMLBRElement');
 const React = require('react');
-const setDraftEditorSelection = require('setDraftEditorSelection')
-  .setDraftEditorSelection;
+const setDraftEditorSelection =
+  require('setDraftEditorSelection').setDraftEditorSelection;
 
 type CSSStyleObject = {[property: string]: string | number, ...};
 
