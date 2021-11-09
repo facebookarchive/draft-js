@@ -33,7 +33,7 @@ const NonASCIIStringSnapshotSerializer = {
       '"' +
       val
         .split('')
-        .map(char => {
+        .map((char) => {
           const code = char.charCodeAt(0);
           return code > MAX_ASCII_CHARACTER
             ? '\\u' + code.toString(16).padStart(4, '0')
