@@ -56,9 +56,7 @@ this remains efficient due to data persistence across immutable objects.
 import {Editor, EditorState} from 'draft-js';
 
 const MyInput = () => {
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty(),
-  );
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   return <Editor editorState={editorState} onChange={setEditorState} />;
 };
