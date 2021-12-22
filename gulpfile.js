@@ -26,6 +26,7 @@ const StatsPlugin = require('stats-webpack-plugin');
 const through = require('through2');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpackStream = require('webpack-stream');
+const Visualizer = require('webpack-visualizer-plugin');
 
 const paths = {
   dist: 'dist',
@@ -114,6 +115,9 @@ const buildDist = opts => {
       }),
       new StatsPlugin(`../meta/bundle-size-stats/${opts.output}.json`, {
         chunkModules: true,
+      }),
+      new Visualizer({
+        filename: './meta/bundle-size-stats/statistics.html',
       }),
     ],
   };
