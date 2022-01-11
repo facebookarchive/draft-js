@@ -238,7 +238,7 @@ const DraftEditorCompositionHandler = {
     );
     const compositionEndSelectionState = documentSelection.selectionState;
 
-    editor.restoreEditorDOM();
+    // editor.restoreEditorDOM();
 
     // See:
     // - https://github.com/facebook/draft-js/issues/2093
@@ -248,6 +248,13 @@ const DraftEditorCompositionHandler = {
     const editorStateWithUpdatedSelection = isIE
       ? EditorState.forceSelection(editorState, compositionEndSelectionState)
       : EditorState.acceptSelection(editorState, compositionEndSelectionState);
+
+    const anchorKey = compositionEndSelectionState.getAnchorKey();
+    const focusKey = compositionEndSelectionState.getFocusKey();
+
+    anchorKey === focusKey
+      ? editor.restoreBlockDOM(anchorKey)
+      : editor.restoreEditorDOM();
 
     editor.update(
       EditorState.push(
