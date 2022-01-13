@@ -20,7 +20,7 @@ function getOwnObjectValues<TValue>(obj: {
   +[key: string]: TValue,
   ...
 }): Array<TValue> {
-  return Object.keys(obj).map(key => obj[key]);
+  return Object.keys(obj).map((key) => obj[key]);
 }
 
 module.exports = getOwnObjectValues;
