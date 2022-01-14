@@ -186,18 +186,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
 
   editor: ?HTMLElement;
   editorContainer: ?HTMLElement;
-  focus: () => void;
-  blur: () => void;
-  setMode: (mode: DraftEditorModes) => void;
-  exitCurrentMode: () => void;
-  restoreEditorDOM: (scrollPosition?: DraftScrollPosition) => void;
-  setClipboard: (clipboard: ?BlockMap) => void;
-  getClipboard: () => ?BlockMap;
   getEditorKey: () => string;
-  update: (editorState: EditorState) => void;
-  onDragEnter: () => void;
-  onDragLeave: () => void;
-
   // See `restoreEditorDOM()`.
   state: State = {contentsKey: 0};
 
