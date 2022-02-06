@@ -17,10 +17,8 @@ const applyEntityToContentBlock = require('applyEntityToContentBlock');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const removeEntitiesAtEdges = require('removeEntitiesAtEdges');
 
-const {
-  contentState: sampleContentState,
-  selectionState,
-} = getSampleStateForTesting();
+const {contentState: sampleContentState, selectionState} =
+  getSampleStateForTesting();
 
 const selectionOnEntity = selectionState.merge({
   anchorKey: 'b',

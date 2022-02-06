@@ -10,11 +10,13 @@
  */
 
 'use strict';
-
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
+import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
+import type {RawDraftEntity} from 'RawDraftEntity';
 
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
@@ -24,7 +26,10 @@ const encodeEntityRanges = require('encodeEntityRanges');
 const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 const invariant = require('invariant');
 
-const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
+const createRawBlock = (
+  block: BlockNodeRecord,
+  entityStorageMap: {[key: string]: RawDraftEntity},
+) => {
   return {
     key: block.getKey(),
     text: block.getText(),
@@ -38,9 +43,9 @@ const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
 
 const insertRawBlock = (
   block: BlockNodeRecord,
-  entityMap: *,
+  entityMap: {[key: string]: RawDraftEntity},
   rawBlocks: Array<RawDraftContentBlock>,
-  blockCacheRef: *,
+  blockCacheRef: {...},
 ) => {
   if (block instanceof ContentBlock) {
     rawBlocks.push(createRawBlock(block, entityMap));
@@ -72,7 +77,7 @@ const encodeRawBlocks = (
   const rawBlocks = [];
 
   const blockCacheRef = {};
-  const entityCacheRef = {};
+  const entityCacheRef: {[string]: ?string} = {};
   let entityStorageKey = 0;
 
   contentState.getBlockMap().forEach(block => {
@@ -114,7 +119,13 @@ const encodeRawEntityMap = (
 ): RawDraftContentState => {
   const {blocks, entityMap} = rawState;
 
-  const rawEntityMap = {};
+  const rawEntityMap: {
+    [number]: {
+      data: any,
+      mutability: DraftEntityMutability,
+      type: DraftEntityType,
+    },
+  } = {};
 
   Object.keys(entityMap).forEach((key, index) => {
     const entity = contentState.getEntity(DraftStringKey.unstringify(key));
@@ -127,6 +138,8 @@ const encodeRawEntityMap = (
 
   return {
     blocks,
+    // $FlowFixMe[incompatible-exact]
+    // $FlowFixMe[incompatible-return]
     entityMap: rawEntityMap,
   };
 };

@@ -27,7 +27,7 @@ function removeEntitiesAtEdges(
 ): ContentState {
   const blockMap = contentState.getBlockMap();
 
-  const updatedBlocks = {};
+  const updatedBlocks: {[string]: BlockNodeRecord} = {};
 
   const startKey = selectionState.getStartKey();
   const startOffset = selectionState.getStartOffset();

@@ -261,7 +261,7 @@ class ContentState extends ContentStateRecord {
 
   static createFromText(
     text: string,
-    delimiter: string | RegExp = /\r\n?|\n/g,
+    delimiter?: string | RegExp = /\r\n?|\n/g,
   ): ContentState {
     const strings = text.split(delimiter);
     const blocks = strings.map(block => {
@@ -280,6 +280,7 @@ class ContentState extends ContentStateRecord {
     return new ContentState({
       ...state,
       blockMap: OrderedMap(state.blockMap).map(
+        // $FlowFixMe[method-unbinding]
         ContentState.createContentBlockFromJS,
       ),
       selectionBefore: new SelectionState(state.selectionBefore),

@@ -54,39 +54,48 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
     super(decorateCharacterList(config));
   }
 
+  // $FlowFixMe[method-unbinding]
   getKey(): BlockNodeKey {
     return this.get('key');
   }
 
+  // $FlowFixMe[method-unbinding]
   getType(): DraftBlockType {
     return this.get('type');
   }
 
+  // $FlowFixMe[method-unbinding]
   getText(): string {
     return this.get('text');
   }
 
+  // $FlowFixMe[method-unbinding]
   getCharacterList(): List<CharacterMetadata> {
     return this.get('characterList');
   }
 
+  // $FlowFixMe[method-unbinding]
   getLength(): number {
     return this.getText().length;
   }
 
+  // $FlowFixMe[method-unbinding]
   getDepth(): number {
     return this.get('depth');
   }
 
+  // $FlowFixMe[method-unbinding]
   getData(): Map<any, any> {
     return this.get('data');
   }
 
+  // $FlowFixMe[method-unbinding]
   getInlineStyleAt(offset: number): DraftInlineStyle {
     const character = this.getCharacterList().get(offset);
     return character ? character.getStyle() : EMPTY_SET;
   }
 
+  // $FlowFixMe[method-unbinding]
   getEntityAt(offset: number): ?string {
     const character = this.getCharacterList().get(offset);
     return character ? character.getEntity() : null;
@@ -95,6 +104,7 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
   /**
    * Execute a callback for every contiguous range of styles within the block.
    */
+  // $FlowFixMe[method-unbinding]
   findStyleRanges(
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,
@@ -110,6 +120,7 @@ class ContentBlock extends ContentBlockRecord implements BlockNode {
   /**
    * Execute a callback for every contiguous range of entities within the block.
    */
+  // $FlowFixMe[method-unbinding]
   findEntityRanges(
     filterFn: (value: CharacterMetadata) => boolean,
     callback: (start: number, end: number) => void,

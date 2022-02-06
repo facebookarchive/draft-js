@@ -18,12 +18,12 @@ const DraftEntityInstance = {
 
 let count = 0;
 
-DraftEntity.create = jest.fn(function() {
+DraftEntity.create = jest.fn(function () {
   count++;
   return '' + count;
 });
 
-DraftEntity.get = jest.fn(function() {
+DraftEntity.get = jest.fn(function () {
   return DraftEntityInstance;
 });
 

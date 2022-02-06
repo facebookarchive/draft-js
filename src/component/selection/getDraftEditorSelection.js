@@ -25,14 +25,10 @@ function getDraftEditorSelection(
   editorState: EditorState,
   root: HTMLElement,
 ): DOMDerivedSelection {
-  const selection: SelectionObject = root.ownerDocument.defaultView.getSelection();
-  const {
-    anchorNode,
-    anchorOffset,
-    focusNode,
-    focusOffset,
-    rangeCount,
-  } = selection;
+  const selection: SelectionObject =
+    root.ownerDocument.defaultView.getSelection();
+  const {anchorNode, anchorOffset, focusNode, focusOffset, rangeCount} =
+    selection;
 
   if (
     // No active selection.

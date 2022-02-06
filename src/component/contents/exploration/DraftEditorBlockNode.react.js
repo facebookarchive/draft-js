@@ -95,7 +95,7 @@ const shouldNotAddWrapperElement = (
 };
 
 const applyWrapperElementToSiblings = (
-  wrapperTemplate: *,
+  wrapperTemplate: any,
   Element: string,
   nodes: Array<React.Node>,
 ): Array<React.Node> => {
@@ -175,8 +175,8 @@ const getElementPropsConfig = (
   editorKey: string,
   offsetKey: string,
   blockStyleFn: BlockStyleFn,
-  customConfig: *,
-  ref: null | {|current: null | Element|},
+  customConfig: CustomRenderConfig,
+  ref: null | {current: null | Element},
 ): Object => {
   let elementProps: Object = {
     'data-block': true,
@@ -203,7 +203,7 @@ const getElementPropsConfig = (
 };
 
 class DraftEditorBlockNode extends React.Component<Props> {
-  wrapperRef: {|current: null | Element|} = React.createRef<Element>();
+  wrapperRef: {current: null | Element} = React.createRef<Element>();
 
   shouldComponentUpdate(nextProps: Props): boolean {
     const {block, direction, tree} = this.props;

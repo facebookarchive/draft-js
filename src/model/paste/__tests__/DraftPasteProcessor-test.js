@@ -92,12 +92,14 @@ test('must identify italics text', () => {
 });
 
 test('must identify overlapping inline styles', () => {
+  /* eslint-disable fb-www/gender-neutral-language */
   assertDraftPasteProcessorProcessHTML(`
     <i>
       <b>he</b>
       hi
     </i>
   `);
+  /* eslint-enable fb-www/gender-neutral-language */
 });
 
 test('must identify block styles', () => {

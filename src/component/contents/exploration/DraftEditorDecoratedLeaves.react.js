@@ -28,7 +28,7 @@ const React = require('react');
 
 type Props = {
   block: BlockNodeRecord,
-  children: ?Array<React.Node>,
+  children: ?$ReadOnlyArray<React.Node>,
   contentState: ContentState,
   decorator: DraftDecoratorType,
   decoratorKey: string,

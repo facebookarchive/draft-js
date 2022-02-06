@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @providesModule DraftEditor
+ * @format
  */
 
 /**
@@ -17,7 +18,7 @@
   text-align: initial;
 }
 
-.public/DraftEditor/content[contenteditable="true"] {
+.public/DraftEditor/content[contenteditable='true'] {
   -webkit-user-modify: read-write-plaintext-only;
 }
 
@@ -31,10 +32,13 @@
  */
 .DraftEditor/editorContainer {
   background-color: rgba(255, 255, 255, 0);
-  /* Repair mysterious missing Safari cursor */
-  border-left: 0.1px solid transparent;
   position: relative;
   z-index: 1;
+}
+
+.safari .DraftEditor/editorContainer {
+  /* Repair mysterious missing Safari cursor */
+  border-left: 0.1px solid transparent;
 }
 
 .public/DraftEditor/block {

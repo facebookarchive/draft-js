@@ -23,27 +23,13 @@ let leafChildren = null;
 let textNodes = null;
 
 const resetRootNodeMocks = () => {
-  ({
-    editorState,
-    root,
-    contents,
-    blocks,
-    leafs,
-    leafChildren,
-    textNodes,
-  } = getSampleSelectionMocksForTesting());
+  ({editorState, root, contents, blocks, leafs, leafChildren, textNodes} =
+    getSampleSelectionMocksForTesting());
 };
 
 const resetNestedNodeMocks = () => {
-  ({
-    editorState,
-    root,
-    contents,
-    blocks,
-    leafs,
-    leafChildren,
-    textNodes,
-  } = getSampleSelectionMocksForTestingNestedBlocks());
+  ({editorState, root, contents, blocks, leafs, leafChildren, textNodes} =
+    getSampleSelectionMocksForTestingNestedBlocks());
 };
 
 const assertGetDraftEditorSelection = getSelectionReturnValue => {
