@@ -12,6 +12,7 @@
  * production systems. This file may be update/removed without notice.
  */
 import type {BlockMap} from 'BlockMap';
+import type {BlockNodeKey} from 'BlockNode';
 
 const ContentBlockNode = require('ContentBlockNode');
 const DraftTreeInvariants = require('DraftTreeInvariants');
@@ -49,7 +50,7 @@ const updateParentChild = (
     parent != null && child != null,
     'parent & child should exist in the block map',
   );
-  const newBlocks = {};
+  const newBlocks: {[string | BlockNodeKey]: $FlowFixMe} = {};
   const existingChildren = parent.getChildKeys();
   invariant(
     existingChildren != null &&
@@ -106,7 +107,7 @@ const updateSibling = (
     prevSibling != null && nextSibling != null,
     'siblings should exist in the block map',
   );
-  const newBlocks = {};
+  const newBlocks: {[string]: $FlowFixMe} = {};
   newBlocks[prevKey] = prevSibling.merge({
     nextSibling: nextKey,
   });
@@ -136,7 +137,7 @@ const replaceParentChild = (
     'parent & child should exist in the block map',
   );
   const existingChildren = parent.getChildKeys();
-  const newBlocks = {};
+  const newBlocks: {[string]: $FlowFixMe} = {};
   newBlocks[parentKey] = parent.merge({
     children: existingChildren.set(
       existingChildren.indexOf(existingChildKey),

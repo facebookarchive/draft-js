@@ -138,7 +138,8 @@ function StyleButton({active, style, label, onToggle}) {
       onMouseDown={(e) => {
         e.preventDefault();
         onToggle(style);
-      }}>
+      }}
+    >
       {label}
     </span>
   );

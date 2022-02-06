@@ -10,6 +10,7 @@
  */
 
 'use strict';
+import type {BlockNodeKey} from 'BlockNode';
 
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
@@ -111,7 +112,7 @@ const getSampleSelectionMocksForTestingNestedBlocks = (): Object => {
     return outerBlockElement;
   });
 
-  const blockCacheRef = {};
+  const blockCacheRef: {[BlockNodeKey]: HTMLDivElement} = {};
   blocks.forEach((blockElem, index) => {
     const currentBlock = contentBlocks[index];
     const parentKey = currentBlock.getParentKey();
@@ -126,6 +127,7 @@ const getSampleSelectionMocksForTestingNestedBlocks = (): Object => {
     }
 
     // append to to the innerBlockElement of the parent block
+    // $FlowFixMe[incompatible-use]
     blockCacheRef[parentKey].firstChild.appendChild(blockElem);
   });
 

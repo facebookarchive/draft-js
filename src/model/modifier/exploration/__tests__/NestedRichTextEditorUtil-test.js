@@ -1036,8 +1036,9 @@ test('onDelete does not handle non-block-end or non-collapsed selections', () =>
 });
 
 test('onDelete removes a following atomic block', () => {
-  const blockSizeBeforeRemove = editorState.getCurrentContent().getBlockMap()
-    .size;
+  const blockSizeBeforeRemove = editorState
+    .getCurrentContent()
+    .getBlockMap().size;
   const withAtomicBlock = insertAtomicBlock(editorState);
   const content = withAtomicBlock.getCurrentContent();
   const atomicKey = content

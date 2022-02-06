@@ -200,7 +200,8 @@ class DraftJsPlaygroundContainer extends React.Component {
               className="nav-home"
               target="_blank"
               rel="noopener noreferrer"
-              href="https://draftjs.org/">
+              href="https://draftjs.org/"
+            >
               Draft.js
             </a>
             <ul className="nav-site">
@@ -208,7 +209,8 @@ class DraftJsPlaygroundContainer extends React.Component {
                 <select
                   className="nav-experiment-selector"
                   name="experiment"
-                  onChange={this.onExperimentChange}>
+                  onChange={this.onExperimentChange}
+                >
                   <option value="">Try an experiment..</option>
                   <option value="draft_refactored_html_importer">
                     Modern HTML importer
@@ -222,7 +224,8 @@ class DraftJsPlaygroundContainer extends React.Component {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://draftjs.org/docs/getting-started">
+                  href="https://draftjs.org/docs/getting-started"
+                >
                   Docs
                 </a>
               </li>
@@ -230,7 +233,8 @@ class DraftJsPlaygroundContainer extends React.Component {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://github.com/facebook/draft-js">
+                  href="https://github.com/facebook/draft-js"
+                >
                   GitHub
                 </a>
               </li>
@@ -254,7 +258,8 @@ class DraftJsPlaygroundContainer extends React.Component {
                     <select
                       title="Draft.js content type switch"
                       onChange={this.onSelectChange}
-                      value={mode}>
+                      value={mode}
+                    >
                       <option value="rawContent">Raw</option>
                       <option value="html">HTML</option>
                     </select>
@@ -262,12 +267,14 @@ class DraftJsPlaygroundContainer extends React.Component {
                   <section className="contentControls">
                     <button
                       title="Import content type from the editor"
-                      onClick={this.importEditorState}>
+                      onClick={this.importEditorState}
+                    >
                       Import
                     </button>
                     <button
                       title="Update the editor with content type"
-                      onClick={this.setContent}>
+                      onClick={this.setContent}
+                    >
                       Update
                     </button>
                   </section>
@@ -295,7 +302,8 @@ class DraftJsPlaygroundContainer extends React.Component {
                 style={{flexShrink: 0, width: '11em'}}
                 onChange={(e) =>
                   this.setState({showAllState: e.target.value === 'all'})
-                }>
+                }
+              >
                 <option value="content">Current Content</option>
                 <option value="all">All State</option>
               </select>
@@ -322,7 +330,8 @@ class DraftJsPlaygroundContainer extends React.Component {
                         color: Immutable.Iterable.isIterable(data)
                           ? '#E85351'
                           : 'gray',
-                      }}>
+                      }}
+                    >
                       {itemString}
                     </span>
                   );

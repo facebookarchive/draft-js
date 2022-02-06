@@ -105,7 +105,7 @@ const assertMoveBlockInContentState = (
       .map(block =>
         Object.keys(block)
           .filter(prop => BLOCK_PROPS_BLACKLIST.indexOf(prop) === -1)
-          .reduce((acc, prop) => {
+          .reduce<{[string]: $FlowFixMe}>((acc, prop) => {
             acc[prop] = block[prop];
             return acc;
           }, {}),

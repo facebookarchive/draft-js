@@ -108,7 +108,7 @@ type BlockTypeMap = Map<string, string | Array<string>>;
 const buildBlockTypeMap = (
   blockRenderMap: DraftBlockRenderMap,
 ): BlockTypeMap => {
-  const blockTypeMap = {};
+  const blockTypeMap: {[string]: any | Array<any | string>} = {};
 
   blockRenderMap.mapKeys((blockType, desc) => {
     const elements = [desc.element];
@@ -613,7 +613,7 @@ class ContentBlocksBuilder {
       return;
     }
     const image: HTMLImageElement = (node: any);
-    const entityConfig = {};
+    const entityConfig: {[string]: string} = {};
 
     imgAttr.forEach(attr => {
       const imageAttribute = image.getAttribute(attr);
@@ -656,7 +656,7 @@ class ContentBlocksBuilder {
       return;
     }
     const anchor: HTMLAnchorElement = (node: any);
-    const entityConfig = {};
+    const entityConfig: {[string]: string} = {};
 
     anchorAttr.forEach(attr => {
       const anchorAttribute = anchor.getAttribute(attr);
@@ -748,9 +748,7 @@ class ContentBlocksBuilder {
    * Extract the text and the associated inline styles form an
    * array of content block configs.
    */
-  _extractTextFromBlockConfigs(
-    blockConfigs: Array<ContentBlockConfig>,
-  ): {
+  _extractTextFromBlockConfigs(blockConfigs: Array<ContentBlockConfig>): {
     text: string,
     characterList: List<CharacterMetadata>,
     ...

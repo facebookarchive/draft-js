@@ -8,4 +8,4 @@
  */
 
 // used for testing react fiber
-global.requestAnimationFrame = callback => global.setTimeout(callback, 0);
+global.requestAnimationFrame = (callback) => global.setTimeout(callback, 0);
