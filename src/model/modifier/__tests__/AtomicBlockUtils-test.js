@@ -13,8 +13,6 @@
 
 jest.mock('generateRandomKey');
 
-const mockUUID = require('mockUUID');
-jest.mock('uuid', () => mockUUID);
 const AtomicBlockUtils = require('AtomicBlockUtils');
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -23,6 +21,9 @@ const SelectionState = require('SelectionState');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const invariant = require('invariant');
+const mockUUID = require('mockUUID');
+
+jest.mock('uuid', () => mockUUID);
 
 const sampleStateForTesting = getSampleStateForTesting();
 const {editorState, selectionState} = sampleStateForTesting;
