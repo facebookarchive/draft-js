@@ -10,9 +10,10 @@
  */
 
 'use strict';
-
 import type {BlockMap} from 'BlockMap';
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type CharacterMetadata from 'CharacterMetadata';
+import type ContentBlock from 'ContentBlock';
 import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
@@ -55,7 +56,8 @@ const getAncestorsKeys = (
     return parents;
   }
 
-  let blockNode = blockMap.get(blockKey);
+  let blockNode: ?(BlockNodeRecord | ContentBlock | ContentBlockNode) =
+    blockMap.get(blockKey);
   while (blockNode && blockNode.getParentKey()) {
     const parentKey = blockNode.getParentKey();
     if (parentKey) {

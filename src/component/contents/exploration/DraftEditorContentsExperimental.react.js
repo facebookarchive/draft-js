@@ -119,7 +119,7 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
     const rootBlock = blocksAsArray[0];
     const processedBlocks = [];
 
-    let nodeBlock = rootBlock;
+    let nodeBlock: ?BlockNodeRecord = rootBlock;
 
     while (nodeBlock) {
       const blockKey = nodeBlock.getKey();

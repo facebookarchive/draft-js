@@ -14,6 +14,7 @@
 
 import type {BlockMap} from 'BlockMap';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type ContentBlock from 'ContentBlock';
 
 const ContentBlockNode = require('ContentBlockNode');
 
@@ -39,7 +40,11 @@ const getNextDelimiterBlockKey = (
     return null;
   }
 
-  let nextNonDescendantBlock = blockMap.get(parent);
+  let nextNonDescendantBlock: ?(
+    | ContentBlock
+    | BlockNodeRecord
+    | ContentBlockNode
+  ) = blockMap.get(parent);
   while (
     nextNonDescendantBlock &&
     !nextNonDescendantBlock.getNextSiblingKey()

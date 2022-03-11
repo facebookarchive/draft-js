@@ -80,7 +80,7 @@ function getAnonymizedEditorDOM(
   getNodeLabels?: (n: Node) => Array<string>,
 ): string {
   // grabbing the DOM content of the Draft editor
-  let currentNode = node;
+  let currentNode: ?Node = node;
   // this should only be used after checking with isElement
   let castedNode: Element = (currentNode: any);
   while (currentNode) {

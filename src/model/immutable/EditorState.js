@@ -203,7 +203,7 @@ class EditorState {
   ): EditorState {
     const map = editorState.getImmutable().withMutations(state => {
       const existingDecorator = state.get('decorator');
-      let decorator = existingDecorator;
+      let decorator: ?DraftDecoratorType = existingDecorator;
       if (put.decorator === null) {
         decorator = null;
       } else if (put.decorator) {

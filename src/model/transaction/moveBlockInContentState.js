@@ -153,7 +153,7 @@ const moveBlockInContentState = (
   const blockMap = contentState.getBlockMap();
   const isExperimentalTreeBlock = blockToBeMoved instanceof ContentBlockNode;
 
-  let blocksToBeMoved = [blockToBeMoved];
+  let blocksToBeMoved: Array<BlockNodeRecord> = [blockToBeMoved];
   let blockMapWithoutBlocksToBeMoved = blockMap.delete(blockKey);
 
   if (isExperimentalTreeBlock) {

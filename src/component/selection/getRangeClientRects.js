@@ -27,7 +27,7 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
   const clientRects = [];
 
   for (
-    let ancestor = range.endContainer;
+    let ancestor: ?Node = range.endContainer;
     ancestor != null;
     ancestor = ancestor.parentNode
   ) {

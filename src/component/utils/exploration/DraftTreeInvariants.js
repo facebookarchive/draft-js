@@ -12,6 +12,7 @@
  * production systems. This file may be update/removed without notice.
  */
 import type {BlockMap} from 'BlockMap';
+import type {BlockNodeKey} from 'BlockNode';
 import type ContentBlockNode from 'ContentBlockNode';
 
 const warning = require('warning');
@@ -105,7 +106,7 @@ const DraftTreeInvariants = {
     }
     const firstNode = eligibleFirstNodes.shift();
     let nodesSeen = 0;
-    let currentKey = firstNode.getKey();
+    let currentKey: ?($FlowFixMe | BlockNodeKey) = firstNode.getKey();
     const visitedStack = [];
     while (currentKey != null) {
       const currentNode = blockMap.get(currentKey);
