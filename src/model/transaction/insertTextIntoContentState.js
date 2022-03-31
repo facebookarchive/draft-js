@@ -11,15 +11,15 @@
 
 'use strict';
 
+import type CharacterMetadata from 'CharacterMetadata';
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
+
 const Immutable = require('immutable');
 const insertIntoList = require('insertIntoList');
 const invariant = require('invariant');
 
 const {Repeat} = Immutable;
-
-import type CharacterMetadata from 'CharacterMetadata';
-import type ContentState from 'ContentState';
-import type SelectionState from 'SelectionState';
 
 function insertTextIntoContentState(
   contentState: ContentState,
