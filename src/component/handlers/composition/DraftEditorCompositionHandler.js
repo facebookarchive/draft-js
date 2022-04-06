@@ -190,15 +190,29 @@ const DraftEditorCompositionHandler = {
       const {blockKey, decoratorKey, leafKey} =
         DraftOffsetKey.decode(offsetKey);
 
-      const {start, end} = editorState
+      const {start: startBlockPos, end: endBlockPos} = editorState
         .getBlockTree(blockKey)
         .getIn([decoratorKey, 'leaves', leafKey]);
+      const sourceBlockLength = endBlockPos - startBlockPos;
+
+      const selection = editorState.getSelection();
+      const selectionStart = selection.getStartOffset();
+      const selectionEnd = selection.getEndOffset();
+      const selectionLength = selectionEnd - selectionStart;
+
+      const insertedCharsLength =
+        composedChars.length - sourceBlockLength + selectionLength;
+      const insertedCharsStartPos = selectionStart - startBlockPos;
+      const insertedChars = composedChars.slice(
+        insertedCharsStartPos,
+        insertedCharsStartPos + insertedCharsLength,
+      );
 
       const replacementRange = editorState.getSelection().merge({
         anchorKey: blockKey,
         focusKey: blockKey,
-        anchorOffset: start,
-        focusOffset: end,
+        anchorOffset: selectionStart,
+        focusOffset: selectionEnd,
         isBackward: false,
       });
 
@@ -208,12 +222,12 @@ const DraftEditorCompositionHandler = {
       );
       const currentStyle = contentState
         .getBlockForKey(blockKey)
-        .getInlineStyleAt(start);
+        .getInlineStyleAt(startBlockPos);
 
       contentState = DraftModifier.replaceText(
         contentState,
         replacementRange,
-        composedChars,
+        insertedChars,
         currentStyle,
         entityKey,
       );
