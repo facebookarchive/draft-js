@@ -8,8 +8,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['14', '16', '17']
-        cmd: ['build', 'test', 'flow', 'lint']
+        node-version: ['14', '16']
+        cmd: ['build']
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
