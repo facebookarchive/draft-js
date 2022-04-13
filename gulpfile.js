@@ -26,6 +26,8 @@ const StatsPlugin = require('stats-webpack-plugin');
 const through = require('through2');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpackStream = require('webpack-stream');
+const Visualizer = require('webpack-visualizer-plugin');
+const argv = require('yargs').argv;
 
 const paths = {
   dist: 'dist',
@@ -115,7 +117,12 @@ const buildDist = opts => {
       new StatsPlugin(`../meta/bundle-size-stats/${opts.output}.json`, {
         chunkModules: true,
       }),
-    ],
+      argv.stats
+        ? new Visualizer({
+            filename: './meta/bundle-size-stats/statistics.html',
+          })
+        : 0,
+    ].filter(x => !!x),
   };
   if (!opts.debug) {
     webpackOpts.plugins.push(new UglifyJsPlugin());

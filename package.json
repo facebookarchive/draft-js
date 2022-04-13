@@ -23,6 +23,7 @@
     "prepublish": "npm run build",
     "pretest": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "build": "gulp",
+    "build --stats": "gulp --stats",
     "dev": "gulp dev",
     "postbuild": "node node_modules/fbjs-scripts/node/check-lib-requires.js lib",
     "lint": "eslint .",
@@ -37,7 +38,8 @@
   "dependencies": {
     "fbjs": "^2.0.0",
     "immutable": "~3.7.4",
-    "object-assign": "^4.1.1"
+    "object-assign": "^4.1.1",
+    "webpack-visualizer-plugin": "^0.1.11"
   },
   "peerDependencies": {
     "react": ">=0.14.0",
