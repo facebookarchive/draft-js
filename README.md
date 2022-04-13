@@ -19,7 +19,13 @@
 </p>
 
 --------------------
+## Status
 
+**THIS PROJECT IS CURRENTLY IN MAINTENANCE MODE. It will not receive any feature updates, only critical security bug patches. On 31st December 2022 the repo will be fully archived.**
+
+For users looking for an open source alternative, Meta have been working on migrating to a new framework, called [Lexical](https://github.com/facebook/lexical). It's still experimental, and we're working on adding migration guides, but, we believe, it provides a more performant and accessible alternative.
+
+--------------------
 Draft.js is a JavaScript rich text editor framework, built for React and
 backed by an immutable model.
 
