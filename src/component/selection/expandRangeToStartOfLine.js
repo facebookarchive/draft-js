@@ -114,8 +114,11 @@ function expandRangeToStartOfLine(range: Range): Range {
   );
   range = range.cloneRange();
 
-  let containingElement = range.startContainer;
+  let containingElement: ?Node = range.startContainer;
+  // $FlowFixMe[incompatible-type]
+  // $FlowFixMe[incompatible-use]
   if (containingElement.nodeType !== 1) {
+    // $FlowFixMe[incompatible-use]
     containingElement = containingElement.parentNode;
   }
   const lineHeight = getLineHeightPx((containingElement: any));
