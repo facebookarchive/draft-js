@@ -86,8 +86,8 @@
     "webpack-stream": "6.1.0"
   },
   "devEngines": {
-    "node": "10.x || 12.x || 14.x",
-    "npm": "2.x || 3.x || 5.x || 6.x"
+    "node": "14.x || 16.x",
+    "npm": "2.x || 3.x || 5.x || 6.x || 7.x || 8.x"
   },
   "jest": {
     "globals": {
