@@ -75,6 +75,7 @@ const SecondaryClipboard = {
     const newContent = DraftModifier.replaceWithFragment(
       editorState.getCurrentContent(),
       editorState.getSelection(),
+      // $FlowFixMe[incompatible-call]
       clipboard,
     );
 
