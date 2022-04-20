@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @emails oncall+draft_js
- * @format
  * @flow strict-local
+ * @format
  */
 
 'use strict';
