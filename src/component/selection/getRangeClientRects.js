@@ -22,6 +22,7 @@ const isChrome = UserAgent.isBrowser('Chrome');
 // not overlap the entire node. To resolve this, we split the range at each
 // start tag and join the client rects together.
 // https://code.google.com/p/chromium/issues/detail?id=324437
+/* eslint-disable consistent-return */
 function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
   const tempRange = range.cloneRange();
   const clientRects = [];

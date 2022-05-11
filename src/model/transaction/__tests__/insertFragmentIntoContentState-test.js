@@ -35,9 +35,9 @@ const DEFAULT_BLOCK_CONFIG = {
 
 const initialBlock = contentState.getBlockMap().first();
 
+/* eslint-disable-next-line */
 const getInvariantViolation = msg => {
   try {
-    /* eslint-disable-next-line */
     invariant(false, msg);
   } catch (e) {
     return e;

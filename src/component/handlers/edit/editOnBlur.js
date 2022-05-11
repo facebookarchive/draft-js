@@ -30,7 +30,7 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
   // opposed to clicking to another tab or window).
   const {ownerDocument} = e.currentTarget;
   if (
-    !Boolean(editor.props.preserveSelectionOnBlur) &&
+    !editor.props.preserveSelectionOnBlur &&
     getActiveElement(ownerDocument) === ownerDocument.body
   ) {
     const selection: SelectionObject = ownerDocument.defaultView.getSelection();
