@@ -21,6 +21,7 @@ const UserAgent = require('UserAgent');
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
 const isEventHandled = require('isEventHandled');
 const isSelectionAtLeafStart = require('isSelectionAtLeafStart');
+const isSelectionAtBlockEndWithNewLine = require('isSelectionAtBlockEndWithNewLine');
 const nullthrows = require('nullthrows');
 const setImmediate = require('setImmediate');
 
@@ -155,6 +156,16 @@ function editOnBeforeInput(
       editor._latestCommittedEditorState,
     );
   }
+
+  if (!mustPreventNative) {
+    // When there is \n at the end of the block, there is one extra \n added in DraftEditorLeaf for the content to render properly in browsers
+    // editOnInput takes care of it, but we must prevent the new char to land natively between the two
+    // as in that case the check in editOnInput wouldn't detect the situation properly
+    mustPreventNative = isSelectionAtBlockEndWithNewLine(
+      editor._latestCommittedEditorState,
+    );
+  }
+
   if (!mustPreventNative) {
     // Let's say we have a decorator that highlights hashtags. In many cases
     // we need to prevent native behavior and rerender ourselves --
