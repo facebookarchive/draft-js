@@ -68,6 +68,37 @@ class MyEditor extends React.Component {
 }
 ```
 
+Since the release of React 16.8, you can use [`Hooks`](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.
+
+```js
+import React, { useState } from 'react'
+import { Editor, EditorState, RichUtils } from 'draft-js';
+
+const MyEditor = () => {
+    const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+    const handleKeyCommand = (command, editorState) => {
+        const newState = RichUtils.handleKeyCommand(editorState, command);
+
+        if (newState) {
+            setEditorState(newState);
+            return 'handled';
+        }
+
+        return 'not-handled';
+    }
+    return (
+        <Editor
+            editorState={editorState}
+            onChange={setEditorState}
+            handleKeyCommand={handleKeyCommand}
+        />
+    )
+}
+
+export default MyEditor
+```
+
+
 > `handleKeyCommand`
 >
 > The `command` argument supplied to `handleKeyCommand` is a string value, the
