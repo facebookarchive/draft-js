@@ -60,6 +60,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
           this.toggleBlockType = this._toggleBlockType.bind(this);
           this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
+          this.insertSoftNewLine = this._insertSoftNewLine.bind(this);
         }
 
         _handleKeyCommand(command, editorState) {
@@ -95,6 +96,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           );
         }
 
+        _insertSoftNewLine() {
+          this.onChange(
+              RichUtils.insertSoftNewline(this.state.editorState)
+          );
+        }
+
         _toggleInlineStyle(inlineStyle) {
           this.onChange(
             RichUtils.toggleInlineStyle(
@@ -127,6 +134,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 editorState={editorState}
                 onToggle={this.toggleInlineStyle}
               />
+              <button onClick={this.insertSoftNewLine}>Insert soft new line</button>
               <div className={className} onClick={this.focus}>
                 <Editor
                   blockStyleFn={getBlockStyle}
