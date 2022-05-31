@@ -10,8 +10,8 @@
  */
 
 'use strict';
-
-jest.mock('generateRandomKey');
+import type {BlockMap} from 'BlockMap';
+import type ContentState from 'ContentState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlock = require('ContentBlock');
@@ -22,6 +22,8 @@ const getSampleStateForTesting = require('getSampleStateForTesting');
 const Immutable = require('immutable');
 const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 const invariant = require('invariant');
+
+jest.mock('generateRandomKey');
 
 const {contentState, selectionState} = getSampleStateForTesting();
 const {List, Map} = Immutable;
@@ -35,7 +37,7 @@ const DEFAULT_BLOCK_CONFIG = {
 
 const initialBlock = contentState.getBlockMap().first();
 
-const getInvariantViolation = msg => {
+const getInvariantViolation = (msg: string) => {
   try {
     /* eslint-disable-next-line */
     invariant(false, msg);
@@ -44,7 +46,10 @@ const getInvariantViolation = msg => {
   }
 };
 
-const createFragment = (fragment = {}, experimentalTreeDataSupport = false) => {
+const createFragment = (
+  fragment = {},
+  experimentalTreeDataSupport: boolean = false,
+) => {
   const ContentBlockNodeRecord = experimentalTreeDataSupport
     ? ContentBlockNode
     : ContentBlock;
@@ -66,9 +71,9 @@ const createContentBlockNodeFragment = fragment => {
 };
 
 const assertInsertFragmentIntoContentState = (
-  fragment,
-  selection = selectionState,
-  content = contentState,
+  fragment: BlockMap,
+  selection: $FlowFixMe | SelectionState = selectionState,
+  content: ContentState = contentState,
 ) => {
   expect(
     insertFragmentIntoContentState(content, selection, fragment)

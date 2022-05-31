@@ -28,11 +28,21 @@ const getEditorState = (text: string = 'Arsenal') => {
   );
 };
 
-const getBlurEvent = currentTarget => ({
+const getBlurEvent = (currentTarget: HTMLDivElement) => ({
   currentTarget,
 });
 
-function withGlobalGetSelectionAs(getSelectionValue = {}, callback) {
+function withGlobalGetSelectionAs(
+  getSelectionValue:
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{
+        anchorNode: Text,
+        focusNode: Text,
+        rangeCount: number,
+        removeAllRanges: JestMockFn<$ReadOnlyArray<mixed>, mixed>,
+      }> = {},
+  callback: () => void,
+) {
   const oldGetSelection = global.getSelection;
   try {
     global.getSelection = () => {

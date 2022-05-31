@@ -48,7 +48,14 @@ let compositionHandler = null;
 // Initialization of mock editor component that will be used for all tests
 let editor;
 
-function getEditorState(blocks) {
+function getEditorState(
+  blocks:
+    | $TEMPORARY$object<{blockkey0: string}>
+    | $TEMPORARY$object<{
+        blockkey0: $TEMPORARY$string<'react'>,
+        blockkey1: $TEMPORARY$string<'draft'>,
+      }>,
+) {
   const contentBlocks = Object.keys(blocks).map(blockKey => {
     return new ContentBlock({
       key: blockKey,
@@ -76,7 +83,10 @@ function editorTextContent() {
   return editor._latestEditorState.getCurrentContent().getPlainText();
 }
 
-function withGlobalGetSelectionAs(getSelectionValue, callback) {
+function withGlobalGetSelectionAs(
+  getSelectionValue: $TEMPORARY$object<{...}>,
+  callback: () => void,
+) {
   const oldGetSelection = global.getSelection;
   try {
     global.getSelection = () => getSelectionValue;

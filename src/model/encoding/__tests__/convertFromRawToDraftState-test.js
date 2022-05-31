@@ -18,7 +18,7 @@ import type {RawDraftContentState} from 'RawDraftContentState';
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const mockUUID = require('mockUUID');
 
-const toggleExperimentalTreeDataSupport = enabled => {
+const toggleExperimentalTreeDataSupport = (enabled: boolean) => {
   jest.doMock('gkx', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });

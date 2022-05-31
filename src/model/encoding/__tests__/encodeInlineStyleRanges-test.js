@@ -33,7 +33,7 @@ const {List, OrderedSet, Repeat} = Immutable;
 const FOO = OrderedSet.of('foo');
 const FOO_BAR = OrderedSet.of('foo', 'bar');
 
-const createBlock = (text, inlineStyles) => {
+const createBlock = (text: string, inlineStyles) => {
   return new ContentBlock({
     key: 'a',
     text,

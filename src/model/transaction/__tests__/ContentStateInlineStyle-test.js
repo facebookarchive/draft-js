@@ -10,6 +10,8 @@
  */
 
 'use strict';
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
 
 const ContentStateInlineStyle = require('ContentStateInlineStyle');
 
@@ -23,9 +25,9 @@ const initialSelection = selectionState.set(
 );
 
 const assertAddContentStateInlineStyle = (
-  inlineStyle,
-  selection = selectionState,
-  content = contentState,
+  inlineStyle: $TEMPORARY$string<'BOLD'> | $TEMPORARY$string<'ITALIC'>,
+  selection: $FlowFixMe | SelectionState = selectionState,
+  content: ContentState = contentState,
 ) => {
   const newContentState = ContentStateInlineStyle.add(
     content,
@@ -39,9 +41,9 @@ const assertAddContentStateInlineStyle = (
 };
 
 const assertRemoveContentStateInlineStyle = (
-  inlineStyle,
-  selection = selectionState,
-  content = contentState,
+  inlineStyle: $TEMPORARY$string<'BOLD'> | $TEMPORARY$string<'ITALIC'>,
+  selection: $FlowFixMe | SelectionState = selectionState,
+  content: ContentState = contentState,
 ) => {
   const newContentState = ContentStateInlineStyle.remove(
     content,

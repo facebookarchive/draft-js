@@ -32,7 +32,7 @@ const DEFAUL_BLOCK_CONFIG = {
   ),
 };
 
-const getSampleBlock = props => {
+const getSampleBlock = (props: void) => {
   return new ContentBlockNode({
     ...DEFAUL_BLOCK_CONFIG,
     ...props,

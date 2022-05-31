@@ -10,6 +10,7 @@
  */
 
 'use strict';
+import type ContentState from 'ContentState';
 
 const SelectionState = require('SelectionState');
 
@@ -36,9 +37,9 @@ const selectAdjacentBlocks = new SelectionState({
 });
 
 const assertApplyEntityToContentState = (
-  entityKey,
-  selection = selectionState,
-  content = contentState,
+  entityKey: null | $TEMPORARY$string<'x'>,
+  selection: $FlowFixMe | SelectionState = selectionState,
+  content: ContentState = contentState,
 ) => {
   expect(
     applyEntityToContentState(content, selection, entityKey)

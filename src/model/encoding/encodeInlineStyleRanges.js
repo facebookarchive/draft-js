@@ -20,8 +20,8 @@ const UnicodeUtils = require('UnicodeUtils');
 
 const findRangesImmutable = require('findRangesImmutable');
 
-const areEqual = (a, b) => a === b;
-const isTruthy = a => !!a;
+const areEqual = (a: boolean, b: boolean) => a === b;
+const isTruthy = (a: boolean) => !!a;
 const EMPTY_ARRAY = [];
 
 /**

@@ -31,7 +31,12 @@ const getEditorState = (text: string = '') => {
   );
 };
 
-function withGlobalGetSelectionAs(getSelectionValue = {}, callback) {
+function withGlobalGetSelectionAs(
+  getSelectionValue:
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{anchorNode: Text}> = {},
+  callback: () => void,
+) {
   const oldGetSelection = global.getSelection;
   try {
     global.getSelection = () => getSelectionValue;

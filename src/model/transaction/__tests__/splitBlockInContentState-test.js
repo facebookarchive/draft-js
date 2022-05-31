@@ -10,8 +10,7 @@
  */
 
 'use strict';
-
-jest.mock('generateRandomKey');
+import type ContentState from 'ContentState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -20,6 +19,8 @@ const SelectionState = require('SelectionState');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const Immutable = require('immutable');
 const splitBlockInContentState = require('splitBlockInContentState');
+
+jest.mock('generateRandomKey');
 
 const {List} = Immutable;
 
@@ -78,7 +79,10 @@ const treeContentState = contentState.setBlockMap(
   BlockMapBuilder.createFromArray(contentBlockNodes),
 );
 
-const assertSplitBlockInContentState = (selection, content = contentState) => {
+const assertSplitBlockInContentState = (
+  selection: $FlowFixMe | SelectionState,
+  content: ContentState = contentState,
+) => {
   expect(
     splitBlockInContentState(content, selection)
       .getBlockMap()

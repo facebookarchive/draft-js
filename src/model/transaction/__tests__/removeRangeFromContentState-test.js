@@ -10,6 +10,7 @@
  */
 
 'use strict';
+import type ContentState from 'ContentState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -71,8 +72,8 @@ const treeContentState = contentState.setBlockMap(
 );
 
 const assertRemoveRangeFromContentState = (
-  selection,
-  content = contentState,
+  selection: $FlowFixMe | SelectionState,
+  content: ContentState = contentState,
 ) => {
   expect(
     removeRangeFromContentState(content, selection).getBlockMap().toJS(),

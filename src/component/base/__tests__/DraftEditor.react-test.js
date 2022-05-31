@@ -59,7 +59,7 @@ test('must has editorKey same as props', () => {
 });
 
 describe('ariaDescribedBy', () => {
-  function getProps(elem) {
+  function getProps(elem: React.Node) {
     const r = shallow.render(elem);
     const ec = r.props.children[1].props.children;
     return ec.props;

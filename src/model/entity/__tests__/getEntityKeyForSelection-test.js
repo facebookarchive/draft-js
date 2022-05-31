@@ -35,7 +35,12 @@ const NON_COLLAPSED_SELECTION = initialSelectionState.merge({
   focusOffset: 2,
 });
 
-const setEntityMutability = mutability => {
+const setEntityMutability = (
+  mutability:
+    | $TEMPORARY$string<'IMMUTABLE'>
+    | $TEMPORARY$string<'MUTABLE'>
+    | $TEMPORARY$string<'SEGMENTED'>,
+) => {
   // $FlowFixMe error encountered when strong-typing ContentState.getEntityMap
   contentState.getEntityMap().__get = () => ({
     getMutability: () => mutability,

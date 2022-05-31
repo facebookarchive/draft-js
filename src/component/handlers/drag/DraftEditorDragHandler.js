@@ -138,7 +138,7 @@ const DraftEditorDragHandler = {
   },
 };
 
-function endDrag(editor) {
+function endDrag(editor: DraftEditor) {
   editor._internalDrag = false;
 
   // Fix issue #1383

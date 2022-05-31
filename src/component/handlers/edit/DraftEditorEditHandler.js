@@ -32,7 +32,7 @@ const isChrome = UserAgent.isBrowser('Chrome');
 const isFirefox = UserAgent.isBrowser('Firefox');
 
 const selectionHandler: (e: DraftEditor) => void =
-  isChrome || isFirefox ? onSelect : e => {};
+  isChrome || isFirefox ? onSelect : (e: DraftEditor) => {};
 
 const DraftEditorEditHandler = {
   onBeforeInput,
