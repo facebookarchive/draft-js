@@ -77,8 +77,8 @@ const contentBlockNodes = [
 ];
 
 const assertGetNextDelimiterBlockKey = (
-  targetBlockKey,
-  blocksArray = contentBlockNodes,
+  targetBlockKey: string,
+  blocksArray: Array<ContentBlock | ContentBlockNode> = contentBlockNodes,
 ) => {
   const editor = EditorState.createWithContent(
     ContentState.createFromBlockArray(blocksArray),

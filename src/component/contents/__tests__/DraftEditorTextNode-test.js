@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @emails oncall+draft_js
- * @format
  * @flow strict-local
+ * @format
  */
 
 'use strict';
@@ -30,7 +30,9 @@ beforeEach(() => {
   container = document.createElement('div');
 });
 
-const renderIntoContainer = element => {
+const renderIntoContainer = (element: React.Node) => {
+  // $FlowFixMe[incompatible-call]
+  // $FlowFixMe[incompatible-exact]
   return ReactDOM.render(element, container);
 };
 
@@ -48,7 +50,10 @@ const initializeAsNonIE = () => {
   UserAgent.isBrowser.mockImplementation(() => false);
 };
 
-const expectPopulatedSpan = (stub, testString) => {
+const expectPopulatedSpan = (
+  stub: DraftEditorTextNode | HTMLDivElement,
+  testString: string | $TEMPORARY$string<'Hello'>,
+) => {
   // $FlowExpectedError[incompatible-type] node could be null
   const node: Element = ReactDOM.findDOMNode(stub);
   expect(node.tagName).toBe('SPAN');

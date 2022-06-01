@@ -19,7 +19,7 @@ const Immutable = require('immutable');
 
 const {OrderedSet, Repeat} = Immutable;
 
-const createBlock = (text, entities) => {
+const createBlock = (text: string, entities: Array<?string>) => {
   const style = OrderedSet();
   return new ContentBlock({
     key: 'a',

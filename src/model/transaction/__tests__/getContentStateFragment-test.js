@@ -76,7 +76,14 @@ const DEFAULT_SELECTION = {
   isBackward: false,
 };
 
-const assertGetContentStateFragment = (blocksArray, selection = {}) => {
+const assertGetContentStateFragment = (
+  blocksArray: Array<ContentBlock | ContentBlockNode>,
+  selection: {
+    anchorKey?: string,
+    focusKey?: string,
+    focusOffset?: number,
+  } = {...null},
+) => {
   const editor = EditorState.acceptSelection(
     EditorState.createWithContent(
       ContentState.createFromBlockArray([...blocksArray]),
