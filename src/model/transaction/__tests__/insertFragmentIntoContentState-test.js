@@ -47,6 +47,8 @@ const getInvariantViolation = (msg: string) => {
 };
 
 const createFragment = (
+  /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
+   * LTI update could not be added via codemod */
   fragment = {},
   experimentalTreeDataSupport: boolean = false,
 ) => {
@@ -66,6 +68,8 @@ const createFragment = (
   );
 };
 
+/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
+ * LTI update could not be added via codemod */
 const createContentBlockNodeFragment = fragment => {
   return createFragment(fragment, true);
 };

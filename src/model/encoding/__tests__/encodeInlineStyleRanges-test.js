@@ -33,6 +33,8 @@ const {List, OrderedSet, Repeat} = Immutable;
 const FOO = OrderedSet.of('foo');
 const FOO_BAR = OrderedSet.of('foo', 'bar');
 
+/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
+ * LTI update could not be added via codemod */
 const createBlock = (text: string, inlineStyles) => {
   return new ContentBlock({
     key: 'a',
