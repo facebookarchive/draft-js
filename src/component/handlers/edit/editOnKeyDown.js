@@ -77,7 +77,7 @@ function onKeyCommand(
 /**
  * Intercept keydown behavior to handle keys and commands manually, if desired.
  *
- * Keydown combinations may be mapped to `DraftCommand` values, which may
+ * Keydown combinations may be mapped to `DraftEditorCommand` values, which may
  * correspond to command functions that modify the editor or its contents.
  *
  * See `getDefaultKeyBinding` for defaults. Alternatively, the top-level
