@@ -79,18 +79,15 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlockMap(): BlockMap {
-    // $FlowFixMe[prop-missing] found when removing casts of this to any
-    return this.get('blockMap');
+    return (this: any).get('blockMap');
   }
 
   getSelectionBefore(): SelectionState {
-    // $FlowFixMe[prop-missing] found when removing casts of this to any
-    return this.get('selectionBefore');
+    return (this: any).get('selectionBefore');
   }
 
   getSelectionAfter(): SelectionState {
-    // $FlowFixMe[prop-missing] found when removing casts of this to any
-    return this.get('selectionAfter');
+    return (this: any).get('selectionAfter');
   }
 
   getBlockForKey(key: string): BlockNodeRecord {
@@ -230,18 +227,15 @@ class ContentState extends ContentStateRecord {
   }
 
   setSelectionBefore(selection: SelectionState): ContentState {
-    // $FlowFixMe[prop-missing] found when removing casts of this to any
-    return this.set('selectionBefore', selection);
+    return (this: any).set('selectionBefore', selection);
   }
 
   setSelectionAfter(selection: SelectionState): ContentState {
-    // $FlowFixMe[prop-missing] found when removing casts of this to any
-    return this.set('selectionAfter', selection);
+    return (this: any).set('selectionAfter', selection);
   }
 
   setBlockMap(blockMap: BlockMap): ContentState {
-    // $FlowFixMe[prop-missing] found when removing casts of this to any
-    return this.set('blockMap', blockMap);
+    return (this: any).set('blockMap', blockMap);
   }
 
   static createFromBlockArray(
