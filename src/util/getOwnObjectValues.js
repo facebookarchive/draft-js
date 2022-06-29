@@ -2,8 +2,8 @@
  * (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
  *
  * @flow strict
- * @typechecks
  * @format
+ * @typechecks
  */
 
 /**

@@ -1,9 +1,9 @@
 /**
  * (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
  *
- * @typechecks
  * @flow strict
  * @format
+ * @typechecks
  */
 
 /*eslint-disable no-bitwise */

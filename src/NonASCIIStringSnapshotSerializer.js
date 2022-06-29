@@ -4,6 +4,7 @@
  * @emails oncall+ads_integration_management
  * @flow strict-local
  * @format
+ * @oncall ads_integration_management
  */
 
 'use strict';
