@@ -7,6 +7,7 @@
  * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 import type ContentState from 'ContentState';

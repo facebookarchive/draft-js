@@ -7,6 +7,7 @@
  * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 const DraftOffsetKey = require('DraftOffsetKey');

@@ -7,6 +7,7 @@
  * @emails oncall+draft_js
  * @flow strict
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
