@@ -83,7 +83,7 @@ const assertGetContentStateFragment = (
     anchorKey?: string,
     focusKey?: string,
     focusOffset?: number,
-  } = {...null},
+  } = {},
 ) => {
   const editor = EditorState.acceptSelection(
     EditorState.createWithContent(
