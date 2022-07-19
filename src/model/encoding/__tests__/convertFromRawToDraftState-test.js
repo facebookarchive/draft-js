@@ -66,7 +66,7 @@ test('must map falsey block types to default value of unstyled', () => {
     entityMap: {},
   };
 
-  //$FlowFixMe looks like the whole point of the test is to verify something prevented by flow? Let it be for now.
+  // $FlowFixMe looks like the whole point of the test is to verify something prevented by flow? Let it be for now.
   assertDraftState(rawState);
 });
 
