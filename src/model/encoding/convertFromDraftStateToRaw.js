@@ -154,9 +154,11 @@ const convertFromDraftStateToRaw = (
   };
 
   // add blocks
+  // $FlowFixMe[prop-missing]
   rawDraftContentState = encodeRawBlocks(contentState, rawDraftContentState);
 
   // add entities
+  // $FlowFixMe[prop-missing]
   rawDraftContentState = encodeRawEntityMap(contentState, rawDraftContentState);
 
   return rawDraftContentState;
