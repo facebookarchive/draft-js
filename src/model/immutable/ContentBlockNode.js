@@ -10,7 +10,6 @@
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
  *
- * @emails oncall+draft_js
  * @flow
  * @format
  * @oncall draft_js
