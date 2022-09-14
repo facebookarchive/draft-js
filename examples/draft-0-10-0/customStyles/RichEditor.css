@@ -80,20 +80,20 @@
   line-height: 20px;
 }
 
-.rte__kentico {
-  color: white;
-  background-color: #f05a22;
+.rte__inline-leaf {
+  color: #231f20; /* Kontent.ai font color */
+  background-color: #3dcca8; /* Official Kontent.ai primary color */
   white-space: pre-wrap;
 }
 
-.rte__kentico-programmatic {
+.rte__inline-leaf-programmatic {
   border-radius: 0.5em;
   padding-right: 0.5em;
   padding-left: 0.5em;
   border-bottom-left-radius: 0;
 }
 
-.rte__kentico + .rte__kentico {
+.rte__inline-leaf + .rte__inline-leaf {
   border-top-left-radius: 0;
   padding-left: 0;
   margin-left: -0.5em;

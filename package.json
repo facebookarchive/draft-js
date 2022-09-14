@@ -1,7 +1,7 @@
 {
   "name": "@kontent-ai/draft-js",
   "description": "A React framework for building text editors.",
-  "version": "0.11.7-kentico.2",
+  "version": "0.11.7-internal.2",
   "keywords": [
     "draftjs",
     "editor",

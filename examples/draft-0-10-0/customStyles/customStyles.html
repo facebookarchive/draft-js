@@ -25,12 +25,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   </head>
   <body>
     <div class="docs">
-      <h1>Kentico DraftJS customization test</h1>
+      <h1>DraftJS Inline style customization test</h1>
       <p>This page showcases customizations of the DraftJS editor and scenarios for it's testing. It is also a documentation for the type of customizations made.</p>
       <h2>Class name support for inline styles</h2>
       <p>DraftJS editor supports natively only inline styles rendered directly to the editor leaf DOM nodes. With this customization <code>className</code> property can be added to the style object and it renders to the <code>class</code> attribute in the resulting HTML.</p>
-      <p>Add text and apply <strong>Kentico</strong> inline style from the toolbar. The style should be applied (Kentico logo <span class="rte__kentico rte__kentico-programmatic" style="display: inline-block; text-decoration: underline;">leaf</span> design), there should be inline style <code>display: inline-block; text-decoration: underline;</code> and class names <code>rte__kentico rte__kentico-programmatic</code> rendered.</p>
-      <p>It should combine well with the <strong>Highlight</strong> inline style from the toolbar which should apply <span class="rte__highlight">highlight</span> and class name <code>rte__highlight</code> and mix properly with the other styles including <strong>Kentico</strong> like this: <span class="rte__kentico rte__kentico-programmatic" style="display: inline-block; text-decoration: underline;">Hello </span><span class="rte__kentico rte__kentico-programmatic rte__highlight" style="display: inline-block; text-decoration: underline;">world</span></p>
+      <p>Add text and apply <strong>Leaf</strong> inline style from the toolbar. The style should be applied (Kontent.ai logo <span class="rte__inline-leaf rte__inline-leaf-programmatic" style="display: inline-block; text-decoration: underline;">leaf</span> design), there should be inline style <code>display: inline-block; text-decoration: underline;</code> and class names <code>rte__inline-leaf rte__inline-leaf-programmatic</code> rendered.</p>
+      <p>It should combine well with the <strong>Highlight</strong> inline style from the toolbar which should apply <span class="rte__highlight">highlight</span> and class name <code>rte__highlight</code> and mix properly with the other styles including <strong>LEAF</strong> like this: <span class="rte__inline-leaf rte__inline-leaf-programmatic" style="display: inline-block; text-decoration: underline;">Hello </span><span class="rte__inline-leaf rte__inline-leaf-programmatic rte__highlight" style="display: inline-block; text-decoration: underline;">world</span></p>
       <h2>RTL short-circuit</h2>
       <p>We disabled the default handling of RTL detection in individual blocks for performance reasons. No need to test it here.</p>
       <h2><code>getIn</code> error</h2>
@@ -163,8 +163,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           padding: 2,
         },
 
-        KENTICO: {
-          className: 'rte__kentico',
+        LEAF: {
+          className: 'rte__inline-leaf',
           display: 'inline-block',
         },
 
@@ -182,9 +182,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
 
       function getCustomStyle(style) {
-        if (style.includes('KENTICO')) {
+        if (style.includes('LEAF')) {
           return {
-            className: 'rte__kentico-programmatic',
+            className: 'rte__inline-leaf-programmatic',
             textDecoration: 'underline',
           };
         }
@@ -255,7 +255,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         {label: 'Italic', style: 'ITALIC'},
         {label: 'Underline', style: 'UNDERLINE'},
         {label: 'Monospace', style: 'CODE'},
-        {label: 'Kentico', style: 'KENTICO'},
+        {label: 'Leaf', style: 'LEAF'},
         {label: 'Highlight', style: 'HIGHLIGHT'},
       ];
 
