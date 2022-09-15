@@ -26,7 +26,9 @@ const {Map} = require('immutable');
 
 jest.mock('DOMObserver', () => {
   function DOMObserver() {}
+  // $FlowFixMe[prop-missing]
   DOMObserver.prototype.start = jest.fn();
+  // $FlowFixMe[prop-missing]
   DOMObserver.prototype.stopAndFlushMutations = jest
     .fn()
     .mockReturnValue(Map({}));
