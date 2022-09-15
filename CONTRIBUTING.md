@@ -1,6 +1,5 @@
 # Contributing to Draft.js
-We want to make contributing to this project as approachable and transparent as
-possible.
+If you'd like to contribute to Draft.js, please contribute to the [original repository](https://github.com/facebook/draft-js). This is but a fork.
 
 ## Code of Conduct
 Facebook has adopted a Code of Conduct that we expect project
