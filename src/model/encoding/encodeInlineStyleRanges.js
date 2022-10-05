@@ -22,7 +22,7 @@ const findRangesImmutable = require('findRangesImmutable');
 
 const areEqual = (a: boolean, b: boolean) => a === b;
 const isTruthy = (a: boolean) => !!a;
-const EMPTY_ARRAY = [];
+const EMPTY_ARRAY: Array<$FlowFixMe> = [];
 
 /**
  * Helper function for getting encoded styles for each inline style. Convert

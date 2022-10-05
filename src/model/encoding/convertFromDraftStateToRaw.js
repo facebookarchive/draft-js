@@ -10,6 +10,7 @@
  */
 
 'use strict';
+
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
@@ -74,7 +75,7 @@ const encodeRawBlocks = (
 ): RawDraftContentState => {
   const {entityMap} = rawState;
 
-  const rawBlocks = [];
+  const rawBlocks: Array<RawDraftContentBlock> = [];
 
   const blockCacheRef = {};
   const entityCacheRef: {[string]: ?string} = {};
@@ -149,7 +150,7 @@ const convertFromDraftStateToRaw = (
 ): RawDraftContentState => {
   let rawDraftContentState = {
     entityMap: {},
-    blocks: [],
+    blocks: ([]: Array<RawDraftContentBlock>),
   };
 
   // add blocks

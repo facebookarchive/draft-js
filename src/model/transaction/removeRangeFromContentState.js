@@ -10,6 +10,7 @@
  */
 
 'use strict';
+
 import type {BlockMap} from 'BlockMap';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type CharacterMetadata from 'CharacterMetadata';
@@ -305,7 +306,7 @@ const removeRangeFromContentState = (
   const isExperimentalTreeBlock = startBlock instanceof ContentBlockNode;
 
   // used to retain blocks that should not be deleted to avoid orphan children
-  let parentAncestors = [];
+  let parentAncestors: Array<string> = [];
 
   if (isExperimentalTreeBlock) {
     const endBlockchildrenKeys = endBlock.getChildKeys();

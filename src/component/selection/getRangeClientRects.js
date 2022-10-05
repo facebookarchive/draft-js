@@ -43,7 +43,7 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
     clientRects.push(rects);
     if (atCommonAncestor) {
       clientRects.reverse();
-      return [].concat(...clientRects);
+      return ([]: Array<ClientRect>).concat(...clientRects);
     }
     tempRange.setEndBefore(ancestor);
   }

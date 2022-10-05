@@ -12,6 +12,9 @@
  * @oncall draft_js
  */
 
+import type {DraftBlockType} from 'DraftBlockType';
+import type {EntityRange} from 'EntityRange';
+import type {InlineStyleRange} from 'InlineStyleRange';
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
@@ -109,15 +112,23 @@ const DraftTreeAdapter = {
   fromRawStateToRawTreeState(
     draftState: RawDraftContentState,
   ): RawDraftContentState {
-    const transformedBlocks = [];
-    const parentStack = [];
+    const transformedBlocks: Array<RawDraftContentBlock> = [];
+    const parentStack: Array<{
+      children: Array<RawDraftContentBlock>,
+      depth: number,
+      entityRanges: Array<EntityRange>,
+      inlineStyleRanges: Array<InlineStyleRange>,
+      key: string,
+      text: string,
+      type: DraftBlockType,
+    }> = [];
 
     draftState.blocks.forEach(block => {
       const isList = isListBlock(block);
       const depth = block.depth || 0;
       const treeBlock = {
         ...block,
-        children: [],
+        children: ([]: Array<RawDraftContentBlock>),
       };
 
       if (!isList) {
@@ -137,9 +148,9 @@ const DraftTreeAdapter = {
           text: '',
           depth: depth - 1,
           type: block.type,
-          children: [],
-          entityRanges: [],
-          inlineStyleRanges: [],
+          children: ([]: Array<RawDraftContentBlock>),
+          entityRanges: ([]: Array<EntityRange>),
+          inlineStyleRanges: ([]: Array<InlineStyleRange>),
         };
 
         parentStack.unshift(newParent);
