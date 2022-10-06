@@ -53,3 +53,11 @@ div[class^="announcementBarContent"] a:hover {
     padding: 6px 30px;
   }
 }
+
+ /* YouTube video well display in smartphones*/
+ @media only screen and (max-width: 580px) {
+  .ifr-wrapper {
+    width: 90vw;
+    height: 50.63vw;
+  }
+ }

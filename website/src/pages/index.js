@@ -29,7 +29,7 @@ function VideoContainer() {
   return (
     <div className="container text--center margin-bottom--xl margin-top--lg">
       <div className="row">
-        <div className="col">
+        <div className={`${styles.ifr-wrapper} col`}>
           <h2>Check it out in the intro video</h2>
             <iframe
               width="560"
