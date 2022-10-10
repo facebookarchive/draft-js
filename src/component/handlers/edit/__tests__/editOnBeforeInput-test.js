@@ -4,13 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
-
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type DraftEditor from 'DraftEditor.react';
 
 const CompositeDraftDecorator = require('CompositeDraftDecorator');
@@ -51,9 +51,21 @@ const getEditorState = (text: string = 'Arsenal') => {
   );
 };
 
+/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
+ * LTI update could not be added via codemod */
 const getDraftEditor = (obj): DraftEditor => (obj: any);
 
-const getInputEvent = (data): SyntheticInputEvent<HTMLElement> =>
+const getInputEvent = (
+  data:
+    | void
+    | string
+    | $TEMPORARY$string<'A'>
+    | $TEMPORARY$string<'O'>
+    | $TEMPORARY$string<'a'>
+    | $TEMPORARY$string<'b'>
+    | $TEMPORARY$string<'f'>
+    | $TEMPORARY$string<'o'>,
+): SyntheticInputEvent<HTMLElement> =>
   ({
     data,
     preventDefault: jest.fn(),
@@ -159,11 +171,19 @@ test('editor selectionstate is updated if new text matches current selection and
 });
 
 const HASHTAG_REGEX = /#[a-z]+/g;
-function hashtagStrategy(contentBlock, callback, contentState) {
+function hashtagStrategy(
+  contentBlock: BlockNodeRecord,
+  callback: (start: number, end: number) => void,
+  contentState: ContentState,
+) {
   findWithRegex(HASHTAG_REGEX, contentBlock, callback);
 }
 
-function findWithRegex(regex, contentBlock, callback) {
+function findWithRegex(
+  regex: RegExp,
+  contentBlock: BlockNodeRecord,
+  callback: (start: number, end: number) => void,
+) {
   const text = contentBlock.getText();
   let matchArr = regex.exec(text);
   while (matchArr !== null) {
@@ -173,10 +193,15 @@ function findWithRegex(regex, contentBlock, callback) {
 }
 
 function testDecoratorFingerprint(
-  text,
-  selection,
-  charToInsert,
-  shouldPrevent,
+  text: string,
+  selection: number,
+  charToInsert:
+    | string
+    | $TEMPORARY$string<'a'>
+    | $TEMPORARY$string<'b'>
+    | $TEMPORARY$string<'f'>
+    | $TEMPORARY$string<'o'>,
+  shouldPrevent: boolean,
 ) {
   const editorState = EditorState.acceptSelection(
     EditorState.set(getEditorState(text), {

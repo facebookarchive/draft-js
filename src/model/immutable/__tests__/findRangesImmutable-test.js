@@ -4,12 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
+
+import type {List as $IMPORTED_TYPE$_List} from 'immutable';
 
 const findRangesImmutable = require('findRangesImmutable');
 const Immutable = require('immutable');
@@ -21,10 +23,10 @@ const returnTrue = () => true;
 const SAMPLE_LIST = List.of(1, 1, 1, 1, 1);
 
 const assertFindRangesImmutable = (
-  list,
-  areEqualFn = returnTrue,
-  filterFn = returnTrue,
-  foundFn = jest.fn(),
+  list: $IMPORTED_TYPE$_List<number>,
+  areEqualFn: (a: number, b: number) => boolean = returnTrue,
+  filterFn: () => boolean = returnTrue,
+  foundFn: JestMockFn<Array<number>, void> = jest.fn(),
 ) => {
   findRangesImmutable(list, areEqualFn, filterFn, foundFn);
   expect(foundFn.mock.calls).toMatchSnapshot();

@@ -4,12 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
- * @flow strict-local
- * @emails oncall+draft_js
- *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
+ *
+ * @flow strict-local
+ * @format
+ * @oncall draft_js
  */
 import type {BlockMap} from 'BlockMap';
 import type {BlockNodeKey} from 'BlockNode';

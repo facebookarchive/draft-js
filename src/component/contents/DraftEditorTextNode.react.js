@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -39,7 +39,14 @@ function isNewline(node: Element): boolean {
  * See http://jsfiddle.net/9khdavod/ for the failure case, and
  * http://jsfiddle.net/7pg143f7/ for the fixed case.
  */
-const NEWLINE_A = ref =>
+const NEWLINE_A = (
+  ref: (
+    ref:
+      | null
+      | React$ElementRef<$TEMPORARY$string<'br'>>
+      | React$ElementRef<$TEMPORARY$string<'span'>>,
+  ) => null | HTMLSpanElement | HTMLBRElement,
+) =>
   useNewlineChar ? (
     <span key="A" data-text="true" ref={ref}>
       {'\n'}
@@ -48,7 +55,14 @@ const NEWLINE_A = ref =>
     <br key="A" data-text="true" ref={ref} />
   );
 
-const NEWLINE_B = ref =>
+const NEWLINE_B = (
+  ref: (
+    ref:
+      | null
+      | React$ElementRef<$TEMPORARY$string<'br'>>
+      | React$ElementRef<$TEMPORARY$string<'span'>>,
+  ) => null | HTMLSpanElement | HTMLBRElement,
+) =>
   useNewlineChar ? (
     <span key="B" data-text="true" ref={ref}>
       {'\n'}

@@ -38,7 +38,7 @@
 }
 
 .playground-main button {
-  background: #3B3738;
+  background: #3b3738;
   margin-left: 10px;
 }
 
@@ -53,7 +53,7 @@
 
 .nav-main {
   *zoom: 1;
-  background: #3B3738;
+  background: #3b3738;
   color: #fafafa;
   position: fixed;
   top: 0;
@@ -64,8 +64,9 @@
   padding: 0 15px;
 }
 
-.nav-main:before, .nav-main:after {
-  content: " ";
+.nav-main:before,
+.nav-main:after {
+  content: ' ';
   display: table;
 }
 
@@ -103,7 +104,7 @@
 
 .nav-main .nav-site a.active {
   color: #fafafa;
-  border-bottom: 3px solid #C15757;
+  border-bottom: 3px solid #c15757;
   background: #333;
 }
 
@@ -114,7 +115,7 @@
 }
 
 .nav-home a {
-  color: #C15757;
+  color: #c15757;
 }
 
 .nav-main .nav-experiment-selector option,

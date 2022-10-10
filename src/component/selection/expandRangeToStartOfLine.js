@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 const UnicodeUtils = require('UnicodeUtils');
@@ -114,8 +114,11 @@ function expandRangeToStartOfLine(range: Range): Range {
   );
   range = range.cloneRange();
 
-  let containingElement = range.startContainer;
+  let containingElement: ?Node = range.startContainer;
+  // $FlowFixMe[incompatible-type]
+  // $FlowFixMe[incompatible-use]
   if (containingElement.nodeType !== 1) {
+    // $FlowFixMe[incompatible-use]
     containingElement = containingElement.parentNode;
   }
   const lineHeight = getLineHeightPx((containingElement: any));

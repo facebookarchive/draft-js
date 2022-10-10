@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
- * @format
  * @flow strict-local
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -79,10 +79,10 @@ const BLOCK_PROPS_BLACKLIST = [
 ];
 
 const assertMoveBlockInContentState = (
-  blockToBeMovedKey,
-  targetBlockKey,
-  insertionMode,
-  blocksArray = contentBlocks,
+  blockToBeMovedKey: string,
+  targetBlockKey: string,
+  insertionMode: 'after' | 'before',
+  blocksArray: Array<ContentBlock | ContentBlockNode> = contentBlocks,
 ) => {
   const editor = EditorState.createWithContent(
     ContentState.createFromBlockArray(blocksArray),

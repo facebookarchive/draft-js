@@ -12,7 +12,6 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 .DraftJsPlaygroundContainer-container {
   background: white;
   display: flex;
@@ -36,12 +35,11 @@
   display: flex;
   justify-content: space-between;
   background: #eee;
-  padding: .5em;
+  padding: 0.5em;
 }
 
 .DraftJsPlaygroundContainer-raw {
   width: 100%;
-
 }
 
 .DraftJsPlaygroundContainer-container [data-block] {
@@ -56,11 +54,15 @@
   margin-left: 0;
 }
 
-.DraftJsPlaygroundContainer-container [data-contents] > [data-block]:first-child {
+.DraftJsPlaygroundContainer-container
+  [data-contents]
+  > [data-block]:first-child {
   border-top: none;
 }
 
-.DraftJsPlaygroundContainer-container [data-contents] > [data-block]:last-child {
+.DraftJsPlaygroundContainer-container
+  [data-contents]
+  > [data-block]:last-child {
   border-bottom: none;
 }
 

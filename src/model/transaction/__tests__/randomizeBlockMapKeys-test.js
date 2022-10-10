@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -22,7 +22,9 @@ const randomizeBlockMapKeys = require('randomizeBlockMapKeys');
 
 const {List} = Immutable;
 
-const assertRandomizeBlockMapKeys = blockMapArray => {
+const assertRandomizeBlockMapKeys = (
+  blockMapArray: Array<ContentBlock | ContentBlockNode>,
+) => {
   expect(
     randomizeBlockMapKeys(BlockMapBuilder.createFromArray(blockMapArray))
       .toIndexedSeq()

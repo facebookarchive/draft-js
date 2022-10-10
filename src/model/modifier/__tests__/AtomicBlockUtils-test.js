@@ -4,14 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
-
-jest.mock('generateRandomKey');
+import type {BlockNodeRecord} from 'BlockNodeRecord';
 
 const AtomicBlockUtils = require('AtomicBlockUtils');
 const BlockMapBuilder = require('BlockMapBuilder');
@@ -22,6 +21,8 @@ const SelectionState = require('SelectionState');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const invariant = require('invariant');
 const mockUUID = require('mockUUID');
+
+jest.mock('generateRandomKey');
 
 jest.mock('uuid', () => mockUUID);
 
@@ -34,7 +35,7 @@ const initialBlock = contentState.getBlockMap().first();
 const ENTITY_KEY = contentState.getLastCreatedEntityKey();
 const CHARACTER = ' ';
 
-const getInvariantViolation = msg => {
+const getInvariantViolation = (msg: string) => {
   try {
     /* eslint-disable-next-line */
     invariant(false, msg);
@@ -43,23 +44,23 @@ const getInvariantViolation = msg => {
   }
 };
 
-const toggleExperimentalTreeDataSupport = enabled => {
+const toggleExperimentalTreeDataSupport = (enabled: boolean) => {
   jest.doMock('gkx', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
 };
 
-const assertAtomic = state => {
+const assertAtomic = (state: EditorState) => {
   expect(
     state.getCurrentContent().getBlockMap().toIndexedSeq().toJS(),
   ).toMatchSnapshot();
 };
 
 const assertInsertAtomicBlock = (
-  state = editorState,
-  entity = ENTITY_KEY,
-  character = CHARACTER,
-  experimentalTreeDataSupport = false,
+  state: EditorState = editorState,
+  entity: string = ENTITY_KEY,
+  character: string = CHARACTER,
+  experimentalTreeDataSupport: boolean = false,
 ) => {
   toggleExperimentalTreeDataSupport(experimentalTreeDataSupport);
   const newState = AtomicBlockUtils.insertAtomicBlock(state, entity, character);
@@ -68,10 +69,13 @@ const assertInsertAtomicBlock = (
 };
 
 const assertMoveAtomicBlock = (
-  atomicBlock,
-  seletion,
-  state = editorState,
-  insertionType,
+  atomicBlock: BlockNodeRecord,
+  seletion: $FlowFixMe,
+  state: EditorState = editorState,
+  insertionType:
+    | void
+    | $TEMPORARY$string<'after'>
+    | $TEMPORARY$string<'before'>,
 ) => {
   const newState = AtomicBlockUtils.moveAtomicBlock(
     state,

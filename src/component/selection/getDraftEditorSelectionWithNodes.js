@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -154,7 +154,8 @@ function getPointForNonTextNode(
   startNode: Node,
   childOffset: number,
 ): SelectionPoint {
-  let node = startNode;
+  let node: ?(Node | Element) = startNode;
+  // $FlowFixMe[incompatible-call]
   const offsetKey: ?string = findAncestorOffsetKey(node);
 
   invariant(
@@ -166,6 +167,7 @@ function getPointForNonTextNode(
   // If the editorRoot is the selection, step downward into the content
   // wrapper.
   if (editorRoot === node) {
+    // $FlowFixMe[incompatible-use]
     node = node.firstChild;
     invariant(
       isElement(node),
@@ -201,6 +203,7 @@ function getPointForNonTextNode(
     return {key, offset: 0};
   }
 
+  // $FlowFixMe[incompatible-use]
   const nodeBeforeCursor = node.childNodes[childOffset - 1];
   let leafKey: ?string = null;
   let textLength: ?number = null;

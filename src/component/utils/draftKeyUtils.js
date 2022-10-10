@@ -6,9 +6,9 @@
  *
  * Provides utilities for handling draftjs keys.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';

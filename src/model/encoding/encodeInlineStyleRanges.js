@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -20,9 +20,9 @@ const UnicodeUtils = require('UnicodeUtils');
 
 const findRangesImmutable = require('findRangesImmutable');
 
-const areEqual = (a, b) => a === b;
-const isTruthy = a => !!a;
-const EMPTY_ARRAY = [];
+const areEqual = (a: boolean, b: boolean) => a === b;
+const isTruthy = (a: boolean) => !!a;
+const EMPTY_ARRAY: Array<$FlowFixMe> = [];
 
 /**
  * Helper function for getting encoded styles for each inline style. Convert

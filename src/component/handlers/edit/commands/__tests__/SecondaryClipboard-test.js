@@ -4,16 +4,16 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
- * @format
  * @flow strict-local
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
 jest.mock('generateRandomKey');
 
-const toggleExperimentalTreeDataSupport = enabled => {
+const toggleExperimentalTreeDataSupport = (enabled: boolean) => {
   jest.doMock('gkx', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
@@ -100,9 +100,28 @@ const contentBlockNodes = [
 ];
 
 const assertCutOperation = (
-  operation,
-  selection = {},
-  content = contentBlockNodes,
+  operation: (editorState: EditorState) => EditorState,
+  selection:
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{
+        anchorKey: $TEMPORARY$string<'E'>,
+        anchorOffset: number,
+        focusKey: $TEMPORARY$string<'E'>,
+        focusOffset: number,
+      }>
+    | $TEMPORARY$object<{
+        anchorKey: $TEMPORARY$string<'H'>,
+        anchorOffset: number,
+        focusKey: $TEMPORARY$string<'H'>,
+        focusOffset: number,
+      }>
+    | $TEMPORARY$object<{
+        anchorKey: $TEMPORARY$string<'I'>,
+        anchorOffset: number,
+        focusKey: $TEMPORARY$string<'I'>,
+        focusOffset: number,
+      }> = {},
+  content: $TEMPORARY$array<ContentBlockNode> = contentBlockNodes,
 ) => {
   const result = operation(
     EditorState.forceSelection(

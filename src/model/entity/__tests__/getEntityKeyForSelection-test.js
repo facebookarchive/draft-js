@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 const getEntityKeyForSelection = require('getEntityKeyForSelection');
@@ -35,7 +35,12 @@ const NON_COLLAPSED_SELECTION = initialSelectionState.merge({
   focusOffset: 2,
 });
 
-const setEntityMutability = mutability => {
+const setEntityMutability = (
+  mutability:
+    | $TEMPORARY$string<'IMMUTABLE'>
+    | $TEMPORARY$string<'MUTABLE'>
+    | $TEMPORARY$string<'SEGMENTED'>,
+) => {
   // $FlowFixMe error encountered when strong-typing ContentState.getEntityMap
   contentState.getEntityMap().__get = () => ({
     getMutability: () => mutability,

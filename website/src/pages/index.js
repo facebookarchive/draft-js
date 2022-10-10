@@ -25,22 +25,33 @@ function ClientOnly({children, fallback}) {
   return children;
 }
 
+function VideoContainer() {
+  return (
+    <div className="container text--center margin-bottom--xl margin-top--lg">
+      <div className="row">
+        <div className="col">
+          <h2>Check it out in the intro video</h2>
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/YEK7SXFrJL4"
+              title="Explain Like I'm 5: DraftJS"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Home() {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
 
   return (
     <Layout permalink="/" description={siteConfig.tagline}>
-      <div className={styles.blm}>
-        Black Lives Matter.{' '}
-        <a
-          target="_blank"
-          rel="noopener"
-          rel="noreferrer"
-          href="https://support.eji.org/give/153413/#!/donation/checkout">
-          Support&nbsp;the&nbsp;Equal&nbsp;Justice&nbsp;Initiative.
-        </a>
-      </div>
       <div className="hero hero--primary shadow--lw">
         <div className="container">
           <div className="row">
@@ -64,6 +75,7 @@ function Home() {
           </div>
         </div>
       </div>
+      <VideoContainer />
       <div className="container">
         <div className="margin-vert--xl">
           <div className="row">

@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -22,7 +22,7 @@ const DEFAULT_CONFIG = {
   hasFocus: true,
 };
 
-const flip = selectionState => {
+const flip = (selectionState: $FlowFixMe) => {
   return selectionState.merge({
     anchorKey: selectionState.getFocusKey(),
     anchorOffset: selectionState.getFocusOffset(),
@@ -32,7 +32,16 @@ const flip = selectionState => {
   });
 };
 
-const getSample = (type, config = {}) => {
+const getSample = (
+  type:
+    | $TEMPORARY$string<'COLLAPSED'>
+    | $TEMPORARY$string<'MULTI_BLOCK'>
+    | $TEMPORARY$string<'WITHIN_BLOCK'>,
+  config:
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{anchorOffset: number, focusOffset: number}>
+    | $TEMPORARY$object<{isBackward: boolean}> = {},
+) => {
   let selectionState;
 
   switch (type) {

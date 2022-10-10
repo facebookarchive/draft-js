@@ -4,16 +4,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
- * @flow
- * @emails oncall+draft_js
- *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
+ *
+ * @flow
+ * @format
+ * @oncall draft_js
  */
 
 import type {BlockMap} from 'BlockMap';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type ContentBlock from 'ContentBlock';
 
 const ContentBlockNode = require('ContentBlockNode');
 
@@ -39,7 +40,11 @@ const getNextDelimiterBlockKey = (
     return null;
   }
 
-  let nextNonDescendantBlock = blockMap.get(parent);
+  let nextNonDescendantBlock: ?(
+    | ContentBlock
+    | BlockNodeRecord
+    | ContentBlockNode
+  ) = blockMap.get(parent);
   while (
     nextNonDescendantBlock &&
     !nextNonDescendantBlock.getNextSiblingKey()

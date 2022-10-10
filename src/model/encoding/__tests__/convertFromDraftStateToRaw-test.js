@@ -4,15 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
- * @format
  * @flow strict-local
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
-
-const mockUUID = require('mockUUID');
-jest.mock('uuid', () => jest.fn(mockUUID));
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -24,6 +21,9 @@ const DraftEntityInstance = require('DraftEntityInstance');
 const convertFromDraftStateToRaw = require('convertFromDraftStateToRaw');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const Immutable = require('immutable');
+const mockUUID = require('mockUUID');
+
+jest.mock('uuid', () => jest.fn(mockUUID));
 
 const {contentState} = getSampleStateForTesting();
 
@@ -61,9 +61,20 @@ const treeContentState = contentState.setBlockMap(
   ]),
 );
 
-const getMetadata = entityKey =>
-  Immutable.Repeat(CharacterMetadata.create({entity: entityKey}), 5);
-const getLink = entityKey =>
+const getMetadata = (
+  entityKey:
+    | $TEMPORARY$string<'3'>
+    | $TEMPORARY$string<'4'>
+    | $TEMPORARY$string<'5'>
+    | $TEMPORARY$string<'6'>,
+) => Immutable.Repeat(CharacterMetadata.create({entity: entityKey}), 5);
+const getLink = (
+  entityKey:
+    | $TEMPORARY$string<'3'>
+    | $TEMPORARY$string<'4'>
+    | $TEMPORARY$string<'5'>
+    | $TEMPORARY$string<'6'>,
+) =>
   new DraftEntityInstance({
     type: 'LINK',
     mutabiltity: 'MUTABLE',
@@ -104,7 +115,7 @@ const contentStateWithNonContiguousEntities = ContentState.createFromBlockArray(
   .addEntity(getLink('5'))
   .addEntity(getLink('6'));
 
-const assertConvertFromDraftStateToRaw = content => {
+const assertConvertFromDraftStateToRaw = (content: ContentState) => {
   expect(convertFromDraftStateToRaw(content)).toMatchSnapshot();
 };
 

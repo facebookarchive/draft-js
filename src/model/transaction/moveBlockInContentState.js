@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -153,7 +153,7 @@ const moveBlockInContentState = (
   const blockMap = contentState.getBlockMap();
   const isExperimentalTreeBlock = blockToBeMoved instanceof ContentBlockNode;
 
-  let blocksToBeMoved = [blockToBeMoved];
+  let blocksToBeMoved: Array<BlockNodeRecord> = [blockToBeMoved];
   let blockMapWithoutBlocksToBeMoved = blockMap.delete(blockKey);
 
   if (isExperimentalTreeBlock) {

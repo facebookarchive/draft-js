@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -59,7 +59,7 @@ test('must has editorKey same as props', () => {
 });
 
 describe('ariaDescribedBy', () => {
-  function getProps(elem) {
+  function getProps(elem: React.Node) {
     const r = shallow.render(elem);
     const ec = r.props.children[1].props.children;
     return ec.props;
