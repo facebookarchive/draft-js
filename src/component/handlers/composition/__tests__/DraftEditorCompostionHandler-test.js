@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -26,7 +26,9 @@ const {Map} = require('immutable');
 
 jest.mock('DOMObserver', () => {
   function DOMObserver() {}
+  // $FlowFixMe[prop-missing]
   DOMObserver.prototype.start = jest.fn();
+  // $FlowFixMe[prop-missing]
   DOMObserver.prototype.stopAndFlushMutations = jest
     .fn()
     .mockReturnValue(Map({}));
@@ -48,7 +50,14 @@ let compositionHandler = null;
 // Initialization of mock editor component that will be used for all tests
 let editor;
 
-function getEditorState(blocks) {
+function getEditorState(
+  blocks:
+    | $TEMPORARY$object<{blockkey0: string}>
+    | $TEMPORARY$object<{
+        blockkey0: $TEMPORARY$string<'react'>,
+        blockkey1: $TEMPORARY$string<'draft'>,
+      }>,
+) {
   const contentBlocks = Object.keys(blocks).map(blockKey => {
     return new ContentBlock({
       key: blockKey,
@@ -76,7 +85,10 @@ function editorTextContent() {
   return editor._latestEditorState.getCurrentContent().getPlainText();
 }
 
-function withGlobalGetSelectionAs(getSelectionValue, callback) {
+function withGlobalGetSelectionAs(
+  getSelectionValue: $TEMPORARY$object<{...}>,
+  callback: () => void,
+) {
   const oldGetSelection = global.getSelection;
   try {
     global.getSelection = () => getSelectionValue;

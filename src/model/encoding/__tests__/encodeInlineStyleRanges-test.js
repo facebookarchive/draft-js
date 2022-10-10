@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -33,7 +33,9 @@ const {List, OrderedSet, Repeat} = Immutable;
 const FOO = OrderedSet.of('foo');
 const FOO_BAR = OrderedSet.of('foo', 'bar');
 
-const createBlock = (text, inlineStyles) => {
+/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
+ * LTI update could not be added via codemod */
+const createBlock = (text: string, inlineStyles) => {
   return new ContentBlock({
     key: 'a',
     text,

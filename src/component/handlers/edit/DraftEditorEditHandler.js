@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -32,7 +32,7 @@ const isChrome = UserAgent.isBrowser('Chrome');
 const isFirefox = UserAgent.isBrowser('Firefox');
 
 const selectionHandler: (e: DraftEditor) => void =
-  isChrome || isFirefox ? onSelect : e => {};
+  isChrome || isFirefox ? onSelect : (e: DraftEditor) => {};
 
 const DraftEditorEditHandler = {
   onBeforeInput,

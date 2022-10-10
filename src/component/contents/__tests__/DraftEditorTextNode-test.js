@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
- * @format
  * @flow strict-local
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -30,7 +30,9 @@ beforeEach(() => {
   container = document.createElement('div');
 });
 
-const renderIntoContainer = element => {
+const renderIntoContainer = (element: React.Node) => {
+  // $FlowFixMe[incompatible-call]
+  // $FlowFixMe[incompatible-exact]
   return ReactDOM.render(element, container);
 };
 
@@ -48,7 +50,10 @@ const initializeAsNonIE = () => {
   UserAgent.isBrowser.mockImplementation(() => false);
 };
 
-const expectPopulatedSpan = (stub, testString) => {
+const expectPopulatedSpan = (
+  stub: DraftEditorTextNode | HTMLDivElement,
+  testString: string | $TEMPORARY$string<'Hello'>,
+) => {
   // $FlowExpectedError[incompatible-type] node could be null
   const node: Element = ReactDOM.findDOMNode(stub);
   expect(node.tagName).toBe('SPAN');
@@ -151,15 +156,11 @@ test('must skip updates if text already matches DOM, non-IE', function () {
 
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-  // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
-  // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   expect(stub.render.mock.calls.length).toBe(0);
 
   // Sanity check that updating is performed when appropriate.
   renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
-  // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
-  // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   expect(stub.render.mock.calls.length).toBe(1);
 });
 
@@ -173,15 +174,11 @@ test('must skip updates if text already matches DOM, IE', function () {
 
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
-  // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
-  // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   expect(stub.render.mock.calls.length).toBe(0);
 
   // Sanity check that updating is performed when appropriate.
   renderIntoContainer(<DraftEditorTextNode>{TEST_B}</DraftEditorTextNode>);
 
-  // $FlowExpectedError[prop-missing] property render is missing in HTMLDivElement
-  // $FlowFixMe[method-unbinding] added when improving typing for this parameters
   expect(stub.render.mock.calls.length).toBe(1);
 });
 

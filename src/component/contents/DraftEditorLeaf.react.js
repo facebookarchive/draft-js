@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -145,7 +145,7 @@ class DraftEditorLeaf extends React.Component<Props> {
 
     const {customStyleMap, customStyleFn, offsetKey, styleSet} = this.props;
     let styleObj = styleSet.reduce((map, styleName) => {
-      const mergedStyles = {};
+      const mergedStyles: {textDecoration?: string, ...} = {};
       const style = customStyleMap[styleName];
 
       if (style !== undefined && map.textDecoration !== style.textDecoration) {

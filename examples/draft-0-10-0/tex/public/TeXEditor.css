@@ -32,13 +32,13 @@
 }
 
 .TeXEditor-handle {
-  color: rgba(98, 177, 254, 1.0);
+  color: rgba(98, 177, 254, 1);
   direction: ltr;
   unicode-bidi: bidi-override;
 }
 
 .TeXEditor-hashtag {
-  color: rgba(95, 184, 138, 1.0);
+  color: rgba(95, 184, 138, 1);
 }
 
 .TeXEditor-tex {

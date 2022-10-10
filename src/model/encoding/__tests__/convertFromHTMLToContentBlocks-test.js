@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -47,7 +47,7 @@ const SUPPORTED_TAGS = [
   'pre',
 ];
 
-const normalizeBlock = block => {
+const normalizeBlock = (block: $FlowFixMe) => {
   const {type, depth, text, characterList} = block;
 
   return {
@@ -58,7 +58,7 @@ const normalizeBlock = block => {
   };
 };
 
-const toggleExperimentalTreeDataSupport = enabled => {
+const toggleExperimentalTreeDataSupport = (enabled: $FlowFixMe) => {
   jest.doMock('gkx', () => name => {
     if (name === 'draftjs_paste_emojis') {
       return true;
@@ -75,10 +75,14 @@ beforeEach(() => {
   jest.mock('uuid', () => mockUUID);
 });
 
-const convertFromHTML = (html_string, config) => {
-  /* $FlowFixMe[cannot-spread-inexact] (>=0.122.0 site=www) This comment
-   * suppresses an error found when Flow v0.122.0 was deployed. To see the
-   * error, delete this comment and run Flow. */
+const convertFromHTML = (
+  html_string: string | $TEMPORARY$string<'a\n'>,
+  config:
+    | void
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{experimentalTreeDataSupport: boolean}>
+    | $TEMPORARY$object<{experimentalTreeDataSupport: boolean, ...}>,
+) => {
   const options = {
     ...DEFAULT_CONFIG,
     ...config,
@@ -95,7 +99,10 @@ const convertFromHTML = (html_string, config) => {
   );
 };
 
-const AreTreeBlockNodesEquivalent = (html_string, config = {}) => {
+const AreTreeBlockNodesEquivalent = (
+  html_string: string,
+  config: $TEMPORARY$object<{...}> = {},
+) => {
   const treeEnabled = (
     convertFromHTML(html_string, {
       ...config,
@@ -113,7 +120,12 @@ const AreTreeBlockNodesEquivalent = (html_string, config = {}) => {
   return JSON.stringify(treeEnabled) === JSON.stringify(treeDisabled);
 };
 
-const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
+const assertConvertFromHTMLToContentBlocks = (
+  html_string: string,
+  config:
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{experimentalTreeDataSupport: boolean}> = {},
+) => {
   expect(
     (convertFromHTML(html_string, config)?.contentBlocks || []).map(block =>
       block.toJS(),

@@ -4,14 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
- * @flow
- * @emails oncall+draft_js
- *
  * This file is a fork of DraftEditorContents.react.js for tree nodes
  *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
+ *
+ * @flow
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -119,7 +119,7 @@ class DraftEditorContentsExperimental extends React.Component<Props> {
     const rootBlock = blocksAsArray[0];
     const processedBlocks = [];
 
-    let nodeBlock = rootBlock;
+    let nodeBlock: ?BlockNodeRecord = rootBlock;
 
     while (nodeBlock) {
       const blockKey = nodeBlock.getKey();

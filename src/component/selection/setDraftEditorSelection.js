@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -80,7 +80,7 @@ function getAnonymizedEditorDOM(
   getNodeLabels?: (n: Node) => Array<string>,
 ): string {
   // grabbing the DOM content of the Draft editor
-  let currentNode = node;
+  let currentNode: ?Node = node;
   // this should only be used after checking with isElement
   let castedNode: Element = (currentNode: any);
   while (currentNode) {

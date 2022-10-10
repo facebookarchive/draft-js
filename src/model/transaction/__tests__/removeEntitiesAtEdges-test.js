@@ -4,12 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
 
 const DraftEntityInstance = require('DraftEntityInstance');
 
@@ -28,7 +30,14 @@ const selectionOnEntity = selectionState.merge({
 });
 
 // Creates an entity with the given key and mutability
-function ensureEntityWithMutability(contentState, key, mutability) {
+function ensureEntityWithMutability(
+  contentState: ContentState,
+  key: $TEMPORARY$string<'2'> | $TEMPORARY$string<'456'>,
+  mutability:
+    | $TEMPORARY$string<'IMMUTABLE'>
+    | $TEMPORARY$string<'MUTABLE'>
+    | $TEMPORARY$string<'SEGMENTED'>,
+) {
   return contentState.setEntityMap(
     contentState.getAllEntities().set(
       key,
@@ -40,9 +49,12 @@ function ensureEntityWithMutability(contentState, key, mutability) {
 }
 
 const assertRemoveEntitiesAtEdges = (
-  selection,
-  mutability = 'IMMUTABLE',
-  content = sampleContentState,
+  selection: $FlowFixMe | SelectionState,
+  mutability:
+    | $TEMPORARY$string<'IMMUTABLE'>
+    | $TEMPORARY$string<'MUTABLE'>
+    | $TEMPORARY$string<'SEGMENTED'> = 'IMMUTABLE',
+  content: ContentState = sampleContentState,
 ) => {
   const contentState = ensureEntityWithMutability(content, '2', mutability);
   expect(

@@ -4,21 +4,24 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
-jest.mock('generateRandomKey');
-
+import type {EntityRange} from 'EntityRange';
+import type {InlineStyleRange} from 'InlineStyleRange';
+import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
 
 const convertFromRawToDraftState = require('convertFromRawToDraftState');
 const mockUUID = require('mockUUID');
 
-const toggleExperimentalTreeDataSupport = enabled => {
+jest.mock('generateRandomKey');
+
+const toggleExperimentalTreeDataSupport = (enabled: boolean) => {
   jest.doMock('gkx', () => name => {
     return name === 'draft_tree_data_support' ? enabled : false;
   });
@@ -42,30 +45,30 @@ test('must map falsey block types to default value of unstyled', () => {
         key: 'A',
         text: 'AAAA',
         depth: 0,
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'B',
         text: 'BBBB',
         type: null,
         depth: 0,
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'C',
         text: 'CCCC',
         type: undefined,
         depth: 0,
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
     ],
     entityMap: {},
   };
 
-  //$FlowFixMe looks like the whole point of the test is to verify something prevented by flow? Let it be for now.
+  // $FlowFixMe looks like the whole point of the test is to verify something prevented by flow? Let it be for now.
   assertDraftState(rawState);
 });
 
@@ -75,8 +78,8 @@ test('must be able to convert from styled blocks and entities mapped raw state',
       {
         data: {},
         depth: 0,
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
         key: 'a',
         text: 'Alpha',
         type: 'unstyled',
@@ -105,7 +108,7 @@ test('must be able to convert from styled blocks and entities mapped raw state',
       {
         data: {},
         depth: 0,
-        entityRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
         inlineStyleRanges: [
           {
             length: 7,
@@ -136,36 +139,36 @@ test('must convert from raw tree draft to raw content state when experimentalTre
       {
         key: 'A',
         text: '',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
         type: 'unstyled',
         depth: 0,
         children: [
           {
             key: 'B',
             text: '',
-            entityRanges: [],
-            inlineStyleRanges: [],
+            entityRanges: ([]: Array<EntityRange>),
+            inlineStyleRanges: ([]: Array<InlineStyleRange>),
             type: 'unstyled',
             depth: 0,
             children: [
               {
                 key: 'C',
                 text: 'left block',
-                entityRanges: [],
-                inlineStyleRanges: [],
+                entityRanges: ([]: Array<EntityRange>),
+                inlineStyleRanges: ([]: Array<InlineStyleRange>),
                 type: 'unstyled',
                 depth: 0,
-                children: [],
+                children: ([]: Array<RawDraftContentBlock>),
               },
               {
                 key: 'D',
                 text: 'right block',
-                entityRanges: [],
-                inlineStyleRanges: [],
+                entityRanges: ([]: Array<EntityRange>),
+                inlineStyleRanges: ([]: Array<InlineStyleRange>),
                 type: 'unstyled',
                 depth: 0,
-                children: [],
+                children: ([]: Array<RawDraftContentBlock>),
               },
             ],
           },
@@ -173,10 +176,10 @@ test('must convert from raw tree draft to raw content state when experimentalTre
             key: 'E',
             type: 'header-one',
             text: 'This is a tree based document!',
-            entityRanges: [],
-            inlineStyleRanges: [],
+            entityRanges: ([]: Array<EntityRange>),
+            inlineStyleRanges: ([]: Array<InlineStyleRange>),
             depth: 0,
-            children: [],
+            children: ([]: Array<RawDraftContentBlock>),
           },
         ],
       },
@@ -194,36 +197,36 @@ test('convert from raw tree draft content state', () => {
       {
         key: 'A',
         text: '',
-        entityRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
         depth: 0,
-        inlineStyleRanges: [],
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
         type: 'unstyled',
         children: [
           {
             key: 'B',
             text: '',
-            entityRanges: [],
+            entityRanges: ([]: Array<EntityRange>),
             depth: 0,
-            inlineStyleRanges: [],
+            inlineStyleRanges: ([]: Array<InlineStyleRange>),
             type: 'unstyled',
             children: [
               {
                 key: 'C',
                 text: 'left block',
-                entityRanges: [],
+                entityRanges: ([]: Array<EntityRange>),
                 depth: 0,
-                inlineStyleRanges: [],
+                inlineStyleRanges: ([]: Array<InlineStyleRange>),
                 type: 'unstyled',
-                children: [],
+                children: ([]: Array<RawDraftContentBlock>),
               },
               {
                 key: 'D',
                 text: 'right block',
-                entityRanges: [],
+                entityRanges: ([]: Array<EntityRange>),
                 depth: 0,
-                inlineStyleRanges: [],
+                inlineStyleRanges: ([]: Array<InlineStyleRange>),
                 type: 'unstyled',
-                children: [],
+                children: ([]: Array<RawDraftContentBlock>),
               },
             ],
           },
@@ -231,10 +234,10 @@ test('convert from raw tree draft content state', () => {
             key: 'E',
             type: 'header-one',
             text: 'This is a tree based document!',
-            entityRanges: [],
+            entityRanges: ([]: Array<EntityRange>),
             depth: 0,
-            inlineStyleRanges: [],
-            children: [],
+            inlineStyleRanges: ([]: Array<InlineStyleRange>),
+            children: ([]: Array<RawDraftContentBlock>),
           },
         ],
       },
@@ -252,25 +255,25 @@ test('must be able to convert from raw state to tree state when experimentalTree
       {
         key: 'A',
         text: 'AAAA',
-        entityRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
         type: 'unstyled',
-        inlineStyleRanges: [],
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
         depth: 0,
       },
       {
         key: 'B',
         text: 'BBBB',
-        entityRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
         type: 'unstyled',
-        inlineStyleRanges: [],
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
         depth: 0,
       },
       {
         key: 'C',
         text: 'CCCC',
-        entityRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
         type: 'unstyled',
-        inlineStyleRanges: [],
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
         depth: 0,
       },
     ],
@@ -289,24 +292,24 @@ test('must be able to convert content blocks that have list with depth from raw 
         type: 'ordered-list-item',
         depth: 0,
         text: '',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'B',
         type: 'ordered-list-item',
         depth: 1,
         text: '',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'C',
         type: 'ordered-list-item',
         depth: 2,
         text: 'deeply nested list',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
     ],
     entityMap: {},
@@ -323,25 +326,25 @@ test('ignore empty children array', () => {
         type: 'ordered-list-item',
         depth: 0,
         text: 'A',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'B',
         type: 'ordered-list-item',
         depth: 0,
         text: 'B',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'C',
         type: 'ordered-list-item',
         depth: 0,
         text: 'C',
-        children: [],
-        entityRanges: [],
-        inlineStyleRanges: [],
+        children: ([]: Array<RawDraftContentBlock>),
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
     ],
     entityMap: {},
@@ -358,25 +361,25 @@ test('ignore empty children array for tree conversion 1', () => {
         type: 'ordered-list-item',
         depth: 0,
         text: 'A',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'B',
         type: 'ordered-list-item',
         depth: 0,
         text: 'B',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'C',
         type: 'ordered-list-item',
         depth: 0,
         text: 'C',
-        children: [],
-        entityRanges: [],
-        inlineStyleRanges: [],
+        children: ([]: Array<RawDraftContentBlock>),
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
     ],
     entityMap: {},
@@ -393,25 +396,25 @@ test('ignore empty children array for tree conversion 2', () => {
         type: 'ordered-list-item',
         depth: 0,
         text: 'A',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'B',
         type: 'ordered-list-item',
         depth: 0,
         text: 'B',
-        entityRanges: [],
-        inlineStyleRanges: [],
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
       {
         key: 'C',
         type: 'ordered-list-item',
         depth: 0,
         text: 'C',
-        children: [],
-        entityRanges: [],
-        inlineStyleRanges: [],
+        children: ([]: Array<RawDraftContentBlock>),
+        entityRanges: ([]: Array<EntityRange>),
+        inlineStyleRanges: ([]: Array<InlineStyleRange>),
       },
     ],
     entityMap: {},

@@ -4,12 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
+
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
@@ -74,7 +75,7 @@ const encodeRawBlocks = (
 ): RawDraftContentState => {
   const {entityMap} = rawState;
 
-  const rawBlocks = [];
+  const rawBlocks: Array<RawDraftContentBlock> = [];
 
   const blockCacheRef = {};
   const entityCacheRef: {[string]: ?string} = {};
@@ -149,13 +150,15 @@ const convertFromDraftStateToRaw = (
 ): RawDraftContentState => {
   let rawDraftContentState = {
     entityMap: {},
-    blocks: [],
+    blocks: ([]: Array<RawDraftContentBlock>),
   };
 
   // add blocks
+  // $FlowFixMe[prop-missing]
   rawDraftContentState = encodeRawBlocks(contentState, rawDraftContentState);
 
   // add entities
+  // $FlowFixMe[prop-missing]
   rawDraftContentState = encodeRawEntityMap(contentState, rawDraftContentState);
 
   return rawDraftContentState;

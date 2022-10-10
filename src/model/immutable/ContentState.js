@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -79,15 +79,18 @@ class ContentState extends ContentStateRecord {
   }
 
   getBlockMap(): BlockMap {
-    return (this: any).get('blockMap');
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
+    return this.get('blockMap');
   }
 
   getSelectionBefore(): SelectionState {
-    return (this: any).get('selectionBefore');
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
+    return this.get('selectionBefore');
   }
 
   getSelectionAfter(): SelectionState {
-    return (this: any).get('selectionAfter');
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
+    return this.get('selectionAfter');
   }
 
   getBlockForKey(key: string): BlockNodeRecord {
@@ -227,15 +230,18 @@ class ContentState extends ContentStateRecord {
   }
 
   setSelectionBefore(selection: SelectionState): ContentState {
-    return (this: any).set('selectionBefore', selection);
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
+    return this.set('selectionBefore', selection);
   }
 
   setSelectionAfter(selection: SelectionState): ContentState {
-    return (this: any).set('selectionAfter', selection);
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
+    return this.set('selectionAfter', selection);
   }
 
   setBlockMap(blockMap: BlockMap): ContentState {
-    return (this: any).set('blockMap', blockMap);
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
+    return this.set('blockMap', blockMap);
   }
 
   static createFromBlockArray(

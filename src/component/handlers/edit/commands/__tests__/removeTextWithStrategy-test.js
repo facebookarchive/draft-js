@@ -4,23 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
- * @format
  * @flow strict-local
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
-
-jest.mock('generateRandomKey');
-
-const toggleExperimentalTreeDataSupport = enabled => {
-  jest.doMock('gkx', () => name => {
-    return name === 'draft_tree_data_support' ? enabled : false;
-  });
-};
-
-// Seems to be important to put this at the top
-toggleExperimentalTreeDataSupport(true);
+import type ContentState from 'ContentState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -32,6 +22,15 @@ const getSampleStateForTesting = require('getSampleStateForTesting');
 const Immutable = require('immutable');
 const moveSelectionForward = require('moveSelectionForward');
 const removeTextWithStrategy = require('removeTextWithStrategy');
+
+jest.mock('generateRandomKey');
+const toggleExperimentalTreeDataSupport = (enabled: boolean) => {
+  jest.doMock('gkx', () => name => {
+    return name === 'draft_tree_data_support' ? enabled : false;
+  });
+};
+// Seems to be important to put this at the top
+toggleExperimentalTreeDataSupport(true);
 
 const {List} = Immutable;
 
@@ -102,9 +101,28 @@ const contentBlockNodes = [
 ];
 
 const assertRemoveTextOperation = (
-  operation,
-  selection = {},
-  content = contentBlockNodes,
+  operation: (editorState: EditorState) => ContentState,
+  selection:
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{
+        anchorKey: $TEMPORARY$string<'D'>,
+        anchorOffset: number,
+        focusKey: $TEMPORARY$string<'D'>,
+        focusOffset: number,
+      }>
+    | $TEMPORARY$object<{
+        anchorKey: $TEMPORARY$string<'D'>,
+        anchorOffset: number,
+        focusKey: $TEMPORARY$string<'E'>,
+        focusOffset: number,
+      }>
+    | $TEMPORARY$object<{
+        anchorKey: $TEMPORARY$string<'E'>,
+        anchorOffset: number,
+        focusKey: $TEMPORARY$string<'E'>,
+        focusOffset: number,
+      }> = {},
+  content: $TEMPORARY$array<ContentBlockNode> = contentBlockNodes,
 ) => {
   const result = operation(
     EditorState.forceSelection(

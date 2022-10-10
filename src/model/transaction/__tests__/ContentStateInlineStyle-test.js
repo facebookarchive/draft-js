@@ -4,12 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
+import type ContentState from 'ContentState';
+import type SelectionState from 'SelectionState';
 
 const ContentStateInlineStyle = require('ContentStateInlineStyle');
 
@@ -23,9 +25,9 @@ const initialSelection = selectionState.set(
 );
 
 const assertAddContentStateInlineStyle = (
-  inlineStyle,
-  selection = selectionState,
-  content = contentState,
+  inlineStyle: $TEMPORARY$string<'BOLD'> | $TEMPORARY$string<'ITALIC'>,
+  selection: $FlowFixMe | SelectionState = selectionState,
+  content: ContentState = contentState,
 ) => {
   const newContentState = ContentStateInlineStyle.add(
     content,
@@ -39,9 +41,9 @@ const assertAddContentStateInlineStyle = (
 };
 
 const assertRemoveContentStateInlineStyle = (
-  inlineStyle,
-  selection = selectionState,
-  content = contentState,
+  inlineStyle: $TEMPORARY$string<'BOLD'> | $TEMPORARY$string<'ITALIC'>,
+  selection: $FlowFixMe | SelectionState = selectionState,
+  content: ContentState = contentState,
 ) => {
   const newContentState = ContentStateInlineStyle.remove(
     content,

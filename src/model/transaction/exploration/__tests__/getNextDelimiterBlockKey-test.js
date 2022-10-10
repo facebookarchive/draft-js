@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
- * @format
  * @flow strict-local
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -77,8 +77,8 @@ const contentBlockNodes = [
 ];
 
 const assertGetNextDelimiterBlockKey = (
-  targetBlockKey,
-  blocksArray = contentBlockNodes,
+  targetBlockKey: string,
+  blocksArray: Array<ContentBlock | ContentBlockNode> = contentBlockNodes,
 ) => {
   const editor = EditorState.createWithContent(
     ContentState.createFromBlockArray(blocksArray),
