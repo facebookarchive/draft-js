@@ -500,7 +500,7 @@ class EditorState {
       currentContent: newContent,
       directionMap,
       undoStack,
-      redoStack: Stack(),
+      redoStack: Stack<ContentState>(),
       lastChangeType: changeType,
       selection: contentState.getSelectionAfter(),
       forceSelection,
