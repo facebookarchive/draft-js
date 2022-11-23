@@ -15,27 +15,27 @@
  * @format
  */
 
-import React, {Component} from 'react';
+import './App.css';
 import './DraftJsPlaygroundContainer.css';
-import {Controlled as CodeMirror} from 'react-codemirror2';
+import DraftJsRichEditorExample from './DraftJsRichEditorExample';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
-import 'draft-js/dist/Draft.css';
-import './App.css';
-import DraftJsRichEditorExample from './DraftJsRichEditorExample';
-import JSONTree from 'react-json-tree';
 import {convertToHTML} from 'draft-convert';
-import PanelGroup from 'react-panelgroup';
-import gkx from 'draft-js/lib/gkx';
-import convertFromHTMLModern from 'draft-js/lib/convertFromHTMLToContentBlocks';
-
 import {
   ContentState,
   EditorState,
   convertFromHTML as convertFromHTMLClassic,
-  convertToRaw,
   convertFromRaw,
+  convertToRaw,
 } from 'draft-js';
+import 'draft-js/dist/Draft.css';
+import convertFromHTMLModern from 'draft-js/lib/convertFromHTMLToContentBlocks';
+import gkx from 'draft-js/lib/gkx';
+import Immutable from 'immutable';
+import React from 'react';
+import {Controlled as CodeMirror} from 'react-codemirror2';
+import JSONTree from 'react-json-tree';
+import PanelGroup from 'react-panelgroup';
 
 const fromHTML = gkx('draft_refactored_html_importer')
   ? convertFromHTMLModern
@@ -92,13 +92,14 @@ const BASE_CONTENT = {
   html: baseHtmlContent,
 };
 
-class DraftJsPlaygroundContainer extends Component {
-  constructor(props: Props) {
+class DraftJsPlaygroundContainer extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       mode: 'rawContent',
       editorState: EditorState.createEmpty(),
       codeMirrorValue: BASE_CONTENT['rawContent'],
+      showAllState: false,
     };
   }
 
@@ -106,7 +107,7 @@ class DraftJsPlaygroundContainer extends Component {
     this.setContent();
   }
 
-  onChange = editorState => {
+  onChange = (editorState) => {
     this.setState({editorState});
   };
 
@@ -133,13 +134,11 @@ class DraftJsPlaygroundContainer extends Component {
 
   _setHTMLContent(html) {
     const parsedHtml = fromHTML(html);
-
     if (!parsedHtml) {
       return;
     }
 
     const {contentBlocks, entityMap} = parsedHtml;
-
     if (!contentBlocks) {
       return;
     }
@@ -160,7 +159,6 @@ class DraftJsPlaygroundContainer extends Component {
 
   setContent = () => {
     const {mode, codeMirrorValue} = this.state;
-
     if (mode === 'html') {
       this._setHTMLContent(codeMirrorValue);
     } else {
@@ -175,13 +173,13 @@ class DraftJsPlaygroundContainer extends Component {
     });
   };
 
-  updateCodeMirror = codeMirrorValue => {
+  updateCodeMirror = (codeMirrorValue) => {
     this.setState({codeMirrorValue});
   };
 
   shouldExpandNode = (keyName, data, level) => {
     return ['blockMap', 'root'].some(
-      defaultVisibleNode => keyName[0] === defaultVisibleNode,
+      (defaultVisibleNode) => keyName[0] === defaultVisibleNode,
     );
   };
 
@@ -192,7 +190,7 @@ class DraftJsPlaygroundContainer extends Component {
   };
 
   render() {
-    const {editorState, mode, codeMirrorValue} = this.state;
+    const {editorState, mode, codeMirrorValue, showAllState} = this.state;
 
     return (
       <div className="container">
@@ -202,7 +200,8 @@ class DraftJsPlaygroundContainer extends Component {
               className="nav-home"
               target="_blank"
               rel="noopener noreferrer"
-              href="https://draftjs.org/">
+              href="https://draftjs.org/"
+            >
               Draft.js
             </a>
             <ul className="nav-site">
@@ -210,7 +209,8 @@ class DraftJsPlaygroundContainer extends Component {
                 <select
                   className="nav-experiment-selector"
                   name="experiment"
-                  onChange={this.onExperimentChange}>
+                  onChange={this.onExperimentChange}
+                >
                   <option value="">Try an experiment..</option>
                   <option value="draft_refactored_html_importer">
                     Modern HTML importer
@@ -224,7 +224,8 @@ class DraftJsPlaygroundContainer extends Component {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://draftjs.org/docs/overview.html#content">
+                  href="https://draftjs.org/docs/getting-started"
+                >
                   Docs
                 </a>
               </li>
@@ -232,7 +233,8 @@ class DraftJsPlaygroundContainer extends Component {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  href="https://github.com/facebook/draft-js">
+                  href="https://github.com/facebook/draft-js"
+                >
                   GitHub
                 </a>
               </li>
@@ -256,7 +258,8 @@ class DraftJsPlaygroundContainer extends Component {
                     <select
                       title="Draft.js content type switch"
                       onChange={this.onSelectChange}
-                      value={mode}>
+                      value={mode}
+                    >
                       <option value="rawContent">Raw</option>
                       <option value="html">HTML</option>
                     </select>
@@ -264,12 +267,14 @@ class DraftJsPlaygroundContainer extends Component {
                   <section className="contentControls">
                     <button
                       title="Import content type from the editor"
-                      onClick={this.importEditorState}>
+                      onClick={this.importEditorState}
+                    >
                       Import
                     </button>
                     <button
                       title="Update the editor with content type"
-                      onClick={this.setContent}>
+                      onClick={this.setContent}
+                    >
                       Update
                     </button>
                   </section>
@@ -278,7 +283,7 @@ class DraftJsPlaygroundContainer extends Component {
                   onBeforeChange={(editor, data, codeMirrorValue) =>
                     this.updateCodeMirror(codeMirrorValue)
                   }
-                  ref={input => {
+                  ref={(input) => {
                     this.markupinput = input;
                   }}
                   options={{
@@ -293,10 +298,44 @@ class DraftJsPlaygroundContainer extends Component {
               </div>
             </PanelGroup>
             <div className="playground-raw-preview">
+              <select
+                style={{flexShrink: 0, width: '11em'}}
+                onChange={(e) =>
+                  this.setState({showAllState: e.target.value === 'all'})
+                }
+              >
+                <option value="content">Current Content</option>
+                <option value="all">All State</option>
+              </select>
+              {this.state.showAllState && (
+                <small style={{marginTop: 8, color: 'grey'}}>
+                  Not all this state is accessible via the Draft.js API. Some is
+                  internal and shouldn't be directly changed by editors. Use
+                  this view when developing Draft.js itself.
+                </small>
+              )}
               <JSONTree
                 shouldExpandNode={this.shouldExpandNode}
                 theme={theme}
-                data={editorState.getCurrentContent()}
+                data={
+                  showAllState
+                    ? editorState._immutable
+                    : editorState.getCurrentContent()
+                }
+                getItemString={(type, data, itemType, itemString) => {
+                  return (
+                    <span
+                      title={data.constructor.name}
+                      style={{
+                        color: Immutable.Iterable.isIterable(data)
+                          ? '#E85351'
+                          : 'gray',
+                      }}
+                    >
+                      {itemString}
+                    </span>
+                  );
+                }}
               />
             </div>
           </PanelGroup>

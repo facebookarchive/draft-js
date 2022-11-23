@@ -4,6 +4,126 @@ Notable changes to Draft.js will be documented in this file.
 
 Changes to `src` are live in production on facebook.com at the time of release.
 
+## 0.11.7 (Aug 13th, 2020)
+
+### Added
+
+* Allow aria-describedby overriding (Jeff Dickey in 8b8b9c00)
+* Add support to create editor state using text string (Abhishek Pandya in fc9395fe)
+
+### Changed
+* Update readme to suggest building with yarn (#2527) (Kevin Chavez in 54213a13)
+* Update build, static analysis deps (+ upgrade to fbjs 2.0.0) (#2541) (Kevin Chavez in 5e92a32f)
+* Tex example: Update babel to v7 + other deps (#2533) (Kevin Chavez in ce94ecf3)
+* Update package.json (#2490) (Michaël De Boey in b79082f9)
+* Update media.html (#2452) (fay in a8f44b15)
+* Upgrade dependencies in playground example (#2534) (Kevin Chavez in f6bf4ed3)
+* feat(docs): Update README.md (#2523) (Darsh Shah in e0fc33eb)
+* adds highlight in docs (#2469) (Tunde Thomas in cef61910)
+* Update QuickStart-API-Basics.md (#2491) (Michaël De Boey in 170fe23a)
+* Update .travis.yml (#2495) (Michaël De Boey in 3eb391e7)
+* Update link to Record in docs (#2418) (Rounak Agarwal in 6a55c383)
+* Update link to Immutable Map in docs (#2530) (Rounak Agarwal in 31dde91a)
+* Upgrade browserify and babel deps in universal example (#2532) (Kevin Chavez in 1c8815a1)
+* Upgrade eslint, flow, jest (#2531) (Kevin Chavez in ccd0470b)
+* Fix the build by adding an argument to catch statement (Kevin Chavez in 5482c902)
+* Conditionally invokes URI.tryParseURI in OSS code (Claudio Procida in 36de6f1f)
+* formatPastedText prop (Laura González in 9a9ccbd5)
+* fix pasting invalid links (Frank Thompson in 862a5b2b)
+* chore(dependabot): adds examples directories separately (#2505) (Claudio Procida in fb0eb34c)
+* style(website): Removes desaturation (#2504) (Claudio Procida in 2b8edb18)
+* Fixes links accessibility by adding underlines (#2497) (R Nabors in 5e17cc24)
+* add codes to suppressions in www (Daniel Sainati in 8457ebba)
+* update comments in mobile to support error codes (Daniel Sainati in fb728fde)
+* Use object shorthand in DraftEditorCompositionHandler (Kevin Chavez in d949433d)
+* Force the selection when composition is resolved (#2094) (Robbert Brak in 3be4d372)
+* fix(security): Upgrades Docusaurus to address CVE-2020-7662 (#2457) (Claudio Procida in a08a8fa5)
+
+
+## 0.11.6 (June 4th, 2020)
+
+### Added
+* Adds BLM banner (#2454) (claudiopro in 2a0c5bbe)
+* HtmlConversion: Add support for telephone links (#2365) (Andrew Lauria in e1e9a0c5)
+* 7.C - Block Operations - Consume (Shalabh Vyas in 99c6b06c)
+* Add fromJS() API to Draft model objects (Shalabh Vyas in 3ee5a23e)
+
+### Changed
+* Add Null return value type in code example (#2429) (Jacob D. Castro in 45bb6b52)
+* Add /meta/bundle-size-stats to .gitignore (#2436) (Kevin Chavez in e3a689df)
+* Update eslint, cross-env and gulp-derequire. Fix version numbers for … (#2437) (Kevin Chavez in 79a25b5c)
+* Update Overview.md (#2434) (Mohamed ABDELLANI in e5e293f1)
+* Upgrade jest and flow-bin deps (#2435) (Kevin Chavez in 9ac399cc)
+* Update cadence for dependabot updates (#2402) (Kevin Chavez in 6619077c)
+* Bump alex from 8.0.0 to 8.1.1 (#2407) (dependabot-preview[bot] in 7e604b06)
+* Bump fstream from 1.0.11 to 1.0.12 in /examples/draft-0-10-0/tex (#2396) (dependabot[bot] in 1f5d40ec)
+* Bump acorn from 6.0.5 to 6.4.1 in /examples/draft-0-10-0/tex (#2376) (dependabot[bot] in 9028881c)
+* chore(flow): Updates flow-bin to 0.123 (#2393) (Claudio Procida in 497a4787)
+* Short-circuit getUpdatedSelectionState for invalid selection updates on prod (Kevin Chavez in 0585b68f)
+* Type selection object in setDraftEditorSelection.js (Kevin Chavez in 31dec710)
+* Type selection object in keyCommandBackspaceToStartOfLine.js (Kevin Chavez in aa5c4a19)
+* Flow v0.123.0 in www (Panagiotis Vekris in af675755)
+* Type selection object in getDraftEditorSelection.js (Kevin Chavez in dfacb1b4)
+* Type selection object in editOnBlur.js (Kevin Chavez in 22997144)
+* Type selection object in editOnInput. (Kevin Chavez in 41beae1b)
+* upgrade to flow 0.122.0 (Marshall Roch in 97dd19b2)
+* DraftEntity ID Changes (Shalabh Vyas in 13989e31)
+* use pasted block type if pasting to empty unstyled block (Frank Thompson in 7d3d3c8f)
+* Update deps for and cleanup playground example (#2368) (Kevin Chavez in 2658dd60)
+* Only extend selection if it has ranges in setDraftEditorSelection.js (Kevin Chavez in d53fa7ab)
+* Update draft.js on website to v0.11.5 (#2370) (Kevin Chavez in 538d864e)
+* Make a few types exact (Kevin Chavez in 0950285d)
+* Remaining non-generated non-reason-parsed files (Jordan Brown in 153482ff)
+
+### Fixed
+* Fix draft-js pasted inline styles (Giulio Jiang in 92176ab2)
+* docs: in react hooks example, limit createEmpty calls (#2432) (Benjamin Atkin in 05e838e6)
+* Revisit comment for todo of T65805998, validate there's nothing to worry about (Kevin Chavez in 268ece35)
+* html/shared/draft-js/model/transaction (generatedunixname89002005287564 in c75f1e4c)
+* types-first in html/js/mobile (Panagiotis Vekris in e66f39ef)
+* Address #2413 by making Firefox follow the same behaviour as Chrome (#2414) (Kevin Chavez in 6d619c61)
+* Prevent placeholder from unnecessarily wrapping (#2392) (Frank Yan in 9d6bbfdc)
+* docs: Fix simple typo, sibbling -> sibling (#2384) (Tim Gates in d1cb1e77)
+* Fix build by adding missing modules (Kevin Chavez in fbe3417e)
+* Fix flow by allowing optional chaining (#2369) (Kevin Chavez in 85764327)
+
+## 0.11.5 (Mar 26, 2020)
+
+### Removed
+* Remove examples for draft.js 0.9.0 (#2358) (Kevin Chavez in fd16d8e2)
+
+### Changed
+* Update deps in 'universal' example (#2362) (Kevin Chavez in dc8bfbb2)
+* Remove unused Flow suppressions in WWW (George Zahariev in 3858858b)
+* Improve types for EditorState (Kevin Chavez in 792bd3ab)
+* Don't SSR example editor on website. (#2356) (Kevin Chavez in 9191a3f2)
+* Deprecate Travis Bot files and configuration (Chris Lüer in 6c1c6544)
+* Require ReactDOMComet instead of ReactDOM (Dan Abramov in 66301633)
+* Strictify DraftEditorLeaf.react.js (Kevin Chavez in b4a1db99)
+* Make decodeEntityRanges flow strict (Kevin Chavez in 7af73b70)
+* Move key to static argument instead of spread (Sebastian Markbage in d6527a95)
+* "ecmascript" => "ECMAScript" (#2327) (Agastya Chandrakant in 6cfed736)
+* Abstract ReactDOM as ReactDOMComet (Sebastian Markbage in 24339f12)
+* Prevent (but not fix) ‘Cannot read property 'getIn' of undefined’ in getUpdatedSelectionState (Steven Luscher in a9fcbb20)
+* Make some more modules strict(-local) (Kevin Chavez in c30ca735 and 70025659)
+* Update webpack deps (#2310) (Kevin Chavez in 0131e1d5)
+* Remove unused gulp task remained from docusaurus 2 migration (#2308) (Kanitkorn S in 963e3126)
+* Re-write `DraftEditorExample` in the website using react hooks (#2287) (Kevin Chavez in 9b9376bd)
+* Add a preventScroll prop (Dan Abramov in 3ba907bb)
+* Add editorRef prop to DraftEditor (Dan Abramov in 8c500424)
+* Remove findDOMNode from DraftEditorBlockNode (Sebastian Markbage in 0dd39781)
+* Remove findDOMNode in DraftEditorDragHandler (Sebastian Markbage in c1a55ceb)
+* Remove findDOMNode from getContentEditableContainer (Sebastian Markbage in 9d587d9f)
+* Upgrade to Flow explicit inexact object type syntax (Jordan Brown in b051fc1b)
+* Upgrade eslint + flow, and fix failed test from nullishCoalescingOperator (#2083) (Kanitkorn S in 824fd125)
+* chore(travis): bumps node versions used in Travis CI to 10 and 12 (#2300) (Claudio Procida in e711230f)
+
+### Fixed
+* Fix Uncaught TypeError: Cannot read property 'nodeType' of null at editOnInput (#2330) (Konstantin Tarkus in db3216d9)
+* Fix keyBindingFn documentation URL (Ryan Silva in 3251017d)
+* fix style handling in convertFromHTMLToContentBlocks (Frank Thompson in ad8374d2)
+* remove unused flow suppressions (Panagiotis Vekris in 822d2fbd)
+
 ## 0.11.4 (January 7th, 2020)
 
 ### Added

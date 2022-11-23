@@ -4,18 +4,18 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
-const React = require('React');
 const UserAgent = require('UserAgent');
 
 const invariant = require('invariant');
 const isElement = require('isElement');
+const React = require('react');
 
 // In IE, spans with <br> tags render as two newlines. By rendering a span
 // with only a newline character, we can be sure to render a single line.
@@ -39,7 +39,14 @@ function isNewline(node: Element): boolean {
  * See http://jsfiddle.net/9khdavod/ for the failure case, and
  * http://jsfiddle.net/7pg143f7/ for the fixed case.
  */
-const NEWLINE_A = ref =>
+const NEWLINE_A = (
+  ref: (
+    ref:
+      | null
+      | React$ElementRef<$TEMPORARY$string<'br'>>
+      | React$ElementRef<$TEMPORARY$string<'span'>>,
+  ) => null | HTMLSpanElement | HTMLBRElement,
+) =>
   useNewlineChar ? (
     <span key="A" data-text="true" ref={ref}>
       {'\n'}
@@ -48,7 +55,14 @@ const NEWLINE_A = ref =>
     <br key="A" data-text="true" ref={ref} />
   );
 
-const NEWLINE_B = ref =>
+const NEWLINE_B = (
+  ref: (
+    ref:
+      | null
+      | React$ElementRef<$TEMPORARY$string<'br'>>
+      | React$ElementRef<$TEMPORARY$string<'span'>>,
+  ) => null | HTMLSpanElement | HTMLBRElement,
+) =>
   useNewlineChar ? (
     <span key="B" data-text="true" ref={ref}>
       {'\n'}
@@ -57,9 +71,7 @@ const NEWLINE_B = ref =>
     <br key="B" data-text="true" ref={ref} />
   );
 
-type Props = {
-  children: string,
-};
+type Props = {children: string, ...};
 
 /**
  * The lowest-level component in a `DraftEditor`, the text node component

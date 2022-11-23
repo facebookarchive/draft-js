@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -21,10 +21,10 @@ const sampleBlock = new ContentBlock({
 });
 
 const assertApplyEntityToContentBlock = (
-  start,
-  end,
-  entityKey = 'x',
-  contentBlock = sampleBlock,
+  start: number,
+  end: number,
+  entityKey: $TEMPORARY$string<'x'> = 'x',
+  contentBlock: ContentBlock = sampleBlock,
 ) => {
   expect(
     applyEntityToContentBlock(contentBlock, start, end, entityKey).toJS(),

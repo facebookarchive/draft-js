@@ -15,40 +15,29 @@
  * @format
  */
 
-import React, {Component} from 'react';
-
+import './DraftJsRichEditorExample.css';
 import {Editor, RichUtils, getDefaultKeyBinding} from 'draft-js';
-
 import gkx from 'draft-js/lib/gkx';
 import NestedRichTextEditorUtil from 'draft-js/lib/NestedRichTextEditorUtil';
-
-import './DraftJsRichEditorExample.css';
+import React from 'react';
 
 const RichTextUtils = gkx('draft_tree_data_support')
   ? NestedRichTextEditorUtil
   : RichUtils;
 
-class DraftJsRichEditorExample extends Component {
-  constructor(props) {
-    super(props);
-    this.focus = () => this.refs.editor.focus();
-    this.onChange = this.props.onChange;
-    this.handleKeyCommand = this._handleKeyCommand.bind(this);
-    this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
-    this.toggleBlockType = this._toggleBlockType.bind(this);
-    this.toggleInlineStyle = this._toggleInlineStyle.bind(this);
-  }
+class DraftJsRichEditorExample extends React.Component {
+  focus = () => this.refs.editor.focus();
 
-  _handleKeyCommand(command, editorState) {
+  handleKeyCommand = (command, editorState) => {
     const newState = RichTextUtils.handleKeyCommand(editorState, command);
     if (newState) {
-      this.onChange(newState);
+      this.props.onChange(newState);
       return true;
     }
     return false;
-  }
+  };
 
-  _mapKeyToEditorCommand(e) {
+  mapKeyToEditorCommand = (e) => {
     if (e.keyCode === 9 /* TAB */) {
       const newEditorState = RichTextUtils.onTab(
         e,
@@ -56,24 +45,24 @@ class DraftJsRichEditorExample extends Component {
         4 /* maxDepth */,
       );
       if (newEditorState !== this.props.editorState) {
-        this.onChange(newEditorState);
+        this.props.onChange(newEditorState);
       }
       return false;
     }
     return getDefaultKeyBinding(e);
-  }
+  };
 
-  _toggleBlockType(blockType) {
-    this.onChange(
+  toggleBlockType = (blockType) => {
+    this.props.onChange(
       RichTextUtils.toggleBlockType(this.props.editorState, blockType),
     );
-  }
+  };
 
-  _toggleInlineStyle(inlineStyle) {
-    this.onChange(
+  toggleInlineStyle = (inlineStyle) => {
+    this.props.onChange(
       RichTextUtils.toggleInlineStyle(this.props.editorState, inlineStyle),
     );
-  }
+  };
 
   render() {
     const {editorState} = this.props;
@@ -83,12 +72,7 @@ class DraftJsRichEditorExample extends Component {
     let className = 'RichEditor-editor';
     const contentState = editorState.getCurrentContent();
     if (!contentState.hasText()) {
-      if (
-        contentState
-          .getBlockMap()
-          .first()
-          .getType() !== 'unstyled'
-      ) {
+      if (contentState.getBlockMap().first().getType() !== 'unstyled') {
         className += ' RichEditor-hidePlaceholder';
       }
     }
@@ -112,7 +96,7 @@ class DraftJsRichEditorExample extends Component {
             editorState={editorState}
             handleKeyCommand={this.handleKeyCommand}
             keyBindingFn={this.mapKeyToEditorCommand}
-            onChange={this.onChange}
+            onChange={this.props.onChange}
             placeholder={this.props.placeholder}
             ref="editor"
             spellCheck={true}
@@ -142,27 +126,23 @@ function getBlockStyle(block) {
   }
 }
 
-class StyleButton extends React.Component {
-  constructor() {
-    super();
-    this.onToggle = e => {
-      e.preventDefault();
-      this.props.onToggle(this.props.style);
-    };
+function StyleButton({active, style, label, onToggle}) {
+  let className = 'RichEditor-styleButton';
+  if (active) {
+    className += ' RichEditor-activeButton';
   }
 
-  render() {
-    let className = 'RichEditor-styleButton';
-    if (this.props.active) {
-      className += ' RichEditor-activeButton';
-    }
-
-    return (
-      <span className={className} onMouseDown={this.onToggle}>
-        {this.props.label}
-      </span>
-    );
-  }
+  return (
+    <span
+      className={className}
+      onMouseDown={(e) => {
+        e.preventDefault();
+        onToggle(style);
+      }}
+    >
+      {label}
+    </span>
+  );
 }
 
 const BLOCK_TYPES = [
@@ -178,7 +158,7 @@ const BLOCK_TYPES = [
   {label: 'Code Block', style: 'code-block'},
 ];
 
-const BlockStyleControls = props => {
+function BlockStyleControls(props) {
   const {editorState} = props;
   const selection = editorState.getSelection();
   const blockType = editorState
@@ -188,7 +168,7 @@ const BlockStyleControls = props => {
 
   return (
     <div className="RichEditor-controls">
-      {BLOCK_TYPES.map(type => (
+      {BLOCK_TYPES.map((type) => (
         <StyleButton
           key={type.label}
           active={type.style === blockType}
@@ -199,7 +179,7 @@ const BlockStyleControls = props => {
       ))}
     </div>
   );
-};
+}
 
 const INLINE_STYLES = [
   {label: 'Bold', style: 'BOLD'},
@@ -208,12 +188,12 @@ const INLINE_STYLES = [
   {label: 'Monospace', style: 'CODE'},
 ];
 
-const InlineStyleControls = props => {
+function InlineStyleControls(props) {
   const currentStyle = props.editorState.getCurrentInlineStyle();
 
   return (
     <div className="RichEditor-controls">
-      {INLINE_STYLES.map(type => (
+      {INLINE_STYLES.map((type) => (
         <StyleButton
           key={type.label}
           active={currentStyle.has(type.style)}
@@ -224,6 +204,6 @@ const InlineStyleControls = props => {
       ))}
     </div>
   );
-};
+}
 
 export default DraftJsRichEditorExample;

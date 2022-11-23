@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -15,10 +15,11 @@ import type ContentState from 'ContentState';
 import type SelectionState from 'SelectionState';
 
 const CharacterMetadata = require('CharacterMetadata');
+
 const {Map} = require('immutable');
 
 const ContentStateInlineStyle = {
-  add: function(
+  add(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,
@@ -26,7 +27,7 @@ const ContentStateInlineStyle = {
     return modifyInlineStyle(contentState, selectionState, inlineStyle, true);
   },
 
-  remove: function(
+  remove(
     contentState: ContentState,
     selectionState: SelectionState,
     inlineStyle: string,

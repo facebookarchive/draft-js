@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -56,6 +56,11 @@ const updateExistingBlock = (
       break;
   }
 
+  let type = targetBlock.getType();
+  if (text && type === 'unstyled') {
+    type = fragmentBlock.getType();
+  }
+
   const newBlock = targetBlock.merge({
     text:
       text.slice(0, targetOffset) +
@@ -66,6 +71,7 @@ const updateExistingBlock = (
       fragmentBlock.getCharacterList(),
       targetOffset,
     ),
+    type,
     data,
   });
 

@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -18,14 +18,20 @@ const {Map, OrderedSet, Record} = require('immutable');
 // Immutable.map is typed such that the value for every key in the map
 // must be the same type
 type CharacterMetadataConfigValueType = DraftInlineStyle | ?string;
+type CharacterMetadataConfigRawValueType = Array<string> | ?string;
 
-type CharacterMetadataConfig = {
-  style?: CharacterMetadataConfigValueType,
-  entity?: CharacterMetadataConfigValueType,
+export type CharacterMetadataRawConfig = {
+  style?: CharacterMetadataConfigRawValueType,
+  entity?: CharacterMetadataConfigRawValueType,
   ...
 };
 
-const EMPTY_SET = OrderedSet();
+type CharacterMetadataConfig = interface {
+  style?: CharacterMetadataConfigValueType,
+  entity?: CharacterMetadataConfigValueType,
+};
+
+const EMPTY_SET = OrderedSet<string>();
 
 const defaultRecord: CharacterMetadataConfig = {
   style: EMPTY_SET,
@@ -91,6 +97,7 @@ class CharacterMetadata extends CharacterMetadataRecord {
     };
 
     // Fill in unspecified properties, if necessary.
+    // $FlowFixMe[incompatible-call] added when improving typing for this parameters
     const configMap = Map(defaultConfig).merge(config);
 
     const existing: ?CharacterMetadata = pool.get(configMap);
@@ -102,10 +109,21 @@ class CharacterMetadata extends CharacterMetadataRecord {
     pool = pool.set(configMap, newCharacter);
     return newCharacter;
   }
+
+  static fromJS({
+    style,
+    entity,
+  }: CharacterMetadataRawConfig): CharacterMetadata {
+    return new CharacterMetadata({
+      style: Array.isArray(style) ? OrderedSet(style) : style,
+      entity: Array.isArray(entity) ? OrderedSet(entity) : entity,
+    });
+  }
 }
 
 const EMPTY = new CharacterMetadata();
 let pool: Map<Map<any, any>, CharacterMetadata> = Map([
+  // $FlowFixMe[incompatible-call] added when improving typing for this parameters
   [Map(defaultRecord), EMPTY],
 ]);
 

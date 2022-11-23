@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -20,6 +20,7 @@ const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 const cx = require('cx');
 const getSafeBodyFromHTML = require('getSafeBodyFromHTML');
+const mockUUID = require('mockUUID');
 
 const DEFAULT_CONFIG = {
   DOMBuilder: getSafeBodyFromHTML,
@@ -46,7 +47,7 @@ const SUPPORTED_TAGS = [
   'pre',
 ];
 
-const normalizeBlock = block => {
+const normalizeBlock = (block: $FlowFixMe) => {
   const {type, depth, text, characterList} = block;
 
   return {
@@ -57,13 +58,13 @@ const normalizeBlock = block => {
   };
 };
 
-const toggleExperimentalTreeDataSupport = enabled => {
+const toggleExperimentalTreeDataSupport = (enabled: $FlowFixMe) => {
   jest.doMock('gkx', () => name => {
+    if (name === 'draftjs_paste_emojis') {
+      return true;
+    }
     if (name === 'draft_tree_data_support') {
       return enabled;
-    }
-    if (name === 'draftjs_fix_paste_for_img') {
-      return true;
     }
     return false;
   });
@@ -71,14 +72,19 @@ const toggleExperimentalTreeDataSupport = enabled => {
 
 beforeEach(() => {
   jest.resetModules();
+  jest.mock('uuid', () => mockUUID);
 });
 
-const convertFromHTML = (html_string, config) => {
+const convertFromHTML = (
+  html_string: string | $TEMPORARY$string<'a\n'>,
+  config:
+    | void
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{experimentalTreeDataSupport: boolean}>
+    | $TEMPORARY$object<{experimentalTreeDataSupport: boolean, ...}>,
+) => {
   const options = {
     ...DEFAULT_CONFIG,
-    /* $FlowFixMe(>=0.111.0) This comment suppresses an error found when Flow
-     * v0.111.0 was deployed. To see the error, delete this comment and run
-     * Flow. */
     ...config,
   };
 
@@ -93,7 +99,10 @@ const convertFromHTML = (html_string, config) => {
   );
 };
 
-const AreTreeBlockNodesEquivalent = (html_string, config = {}) => {
+const AreTreeBlockNodesEquivalent = (
+  html_string: string,
+  config: $TEMPORARY$object<{...}> = {},
+) => {
   const treeEnabled = (
     convertFromHTML(html_string, {
       ...config,
@@ -111,7 +120,12 @@ const AreTreeBlockNodesEquivalent = (html_string, config = {}) => {
   return JSON.stringify(treeEnabled) === JSON.stringify(treeDisabled);
 };
 
-const assertConvertFromHTMLToContentBlocks = (html_string, config = {}) => {
+const assertConvertFromHTMLToContentBlocks = (
+  html_string: string,
+  config:
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{experimentalTreeDataSupport: boolean}> = {},
+) => {
   expect(
     (convertFromHTML(html_string, config)?.contentBlocks || []).map(block =>
       block.toJS(),
@@ -157,9 +171,7 @@ test('img with http protocol should have camera emoji content', () => {
   const entityMap = blocks?.entityMap;
   expect(entityMap).not.toBe(null);
   if (entityMap != null) {
-    expect(
-      entityMap.__get(entityMap.__getLastCreatedEntityKey()).mutability,
-    ).toBe('IMMUTABLE');
+    expect(entityMap.last().mutability).toBe('IMMUTABLE');
   }
 });
 
@@ -171,9 +183,31 @@ test('img with https protocol should have camera emoji content', () => {
   const entityMap = blocks?.entityMap;
   expect(entityMap).not.toBe(null);
   if (entityMap != null) {
-    expect(
-      entityMap.__get(entityMap.__getLastCreatedEntityKey()).mutability,
-    ).toBe('IMMUTABLE');
+    expect(entityMap.last().mutability).toBe('IMMUTABLE');
+  }
+});
+
+test('img with alt text should have alt text as placeholder', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    '<img alt="facebook website" src="https://www.facebook.com">',
+  );
+  expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
+  const entityMap = blocks?.entityMap;
+  expect(entityMap).not.toBe(null);
+  if (entityMap != null) {
+    expect(entityMap.last().mutability).toBe('IMMUTABLE');
+  }
+});
+
+test('img with empty alt text should have camera emoji content', () => {
+  const blocks = convertFromHTMLToContentBlocks(
+    '<img alt="" src="https://www.facebook.com">',
+  );
+  expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
+  const entityMap = blocks?.entityMap;
+  expect(entityMap).not.toBe(null);
+  if (entityMap != null) {
+    expect(entityMap.last().mutability).toBe('IMMUTABLE');
   }
 });
 
@@ -182,13 +216,6 @@ test('img with data protocol should be correctly parsed', () => {
     `<img src="${IMAGE_DATA_URL}">`,
   );
   expect(blocks?.contentBlocks?.[0].text).toMatchSnapshot();
-});
-
-test('img with role presentation should not be rendered', () => {
-  const blocks = convertFromHTMLToContentBlocks(
-    `<img src="${IMAGE_DATA_URL}" role="presentation">`,
-  );
-  expect(blocks?.contentBlocks).toMatchSnapshot();
 });
 
 test('line break should be correctly parsed - single <br>', () => {
@@ -557,6 +584,24 @@ test('Should import two blockquotes without extra line breaks', () => {
         <span>Second</span>
       </div>
     </blockquote>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should recognize preformatted blocks', () => {
+  const html_string = `
+    <meta charset='utf-8'><span style="font-family: system-ui, -apple-system, system-ui, &quot;.SFNSText-Regular&quot;, sans-serif; font-variant-ligatures: normal; white-space: pre-wrap; display: inline !important;">following some pre </span><span style="font-family: Menlo, Consolas, Monaco, monospace; white-space: pre-line;">some_code_stuff</span>
+  `;
+  assertConvertFromHTMLToContentBlocks(html_string, {
+    experimentalTreeDataSupport: false,
+  });
+});
+
+test('Should recognize preformatted blocks mixed other styles', () => {
+  const html_string = `
+    <meta charset='utf-8'><span style="font-family: system-ui, -apple-system, system-ui, &quot;.SFNSText-Regular&quot;, sans-serif; font-size: 14px; font-weight: 400; white-space: pre-wrap; display: inline !important;">example </span><span style="font-weight: 600; font-family: Menlo, Consolas, Monaco, monospace; white-space: pre-line;">bold</span><span style="font-family: Menlo, Consolas, Monaco, monospace; white-space: pre-line; font-weight: 400;"> and code</span>
   `;
   assertConvertFromHTMLToContentBlocks(html_string, {
     experimentalTreeDataSupport: false,

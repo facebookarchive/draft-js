@@ -17,6 +17,35 @@ import classnames from 'classnames';
 import DraftEditorExample from '../components/DraftEditorExample';
 import styles from './styles.module.css';
 
+/** Won't render children on server */
+function ClientOnly({children, fallback}) {
+  if (typeof window === 'undefined') {
+    return fallback || null;
+  }
+  return children;
+}
+
+function VideoContainer() {
+  return (
+    <div className="container text--center margin-bottom--xl margin-top--lg">
+      <div className="row">
+        <div className="col">
+          <h2>Check it out in the intro video</h2>
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/YEK7SXFrJL4"
+              title="Explain Like I'm 5: DraftJS"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Home() {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
@@ -46,6 +75,7 @@ function Home() {
           </div>
         </div>
       </div>
+      <VideoContainer />
       <div className="container">
         <div className="margin-vert--xl">
           <div className="row">
@@ -74,9 +104,9 @@ function Home() {
                   target="_blank"
                   rel="noreferrer noopener">
                   immutable-js
-                </a>, offering an API with functional state updates and
-                aggressively leveraging data persistence for scalable memory
-                usage.
+                </a>
+                , offering an API with functional state updates and aggressively
+                leveraging data persistence for scalable memory usage.
               </p>
             </div>
           </div>
@@ -87,15 +117,17 @@ function Home() {
             'margin-vert--xl',
             styles.hideOnTabletAndSmaller,
           )}>
-          <div className="col col--6 col--offset-3">
-            <h2>Try it out!</h2>
-            <p>
-              Here's a simple example of a rich text editor built in Draft.js.
-            </p>
-            <div id="rich-example">
-              <DraftEditorExample />
+          <ClientOnly fallback={null}>
+            <div className="col col--6 col--offset-3">
+              <h2>Try it out!</h2>
+              <p>
+                Here's a simple example of a rich text editor built in Draft.js.
+              </p>
+              <div id="rich-example">
+                <DraftEditorExample />
+              </div>
             </div>
-          </div>
+          </ClientOnly>
         </div>
         <div className="margin-vert--xl text--center">
           <Link

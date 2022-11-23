@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -22,7 +22,6 @@ import type {List} from 'immutable';
 
 const DraftEditorLeaf = require('DraftEditorLeaf.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
 const Scroll = require('Scroll');
 const Style = require('Style');
 const UnicodeBidi = require('UnicodeBidi');
@@ -35,6 +34,7 @@ const getViewportDimensions = require('getViewportDimensions');
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
 const nullthrows = require('nullthrows');
+const React = require('react');
 
 const SCROLL_BUFFER = 10;
 
@@ -43,7 +43,7 @@ type Props = {
   blockProps?: Object,
   blockStyleFn: (block: BlockNodeRecord) => string,
   contentState: ContentState,
-  customStyleFn: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
+  customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
   customStyleMap: Object,
   decorator: ?DraftDecoratorType,
   direction: BidiDirection,
@@ -53,6 +53,7 @@ type Props = {
   selection: SelectionState,
   startIndent?: boolean,
   tree: List<any>,
+  ...
 };
 
 /**
@@ -212,7 +213,7 @@ class DraftEditorBlock extends React.Component<Props> {
         const commonProps: DraftDecoratorComponentProps = {
           contentState: this.props.contentState,
           decoratedText,
-          dir: dir,
+          dir,
           start,
           end,
           blockKey,

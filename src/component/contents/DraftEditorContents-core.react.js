@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -19,7 +19,6 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorBlock = require('DraftEditorBlock.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
 
 const cx = require('cx');
 const joinClasses: (
@@ -27,17 +26,19 @@ const joinClasses: (
   ...classes: Array<?string>
 ) => string = require('joinClasses');
 const nullthrows = require('nullthrows');
+const React = require('react');
 
 type Props = {
   blockRenderMap: DraftBlockRenderMap,
   blockRendererFn: (block: BlockNodeRecord) => ?Object,
-  blockStyleFn?: (block: BlockNodeRecord) => string,
+  blockStyleFn: (block: BlockNodeRecord) => string,
   customStyleFn?: (style: DraftInlineStyle, block: BlockNodeRecord) => ?Object,
   customStyleMap?: Object,
   editorKey?: string,
   editorState: EditorState,
   preventScroll?: boolean,
   textDirectionality?: BidiDirection,
+  ...
 };
 
 /**
@@ -145,7 +146,7 @@ class DraftEditorContents extends React.Component<Props> {
 
     const blocksAsArray = content.getBlocksAsArray();
     const processedBlocks = [];
-
+    const alreadyEncounteredDepth = new Set<number>();
     let currentDepth = null;
     let lastWrapperTemplate = null;
 
@@ -201,12 +202,15 @@ class DraftEditorContents extends React.Component<Props> {
         const shouldResetCount =
           lastWrapperTemplate !== wrapperTemplate ||
           currentDepth === null ||
-          depth > currentDepth;
+          depth > currentDepth ||
+          (depth < currentDepth && !alreadyEncounteredDepth.has(depth));
         className = joinClasses(
           className,
           getListItemClasses(blockType, depth, shouldResetCount, direction),
         );
       }
+
+      alreadyEncounteredDepth.add(depth);
 
       const Component = CustomComponent || DraftEditorBlock;
       let childProps = {
@@ -227,9 +231,6 @@ class DraftEditorContents extends React.Component<Props> {
       const child = React.createElement(
         Element,
         childProps,
-        /* $FlowFixMe(>=0.112.0 site=www,mobile) This comment suppresses an
-         * error found when Flow v0.112 was deployed. To see the error delete
-         * this comment and run Flow. */
         <Component {...componentProps} key={key} />,
       );
 

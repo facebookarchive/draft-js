@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -26,7 +26,9 @@ const {Map} = require('immutable');
 
 jest.mock('DOMObserver', () => {
   function DOMObserver() {}
+  // $FlowFixMe[prop-missing]
   DOMObserver.prototype.start = jest.fn();
+  // $FlowFixMe[prop-missing]
   DOMObserver.prototype.stopAndFlushMutations = jest
     .fn()
     .mockReturnValue(Map({}));
@@ -48,7 +50,14 @@ let compositionHandler = null;
 // Initialization of mock editor component that will be used for all tests
 let editor;
 
-function getEditorState(blocks) {
+function getEditorState(
+  blocks:
+    | $TEMPORARY$object<{blockkey0: string}>
+    | $TEMPORARY$object<{
+        blockkey0: $TEMPORARY$string<'react'>,
+        blockkey1: $TEMPORARY$string<'draft'>,
+      }>,
+) {
   const contentBlocks = Object.keys(blocks).map(blockKey => {
     return new ContentBlock({
       key: blockKey,
@@ -68,7 +77,7 @@ function getEditorStateFromHTML(html: string) {
           blocksFromHTML.contentBlocks || [],
           blocksFromHTML.entityMap,
         )
-      : ContentState.createEmpty();
+      : ContentState.createFromText('');
   return EditorState.createWithContent(state);
 }
 
@@ -76,7 +85,10 @@ function editorTextContent() {
   return editor._latestEditorState.getCurrentContent().getPlainText();
 }
 
-function withGlobalGetSelectionAs(getSelectionValue, callback) {
+function withGlobalGetSelectionAs(
+  getSelectionValue: $TEMPORARY$object<{...}>,
+  callback: () => void,
+) {
   const oldGetSelection = global.getSelection;
   try {
     global.getSelection = () => getSelectionValue;
@@ -103,11 +115,12 @@ beforeEach(() => {
 test('isInCompositionMode is properly updated on composition events', () => {
   // `inCompositionMode` is updated inside editOnCompositionStart,
   // which is why we can't just call compositionHandler.onCompositionStart.
-  // $FlowExpectedError
+  // $FlowExpectedError[incompatible-call]
   editOnCompositionStart(editor, {});
   expect(editor.setMode).toHaveBeenLastCalledWith('composite');
   expect(editor._latestEditorState.isInCompositionMode()).toBe(true);
-  // $FlowExpectedError
+  // $FlowExpectedError[incompatible-use]
+  // $FlowExpectedError[incompatible-call]
   compositionHandler.onCompositionEnd(editor);
   jest.runAllTimers();
   expect(editor._latestEditorState.isInCompositionMode()).toBe(false);
@@ -118,12 +131,15 @@ test('Can handle a single mutation', () => {
   withGlobalGetSelectionAs({}, () => {
     editor._latestEditorState = getEditorState({blockkey0: ''});
     const mutations = Map({'blockkey0-0-0': '\u79c1'});
+    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
       mutations,
     );
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-use]
+    // $FlowExpectedError[incompatible-call]
     compositionHandler.onCompositionStart(editor);
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-use]
+    // $FlowExpectedError[incompatible-call]
     compositionHandler.onCompositionEnd(editor);
     jest.runAllTimers();
 
@@ -141,12 +157,15 @@ test('Can handle mutations in multiple blocks', () => {
       'blockkey0-0-0': 'reactjs',
       'blockkey1-0-0': 'draftjs',
     });
+    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
       mutations,
     );
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-use]
+    // $FlowExpectedError[incompatible-call]
     compositionHandler.onCompositionStart(editor);
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-use]
+    // $FlowExpectedError[incompatible-call]
     compositionHandler.onCompositionEnd(editor);
     jest.runAllTimers();
 
@@ -164,17 +183,20 @@ test('Can handle mutations in the same block in multiple leaf nodes', () => {
       .getBlockMap()
       .first()
       .getKey();
-    const mutations = Map({
+    const mutations = Map<_, mixed>({
       [`${blockKey}-0-0`]: 'reacta ',
       [`${blockKey}-0-1`]: 'draftbb',
       [`${blockKey}-0-2`]: ' graphqlccc',
     });
+    // $FlowFixMe[method-unbinding] added when improving typing for this parameters
     require('DOMObserver').prototype.stopAndFlushMutations.mockReturnValue(
       mutations,
     );
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-use]
+    // $FlowExpectedError[incompatible-call]
     compositionHandler.onCompositionStart(editor);
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-use]
+    // $FlowExpectedError[incompatible-call]
     compositionHandler.onCompositionEnd(editor);
     jest.runAllTimers();
 

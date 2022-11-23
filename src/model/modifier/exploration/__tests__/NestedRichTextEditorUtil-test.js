@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @format
+ * @oncall draft_js
  */
 
 jest.mock('generateRandomKey');
@@ -125,10 +125,7 @@ const assertNestedUtilOperation = (
 
   const expected =
     result instanceof EditorState
-      ? result
-          .getCurrentContent()
-          .getBlockMap()
-          .toJS()
+      ? result.getCurrentContent().getBlockMap().toJS()
       : result;
 
   expect(expected).toMatchSnapshot();
@@ -420,7 +417,7 @@ const contentBlockNodes2 = [
 
 test('onTab with leaf as previous block & non-leaf as next block merges to the next block', () => {
   assertNestedUtilOperation(
-    editorState => onTab({preventDefault: () => {}}, editorState, 2),
+    editorState => onTab({preventDefault: () => {}}, editorState),
     {
       anchorKey: 'E',
       focusKey: 'E',
@@ -431,7 +428,7 @@ test('onTab with leaf as previous block & non-leaf as next block merges to the n
 
 test('onTab with non-leaf as previous block merges to the previous block', () => {
   assertNestedUtilOperation(
-    editorState => onTab({preventDefault: () => {}}, editorState, 2),
+    editorState => onTab({preventDefault: () => {}}, editorState),
     {
       anchorKey: 'I',
       focusKey: 'I',
@@ -442,7 +439,7 @@ test('onTab with non-leaf as previous block merges to the previous block', () =>
 
 test('onTab with no previous block does nothing', () => {
   assertNestedUtilOperation(
-    editorState => onTab({preventDefault: () => {}}, editorState, 1),
+    editorState => onTab({preventDefault: () => {}}, editorState),
     {
       anchorKey: 'A',
       focusKey: 'A',
@@ -453,7 +450,7 @@ test('onTab with no previous block does nothing', () => {
 
 test('onTab when siblings are at the same depth creates a new parent', () => {
   assertNestedUtilOperation(
-    editorState => onTab({preventDefault: () => {}}, editorState, 1),
+    editorState => onTab({preventDefault: () => {}}, editorState),
     {
       anchorKey: 'H',
       focusKey: 'H',
@@ -530,7 +527,7 @@ const contentBlockNodes3 = [
 
 test('onTab when both siblings are non-leaf merges blocks 1', () => {
   assertNestedUtilOperation(
-    editorState => onTab({preventDefault: () => {}}, editorState, 1),
+    editorState => onTab({preventDefault: () => {}}, editorState),
     {
       anchorKey: 'C',
       focusKey: 'C',
@@ -616,7 +613,7 @@ const contentBlockNodes4 = [
 
 test('onTab when both siblings are non-leaf merges blocks 2', () => {
   assertNestedUtilOperation(
-    editorState => onTab({preventDefault: () => {}}, editorState, 1),
+    editorState => onTab({preventDefault: () => {}}, editorState),
     {
       anchorKey: 'D',
       focusKey: 'D',
@@ -628,7 +625,7 @@ test('onTab when both siblings are non-leaf merges blocks 2', () => {
 test('onTab (untab) on a block with no parent does nothing', () => {
   assertNestedUtilOperation(
     editorState =>
-      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 1),
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState),
     {
       anchorKey: 'B',
       focusKey: 'B',
@@ -640,7 +637,7 @@ test('onTab (untab) on a block with no parent does nothing', () => {
 test('onTab (untab) on a first child moves block as previous sibling of parent', () => {
   assertNestedUtilOperation(
     editorState =>
-      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState),
     {
       anchorKey: 'D',
       focusKey: 'D',
@@ -652,7 +649,7 @@ test('onTab (untab) on a first child moves block as previous sibling of parent',
 test('onTab (untab) on a last child moves block as next sibling of parent', () => {
   assertNestedUtilOperation(
     editorState =>
-      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState),
     {
       anchorKey: 'H',
       focusKey: 'H',
@@ -735,7 +732,7 @@ const contentBlockNodes5 = [
 test('onTab (untab) on a middle child splits the block at that child', () => {
   assertNestedUtilOperation(
     editorState =>
-      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState),
     {
       anchorKey: 'E',
       focusKey: 'E',
@@ -795,7 +792,7 @@ const contentBlockNodes6 = [
 test('onTab (untab) unnests non-leaf next sibling', () => {
   assertNestedUtilOperation(
     editorState =>
-      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState),
     {
       anchorKey: 'B',
       focusKey: 'B',
@@ -873,7 +870,7 @@ const contentBlockNodes7 = [
 test('onTab (untab) merges adjacent non-leaf blocks', () => {
   assertNestedUtilOperation(
     editorState =>
-      onTab({preventDefault: () => {}, shiftKey: true}, editorState, 2),
+      onTab({preventDefault: () => {}, shiftKey: true}, editorState),
     {
       anchorKey: 'B',
       focusKey: 'B',
@@ -1039,8 +1036,9 @@ test('onDelete does not handle non-block-end or non-collapsed selections', () =>
 });
 
 test('onDelete removes a following atomic block', () => {
-  const blockSizeBeforeRemove = editorState.getCurrentContent().getBlockMap()
-    .size;
+  const blockSizeBeforeRemove = editorState
+    .getCurrentContent()
+    .getBlockMap().size;
   const withAtomicBlock = insertAtomicBlock(editorState);
   const content = withAtomicBlock.getCurrentContent();
   const atomicKey = content

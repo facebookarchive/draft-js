@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -21,7 +21,7 @@ import type {List} from 'immutable';
  *
  * See `CompositeDraftDecorator` for the most common use case.
  */
-export type DraftDecoratorType = {
+export type DraftDecoratorType = interface {
   /**
    * Given a `ContentBlock`, return an immutable List of decorator keys.
    */
@@ -39,5 +39,4 @@ export type DraftDecoratorType = {
    * this decorated range.
    */
   getPropsForKey(key: string): ?Object,
-  ...
 };

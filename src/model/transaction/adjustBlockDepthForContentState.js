@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -18,7 +18,7 @@ function adjustBlockDepthForContentState(
   contentState: ContentState,
   selectionState: SelectionState,
   adjustment: number,
-  maxDepth: number,
+  maxDepth?: number,
 ): ContentState {
   const startKey = selectionState.getStartKey();
   const endKey = selectionState.getEndKey();
@@ -30,7 +30,10 @@ function adjustBlockDepthForContentState(
     .concat([[endKey, blockMap.get(endKey)]])
     .map(block => {
       let depth = block.getDepth() + adjustment;
-      depth = Math.max(0, Math.min(depth, maxDepth));
+      depth = Math.max(0, depth);
+      if (maxDepth != null) {
+        depth = Math.min(depth, maxDepth);
+      }
       return block.set('depth', depth);
     });
 

@@ -8,3 +8,4 @@ npm-debug.log
 !website/static/
 yarn-error.log
 .DS_Store
+meta/bundle-size-stats/

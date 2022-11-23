@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -15,6 +15,7 @@ jest.mock('generateRandomKey');
 const DraftPasteProcessor = require('DraftPasteProcessor');
 
 const Immutable = require('immutable');
+const mockUUID = require('mockUUID');
 
 const {OrderedSet, Map} = Immutable;
 
@@ -81,6 +82,7 @@ const assertDraftPasteProcessorProcessHTML = (
 
 beforeEach(() => {
   jest.resetModules();
+  jest.mock('uuid', () => mockUUID);
 });
 
 test('must identify italics text', () => {
@@ -90,12 +92,14 @@ test('must identify italics text', () => {
 });
 
 test('must identify overlapping inline styles', () => {
+  /* eslint-disable fb-www/gender-neutral-language */
   assertDraftPasteProcessorProcessHTML(`
     <i>
       <b>he</b>
       hi
     </i>
   `);
+  /* eslint-enable fb-www/gender-neutral-language */
 });
 
 test('must identify block styles', () => {

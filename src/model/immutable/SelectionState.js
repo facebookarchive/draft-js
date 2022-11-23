@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -32,9 +32,9 @@ const defaultRecord: {
   hasFocus: false,
 };
 
-/* $FlowFixMe This comment suppresses an error found when automatically adding
- * a type annotation with the codemod Komodo/Annotate_exports. To see the error
- * delete this comment and run Flow. */
+/* $FlowFixMe[unclear-type] This comment suppresses an error found when
+ * automatically adding a type annotation with the codemod Komodo/Annotate_
+ * exports. To see the error delete this comment and run Flow. */
 const SelectionStateRecord = (Record(defaultRecord): any);
 
 class SelectionState extends SelectionStateRecord {

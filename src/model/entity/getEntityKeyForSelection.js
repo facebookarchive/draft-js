@@ -4,15 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
 import type ContentState from 'ContentState';
-import type {EntityMap} from 'EntityMap';
 import type SelectionState from 'SelectionState';
 
 const {notEmptyKey} = require('draftKeyUtils');
@@ -36,7 +35,7 @@ function getEntityKeyForSelection(
       if (entityKey !== contentState.getBlockForKey(key).getEntityAt(offset)) {
         return null;
       }
-      return filterKey(contentState.getEntityMap(), entityKey);
+      return filterKey(contentState, entityKey);
     }
     return null;
   }
@@ -50,16 +49,16 @@ function getEntityKeyForSelection(
       ? null
       : startBlock.getEntityAt(startOffset);
 
-  return filterKey(contentState.getEntityMap(), entityKey);
+  return filterKey(contentState, entityKey);
 }
 
 /**
  * Determine whether an entity key corresponds to a `MUTABLE` entity. If so,
  * return it. If not, return null.
  */
-function filterKey(entityMap: EntityMap, entityKey: ?string): ?string {
+function filterKey(contentState: ContentState, entityKey: ?string): ?string {
   if (notEmptyKey(entityKey)) {
-    const entity = entityMap.__get(entityKey);
+    const entity = contentState.getEntity(entityKey);
     return entity.getMutability() === 'MUTABLE' ? entityKey : null;
   }
   return null;

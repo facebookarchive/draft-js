@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -33,8 +33,8 @@ function getTextContentFromFiles(
 ): void {
   let readCount = 0;
   const results = [];
-  files.forEach(function(/*blob*/ file) {
-    readFile(file, function(/*string*/ text) {
+  files.forEach(function (/*blob*/ file) {
+    readFile(file, function (/*string*/ text) {
       readCount++;
       text && results.push(text.slice(0, TEXT_SIZE_UPPER_BOUND));
       if (readCount == files.length) {
@@ -67,7 +67,7 @@ function readFile(file: File, callback: (contents: string) => void): void {
   }
 
   const reader = new FileReader();
-  reader.onload = function() {
+  reader.onload = function () {
     const result = reader.result;
     invariant(
       typeof result === 'string',
@@ -75,7 +75,7 @@ function readFile(file: File, callback: (contents: string) => void): void {
     );
     callback(result);
   };
-  reader.onerror = function() {
+  reader.onerror = function () {
     callback('');
   };
   reader.readAsText(file);

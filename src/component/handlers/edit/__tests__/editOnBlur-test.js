@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -28,11 +28,21 @@ const getEditorState = (text: string = 'Arsenal') => {
   );
 };
 
-const getBlurEvent = currentTarget => ({
+const getBlurEvent = (currentTarget: HTMLDivElement) => ({
   currentTarget,
 });
 
-function withGlobalGetSelectionAs(getSelectionValue = {}, callback) {
+function withGlobalGetSelectionAs(
+  getSelectionValue:
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{
+        anchorNode: Text,
+        focusNode: Text,
+        rangeCount: number,
+        removeAllRanges: JestMockFn<$ReadOnlyArray<mixed>, mixed>,
+      }> = {},
+  callback: () => void,
+) {
   const oldGetSelection = global.getSelection;
   try {
     global.getSelection = () => {
@@ -67,7 +77,7 @@ test('editor removes selection on blur (default behaviour)', () => {
       editor: editorNode,
     };
 
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-call]
     onBlur(editor, getBlurEvent(editorNode));
 
     expect(globalSelection.removeAllRanges).toHaveBeenCalledTimes(1);
@@ -97,7 +107,7 @@ test('editor preserves selection on blur', () => {
       editor: editorNode,
     };
 
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-call]
     onBlur(editor, getBlurEvent(editorNode));
 
     expect(globalSelection.removeAllRanges).toHaveBeenCalledTimes(0);

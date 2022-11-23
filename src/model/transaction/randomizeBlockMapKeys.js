@@ -4,14 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
-
 import type {BlockMap} from 'BlockMap';
+import type {BlockNodeKey} from 'BlockNode';
 
 const ContentBlockNode = require('ContentBlockNode');
 
@@ -21,7 +21,7 @@ const Immutable = require('immutable');
 const {OrderedMap} = Immutable;
 
 const randomizeContentBlockNodeKeys = (blockMap: BlockMap): BlockMap => {
-  const newKeysRef = {};
+  const newKeysRef: {[BlockNodeKey]: string} = {};
 
   // we keep track of root blocks in order to update subsequent sibling links
   let lastRootBlock: ContentBlockNode;

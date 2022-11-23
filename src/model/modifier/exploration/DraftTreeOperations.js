@@ -4,14 +4,15 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
- * @flow strict-local
- * @emails oncall+draft_js
- *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
+ *
+ * @flow strict-local
+ * @format
+ * @oncall draft_js
  */
 import type {BlockMap} from 'BlockMap';
+import type {BlockNodeKey} from 'BlockNode';
 
 const ContentBlockNode = require('ContentBlockNode');
 const DraftTreeInvariants = require('DraftTreeInvariants');
@@ -49,7 +50,7 @@ const updateParentChild = (
     parent != null && child != null,
     'parent & child should exist in the block map',
   );
-  const newBlocks = {};
+  const newBlocks: {[string | BlockNodeKey]: $FlowFixMe} = {};
   const existingChildren = parent.getChildKeys();
   invariant(
     existingChildren != null &&
@@ -106,7 +107,7 @@ const updateSibling = (
     prevSibling != null && nextSibling != null,
     'siblings should exist in the block map',
   );
-  const newBlocks = {};
+  const newBlocks: {[string]: $FlowFixMe} = {};
   newBlocks[prevKey] = prevSibling.merge({
     nextSibling: nextKey,
   });
@@ -136,7 +137,7 @@ const replaceParentChild = (
     'parent & child should exist in the block map',
   );
   const existingChildren = parent.getChildKeys();
-  const newBlocks = {};
+  const newBlocks: {[string]: $FlowFixMe} = {};
   newBlocks[parentKey] = parent.merge({
     children: existingChildren.set(
       existingChildren.indexOf(existingChildKey),

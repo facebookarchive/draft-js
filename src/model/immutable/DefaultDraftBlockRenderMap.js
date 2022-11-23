@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -14,10 +14,9 @@
 import type {DraftBlockRenderConfig} from 'DraftBlockRenderConfig';
 import type {CoreDraftBlockType} from 'DraftBlockType';
 
-const React = require('React');
-
 const cx = require('cx');
 const {Map} = require('immutable');
+const React = require('react');
 
 type DefaultCoreDraftBlockRenderMap = Map<
   CoreDraftBlockType,

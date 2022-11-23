@@ -4,12 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
+import type ContentState from 'ContentState';
 
 const SelectionState = require('SelectionState');
 
@@ -36,9 +37,9 @@ const selectAdjacentBlocks = new SelectionState({
 });
 
 const assertApplyEntityToContentState = (
-  entityKey,
-  selection = selectionState,
-  content = contentState,
+  entityKey: null | $TEMPORARY$string<'x'>,
+  selection: $FlowFixMe | SelectionState = selectionState,
+  content: ContentState = contentState,
 ) => {
   expect(
     applyEntityToContentState(content, selection, entityKey)

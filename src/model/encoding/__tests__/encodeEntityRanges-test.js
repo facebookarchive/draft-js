@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -19,8 +19,8 @@ const Immutable = require('immutable');
 
 const {OrderedSet, Repeat} = Immutable;
 
-const createBlock = (text, entities) => {
-  const style = OrderedSet();
+const createBlock = (text: string, entities: Array<?string>) => {
+  const style = OrderedSet<string>();
   return new ContentBlock({
     key: 'a',
     text,

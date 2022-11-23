@@ -4,12 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
+import type {BlockNodeKey} from 'BlockNode';
 
 const ContentBlockNode = require('ContentBlockNode');
 const ContentState = require('ContentState');
@@ -111,7 +112,7 @@ const getSampleSelectionMocksForTestingNestedBlocks = (): Object => {
     return outerBlockElement;
   });
 
-  const blockCacheRef = {};
+  const blockCacheRef: {[BlockNodeKey]: HTMLDivElement} = {};
   blocks.forEach((blockElem, index) => {
     const currentBlock = contentBlocks[index];
     const parentKey = currentBlock.getParentKey();
@@ -126,6 +127,7 @@ const getSampleSelectionMocksForTestingNestedBlocks = (): Object => {
     }
 
     // append to to the innerBlockElement of the parent block
+    // $FlowFixMe[incompatible-use]
     blockCacheRef[parentKey].firstChild.appendChild(blockElem);
   });
 

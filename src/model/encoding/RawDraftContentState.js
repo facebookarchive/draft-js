@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -25,6 +25,5 @@ import type {RawDraftEntity} from 'RawDraftEntity';
  */
 export type RawDraftContentState = {
   blocks: Array<RawDraftContentBlock>,
-  entityMap: {[key: string]: RawDraftEntity, ...},
-  ...
+  entityMap: {[key: string]: RawDraftEntity},
 };

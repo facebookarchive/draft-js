@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -16,7 +16,7 @@ import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
 import type {HTMLDir} from 'UnicodeBidiDirection';
 
-const React = require('React');
+const React = require('react');
 
 export type DraftDecoratorStrategy = (
   block: BlockNodeRecord,
@@ -53,7 +53,7 @@ export type DraftDecorator = {
  */
 export type DraftDecoratorComponentProps = {
   blockKey: BlockNodeKey,
-  children?: Array<React.Node>,
+  children?: Array<React.MixedElement>,
   contentState: ContentState,
   decoratedText: string,
   dir: ?HTMLDir,
@@ -68,5 +68,4 @@ export type DraftDecoratorComponentProps = {
   entityKey: ?string,
   offsetKey: string,
   start: number,
-  ...
 };

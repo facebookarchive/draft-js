@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
- * @format
  * @flow strict-local
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -32,7 +32,7 @@ const DEFAUL_BLOCK_CONFIG = {
   ),
 };
 
-const getSampleBlock = props => {
+const getSampleBlock = (props: void) => {
   return new ContentBlockNode({
     ...DEFAUL_BLOCK_CONFIG,
     ...props,

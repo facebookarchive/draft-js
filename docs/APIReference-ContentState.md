@@ -4,8 +4,8 @@ title: ContentState
 ---
 
 `ContentState` is an Immutable
-[Record](http://facebook.github.io/immutable-js/docs/#/Record/Record) that
-represents the full state of:
+[Record](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Record) 
+that represents the full state of:
 
 - The entire **contents** of an editor: text, block and inline styles, and entity ranges.
 - Two **selection states** of an editor: before and after the rendering of these contents.
@@ -140,7 +140,7 @@ _Methods_
 
 _Properties_
 
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map) to
+> Use [Immutable Map API](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Map) to
 > set properties.
 >
 > **Example**
@@ -416,7 +416,7 @@ editing.
 
 ## Properties
 
-> Use [Immutable Map API](http://facebook.github.io/immutable-js/docs/#/Map) to
+> Use [Immutable Map API](https://web.archive.org/web/20150623131347/http://facebook.github.io:80/immutable-js/docs/#/Map) to
 > set properties.
 
 ### `blockMap`

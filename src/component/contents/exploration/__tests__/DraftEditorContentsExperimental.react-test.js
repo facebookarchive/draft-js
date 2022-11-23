@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -15,11 +15,11 @@ const ContentState = require('ContentState');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
 const DraftEditorContents = require('DraftEditorContentsExperimental.react');
 const EditorState = require('EditorState');
-const React = require('React');
 const SelectionState = require('SelectionState');
 
 const TestHelper = require('_DraftTestHelper');
 const Immutable = require('immutable');
+const React = require('react');
 const ReactTestRenderer = require('react-test-renderer');
 
 const {List} = Immutable;

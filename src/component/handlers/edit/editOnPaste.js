@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -17,6 +17,7 @@ import type {EntityMap} from 'EntityMap';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
+const ContentState = require('ContentState');
 const DataTransfer = require('DataTransfer');
 const DraftModifier = require('DraftModifier');
 const DraftPasteProcessor = require('DraftPasteProcessor');
@@ -49,9 +50,9 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
         return;
       }
 
-      /* $FlowFixMe This comment suppresses an error found DataTransfer was
-       * typed. getFiles() returns an array of <Files extends Blob>, not Blob
-       */
+      /* $FlowFixMe[incompatible-call] This comment suppresses an error found
+       * DataTransfer was typed. getFiles() returns an array of <Files extends
+       * Blob>, not Blob */
       getTextContentFromFiles(files, (/*string*/ fileText) => {
         fileText = fileText || defaultFileText;
         if (!fileText) {
@@ -67,9 +68,8 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
             editorState.getSelection(),
           ),
         });
-        const currentBlockType = RichTextEditorUtil.getCurrentBlockType(
-          editorState,
-        );
+        const currentBlockType =
+          RichTextEditorUtil.getCurrentBlockType(editorState);
 
         const text = DraftPasteProcessor.processText(
           blocks,
@@ -94,20 +94,22 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
   }
 
   let textBlocks: Array<string> = [];
-  const text: string = (data.getText(): any);
-  const html: string = (data.getHTML(): any);
+  let text: string = (data.getText(): any);
+  let html: string = (data.getHTML(): any);
   const editorState = editor._latestEditorState;
 
-  if (
-    editor.props.handlePastedText &&
-    isEventHandled(editor.props.handlePastedText(text, html, editorState))
-  ) {
-    return;
+  if (editor.props.formatPastedText) {
+    const {text: formattedText, html: formattedHtml} =
+      editor.props.formatPastedText(text, html);
+    text = formattedText;
+    html = ((formattedHtml: any): string);
   }
 
   if (text) {
     textBlocks = splitTextIntoTextBlocks(text);
   }
+
+  let handleInternalPaste: ?() => void = null;
 
   if (!editor.props.stripPastedStyles) {
     // If the text from the paste event is rich content that matches what we
@@ -118,11 +120,15 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
     // editor in Firefox and IE will not include empty lines. The resulting
     // paste will preserve the newlines correctly.
     const internalClipboard = editor.getClipboard();
-    if (data.isRichText() && internalClipboard) {
+    if (
+      !editor.props.formatPastedText &&
+      data.isRichText() &&
+      internalClipboard
+    ) {
       if (
         // If the editorKey is present in the pasted HTML, it should be safe to
         // assume this is an internal paste.
-        html.indexOf(editor.getEditorKey()) !== -1 ||
+        html?.indexOf(editor.getEditorKey()) !== -1 ||
         // The copy may have been made within a single block, in which case the
         // editor key won't be part of the paste. In this case, just check
         // whether the pasted text matches the internal clipboard.
@@ -130,10 +136,10 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
           internalClipboard.size === 1 &&
           internalClipboard.first().getText() === text)
       ) {
-        editor.update(
-          insertFragment(editor._latestEditorState, internalClipboard),
-        );
-        return;
+        handleInternalPaste = () =>
+          editor.update(
+            insertFragment(editor._latestEditorState, internalClipboard),
+          );
       }
     } else if (
       internalClipboard &&
@@ -144,9 +150,28 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
       // Safari does not properly store text/html in some cases.
       // Use the internalClipboard if present and equal to what is on
       // the clipboard. See https://bugs.webkit.org/show_bug.cgi?id=19893.
-      editor.update(
-        insertFragment(editor._latestEditorState, internalClipboard),
-      );
+      handleInternalPaste = () =>
+        editor.update(
+          insertFragment(editor._latestEditorState, internalClipboard),
+        );
+    }
+
+    if (
+      editor.props.handlePastedText &&
+      isEventHandled(
+        editor.props.handlePastedText(
+          text,
+          html,
+          editorState,
+          handleInternalPaste != null,
+        ),
+      )
+    ) {
+      return;
+    }
+
+    if (handleInternalPaste != null) {
+      handleInternalPaste();
       return;
     }
 
@@ -182,9 +207,8 @@ function editOnPaste(editor: DraftEditor, e: SyntheticClipboardEvent<>): void {
       ),
     });
 
-    const currentBlockType = RichTextEditorUtil.getCurrentBlockType(
-      editorState,
-    );
+    const currentBlockType =
+      RichTextEditorUtil.getCurrentBlockType(editorState);
 
     const textFragment = DraftPasteProcessor.processText(
       textBlocks,
@@ -207,13 +231,14 @@ function insertFragment(
     editorState.getSelection(),
     fragment,
   );
-  // TODO: merge the entity map once we stop using DraftEntity
-  // like this:
-  // const mergedEntityMap = newContent.getEntityMap().merge(entityMap);
+
+  const newEntityMap = entityMap
+    ? ContentState.mergeEntityMaps(newContent.getAllEntities(), entityMap)
+    : newContent.getAllEntities();
 
   return EditorState.push(
     editorState,
-    newContent.set('entityMap', entityMap),
+    newContent.setEntityMap(newEntityMap),
     'insert-fragment',
   );
 }

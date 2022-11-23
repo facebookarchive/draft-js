@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -35,7 +35,7 @@ const ContentBlockRecord = experimentalTreeDataSupport
 const {List, Repeat} = Immutable;
 
 const AtomicBlockUtils = {
-  insertAtomicBlock: function(
+  insertAtomicBlock(
     editorState: EditorState,
     entityKey: string,
     character: string,
@@ -105,7 +105,7 @@ const AtomicBlockUtils = {
     return EditorState.push(editorState, newContent, 'insert-fragment');
   },
 
-  moveAtomicBlock: function(
+  moveAtomicBlock(
     editorState: EditorState,
     atomicBlock: BlockNodeRecord,
     targetRange: SelectionState,

@@ -4,12 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
+
+import type {SelectionObject} from 'DraftDOMTypes';
 
 const EditorState = require('EditorState');
 
@@ -30,7 +32,12 @@ function keyCommandBackspaceToStartOfLine(
         return moveSelectionBackward(strategyState, 1);
       }
       const {ownerDocument} = e.currentTarget;
-      const domSelection = ownerDocument.defaultView.getSelection();
+      const domSelection: SelectionObject =
+        ownerDocument.defaultView.getSelection();
+      // getRangeAt can technically throw if there's no selection, but we know
+      // there is one here because text editor has focus (the cursor is a
+      // selection of length 0). Therefore, we don't need to wrap this in a
+      // try-catch block.
       let range = domSelection.getRangeAt(0);
       range = expandRangeToStartOfLine(range);
 

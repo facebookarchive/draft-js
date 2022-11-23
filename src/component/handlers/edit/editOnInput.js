@@ -4,13 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
+import type {SelectionObject} from 'DraftDOMTypes';
 import type DraftEditor from 'DraftEditor.react';
 
 const DraftModifier = require('DraftModifier');
@@ -58,21 +59,26 @@ function onInputType(inputType: string, editorState: EditorState): EditorState {
  * when an `input` change leads to a DOM/model mismatch, the change should be
  * due to a spellcheck change, and we can incorporate it into our model.
  */
-function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
+function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
+  // This will happen for most simple insertions. The new state is already
+  // computed. Let's just call "editor.update". Things should match nicely so
+  // this function will exit below where we check "domText === modelText".
   if (editor._pendingStateFromBeforeInput !== undefined) {
     editor.update(editor._pendingStateFromBeforeInput);
     editor._pendingStateFromBeforeInput = undefined;
   }
+
   // at this point editor is not null for sure (after input)
   const castedEditorElement: HTMLElement = (editor.editor: any);
-  const domSelection = castedEditorElement.ownerDocument.defaultView.getSelection();
+  const domSelection: SelectionObject =
+    castedEditorElement.ownerDocument.defaultView.getSelection();
 
   const {anchorNode, isCollapsed} = domSelection;
   const isNotTextOrElementNode =
-    anchorNode.nodeType !== Node.TEXT_NODE &&
-    anchorNode.nodeType !== Node.ELEMENT_NODE;
+    anchorNode?.nodeType !== Node.TEXT_NODE &&
+    anchorNode?.nodeType !== Node.ELEMENT_NODE;
 
-  if (isNotTextOrElementNode) {
+  if (anchorNode == null || isNotTextOrElementNode) {
     // TODO: (t16149272) figure out context for this change
     return;
   }
@@ -86,10 +92,14 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     // https://chromium.googlesource.com/chromium/src/+/a3b600981286b135632371477f902214c55a1724
     // To work around, we'll merge the sibling text nodes back into this one.
     const span = anchorNode.parentNode;
+    if (span == null) {
+      // Handle null-parent case.
+      return;
+    }
     anchorNode.nodeValue = span.textContent;
     for (
       let child = span.firstChild;
-      child !== null;
+      child != null;
       child = child.nextSibling
     ) {
       if (child !== anchorNode) {
@@ -128,9 +138,10 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     // Newest versions of Android support the dom-inputevent-inputtype
     // and we can use the `inputType` to properly apply the state changes.
 
-    /* $FlowFixMe inputType is only defined on a draft of a standard.
-     * https://w3c.github.io/input-events/#dom-inputevent-inputtype */
-    const {inputType} = e.nativeEvent;
+    /* $FlowFixMe[prop-missing] inputType is only defined on a draft of a
+     * standard. https://w3c.github.io/input-events/#dom-inputevent-inputtype
+     */
+    const inputType = event ? event.nativeEvent.inputType : undefined;
     if (inputType) {
       const newEditorState = onInputType(inputType, editorState);
       if (newEditorState !== editorState) {
@@ -172,7 +183,13 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
 
   let anchorOffset, focusOffset, startOffset, endOffset;
 
-  if (isGecko) {
+  const isDeleteWordForward =
+    // $FlowFixMe[prop-missing] Flow doesn't know if can be an InputEvent w/ inputType
+    event?.nativeEvent?.inputType === 'deleteWordForward';
+
+  // Adjust our selection if appropriate. If we're deleting the word forward, we
+  // don't do this, since we want to stay at the same offset.
+  if (isGecko && !isDeleteWordForward) {
     // Firefox selection does not change while the context menu is open, so
     // we preserve the anchor and focus values of the DOM selection.
     anchorOffset = domSelection.anchorOffset;
@@ -181,7 +198,7 @@ function editOnInput(editor: DraftEditor, e: SyntheticInputEvent<>): void {
     endOffset = startOffset + Math.abs(anchorOffset - focusOffset);
     anchorOffset = startOffset;
     focusOffset = endOffset;
-  } else {
+  } else if (!isDeleteWordForward) {
     // Browsers other than Firefox may adjust DOM selection while the context
     // menu is open, and Safari autocorrect is prone to providing an inaccurate
     // DOM selection. Don't trust it. Instead, use our existing SelectionState

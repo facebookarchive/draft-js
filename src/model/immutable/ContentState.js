@@ -4,18 +4,21 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
 import type {BlockMap} from 'BlockMap';
+import type {BlockNodeRawConfig} from 'BlockNode';
 import type {BlockNodeRecord} from 'BlockNodeRecord';
+import type {ContentStateRawType} from 'ContentStateRawType';
 import type DraftEntityInstance from 'DraftEntityInstance';
 import type {DraftEntityMutability} from 'DraftEntityMutability';
 import type {DraftEntityType} from 'DraftEntityType';
+import type {EntityMap} from 'EntityMap';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const CharacterMetadata = require('CharacterMetadata');
@@ -25,42 +28,68 @@ const DraftEntity = require('DraftEntity');
 const SelectionState = require('SelectionState');
 
 const generateRandomKey = require('generateRandomKey');
+const getOwnObjectValues = require('getOwnObjectValues');
 const gkx = require('gkx');
 const Immutable = require('immutable');
 const sanitizeDraftText = require('sanitizeDraftText');
 
-const {List, Record, Repeat} = Immutable;
+const {List, Record, Repeat, Map: ImmutableMap, OrderedMap} = Immutable;
 
-const defaultRecord: {
+type ContentStateRecordType = {
   entityMap: ?any,
   blockMap: ?BlockMap,
   selectionBefore: ?SelectionState,
   selectionAfter: ?SelectionState,
   ...
-} = {
+};
+
+const defaultRecord: ContentStateRecordType = {
   entityMap: null,
   blockMap: null,
   selectionBefore: null,
   selectionAfter: null,
 };
 
-const ContentStateRecord = (Record(defaultRecord): any);
+// Immutable 3 typedefs are not good, so ContentState ends up
+// subclassing `any`. Define a rudimentary type for the
+// supercalss here instead.
+declare class ContentStateRecordHelper {
+  constructor(args: any): ContentState;
+  merge(args: any): any;
+  setIn(keyPath: Array<string>, value: any): ContentState;
+  equals(other: ContentState): boolean;
+  mergeDeep(other: any): ContentState;
+}
+
+const ContentStateRecord: typeof ContentStateRecordHelper = (Record(
+  defaultRecord,
+): any);
+
+/* $FlowFixMe[signature-verification-failure] Supressing a `signature-
+ * verification-failure` error here. TODO: T65949050 Clean up the branch for
+ * this GK */
+const ContentBlockNodeRecord = gkx('draft_tree_data_support')
+  ? ContentBlockNode
+  : ContentBlock;
 
 class ContentState extends ContentStateRecord {
-  getEntityMap(): any {
+  getEntityMap(): EntityMap {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity;
   }
 
   getBlockMap(): BlockMap {
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
     return this.get('blockMap');
   }
 
   getSelectionBefore(): SelectionState {
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
     return this.get('selectionBefore');
   }
 
   getSelectionAfter(): SelectionState {
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
     return this.get('selectionAfter');
   }
 
@@ -156,9 +185,11 @@ class ContentState extends ContentStateRecord {
 
   replaceEntityData(
     key: string,
-    newData: {[key: string]: any, ...},
+    newData: interface {[key: string]: any},
   ): ContentState {
     // TODO: update this when we fully remove DraftEntity
+    /* $FlowFixMe[class-object-subtyping] added when improving typing for this
+     * parameters */
     DraftEntity.__replaceData(key, newData);
     return this;
   }
@@ -172,6 +203,45 @@ class ContentState extends ContentStateRecord {
   getEntity(key: string): DraftEntityInstance {
     // TODO: update this when we fully remove DraftEntity
     return DraftEntity.__get(key);
+  }
+
+  getAllEntities(): OrderedMap<string, DraftEntityInstance> {
+    return DraftEntity.__getAll();
+  }
+
+  setEntityMap(
+    entityMap: OrderedMap<string, DraftEntityInstance>,
+  ): ContentState {
+    DraftEntity.__loadWithEntities(entityMap);
+    return this;
+  }
+
+  static mergeEntityMaps(
+    to: OrderedMap<string, DraftEntityInstance>,
+    from: EntityMap,
+  ): OrderedMap<string, DraftEntityInstance> {
+    return to.merge(from.__getAll());
+  }
+
+  // TODO: when EntityMap is moved into content state this and `setEntityMap`
+  // Will be the exact same. Merge them then.
+  replaceEntityMap(entityMap: EntityMap): ContentState {
+    return this.setEntityMap(entityMap.__getAll());
+  }
+
+  setSelectionBefore(selection: SelectionState): ContentState {
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
+    return this.set('selectionBefore', selection);
+  }
+
+  setSelectionAfter(selection: SelectionState): ContentState {
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
+    return this.set('selectionAfter', selection);
+  }
+
+  setBlockMap(blockMap: BlockMap): ContentState {
+    // $FlowFixMe[prop-missing] found when removing casts of this to any
+    return this.set('blockMap', blockMap);
   }
 
   static createFromBlockArray(
@@ -197,14 +267,11 @@ class ContentState extends ContentStateRecord {
 
   static createFromText(
     text: string,
-    delimiter: string | RegExp = /\r\n?|\n/g,
+    delimiter?: string | RegExp = /\r\n?|\n/g,
   ): ContentState {
     const strings = text.split(delimiter);
     const blocks = strings.map(block => {
       block = sanitizeDraftText(block);
-      const ContentBlockNodeRecord = gkx('draft_tree_data_support')
-        ? ContentBlockNode
-        : ContentBlock;
       return new ContentBlockNodeRecord({
         key: generateRandomKey(),
         text: block,
@@ -213,6 +280,38 @@ class ContentState extends ContentStateRecord {
       });
     });
     return ContentState.createFromBlockArray(blocks);
+  }
+
+  static fromJS(state: ContentStateRawType): ContentState {
+    return new ContentState({
+      ...state,
+      blockMap: OrderedMap<string, BlockNodeRawConfig>(state.blockMap).map(
+        // $FlowFixMe[method-unbinding]
+        ContentState.createContentBlockFromJS,
+      ),
+      selectionBefore: new SelectionState(state.selectionBefore),
+      selectionAfter: new SelectionState(state.selectionAfter),
+    });
+  }
+
+  static createContentBlockFromJS(
+    block: BlockNodeRawConfig,
+  ): ContentBlockNodeRecord {
+    const characterList = block.characterList;
+
+    return new ContentBlockNodeRecord({
+      ...block,
+      data: ImmutableMap(block.data),
+      characterList:
+        characterList != null
+          ? List(
+              (Array.isArray(characterList)
+                ? characterList
+                : getOwnObjectValues(characterList)
+              ).map(c => CharacterMetadata.fromJS(c)),
+            )
+          : undefined,
+    });
   }
 }
 

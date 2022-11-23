@@ -4,21 +4,24 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
-
-jest.mock('SelectionState');
-
-let contentState;
+import type {BlockNodeKey} from 'BlockNode';
+import type CharacterMetadata from 'CharacterMetadata';
+import type {DraftBlockType} from 'DraftBlockType';
+import type {List, Map} from 'immutable';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
+const SelectionState = require('SelectionState');
 
+jest.mock('SelectionState');
+let contentState;
 const SINGLE_BLOCK = [{text: 'Lorem ipsum', key: 'a'}];
 const MULTI_BLOCK = [
   {text: 'Four score', key: 'b'},
@@ -26,13 +29,22 @@ const MULTI_BLOCK = [
 ];
 const ZERO_WIDTH_CHAR_BLOCK = [{text: unescape('%u200B%u200B'), key: 'a'}];
 
-const SelectionState = require('SelectionState');
-
 const createLink = () => {
   return contentState.createEntity('LINK', 'MUTABLE', {uri: 'zombo.com'});
 };
 
-const getSample = textBlocks => {
+const getSample = (
+  textBlocks: $TEMPORARY$array<
+    $TEMPORARY$object<{
+      characterList?: List<CharacterMetadata>,
+      data?: Map<$FlowFixMe, $FlowFixMe>,
+      depth?: number,
+      key?: BlockNodeKey,
+      text?: string,
+      type?: DraftBlockType,
+    }>,
+  >,
+) => {
   const contentBlocks = textBlocks.map(block => new ContentBlock(block));
   const blockMap = BlockMapBuilder.createFromArray(contentBlocks);
   return new ContentState({

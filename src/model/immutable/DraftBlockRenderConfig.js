@@ -4,18 +4,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
-const React = require('React');
+import * as React from 'react';
 
 export type DraftBlockRenderConfig = {
   element: string,
   wrapper?: React.Node,
   aliasedElements?: Array<string>,
-  ...
 };

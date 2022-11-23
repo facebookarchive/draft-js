@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @format
+ * @oncall draft_js
  */
 
 const AtomicBlockUtils = require('AtomicBlockUtils');
@@ -17,12 +17,8 @@ const SelectionState = require('SelectionState');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 
 const {editorState, selectionState} = getSampleStateForTesting();
-const {
-  onBackspace,
-  onDelete,
-  onTab,
-  tryToRemoveBlockStyle,
-} = RichTextEditorUtil;
+const {onBackspace, onDelete, onTab, tryToRemoveBlockStyle} =
+  RichTextEditorUtil;
 
 const insertAtomicBlock = targetEditorState => {
   const entityKey = targetEditorState
@@ -101,8 +97,9 @@ test('onBackspace resets the current block type at the start of the first block'
 });
 
 test('onBackspace removes a preceding atomic block', () => {
-  const blockSizeBeforeRemove = editorState.getCurrentContent().getBlockMap()
-    .size;
+  const blockSizeBeforeRemove = editorState
+    .getCurrentContent()
+    .getBlockMap().size;
   const withAtomicBlock = insertAtomicBlock(editorState);
   const afterBackspace = onBackspace(withAtomicBlock);
   const contentState = afterBackspace.getCurrentContent();
@@ -126,8 +123,9 @@ test('onDelete does not handle non-block-end or non-collapsed selections', () =>
 });
 
 test('onDelete removes a following atomic block', () => {
-  const blockSizeBeforeRemove = editorState.getCurrentContent().getBlockMap()
-    .size;
+  const blockSizeBeforeRemove = editorState
+    .getCurrentContent()
+    .getBlockMap().size;
   const withAtomicBlock = insertAtomicBlock(editorState);
   const content = withAtomicBlock.getCurrentContent();
   const atomicKey = content
@@ -177,12 +175,9 @@ describe('onTab on list block', () => {
   const changeBlockType = setListItem =>
     EditorState.push(editorState, setListItem, 'change-block-type');
   const getFirstBlockDepth = contentState =>
-    contentState
-      .getCurrentContent()
-      .getFirstBlock()
-      .getDepth();
-  const addTab = (contentState, maxDepth = 2) =>
-    onTab({preventDefault: () => {}}, contentState, maxDepth);
+    contentState.getCurrentContent().getFirstBlock().getDepth();
+  const addTab = contentState =>
+    onTab({preventDefault: () => {}}, contentState);
 
   test('increases the depth of unordered-list-item', () => {
     const contentState = editorState.getCurrentContent();

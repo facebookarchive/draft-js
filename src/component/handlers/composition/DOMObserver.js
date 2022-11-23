@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -23,7 +23,7 @@ const {Map} = Immutable;
 
 type MutationRecordT =
   | MutationRecord
-  | {|type: 'characterData', target: Node, removedNodes?: void|};
+  | {type: 'characterData', target: Node, removedNodes?: void};
 
 // Heavily based on Prosemirror's DOMObserver https://github.com/ProseMirror/prosemirror-view/blob/master/src/domobserver.js
 
@@ -51,8 +51,9 @@ class DOMObserver {
     this.container = container;
     this.mutations = Map();
     const containerWindow = getWindowForNode(container);
-    if (containerWindow.MutationObserver && !USE_CHAR_DATA) {
-      this.observer = new containerWindow.MutationObserver(mutations =>
+    const MutationObserver = containerWindow.MutationObserver;
+    if (MutationObserver && !USE_CHAR_DATA) {
+      this.observer = new MutationObserver(mutations =>
         this.registerMutations(mutations),
       );
     } else {
@@ -73,8 +74,8 @@ class DOMObserver {
     if (this.observer) {
       this.observer.observe(this.container, DOM_OBSERVER_OPTIONS);
     } else {
-      /* $FlowFixMe(>=0.68.0 site=www,mobile) This event type is not defined
-       * by Flow's standard library */
+      /* $FlowFixMe[incompatible-call] (>=0.68.0 site=www,mobile) This event
+       * type is not defined by Flow's standard library */
       this.container.addEventListener(
         'DOMCharacterDataModified',
         this.onCharData,
@@ -88,8 +89,8 @@ class DOMObserver {
       this.registerMutations(observer.takeRecords());
       observer.disconnect();
     } else {
-      /* $FlowFixMe(>=0.68.0 site=www,mobile) This event type is not defined
-       * by Flow's standard library */
+      /* $FlowFixMe[incompatible-call] (>=0.68.0 site=www,mobile) This event
+       * type is not defined by Flow's standard library */
       this.container.removeEventListener(
         'DOMCharacterDataModified',
         this.onCharData,

@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -26,12 +26,13 @@ function getUpdatedSelectionState(
   focusOffset: number,
 ): SelectionState {
   const selection: SelectionState = nullthrows(editorState.getSelection());
-  if (__DEV__) {
-    if (!anchorKey || !focusKey) {
+  if (!anchorKey || !focusKey) {
+    // If we cannot make sense of the updated selection state, stick to the current one.
+    if (__DEV__) {
       /* eslint-disable-next-line */
       console.warn('Invalid selection state.', arguments, editorState.toJS());
-      return selection;
     }
+    return selection;
   }
 
   const anchorPath = DraftOffsetKey.decode(anchorKey);

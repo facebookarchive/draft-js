@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -23,27 +23,13 @@ let leafChildren = null;
 let textNodes = null;
 
 const resetRootNodeMocks = () => {
-  ({
-    editorState,
-    root,
-    contents,
-    blocks,
-    leafs,
-    leafChildren,
-    textNodes,
-  } = getSampleSelectionMocksForTesting());
+  ({editorState, root, contents, blocks, leafs, leafChildren, textNodes} =
+    getSampleSelectionMocksForTesting());
 };
 
 const resetNestedNodeMocks = () => {
-  ({
-    editorState,
-    root,
-    contents,
-    blocks,
-    leafs,
-    leafChildren,
-    textNodes,
-  } = getSampleSelectionMocksForTestingNestedBlocks());
+  ({editorState, root, contents, blocks, leafs, leafChildren, textNodes} =
+    getSampleSelectionMocksForTestingNestedBlocks());
 };
 
 const assertGetDraftEditorSelection = getSelectionReturnValue => {

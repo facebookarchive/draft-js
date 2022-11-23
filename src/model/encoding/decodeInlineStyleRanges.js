@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -19,7 +19,7 @@ const UnicodeUtils = require('UnicodeUtils');
 const {OrderedSet} = require('immutable');
 const {substr} = UnicodeUtils;
 
-const EMPTY_SET = OrderedSet();
+const EMPTY_SET = OrderedSet<mixed>();
 
 /**
  * Convert to native JavaScript string lengths to determine ranges.

@@ -4,8 +4,8 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -162,7 +162,7 @@ test('does not discard style override when adjusting depth', () => {
   let editor = EditorState.createEmpty();
 
   editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
-  editor = RichTextEditorUtil.onTab({preventDefault: () => {}}, editor, 1);
+  editor = RichTextEditorUtil.onTab({preventDefault: () => {}}, editor);
 
   expect(editor.getCurrentInlineStyle().toJS()).toMatchSnapshot();
 });

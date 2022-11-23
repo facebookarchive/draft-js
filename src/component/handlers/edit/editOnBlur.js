@@ -4,13 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
+import type {SelectionObject} from 'DraftDOMTypes';
 import type DraftEditor from 'DraftEditor.react';
 
 const EditorState = require('EditorState');
@@ -29,12 +30,10 @@ function editOnBlur(editor: DraftEditor, e: SyntheticEvent<HTMLElement>): void {
   // opposed to clicking to another tab or window).
   const {ownerDocument} = e.currentTarget;
   if (
-    // This ESLint rule conflicts with `sketchy-null-bool` flow check
-    // eslint-disable-next-line no-extra-boolean-cast
     !Boolean(editor.props.preserveSelectionOnBlur) &&
     getActiveElement(ownerDocument) === ownerDocument.body
   ) {
-    const selection = ownerDocument.defaultView.getSelection();
+    const selection: SelectionObject = ownerDocument.defaultView.getSelection();
     const editorNode = editor.editor;
     if (
       selection.rangeCount === 1 &&

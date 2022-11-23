@@ -4,12 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
+ * @flow strict
  * @format
- * @flow
- * @emails oncall+draft_js
+ * @oncall draft_js
  */
 
-function getWindowForNode(node: ?Node): any {
+function getWindowForNode(node: ?Node): Window {
   if (!node || !node.ownerDocument || !node.ownerDocument.defaultView) {
     return window;
   }

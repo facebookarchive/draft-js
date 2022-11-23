@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  * @format
- * @emails oncall+draft_js
+ * @oncall draft_js
  */
 
 // THIS IS PURELY A MOCK TO GET AROUND THE TEST FRAMEWORK

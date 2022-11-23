@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -19,8 +19,8 @@ import type {EntityMap} from 'EntityMap';
 const CharacterMetadata = require('CharacterMetadata');
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
+const ContentState = require('ContentState');
 const DefaultDraftBlockRenderMap = require('DefaultDraftBlockRenderMap');
-const DraftEntity = require('DraftEntity');
 const URI = require('URI');
 
 const cx = require('cx');
@@ -34,6 +34,7 @@ const isHTMLElement = require('isHTMLElement');
 const isHTMLImageElement = require('isHTMLImageElement');
 
 const experimentalTreeDataSupport = gkx('draft_tree_data_support');
+const allowPastingAltText = gkx('draftjs_paste_emojis');
 
 const NBSP = '&nbsp;';
 const SPACE = ' ';
@@ -107,7 +108,7 @@ type BlockTypeMap = Map<string, string | Array<string>>;
 const buildBlockTypeMap = (
   blockRenderMap: DraftBlockRenderMap,
 ): BlockTypeMap => {
-  const blockTypeMap = {};
+  const blockTypeMap: {[string]: any | Array<any | string>} = {};
 
   blockRenderMap.mapKeys((blockType, desc) => {
     const elements = [desc.element];
@@ -126,6 +127,17 @@ const buildBlockTypeMap = (
   });
 
   return Map(blockTypeMap);
+};
+
+const detectInlineStyle = (node: Node): string | null => {
+  if (isHTMLElement(node)) {
+    const element: HTMLElement = (node: any);
+    // Currently only used to detect preformatted inline code
+    if (element.style.fontFamily.includes('monospace')) {
+      return 'CODE';
+    }
+  }
+  return null;
 };
 
 /**
@@ -150,12 +162,24 @@ const isValidAnchor = (node: Node) => {
     return false;
   }
   const anchorNode: HTMLAnchorElement = (node: any);
-  return !!(
-    anchorNode.href &&
-    (anchorNode.protocol === 'http:' ||
-      anchorNode.protocol === 'https:' ||
-      anchorNode.protocol === 'mailto:')
-  );
+
+  if (
+    !anchorNode.href ||
+    (anchorNode.protocol !== 'http:' &&
+      anchorNode.protocol !== 'https:' &&
+      anchorNode.protocol !== 'mailto:' &&
+      anchorNode.protocol !== 'tel:')
+  ) {
+    return false;
+  }
+
+  try {
+    // Just checking whether we can actually create a URI
+    const _ = new URI(anchorNode.href);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 /**
@@ -282,7 +306,7 @@ class ContentBlocksBuilder {
   contentBlocks: Array<BlockNodeRecord> = [];
 
   // Entity map use to store links and images found in the HTML nodes
-  entityMap: EntityMap = DraftEntity;
+  contentState: ContentState = ContentState.createFromText('');
 
   // Map HTML tags to draftjs block types and disambiguation function
   blockTypeMap: BlockTypeMap;
@@ -307,7 +331,7 @@ class ContentBlocksBuilder {
     this.currentDepth = 0;
     this.currentEntity = null;
     this.currentText = '';
-    this.entityMap = DraftEntity;
+    this.contentState = ContentState.createFromText('');
     this.wrapper = null;
     this.contentBlocks = [];
   }
@@ -350,7 +374,7 @@ class ContentBlocksBuilder {
     }
     return {
       contentBlocks: this.contentBlocks,
-      entityMap: this.entityMap,
+      entityMap: this.contentState.getEntityMap(),
     };
   }
 
@@ -370,7 +394,7 @@ class ContentBlocksBuilder {
       characterList: this.characterList,
       depth: this.currentDepth,
       parent: null,
-      children: List(),
+      children: List<mixed>(),
       prevSibling: null,
       nextSibling: null,
       childConfigs: [],
@@ -496,6 +520,10 @@ class ContentBlocksBuilder {
         newStyle = newStyle.add(HTMLTagToRawInlineStyleMap.get(nodeName));
       }
       newStyle = styleFromNodeAttributes(node, newStyle);
+      const inlineStyle = detectInlineStyle(node);
+      if (inlineStyle != null) {
+        newStyle = newStyle.add(inlineStyle);
+      }
       blockConfigs.push(
         ...this._toBlockConfigs(Array.from(node.childNodes), newStyle),
       );
@@ -585,7 +613,7 @@ class ContentBlocksBuilder {
       return;
     }
     const image: HTMLImageElement = (node: any);
-    const entityConfig = {};
+    const entityConfig: {[string]: string} = {};
 
     imgAttr.forEach(attr => {
       const imageAttribute = image.getAttribute(attr);
@@ -594,24 +622,21 @@ class ContentBlocksBuilder {
       }
     });
 
-    // TODO: T15530363 update this when we remove DraftEntity entirely
-    this.currentEntity = this.entityMap.__create(
+    this.contentState = this.contentState.createEntity(
       'IMAGE',
       'IMMUTABLE',
       entityConfig,
     );
+    this.currentEntity = this.contentState.getLastCreatedEntityKey();
 
     // The child text node cannot just have a space or return as content (since
-    // we strip those out), unless the image is for presentation only.
-    // See https://github.com/facebook/draft-js/issues/231 for some context.
-    if (gkx('draftjs_fix_paste_for_img')) {
-      if (image.getAttribute('role') !== 'presentation') {
-        this._appendText('\ud83d\udcf7', style);
-      }
+    // we strip those out)
+    const alt = image.getAttribute('alt');
+    if (allowPastingAltText && alt != null && alt.length > 0) {
+      this._appendText(alt, style);
     } else {
       this._appendText('\ud83d\udcf7', style);
     }
-
     this.currentEntity = null;
   }
 
@@ -631,7 +656,7 @@ class ContentBlocksBuilder {
       return;
     }
     const anchor: HTMLAnchorElement = (node: any);
-    const entityConfig = {};
+    const entityConfig: {[string]: string} = {};
 
     anchorAttr.forEach(attr => {
       const anchorAttribute = anchor.getAttribute(attr);
@@ -641,12 +666,13 @@ class ContentBlocksBuilder {
     });
 
     entityConfig.url = new URI(anchor.href).toString();
-    // TODO: T15530363 update this when we remove DraftEntity completely
-    this.currentEntity = this.entityMap.__create(
+
+    this.contentState = this.contentState.createEntity(
       'LINK',
       'MUTABLE',
       entityConfig || {},
     );
+    this.currentEntity = this.contentState.getLastCreatedEntityKey();
 
     blockConfigs.push(
       ...this._toBlockConfigs(Array.from(node.childNodes), style),
@@ -722,16 +748,14 @@ class ContentBlocksBuilder {
    * Extract the text and the associated inline styles form an
    * array of content block configs.
    */
-  _extractTextFromBlockConfigs(
-    blockConfigs: Array<ContentBlockConfig>,
-  ): {
+  _extractTextFromBlockConfigs(blockConfigs: Array<ContentBlockConfig>): {
     text: string,
     characterList: List<CharacterMetadata>,
     ...
   } {
     const l = blockConfigs.length - 1;
     let text = '';
-    let characterList = List();
+    let characterList = List<CharacterMetadata>();
     for (let i = 0; i <= l; i++) {
       const config = blockConfigs[i];
       text += config.text;

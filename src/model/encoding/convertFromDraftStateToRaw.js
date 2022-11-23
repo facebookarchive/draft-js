@@ -4,17 +4,20 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
 import type {BlockNodeRecord} from 'BlockNodeRecord';
 import type ContentState from 'ContentState';
+import type {DraftEntityMutability} from 'DraftEntityMutability';
+import type {DraftEntityType} from 'DraftEntityType';
 import type {RawDraftContentBlock} from 'RawDraftContentBlock';
 import type {RawDraftContentState} from 'RawDraftContentState';
+import type {RawDraftEntity} from 'RawDraftEntity';
 
 const ContentBlock = require('ContentBlock');
 const ContentBlockNode = require('ContentBlockNode');
@@ -24,7 +27,10 @@ const encodeEntityRanges = require('encodeEntityRanges');
 const encodeInlineStyleRanges = require('encodeInlineStyleRanges');
 const invariant = require('invariant');
 
-const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
+const createRawBlock = (
+  block: BlockNodeRecord,
+  entityStorageMap: {[key: string]: RawDraftEntity},
+) => {
   return {
     key: block.getKey(),
     text: block.getText(),
@@ -38,9 +44,9 @@ const createRawBlock = (block: BlockNodeRecord, entityStorageMap: *) => {
 
 const insertRawBlock = (
   block: BlockNodeRecord,
-  entityMap: *,
+  entityMap: {[key: string]: RawDraftEntity},
   rawBlocks: Array<RawDraftContentBlock>,
-  blockCacheRef: *,
+  blockCacheRef: {...},
 ) => {
   if (block instanceof ContentBlock) {
     rawBlocks.push(createRawBlock(block, entityMap));
@@ -50,6 +56,7 @@ const insertRawBlock = (
   invariant(block instanceof ContentBlockNode, 'block is not a BlockNode');
 
   const parentKey = block.getParentKey();
+  // $FlowFixMe[prop-missing]
   const rawBlock = (blockCacheRef[block.getKey()] = {
     ...createRawBlock(block, entityMap),
     children: [],
@@ -69,10 +76,10 @@ const encodeRawBlocks = (
 ): RawDraftContentState => {
   const {entityMap} = rawState;
 
-  const rawBlocks = [];
+  const rawBlocks: Array<RawDraftContentBlock> = [];
 
   const blockCacheRef = {};
-  const entityCacheRef = {};
+  const entityCacheRef: {[string]: ?string} = {};
   let entityStorageKey = 0;
 
   contentState.getBlockMap().forEach(block => {
@@ -114,7 +121,13 @@ const encodeRawEntityMap = (
 ): RawDraftContentState => {
   const {blocks, entityMap} = rawState;
 
-  const rawEntityMap = {};
+  const rawEntityMap: {
+    [number]: {
+      data: any,
+      mutability: DraftEntityMutability,
+      type: DraftEntityType,
+    },
+  } = {};
 
   Object.keys(entityMap).forEach((key, index) => {
     const entity = contentState.getEntity(DraftStringKey.unstringify(key));
@@ -127,6 +140,8 @@ const encodeRawEntityMap = (
 
   return {
     blocks,
+    // $FlowFixMe[incompatible-exact]
+    // $FlowFixMe[incompatible-return]
     entityMap: rawEntityMap,
   };
 };
@@ -136,13 +151,15 @@ const convertFromDraftStateToRaw = (
 ): RawDraftContentState => {
   let rawDraftContentState = {
     entityMap: {},
-    blocks: [],
+    blocks: ([]: Array<RawDraftContentBlock>),
   };
 
   // add blocks
+  // $FlowFixMe[prop-missing]
   rawDraftContentState = encodeRawBlocks(contentState, rawDraftContentState);
 
   // add entities
+  // $FlowFixMe[prop-missing]
   rawDraftContentState = encodeRawEntityMap(contentState, rawDraftContentState);
 
   return rawDraftContentState;

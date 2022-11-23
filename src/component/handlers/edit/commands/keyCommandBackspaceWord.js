@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -33,10 +33,7 @@ function keyCommandBackspaceWord(editorState: EditorState): EditorState {
       }
       const key = selection.getStartKey();
       const content = strategyState.getCurrentContent();
-      const text = content
-        .getBlockForKey(key)
-        .getText()
-        .slice(0, offset);
+      const text = content.getBlockForKey(key).getText().slice(0, offset);
       const toRemove = DraftRemovableWord.getBackward(text);
       return moveSelectionBackward(strategyState, toRemove.length || 1);
     },

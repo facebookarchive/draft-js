@@ -4,19 +4,31 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
-import type CharacterMetadata from 'CharacterMetadata';
+import type CharacterMetadata, {
+  CharacterMetadataRawConfig,
+} from 'CharacterMetadata';
 import type {DraftBlockType} from 'DraftBlockType';
 import type {DraftInlineStyle} from 'DraftInlineStyle';
 import type {List, Map} from 'immutable';
 
 export type BlockNodeKey = string;
+
+export type BlockNodeRawConfig = {
+  characterList?: Array<CharacterMetadataRawConfig>,
+  data?: Map<any, any>,
+  depth?: number,
+  key?: BlockNodeKey,
+  text?: string,
+  type?: DraftBlockType,
+  ...
+};
 
 export type BlockNodeConfig = {
   characterList?: List<CharacterMetadata>,

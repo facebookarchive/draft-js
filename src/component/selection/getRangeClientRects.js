@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -22,13 +22,12 @@ const isChrome = UserAgent.isBrowser('Chrome');
 // not overlap the entire node. To resolve this, we split the range at each
 // start tag and join the client rects together.
 // https://code.google.com/p/chromium/issues/detail?id=324437
-/* eslint-disable consistent-return */
 function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
   const tempRange = range.cloneRange();
   const clientRects = [];
 
   for (
-    let ancestor = range.endContainer;
+    let ancestor: ?Node = range.endContainer;
     ancestor != null;
     ancestor = ancestor.parentNode
   ) {
@@ -44,7 +43,7 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
     clientRects.push(rects);
     if (atCommonAncestor) {
       clientRects.reverse();
-      return [].concat(...clientRects);
+      return ([]: Array<ClientRect>).concat(...clientRects);
     }
     tempRange.setEndBefore(ancestor);
   }
@@ -61,7 +60,7 @@ function getRangeClientRectsChrome(range: Range): Array<ClientRect> {
  */
 const getRangeClientRects = ((isChrome
   ? getRangeClientRectsChrome
-  : function(range: Range): Array<ClientRect> {
+  : function (range: Range): Array<ClientRect> {
       return Array.from(range.getClientRects());
     }): (range: Range) => Array<ClientRect>);
 

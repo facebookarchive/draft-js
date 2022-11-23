@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict-local
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -29,10 +29,7 @@ function keyCommandDeleteWord(editorState: EditorState): EditorState {
       const offset = selection.getStartOffset();
       const key = selection.getStartKey();
       const content = strategyState.getCurrentContent();
-      const text = content
-        .getBlockForKey(key)
-        .getText()
-        .slice(offset);
+      const text = content.getBlockForKey(key).getText().slice(offset);
       const toRemove = DraftRemovableWord.getForward(text);
 
       // If there are no words in front of the cursor, remove the newline.

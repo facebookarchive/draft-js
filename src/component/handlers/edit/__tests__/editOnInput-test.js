@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -31,7 +31,12 @@ const getEditorState = (text: string = '') => {
   );
 };
 
-function withGlobalGetSelectionAs(getSelectionValue = {}, callback) {
+function withGlobalGetSelectionAs(
+  getSelectionValue:
+    | $TEMPORARY$object<{...}>
+    | $TEMPORARY$object<{anchorNode: Text}> = {},
+  callback: () => void,
+) {
   const oldGetSelection = global.getSelection;
   try {
     global.getSelection = () => getSelectionValue;
@@ -62,7 +67,7 @@ test('restoreEditorDOM and keyCommandPlainBackspace are NOT called when the `inp
       currentTarget: editorNode,
     };
 
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-call]
     onInput(editor, inputEvent);
 
     expect(require('keyCommandPlainBackspace')).toHaveBeenCalledTimes(0);
@@ -94,10 +99,10 @@ test('restoreEditorDOM and keyCommandPlainBackspace are called when backspace is
       currentTarget: editorNode,
     };
 
-    // $FlowExpectedError
+    // $FlowExpectedError[incompatible-call]
     onInput(editor, inputEvent);
 
-    // $FlowExpectedError
+    // $FlowExpectedError[prop-missing]
     const newEditorState = require('keyCommandPlainBackspace').mock.results[0]
       .value;
     expect(require('keyCommandPlainBackspace')).toHaveBeenCalledWith(

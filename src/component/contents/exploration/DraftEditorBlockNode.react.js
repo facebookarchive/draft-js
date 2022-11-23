@@ -4,14 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
- * @flow
- * @emails oncall+draft_js
- *
  * This file is a fork of DraftEditorBlock.react.js and DraftEditorContents.react.js
  *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
+ *
+ * @flow
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -27,7 +27,6 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 
 const DraftEditorNode = require('DraftEditorNode.react');
 const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
 const Scroll = require('Scroll');
 const Style = require('Style');
 
@@ -37,12 +36,13 @@ const getViewportDimensions = require('getViewportDimensions');
 const Immutable = require('immutable');
 const invariant = require('invariant');
 const isHTMLElement = require('isHTMLElement');
+const React = require('react');
 
 const SCROLL_BUFFER = 10;
 
 const {List} = Immutable;
 
-// we should harden up the bellow flow types to make them more strict
+// we should harden up the below flow types to make them more strict
 type CustomRenderConfig = Object;
 type DraftRenderConfig = Object;
 type BlockRenderFn = (block: BlockNodeRecord) => ?Object;
@@ -95,13 +95,13 @@ const shouldNotAddWrapperElement = (
 };
 
 const applyWrapperElementToSiblings = (
-  wrapperTemplate: *,
+  wrapperTemplate: any,
   Element: string,
   nodes: Array<React.Node>,
 ): Array<React.Node> => {
   const wrappedSiblings = [];
 
-  // we check back until we find a sibbling that does not have same wrapper
+  // we check back until we find a sibling that does not have same wrapper
   for (const sibling: any of nodes.reverse()) {
     if (sibling.type !== Element) {
       break;
@@ -175,8 +175,8 @@ const getElementPropsConfig = (
   editorKey: string,
   offsetKey: string,
   blockStyleFn: BlockStyleFn,
-  customConfig: *,
-  ref: null | {|current: null | Element|},
+  customConfig: CustomRenderConfig,
+  ref: null | {current: null | Element},
 ): Object => {
   let elementProps: Object = {
     'data-block': true,
@@ -203,7 +203,7 @@ const getElementPropsConfig = (
 };
 
 class DraftEditorBlockNode extends React.Component<Props> {
-  wrapperRef: {|current: null | Element|} = React.createRef<Element>();
+  wrapperRef: {current: null | Element} = React.createRef<Element>();
 
   shouldComponentUpdate(nextProps: Props): boolean {
     const {block, direction, tree} = this.props;

@@ -4,17 +4,17 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
 
 jest.disableAutomock();
 
-const addFocusToSelection = require('setDraftEditorSelection')
-  .addFocusToSelection;
 const getSampleSelectionMocksForTesting = require('getSampleSelectionMocksForTesting');
+const addFocusToSelection =
+  require('setDraftEditorSelection').addFocusToSelection;
 
 // Based on https://w3c.github.io/selection-api/#selection-interface
 class Selection {

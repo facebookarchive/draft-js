@@ -4,12 +4,12 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
- * @flow
- * @emails oncall+draft_js
- *
  * This is unstable and not part of the public API and should not be used by
  * production systems. This file may be update/removed without notice.
+ *
+ * @flow
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -21,13 +21,14 @@ import type {BidiDirection} from 'UnicodeBidiDirection';
 import type {Set} from 'immutable';
 
 const DraftOffsetKey = require('DraftOffsetKey');
-const React = require('React');
 const UnicodeBidi = require('UnicodeBidi');
 const UnicodeBidiDirection = require('UnicodeBidiDirection');
 
+const React = require('react');
+
 type Props = {
   block: BlockNodeRecord,
-  children: ?Array<React.Node>,
+  children: ?$ReadOnlyArray<React.Node>,
   contentState: ContentState,
   decorator: DraftDecoratorType,
   decoratorKey: string,

@@ -4,14 +4,14 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
-
-jest.mock('generateRandomKey');
+import type {BlockMap} from 'BlockMap';
+import type ContentState from 'ContentState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlock = require('ContentBlock');
@@ -22,6 +22,8 @@ const getSampleStateForTesting = require('getSampleStateForTesting');
 const Immutable = require('immutable');
 const insertFragmentIntoContentState = require('insertFragmentIntoContentState');
 const invariant = require('invariant');
+
+jest.mock('generateRandomKey');
 
 const {contentState, selectionState} = getSampleStateForTesting();
 const {List, Map} = Immutable;
@@ -35,7 +37,7 @@ const DEFAULT_BLOCK_CONFIG = {
 
 const initialBlock = contentState.getBlockMap().first();
 
-const getInvariantViolation = msg => {
+const getInvariantViolation = (msg: string) => {
   try {
     /* eslint-disable-next-line */
     invariant(false, msg);
@@ -44,7 +46,12 @@ const getInvariantViolation = msg => {
   }
 };
 
-const createFragment = (fragment = {}, experimentalTreeDataSupport = false) => {
+const createFragment = (
+  /* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
+   * LTI update could not be added via codemod */
+  fragment = {},
+  experimentalTreeDataSupport: boolean = false,
+) => {
   const ContentBlockNodeRecord = experimentalTreeDataSupport
     ? ContentBlockNode
     : ContentBlock;
@@ -61,14 +68,16 @@ const createFragment = (fragment = {}, experimentalTreeDataSupport = false) => {
   );
 };
 
+/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
+ * LTI update could not be added via codemod */
 const createContentBlockNodeFragment = fragment => {
   return createFragment(fragment, true);
 };
 
 const assertInsertFragmentIntoContentState = (
-  fragment,
-  selection = selectionState,
-  content = contentState,
+  fragment: BlockMap,
+  selection: $FlowFixMe | SelectionState = selectionState,
+  content: ContentState = contentState,
 ) => {
   expect(
     insertFragmentIntoContentState(content, selection, fragment)
@@ -126,8 +135,7 @@ test('must apply multiblock fragments', () => {
 
 test('must be able to insert a fragment with a single ContentBlockNode', () => {
   const initialSelection = SelectionState.createEmpty('A');
-  const initialContent = contentState.set(
-    'blockMap',
+  const initialContent = contentState.setBlockMap(
     createContentBlockNodeFragment([
       {
         key: 'A',
@@ -150,8 +158,7 @@ test('must be able to insert a fragment with a single ContentBlockNode', () => {
 
 test('must be able to insert fragment of ContentBlockNodes', () => {
   const initialSelection = SelectionState.createEmpty('first');
-  const initialContent = contentState.set(
-    'blockMap',
+  const initialContent = contentState.setBlockMap(
     createContentBlockNodeFragment([
       {
         key: 'first',
@@ -198,8 +205,7 @@ test('must be able to insert fragment of ContentBlockNodes', () => {
 
 test('must be able to insert fragment of ContentBlockNodes after nested block', () => {
   const initialSelection = SelectionState.createEmpty('firstChild');
-  const initialContent = contentState.set(
-    'blockMap',
+  const initialContent = contentState.setBlockMap(
     createContentBlockNodeFragment([
       {
         key: 'root',
@@ -253,8 +259,7 @@ test('must be able to insert fragment of ContentBlockNodes after nested block', 
 
 test('must be able to insert a fragment of ContentBlockNodes while updating the target block with the first fragment block properties', () => {
   const initialSelection = SelectionState.createEmpty('first');
-  const initialContent = contentState.set(
-    'blockMap',
+  const initialContent = contentState.setBlockMap(
     createContentBlockNodeFragment([
       {
         key: 'first',
@@ -301,8 +306,7 @@ test('must be able to insert a fragment of ContentBlockNodes while updating the 
 
 test('must be able to insert a fragment of ContentBlockNodes while updating the target block with the first fragment block properties after nested block', () => {
   const initialSelection = SelectionState.createEmpty('firstChild');
-  const initialContent = contentState.set(
-    'blockMap',
+  const initialContent = contentState.setBlockMap(
     createContentBlockNodeFragment([
       {
         key: 'root',
@@ -362,8 +366,7 @@ test('must be able to insert a fragment of ContentBlockNodes while updating the 
 
 test('must throw an error when trying to apply ContentBlockNode fragments when selection is on a block that has children', () => {
   const initialSelection = SelectionState.createEmpty('A');
-  const initialContent = contentState.set(
-    'blockMap',
+  const initialContent = contentState.setBlockMap(
     createContentBlockNodeFragment([
       {
         key: 'A',

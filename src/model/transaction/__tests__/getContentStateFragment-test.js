@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -76,7 +76,14 @@ const DEFAULT_SELECTION = {
   isBackward: false,
 };
 
-const assertGetContentStateFragment = (blocksArray, selection = {}) => {
+const assertGetContentStateFragment = (
+  blocksArray: Array<ContentBlock | ContentBlockNode>,
+  selection: {
+    anchorKey?: string,
+    focusKey?: string,
+    focusOffset?: number,
+  } = {},
+) => {
   const editor = EditorState.acceptSelection(
     EditorState.createWithContent(
       ContentState.createFromBlockArray([...blocksArray]),

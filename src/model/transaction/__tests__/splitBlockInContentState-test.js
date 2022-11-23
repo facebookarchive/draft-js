@@ -4,14 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
-
-jest.mock('generateRandomKey');
+import type ContentState from 'ContentState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -20,6 +19,8 @@ const SelectionState = require('SelectionState');
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const Immutable = require('immutable');
 const splitBlockInContentState = require('splitBlockInContentState');
+
+jest.mock('generateRandomKey');
 
 const {List} = Immutable;
 
@@ -74,12 +75,14 @@ const contentBlockNodes = [
   }),
 ];
 const treeSelectionState = SelectionState.createEmpty('A');
-const treeContentState = contentState.set(
-  'blockMap',
+const treeContentState = contentState.setBlockMap(
   BlockMapBuilder.createFromArray(contentBlockNodes),
 );
 
-const assertSplitBlockInContentState = (selection, content = contentState) => {
+const assertSplitBlockInContentState = (
+  selection: $FlowFixMe | SelectionState,
+  content: ContentState = contentState,
+) => {
   expect(
     splitBlockInContentState(content, selection)
       .getBlockMap()
@@ -115,10 +118,7 @@ test('must split within a block', () => {
 });
 
 test('must split at the end of a block', () => {
-  const SPLIT_OFFSET = contentState
-    .getBlockMap()
-    .first()
-    .getLength();
+  const SPLIT_OFFSET = contentState.getBlockMap().first().getLength();
 
   assertSplitBlockInContentState(
     selectionState.merge({

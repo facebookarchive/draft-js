@@ -10,9 +10,9 @@ exports[`must not return key if segmented 1`] = `null`;
 
 exports[`must not return key if segmented with collapsed selection 1`] = `null`;
 
-exports[`must return key if mutable 1`] = `"1"`;
+exports[`must return key if mutable 1`] = `"2"`;
 
-exports[`must return key if mutable with collapsed selection 1`] = `"1"`;
+exports[`must return key if mutable with collapsed selection 1`] = `"2"`;
 
 exports[`must return null at start of block with collapsed selection 1`] = `null`;
 

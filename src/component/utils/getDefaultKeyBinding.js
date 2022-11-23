@@ -4,9 +4,9 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @format
  * @flow strict
- * @emails oncall+draft_js
+ * @format
+ * @oncall draft_js
  */
 
 'use strict';
@@ -84,6 +84,8 @@ function getDefaultKeyBinding(
       return hasCommandModifier(e) ? 'underline' : null;
     case 87: // W
       return isOSX && isCtrlKeyCommand(e) ? 'backspace-word' : null;
+    case 88: // X
+      return hasCommandModifier(e) && e.shiftKey ? 'strikethrough' : null;
     case 89: // Y
       if (isCtrlKeyCommand(e)) {
         return isOSX ? 'secondary-paste' : 'redo';

@@ -1,9 +1,9 @@
 /**
- * Copyright 2004-present Facebook. All Rights Reserved.
+ * (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
  *
- * @emails oncall+ads_integration_management
  * @flow strict-local
  * @format
+ * @oncall ads_integration_management
  */
 
 'use strict';
@@ -33,7 +33,7 @@ const NonASCIIStringSnapshotSerializer = {
       '"' +
       val
         .split('')
-        .map(char => {
+        .map((char) => {
           const code = char.charCodeAt(0);
           return code > MAX_ASCII_CHARACTER
             ? '\\u' + code.toString(16).padStart(4, '0')

@@ -4,12 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
+import type {List} from 'immutable';
 
 const Immutable = require('immutable');
 const insertIntoList = require('insertIntoList');
@@ -17,9 +18,9 @@ const insertIntoList = require('insertIntoList');
 const SAMPLE_LIST = Immutable.List.of(0, 1, 2, 3, 4);
 
 const assertAssertInsertIntoList = (
-  toInsert,
-  offset = SAMPLE_LIST.size,
-  targetList = SAMPLE_LIST,
+  toInsert: List<number>,
+  offset: number = SAMPLE_LIST.size,
+  targetList: List<number> = SAMPLE_LIST,
 ) => {
   expect(insertIntoList(targetList, toInsert, offset)).toMatchSnapshot();
 };

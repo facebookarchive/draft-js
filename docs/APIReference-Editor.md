@@ -79,10 +79,10 @@ blockRendererFn?: (block: ContentBlock) => ?Object
 
 Optionally set a function to define custom block rendering. See [Advanced Topics: Block Components](/docs/advanced-topics-block-components) for details on usage.
 
-### `blockRendererMap`
+### `blockRenderMap`
 
 ```js
-blockRendererMap?: DraftBlockRenderMap
+blockRenderMap?: DraftBlockRenderMap
 ```
 
 Provide a map of block rendering configurations. Each block type maps to element tag and an optional react element wrapper. This configuration is used for both rendering and paste processing. See

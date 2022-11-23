@@ -4,12 +4,13 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
- * @emails oncall+draft_js
  * @flow strict-local
  * @format
+ * @oncall draft_js
  */
 
 'use strict';
+import type ContentState from 'ContentState';
 
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
@@ -66,27 +67,21 @@ const contentBlockNodes = [
   }),
 ];
 const treeSelectionState = SelectionState.createEmpty('A');
-const treeContentState = contentState.set(
-  'blockMap',
+const treeContentState = contentState.setBlockMap(
   BlockMapBuilder.createFromArray(contentBlockNodes),
 );
 
 const assertRemoveRangeFromContentState = (
-  selection,
-  content = contentState,
+  selection: $FlowFixMe | SelectionState,
+  content: ContentState = contentState,
 ) => {
   expect(
-    removeRangeFromContentState(content, selection)
-      .getBlockMap()
-      .toJS(),
+    removeRangeFromContentState(content, selection).getBlockMap().toJS(),
   ).toMatchSnapshot();
 };
 
 const initialBlock = contentState.getBlockMap().first();
-const secondBlock = contentState
-  .getBlockMap()
-  .skip(1)
-  .first();
+const secondBlock = contentState.getBlockMap().skip(1).first();
 const selectionWithinA = selectionState.set('anchorOffset', 3);
 const selectionFromEndOfA = selectionState.merge({
   anchorOffset: initialBlock.getLength(),
@@ -117,10 +112,7 @@ test('must remove to the end of the block', () => {
   assertRemoveRangeFromContentState(
     selectionState.merge({
       anchorOffset: 3,
-      focusOffset: contentState
-        .getBlockMap()
-        .first()
-        .getLength(),
+      focusOffset: contentState.getBlockMap().first().getLength(),
     }),
   );
 });
