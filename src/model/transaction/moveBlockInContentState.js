@@ -202,7 +202,7 @@ const moveBlockInContentState = (
 
   const slicedBlocks = blocksToBeMoved.map(block => [block.getKey(), block]);
 
-  let newBlocks = OrderedMap();
+  let newBlocks = OrderedMap<string, BlockNodeRecord>();
 
   if (insertionMode === 'before') {
     const blockBefore = contentState.getBlockBefore(targetKey);

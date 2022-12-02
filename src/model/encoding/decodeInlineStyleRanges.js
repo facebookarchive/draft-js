@@ -19,7 +19,7 @@ const UnicodeUtils = require('UnicodeUtils');
 const {OrderedSet} = require('immutable');
 const {substr} = UnicodeUtils;
 
-const EMPTY_SET = OrderedSet();
+const EMPTY_SET = OrderedSet<mixed>();
 
 /**
  * Convert to native JavaScript string lengths to determine ranges.

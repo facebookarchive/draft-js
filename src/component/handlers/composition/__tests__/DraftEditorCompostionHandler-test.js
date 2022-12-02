@@ -183,7 +183,7 @@ test('Can handle mutations in the same block in multiple leaf nodes', () => {
       .getBlockMap()
       .first()
       .getKey();
-    const mutations = Map({
+    const mutations = Map<_, mixed>({
       [`${blockKey}-0-0`]: 'reacta ',
       [`${blockKey}-0-1`]: 'draftbb',
       [`${blockKey}-0-2`]: ' graphqlccc',

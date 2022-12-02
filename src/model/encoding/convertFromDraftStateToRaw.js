@@ -56,6 +56,7 @@ const insertRawBlock = (
   invariant(block instanceof ContentBlockNode, 'block is not a BlockNode');
 
   const parentKey = block.getParentKey();
+  // $FlowFixMe[prop-missing]
   const rawBlock = (blockCacheRef[block.getKey()] = {
     ...createRawBlock(block, entityMap),
     children: [],
