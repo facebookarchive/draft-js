@@ -22,7 +22,7 @@ const Immutable = require('immutable');
 
 const {List, Map, OrderedSet, Record, Repeat} = Immutable;
 
-const EMPTY_SET = OrderedSet();
+const EMPTY_SET = OrderedSet<string>();
 
 const defaultRecord: BlockNodeConfig = {
   key: '',

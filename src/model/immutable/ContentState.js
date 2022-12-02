@@ -285,7 +285,7 @@ class ContentState extends ContentStateRecord {
   static fromJS(state: ContentStateRawType): ContentState {
     return new ContentState({
       ...state,
-      blockMap: OrderedMap(state.blockMap).map(
+      blockMap: OrderedMap<string, BlockNodeRawConfig>(state.blockMap).map(
         // $FlowFixMe[method-unbinding]
         ContentState.createContentBlockFromJS,
       ),

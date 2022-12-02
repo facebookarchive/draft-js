@@ -146,7 +146,7 @@ class DraftEditorContents extends React.Component<Props> {
 
     const blocksAsArray = content.getBlocksAsArray();
     const processedBlocks = [];
-    const alreadyEncounteredDepth = new Set();
+    const alreadyEncounteredDepth = new Set<number>();
     let currentDepth = null;
     let lastWrapperTemplate = null;
 

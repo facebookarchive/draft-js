@@ -394,7 +394,7 @@ class ContentBlocksBuilder {
       characterList: this.characterList,
       depth: this.currentDepth,
       parent: null,
-      children: List(),
+      children: List<mixed>(),
       prevSibling: null,
       nextSibling: null,
       childConfigs: [],
@@ -755,7 +755,7 @@ class ContentBlocksBuilder {
   } {
     const l = blockConfigs.length - 1;
     let text = '';
-    let characterList = List();
+    let characterList = List<CharacterMetadata>();
     for (let i = 0; i <= l; i++) {
       const config = blockConfigs[i];
       text += config.text;

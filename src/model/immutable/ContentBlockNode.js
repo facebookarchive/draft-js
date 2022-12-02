@@ -36,7 +36,7 @@ type ContentBlockNodeConfig = BlockNodeConfig & {
   ...
 };
 
-const EMPTY_SET = OrderedSet();
+const EMPTY_SET = OrderedSet<string>();
 
 const defaultRecord: ContentBlockNodeConfig = {
   parent: null,

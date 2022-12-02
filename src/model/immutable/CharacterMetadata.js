@@ -31,7 +31,7 @@ type CharacterMetadataConfig = interface {
   entity?: CharacterMetadataConfigValueType,
 };
 
-const EMPTY_SET = OrderedSet();
+const EMPTY_SET = OrderedSet<string>();
 
 const defaultRecord: CharacterMetadataConfig = {
   style: EMPTY_SET,
