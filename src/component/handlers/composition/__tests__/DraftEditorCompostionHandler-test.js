@@ -11,9 +11,7 @@
 
 'use strict';
 
-// DraftEditorComposition uses timers to detect duplicate `compositionend`
-// events.
-jest.useFakeTimers();
+import type DraftEditor from 'DraftEditor.react';
 
 const ContentBlock = require('ContentBlock');
 const ContentState = require('ContentState');
@@ -23,6 +21,10 @@ const SelectionState = require('SelectionState');
 const convertFromHTMLToContentBlocks = require('convertFromHTMLToContentBlocks');
 const editOnCompositionStart = require('editOnCompositionStart');
 const {Map} = require('immutable');
+
+// DraftEditorComposition uses timers to detect duplicate `compositionend`
+// events.
+jest.useFakeTimers();
 
 jest.mock('DOMObserver', () => {
   function DOMObserver() {}
@@ -48,7 +50,15 @@ jest.mock('getDraftEditorSelection', () => {
 // the module in a bad state we forcibly reload it each test.
 let compositionHandler = null;
 // Initialization of mock editor component that will be used for all tests
-let editor;
+let editor: {
+  _latestEditorState: EditorState,
+  _onCompositionStart: (editor: DraftEditor) => void,
+  _onKeyDown: JestMockFn<$FlowFixMe, $FlowFixMe>,
+  exitCurrentMode: JestMockFn<$FlowFixMe, $FlowFixMe>,
+  restoreEditorDOM: JestMockFn<$FlowFixMe, $FlowFixMe>,
+  setMode: JestMockFn<$FlowFixMe, $FlowFixMe>,
+  update: JestMockFn<$FlowFixMe, $FlowFixMe>,
+};
 
 function getEditorState(
   blocks:
