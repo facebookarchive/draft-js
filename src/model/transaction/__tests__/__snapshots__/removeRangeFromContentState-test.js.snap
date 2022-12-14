@@ -2608,3 +2608,47 @@ Object {
   },
 }
 `;
+
+exports[`parent should be removed, children should be updated in grandParent 1`] = `
+Object {
+  "A": Object {
+    "characterList": Array [],
+    "children": Array [
+      "B",
+      "D",
+    ],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  "B": Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "B",
+    "nextSibling": "D",
+    "parent": "A",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  "D": Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "D",
+    "nextSibling": null,
+    "parent": "A",
+    "prevSibling": "B",
+    "text": "",
+    "type": "unstyled",
+  },
+}
+`;

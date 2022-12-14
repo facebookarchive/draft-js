@@ -259,7 +259,7 @@ const updateBlockMapLinks = (
         );
       });
       if (newParentKey != null) {
-        const newParent = blockMap.get(newParentKey);
+        const newParent = blocks.get(newParentKey);
         transformBlock(newParentKey, blocks, block =>
           block.merge({
             children: newParent
