@@ -18,7 +18,7 @@ const TEST_A = 'Hello';
 const TEST_B = ' World!';
 
 const DraftEditorTextNode = require('DraftEditorTextNode.react');
-const ReactDOMLegacy_DEPRECATED = require('ReactDOMLegacy_DEPRECATED');
+const ReactDOM = require('ReactDOM');
 const UserAgent = require('UserAgent');
 
 const React = require('react');
@@ -33,7 +33,7 @@ beforeEach(() => {
 const renderIntoContainer = (element: React.Node) => {
   // $FlowFixMe[incompatible-call]
   // $FlowFixMe[incompatible-exact]
-  return ReactDOMLegacy_DEPRECATED.render(element, container);
+  return ReactDOM.render(element, container);
 };
 
 const initializeAsIE = () => {
@@ -55,7 +55,7 @@ const expectPopulatedSpan = (
   testString: string | $TEMPORARY$string<'Hello'>,
 ) => {
   // $FlowExpectedError[incompatible-type] node could be null
-  const node: Element = ReactDOMLegacy_DEPRECATED.findDOMNode(stub);
+  const node: Element = ReactDOM.findDOMNode(stub);
   expect(node.tagName).toBe('SPAN');
   expect(node.childNodes.length).toBe(1);
   expect(node.firstChild && node.firstChild.textContent).toBe(testString);
@@ -68,7 +68,7 @@ test('must initialize correctly with an empty string, non-IE', function () {
   );
   // $FlowExpectedError[incompatible-use] we know node is an Element
   // $FlowExpectedError[prop-missing] we know node is an Element
-  expect(ReactDOMLegacy_DEPRECATED.findDOMNode(stub).tagName).toBe('BR');
+  expect(ReactDOM.findDOMNode(stub).tagName).toBe('BR');
 });
 
 test('must initialize correctly with an empty string, IE', function () {
@@ -192,7 +192,7 @@ test('must update from non-empty to empty, non-IE', function () {
 
   // $FlowExpectedError[incompatible-use] we know node is an Element
   // $FlowExpectedError[prop-missing] we know node is an Element
-  expect(ReactDOMLegacy_DEPRECATED.findDOMNode(stub).tagName).toBe('BR');
+  expect(ReactDOM.findDOMNode(stub).tagName).toBe('BR');
 });
 
 test('must update from non-empty to empty, IE', function () {
@@ -222,10 +222,10 @@ test('must force unchanged text back into the DOM', function () {
   );
 
   // $FlowExpectedError[incompatible-use] we know node is not null
-  ReactDOMLegacy_DEPRECATED.findDOMNode(stub).textContent = TEST_B;
+  ReactDOM.findDOMNode(stub).textContent = TEST_B;
 
   renderIntoContainer(<DraftEditorTextNode>{TEST_A}</DraftEditorTextNode>);
 
   // $FlowExpectedError[incompatible-use] we know node is not null
-  expect(ReactDOMLegacy_DEPRECATED.findDOMNode(stub).textContent).toBe(TEST_A);
+  expect(ReactDOM.findDOMNode(stub).textContent).toBe(TEST_A);
 });
