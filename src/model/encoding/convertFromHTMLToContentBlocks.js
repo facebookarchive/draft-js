@@ -81,6 +81,8 @@ const HTMLTagToRawInlineStyleMap: Map<string, string> = Map({
   strong: 'BOLD',
   u: 'UNDERLINE',
   mark: 'HIGHLIGHT',
+  sup: 'SUPERSCRIPT',
+  sub: 'SUBSCRIPT',
 });
 
 type BlockTypeMap = Map<string, string | Array<string>>;
