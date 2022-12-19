@@ -24,7 +24,7 @@ const getRangeBoundingClientRect = require('getRangeBoundingClientRect');
  */
 function getVisibleSelectionRect(global: any): ?FakeClientRect {
   const selection = global.getSelection();
-  if (!selection.rangeCount) {
+  if (!selection?.rangeCount) {
     return null;
   }
 
