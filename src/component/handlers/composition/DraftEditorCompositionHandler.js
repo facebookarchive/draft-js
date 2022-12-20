@@ -64,6 +64,25 @@ const DraftEditorCompositionHandler = {
    */
   onCompositionStart(editor: DraftEditor): void {
     stillComposing = true;
+
+    const editorState = editor._latestEditorState;
+    if (editorState) {
+      const selection = editorState.getSelection();
+      const contentState = editorState.getCurrentContent();
+
+      if (!selection.isCollapsed()) {
+        editor.update(
+          EditorState.set(editorState, {
+            currentContent: DraftModifier.removeRange(
+              contentState,
+              selection,
+              'forward',
+            ),
+          }),
+        );
+      }
+    }
+
     startDOMObserver(editor);
   },
 
