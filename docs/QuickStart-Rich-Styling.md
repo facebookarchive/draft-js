@@ -68,6 +68,37 @@ class MyEditor extends React.Component {
 }
 ```
 
+Since the release of React 16.8, you can use [Hooks](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.
+
+```js
+import {Editor, EditorState, RichUtils} from 'draft-js';
+
+function MyEditor() {
+  const [editorState, setEditorState] = React.useState(() =>
+    EditorState.createEmpty()
+  );
+  
+  function handleKeyCommand(command) {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+
+    if (newState) {
+      setEditorState(newState);
+      return "handled";
+    }
+
+    return "not-handled";
+  }
+  
+  return (
+    <Editor
+      editorState={editorState}
+      handleKeyCommand={handleKeyCommand}
+      onChange={setEditorState}
+    />
+  );
+}
+```
+
 > `handleKeyCommand`
 >
 > The `command` argument supplied to `handleKeyCommand` is a string value, the
@@ -107,5 +138,27 @@ class MyEditor extends React.Component {
       </div>
     );
   }
+}
+```
+
+Since the release of React 16.8, you can use [Hooks](https://reactjs.org/docs/hooks-intro.html) as a way to work with `EditorState` without using a class.
+
+```js
+function MyEditor() {
+  // ...
+
+  function _onBoldClick() {
+    setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
+  }
+  return (
+    <div>
+      <button onClick={_onBoldClick}>Bold</button>
+      <Editor
+        editorState={editorState}
+        handleKeyCommand={handleKeyCommand}
+        onChange={setEditorState}
+      />
+    </div>
+  );
 }
 ```
