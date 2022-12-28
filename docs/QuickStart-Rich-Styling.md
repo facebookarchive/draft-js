@@ -109,3 +109,36 @@ class MyEditor extends React.Component {
   }
 }
 ```
+## With Hooks
+```js
+function App() {
+	const [editorState, setEditorState] = useState(() =>
+		EditorState.createEmpty()
+	);
+
+	const handleKeyCommand = (command, editorState) => {
+		const newState = RichUtils.handleKeyCommand(editorState, command);
+		if (newState) {
+			setEditorState(newState);
+			return "handled";
+		}
+		return "not-handled";
+	};
+
+	const handleBold = () => {
+		setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
+	};
+
+	return (
+		<>
+			<button onClick={handleBold}>Bold</button>
+			<Editor
+				editorState={editorState}
+				handleKeyCommand={handleKeyCommand}
+				onChange={setEditorState}
+			/>
+		</>
+	);
+}
+export default App;
+```
