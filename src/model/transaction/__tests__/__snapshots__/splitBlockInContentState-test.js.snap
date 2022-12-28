@@ -2164,3 +2164,25 @@ Array [
   },
 ]
 `;
+
+exports[`should not split atomic block 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": "1",
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {},
+    "depth": 0,
+    "key": "A",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;

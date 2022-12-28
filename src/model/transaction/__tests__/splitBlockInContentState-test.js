@@ -15,6 +15,7 @@ import type ContentState from 'ContentState';
 const BlockMapBuilder = require('BlockMapBuilder');
 const ContentBlockNode = require('ContentBlockNode');
 const SelectionState = require('SelectionState');
+const CharacterMetadata = require('CharacterMetadata');
 
 const getSampleStateForTesting = require('getSampleStateForTesting');
 const Immutable = require('immutable');
@@ -220,5 +221,29 @@ test('must convert empty list item ContentBlock to unstyled rather than split', 
       focusKey: 'H',
     }),
     treeContentState,
+  );
+});
+
+test('should not split atomic block', () => {
+  const charData = CharacterMetadata.create({entity: '1'});
+  const contentStateWithAtomicBlock = contentState.set(
+    'blockMap',
+    BlockMapBuilder.createFromArray([
+      new ContentBlockNode({
+        key: 'A',
+        text: ' ',
+        type: 'atomic',
+        characterList: List([charData]),
+      }),
+    ]),
+  );
+  assertSplitBlockInContentState(
+    selectionState.merge({
+      anchorOffset: 0,
+      focusOffset: 0,
+      anchorKey: 'A',
+      focusKey: 'A',
+    }),
+    contentStateWithAtomicBlock,
   );
 });
