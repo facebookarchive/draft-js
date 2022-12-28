@@ -1364,7 +1364,7 @@ Object {
 
 exports[`must remove from the start of A to the start of B 1`] = `
 Object {
-  "a": Object {
+  "b": Object {
     "characterList": Array [
       Object {
         "entity": "2",
@@ -1399,9 +1399,9 @@ Object {
     ],
     "data": Object {},
     "depth": 0,
-    "key": "a",
+    "key": "b",
     "text": "Bravo",
-    "type": "unstyled",
+    "type": "unordered-list-item",
   },
   "c": Object {
     "characterList": Array [
@@ -1500,7 +1500,7 @@ Object {
 
 exports[`must remove from the start of A to within B 1`] = `
 Object {
-  "a": Object {
+  "b": Object {
     "characterList": Array [
       Object {
         "entity": "2",
@@ -1517,9 +1517,9 @@ Object {
     ],
     "data": Object {},
     "depth": 0,
-    "key": "a",
+    "key": "b",
     "text": "vo",
-    "type": "unstyled",
+    "type": "unordered-list-item",
   },
   "c": Object {
     "characterList": Array [
