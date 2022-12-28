@@ -15,7 +15,7 @@
     "react": "file:../../../node_modules/react",
     "react-dom": "file:../../../node_modules/react-dom",
     "webpack": "^5.10.0",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
