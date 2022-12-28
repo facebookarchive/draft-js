@@ -94,7 +94,7 @@ stateless components:
 ```js
 const HandleSpan = props => {
   return (
-    <span {...props} style={styles.handle}>
+    <span style={styles.handle}>
       {props.children}
     </span>
   );
@@ -102,7 +102,7 @@ const HandleSpan = props => {
 
 const HashtagSpan = props => {
   return (
-    <span {...props} style={styles.hashtag}>
+    <span style={styles.hashtag}>
       {props.children}
     </span>
   );
