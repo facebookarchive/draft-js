@@ -724,23 +724,69 @@ function getInlineStyleForNonCollapsedSelection(
   content: ContentState,
   selection: SelectionState,
 ): DraftInlineStyle {
-  const startKey = selection.getStartKey();
-  const startOffset = selection.getStartOffset();
-  const startBlock = content.getBlockForKey(startKey);
+  const anchorKey = selection.getAnchorKey();
+  const anchorOffset = selection.getAnchorOffset();
+  const anchorBlock = content.getBlockForKey(anchorKey);
 
   // If there is a character just inside the selection, use its style.
-  if (startOffset < startBlock.getLength()) {
-    return startBlock.getInlineStyleAt(startOffset);
+  if (anchorOffset < anchorBlock.getLength()) {
+    return anchorBlock.getInlineStyleAt(anchorOffset);
   }
 
   // Check if the selection at the end of a non-empty block. Use the last
   // style in the block.
-  if (startOffset > 0) {
-    return startBlock.getInlineStyleAt(startOffset - 1);
+  if (anchorOffset > 0) {
+    return anchorBlock.getInlineStyleAt(anchorOffset - 1);
   }
 
-  // Otherwise, look upward in the document to find the closest character.
-  return lookUpwardForInlineStyle(content, startKey);
+  if (selection.getIsBackward()) {
+    // Look upward in the document to find the closest character.
+    return lookUpwardForInlineStyle(content, anchorKey);
+  }
+
+  // Otherwise, look in the rest of the selection to find the closest
+  // character.
+  return lookRestForInlineStyle(content, selection);
+}
+
+// this is for non-collapsed selection
+function lookRestForInlineStyle(
+  content: ContentState,
+  selection: SelectionState,
+): DraftInlineStyle {
+  const blocks = content.getBlockMap();
+  const anchorKey = selection.getAnchorKey();
+  const endKey = selection.getEndKey();
+  let outOfSelection = false;
+
+  const nonEmpty = blocks
+    .skipUntil((_, k) => k === anchorKey)
+    .skip(1)
+    // we should lookup only in the selected blocks, so if this is the last
+    // selected block -- we out
+    .skipUntil((block, k) => {
+      // we don't need characters which out of the selection
+      if (outOfSelection) {
+        return false;
+      }
+      // when we reached the selection focus block
+      if (k === endKey) {
+        outOfSelection = true;
+      }
+      return block.getLength();
+    })
+    .first();
+
+  if (nonEmpty) {
+    // when this is the last block in the selection
+    if (outOfSelection) {
+      return nonEmpty.getInlineStyleAt(selection.getEndOffset() - 1);
+    }
+    return nonEmpty.getInlineStyleAt(nonEmpty.getLength() - 1);
+  }
+
+  // fallback. This is for case when all selected blocks are empty
+  return lookUpwardForInlineStyle(content, selection.getStartKey());
 }
 
 function lookUpwardForInlineStyle(

@@ -20,6 +20,18 @@ Array [
 
 exports[`falls back to no style if in empty block at document start 1`] = `Array []`;
 
+exports[`looks through rest backward-selected blocks to find a character when anchor block is empty 1`] = `
+Array [
+  "BOLD",
+]
+`;
+
+exports[`looks through rest selected blocks to find a character when anchor block is empty 1`] = `
+Array [
+  "ITALIC",
+]
+`;
+
 exports[`looks upward through empty blocks to find a character 1`] = `
 Array [
   "BOLD",

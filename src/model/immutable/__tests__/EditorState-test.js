@@ -201,8 +201,32 @@ test('looks upward through empty blocks to find a character', () => {
     rangedSelection.merge({
       anchorKey: 'emptyA',
       anchorOffset: 0,
+      focusKey: 'emptyB',
+      focusOffset: 0,
+    }),
+  );
+});
+
+test('looks through rest selected blocks to find a character when anchor block is empty', () => {
+  assertGetCurrentInlineStyle(
+    rangedSelection.merge({
+      anchorKey: 'emptyA',
+      anchorOffset: 0,
       focusKey: 'c',
       focusOffset: 3,
+      isBackward: false,
+    }),
+  );
+});
+
+test('looks through rest backward-selected blocks to find a character when anchor block is empty', () => {
+  assertGetCurrentInlineStyle(
+    new SelectionState({
+      anchorKey: 'emptyB',
+      anchorOffset: 0,
+      focusKey: 'b',
+      focusOffset: 3,
+      isBackward: true,
     }),
   );
 });
@@ -212,8 +236,8 @@ test('falls back to no style if in empty block at document start', () => {
     new SelectionState({
       anchorKey: 'emptyA',
       anchorOffset: 0,
-      focusKey: 'c',
-      focusOffset: 3,
+      focusKey: 'emptyB',
+      focusOffset: 0,
       isBackward: false,
     }),
     MULTI_BLOCK_STATE,
