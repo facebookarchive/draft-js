@@ -60,6 +60,13 @@ function onInputType(inputType: string, editorState: EditorState): EditorState {
  * due to a spellcheck change, and we can incorporate it into our model.
  */
 function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
+  // This part will be triggered after spacebar was pressed after autocomplete on IOS.
+  // It is needed to prevent adding extra space.
+  if (editor._blockNextStateUpdate) {
+    editor.restoreEditorDOM();
+    editor._blockNextStateUpdate = false;
+    return;
+  }
   // This will happen for most simple insertions. The new state is already
   // computed. Let's just call "editor.update". Things should match nicely so
   // this function will exit below where we check "domText === modelText".
@@ -129,6 +136,11 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
     domText = domText.slice(0, -1);
   }
 
+  /* $FlowFixMe[prop-missing] inputType is only defined on a draft of a
+   * standard. https://w3c.github.io/input-events/#dom-inputevent-inputtype
+   */
+  const inputType = event ? event.nativeEvent.inputType : undefined;
+
   // No change -- the DOM is up to date. Nothing to do here.
   if (domText === modelText) {
     // This can be buggy for some Android keyboards because they don't fire
@@ -138,10 +150,6 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
     // Newest versions of Android support the dom-inputevent-inputtype
     // and we can use the `inputType` to properly apply the state changes.
 
-    /* $FlowFixMe[prop-missing] inputType is only defined on a draft of a
-     * standard. https://w3c.github.io/input-events/#dom-inputevent-inputtype
-     */
-    const inputType = event ? event.nativeEvent.inputType : undefined;
     if (inputType) {
       const newEditorState = onInputType(inputType, editorState);
       if (newEditorState !== editorState) {
@@ -151,6 +159,16 @@ function editOnInput(editor: DraftEditor, event: ?SyntheticInputEvent<>): void {
       }
     }
     return;
+  } else {
+    // This part of code is responsible for case when space button triggers
+    // previous character erasure. This issue was described here
+    // https://github.com/facebook/draft-js/issues/2091
+    if (inputType) {
+      if (inputType === 'deleteContentBackward') {
+        domText = modelText;
+        editor._blockNextStateUpdate = true;
+      }
+    }
   }
 
   const selection = editorState.getSelection();

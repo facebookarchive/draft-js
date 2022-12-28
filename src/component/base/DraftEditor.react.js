@@ -159,6 +159,7 @@ class DraftEditor extends React.Component<DraftEditorProps, State> {
   _latestEditorState: EditorState;
   _latestCommittedEditorState: EditorState;
   _pendingStateFromBeforeInput: void | EditorState;
+  _blockNextStateUpdate: boolean = false;
 
   /**
    * Define proxies that can route events to the current handler.
