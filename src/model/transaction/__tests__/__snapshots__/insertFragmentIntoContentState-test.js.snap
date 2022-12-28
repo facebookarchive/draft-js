@@ -750,26 +750,10 @@ Array [
     },
     "depth": 0,
     "key": "first",
-    "nextSibling": "key15",
+    "nextSibling": "key16",
     "parent": null,
     "prevSibling": null,
     "text": "Alpha",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [],
-    "children": Array [
-      "key16",
-    ],
-    "data": Object {
-      "a": 1,
-    },
-    "depth": 0,
-    "key": "key15",
-    "nextSibling": "second",
-    "parent": null,
-    "prevSibling": "first",
-    "text": "",
     "type": "unstyled",
   },
   Object {
@@ -782,8 +766,24 @@ Array [
     },
     "depth": 0,
     "key": "key16",
+    "nextSibling": "second",
+    "parent": null,
+    "prevSibling": "first",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key18",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key17",
     "nextSibling": null,
-    "parent": "key15",
+    "parent": "key16",
     "prevSibling": null,
     "text": "",
     "type": "unstyled",
@@ -816,9 +816,9 @@ Array [
       "a": 1,
     },
     "depth": 0,
-    "key": "key17",
+    "key": "key18",
     "nextSibling": null,
-    "parent": "key16",
+    "parent": "key17",
     "prevSibling": null,
     "text": "Delta",
     "type": "unstyled",
@@ -833,7 +833,7 @@ Array [
     "key": "second",
     "nextSibling": null,
     "parent": null,
-    "prevSibling": "key15",
+    "prevSibling": "key16",
     "text": "",
     "type": "unstyled",
   },
@@ -846,8 +846,8 @@ Array [
     "characterList": Array [],
     "children": Array [
       "firstChild",
-      "key19",
-      "key22",
+      "key20",
+      "key23",
       "lastChild",
     ],
     "data": Object {
@@ -890,26 +890,10 @@ Array [
     },
     "depth": 0,
     "key": "firstChild",
-    "nextSibling": "key19",
+    "nextSibling": "key20",
     "parent": "root",
     "prevSibling": null,
     "text": "Alpha",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [],
-    "children": Array [
-      "key20",
-    ],
-    "data": Object {
-      "a": 1,
-    },
-    "depth": 0,
-    "key": "key19",
-    "nextSibling": "key22",
-    "parent": "root",
-    "prevSibling": "firstChild",
-    "text": "",
     "type": "unstyled",
   },
   Object {
@@ -922,8 +906,24 @@ Array [
     },
     "depth": 0,
     "key": "key20",
+    "nextSibling": "key23",
+    "parent": "root",
+    "prevSibling": "firstChild",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key22",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key21",
     "nextSibling": null,
-    "parent": "key19",
+    "parent": "key20",
     "prevSibling": null,
     "text": "",
     "type": "unstyled",
@@ -956,9 +956,9 @@ Array [
       "a": 1,
     },
     "depth": 0,
-    "key": "key21",
+    "key": "key22",
     "nextSibling": null,
-    "parent": "key20",
+    "parent": "key21",
     "prevSibling": null,
     "text": "Delta",
     "type": "unstyled",
@@ -1003,10 +1003,10 @@ Array [
       "a": 1,
     },
     "depth": 0,
-    "key": "key22",
+    "key": "key23",
     "nextSibling": "lastChild",
     "parent": "root",
-    "prevSibling": "key19",
+    "prevSibling": "key20",
     "text": "Elephant",
     "type": "unstyled",
   },
@@ -1020,7 +1020,7 @@ Array [
     "key": "lastChild",
     "nextSibling": null,
     "parent": "root",
-    "prevSibling": "key22",
+    "prevSibling": "key23",
     "text": "",
     "type": "unstyled",
   },
@@ -1078,7 +1078,87 @@ Array [
     "parent": null,
     "prevSibling": null,
     "text": "some text",
-    "type": "unstyled",
+    "type": "heading-two",
+  },
+]
+`;
+
+exports[`must be able to insert a fragment with a single ContentBlockNode keeping the target block type when it has text 1`] = `
+Array [
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "A",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "some textItem 1",
+    "type": "unordered-list-item",
   },
 ]
 `;
@@ -1093,25 +1173,9 @@ Array [
     },
     "depth": 0,
     "key": "first",
-    "nextSibling": "key6",
+    "nextSibling": "key7",
     "parent": null,
     "prevSibling": null,
-    "text": "",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [],
-    "children": Array [
-      "key7",
-    ],
-    "data": Object {
-      "a": 1,
-    },
-    "depth": 0,
-    "key": "key6",
-    "nextSibling": "key9",
-    "parent": null,
-    "prevSibling": "first",
     "text": "",
     "type": "unstyled",
   },
@@ -1125,36 +1189,17 @@ Array [
     },
     "depth": 0,
     "key": "key7",
-    "nextSibling": null,
-    "parent": "key6",
-    "prevSibling": null,
+    "nextSibling": "key10",
+    "parent": null,
+    "prevSibling": "first",
     "text": "",
     "type": "unstyled",
   },
   Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
+    "characterList": Array [],
+    "children": Array [
+      "key9",
     ],
-    "children": Array [],
     "data": Object {
       "a": 1,
     },
@@ -1163,23 +1208,11 @@ Array [
     "nextSibling": null,
     "parent": "key7",
     "prevSibling": null,
-    "text": "Delta",
+    "text": "",
     "type": "unstyled",
   },
   Object {
     "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
       Object {
         "entity": null,
         "style": Array [],
@@ -1207,127 +1240,8 @@ Array [
     },
     "depth": 0,
     "key": "key9",
-    "nextSibling": "second",
-    "parent": null,
-    "prevSibling": "key6",
-    "text": "Elephant",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [],
-    "children": Array [],
-    "data": Object {
-      "a": 1,
-    },
-    "depth": 0,
-    "key": "second",
     "nextSibling": null,
-    "parent": null,
-    "prevSibling": "key9",
-    "text": "",
-    "type": "unstyled",
-  },
-]
-`;
-
-exports[`must be able to insert fragment of ContentBlockNodes after nested block 1`] = `
-Array [
-  Object {
-    "characterList": Array [],
-    "children": Array [
-      "firstChild",
-      "key10",
-      "key13",
-      "lastChild",
-    ],
-    "data": Object {
-      "a": 1,
-    },
-    "depth": 0,
-    "key": "root",
-    "nextSibling": null,
-    "parent": null,
-    "prevSibling": null,
-    "text": "",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [],
-    "children": Array [],
-    "data": Object {
-      "a": 1,
-    },
-    "depth": 0,
-    "key": "firstChild",
-    "nextSibling": "key10",
-    "parent": "root",
-    "prevSibling": null,
-    "text": "",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [],
-    "children": Array [
-      "key11",
-    ],
-    "data": Object {
-      "a": 1,
-    },
-    "depth": 0,
-    "key": "key10",
-    "nextSibling": "key13",
-    "parent": "root",
-    "prevSibling": "firstChild",
-    "text": "",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [],
-    "children": Array [
-      "key12",
-    ],
-    "data": Object {
-      "a": 1,
-    },
-    "depth": 0,
-    "key": "key11",
-    "nextSibling": null,
-    "parent": "key10",
-    "prevSibling": null,
-    "text": "",
-    "type": "unstyled",
-  },
-  Object {
-    "characterList": Array [
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-      Object {
-        "entity": null,
-        "style": Array [],
-      },
-    ],
-    "children": Array [],
-    "data": Object {
-      "a": 1,
-    },
-    "depth": 0,
-    "key": "key12",
-    "nextSibling": null,
-    "parent": "key11",
+    "parent": "key8",
     "prevSibling": null,
     "text": "Delta",
     "type": "unstyled",
@@ -1372,10 +1286,176 @@ Array [
       "a": 1,
     },
     "depth": 0,
+    "key": "key10",
+    "nextSibling": "second",
+    "parent": null,
+    "prevSibling": "key7",
+    "text": "Elephant",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "second",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": "key10",
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`must be able to insert fragment of ContentBlockNodes after nested block 1`] = `
+Array [
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "firstChild",
+      "key11",
+      "key14",
+      "lastChild",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "root",
+    "nextSibling": null,
+    "parent": null,
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "firstChild",
+    "nextSibling": "key11",
+    "parent": "root",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key12",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key11",
+    "nextSibling": "key14",
+    "parent": "root",
+    "prevSibling": "firstChild",
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [],
+    "children": Array [
+      "key13",
+    ],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key12",
+    "nextSibling": null,
+    "parent": "key11",
+    "prevSibling": null,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
     "key": "key13",
+    "nextSibling": null,
+    "parent": "key12",
+    "prevSibling": null,
+    "text": "Delta",
+    "type": "unstyled",
+  },
+  Object {
+    "characterList": Array [
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+      Object {
+        "entity": null,
+        "style": Array [],
+      },
+    ],
+    "children": Array [],
+    "data": Object {
+      "a": 1,
+    },
+    "depth": 0,
+    "key": "key14",
     "nextSibling": "lastChild",
     "parent": "root",
-    "prevSibling": "key10",
+    "prevSibling": "key11",
     "text": "Elephant",
     "type": "unstyled",
   },
@@ -1389,7 +1469,7 @@ Array [
     "key": "lastChild",
     "nextSibling": null,
     "parent": "root",
-    "prevSibling": "key13",
+    "prevSibling": "key14",
     "text": "",
     "type": "unstyled",
   },
