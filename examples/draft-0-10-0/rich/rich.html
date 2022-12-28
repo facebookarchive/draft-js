@@ -53,9 +53,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           const newState = RichUtils.handleKeyCommand(editorState, command);
           if (newState) {
             this.onChange(newState);
-            return true;
+            return 'handled';
           }
-          return false;
+          return 'not-handled';
         }
 
         _mapKeyToEditorCommand(e) {
