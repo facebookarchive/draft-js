@@ -1,0 +1,92 @@
+<!--
+Copyright (c) Facebook, Inc. and its affiliates. All rights reserved.
+
+This file provided by Facebook is for non-commercial testing and evaluation
+purposes only. Facebook reserves all rights not expressly granted.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Draft • Plain Text Editor</title>
+    <link rel="stylesheet" href="../../../dist/Draft.css" />
+  </head>
+  <body>
+    <div id="target"></div>
+    <script src="../../../node_modules/react/umd/react.development.js"></script>
+    <script src="../../../node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script src="../../../node_modules/immutable/dist/immutable.js"></script>
+    <script src="../../../node_modules/es6-shim/es6-shim.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
+    <script src="../../../dist/Draft.js"></script>
+    <script type="text/babel">
+      'use strict';
+
+      const {Editor, EditorState} = Draft;
+
+      function PlainTextEditorExample() {
+        const editorRef = React.useRef(null);
+        const [editorState, setEditorState] = React.useState(() =>
+          EditorState.createEmpty(),
+        );
+
+        function logState() {
+          console.log(editorState.toJS());
+        }
+
+        function focus(ref) {
+          editorRef.current.focus();
+        }
+
+        return (
+          <div style={styles.root}>
+            <div style={styles.editor} onClick={focus}>
+              <Editor
+                editorState={editorState}
+                onChange={setEditorState}
+                placeholder="Enter some text..."
+                ref={editorRef}
+              />
+            </div>
+            <input
+              onClick={logState}
+              style={styles.button}
+              type="button"
+              value="Log State"
+            />
+          </div>
+        );
+      }
+
+      const styles = {
+        root: {
+          fontFamily: "'Helvetica', sans-serif",
+          padding: 20,
+          width: 600,
+        },
+        editor: {
+          border: '1px solid #ccc',
+          cursor: 'text',
+          minHeight: 80,
+          padding: 10,
+        },
+        button: {
+          marginTop: 10,
+          textAlign: 'center',
+        },
+      };
+
+      ReactDOM.render(
+        <PlainTextEditorExample />,
+        document.getElementById('target'),
+      );
+    </script>
+  </body>
+</html>
