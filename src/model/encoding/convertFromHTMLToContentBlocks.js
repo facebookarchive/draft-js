@@ -246,6 +246,9 @@ const styleFromNodeAttributes = (
 const isListNode = (nodeName: ?string): boolean =>
   nodeName === 'ul' || nodeName === 'ol';
 
+const isListItemType = (blockType: ?string): boolean =>
+  blockType === 'unordered-list-item' || blockType === 'ordered-list-item';
+
 /**
  *  ContentBlockConfig is a mutable data structure that holds all
  *  the information required to build a ContentBlock and an array of
@@ -441,6 +444,7 @@ class ContentBlocksBuilder {
         blockConfigs.push(
           ...this._toBlockConfigs(Array.from(node.childNodes), style),
         );
+
         this.currentDepth = wasCurrentDepth;
         this.wrapper = wasWrapper;
         continue;
@@ -469,8 +473,7 @@ class ContentBlocksBuilder {
         if (
           !experimentalTreeDataSupport &&
           isHTMLElement(node) &&
-          (blockType === 'unordered-list-item' ||
-            blockType === 'ordered-list-item')
+          isListItemType(blockType)
         ) {
           const htmlElement: HTMLElement = (node: any);
           this.currentDepth = getListItemDepth(htmlElement, this.currentDepth);
@@ -701,15 +704,48 @@ class ContentBlocksBuilder {
   }
 
   /**
+   * Pull out nested nodes from list item block configs, keeping the parent
+   * list item node and transforming the children into list items themselves.
+   */
+  _hoistNestedListItems(
+    blockConfig: ContentBlockConfig,
+  ): List<ContentBlockConfig> {
+    // Hoist the list item itself, but without children, so that when the
+    // ContentBlock is generated it doesn't include the text of the child nodes.
+    const blockConfigWithoutChildren = {...blockConfig, childConfigs: []};
+
+    // Hoist the children, transforming some block types into list items to
+    // preserve the list structure. Due to the constrained nature of a flat
+    // block map, there are cases when the list structure can't be preserved.
+    const hoistedChildConfigs = List(blockConfig.childConfigs).flatMap(
+      childConfig => {
+        if (
+          childConfig.type === 'unstyled' ||
+          childConfig.type === 'paragraph' ||
+          childConfig.type === 'blockquote'
+        ) {
+          return [{...childConfig, type: blockConfig.type}];
+        }
+
+        return this._hoistContainersInBlockConfigs([childConfig]);
+      },
+    );
+
+    return List([blockConfigWithoutChildren]).concat(hoistedChildConfigs);
+  }
+
+  /**
    * Remove 'useless' container nodes from the block config hierarchy, by
    * replacing them with their children.
    */
-
   _hoistContainersInBlockConfigs(
     blockConfigs: Array<ContentBlockConfig>,
   ): List<ContentBlockConfig> {
     const hoisted = List(blockConfigs).flatMap(blockConfig => {
-      // Don't mess with useful blocks
+      if (isListItemType(blockConfig.type)) {
+        return this._hoistNestedListItems(blockConfig);
+      }
+
       if (blockConfig.type !== 'unstyled' || blockConfig.text !== '') {
         return [blockConfig];
       }
@@ -734,10 +770,16 @@ class ContentBlocksBuilder {
       const {text, characterList} = this._extractTextFromBlockConfigs(
         config.childConfigs,
       );
+
+      const blockText = config.text + text;
+      if (!blockText) {
+        return;
+      }
+
       this.contentBlocks.push(
         new ContentBlock({
           ...config,
-          text: config.text + text,
+          text: blockText,
           characterList: config.characterList.concat(characterList),
         }),
       );
