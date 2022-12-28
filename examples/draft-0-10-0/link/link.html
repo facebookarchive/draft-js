@@ -74,8 +74,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           const selection = editorState.getSelection();
           if (!selection.isCollapsed()) {
             const contentState = editorState.getCurrentContent();
-            const startKey = editorState.getSelection().getStartKey();
-            const startOffset = editorState.getSelection().getStartOffset();
+            const startKey = selection.getStartKey();
+            const startOffset = selection.getStartOffset();
             const blockWithLinkAtBeginning = contentState.getBlockForKey(startKey);
             const linkKey = blockWithLinkAtBeginning.getEntityAt(startOffset);
 
