@@ -4,69 +4,69 @@ exports[`must identify nothing in an empty string 1`] = `""`;
 
 exports[`must identify nothing in an empty string 2`] = `""`;
 
-exports[`must identify punct/whitespace strings looking backward 1`] = `"    "`;
+exports[`must identify punct/whitespace strings looking backward 1`] = `" "`;
 
-exports[`must identify punct/whitespace strings looking backward 2`] = `"\\u060d\\ufd3e\\ufd3f"`;
+exports[`must identify punct/whitespace strings looking backward 2`] = `"\\ufd3f"`;
 
-exports[`must identify punct/whitespace strings looking backward 3`] = `". . . . ."`;
+exports[`must identify punct/whitespace strings looking backward 3`] = `"."`;
 
-exports[`must identify punct/whitespace strings looking backward 4`] = `"   !!!???   "`;
+exports[`must identify punct/whitespace strings looking backward 4`] = `" "`;
 
-exports[`must identify punct/whitespace strings looking forward 1`] = `"    "`;
+exports[`must identify punct/whitespace strings looking forward 1`] = `" "`;
 
-exports[`must identify punct/whitespace strings looking forward 2`] = `"\\u060d\\ufd3e\\ufd3f"`;
+exports[`must identify punct/whitespace strings looking forward 2`] = `"\\u060d"`;
 
-exports[`must identify punct/whitespace strings looking forward 3`] = `". . . . ."`;
+exports[`must identify punct/whitespace strings looking forward 3`] = `"."`;
 
-exports[`must identify punct/whitespace strings looking forward 4`] = `"   !!!???   "`;
+exports[`must identify punct/whitespace strings looking forward 4`] = `" "`;
 
-exports[`must identify punctuation with apostrophes 1`] = `"'hello"`;
+exports[`must identify punctuation with apostrophes 1`] = `"'"`;
 
 exports[`must identify punctuation with apostrophes 2`] = `"hello'"`;
 
-exports[`must identify punctuation with apostrophes 3`] = `"\\u2018hello"`;
+exports[`must identify punctuation with apostrophes 3`] = `"\\u2018"`;
 
 exports[`must identify punctuation with apostrophes 4`] = `"hello\\u2019"`;
 
-exports[`must identify punctuation with apostrophes 5`] = `"('hello"`;
+exports[`must identify punctuation with apostrophes 5`] = `"("`;
 
-exports[`must identify punctuation with apostrophes 6`] = `"hello')"`;
+exports[`must identify punctuation with apostrophes 6`] = `")"`;
 
-exports[`must identify punctuation with apostrophes 7`] = `".'."`;
+exports[`must identify punctuation with apostrophes 7`] = `"."`;
 
-exports[`must identify punctuation with apostrophes 8`] = `".'."`;
+exports[`must identify punctuation with apostrophes 8`] = `"."`;
 
-exports[`must identify words ended by punctuation looking backward 1`] = `"animals."`;
+exports[`must identify words ended by punctuation looking backward 1`] = `"."`;
 
-exports[`must identify words ended by punctuation looking backward 2`] = `"animals|"`;
+exports[`must identify words ended by punctuation looking backward 2`] = `"|"`;
 
-exports[`must identify words ended by punctuation looking backward 3`] = `"animals^"`;
+exports[`must identify words ended by punctuation looking backward 3`] = `"^"`;
 
-exports[`must identify words ended by punctuation looking backward 4`] = `"animals\\u060d\\ufd3e\\ufd3f"`;
+exports[`must identify words ended by punctuation looking backward 4`] = `"\\ufd3f"`;
 
-exports[`must identify words ended by punctuation looking backward 5`] = `"animals.. .. .."`;
+exports[`must identify words ended by punctuation looking backward 5`] = `"."`;
 
-exports[`must identify words ended by spaces looking backward 1`] = `"animals  "`;
+exports[`must identify words ended by spaces looking backward 1`] = `" "`;
 
-exports[`must identify words ended by spaces looking backward 2`] = `"f\\u00e0bregas    "`;
+exports[`must identify words ended by spaces looking backward 2`] = `" "`;
 
-exports[`must identify words ended by spaces looking backward 3`] = `"\\u063a\\u063b\\u063c      "`;
+exports[`must identify words ended by spaces looking backward 3`] = `" "`;
 
-exports[`must identify words led by punctuation looking forward 1`] = `".the"`;
+exports[`must identify words led by punctuation looking forward 1`] = `"."`;
 
-exports[`must identify words led by punctuation looking forward 2`] = `"|the"`;
+exports[`must identify words led by punctuation looking forward 2`] = `"|"`;
 
-exports[`must identify words led by punctuation looking forward 3`] = `"^the"`;
+exports[`must identify words led by punctuation looking forward 3`] = `"^"`;
 
-exports[`must identify words led by punctuation looking forward 4`] = `"\\u060d\\ufd3e\\ufd3fthe"`;
+exports[`must identify words led by punctuation looking forward 4`] = `"\\u060d"`;
 
-exports[`must identify words led by punctuation looking forward 5`] = `".. .. ..the"`;
+exports[`must identify words led by punctuation looking forward 5`] = `"."`;
 
-exports[`must identify words led by spaces looking forward 1`] = `"  the"`;
+exports[`must identify words led by spaces looking forward 1`] = `" "`;
 
-exports[`must identify words led by spaces looking forward 2`] = `"    th\\u00e9"`;
+exports[`must identify words led by spaces looking forward 2`] = `" "`;
 
-exports[`must identify words led by spaces looking forward 3`] = `"      \\u0637\\u0638\\u0639"`;
+exports[`must identify words led by spaces looking forward 3`] = `" "`;
 
 exports[`must identify words looking backward 1`] = `"animals"`;
 

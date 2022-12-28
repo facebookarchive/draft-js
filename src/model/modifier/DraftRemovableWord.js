@@ -13,7 +13,19 @@
 
 const TokenizeUtil = require('TokenizeUtil');
 
-const punctuation = TokenizeUtil.getPunctuation();
+let punctuation = TokenizeUtil.getPunctuation();
+
+// punctuation is enhanced with '&' . Currently the punctuations are being used
+// to act as word separator. Since '&' is not a valid English punctuation it
+// is not being returned as part of the punctuation string, hence presence of &
+// in between two words is considered as part of the string.
+// For example if the string is 'value0&field1=value1&field2'
+// Backspace regex will consider 'value1&field2' as the last word of the string
+// Delete regex will consider 'value0&field1' as the first word of the string
+
+if (punctuation.indexOf('&') < 0) {
+  punctuation = [punctuation.slice(0, 1), '&', punctuation.slice(1)].join('');
+}
 
 // The apostrophe and curly single quotes behave in a curious way: when
 // surrounded on both sides by word characters, they behave as word chars; when
@@ -26,6 +38,9 @@ const CHAMELEON_CHARS = "['\u2018\u2019]";
 const WHITESPACE_AND_PUNCTUATION = '\\s|(?![_])' + punctuation;
 
 const DELETE_STRING =
+  '^(?:(?:' +
+  WHITESPACE_AND_PUNCTUATION +
+  '))|' +
   '^' +
   '(?:' +
   WHITESPACE_AND_PUNCTUATION +
@@ -49,10 +64,12 @@ const BACKSPACE_STRING =
   '|(?!' +
   WHITESPACE_AND_PUNCTUATION +
   ').)*' +
-  '(?:' +
+  '(?!' +
   WHITESPACE_AND_PUNCTUATION +
   ')*' +
-  '$';
+  '$|(?:(?:' +
+  WHITESPACE_AND_PUNCTUATION +
+  ')$)';
 const BACKSPACE_REGEX = new RegExp(BACKSPACE_STRING);
 
 function getRemovableWord(text: string, isBackward: boolean): string {
