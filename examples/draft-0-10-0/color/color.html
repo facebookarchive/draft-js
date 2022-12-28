@@ -51,36 +51,39 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           const {editorState} = this.state;
           const selection = editorState.getSelection();
 
-          // Let's just allow one color at a time. Turn off all active colors.
-          const nextContentState = Object.keys(colorStyleMap)
-            .reduce((contentState, color) => {
-              return Modifier.removeInlineStyle(contentState, selection, color)
-            }, editorState.getCurrentContent());
-
-          let nextEditorState = EditorState.push(
-            editorState,
-            nextContentState,
-            'change-inline-style'
+          const otherColors = Object.keys(colorStyleMap).filter(color =>
+            color !== toggledColor
           );
 
-          const currentStyle = editorState.getCurrentInlineStyle();
+          const nextEditorState = RichUtils
+            .toggleInlineStyle(editorState, toggledColor);
 
-          // Unset style override for current color.
           if (selection.isCollapsed()) {
-            nextEditorState = currentStyle.reduce((state, color) => {
-              return RichUtils.toggleInlineStyle(state, color);
-            }, nextEditorState);
+            // remove other colors style
+            const nextStyle = otherColors.reduce((colors, color) =>
+              colors.has(color) ? colors.remove(color) : colors,
+              nextEditorState.getCurrentInlineStyle());
+
+            this.onChange(EditorState.setInlineStyleOverride(
+              nextEditorState, nextStyle
+            ));
+
+            return;
           }
 
-          // If the color is being toggled on, apply it.
-          if (!currentStyle.has(toggledColor)) {
-            nextEditorState = RichUtils.toggleInlineStyle(
-              nextEditorState,
-              toggledColor
-            );
-          }
+          // has selection
 
-          this.onChange(nextEditorState);
+          // Turn off other active colors.
+          const nextContentState = otherColors
+            .reduce((contentState, color) => 
+              Modifier.removeInlineStyle(contentState, selection, color),
+              nextEditorState.getCurrentContent());
+
+          this.onChange(EditorState.push(
+            nextEditorState,
+            nextContentState,
+            "change-inline-style"
+          ));
         }
 
         render() {
