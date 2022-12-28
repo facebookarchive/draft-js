@@ -165,7 +165,16 @@ function moveText(
     editorState.getSelection(),
     targetSelection,
   );
-  return EditorState.push(editorState, newContentState, 'insert-fragment');
+  editorState = EditorState.push(
+    editorState,
+    newContentState,
+    'insert-fragment',
+  );
+  editorState = EditorState.forceSelection(
+    editorState,
+    newContentState.getSelectionAfter(),
+  );
+  return editorState;
 }
 
 /**
