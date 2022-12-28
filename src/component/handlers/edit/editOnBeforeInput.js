@@ -55,9 +55,16 @@ function replaceText(
   entityKey: ?string,
   forceSelection: boolean,
 ): EditorState {
+  // Special case `. `: Replace ` ` with `. `
+  const selection = editorState.getSelection();
+  if (text === '. ') {
+    selection = selection.merge({
+      anchorOffset: selection.getAnchorOffset() - 1,
+    });
+  }
   const contentState = DraftModifier.replaceText(
     editorState.getCurrentContent(),
-    editorState.getSelection(),
+    selection,
     text,
     inlineStyle,
     entityKey,
