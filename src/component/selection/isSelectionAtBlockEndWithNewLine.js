@@ -1,0 +1,25 @@
+/**
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @emails oncall+draft_js
+ * @flow strict-local
+ * @format
+ */
+'use strict';
+
+import type EditorState from 'EditorState';
+
+function isSelectionAtBlockEndWithNewLine(editorState: EditorState): boolean {
+  const selection = editorState.getSelection();
+  const anchorKey = selection.getAnchorKey();
+  const offset = selection.getStartOffset();
+
+  const block = editorState.getCurrentContent().getBlockForKey(anchorKey);
+
+  return block.getLength() === offset && block.getText()[offset - 1] === '\n';
+}
+
+module.exports = isSelectionAtBlockEndWithNewLine;
