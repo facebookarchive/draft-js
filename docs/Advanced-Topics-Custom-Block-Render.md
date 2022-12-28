@@ -77,7 +77,7 @@ const blockRenderMap = Immutable.Map({
   }
 });
 
-// Include 'paragraph' as a valid block and updated the unstyled element but
+// Include 'section' as a valid block and updated the unstyled element but
 // keep support for other draft default block types
 const extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
 
