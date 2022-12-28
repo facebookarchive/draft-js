@@ -180,6 +180,22 @@ test('does not discard style override when splitting block', () => {
   expect(editor.getCurrentInlineStyle().toJS()).toMatchSnapshot();
 });
 
+test('does not discard style override when gaining/losing focus', () => {
+  let editor = UNDECORATED_STATE;
+  editor = EditorState.moveFocusToEnd(editor);
+  editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
+  editor = EditorState.moveFocusToEnd(editor);
+  expect(editor.getCurrentInlineStyle().toJS()).toMatchSnapshot();
+});
+
+test('does discard style override when selection has changed', () => {
+  let editor = UNDECORATED_STATE;
+  editor = EditorState.acceptSelection(editor, collapsedSelection);
+  editor = RichTextEditorUtil.toggleInlineStyle(editor, 'BOLD');
+  editor = EditorState.acceptSelection(editor, rangedSelection);
+  expect(editor.getCurrentInlineStyle().toJS()).toMatchSnapshot();
+});
+
 test('uses right of the start for blocks with text', () => {
   assertGetCurrentInlineStyle(rangedSelection.set('focusKey', 'b'));
 });
